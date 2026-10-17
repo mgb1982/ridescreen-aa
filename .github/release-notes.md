@@ -4,7 +4,7 @@ Basada en [OpenCfMoto](https://github.com/zanderp/open-cfmoto) de Alexandru (zan
 
 > ⚠️ **¿La probaste alguna vez y no te funcionó? Dale otra oportunidad.** Esta versión es mucho más intuitiva y soluciona la mayoría de los problemas de las anteriores, sobre todo en la primera conexión.
 >
-> 📱 [Guía del móvil](https://mgb1982.github.io/ridescreen-aa/guia/) · ⌚ [Guía del reloj](https://mgb1982.github.io/ridescreen-aa/reloj/)
+> 📱 [Guía del móvil](https://ridescreen.app/guia/) · ⌚ [Guía del reloj](https://ridescreen.app/reloj/)
 
 ### Novedades de la v2.2
 **🏠 Pantalla principal nueva**
@@ -45,14 +45,14 @@ Basada en [OpenCfMoto](https://github.com/zanderp/open-cfmoto) de Alexandru (zan
 4. Las próximas versiones te las ofrecerá la propia app.
 
 ### Instalación en el reloj (opcional, Wear OS)
-El reloj no instala APK directamente: esta vez se hace por depuración inalámbrica, **por última vez**. Las siguientes versiones se instalan desde el móvil. Paso a paso, con imágenes: [guía del reloj](https://mgb1982.github.io/ridescreen-aa/reloj/).
+El reloj no instala APK directamente: esta vez se hace por depuración inalámbrica, **por última vez**. Las siguientes versiones se instalan desde el móvil. Paso a paso, con imágenes: [guía del reloj](https://ridescreen.app/reloj/).
 1. En el reloj: Ajustes → Acerca del reloj → Información de software → toca **Versión de software** 5 veces (activa las opciones de desarrollador).
 2. Ajustes → Conexiones → **Wi-Fi en "Activado"** (no Automático), en la misma red que el móvil. Si no te muestra IP, desactiva un momento el Bluetooth del móvil.
 3. Opciones de desarrollador → **Depuración ADB** y **Depuración inalámbrica**. Sube el tiempo de pantalla para que no se apague mientras emparejas.
 4. Desde el móvil, con **Wear Installer 2** o **Bugjaeger** (Play Store): empareja con el código de "Emparejar nuevo dispositivo" y luego instala **`RideScreen-AA-v2.2-WearOS-reloj.apk`**. Ojo: el puerto para emparejar y el de conectar son distintos.
 
 ### Si algo falla
-Mira la [guía del móvil](https://mgb1982.github.io/ridescreen-aa/guia/) (tiene los mensajes de error más habituales y qué hacer). Si sigue, en la app **❓ Ayuda → Compartir registros** y pásalo por el grupo contando qué ha pasado. Los registros ocultan números de serie y contraseñas.
+Mira la [guía del móvil](https://ridescreen.app/guia/) (tiene los mensajes de error más habituales y qué hacer). Si sigue, en la app **❓ Ayuda → Compartir registros** y pásalo por el grupo contando qué ha pasado. Los registros ocultan números de serie y contraseñas.
 
 
 ☕ RideScreen AA es gratis y sin anuncios. Si te resulta útil y quieres que siga creciendo (Play Store, más motos, más funciones), puedes [invitarme a un café en Ko-fi](https://ko-fi.com/mgb1982).
