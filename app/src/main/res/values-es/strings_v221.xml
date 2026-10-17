@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="conn_detail_hus_wedged">Android Auto se ha quedado colgado en el móvil: acepta la conexión pero no responde. Reinicia su servidor (botón de abajo: ⋮ → Stop head unit server y luego Start head unit server) y vuelve a Conectar.</string>
+</resources>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="conn_detail_hus_wedged">Android Auto on the phone got stuck: it took the connection but doesn\'t answer. Restart its head unit server (button below: ⋮ → Stop head unit server, then Start head unit server) and tap Connect again.</string>
+</resources>
