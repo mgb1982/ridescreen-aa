@@ -168,6 +168,10 @@ object AppSettings {
     fun btTriggerName(ctx: Context): String? =
         prefs(ctx).getString(KEY_BT_TRIGGER_NAME, null)?.takeIf { it.isNotBlank() }
 
+    /** True once the rider picked the trigger (or "none") themselves. */
+    fun btTriggerChosen(ctx: Context): Boolean = prefs(ctx).getBoolean("bt_trigger_chosen", false)
+    fun setBtTriggerChosen(ctx: Context) { prefs(ctx).edit().putBoolean("bt_trigger_chosen", true).apply() }
+
     fun setBtTrigger(ctx: Context, mac: String?, name: String?) {
         prefs(ctx).edit()
             .putString(KEY_BT_TRIGGER_MAC, mac?.ifBlank { null })

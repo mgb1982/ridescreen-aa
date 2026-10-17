@@ -346,6 +346,7 @@ class SetupActivity : AppCompatActivity() {
             .setTitle(R.string.setup_bt_trigger_pick)
             .setItems(labels.toTypedArray()) { _, which ->
                 AppSettings.setBtTrigger(this, macs[which], names[which])
+                AppSettings.setBtTriggerChosen(this)   // a deliberate "none" is respected (no auto-adopt)
                 refreshOptions()
                 val toast = if (macs[which] == null) getString(R.string.setup_bt_trigger_none)
                 else getString(R.string.setup_bt_trigger_set, names[which])
