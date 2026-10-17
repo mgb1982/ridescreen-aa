@@ -6,6 +6,21 @@ Basada en [OpenCfMoto](https://github.com/zanderp/open-cfmoto) de Alexandru (zan
 >
 > 📱 [Guía del móvil](https://mgb1982.github.io/ridescreen-aa/guia/) · ⌚ [Guía del reloj](https://mgb1982.github.io/ridescreen-aa/reloj/)
 
+### Novedades de la v2.2.1 · arreglos
+**🔋 Batería**: la v2.2 dejaba los datos móviles encendidos todo el día mientras la app seguía viva (y la espera de la moto en modo ahorro la mantiene viva horas después de cada viaje). En algunos móviles la carga pasaba de durar día y medio a durar medio día. Ahora los datos móviles solo se piden durante el viaje y se sueltan al parar, y la espera larga ya no busca redes Wi-Fi cada minuto. **Sigue conectando sola con el móvil bloqueado** al arrancar la moto.
+
+**🩶 Pantallas grises en el cuadro**: si el cuadro va más lento que el vídeo, la app descarta lo atrasado y sigue desde una imagen completa, en vez de dejar la pantalla gris.
+
+**🔌 Android Auto colgado**: cuando el servidor de Android Auto del móvil acepta la conexión pero no responde (pasa a veces tras reiniciar el móvil o después de usar otra app), la app lo dice claramente y te pone debajo el acceso para reiniciarlo.
+
+**Y además**:
+- Móviles con chip MediaTek que se quedaban sin imagen: usan el decodificador por software.
+- Zontes 125M y cuadros que usan el **punto de acceso del móvil**: la app intenta configurarlo sola por Bluetooth, como la app oficial (en pruebas).
+- Ya no confunde los datos móviles o el Wi-Fi de casa con el punto de acceso del móvil.
+- Arreglado un cierre al salir de Gasolineras antes de tener la ubicación.
+- Sin el falso aviso «Android Auto no envía vídeo» durante los primeros segundos.
+- Los registros se comparten como `ridescreen-log-….txt` (se pueden adjuntar en más apps).
+
 ### Novedades de la v2.2
 **🏠 Pantalla principal nueva**
 - Estado y números del día en una sola tarjeta. Con la moto aparcada, la tarjeta **🅿️ Tu moto** muestra la foto del sitio, la distancia y los botones **«Cómo llegar»** y **«Ver foto»** (la foto se ve dentro de la app, con zoom).
@@ -39,8 +54,8 @@ Basada en [OpenCfMoto](https://github.com/zanderp/open-cfmoto) de Alexandru (zan
 **Y todo lo de la v2**: mapa de calor, récords y trofeos, nombres automáticos de viajes, tu año en moto, libreta de mantenimiento y repostajes, aparcamiento al apagar la moto y brújula hacia tu moto en el reloj.
 
 ### Instalación en el móvil
-1. Descarga **`RideScreen-AA-v2.2.apk`** (abajo, en *Assets*).
-2. Si vienes de la **v1/v1.1/v2** o de la versión del grupo (zontes-1/2), se instala **encima** sin perder nada. Si tienes la OpenCfMoto **oficial**, desinstálala primero: están firmadas con claves distintas.
+1. Descarga **`RideScreen-AA-v2.2.1.apk`** (abajo, en *Assets*).
+2. Si vienes de la **v1/v1.1/v2/v2.2** o de la versión del grupo (zontes-1/2), se instala **encima** sin perder nada. Si tienes la OpenCfMoto **oficial**, desinstálala primero: están firmadas con claves distintas.
 3. Si sale el aviso de **Play Protect** ("app no segura" o "bloqueada"), es porque Google aún no conoce la app: **Más detalles → Instalar de todas formas**.
 4. Las próximas versiones te las ofrecerá la propia app.
 
@@ -49,7 +64,7 @@ El reloj no instala APK directamente: esta vez se hace por depuración inalámbr
 1. En el reloj: Ajustes → Acerca del reloj → Información de software → toca **Versión de software** 5 veces (activa las opciones de desarrollador).
 2. Ajustes → Conexiones → **Wi-Fi en "Activado"** (no Automático), en la misma red que el móvil. Si no te muestra IP, desactiva un momento el Bluetooth del móvil.
 3. Opciones de desarrollador → **Depuración ADB** y **Depuración inalámbrica**. Sube el tiempo de pantalla para que no se apague mientras emparejas.
-4. Desde el móvil, con **Wear Installer 2** o **Bugjaeger** (Play Store): empareja con el código de "Emparejar nuevo dispositivo" y luego instala **`RideScreen-AA-v2.2-WearOS-reloj.apk`**. Ojo: el puerto para emparejar y el de conectar son distintos.
+4. Desde el móvil, con **Wear Installer 2** o **Bugjaeger** (Play Store): empareja con el código de "Emparejar nuevo dispositivo" y luego instala **`RideScreen-AA-v2.2.1-WearOS-reloj.apk`**. Ojo: el puerto para emparejar y el de conectar son distintos.
 
 ### Si algo falla
 Mira la [guía del móvil](https://mgb1982.github.io/ridescreen-aa/guia/) (tiene los mensajes de error más habituales y qué hacer). Si sigue, en la app **❓ Ayuda → Compartir registros** y pásalo por el grupo contando qué ha pasado. Los registros ocultan números de serie y contraseñas.
