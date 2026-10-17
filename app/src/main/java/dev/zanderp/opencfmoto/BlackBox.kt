@@ -81,6 +81,18 @@ object BlackBox {
         main.postDelayed({ save(app) }, AFTER_MS)
     }
 
+    /**
+     * v2.3: "Simulate crash" records an event too (outcome "test"), so the rider can see what the
+     * black box keeps. Only with the detector running: otherwise there's nothing in the buffer.
+     */
+    fun onSimulation(ctx: Context) {
+        val have = synchronized(this) { accel.isNotEmpty() }
+        if (!have) { LogBus.log("[BLACKBOX] simulation: nothing to record (the detector isn't running)"); return }
+        if (impactWall != 0L) return   // a real impact is already being recorded
+        onImpact(ctx, 0f, null)
+        impactOutcome = "test"
+    }
+
     /** What the detector concluded: "alarm", "upright", "moving", "test". Saved with the event. */
     fun onOutcome(outcome: String) {
         if (impactWall != 0L) impactOutcome = outcome

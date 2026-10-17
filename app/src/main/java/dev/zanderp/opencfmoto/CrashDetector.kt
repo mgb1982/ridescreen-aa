@@ -232,6 +232,7 @@ object CrashDetector : SensorEventListener {
             if (alarmActive) return@post
             alarmActive = true
             alarmTest = test
+            if (test) { LogBus.log("[CRASH] simulated alarm"); BlackBox.onSimulation(app) }
             alarmEndsAt = SystemClock.elapsedRealtime() + COUNTDOWN_S * 1000L
             playAlarm()
             showAlarmUi()

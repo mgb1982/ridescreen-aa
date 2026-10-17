@@ -135,10 +135,10 @@ class BlackBoxActivity : AppCompatActivity() {
         }
     }
 
-    private fun outcomeEmoji(o: String) = when (o) { "alarm" -> "🆘"; "upright" -> "🚦"; "moving" -> "↗️"; else -> "🎥" }
+    private fun outcomeEmoji(o: String) = when (o) { "alarm" -> "🆘"; "upright" -> "🚦"; "moving" -> "↗️"; "test" -> "🧪"; else -> "🎥" }
     private fun outcomeLabel(o: String) = getString(when (o) {
         "alarm" -> R.string.bb_outcome_alarm; "upright" -> R.string.bb_outcome_upright
-        "moving" -> R.string.bb_outcome_moving; else -> R.string.bb_outcome_other
+        "moving" -> R.string.bb_outcome_moving; "test" -> R.string.bb_outcome_test; else -> R.string.bb_outcome_other
     })
     private fun compass(b: Float): String {
         val dirs = arrayOf("N", "NE", "E", "SE", "S", "SO", "O", "NO")
