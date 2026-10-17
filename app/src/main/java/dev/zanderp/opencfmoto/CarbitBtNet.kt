@@ -78,9 +78,27 @@ object CarbitBtNet {
         log("dash ${dev.name} ${dev.address}")
         var sock: BluetoothSocket? = null
         try {
-            try { BluetoothAdapter.getDefaultAdapter()?.cancelDiscovery() } catch (_: Exception) {}
-            sock = try { dev.createRfcommSocketToServiceRecord(SERVICE).also { it.connect() } }
-                catch (e: Exception) { log("secure RFCOMM failed ($e), trying insecure"); dev.createInsecureRfcommSocketToServiceRecord(SERVICE).also { it.connect() } }
+            val adapter = BluetoothAdapter.getDefaultAdapter()
+            try { adapter?.cancelDiscovery() } catch (_: Exception) {}
+            // 17 Oct field log: both connects failed within 0.1 s while the dash's Bluetooth was up.
+            // Log what Carbit Ride itself checks (audio profiles connected) and what services the
+            // dash advertises, so the next log says whether our service is there at all.
+            try {
+                log("profiles: a2dp=${adapter?.getProfileConnectionState(android.bluetooth.BluetoothProfile.A2DP)} " +
+                    "headset=${adapter?.getProfileConnectionState(android.bluetooth.BluetoothProfile.HEADSET)} (2 = connected)")
+            } catch (_: Exception) {}
+            log("dash services (SDP): ${sdpUuids(ctx, dev).joinToString { it.toString() }.ifEmpty { "none reported" }}")
+            if (isCarbitRideRunning(ctx)) log("Carbit Ride is installed — if it's running it may hold the dash's channel: force-stop it")
+            for (attempt in 1..3) {
+                sock = try { dev.createRfcommSocketToServiceRecord(SERVICE).also { it.connect() } }
+                    catch (e: Exception) {
+                        log("secure RFCOMM failed ($e), trying insecure")
+                        try { dev.createInsecureRfcommSocketToServiceRecord(SERVICE).also { it.connect() } }
+                        catch (e2: Exception) { log("insecure RFCOMM failed too (attempt $attempt/3): $e2"); null }
+                    }
+                if (sock != null) break
+                Thread.sleep(2500)
+            }
             val s = sock ?: return false
             log("RFCOMM connected")
             val out = s.outputStream; val inp = s.inputStream
@@ -139,6 +157,35 @@ object CarbitBtNet {
             try { sock?.close() } catch (_: Exception) {}
         }
     }
+
+    /** Asks the dash for its service list (SDP) and waits up to 8 s for the answer. */
+    @SuppressLint("MissingPermission")
+    private fun sdpUuids(ctx: Context, dev: BluetoothDevice): List<java.util.UUID> {
+        val latch = CountDownLatch(1)
+        var got: List<java.util.UUID> = emptyList()
+        val rx = object : android.content.BroadcastReceiver() {
+            override fun onReceive(c: Context, i: android.content.Intent) {
+                @Suppress("DEPRECATION")
+                val d: BluetoothDevice? = i.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
+                if (d?.address != dev.address) return
+                @Suppress("DEPRECATION")
+                got = i.getParcelableArrayExtra(BluetoothDevice.EXTRA_UUID)?.mapNotNull { (it as? android.os.ParcelUuid)?.uuid }.orEmpty()
+                latch.countDown()
+            }
+        }
+        return try {
+            ContextCompat.registerReceiver(ctx, rx, android.content.IntentFilter(BluetoothDevice.ACTION_UUID), ContextCompat.RECEIVER_EXPORTED)
+            dev.fetchUuidsWithSdp()
+            latch.await(8, TimeUnit.SECONDS)
+            got.ifEmpty { dev.uuids?.map { it.uuid }.orEmpty() }
+        } catch (e: Exception) {
+            LogBus.log("[BTNET] SDP query failed: $e"); dev.uuids?.map { it.uuid }.orEmpty()
+        } finally { try { ctx.unregisterReceiver(rx) } catch (_: Exception) {} }
+    }
+
+    private fun isCarbitRideRunning(ctx: Context): Boolean = try {
+        ctx.packageManager.getPackageInfo("net.easyconn.easyride.wws", 0); true
+    } catch (_: Exception) { false }
 
     @Suppress("DEPRECATION")
     private fun credentials(r: WifiManager.LocalOnlyHotspotReservation): Pair<String?, String?> =
