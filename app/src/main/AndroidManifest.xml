@@ -76,6 +76,8 @@
         <!-- v2.3: "on my way" by WhatsApp (text ready). -->
         <package android:name="com.whatsapp" />
         <package android:name="com.whatsapp.w4b" />
+        <!-- Carbit Ride (Zontes 125M): it may hold the dash's Bluetooth channel; we tell the rider. -->
+        <package android:name="net.easyconn.easyride.wws" />
     </queries>
 
     <application
