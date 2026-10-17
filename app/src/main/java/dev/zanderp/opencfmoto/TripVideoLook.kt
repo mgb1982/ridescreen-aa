@@ -585,7 +585,7 @@ class TripLook(
 
 /** 5×7 dot-matrix letters for the Retro VHS look (camcorder-style), drawn as little squares. */
 /** Shown under the logo at the end of trip videos (web / Instagram); empty = nothing. */
-const val BRAND_LINK = ""
+const val BRAND_LINK = "ridescreen.app"
 
 object PixelFont {
     private val G: Map<Char, Array<String>> = mapOf(
