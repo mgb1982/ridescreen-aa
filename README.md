@@ -10,7 +10,7 @@
 [![Última versión](https://img.shields.io/github/v/release/mgb1982/ridescreen-aa?style=for-the-badge&label=Versi%C3%B3n&color=243028)](https://github.com/mgb1982/ridescreen-aa/releases/latest)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-Inv%C3%ADtame%20a%20un%20caf%C3%A9-ff5e5b?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/mgb1982)
 
-**[⬇️ Descargar](https://github.com/mgb1982/ridescreen-aa/releases/latest)** · **[📖 Guía de instalación](https://mgb1982.github.io/ridescreen-aa/guia/)** · **[📸 Todas las capturas](docs/CAPTURAS.md)**
+**[⬇️ Descargar](https://github.com/mgb1982/ridescreen-aa/releases/latest)** · **[📖 Guía de instalación](https://ridescreen.app/guia/)** · **[📸 Todas las capturas](docs/CAPTURAS.md)**
 
 <br/>
 
@@ -32,7 +32,7 @@ Está basada en [OpenCfMoto](https://github.com/zanderp/open-cfmoto), de Alexand
 
 1. Descarga **`RideScreen-AA-….apk`** de la [última versión](https://github.com/mgb1982/ridescreen-aa/releases/latest) (en *Assets*).
 2. Si Android avisa de **Play Protect**, es porque la app aún no está en Play Store: **Más detalles → Instalar de todas formas**.
-3. Sigue la **[guía paso a paso](https://mgb1982.github.io/ridescreen-aa/guia/)**: permisos, el servidor de unidad principal de Android Auto y el QR del cuadro (interfaz 3).
+3. Sigue la **[guía paso a paso](https://ridescreen.app/guia/)**: permisos, el servidor de unidad principal de Android Auto y el QR del cuadro (interfaz 3).
 4. Las siguientes versiones te las ofrece la propia app.
 
 <p align="center">
