@@ -160,4 +160,5 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="bike_picker_title">Which bike is it?</string>
     <string name="bike_picker_other">Other bike (automatic setup)</string>
     <string name="bike_picker_menu">Bike model…</string>
+    <string name="stat_speed_now">right now</string>
 </resources>

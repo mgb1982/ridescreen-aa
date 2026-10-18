@@ -160,4 +160,5 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="bike_picker_title">Quina moto és?</string>
     <string name="bike_picker_other">Una altra moto (ajust automàtic)</string>
     <string name="bike_picker_menu">Model de moto…</string>
+    <string name="stat_speed_now">ara mateix</string>
 </resources>

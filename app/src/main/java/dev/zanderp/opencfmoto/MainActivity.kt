@@ -1174,7 +1174,8 @@ class MainActivity : AppCompatActivity() {
     private val todayTicker = object : Runnable {
         override fun run() {
             renderToday()
-            statsHandler.postDelayed(this, 5_000L)
+            // Live speed on the card while projecting: refresh every second then.
+            statsHandler.postDelayed(this, if (ConnectionState.phase == Phase.STREAMING) 1_000L else 5_000L)
         }
     }
     private val statsHandler = android.os.Handler(android.os.Looper.getMainLooper())
@@ -1201,6 +1202,11 @@ class MainActivity : AppCompatActivity() {
         val loc = java.util.Locale.getDefault()
         findViewById<TextView?>(R.id.stat_km)?.text = String.format(loc, "%.1f", km)
         findViewById<TextView?>(R.id.stat_max)?.text = if (max > 0) max.toString() else "--"
+        // v2.3: while projecting, the current speed takes the place of today's top speed.
+        val streaming = ConnectionState.phase == Phase.STREAMING
+        findViewById<View?>(R.id.stat_speed_box)?.visibility = if (streaming) View.VISIBLE else View.GONE
+        findViewById<View?>(R.id.stat_max_box)?.visibility = if (streaming) View.GONE else View.VISIBLE
+        if (streaming) findViewById<TextView?>(R.id.stat_speed)?.text = live?.speedKmh?.toString() ?: "--"
         findViewById<TextView?>(R.id.stat_clock)?.text =
             java.text.SimpleDateFormat("HH:mm", loc).format(java.util.Date())
         renderParked()

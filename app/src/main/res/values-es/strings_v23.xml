@@ -160,4 +160,5 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="bike_picker_title">¿Qué moto es?</string>
     <string name="bike_picker_other">Otra moto (ajuste automático)</string>
     <string name="bike_picker_menu">Modelo de moto…</string>
+    <string name="stat_speed_now">ahora mismo</string>
 </resources>
