@@ -1754,6 +1754,23 @@ class MainActivity : AppCompatActivity() {
 
     /** Poll for tether iface (~45s) then NSD / subnet EasyConn scan. */
     private fun startPhoneHotspotScan(gateOnAaSteady: Boolean) {
+        // 125M (18 Oct): the dash told us over BLE that it joined OUR hotspot and gave its address —
+        // go straight there. Scanning for a "tether interface" missed the local-only hotspot.
+        CarbitBleNet.takeJoined()?.let { (us, dash) ->
+            ConnectionState.set(Phase.JOINING_WIFI, getString(R.string.main_phone_hotspot_status))
+            Thread({
+                try {
+                    val bind = java.net.InetAddress.getByName(us)
+                    val peer = java.net.InetAddress.getByName(dash)
+                    LogBus.log("[HOTSPOT] dash is on our own hotspot at $dash (we are $us) — no scan needed")
+                    hotspotHandOff(bind, peer, gateOnAaSteady)
+                } catch (e: Exception) {
+                    LogBus.log("[HOTSPOT] direct hand-off failed: $e")
+                    runOnUiThread { ConnectionState.set(Phase.ERROR, "hotspot hand-off failed") }
+                }
+            }, "phone-hotspot-direct").apply { isDaemon = true }.start()
+            return
+        }
         val creds = PhoneHotspotAssist.loadCreds(this)
         if (creds.ssid.isNotEmpty()) {
             Toast.makeText(
@@ -1837,29 +1854,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     return@Thread
                 }
-                val bindIp = subnet.localAddress
-                runOnUiThread {
-                    WifiGate.cancelNotification(applicationContext)
-                    if (gateOnAaSteady) {
-                        LogBus.log(
-                            "→ hotspot peer ${peer.hostAddress} (waiting for AA); " +
-                                "bind=${bindIp.hostAddress}",
-                        )
-                        BikeLink.markP2pReady(bindIp, peer)
-                    } else {
-                        ConnectionState.set(Phase.PXC_CONNECTING)
-                        LogBus.log("→ hotspot peer ${peer.hostAddress}; starting EasyConn PXC …")
-                        try {
-                            (BikeLink.prober ?: prober).start(
-                                network = null,
-                                gatewayOverride = peer,
-                                bindIpOverride = bindIp,
-                            )
-                        } catch (e: Exception) {
-                            LogBus.log("prober start failed: $e")
-                        }
-                    }
-                }
+                hotspotHandOff(subnet.localAddress, peer, gateOnAaSteady)
             } catch (e: Exception) {
                 LogBus.log("[HOTSPOT] failed: $e")
                 runOnUiThread {
@@ -1867,6 +1862,32 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }, "phone-hotspot-scan").apply { isDaemon = true }.start()
+    }
+
+    /** Dash found on the phone's hotspot: hand the link to EasyConn (now, or once AA is steady). */
+    private fun hotspotHandOff(bindIp: java.net.InetAddress, peer: java.net.InetAddress, gateOnAaSteady: Boolean) {
+        runOnUiThread {
+            WifiGate.cancelNotification(applicationContext)
+            if (gateOnAaSteady) {
+                LogBus.log(
+                    "→ hotspot peer ${peer.hostAddress} (waiting for AA); " +
+                        "bind=${bindIp.hostAddress}",
+                )
+                BikeLink.markP2pReady(bindIp, peer)
+            } else {
+                ConnectionState.set(Phase.PXC_CONNECTING)
+                LogBus.log("→ hotspot peer ${peer.hostAddress}; starting EasyConn PXC …")
+                try {
+                    (BikeLink.prober ?: prober).start(
+                        network = null,
+                        gatewayOverride = peer,
+                        bindIpOverride = bindIp,
+                    )
+                } catch (e: Exception) {
+                    LogBus.log("prober start failed: $e")
+                }
+            }
+        }
     }
 
     /** Wi‑Fi Direct Group Owner path (CL‑C450 / some DIRECT- SSIDs / Zontes MAC join). */
