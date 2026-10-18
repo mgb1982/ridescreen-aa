@@ -43,13 +43,18 @@ object CarbitBleNet {
     private const val CMD_REQUEST_BUILD_NET: Byte = 0x52
     private const val CMD_NOTIFY_CAR_NET: Byte = 0x53
 
+    // Carbit "HudNSManager" (jj.a in Carbit Ride 2.4): the 125M exposes only this one (18 Oct log).
+    private val HUD_SERVICE: UUID = UUID.fromString("0000b360-d6d8-c7ec-bdf0-eab1bfc6bcbc")
+    private val HUD_CHARS = listOf("0000b362-d6d8-c7ec-bdf0-eab1bfc6bcbc", "0000b363-d6d8-c7ec-bdf0-eab1bfc6bcbc", "0000b364-d6d8-c7ec-bdf0-eab1bfc6bcbc").map(UUID::fromString)
     private val SERVICE_UUIDS = listOf(
+        "0000b360-d6d8-c7ec-bdf0-eab1bfc6bcbc",
         "00001c00-d102-11e1-9b23-000efb0000b2", "0000474d-0000-1000-8000-00805f9b34fb",
         "00001c00-d102-11e1-9b23-000efb0000c3", "0000474e-0000-1000-8000-00805f9b34fb",
         "00001c00-d102-11e1-9b23-000efb0000c6", "0000ffe0-0000-1000-8000-00805f9b34fb",
         "0000fff0-0000-1000-8000-00805f9b34fb",
     ).map(UUID::fromString)
     private val CHAR_UUIDS = listOf(
+        "0000b362-d6d8-c7ec-bdf0-eab1bfc6bcbc", "0000b364-d6d8-c7ec-bdf0-eab1bfc6bcbc", "0000b363-d6d8-c7ec-bdf0-eab1bfc6bcbc",
         "00001c0f-d102-11e1-9b23-000efb0000b2", "00004b59-0000-1000-8000-00805f9b34fb",
         "00001c0f-d102-11e1-9b23-000efb0000c6", "0000ffe1-0000-1000-8000-00805f9b34fb",
         "0000fff1-0000-1000-8000-00805f9b34fb",
@@ -93,7 +98,9 @@ object CarbitBleNet {
      */
     fun run(ctx: Context, dash: BluetoothDevice): Boolean {
         log("trying Bluetooth LE (what Carbit Ride uses on these dashes)")
-        val link = connect(ctx, dash) ?: scanAndConnect(ctx, dash) ?: run {
+        // 18 Oct: the classic address never answers on LE (12 s timeout); the dash advertises its
+        // BLE side as "EC302428DC" at DD:… and is found in < 1 s — so look first.
+        val link = scanAndConnect(ctx, dash) ?: connect(ctx, dash) ?: run {
             log("no BLE link to the dash — is Carbit Ride open? It may be holding the dash's BLE: force-stop it")
             return false
         }
@@ -151,10 +158,10 @@ object CarbitBleNet {
             val part = frame.copyOfRange(off, minOf(frame.size, off + chunk))
             link.writes.drainPermits()
             val r = if (Build.VERSION.SDK_INT >= 33) {
-                link.gatt.writeCharacteristic(link.ch, part, BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT)
+                link.gatt.writeCharacteristic(link.ch, part, writeType(link.ch))
             } else {
                 @Suppress("DEPRECATION") run {
-                    link.ch.writeType = BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
+                    link.ch.writeType = writeType(link.ch)
                     link.ch.value = part
                     if (link.gatt.writeCharacteristic(link.ch)) 0 else -1
                 }
@@ -165,6 +172,13 @@ object CarbitBleNet {
         }
         log("→ 0x${hex(cmd)} $what (${frame.size}B in ${(frame.size + chunk - 1) / chunk} part(s)${if (ok) "" else ", write refused"})")
     }
+
+    private fun props(p: Int) = listOf(2 to "read", 4 to "writeNR", 8 to "write", 16 to "notify", 32 to "indicate")
+        .filter { p and it.first != 0 }.joinToString("+") { it.second }
+
+    private fun writeType(c: BluetoothGattCharacteristic) =
+        if (c.properties and BluetoothGattCharacteristic.PROPERTY_WRITE != 0) BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
+        else BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
 
     private fun hex(b: Byte) = "%02x".format(b.toInt() and 0xFF)
 
@@ -234,21 +248,38 @@ object CarbitBleNet {
                 log("MTU $mtu"); link?.mtu = mtu
                 g.discoverServices()
             }
+            private val pendingCcc = ArrayDeque<BluetoothGattDescriptor>()
             override fun onServicesDiscovered(g: BluetoothGatt, status: Int) {
                 val services = g.services.orEmpty()
                 log("services: " + services.joinToString { s -> s.uuid.toString().let { if (it.endsWith("-0000-1000-8000-00805f9b34fb")) it.substring(4, 8) else it } })
-                val c = SERVICE_UUIDS.firstNotNullOfOrNull { g.getService(it) }?.let { s -> CHAR_UUIDS.firstNotNullOfOrNull { s.getCharacteristic(it) } }
-                if (c == null) { fail = "no EC-BTP service on this device"; ready.countDown(); return }
-                ch = c
-                g.setCharacteristicNotification(c, true)
-                val d = c.getDescriptor(CCC)
-                if (d == null) { link = Link(g, c, frames, writes, mtu); ready.countDown(); return }
-                if (Build.VERSION.SDK_INT >= 33) g.writeDescriptor(d, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)
-                else @Suppress("DEPRECATION") run { d.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE; g.writeDescriptor(d) }
+                val svc = SERVICE_UUIDS.firstNotNullOfOrNull { g.getService(it) }
+                if (svc == null) { fail = "no EC-BTP service on this device"; ready.countDown(); return }
+                for (c in svc.characteristics.orEmpty()) log("char ${c.uuid.toString().substring(4, 8)} props=${props(c.properties)}")
+                val known = if (svc.uuid == HUD_SERVICE) HUD_CHARS else CHAR_UUIDS
+                val chars = svc.characteristics.orEmpty().filter { it.uuid in known }.ifEmpty { svc.characteristics.orEmpty() }
+                val writable = BluetoothGattCharacteristic.PROPERTY_WRITE or BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE
+                val notifiable = BluetoothGattCharacteristic.PROPERTY_NOTIFY or BluetoothGattCharacteristic.PROPERTY_INDICATE
+                val w = chars.firstOrNull { it.properties and writable != 0 }
+                if (w == null) { fail = "no writable characteristic"; ready.countDown(); return }
+                ch = w
+                log("writing to ${w.uuid.toString().substring(4, 8)}")
+                for (c in chars.filter { it.properties and notifiable != 0 }) {
+                    g.setCharacteristicNotification(c, true)
+                    c.getDescriptor(CCC)?.let { pendingCcc += it }
+                }
+                nextCcc(g)
+            }
+            private fun nextCcc(g: BluetoothGatt) {
+                val d = pendingCcc.removeFirstOrNull()
+                if (d == null) { link = Link(g, ch!!, frames, writes, mtu); ready.countDown(); return }
+                val v = if (d.characteristic.properties and BluetoothGattCharacteristic.PROPERTY_NOTIFY != 0)
+                    BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE else BluetoothGattDescriptor.ENABLE_INDICATION_VALUE
+                if (Build.VERSION.SDK_INT >= 33) g.writeDescriptor(d, v)
+                else @Suppress("DEPRECATION") run { d.value = v; g.writeDescriptor(d) }
             }
             override fun onDescriptorWrite(g: BluetoothGatt, d: BluetoothGattDescriptor, status: Int) {
-                log("notifications on (status=$status) via ${ch?.uuid}")
-                link = Link(g, ch!!, frames, writes, mtu); ready.countDown()
+                log("notifications on ${d.characteristic.uuid.toString().substring(4, 8)} (status=$status)")
+                nextCcc(g)
             }
             override fun onCharacteristicWrite(g: BluetoothGatt, c: BluetoothGattCharacteristic, status: Int) {
                 if (status != BluetoothGatt.GATT_SUCCESS) log("write status=$status")
@@ -261,7 +292,7 @@ object CarbitBleNet {
             }
             private fun got(value: ByteArray) {
                 val fs = rx.feed(value)
-                if (fs.isEmpty() && value.isNotEmpty() && value[0] != EcBtpProtocol.START) log("← ${value.size}B raw ${value.take(16).joinToString("") { "%02x".format(it) }}")
+                if (fs.isEmpty() && value.isNotEmpty()) log("← ${value.size}B raw ${value.take(16).joinToString("") { "%02x".format(it) }}")
                 for (f in fs) {
                     val text = String(f.payload, Charsets.UTF_8)
                     val shown = if (text.all { it == '\n' || it == '\r' || !it.isISOControl() }) masked(text).take(300)
