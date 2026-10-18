@@ -252,9 +252,12 @@ object TripVideo {
                 w, h, androidx.media3.effect.Presentation.LAYOUT_SCALE_TO_FIT_WITH_CROP)
             val overlayLook = TripLook(ctx, trip, title, look.style, look.map, streets)
             val shown = clip.copy(startMs = clip.startMs + offsetMs + piece.fromMs)
-            effects += OverlayEffect(ImmutableList.of<androidx.media3.effect.TextureOverlay>(
-                TripOverlay(overlayLook, shown, if (highlights) w to h else null)))
+            // ×4 (19 Oct field test): the overlay's speed/clock ran out of step. Speed change first, then
+            // the overlay, which scales the (sped-up) frame times back to ride time — correct whichever
+            // stage Media3 applies the timestamp change in.
             if (sp > 1f) effects += SpeedChangeEffect(sp)
+            effects += OverlayEffect(ImmutableList.of<androidx.media3.effect.TextureOverlay>(
+                TripOverlay(overlayLook, shown, if (highlights) w to h else null, timeScale = sp)))
             val whole = piece.fromMs == 0L && piece.toMs >= clip.durationMs
             val item = if (whole) MediaItem.fromUri(clip.uri) else MediaItem.Builder().setUri(clip.uri)
                 .setClippingConfiguration(MediaItem.ClippingConfiguration.Builder()
@@ -312,7 +315,11 @@ object TripVideo {
     }
 
     /** Full-frame transparent overlay drawn by [TripLook], redrawn every ~0.5 s of video. */
-    private class TripOverlay(private val look: TripLook, private val clip: Clip, private val size: Pair<Int, Int>? = null) : BitmapOverlay() {
+    private class TripOverlay(
+        private val look: TripLook, private val clip: Clip, private val size: Pair<Int, Int>? = null,
+        /** Output speed-up (×4 → 4f): one second of output covers this many seconds of the ride. */
+        private val timeScale: Float = 1f,
+    ) : BitmapOverlay() {
         private val w: Int
         private val h: Int
         private var bmp: Bitmap? = null
@@ -323,7 +330,7 @@ object TripVideo {
 
         override fun getBitmap(presentationTimeUs: Long): Bitmap {
             if (baseUs < 0) baseUs = presentationTimeUs
-            val tMs = clip.startMs + (presentationTimeUs - baseUs) / 1000L
+            val tMs = clip.startMs + ((presentationTimeUs - baseUs) / 1000L * timeScale).toLong()
             val bucket = tMs / 500L
             bmp?.let { if (bucket == lastBucket) return it }
             lastBucket = bucket

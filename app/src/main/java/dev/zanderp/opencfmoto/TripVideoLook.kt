@@ -515,7 +515,14 @@ class TripLook(
         cardBackground(c, w, h, frame)
         val u = min(w, h) / 100f
         val portrait = h > w
-        val mapBox = if (portrait) RectF(8 * u, h * 0.12f, w - 8 * u, h * 0.12f + (w - 16 * u)) else RectF(6 * u, 8 * u, w * 0.55f, h - 8 * u)
+        // Portrait (19 Oct): the stats ran into the logo at the bottom. Reserve the logo's band and
+        // the 2×2 stats block first, and give the map what's left (still square, centred).
+        val brandTop = h - (if (watermark) 23 * u else 6 * u)
+        val statsH = 39 * u
+        val mapBox = if (portrait) {
+            val side = minOf(w - 16 * u, brandTop - statsH - h * 0.08f)
+            RectF((w - side) / 2f, h * 0.08f, (w + side) / 2f, h * 0.08f + side)
+        } else RectF(6 * u, 8 * u, w * 0.55f, h - 8 * u)
         routeFit(c, mapBox, accent(), null, 1.1f * u, pts.lastIndex, 1.6f * u)
         val mins = ((trip.end - trip.start) / 60_000L).toInt()
         val avg = if (trip.movingTimeMs > 0) (trip.distanceMeters / (trip.movingTimeMs / 1000.0) * 3.6).roundToInt() else 0
@@ -529,7 +536,16 @@ class TripLook(
         var y = if (portrait) mapBox.bottom + 9 * u else h * 0.3f
         text(c, title, x0, y, fitSize(title, headline(), w - x0 - 6 * u, 5.5f * u), headline())
         y += 8 * u
-        for ((k, v) in rows) {
+        if (portrait) {
+            // Two columns: distance | time, average | top speed.
+            val colW = (w - 2 * x0) / 2f
+            rows.forEachIndexed { i, (k, v) ->
+                val x = x0 + (i % 2) * colW
+                val yy = y + (i / 2) * 11 * u
+                text(c, k, x, yy, 2.4f * u, tfMedium, accent())
+                text(c, v, x, yy + 5.2f * u, fitSize(v, headline(), colW - 3 * u, 4.6f * u), headline())
+            }
+        } else for ((k, v) in rows) {
             text(c, k, x0, y, 2.4f * u, tfMedium, accent())
             text(c, v, x0, y + 5.2f * u, 4.6f * u, headline())
             y += 10 * u
