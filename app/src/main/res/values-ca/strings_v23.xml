@@ -161,4 +161,17 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="bike_picker_other">Una altra moto (ajust automàtic)</string>
     <string name="bike_picker_menu">Model de moto…</string>
     <string name="stat_speed_now">ara mateix</string>
+    <string name="remote_service_label">RideScreen AA · comandament del manillar</string>
+    <string name="remote_service_summary">Permet que el comandament del manillar que triïs controli Android Auto al quadre.</string>
+    <string name="remote_service_desc">Només llegeix les tecles del comandament que vas triar a RideScreen AA → Controls, i només mentre Android Auto és al quadre. No llegeix la pantalla, el que escrius ni altres apps. Els altres comandaments, la moto i l’intercomunicador continuen funcionant com sempre.</string>
+    <string name="remote_dedicated_title">Comandament només per a Android Auto</string>
+    <string name="remote_dedicated_desc">Tria un comandament Bluetooth de manillar: mentre Android Auto és al quadre, els seus botons es mouen per Android Auto (+/− amunt/avall, ‹/› esquerra/dreta, central = OK, mantenir = inici, doble = enrere) i mai toquen la música ni el volum. L’intercomunicador continua controlant la música.</string>
+    <string name="remote_dedicated_pick">Triar comandament…</string>
+    <string name="remote_dedicated_service">Activar el permís</string>
+    <string name="remote_dedicated_none">Cap comandament triat.</string>
+    <string name="remote_dedicated_needs_service">%1$s · necessita el permís d’accessibilitat per funcionar amb el mòbil a la butxaca.</string>
+    <string name="remote_dedicated_ready">✓ %1$s controla Android Auto.</string>
+    <string name="remote_dedicated_no_devices">No hi ha cap comandament connectat. Aparella’l als ajustos de Bluetooth d’Android, prem qualsevol botó i torna-ho a provar. (Els intercomunicadors i auriculars no surten aquí: continuen controlant la música).</string>
+    <string name="remote_dedicated_remove">Treure</string>
+    <string name="remote_dedicated_service_explain">Perquè el comandament funcioni amb el mòbil bloquejat, activa «RideScreen AA · comandament del manillar» a Accessibilitat. Només llegeix les tecles d’aquest comandament mentre Android Auto és al quadre.</string>
 </resources>

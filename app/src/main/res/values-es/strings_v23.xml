@@ -161,4 +161,17 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="bike_picker_other">Otra moto (ajuste automático)</string>
     <string name="bike_picker_menu">Modelo de moto…</string>
     <string name="stat_speed_now">ahora mismo</string>
+    <string name="remote_service_label">RideScreen AA · mando del manillar</string>
+    <string name="remote_service_summary">Permite que el mando del manillar que elijas maneje Android Auto en el cuadro.</string>
+    <string name="remote_service_desc">Solo lee las teclas del mando que elegiste en RideScreen AA → Controles, y solo mientras Android Auto está en el cuadro. No lee la pantalla, lo que escribes ni otras apps. Los demás mandos, la moto y el intercomunicador siguen funcionando como siempre.</string>
+    <string name="remote_dedicated_title">Mando solo para Android Auto</string>
+    <string name="remote_dedicated_desc">Elige un mando Bluetooth de manillar: mientras Android Auto está en el cuadro, sus botones se mueven por Android Auto (+/− arriba/abajo, ‹/› izquierda/derecha, central = OK, mantener = inicio, doble = atrás) y nunca tocan la música ni el volumen. El intercomunicador sigue controlando la música.</string>
+    <string name="remote_dedicated_pick">Elegir mando…</string>
+    <string name="remote_dedicated_service">Activar el permiso</string>
+    <string name="remote_dedicated_none">Ningún mando elegido.</string>
+    <string name="remote_dedicated_needs_service">%1$s · necesita el permiso de accesibilidad para funcionar con el móvil en el bolsillo.</string>
+    <string name="remote_dedicated_ready">✓ %1$s maneja Android Auto.</string>
+    <string name="remote_dedicated_no_devices">No hay ningún mando conectado. Emparéjalo en los ajustes de Bluetooth de Android, pulsa cualquiera de sus botones y vuelve a probar. (Los intercomunicadores y auriculares no salen aquí: siguen controlando la música).</string>
+    <string name="remote_dedicated_remove">Quitar</string>
+    <string name="remote_dedicated_service_explain">Para que el mando funcione con el móvil bloqueado, activa «RideScreen AA · mando del manillar» en Accesibilidad. Solo lee las teclas de ese mando mientras Android Auto está en el cuadro.</string>
 </resources>

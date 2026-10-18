@@ -52,6 +52,10 @@ class ButtonMappingActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.remote_pad_on).setOnClickListener { setRemotePad(true) }
         findViewById<MaterialButton>(R.id.remote_pad_off).setOnClickListener { setRemotePad(false) }
         findViewById<MaterialButton>(R.id.btn_teach_remote).setOnClickListener { teachRemote() }
+        findViewById<MaterialButton>(R.id.btn_dedicated_pick).setOnClickListener { pickDedicatedRemote() }
+        findViewById<MaterialButton>(R.id.btn_dedicated_service).setOnClickListener {
+            try { startActivity(android.content.Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS)) } catch (_: Exception) {}
+        }
 
         findViewById<MaterialButton>(R.id.btn_overlay).setOnClickListener {
             try {
@@ -68,6 +72,7 @@ class ButtonMappingActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        refreshDedicated()
         refresh()
     }
 
@@ -360,4 +365,50 @@ private val ButtonAction.navSlot: Int
         ButtonAction.NAV_1 -> 0
         ButtonAction.NAV_2 -> 1
         else -> 2
+
+    // ---- v2.3: dedicated remote (Android Auto only) ----
+    private fun refreshDedicated() {
+        val tv = findViewById<TextView?>(R.id.tv_dedicated_status) ?: return
+        val r = DedicatedRemote.chosen(this)
+        val on = DedicatedRemote.serviceEnabled(this)
+        tv.text = when {
+            r == null -> getString(R.string.remote_dedicated_none)
+            !on -> getString(R.string.remote_dedicated_needs_service, r.name)
+            else -> getString(R.string.remote_dedicated_ready, r.name)
+        }
+        findViewById<View?>(R.id.btn_dedicated_service)?.visibility = if (r != null && !on) View.VISIBLE else View.GONE
     }
+
+    private fun pickDedicatedRemote() {
+        val devs = DedicatedRemote.candidates(this)
+        val current = DedicatedRemote.chosen(this)
+        if (devs.isEmpty()) {
+            com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.remote_dedicated_title)
+                .setMessage(R.string.remote_dedicated_no_devices)
+                .setPositiveButton(android.R.string.ok, null)
+                .apply { if (current != null) setNegativeButton(R.string.remote_dedicated_remove) { _, _ -> DedicatedRemote.clear(this@ButtonMappingActivity); refreshDedicated() } }
+                .show()
+            return
+        }
+        val names = devs.map { it.name }.toTypedArray()
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.remote_dedicated_pick)
+            .setItems(names) { _, i ->
+                DedicatedRemote.choose(this, devs[i])
+                refreshDedicated()
+                if (!DedicatedRemote.serviceEnabled(this)) {
+                    com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.remote_dedicated_title)
+                        .setMessage(R.string.remote_dedicated_service_explain)
+                        .setPositiveButton(R.string.remote_dedicated_service) { _, _ ->
+                            try { startActivity(android.content.Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS)) } catch (_: Exception) {}
+                        }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show()
+                }
+            }
+            .apply { if (current != null) setNegativeButton(R.string.remote_dedicated_remove) { _, _ -> DedicatedRemote.clear(this@ButtonMappingActivity); refreshDedicated() } }
+            .show()
+    }
+}

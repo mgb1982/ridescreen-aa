@@ -161,4 +161,17 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="bike_picker_other">Other bike (automatic setup)</string>
     <string name="bike_picker_menu">Bike model…</string>
     <string name="stat_speed_now">right now</string>
+    <string name="remote_service_label">RideScreen AA · handlebar remote</string>
+    <string name="remote_service_summary">Lets your chosen handlebar remote drive Android Auto on the dash.</string>
+    <string name="remote_service_desc">Only reads the keys of the remote you chose in RideScreen AA → Controls, and only while Android Auto is on the dash. It does not read the screen, what you type or other apps. Other remotes, the bike and your intercom keep working as usual.</string>
+    <string name="remote_dedicated_title">Remote only for Android Auto</string>
+    <string name="remote_dedicated_desc">Pick a Bluetooth handlebar remote: while Android Auto is on the dash, its buttons move around Android Auto (+/− up/down, ‹/› left/right, centre = OK, hold = home, double = back) and never touch music or volume. Your intercom keeps controlling the music.</string>
+    <string name="remote_dedicated_pick">Choose remote…</string>
+    <string name="remote_dedicated_service">Turn on the permission</string>
+    <string name="remote_dedicated_none">No remote chosen.</string>
+    <string name="remote_dedicated_needs_service">%1$s · needs the accessibility permission to work with the phone in your pocket.</string>
+    <string name="remote_dedicated_ready">✓ %1$s drives Android Auto.</string>
+    <string name="remote_dedicated_no_devices">No remote connected. Pair it in Android Bluetooth settings, press any of its buttons and try again. (Intercoms and headsets don’t appear here: they keep controlling music.)</string>
+    <string name="remote_dedicated_remove">Remove</string>
+    <string name="remote_dedicated_service_explain">For the remote to work with the phone locked, turn on «RideScreen AA · handlebar remote» in Accessibility. It only reads that remote’s keys while Android Auto is on the dash.</string>
 </resources>
