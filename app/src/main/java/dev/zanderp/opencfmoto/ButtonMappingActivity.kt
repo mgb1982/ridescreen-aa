@@ -353,18 +353,6 @@ class ButtonMappingActivity : AppCompatActivity() {
             .setNegativeButton("Cancel", null)
             .show()
     }
-}
-
-/** True for the navigate-to-a-saved-place actions. */
-private val ButtonAction.isNav: Boolean
-    get() = this == ButtonAction.NAV_1 || this == ButtonAction.NAV_2 || this == ButtonAction.NAV_3
-
-/** Which [SavedPlaces] slot a nav action points at. */
-private val ButtonAction.navSlot: Int
-    get() = when (this) {
-        ButtonAction.NAV_1 -> 0
-        ButtonAction.NAV_2 -> 1
-        else -> 2
 
     // ---- v2.3: dedicated remote (Android Auto only) ----
     private fun refreshDedicated() {
@@ -412,3 +400,15 @@ private val ButtonAction.navSlot: Int
             .show()
     }
 }
+
+/** True for the navigate-to-a-saved-place actions. */
+private val ButtonAction.isNav: Boolean
+    get() = this == ButtonAction.NAV_1 || this == ButtonAction.NAV_2 || this == ButtonAction.NAV_3
+
+/** Which [SavedPlaces] slot a nav action points at. */
+private val ButtonAction.navSlot: Int
+    get() = when (this) {
+        ButtonAction.NAV_1 -> 0
+        ButtonAction.NAV_2 -> 1
+        else -> 2
+    }
