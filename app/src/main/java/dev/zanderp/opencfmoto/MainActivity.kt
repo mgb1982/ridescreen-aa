@@ -1709,8 +1709,8 @@ class MainActivity : AppCompatActivity() {
             ConnectionState.set(Phase.JOINING_WIFI, getString(R.string.main_phone_hotspot_status))
             Thread({
                 try {
-                    val bind = java.net.InetAddress.getByName(us)
-                    val peer = java.net.InetAddress.getByName(dash)
+                    val bind = java.net.InetAddress.getByName(us) as java.net.Inet4Address
+                    val peer = java.net.InetAddress.getByName(dash) as java.net.Inet4Address
                     LogBus.log("[HOTSPOT] dash is on our own hotspot at $dash (we are $us) — no scan needed")
                     hotspotHandOff(bind, peer, gateOnAaSteady)
                 } catch (e: Exception) {
@@ -1810,7 +1810,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /** Dash found on the phone's hotspot: hand the link to EasyConn (now, or once AA is steady). */
-    private fun hotspotHandOff(bindIp: java.net.InetAddress, peer: java.net.InetAddress, gateOnAaSteady: Boolean) {
+    private fun hotspotHandOff(bindIp: java.net.Inet4Address, peer: java.net.Inet4Address, gateOnAaSteady: Boolean) {
         runOnUiThread {
             WifiGate.cancelNotification(applicationContext)
             if (gateOnAaSteady) {
