@@ -22,7 +22,7 @@
 
 ## ¿Qué es?
 
-**RideScreen AA** pone **Google Maps, Waze, la música y el Asistente** de Android Auto en el cuadro de tu moto, por Wi‑Fi y sin cables, desde un móvil Android. Funciona con los cuadros **EasyConn / Carbit** (los que muestran un QR de MotoPlay) y está probada a diario en la **Zontes 125X / ZT125T‑X** y la **125V**, y confirmada en la **368K**.
+**RideScreen AA** pone **Google Maps, Waze, la música y el Asistente** de Android Auto en el cuadro de tu moto, por Wi‑Fi y sin cables, desde un móvil Android. Funciona con los cuadros **EasyConn / Carbit** (los que muestran un QR de MotoPlay) y está probada a diario en la **Zontes 125X / ZT125T‑X** y la **125V**, y confirmada en la **368K** y la **368E**.
 
 Además de proyectar, la app **registra tus viajes**, te dice **dónde aparcaste** (con foto), lleva el **mantenimiento**, busca la **gasolina más barata**, **avisa a tus contactos si te caes** y tiene **app para el reloj Wear OS**.
 
@@ -108,7 +108,7 @@ RideScreen AA es gratis y sin anuncios. Si te resulta útil, puedes [invitarme a
 
 ## 🇬🇧 In English
 
-**RideScreen AA** puts **Android Auto** (Google Maps, Waze, music, Assistant) on your motorbike's **EasyConn / Carbit dash** over Wi‑Fi, from an Android phone — no root, no PC. It's a fork of [OpenCfMoto](https://github.com/zanderp/open-cfmoto) by Alexandru (zanderp), tuned and tested daily on the **Zontes 125X / 125V** (also confirmed on the **368K**), with extras:
+**RideScreen AA** puts **Android Auto** (Google Maps, Waze, music, Assistant) on your motorbike's **EasyConn / Carbit dash** over Wi‑Fi, from an Android phone — no root, no PC. It's a fork of [OpenCfMoto](https://github.com/zanderp/open-cfmoto) by Alexandru (zanderp), tuned and tested daily on the **Zontes 125X / 125V** (also confirmed on the **368K** and **368E**), with extras:
 
 - **Auto‑connect** when the bike starts (dash Bluetooth or Wi‑Fi in low‑power mode); **live screen fit** with arrows; voice assistant.
 - **Parking spot** with photo and walking directions; **cheapest petrol nearby** (Spain); **maintenance log** and real fuel consumption.
