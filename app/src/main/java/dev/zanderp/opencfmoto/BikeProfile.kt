@@ -175,7 +175,11 @@ object BikeProfiles {
         BikeProfileHolder.profileOverride.resolve()?.let { return it }
         val base = selectByQrGuess(qr)
         if (context == null || qr == null) return base
-        val panel = DashMemory.get(context, qr.ssid) ?: return base
+        val panel = DashMemory.get(context, qr.ssid)
+            ?: KnownDashes.panelFor(qr.modelId)?.also {
+                LogBus.log("[panel] known dash (QR modelId ${qr.modelId}): ${it.first}x${it.second} — fitting from the first connect")
+            }
+            ?: return base
         if (panel == base.panelSize) return base
         val res = DashMemory.bestFit(panel.first, panel.second) ?: return base
         LogBus.log(
@@ -193,6 +197,7 @@ object BikeProfiles {
         ) {
             return MoriniMlSoftApProfile
         }
+        KnownDashes.profileFor(qr.modelId)?.let { return it }
         val matches = all.filter { it.matchesModelId(qr.modelId ?: "") }
         if (matches.isEmpty()) return legacy
         if (matches.size == 1) return matches[0]
@@ -809,4 +814,21 @@ object Cfdl26LandscapeProfile : BikeProfile {
     ): Boolean {
         return Cfdl26PortraitProfile.handleUnknownControl(tag, frame, out, log)
     }
+}
+
+/**
+ * RideScreen AA · dashes confirmed in the field, keyed by the QR's modelId, so the very first
+ * connect already uses the right profile and panel (before, it started unfitted and only the
+ * second connect used the learned size). Sizes are the bike's real screen as logged.
+ */
+internal object KnownDashes {
+    private data class Dash(val label: String, val profile: () -> BikeProfile, val panel: Pair<Int, Int>)
+
+    private val byModelId = mapOf(
+        // Zontes 368K (18 Oct 2026 log): AP+P2P QR, CLIENT_INFO "MotoPlay Landscape", panel 1024×425.
+        "21334" to Dash("Zontes 368", { Cfdl16MotoPlayLandscapeProfile }, 1024 to 425),
+    )
+
+    fun panelFor(modelId: String?): Pair<Int, Int>? = modelId?.trim()?.let { byModelId[it]?.panel }
+    fun profileFor(modelId: String?): BikeProfile? = modelId?.trim()?.let { byModelId[it]?.profile?.invoke() }
 }
