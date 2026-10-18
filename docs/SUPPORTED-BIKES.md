@@ -70,7 +70,7 @@ Riders have projected Android Auto with these (US + international as noted):
 | **Benelli TRK 702 / 702X** | Manual SSID/pwd or QR when shown; grant Nearby devices / Bluetooth for AA |
 | **Rieju 307** | Community-confirmed (2026-08) — Connect + AA on dash; try Fit/Stretch if letterboxed — Discord `#rieju-307` |
 | **Zontes 125X** | Community-confirmed (2026-08) — Carbit / EasyConnect QR |
-| **Zontes 368K** / **368E** | Community-confirmed (2026-10, RideScreen AA) — Carbit / EasyConnect QR |
+| **Zontes 368G** / **368K** / **368E** | Community-confirmed (368G 2025 on OpenCfMoto; 368K + 368E 2026-10 on RideScreen AA) — same screen and dash across the 368 range; Carbit / EasyConnect QR |
 | **Zontes** (other TFT + pairing QR) | Same Carbit / EasyConnect path — try Connect; report logs in Discord |
 | **Morbidelli T1002VX** | Community-confirmed (Argentina) — Carbit / EasyConnect QR |
 | **Morbidelli T352X** | Community-confirmed (2026-08) — AA split on Carbit dash — Discord `#t352x` |
@@ -93,7 +93,7 @@ promote models to “confirmed.”
 | Brand | Notes / examples |
 | --- | --- |
 | **Voge** | **DS800 Rally** + **DS900X** confirmed; other EasyConnect TFT models welcome |
-| **Zontes** | **125X**, **368K** + **368E** confirmed; other TFT dashes with pairing QR welcome |
+| **Zontes** | **125X** and the **368 range (G / K / E)** confirmed; other TFT dashes with pairing QR welcome |
 | **Moto Morini** | **X-Cape 649 / 700** and **Seiemmezzo** (incl. 2026) confirmed; **1200** SoftAP joins (keep MotoFun/pairing QR open — EasyConn may not sit on `:10930`). Pairing QR may be `admin.motomorini.com/…?Wifi=SSID#password#mac&MachineID=…&ProductID=…` — supported. Do **not** scan the vehicle info QR (`code:…color:…`). Dash clock jumping hours / **1970** after connect: **2.0.10** echoes the bike stamp unless it is epoch (log `HU_TIME_SYNC … mode=echo|phone`). |
 | **Benelli** | TRK 702 / 702X class — SoftAP SSID/password or QR when shown; grant **Nearby devices / Bluetooth** |
 | **Rieju** | **307 confirmed**; other EasyConnect TFTs welcome (`#rieju-307`) |
