@@ -90,6 +90,8 @@ class MainActivity : AppCompatActivity() {
         // Remember this bike so the next ride is a one-tap reconnect (skips the scan entirely).
         BikeMemory.save(this, raw, qr)
         refreshBikeLabel()
+        // v2.3: which bike is it? (once per bike; names it and applies known screen setups)
+        BikePicker.maybeAsk(this, raw) { refreshBikeLabel() }
 
         if (pendingAaStart) {
             pendingAaStart = false
@@ -885,7 +887,7 @@ class MainActivity : AppCompatActivity() {
             if (!SetupActivity.hasSeen(this)) SetupActivity.start(this)
             else {
                 maybeAutoConnect()
-                WhatsNew.maybeShow(this)
+                if (!WhatsNew.maybeShow(this)) TelemetryNotice.maybeShow(this)
             }
             maybeResumeFromParked(intent)
             maybeStartFromBtTrigger(intent)

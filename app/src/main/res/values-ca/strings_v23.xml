@@ -152,4 +152,12 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="tvl_made_with">Fet amb</string>
     <string name="tv_music_dropped">No s\'ha pogut barrejar la cançó i el vídeo s\'ha creat sense. Envia\'m el log, si us plau.</string>
     <string name="bb_outcome_test">Simulacre (prova)</string>
+    <string name="telemetry_notice_title">Informes anònims</string>
+    <string name="telemetry_notice_body">Per arreglar errors, l’app envia informes anònims d’errors: un identificador aleatori, la versió de l’app i el text de l’error. Sense comptes, sense rutes, sense contrasenyes del Wi‑Fi i sense res que t’identifiqui a tu o la teva moto.\n\nPots desactivar-los ara o quan vulguis a Configuració → Privadesa.</string>
+    <string name="telemetry_notice_ok">D’acord</string>
+    <string name="telemetry_notice_off">Desactivar</string>
+    <string name="telemetry_notice_off_done">Informes anònims desactivats</string>
+    <string name="bike_picker_title">Quina moto és?</string>
+    <string name="bike_picker_other">Una altra moto (ajust automàtic)</string>
+    <string name="bike_picker_menu">Model de moto…</string>
 </resources>

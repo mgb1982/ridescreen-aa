@@ -173,6 +173,7 @@ class GarageActivity : AppCompatActivity() {
         val items = buildList {
             if (!isActive) add("Use this bike")
             add("Rename")
+            add(getString(R.string.bike_picker_menu))
             add(if (hasPhoto) "Change photo" else "Add photo")
             if (hasPhoto) add("Remove photo")
             add("Remove bike")
@@ -188,6 +189,7 @@ class GarageActivity : AppCompatActivity() {
                         refresh()
                     }
                     "Rename" -> promptRename(bike)
+                    getString(R.string.bike_picker_menu) -> BikePicker.show(this, bike.raw) { refresh() }
                     "Add photo", "Change photo" -> {
                         photoTargetRaw = bike.raw
                         photoLauncher.launch("image/*")

@@ -217,11 +217,9 @@ object VideoPrefs {
             return runCatching { MatchAspectMode.valueOf(named) }.getOrDefault(MatchAspectMode.AUTO)
         }
         // Migrate PR #5 boolean: explicit On → Manual (kept their typed size); else Auto.
-        return if (BikeScope.getBoolean(p, ctx, KEY_MATCH_ASPECT, false)) {
-            MatchAspectMode.MANUAL
-        } else {
-            MatchAspectMode.AUTO
-        }
+        if (BikeScope.getBoolean(p, ctx, KEY_MATCH_ASPECT, false)) return MatchAspectMode.MANUAL
+        // v2.3: a known dash may come with its own proven default (Zontes 125X → Off).
+        return KnownDashes.matchModeFor(BikeMemory.lastQr(ctx)?.modelId, ctx) ?: MatchAspectMode.AUTO
     }
 
     /** Manual target W×H when mode is [MatchAspectMode.MANUAL]. */

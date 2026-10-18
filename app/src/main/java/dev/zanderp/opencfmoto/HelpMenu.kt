@@ -49,16 +49,18 @@ object WhatsNew {
     private const val PREFS = "whats_new"
     private const val KEY_SEEN = "seen"
 
-    fun maybeShow(activity: Activity) {
+    /** True when the sheet was shown (so other one-time notices can wait for the next launch). */
+    fun maybeShow(activity: Activity): Boolean {
         val p = activity.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         val seen = p.getString(KEY_SEEN, null)
-        if (seen == RELEASE) return
+        if (seen == RELEASE) return false
         val freshInstall = try {
             val info = activity.packageManager.getPackageInfo(activity.packageName, 0)
             info.firstInstallTime == info.lastUpdateTime
         } catch (_: Exception) { false }
         p.edit().putString(KEY_SEEN, RELEASE).apply()
         if (!freshInstall) show(activity)
+        return !freshInstall
     }
 
     fun show(activity: Activity) {
@@ -67,6 +69,30 @@ object WhatsNew {
             .setTitle(R.string.whats_new_title)
             .setMessage(R.string.whats_new_body)
             .setPositiveButton(R.string.whats_new_ok, null)
+            .show()
+    }
+}
+
+/**
+ * v2.3 · One-time notice about the anonymous reports, with a one-tap way to turn them off (the
+ * same switch as Setup → Privacy). Shown once, on a launch where nothing else popped up.
+ */
+object TelemetryNotice {
+    private const val PREFS = "whats_new"
+    private const val KEY = "telemetry_notice_seen"
+
+    fun maybeShow(activity: Activity) {
+        val p = activity.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        if (p.getBoolean(KEY, false) || activity.isFinishing || activity.isDestroyed) return
+        p.edit().putBoolean(KEY, true).apply()
+        MaterialAlertDialogBuilder(activity)
+            .setTitle(R.string.telemetry_notice_title)
+            .setMessage(R.string.telemetry_notice_body)
+            .setPositiveButton(R.string.telemetry_notice_ok, null)
+            .setNegativeButton(R.string.telemetry_notice_off) { _, _ ->
+                AppSettings.setAnonymousTelemetry(activity, false)
+                android.widget.Toast.makeText(activity, R.string.telemetry_notice_off_done, android.widget.Toast.LENGTH_LONG).show()
+            }
             .show()
     }
 }

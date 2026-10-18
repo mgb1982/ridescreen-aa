@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-   Sample backup rules file; uncomment and customize as necessary.
-   See https://developer.android.com/guide/topics/data/autobackup
-   for details.
-   Note: This file is ignored for devices older than API 31
-   See https://developer.android.com/about/versions/12/backup-restore
--->
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RideScreen AA · Android Auto backup (API ≤ 30). Everything is backed up except what must not
+     leave the phone: the bike's Wi‑Fi password (inside the saved QR), the phone-hotspot password,
+     emergency / arrival contacts and the passenger-mode pairing. After a restore the rider scans the
+     bike QR again. Keep in sync with data_extraction_rules.xml. -->
 <full-backup-content>
-    <!--
-   <include domain="sharedpref" path="."/>
-   <exclude domain="sharedpref" path="device.xml"/>
--->
+    <exclude domain="sharedpref" path="opencfmoto_bike.xml" />
+    <exclude domain="sharedpref" path="opencfmoto_phone_hotspot.xml" />
+    <exclude domain="sharedpref" path="crash_detector.xml" />
+    <exclude domain="sharedpref" path="arrival_notice.xml" />
+    <exclude domain="sharedpref" path="companion.xml" />
 </full-backup-content>

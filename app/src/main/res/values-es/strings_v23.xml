@@ -152,4 +152,12 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="tvl_made_with">Hecho con</string>
     <string name="tv_music_dropped">No se ha podido mezclar la canción y el vídeo se ha creado sin ella. Mándame el log, porfa.</string>
     <string name="bb_outcome_test">Simulacro (prueba)</string>
+    <string name="telemetry_notice_title">Informes anónimos</string>
+    <string name="telemetry_notice_body">Para arreglar fallos, la app envía informes anónimos de errores: un identificador aleatorio, la versión de la app y el texto del error. Sin cuentas, sin rutas, sin contraseñas del Wi‑Fi y sin nada que te identifique a ti o a tu moto.\n\nPuedes desactivarlos ahora o cuando quieras en Configuración → Privacidad.</string>
+    <string name="telemetry_notice_ok">Vale</string>
+    <string name="telemetry_notice_off">Desactivar</string>
+    <string name="telemetry_notice_off_done">Informes anónimos desactivados</string>
+    <string name="bike_picker_title">¿Qué moto es?</string>
+    <string name="bike_picker_other">Otra moto (ajuste automático)</string>
+    <string name="bike_picker_menu">Modelo de moto…</string>
 </resources>

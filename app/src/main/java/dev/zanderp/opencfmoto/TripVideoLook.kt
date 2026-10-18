@@ -560,7 +560,10 @@ class TripLook(
         text(c, ctx.getString(R.string.tvl_made_with), tx, top + 3.2f * u, 2.3f * u, tfMedium, Color.argb(200, 255, 255, 255))
         text(c, name, tx, top + icon - 0.6f * u, nameSize, tfArchivoBlack)
         if (BRAND_LINK.isNotEmpty()) {
-            text(c, BRAND_LINK, if (portrait) w / 2f else left, h - 4.5f * u, 2.6f * u, tfMedium, accent(),
+            // v2.3: web + Instagram on one line, shrunk to fit the frame if needed.
+            val line = if (BRAND_SOCIAL.isNotEmpty()) "$BRAND_LINK  ·  Instagram $BRAND_SOCIAL" else BRAND_LINK
+            val maxW = if (portrait) w * 0.9f else w - left - 4 * u
+            text(c, line, if (portrait) w / 2f else left, h - 4.5f * u, fitSize(line, tfMedium, maxW, 2.6f * u), tfMedium, accent(),
                 if (portrait) Paint.Align.CENTER else Paint.Align.LEFT)
         }
     }
@@ -586,6 +589,8 @@ class TripLook(
 /** 5×7 dot-matrix letters for the Retro VHS look (camcorder-style), drawn as little squares. */
 /** Shown under the logo at the end of trip videos (web / Instagram); empty = nothing. */
 const val BRAND_LINK = "ridescreen.app"
+/** Instagram handle shown next to [BRAND_LINK]; empty = web only. */
+const val BRAND_SOCIAL = "@ridescreen.app"
 
 object PixelFont {
     private val G: Map<Char, Array<String>> = mapOf(

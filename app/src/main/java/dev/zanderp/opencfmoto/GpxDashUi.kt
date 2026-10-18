@@ -936,6 +936,11 @@ class GpxDashUi(
                         isFocusable = true
                         setOnClickListener { onTap() }
                     }
+                // v2.3: a visible "Go" — riders didn't find that tapping the name opens the route
+                // card (Zontes 125X user, 18 Oct 2026).
+                actions.addView(actionChip("➤ ${context.getString(R.string.main_go)}") {
+                    startNavigationTo(p)
+                }.also { it.setTextColor(0xFF188038.toInt()) })
                 actions.addView(actionChip("★ Save") {
                     MapPlaces.addFavorite(context, p)
                     searchStatus.text = "Saved ${p.name} to favorites"

@@ -152,4 +152,12 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="tvl_made_with">Made with</string>
     <string name="tv_music_dropped">The song couldn\'t be mixed in, so the video was made without it. Please send me the log.</string>
     <string name="bb_outcome_test">Simulation (test)</string>
+    <string name="telemetry_notice_title">Anonymous reports</string>
+    <string name="telemetry_notice_body">To fix bugs, the app sends anonymous error reports: a random id, the app version and the error text. No account, no routes, no Wi‑Fi passwords and nothing that identifies you or your bike.\n\nYou can turn them off now or anytime in Settings → Privacy.</string>
+    <string name="telemetry_notice_ok">OK</string>
+    <string name="telemetry_notice_off">Turn off</string>
+    <string name="telemetry_notice_off_done">Anonymous reports turned off</string>
+    <string name="bike_picker_title">Which bike is it?</string>
+    <string name="bike_picker_other">Other bike (automatic setup)</string>
+    <string name="bike_picker_menu">Bike model…</string>
 </resources>

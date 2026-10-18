@@ -1,5 +1,6 @@
 package dev.zanderp.opencfmoto
 
+import android.content.Context
 import android.os.Build
 import org.json.JSONObject
 import java.io.OutputStream
@@ -176,7 +177,7 @@ object BikeProfiles {
         val base = selectByQrGuess(qr)
         if (context == null || qr == null) return base
         val panel = DashMemory.get(context, qr.ssid)
-            ?: KnownDashes.panelFor(qr.modelId)?.also {
+            ?: KnownDashes.panelFor(qr.modelId, context)?.also {
                 LogBus.log("[panel] known dash (QR modelId ${qr.modelId}): ${it.first}x${it.second} — fitting from the first connect")
             }
             ?: return base
@@ -822,13 +823,31 @@ object Cfdl26LandscapeProfile : BikeProfile {
  * second connect used the learned size). Sizes are the bike's real screen as logged.
  */
 internal object KnownDashes {
-    private data class Dash(val label: String, val profile: () -> BikeProfile, val panel: Pair<Int, Int>)
+    private data class Dash(
+        val label: String,
+        val profile: (() -> BikeProfile)?,
+        val panel: Pair<Int, Int>,
+        /** Default "match aspect" when the rider never chose one; null = the app's usual AUTO. */
+        val matchMode: MatchAspectMode? = null,
+    )
 
     private val byModelId = mapOf(
         // Zontes 368K (18 Oct 2026 log): AP+P2P QR, CLIENT_INFO "MotoPlay Landscape", panel 1024×425.
         "21334" to Dash("Zontes 368", { Cfdl16MotoPlayLandscapeProfile }, 1024 to 425),
+        // Zontes 125X (Manel's, 17 Oct logs): panel 800×416. AA at a plain 800×480 with no margins +
+        // Fill keeps Android Auto's icon bar at the bottom, where it hides under the dash's own
+        // speed/fuel strip; "match aspect" margins make AA put the bar on the left instead.
+        "21340" to Dash("Zontes 125X", null, 800 to 416, MatchAspectMode.OFF),
     )
 
-    fun panelFor(modelId: String?): Pair<Int, Int>? = modelId?.trim()?.let { byModelId[it]?.panel }
-    fun profileFor(modelId: String?): BikeProfile? = modelId?.trim()?.let { byModelId[it]?.profile?.invoke() }
+    /** Same setups by the model the rider picked ([BikePicker]) when the QR's modelId is unknown. */
+    private val byPickedKey = mapOf("125x" to byModelId.getValue("21340"), "368" to byModelId.getValue("21334"))
+
+    private fun find(modelId: String?, ctx: Context?): Dash? =
+        modelId?.trim()?.let { byModelId[it] }
+            ?: ctx?.let { c -> BikePicker.selected(c)?.dashKey?.let { byPickedKey[it] } }
+
+    fun panelFor(modelId: String?, ctx: Context? = null): Pair<Int, Int>? = find(modelId, ctx)?.panel
+    fun profileFor(modelId: String?): BikeProfile? = find(modelId, null)?.profile?.invoke()
+    fun matchModeFor(modelId: String?, ctx: Context? = null): MatchAspectMode? = find(modelId, ctx)?.matchMode
 }
