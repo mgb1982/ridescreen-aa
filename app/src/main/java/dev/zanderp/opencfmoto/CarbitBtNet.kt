@@ -87,8 +87,14 @@ object CarbitBtNet {
                 log("profiles: a2dp=${adapter?.getProfileConnectionState(android.bluetooth.BluetoothProfile.A2DP)} " +
                     "headset=${adapter?.getProfileConnectionState(android.bluetooth.BluetoothProfile.HEADSET)} (2 = connected)")
             } catch (_: Exception) {}
-            log("dash services (SDP): ${sdpUuids(ctx, dev).joinToString { it.toString() }.ifEmpty { "none reported" }}")
+            val services = sdpUuids(ctx, dev)
+            log("dash services (SDP): ${services.joinToString { it.toString() }.ifEmpty { "none reported" }}")
             if (isCarbitRideRunning(ctx)) log("Carbit Ride is installed — if it's running it may hold the dash's channel: force-stop it")
+            // 18 Oct 2026 (125M): only audio + hands-free listed → this dash does it over BLE.
+            if (services.isNotEmpty() && SERVICE !in services) {
+                log("no Carbit classic-Bluetooth service on this dash → BLE")
+                return CarbitBleNet.run(ctx, dev)
+            }
             for (attempt in 1..3) {
                 sock = try { dev.createRfcommSocketToServiceRecord(SERVICE).also { it.connect() } }
                     catch (e: Exception) {
@@ -99,7 +105,7 @@ object CarbitBtNet {
                 if (sock != null) break
                 Thread.sleep(2500)
             }
-            val s = sock ?: return false
+            val s = sock ?: return CarbitBleNet.run(ctx, dev)
             log("RFCOMM connected")
             val out = s.outputStream; val inp = s.inputStream
             // One reader for the whole session; replies are queued in arrival order.
@@ -108,7 +114,7 @@ object CarbitBtNet {
             fun ask(cmd: Int, body: ByteArray = ByteArray(0)): Pair<Int, String>? {
                 PxcFrame(cmd, body).write(out)
                 val r = replies.poll(6, TimeUnit.SECONDS)
-                log("→ 0x${Integer.toHexString(cmd)}${if (body.isNotEmpty()) " " + String(body) else ""} ← " +
+                log("→ 0x${Integer.toHexString(cmd)}${if (body.isNotEmpty()) " " + CarbitBleNet.masked(String(body)) else ""} ← " +
                     (r?.let { "0x${Integer.toHexString(it.first)} ${it.second.take(300)}" } ?: "no reply"))
                 return r
             }
@@ -118,36 +124,8 @@ object CarbitBtNet {
             val status = info?.second?.let { runCatching { JSONObject(it).optInt("status", -100) }.getOrNull() }
             log("client info status=$status")
 
-            // Our own temporary hotspot (needs the normal hotspot off and Location on).
-            release()
-            val wm = ctx.applicationContext.getSystemService(WifiManager::class.java) ?: return false
-            val latch = CountDownLatch(1)
-            var failReason = 0
-            try {
-                wm.startLocalOnlyHotspot(object : WifiManager.LocalOnlyHotspotCallback() {
-                    override fun onStarted(r: WifiManager.LocalOnlyHotspotReservation) { reservation = r; latch.countDown() }
-                    override fun onFailed(reason: Int) { failReason = reason; latch.countDown() }
-                    override fun onStopped() { log("local hotspot stopped by the system"); reservation = null }
-                }, Handler(Looper.getMainLooper()))
-            } catch (e: Exception) { log("local hotspot not allowed: $e"); return false }
-            latch.await(15, TimeUnit.SECONDS)
-            val res = reservation
-            if (res == null) {
-                log("local hotspot failed (reason=$failReason — 1=no channel, 2=generic, 3=incompatible mode: turn the normal hotspot off, 4=tethering disallowed)")
-                return false
-            }
-            val (ssid, pwd) = credentials(res)
-            if (ssid.isNullOrBlank() || pwd.isNullOrBlank()) { log("local hotspot has no SSID/password?"); return false }
-            hotspotSsid = ssid
-            // Our address on the new hotspot (the dash connects back to it).
-            var ip: String? = null
-            for (i in 0 until 20) {
-                ip = PhoneHotspotScan.tetheringSubnets().firstOrNull { !it.interfaceName.startsWith("rmnet") }?.localAddress?.hostAddress
-                if (ip != null) break
-                Thread.sleep(500)
-            }
-            log("local hotspot up: ssid='$ssid' ip=${ip ?: "?"}")
-            val body = JSONObject().put("ssid", ssid).put("pwd", pwd).put("auth", "WPA2").put("ip", ip ?: "").toString().toByteArray()
+            val ap = startLocalHotspot(ctx, log) ?: return false
+            val body = JSONObject().put("ssid", ap.ssid).put("pwd", ap.pwd).put("auth", ap.auth).put("ip", ap.ip ?: "").toString().toByteArray()
             ask(CMD_NOTIFY_AP_INFO, body)
             return true
         } catch (e: Exception) {
@@ -156,6 +134,44 @@ object CarbitBtNet {
         } finally {
             try { sock?.close() } catch (_: Exception) {}
         }
+    }
+
+    data class LocalAp(val ssid: String, val pwd: String, val auth: String, val ip: String?)
+
+    /** Starts our own temporary hotspot (needs the normal hotspot off and Location on). Blocking. */
+    fun startLocalHotspot(ctx: Context, log: (String) -> Unit): LocalAp? {
+        release()
+        val wm = ctx.applicationContext.getSystemService(WifiManager::class.java) ?: return null
+        val latch = CountDownLatch(1)
+        var failReason = 0
+        try {
+            wm.startLocalOnlyHotspot(object : WifiManager.LocalOnlyHotspotCallback() {
+                override fun onStarted(r: WifiManager.LocalOnlyHotspotReservation) { reservation = r; latch.countDown() }
+                override fun onFailed(reason: Int) { failReason = reason; latch.countDown() }
+                override fun onStopped() { log("local hotspot stopped by the system"); reservation = null }
+            }, Handler(Looper.getMainLooper()))
+        } catch (e: Exception) { log("local hotspot not allowed: $e"); return null }
+        latch.await(15, TimeUnit.SECONDS)
+        val res = reservation
+        if (res == null) {
+            log("local hotspot failed (reason=$failReason — 1=no channel, 2=generic, 3=incompatible mode: turn the normal hotspot off, 4=tethering disallowed)")
+            return null
+        }
+        val (ssid, pwd) = credentials(res)
+        if (ssid.isNullOrBlank() || pwd.isNullOrBlank()) { log("local hotspot has no SSID/password?"); return null }
+        hotspotSsid = ssid
+        val auth = if (Build.VERSION.SDK_INT >= 30) when (res.softApConfiguration.securityType) {
+            0 -> "OPEN"; 3 -> "WPA3"; else -> "WPA2"
+        } else "WPA2"
+        // Our address on the new hotspot (the dash connects back to it).
+        var ip: String? = null
+        for (i in 0 until 20) {
+            ip = PhoneHotspotScan.tetheringSubnets().firstOrNull { !it.interfaceName.startsWith("rmnet") }?.localAddress?.hostAddress
+            if (ip != null) break
+            Thread.sleep(500)
+        }
+        log("local hotspot up: ssid='$ssid' auth=$auth ip=${ip ?: "?"}")
+        return LocalAp(ssid, pwd, auth, ip)
     }
 
     /** Asks the dash for its service list (SDP) and waits up to 8 s for the answer. */
