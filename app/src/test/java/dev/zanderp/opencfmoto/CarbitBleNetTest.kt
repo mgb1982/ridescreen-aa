@@ -23,4 +23,9 @@ class CarbitBleNetTest {
         assertFalse(m.contains("abc123xyz"))
         assertTrue(m.contains("AndroidShare_1"))
     }
+
+    @Test fun readsDashAddressFromCarNetInfo() {
+        val json = "{\n\t\"cnt\":\t1,\n\t\"data\":\t[{\n\t\t\t\"name\":\t\"wlan0\",\n\t\t\t\"ip\":\t\"10.56.162.193\",\n\t\t\t\"mask\":\t\"255.255.255.0\"\n\t\t}]\n}"
+        assertEquals("10.56.162.193", CarbitBleNet.dashIp(json))
+    }
 }

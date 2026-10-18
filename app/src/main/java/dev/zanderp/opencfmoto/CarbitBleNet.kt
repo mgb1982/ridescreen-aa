@@ -63,6 +63,16 @@ object CarbitBleNet {
 
     private fun log(s: String) = LogBus.log("[BLENET] $s")
 
+    /** (our address, dash address) once the dash said it joined our hotspot; taken once. */
+    @Volatile private var joined: Pair<String, String>? = null
+    fun takeJoined(): Pair<String, String>? = joined.also { joined = null }
+
+    /** The dash's address from its 0x53 NotifyCarNetInfo {cnt, data:[{name, ip, mask}]}. */
+    internal fun dashIp(json: String): String? = runCatching {
+        val arr = JSONObject(json).optJSONArray("data") ?: return null
+        (0 until arr.length()).map { arr.getJSONObject(it).optString("ip") }.firstOrNull { it.isNotBlank() }
+    }.getOrNull()
+
     /** Pure: splits a byte stream into EC-BTP frames (`$ cmd len … xor \n`), keeping leftovers. */
     internal class Reassembler {
         private val buf = ByteArrayOutputStream()
@@ -98,6 +108,7 @@ object CarbitBleNet {
      */
     fun run(ctx: Context, dash: BluetoothDevice): Boolean {
         log("trying Bluetooth LE (what Carbit Ride uses on these dashes)")
+        joined = null
         // 18 Oct: the classic address never answers on LE (12 s timeout); the dash advertises its
         // BLE side as "EC302428DC" at DD:… and is found in < 1 s — so look first.
         val link = scanAndConnect(ctx, dash) ?: connect(ctx, dash) ?: run {
@@ -130,7 +141,13 @@ object CarbitBleNet {
             val joinUntil = System.currentTimeMillis() + 25_000
             while (System.currentTimeMillis() < joinUntil) {
                 val f = link.frames.poll(joinUntil - System.currentTimeMillis(), TimeUnit.MILLISECONDS) ?: break
-                if (f.command == CMD_NOTIFY_CAR_NET) { log("dash joined our hotspot ✓"); break }
+                if (f.command == CMD_NOTIFY_CAR_NET) {
+                    val dash = dashIp(String(f.payload, Charsets.UTF_8))
+                    val us = ap.ip ?: dash?.let { ourAddressNear(it) }
+                    log("dash joined our hotspot ✓ dash=$dash us=$us")
+                    if (dash != null && us != null) joined = us to dash
+                    break
+                }
                 if (f.command == CMD_REQUEST_BUILD_NET && !resent) { resent = true; send(link, CMD_REQUEST_BUILD_NET, body, "our hotspot details (again)") }
             }
             return true
@@ -140,6 +157,13 @@ object CarbitBleNet {
             runCatching { link.gatt.disconnect() }; runCatching { link.gatt.close() }
         }
     }
+
+    /** Our IPv4 address in the same /24 as [peer] (the local-only hotspot interface). */
+    private fun ourAddressNear(peer: String): String? = runCatching {
+        val prefix = peer.substringBeforeLast('.') + "."
+        java.net.NetworkInterface.getNetworkInterfaces().toList().flatMap { it.inetAddresses.toList() }
+            .filterIsInstance<java.net.Inet4Address>().map { it.hostAddress }.firstOrNull { it.startsWith(prefix) && it != peer }
+    }.getOrNull()
 
     private fun drain(link: Link, ms: Long) {
         val until = System.currentTimeMillis() + ms
