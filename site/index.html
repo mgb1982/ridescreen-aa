@@ -3,15 +3,19 @@
 <head>
 <meta charset="utf-8">
 <script>
-/* Language: visitors whose browser/phone is not set to Spanish, Catalan, Galician or Basque go to the
-   English page — unless they picked a language on the site (that choice always wins). Crawlers stay. */
+/* Language: Spanish, Galician or Basque browsers stay here; Catalan ones go to the Catalan page and
+   everything else to the English one — unless the visitor picked a language on the site (that
+   choice always wins). Crawlers and link previews stay. */
 (function(){try{
-  if (localStorage.getItem("rs_lang")) { if (localStorage.getItem("rs_lang")!=="en") return; }
+  var t=null, pick=localStorage.getItem("rs_lang");
+  if (pick) { if (pick==="en") t="en/"; else if (pick==="ca") t="ca/"; else return; }
   else {
+    if (/bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegram/i.test(navigator.userAgent)) return;
     var l=((navigator.languages&&navigator.languages[0])||navigator.language||"").toLowerCase();
-    if (!l || /^(es|ca|gl|eu)\b/.test(l) || /bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegram/i.test(navigator.userAgent)) return;
+    if (!l || /^(es|gl|eu)\b/.test(l)) return;
+    t = /^ca\b/.test(l) ? "ca/" : "en/";
   }
-  location.replace("en/"+location.hash);
+  location.replace(t+location.hash);
 }catch(e){}})();
 </script>
 <script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
@@ -21,6 +25,7 @@
 <meta name="description" content="App gratuita y sin anuncios que pone Android Auto inalámbrico en el cuadro de tu Zontes (125X, 125V, 368G, 368K, 368E…) y otras motos con cuadro EasyConn/Carbit. Navegación, música, gasolineras, viajes, vídeos y app para el reloj.">
 <link rel="canonical" href="https://ridescreen.app/">
 <link rel="alternate" hreflang="es" href="https://ridescreen.app/">
+<link rel="alternate" hreflang="ca" href="https://ridescreen.app/ca/">
 <link rel="alternate" hreflang="en" href="https://ridescreen.app/en/">
 <link rel="alternate" hreflang="x-default" href="https://ridescreen.app/">
 <link rel="icon" href="img/icon.svg" type="image/svg+xml">
@@ -156,6 +161,7 @@ footer a { color: var(--fg); }
       <a href="guia/">Guía</a>
       <a href="reloj/" class="opt">Reloj</a>
       <a href="https://github.com/mgb1982/ridescreen-aa" class="opt">GitHub</a>
+      <a href="ca/" lang="ca" hreflang="ca" title="Català" data-lang="ca">CA</a>
       <a href="en/" lang="en" hreflang="en" title="English" data-lang="en">EN</a>
     </nav>
   </header>
@@ -256,6 +262,7 @@ footer a { color: var(--fg); }
       <a href="https://github.com/mgb1982/ridescreen-aa">Código fuente</a>
       <a href="https://github.com/mgb1982/ridescreen-aa/blob/main/PRIVACY.md">Privacidad</a>
       <a href="https://ko-fi.com/mgb1982">☕ Ko-fi</a>
+      <a href="ca/" lang="ca" data-lang="ca">Català</a>
       <a href="en/" lang="en" data-lang="en">English</a>
     </div>
     <p>RideScreen AA está basada en <a href="https://github.com/zanderp/open-cfmoto">OpenCfMoto</a> de Alexandru (zanderp). Software libre bajo licencia AGPL-3.0.</p>
