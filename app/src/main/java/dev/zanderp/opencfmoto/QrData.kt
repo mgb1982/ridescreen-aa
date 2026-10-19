@@ -63,6 +63,16 @@ data class QrData(
             val ssid = q["ssid"].orEmpty().trim()
             val pwd = q["pwd"].orEmpty()
             val phoneHotspot = (action and 128) != 0 || (ssid.isEmpty() && mac != null && q.containsKey("bm"))
+            // v2.3 · Wi‑Fi Direct-only dashes (Zontes 350D, 19 Oct: `action=8&mac=…&name=ZT_…`, no
+            // ssid/pwd): join the dash's P2P group by its MAC — the existing P2P path does that.
+            val p2pOnly = ssid.isEmpty() && !phoneHotspot && (action and 8) != 0 && mac != null
+            if (p2pOnly) {
+                val name = q["name"]?.takeIf { it.isNotBlank() } ?: "ZT_${mac!!.replace(":", "")}"
+                return QrData(
+                    ssid = name, pwd = "", auth = q["auth"], mac = mac, name = name, action = action,
+                    modelId = q["modelid"], sn = q["sn"], channel = q["channel"],
+                )
+            }
             if (ssid.isEmpty() && !phoneHotspot) return null
             if (ssid.isNotEmpty() && pwd.isEmpty() && !phoneHotspot) return null
             val display = q["name"]?.takeIf { it.isNotBlank() }
