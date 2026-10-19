@@ -174,4 +174,7 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="remote_dedicated_no_devices">No hi ha cap comandament connectat. Aparella’l als ajustos de Bluetooth d’Android, prem qualsevol botó i torna-ho a provar. (Els intercomunicadors i auriculars no surten aquí: continuen controlant la música).</string>
     <string name="remote_dedicated_remove">Treure</string>
     <string name="remote_dedicated_service_explain">Perquè el comandament funcioni amb el mòbil bloquejat, activa «RideScreen AA · comandament del manillar» a Accessibilitat. Només llegeix les tecles d’aquest comandament mentre Android Auto és al quadre.</string>
+    <string name="help_interfaces">💡 Quadre original sense desconnectar</string>
+    <string name="help_interfaces_title">💡 Quadre original sense desconnectar</string>
+    <string name="help_interfaces_body">Connecta a la interfície 3 com sempre. Quan ja surti Android Auto al quadre, pots passar a la interfície 1 o 2 per veure el quadre original: l\'app segueix connectada, registra el viatge i Android Auto continua funcionant per darrere.\n\nEn tornar a la 3, Android Auto apareix a l\'instant.\n\nEl quadre només encén la seva Wi‑Fi a la interfície 3, així que la primera connexió sempre s\'ha de fer allà.</string>
 </resources>

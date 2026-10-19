@@ -6,7 +6,7 @@
     <string name="conn_detail_need_nearby">Permite «Dispositivos cercanos»: Android Auto lo necesita para arrancar en el cuadro</string>
     <string name="conn_detail_need_bt_on">Activa el Bluetooth: Android Auto lo necesita para arrancar en el cuadro</string>
     <string name="conn_detail_wifi_off">El Wi‑Fi del móvil está apagado: actívalo para conectar</string>
-    <string name="conn_detail_bike_wifi_not_found">No encuentro el Wi‑Fi de la moto: enciéndela, pon el cuadro en la interfaz 3 y vuelve a Conectar</string>
+    <string name="conn_detail_bike_wifi_not_found">No encuentro el Wi‑Fi de la moto: enciéndela, pon el cuadro en la interfaz 3 y vuelve a Conectar (ya conectada, puedes pasar a la 1 o la 2)</string>
     <string name="wifi_picker_hint">Si Android pregunta si conectar a %1$s, pulsa Conectar: es el Wi‑Fi de tu moto</string>
     <string name="wifi_off_title">Activa el Wi‑Fi</string>
     <string name="wifi_off_message">RideScreen AA se conecta a la moto por Wi‑Fi y el del móvil está apagado. Actívalo (no hace falta conectarse a ninguna red) y la conexión seguirá sola.</string>

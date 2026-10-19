@@ -174,4 +174,7 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="remote_dedicated_no_devices">No hay ningún mando conectado. Emparéjalo en los ajustes de Bluetooth de Android, pulsa cualquiera de sus botones y vuelve a probar. (Los intercomunicadores y auriculares no salen aquí: siguen controlando la música).</string>
     <string name="remote_dedicated_remove">Quitar</string>
     <string name="remote_dedicated_service_explain">Para que el mando funcione con el móvil bloqueado, activa «RideScreen AA · mando del manillar» en Accesibilidad. Solo lee las teclas de ese mando mientras Android Auto está en el cuadro.</string>
+    <string name="help_interfaces">💡 Cuadro original sin desconectar</string>
+    <string name="help_interfaces_title">💡 Cuadro original sin desconectar</string>
+    <string name="help_interfaces_body">Conecta en la interfaz 3 como siempre. Cuando ya salga Android Auto en el cuadro, puedes pasar a la interfaz 1 o 2 para ver el cuadro original: la app sigue conectada, registra el viaje y Android Auto sigue funcionando por detrás.\n\nAl volver a la 3, Android Auto aparece al momento.\n\nEl cuadro solo enciende su Wi‑Fi en la interfaz 3, así que la primera conexión siempre tiene que hacerse ahí.</string>
 </resources>

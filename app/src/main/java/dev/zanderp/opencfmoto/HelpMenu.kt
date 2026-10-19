@@ -17,6 +17,7 @@ object HelpMenu {
     fun show(activity: Activity, shareLogs: () -> Unit, reportProblem: () -> Unit, extras: List<Pair<String, () -> Unit>> = emptyList()) {
         val items = listOf(
             activity.getString(R.string.help_guide) to { openGuide(activity) },
+            activity.getString(R.string.help_interfaces) to { showInterfacesTip(activity) },
             activity.getString(R.string.help_watch_guide) to { openUrl(activity, WATCH_GUIDE_URL) },
             activity.getString(R.string.help_share_logs) to shareLogs,
             activity.getString(R.string.help_whats_new) to { WhatsNew.show(activity) },
@@ -29,6 +30,16 @@ object HelpMenu {
     }
 
     fun openGuide(ctx: Context) = openUrl(ctx, GUIDE_URL)
+
+    /** v2.3 · Riders found the link survives switching the dash to screen 1/2 (19 Oct). */
+    fun showInterfacesTip(activity: Activity) {
+        if (activity.isFinishing || activity.isDestroyed) return
+        MaterialAlertDialogBuilder(activity)
+            .setTitle(R.string.help_interfaces_title)
+            .setMessage(R.string.help_interfaces_body)
+            .setPositiveButton(R.string.whats_new_ok, null)
+            .show()
+    }
 
     fun openUrl(ctx: Context, url: String) {
         try {
