@@ -635,6 +635,19 @@ class AndroidAutoService : Service() {
                 } catch (e: Exception) {
                     LogBus.log("[AA] drop re-trigger failed: $e")
                 }
+                return
+            }
+            val n = BikeLink.takeAaLiveDropRetry()
+            if (n > 0) {
+                LogBus.log("[AA] Android Auto dropped while the dash is linked — bringing it back (try $n/3)")
+                watchdogHandler.postDelayed({
+                    if (ConnectionState.phase == Phase.STOPPED) return@postDelayed
+                    try {
+                        dev.zanderp.opencfmoto.aa.AaSelfMode.trigger(this, log = LogBus::log)
+                    } catch (e: Exception) {
+                        LogBus.log("[AA] live re-trigger failed: $e")
+                    }
+                }, 1500L * n)
             }
             return
         }

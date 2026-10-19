@@ -40,6 +40,8 @@ object BikeLink {
     @Volatile private var p2pBindIp: Inet4Address? = null
     @Volatile private var p2pGatewayIp: Inet4Address? = null
     @Volatile private var aaDropRetried = false
+    /** Re-triggers spent on drops that happen once the bike is already linked (125M, 19 Oct). */
+    @Volatile private var aaLiveDropRetries = 0
 
     /** Reset the gate at the start of a fresh Android Auto connection attempt. */
     @Synchronized
@@ -53,6 +55,7 @@ object BikeLink {
         p2pBindIp = null
         p2pGatewayIp = null
         aaDropRetried = false
+        aaLiveDropRetries = 0
         AaVideoBridge.aaSessionSeen = false
         AaVideoBridge.husWedged = false
         // Leave the bike Network held, but unpin the process so AA can use 127.0.0.1.
@@ -65,6 +68,18 @@ object BikeLink {
         if (aaDropRetried || aaVideoSteady) return false
         aaDropRetried = true
         return true
+    }
+
+    /**
+     * Android Auto dropped *after* the bike was linked (seen on the Zontes 125M: AA went quiet a few
+     * seconds after our own hotspot came up, and the dash kept showing the last frozen frame).
+     * Allow a few self-mode re-triggers per connect so AA comes back on its own.
+     */
+    @Synchronized
+    fun takeAaLiveDropRetry(): Int {
+        if (!aaVideoSteady || !(proberStarted || networkReady) || aaLiveDropRetries >= 3) return 0
+        aaLiveDropRetries++
+        return aaLiveDropRetries
     }
 
     @Synchronized
