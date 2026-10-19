@@ -357,6 +357,10 @@ class ButtonMappingActivity : AppCompatActivity() {
     // ---- v2.3: dedicated remote (Android Auto only) ----
     private fun refreshDedicated() {
         val tv = findViewById<TextView?>(R.id.tv_dedicated_status) ?: return
+        if (!DedicatedRemote.available(this)) {
+            findViewById<View?>(R.id.card_dedicated_remote)?.visibility = View.GONE
+            return
+        }
         val r = DedicatedRemote.chosen(this)
         val on = DedicatedRemote.serviceEnabled(this)
         tv.text = when {

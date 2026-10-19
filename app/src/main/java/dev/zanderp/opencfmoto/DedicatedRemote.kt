@@ -55,6 +55,11 @@ object DedicatedRemote {
         }.distinctBy { it.descriptor }
     }
 
+    /** False in the public APKs: the accessibility service only ships in the "personal" build. */
+    fun available(ctx: Context): Boolean = try {
+        ctx.packageManager.getServiceInfo(ComponentName(ctx, RemoteKeyService::class.java), 0); true
+    } catch (_: Exception) { false }
+
     fun serviceEnabled(ctx: Context): Boolean {
         val want = ComponentName(ctx, RemoteKeyService::class.java).flattenToString()
         val list = Settings.Secure.getString(ctx.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES) ?: return false

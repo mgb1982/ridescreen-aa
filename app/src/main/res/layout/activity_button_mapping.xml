@@ -122,6 +122,7 @@
 
         <!-- ===== v2.3: dedicated remote → Android Auto only ===== -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_dedicated_remote"
             style="@style/Card.OpenCfMoto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

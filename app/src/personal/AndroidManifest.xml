@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- "personal" build type only: the accessibility service for the dedicated handlebar remote.
+     Kept out of the public APKs because Play Protect hard-blocks sideloaded apps that declare an
+     accessibility service (19 Oct 2026, build 210: "S'ha bloquejat l'aplicació", no way to continue). -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!-- v2.3: dedicated handlebar remote → Android Auto only (DedicatedRemote). -->
+        <service
+            android:name=".RemoteKeyService"
+            android:exported="false"
+            android:label="@string/remote_service_label"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/remote_key_service" />
+        </service>
+    </application>
+</manifest>
