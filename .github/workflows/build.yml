@@ -4,7 +4,7 @@ on:
   push:
     # Pushing a branch release/zontes-N (or a tag zontes-N) publishes a public GitHub Release
     # tagged zontes-N with the APK attached; the tag is created GitHub-side.
-    branches: [main, 'test/**', 'feature/**', 'release/**', 'personal/**']
+    branches: [main, 'test/**', 'feature/**', 'release/**']
     tags: ['v*']
 
 permissions:
@@ -119,21 +119,6 @@ jobs:
           files: dist/*.apk
           prerelease: false
           make_latest: true
-      # personal/** branches: Manel's own APK with the dedicated-remote accessibility service, which
-      # the public APKs leave out (Play Protect hard-blocks sideloaded apps that declare one).
-      - name: Build personal APK (dedicated remote)
-        if: startsWith(github.ref, 'refs/heads/personal/')
-        shell: bash
-        run: |
-          ./gradlew assembleGithubPersonal -PappVersion="$APP_VERSION" -PversionSuffix="$VERSION_SUFFIX" > personal-build.log 2>&1 \
-            || { grep -E "What went wrong|rror:|^e: " personal-build.log | head -8; exit 1; }
-          mkdir -p personal-apk
-          cp "$(find app/build/outputs/apk/github/personal -name '*.apk' | head -1)" "personal-apk/RideScreen-AA-mando-${GITHUB_RUN_NUMBER}.apk"
-      - uses: actions/upload-artifact@v4
-        if: startsWith(github.ref, 'refs/heads/personal/')
-        with:
-          name: RideScreen-AA-mando-${{ github.run_number }}
-          path: personal-apk/*.apk
       # Test APKs get the build number in the file name: all of them used to be
       # "app-github-release.apk", and an older copy with the same name got sent/installed instead.
       - name: Name test APK

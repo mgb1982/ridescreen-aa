@@ -162,13 +162,6 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/remote_dedicated_pick" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_dedicated_service"
-                    style="@style/Widget.OpenCfMoto.Segment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/remote_dedicated_service" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

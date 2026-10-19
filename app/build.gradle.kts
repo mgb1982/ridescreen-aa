@@ -103,12 +103,6 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("debugRelease")
         }
-        // Manel's own build: release + the dedicated-remote accessibility service (src/personal).
-        create("personal") {
-            initWith(getByName("release"))
-            matchingFallbacks += listOf("release")
-            versionNameSuffix = "-mando"
-        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

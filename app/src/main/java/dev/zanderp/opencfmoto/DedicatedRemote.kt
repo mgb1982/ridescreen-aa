@@ -2,24 +2,19 @@
 // Part of RideScreen AA (fork of OpenCfMoto). Free software under the GNU AGPL v3 or later.
 package dev.zanderp.opencfmoto
 
-import android.accessibilityservice.AccessibilityService
-import android.content.ComponentName
 import android.content.Context
 import android.hardware.input.InputManager
 import android.os.Handler
 import android.os.Looper
-import android.provider.Settings
 import android.view.InputDevice
 import android.view.KeyEvent
-import android.view.accessibility.AccessibilityEvent
 
 /**
  * v2.3 · A handlebar remote that drives Android Auto ONLY, while the intercom keeps music and
  * volume (Manel, 19 Oct: "the remote for Android Auto, the Q58 Max for media").
  *
- * Cheap handlebar remotes pair as an *input device* (HID): their keys go through Android's input
- * pipeline, where an accessibility service can see which device each key came from and swallow it.
- * Headsets/intercoms send AVRCP commands, which never enter that pipeline — so they are untouched.
+ * Cheap handlebar remotes pair as an *input device* (HID); headsets/intercoms send AVRCP commands.
+ * The key source (see [available]) tells them apart by device, so the intercom keeps the music.
  * Keys are taken only while Android Auto is live on the dash; otherwise the remote works as usual.
  */
 object DedicatedRemote {
@@ -55,16 +50,13 @@ object DedicatedRemote {
         }.distinctBy { it.descriptor }
     }
 
-    /** False in the public APKs: the accessibility service only ships in the "personal" build. */
-    fun available(ctx: Context): Boolean = try {
-        ctx.packageManager.getServiceInfo(ComponentName(ctx, RemoteKeyService::class.java), 0); true
-    } catch (_: Exception) { false }
-
-    fun serviceEnabled(ctx: Context): Boolean {
-        val want = ComponentName(ctx, RemoteKeyService::class.java).flattenToString()
-        val list = Settings.Secure.getString(ctx.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES) ?: return false
-        return list.split(':').any { it.equals(want, ignoreCase = true) }
-    }
+    /**
+     * Whether any key source can feed [onKey] right now. The accessibility service that used to do
+     * it was removed (19 Oct): Play Protect hard-blocks sideloaded APKs that declare one. A
+     * replacement that needs no accessibility (Shizuku + evdev, or media keys by device) plugs in
+     * here; until then the Controls card stays hidden.
+     */
+    fun available(@Suppress("UNUSED_PARAMETER") ctx: Context): Boolean = false
 
     /** What each key of a remote does in Android Auto. Media-style remotes become a D-pad. */
     internal fun actionFor(keyCode: Int): ButtonAction? = when (keyCode) {
@@ -89,7 +81,7 @@ object DedicatedRemote {
     private var pendingTap: Runnable? = null
     @Volatile var teachListener: ((KeyEvent) -> Unit)? = null
 
-    /** From [RemoteKeyService]: true = the key was ours and is swallowed. */
+    /** From the key source: true = the key was ours and is swallowed. */
     fun onKey(ctx: Context, e: KeyEvent): Boolean {
         val dev = e.device ?: return false
         val mine = chosen(ctx) ?: return false
@@ -123,18 +115,4 @@ object DedicatedRemote {
     }
 
     private fun cancelTap() { pendingTap?.let { main.removeCallbacks(it) }; pendingTap = null }
-}
-
-/** The accessibility service that lets [DedicatedRemote] see — and keep — the remote's keys. */
-class RemoteKeyService : AccessibilityService() {
-    override fun onKeyEvent(event: KeyEvent): Boolean =
-        try { DedicatedRemote.onKey(this, event) } catch (_: Exception) { false }
-
-    override fun onAccessibilityEvent(event: AccessibilityEvent?) {}
-    override fun onInterrupt() {}
-
-    override fun onServiceConnected() {
-        super.onServiceConnected()
-        LogBus.log("[REMOTE] key service on${DedicatedRemote.chosen(this)?.let { " — remote '${it.name}'" } ?: " (no remote chosen yet)"}")
-    }
 }
