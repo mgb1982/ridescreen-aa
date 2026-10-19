@@ -102,4 +102,17 @@
     <string name="yir_zone_sub">rojo = donde más ruedas</string>
     <string name="yir_tap_share">Toca Compartir para publicarlo 📸</string>
     <string name="widget_tap_directions">Toca para ir andando</string>
+    <string name="maint_first_km">Primera vez a los … km (opcional)</string>
+    <string name="maint_first_at">primera a los %1$s</string>
+    <string name="maint_then_every_km">después cada %1$s del cuentakilómetros</string>
+    <string name="maint_plan_125">📖 Plan del manual de la Zontes 125X</string>
+    <string name="maint_plan_125_msg">Sustituye las tareas por las de la tabla del manual de la Zontes 125X: primera revisión a los 1.000 km, la segunda a los 6.000 y después cada 6.000 (o 15 meses), más filtro de aceite, aceite de transmisión, válvulas, correa, bujía, líquido de frenos y refrigerante con sus propios ciclos.\n\nSe conserva lo que ya hayas apuntado y tus tareas propias.</string>
+    <string name="maint_plan_apply">Aplicar</string>
+    <string name="maint_oil_engine">Aceite de motor</string>
+    <string name="maint_oil_filter">Filtro de aceite</string>
+    <string name="maint_gear_oil">Aceite de transmisión</string>
+    <string name="maint_valves">Holgura de válvulas (revisar)</string>
+    <string name="maint_spark">Bujía</string>
+    <string name="maint_brake_fluid">Líquido de frenos</string>
+    <string name="maint_coolant">Refrigerante</string>
 </resources>

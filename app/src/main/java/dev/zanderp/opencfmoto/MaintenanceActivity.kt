@@ -104,6 +104,7 @@ class MaintenanceActivity : AppCompatActivity() {
             }
         }
         body.addView(button(getString(R.string.maint_add_task)) { editTask(null, book) })
+        body.addView(button(getString(R.string.maint_plan_125)) { askPlan125() })
 
         // Fuel.
         body.addView(section(getString(R.string.maint_fuel)))
@@ -138,7 +139,11 @@ class MaintenanceActivity : AppCompatActivity() {
 
     private fun intervalText(t: Maintenance.Task): String {
         val parts = ArrayList<String>()
-        t.everyKm?.let { parts += getString(R.string.maint_every_km, Maintenance.fmtKm(it.toDouble())) }
+        t.firstKm?.let { parts += getString(R.string.maint_first_at, Maintenance.fmtKm(it.toDouble())) }
+        t.everyKm?.let {
+            parts += getString(if (t.firstKm != null) R.string.maint_then_every_km else R.string.maint_every_km,
+                Maintenance.fmtKm(it.toDouble()))
+        }
         t.everyMonths?.let { parts += getString(R.string.maint_every_months, it) }
         val last = ArrayList<String>()
         t.lastKm?.let { last += Maintenance.fmtKm(it) }
@@ -175,6 +180,18 @@ class MaintenanceActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun askPlan125() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.maint_plan_125)
+            .setMessage(R.string.maint_plan_125_msg)
+            .setPositiveButton(R.string.maint_plan_apply) { _, _ ->
+                Maintenance.applyPlan(this, Maintenance.zontes125Plan(this))
+                render()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
     private fun askRefuel() {
         val liters = number(null, getString(R.string.maint_liters), decimal = true)
         val euros = number(null, getString(R.string.maint_euros), decimal = true)
@@ -199,6 +216,7 @@ class MaintenanceActivity : AppCompatActivity() {
     /** Edit (or, with [t] null, create) a task: name, intervals, and when it was last done. */
     private fun editTask(t: Maintenance.Task?, book: Maintenance.Book) {
         val name = EditText(this).apply { setText(t?.name.orEmpty()); hint = getString(R.string.maint_task_name) }
+        val first = number(t?.firstKm?.toString(), getString(R.string.maint_first_km))
         val km = number(t?.everyKm?.toString(), getString(R.string.maint_interval_km))
         val months = number(t?.everyMonths?.toString(), getString(R.string.maint_interval_months))
         val lastKm = number(t?.lastKm?.let { String.format(Locale.ROOT, "%.0f", it) }, getString(R.string.maint_last_km))
@@ -218,7 +236,7 @@ class MaintenanceActivity : AppCompatActivity() {
         }
         val box = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            listOf(name, km, months, lastKm, lastDate).forEach { addView(it) }
+            listOf(name, first, km, months, lastKm, lastDate).forEach { addView(it) }
         }
         val dlg = MaterialAlertDialogBuilder(this)
             .setTitle(if (t == null) R.string.maint_add_task else R.string.maint_edit)
@@ -229,12 +247,13 @@ class MaintenanceActivity : AppCompatActivity() {
                 val k = km.text.toString().toIntOrNull()?.takeIf { it > 0 }
                 val mo = months.text.toString().toIntOrNull()?.takeIf { it > 0 }
                 val lk = lastKm.text.toString().replace(',', '.').toDoubleOrNull()
-                if (n.isBlank() || (k == null && mo == null)) {
+                val fk = first.text.toString().toIntOrNull()?.takeIf { it > 0 }
+                if (n.isBlank() || (k == null && mo == null && fk == null)) {
                     Toast.makeText(this, R.string.maint_task_invalid, Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
-                if (t == null) Maintenance.addTask(this, n, k, mo)
-                else Maintenance.updateTask(this, t.copy(name = n, everyKm = k, everyMonths = mo, lastKm = lk, lastAt = lastAt))
+                if (t == null) Maintenance.addTask(this, n, k, mo, fk)
+                else Maintenance.updateTask(this, t.copy(name = n, everyKm = k, everyMonths = mo, lastKm = lk, lastAt = lastAt, firstKm = fk))
                 render()
             }
             .setNegativeButton(android.R.string.cancel, null)
