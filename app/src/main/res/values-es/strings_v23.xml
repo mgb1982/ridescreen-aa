@@ -183,4 +183,9 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="nearby_upfront_later">Más tarde</string>
     <string name="conn_detail_dash_no_media">El cuadro no pide la imagen: ponlo en la interfaz 3 y toca Conectar (si sigue igual, apaga y enciende el contacto)</string>
     <string name="conn_detail_dash_no_media_retry">Esperando al cuadro: ponlo en la interfaz 3</string>
+    <string name="ext_control_title">Mando con Key Mapper o Tasker</string>
+    <string name="ext_control_desc">Para un mando de manillar que solo maneje Android Auto (y el intercomunicador siga con la música): en Key Mapper (Play Store) activa el modo experto con Shizuku para que funcione con la pantalla apagada, y asigna a cada botón la acción Intent → Broadcast receiver con uno de estos nombres. RideScreen solo los obedece mientras Android Auto está en el cuadro. También sirven Tasker y MacroDroid.</string>
+    <string name="ext_control_switch">Aceptar acciones de otras apps</string>
+    <string name="ext_control_copy">Copiar nombres de acciones</string>
+    <string name="ext_control_copied">Copiado</string>
 </resources>

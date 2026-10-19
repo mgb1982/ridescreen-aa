@@ -217,6 +217,7 @@ class AndroidAutoService : Service() {
         try { BikeLink.prober?.stop() } catch (_: Exception) {}
         try { mediaButtons?.stop() } catch (_: Exception) {}
         mediaButtons = null
+        try { ExternalControl.stop(applicationContext) } catch (_: Exception) {}
         try { receiver?.stop() } catch (_: Exception) {}
         receiver = null
         AaVideoBridge.pipeline = null
@@ -553,6 +554,7 @@ class AndroidAutoService : Service() {
             return
         }
         mediaButtons = MediaButtonBridge(applicationContext, LogBus::log).also { it.start() }
+        try { ExternalControl.start(applicationContext) } catch (e: Exception) { LogBus.log("[EXT] start failed: $e") }
     }
 
     /** Handlebar bridge needs BT on + CONNECT (API 31+); otherwise it fights phone media for nothing. */

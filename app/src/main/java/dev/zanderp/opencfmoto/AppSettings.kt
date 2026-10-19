@@ -28,6 +28,7 @@ object AppSettings {
     private const val KEY_INCLUDE_SECRETS = "include_secrets_in_logs"
     private const val KEY_TRANSPORT = "wifi_transport"
     private const val KEY_ANON_TELEMETRY = "anonymous_telemetry"
+    private const val KEY_EXTERNAL_CONTROL = "external_control"
     private const val KEY_BT_CLOCK = "bluetooth_clock_sync"
     private const val KEY_CLOCK_LAB_QUERY = "clock_lab_query"
     private const val KEY_CLOCK_LAB_TIMESYNC = "clock_lab_timesync"
@@ -150,6 +151,11 @@ object AppSettings {
         prefs(ctx).edit().putString(KEY_CLOCK_RESYNC_MODE, mode.id).apply()
         ClockLab.resyncMode = mode
     }
+
+    /** v2.3 · Obey app.ridescreen.action.* broadcasts (Key Mapper / Tasker) while projecting. */
+    fun externalControl(ctx: Context): Boolean = prefs(ctx).getBoolean(KEY_EXTERNAL_CONTROL, false)
+    fun setExternalControl(ctx: Context, on: Boolean) =
+        prefs(ctx).edit().putBoolean(KEY_EXTERNAL_CONTROL, on).apply()
 
     fun anonymousTelemetry(ctx: Context): Boolean = prefs(ctx).getBoolean(KEY_ANON_TELEMETRY, true)
     fun setAnonymousTelemetry(ctx: Context, on: Boolean) {

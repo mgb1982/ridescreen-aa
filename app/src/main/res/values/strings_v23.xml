@@ -183,4 +183,9 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="nearby_upfront_later">Later</string>
     <string name="conn_detail_dash_no_media">The dash isn\'t asking for the picture: put it on screen 3 and tap Connect (if it still won\'t, switch the ignition off and on)</string>
     <string name="conn_detail_dash_no_media_retry">Waiting for the dash: put it on screen 3</string>
+    <string name="ext_control_title">Remote with Key Mapper or Tasker</string>
+    <string name="ext_control_desc">For a handlebar remote that only drives Android Auto (the intercom keeps the music): in Key Mapper (Play Store), turn on Expert mode with Shizuku so it works with the screen off, and map each button to the action Intent → Broadcast receiver with one of these names. RideScreen only obeys them while Android Auto is on the dash. Tasker and MacroDroid work too.</string>
+    <string name="ext_control_switch">Accept actions from other apps</string>
+    <string name="ext_control_copy">Copy action names</string>
+    <string name="ext_control_copied">Copied</string>
 </resources>

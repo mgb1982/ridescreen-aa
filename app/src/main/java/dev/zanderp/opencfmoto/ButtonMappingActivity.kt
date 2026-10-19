@@ -53,6 +53,7 @@ class ButtonMappingActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.remote_pad_off).setOnClickListener { setRemotePad(false) }
         findViewById<MaterialButton>(R.id.btn_teach_remote).setOnClickListener { teachRemote() }
         findViewById<MaterialButton>(R.id.btn_dedicated_pick).setOnClickListener { pickDedicatedRemote() }
+        setupExternalControl()
 
         findViewById<MaterialButton>(R.id.btn_overlay).setOnClickListener {
             try {
@@ -354,12 +355,30 @@ class ButtonMappingActivity : AppCompatActivity() {
     // ---- v2.3: dedicated remote (Android Auto only) ----
     private fun refreshDedicated() {
         val tv = findViewById<TextView?>(R.id.tv_dedicated_status) ?: return
-        if (!DedicatedRemote.available(this)) {
-            findViewById<View?>(R.id.card_dedicated_remote)?.visibility = View.GONE
-            return
-        }
+        // The card now hosts "remote with Key Mapper / Tasker"; the built-in picker returns when a
+        // key source that needs no accessibility exists (see DedicatedRemote.available).
+        val avail = DedicatedRemote.available(this)
+        tv.visibility = if (avail) View.VISIBLE else View.GONE
+        findViewById<View?>(R.id.btn_dedicated_pick)?.visibility = if (avail) View.VISIBLE else View.GONE
+        if (!avail) return
         val r = DedicatedRemote.chosen(this)
         tv.text = if (r == null) getString(R.string.remote_dedicated_none) else getString(R.string.remote_dedicated_ready, r.name)
+    }
+
+    private fun setupExternalControl() {
+        val sw = findViewById<com.google.android.material.materialswitch.MaterialSwitch?>(R.id.sw_external_control) ?: return
+        val list = ExternalControl.ACTIONS.keys.joinToString("\n") { ExternalControl.PREFIX + it }
+        findViewById<TextView?>(R.id.tv_external_actions)?.text = list
+        sw.isChecked = AppSettings.externalControl(this)
+        sw.setOnCheckedChangeListener { _, on ->
+            AppSettings.setExternalControl(this, on)
+            if (on) ExternalControl.start(this) else ExternalControl.stop(this)
+        }
+        findViewById<MaterialButton?>(R.id.btn_external_copy)?.setOnClickListener {
+            val cm = getSystemService(android.content.ClipboardManager::class.java)
+            cm?.setPrimaryClip(android.content.ClipData.newPlainText("RideScreen actions", list))
+            android.widget.Toast.makeText(this, R.string.ext_control_copied, android.widget.Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun pickDedicatedRemote() {
