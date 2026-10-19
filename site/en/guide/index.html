@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="How to install RideScreen AA on your phone, set up Android Auto and connect to your Zontes.">
+<title>RideScreen AA guide</title>
+<link rel="canonical" href="https://ridescreen.app/en/guide/">
+<link rel="alternate" hreflang="es" href="https://ridescreen.app/guia/">
+<link rel="alternate" hreflang="ca" href="https://ridescreen.app/ca/guia/">
+<link rel="alternate" hreflang="en" href="https://ridescreen.app/en/guide/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap">
+<style>
+/* Layout: one reading column; each step is text + phone screenshot side by side, stacked on phones.
+   Palette from the app itself: forest green surfaces, brass/gold accent. Dark-first. */
+:root {
+  --bg: #161D18;
+  --surface: #212B24;
+  --surface-2: #2A362E;
+  --fg: #EEF2EA;
+  --muted: #A9B5A6;
+  --accent: #D1A955;
+  --accent-ink: #18211A;
+  --line: #34423A;
+  --warn: #E9C46A;
+  --display: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --body: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+    --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; --warn: #8A5A00; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+  --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; --warn: #8A5A00; color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 880px; margin: 0 auto; padding-inline: 18px; padding-block: 28px 56px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 6vw, 46px); line-height: 1.05; }
+h1 span { color: var(--accent); }
+.lede { color: var(--muted); max-width: 62ch; margin: 12px 0 0; font-size: 17px; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+h2 { font-family: var(--display); font-weight: 400; font-size: 24px; margin-top: 44px; }
+section > .eyebrow { margin-top: 44px; display: block; }
+section > .eyebrow + h2 { margin-top: 4px; }
+
+.check { margin-top: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; }
+.check ul { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.check li { display: grid; grid-template-columns: 26px 1fr; gap: 6px; min-width: 0; }
+.check li::before { content: "✓"; color: var(--accent); font-weight: 700; }
+
+.steps { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 18px; counter-reset: s; }
+.step { counter-increment: s; display: grid; grid-template-columns: 1fr 230px; gap: 22px; align-items: start;
+        background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+.step .txt { min-width: 0; }
+.step h3 { font-size: 19px; font-weight: 700; display: flex; gap: 12px; align-items: baseline; }
+.step h3::before { content: counter(s); font-family: var(--display); font-weight: 400; color: var(--accent-ink); background: var(--accent);
+                   min-width: 30px; height: 30px; border-radius: 15px; display: inline-grid; place-items: center; font-size: 15px; flex: none; transform: translateY(4px); }
+.step p { margin: 10px 0 0; }
+.step img { width: 100%; max-width: 230px; border-radius: 22px; border: 1px solid var(--line); display: block; justify-self: center; }
+.note { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); font-size: 14.5px; }
+.note.warn { border-left: 3px solid var(--warn); }
+kbd { font-family: var(--body); font-weight: 700; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; }
+a { color: var(--accent); }
+.cta { display: inline-block; margin-top: 12px; background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 700;
+       padding: 10px 16px; border-radius: 22px; }
+.cta:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+.faq { margin-top: 16px; display: grid; gap: 10px; }
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 18px; }
+.faq summary { cursor: pointer; font-weight: 700; }
+.faq summary small { display: block; font-weight: 400; color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+.faq details p, .faq details ul { margin: 10px 0 0; }
+.faq ul { padding-left: 20px; }
+.foot { margin-top: 40px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+@media (max-width: 640px) {
+  .step { grid-template-columns: 1fr; }
+  .step img { max-width: 260px; }
+}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <div class="eyebrow">RideScreen AA · phone app · <a href="../../guia/" lang="es" data-lang="es">Español</a> · <a href="../../ca/guia/" lang="ca" data-lang="ca">Català</a></div>
+  <h1>Install and connect <span>in 10 minutes</span></h1>
+  <p class="lede">Android Auto on your Zontes dash, step by step. The first time takes a few minutes; after that it's one tap, or none.</p>
+  <p class="lede" style="font-size:15px;margin-top:6px">Got a Wear OS watch? Carry on with the <a href="../watch/">watch guide</a> afterwards.</p>
+  <p class="lede" style="font-size:15px;margin-top:6px">The screenshots below are from a phone in Spanish; on yours the buttons will be in your language.</p>
+
+  <div class="check">
+    <strong>Before you start</strong>
+    <ul>
+      <li>An Android 10 or newer, 64-bit phone (almost any from the last 5 years).</li>
+      <li>Android Auto installed and up to date from the Play Store. Open it once and accept its terms.</li>
+      <li>Phone Wi‑Fi switched on. You don't need to be connected to any network.</li>
+      <li><span>If you have the bike's official app (Zontes / EasyConnection / Carbit), close it: Settings → Apps → that app → <kbd>Force stop</kbd>.</span></li>
+      <li>The bike switched on and parked, for the first pairing.</li>
+    </ul>
+  </div>
+
+  <section>
+    <span class="eyebrow">Part 1</span>
+    <h2>Install the app</h2>
+    <ol class="steps">
+      <li class="step">
+        <div class="txt">
+          <h3>Download the phone APK</h3>
+          <p>Open the latest release page and, under <strong>Assets</strong>, tap the APK that starts with <strong>RideScreen-AA-v</strong> (for example <strong>RideScreen-AA-v2.2.apk</strong>).</p>
+          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/latest">Open the download</a>
+          <div class="note warn">Don't download the one marked <strong>WearOS-reloj</strong>: it's for the watch, and on a phone it says "package appears to be invalid".</div>
+        </div>
+        <img src="../../guia/g1_descarga.png" alt="GitHub download page with the phone APK highlighted" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Allow installs from your browser</h3>
+          <p>Open the downloaded file. If Android says it can't install apps from this source, tap <strong>Settings</strong>, turn on <strong>Allow from this source</strong> and go back.</p>
+          <p>Then tap <strong>Install</strong>.</p>
+        </div>
+        <img src="../../guia/g2_fuentes.png" alt="Android warning and the Allow from this source switch" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>If Play Protect pops up, install anyway</h3>
+          <p>It appears because the app isn't on the Play Store yet. Tap <strong>More details</strong> and then <strong>Install anyway</strong>.</p>
+          <div class="note">If you tap <em>OK</em> the install is cancelled. You can repeat it by opening the APK again.</div>
+        </div>
+        <img src="../../guia/g3_playprotect.png" alt="Play Protect warning with Install anyway highlighted" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Open RideScreen and accept the permissions</h3>
+          <p>The first time, Settings opens. Accept every permission it asks for, or tap <strong>All granted</strong> to check them all at once.</p>
+          <p>Android requires location to join the bike's Wi‑Fi and to save your rides. The app doesn't track you.</p>
+        </div>
+        <img src="../../guia/g4_permisos.png" alt="RideScreen permissions screen with the All granted button" loading="lazy">
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">Part 2</span>
+    <h2>Set up Android Auto</h2>
+    <ol class="steps" style="counter-reset: s 4">
+      <li class="step">
+        <div class="txt">
+          <h3>Turn on developer mode</h3>
+          <p>Open Android Auto settings (phone Settings → Android Auto, or from RideScreen). Scroll to the bottom and tap <strong>Version</strong> 10 times in a row. Accept the warning.</p>
+          <p>You only need to do this once.</p>
+        </div>
+        <img src="../../guia/g5_aa_version.png" alt="Android Auto settings with Version highlighted and a hint to tap 10 times" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Start the head unit server</h3>
+          <p>On the same screen, tap <strong>⋮</strong> (top right) → <strong>Start head unit server</strong>.</p>
+          <div class="note warn">This is the step people forget most. It turns off every time you restart the phone or Android Auto updates. If one day it won't connect, just repeat this step.</div>
+        </div>
+        <img src="../../guia/g6_aa_servidor.png" alt="Android Auto menu with Start head unit server highlighted" loading="lazy">
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">Part 3</span>
+    <h2>Pair with the bike</h2>
+    <ol class="steps" style="counter-reset: s 6">
+      <li class="step">
+        <div class="txt">
+          <h3>Scan the dash QR</h3>
+          <p>On the dash, switch to <strong>screen 3</strong>: the phone projection screen, which shows a QR code. In RideScreen tap <strong>Scan</strong> (at the bottom, under <strong>More</strong>) and point the camera at it.</p>
+          <div class="note warn">The QR under <strong>Information</strong> is not the right one: scan the one on screen 3. Leave the dash on that screen while it connects.</div>
+        </div>
+        <img src="../../guia/g7_qr.png" alt="Phone camera pointing at the dash QR code" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Accept the bike's Wi‑Fi</h3>
+          <p>Tap <strong>Connect</strong> in RideScreen. Android asks whether the app may connect to the bike's Wi‑Fi (it's named after your bike, e.g. ZT…). Tap <strong>Connect</strong>.</p>
+          <div class="note warn">Be quick: the prompt expires after a minute and a half. If you miss it, tap Connect in the app again.</div>
+        </div>
+        <img src="../../guia/g8_wifi.png" alt="Android prompt to connect to the bike's Wi‑Fi with Connect highlighted" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Done: Android Auto on the dash</h3>
+          <p>A few seconds later Android Auto appears on the bike's screen. You can put your phone in your pocket.</p>
+          <p>Next time, just tap <strong>Connect</strong>. To have it connect by itself when you start the bike: <strong>⚙️ Settings</strong> → <strong>Connect when a Bluetooth device joins</strong> → pick the dash's Bluetooth (it starts with "ZT") and allow <strong>Display over other apps</strong>.</p>
+          <p><strong>Tip:</strong> once connected, you can switch the dash to <strong>screen 1 or 2</strong> to see the original dash. The app stays connected and keeps logging the ride, and when you go back to screen 3 Android Auto is there straight away.</p>
+          <p>The first time you connect, the app asks for the <strong>microphone</strong>: choose <strong>While using the app</strong> so you can use "Ok Google" and your intercom's voice button.</p>
+        </div>
+        <img src="../../guia/g9_listo.png" alt="RideScreen connected, with Android Auto on the dash" loading="lazy">
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">If something goes wrong</span>
+    <h2>What the app says and what to do</h2>
+    <div class="faq">
+      <details>
+        <summary>"App not installed" / "package appears to be invalid"<small>When installing the APK</small></summary>
+        <ul>
+          <li>Check you downloaded <strong>RideScreen-AA-v….apk</strong> and not the watch one (WearOS-reloj).</li>
+          <li>If the download was cut off, the file is damaged: delete it and download it again on a good connection.</li>
+          <li>If it says "not compatible", your phone is 32-bit or runs Android 9 or older. Let us know your phone model.</li>
+          <li>If you had Alexandru's <em>official</em> OpenCfMoto, uninstall it first: they're signed with different keys.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>"Approve the phone's Wi‑Fi / device picker…"<small>When connecting</small></summary>
+        <ul>
+          <li>The bike's Wi‑Fi prompt appeared and wasn't accepted in time. Tap Connect again and accept straight away.</li>
+          <li>If the prompt never shows up: the bike must be on and nearby, with the dash on screen 3.</li>
+          <li>If it shows but never connects, check you scanned the screen 3 QR and not the Information one. If in doubt, scan it again.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>"Grant Nearby devices / Bluetooth, then tap Connect again"<small>When connecting</small></summary>
+        <ul>
+          <li>The <strong>Nearby devices</strong> permission is missing; Android requires it to connect to the bike's Wi‑Fi and Bluetooth.</li>
+          <li>Phone Settings → Apps → RideScreen AA → Permissions → <strong>Nearby devices</strong> → Allow. Then tap Connect.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>"Phone Wi‑Fi is off"<small>When connecting</small></summary>
+        <p>Turn on Wi‑Fi on your phone. You don't need to join any network: the app joins the bike's by itself.</p>
+      </details>
+      <details>
+        <summary>"Close the official app, then reconnect"<small>When connecting</small></summary>
+        <p>The bike's official app (Zontes / EasyConnection / Carbit) is holding the connection to the dash. Settings → Apps → that app → <kbd>Force stop</kbd>, then Connect again. If you don't use it, the easiest thing is to uninstall it.</p>
+      </details>
+      <details>
+        <summary>"Android Auto didn't attach" / connects and disconnects<small>Bike Wi‑Fi connected, but no Android Auto</small></summary>
+        <ul>
+          <li>It's almost always the head unit server (step 6): the app shows a notice with an <strong>Open Android Auto</strong> button. There, ⋮ → Stop head unit server, then Start it again (even if it looked started: sometimes it hangs).</li>
+          <li>After restarting the phone you always need to start it again.</li>
+          <li>Don't uninstall Android Auto updates: you don't need to, and it makes things worse.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Connects the first time, but not after restarting the bike<small>After switching off and on</small></summary>
+        <ul>
+          <li>When you switch on, put the dash on <strong>screen 3</strong> and wait about 20–30 seconds: the app finds the bike by itself.</li>
+          <li>If there's still no picture, tap <strong>Stop</strong> and then <strong>Connect</strong> in RideScreen.</li>
+          <li>If you've restarted your phone in the meantime, start the head unit server first (step 6).</li>
+        </ul>
+      </details>
+      <details>
+        <summary>I want to see the original dash without disconnecting<small>Screens 1 and 2</small></summary>
+        <ul>
+          <li>Always connect on <strong>screen 3</strong>: it's the only one where the dash turns on its Wi‑Fi. If you try from 1 or 2, the app will say it can't find the bike's Wi‑Fi.</li>
+          <li>Once Android Auto is showing, switch to <strong>1 or 2</strong> whenever you like: the app stays connected, logs the ride and Android Auto keeps running in the background.</li>
+          <li>Go back to 3 and Android Auto is there straight away, no reconnecting.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>None of the above<small>How to get help</small></summary>
+        <p>In RideScreen tap <strong>❓ Help → Share logs</strong> right after the failure, and send it to the group saying which bike and phone you have. Logs don't include passwords or serial numbers.</p>
+      </details>
+    </div>
+  </section>
+
+  <p class="foot">RideScreen AA is free and open source, based on OpenCfMoto by Alexandru (zanderp). It is not an official Zontes app. Screenshots are illustrative: exact wording may vary on your phone.</p>
+</div>
+
+</body>
+</html>

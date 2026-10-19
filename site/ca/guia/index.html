@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Com instal·lar RideScreen AA al mòbil, preparar Android Auto i connectar amb la Zontes.">
+<title>Guia RideScreen AA</title>
+<link rel="canonical" href="https://ridescreen.app/ca/guia/">
+<link rel="alternate" hreflang="es" href="https://ridescreen.app/guia/">
+<link rel="alternate" hreflang="ca" href="https://ridescreen.app/ca/guia/">
+<link rel="alternate" hreflang="en" href="https://ridescreen.app/en/guide/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap">
+<style>
+/* Layout: one reading column; each step is text + phone screenshot side by side, stacked on phones.
+   Palette from the app itself: forest green surfaces, brass/gold accent. Dark-first. */
+:root {
+  --bg: #161D18;
+  --surface: #212B24;
+  --surface-2: #2A362E;
+  --fg: #EEF2EA;
+  --muted: #A9B5A6;
+  --accent: #D1A955;
+  --accent-ink: #18211A;
+  --line: #34423A;
+  --warn: #E9C46A;
+  --display: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --body: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+    --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; --warn: #8A5A00; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+  --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; --warn: #8A5A00; color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 880px; margin: 0 auto; padding-inline: 18px; padding-block: 28px 56px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 6vw, 46px); line-height: 1.05; }
+h1 span { color: var(--accent); }
+.lede { color: var(--muted); max-width: 62ch; margin: 12px 0 0; font-size: 17px; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+h2 { font-family: var(--display); font-weight: 400; font-size: 24px; margin-top: 44px; }
+section > .eyebrow { margin-top: 44px; display: block; }
+section > .eyebrow + h2 { margin-top: 4px; }
+
+.check { margin-top: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; }
+.check ul { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.check li { display: grid; grid-template-columns: 26px 1fr; gap: 6px; min-width: 0; }
+.check li::before { content: "✓"; color: var(--accent); font-weight: 700; }
+
+.steps { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 18px; counter-reset: s; }
+.step { counter-increment: s; display: grid; grid-template-columns: 1fr 230px; gap: 22px; align-items: start;
+        background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+.step .txt { min-width: 0; }
+.step h3 { font-size: 19px; font-weight: 700; display: flex; gap: 12px; align-items: baseline; }
+.step h3::before { content: counter(s); font-family: var(--display); font-weight: 400; color: var(--accent-ink); background: var(--accent);
+                   min-width: 30px; height: 30px; border-radius: 15px; display: inline-grid; place-items: center; font-size: 15px; flex: none; transform: translateY(4px); }
+.step p { margin: 10px 0 0; }
+.step img { width: 100%; max-width: 230px; border-radius: 22px; border: 1px solid var(--line); display: block; justify-self: center; }
+.note { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); font-size: 14.5px; }
+.note.warn { border-left: 3px solid var(--warn); }
+kbd { font-family: var(--body); font-weight: 700; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; }
+a { color: var(--accent); }
+.cta { display: inline-block; margin-top: 12px; background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 700;
+       padding: 10px 16px; border-radius: 22px; }
+.cta:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+.faq { margin-top: 16px; display: grid; gap: 10px; }
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 18px; }
+.faq summary { cursor: pointer; font-weight: 700; }
+.faq summary small { display: block; font-weight: 400; color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+.faq details p, .faq details ul { margin: 10px 0 0; }
+.faq ul { padding-left: 20px; }
+.foot { margin-top: 40px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+@media (max-width: 640px) {
+  .step { grid-template-columns: 1fr; }
+  .step img { max-width: 260px; }
+}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <div class="eyebrow">RideScreen AA · app del mòbil · <a href="../../guia/" lang="es" data-lang="es">Español</a> · <a href="../../en/guide/" lang="en" data-lang="en">English</a></div>
+  <h1>Instal·lar i connectar <span>en 10 minuts</span></h1>
+  <p class="lede">Android Auto al quadre de la teva Zontes, pas a pas. El primer cop triga uns minuts; després n'hi ha prou amb un toc, o cap.</p>
+  <p class="lede" style="font-size:15px;margin-top:6px">Tens un rellotge Wear OS? Després continua amb la <a href="../rellotge/">guia del rellotge</a>.</p>
+
+  <div class="check">
+    <strong>Abans de començar</strong>
+    <ul>
+      <li>Mòbil Android 10 o més recent, de 64 bits (gairebé tots els dels últims 5 anys).</li>
+      <li>Android Auto instal·lat i actualitzat des de Play Store. Obre'l un cop i accepta'n les condicions.</li>
+      <li>El Wi‑Fi del mòbil activat. No cal estar connectat a cap xarxa.</li>
+      <li><span>Si tens l'app oficial de la moto (Zontes / EasyConnection / Carbit), tanca-la: a Configuració → Aplicacions → aquella app → <kbd>Força l'aturada</kbd>.</span></li>
+      <li>La moto engegada i parada, per al primer emparellament.</li>
+    </ul>
+  </div>
+
+  <section>
+    <span class="eyebrow">Part 1</span>
+    <h2>Instal·lar l'app</h2>
+    <ol class="steps">
+      <li class="step">
+        <div class="txt">
+          <h3>Descarrega l'APK del mòbil</h3>
+          <p>Obre la pàgina de l'última versió i, a <strong>Assets</strong>, toca l'APK que comença per <strong>RideScreen-AA-v</strong> (per exemple <strong>RideScreen-AA-v2.2.apk</strong>).</p>
+          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/latest">Obrir la descàrrega</a>
+          <div class="note warn">No descarreguis el que diu <strong>WearOS-reloj</strong>: és per al rellotge i al mòbil dona "el paquet no és vàlid".</div>
+        </div>
+        <img src="../../guia/g1_descarga.png" alt="Pàgina de descàrrega a GitHub amb l'APK del mòbil ressaltat" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Permet instal·lar des del navegador</h3>
+          <p>Obre el fitxer descarregat. Si Android avisa que no pot instal·lar apps d'aquesta font, toca <strong>Configuració</strong>, activa <strong>Permet d'aquesta font</strong> i torna enrere.</p>
+          <p>Després toca <strong>Instal·la</strong>.</p>
+        </div>
+        <img src="../../guia/g2_fuentes.png" alt="Avís d'Android i l'interruptor Permet d'aquesta font" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Si salta Play Protect, instal·la igualment</h3>
+          <p>Apareix perquè l'app encara no és a Play Store. Toca <strong>Més detalls</strong> i després <strong>Instal·la igualment</strong>.</p>
+          <div class="note">Si prems <em>D'acord</em> es cancel·la la instal·lació. Pots repetir-la obrint un altre cop l'APK.</div>
+        </div>
+        <img src="../../guia/g3_playprotect.png" alt="Avís de Play Protect amb Instal·la igualment ressaltat" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Obre RideScreen i accepta els permisos</h3>
+          <p>El primer cop s'obre la Configuració. Accepta tots els permisos que demani, o toca <strong>Tot concedit</strong> per revisar-los d'un cop.</p>
+          <p>Android exigeix la ubicació per unir-se al Wi‑Fi de la moto i per desar els teus viatges. L'app no et rastreja.</p>
+        </div>
+        <img src="../../guia/g4_permisos.png" alt="Pantalla de permisos de RideScreen amb el botó Tot concedit" loading="lazy">
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">Part 2</span>
+    <h2>Preparar Android Auto</h2>
+    <ol class="steps" style="counter-reset: s 4">
+      <li class="step">
+        <div class="txt">
+          <h3>Activa el mode de desenvolupador</h3>
+          <p>Obre els ajustos d'Android Auto (Configuració del mòbil → Android Auto, o des de RideScreen). Baixa del tot i toca <strong>Versió</strong> 10 vegades seguides. Accepta l'avís.</p>
+          <p>Només cal fer-ho un cop.</p>
+        </div>
+        <img src="../../guia/g5_aa_version.png" alt="Ajustos d'Android Auto amb Versió ressaltat i la indicació de tocar 10 vegades" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Inicia el servidor d'unitat principal</h3>
+          <p>A la mateixa pantalla, toca <strong>⋮</strong> (a dalt a la dreta) → <strong>Inicia el servidor d'unitat principal</strong>.</p>
+          <div class="note warn">Aquest és el pas que més s'oblida. S'apaga cada cop que reinicies el mòbil o s'actualitza Android Auto. Si un dia no connecta, repeteix només aquest pas.</div>
+        </div>
+        <img src="../../guia/g6_aa_servidor.png" alt="Menú d'Android Auto amb Inicia el servidor d'unitat principal ressaltat" loading="lazy">
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">Part 3</span>
+    <h2>Emparellar amb la moto</h2>
+    <ol class="steps" style="counter-reset: s 6">
+      <li class="step">
+        <div class="txt">
+          <h3>Escaneja el QR del quadre</h3>
+          <p>Al quadre, canvia a la <strong>interfície 3</strong>: la pantalla de projecció del mòbil, que mostra un codi QR. A RideScreen toca <strong>Escaneja</strong> (a baix, a <strong>Més</strong>) i apunta-hi la càmera.</p>
+          <div class="note warn">El QR que apareix a <strong>Informació</strong> no és el bo: escaneja el de la interfície 3. Deixa el quadre en aquesta pantalla mentre connecta.</div>
+        </div>
+        <img src="../../guia/g7_qr.png" alt="Càmera del mòbil apuntant al codi QR del quadre" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Accepta el Wi‑Fi de la moto</h3>
+          <p>Toca <strong>Connecta</strong> a RideScreen. Android pregunta si l'app es pot connectar al Wi‑Fi de la moto (es diu com la teva moto, per exemple ZT…). Toca <strong>Connecta</strong>.</p>
+          <div class="note warn">Fes-ho de seguida: la finestra caduca al minut i mig. Si se't passa, torna a tocar Connecta a l'app.</div>
+        </div>
+        <img src="../../guia/g8_wifi.png" alt="Finestra d'Android per connectar al Wi‑Fi de la moto amb Connecta ressaltat" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>A punt: Android Auto al quadre</h3>
+          <p>En pocs segons apareix Android Auto a la pantalla de la moto. Pots desar el mòbil a la butxaca.</p>
+          <p>El cop següent n'hi ha prou de tocar <strong>Connecta</strong>. Perquè es connecti sola en engegar la moto: <strong>⚙️ Ajustos</strong> → <strong>Connecta quan es connecti un dispositiu Bluetooth</strong> → tria el Bluetooth del quadre (comença per "ZT") i permet <strong>Mostra sobre altres apps</strong>.</p>
+          <p><strong>Truc:</strong> un cop connectada, pots passar el quadre a la <strong>interfície 1 o 2</strong> per veure el quadre original. L'app continua connectada i registrant el viatge, i en tornar a la 3 Android Auto apareix a l'instant.</p>
+          <p>El primer cop que connectis, l'app et demanarà el <strong>micròfon</strong>: tria <strong>Mentre s'utilitza l'app</strong> per poder fer servir «Ok Google» i el botó de veu de l'intercomunicador.</p>
+        </div>
+        <img src="../../guia/g9_listo.png" alt="RideScreen connectat, amb Android Auto al quadre" loading="lazy">
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">Si alguna cosa falla</span>
+    <h2>El que diu l'app i què fer</h2>
+    <div class="faq">
+      <details>
+        <summary>"No s'ha instal·lat l'aplicació" / "el paquet no és vàlid"<small>En instal·lar l'APK</small></summary>
+        <ul>
+          <li>Comprova que vas baixar l'APK <strong>RideScreen-AA-v….apk</strong> i no el del rellotge (WearOS-reloj).</li>
+          <li>Si la descàrrega es va tallar, el fitxer queda malmès: esborra'l i torna'l a descarregar amb bona connexió.</li>
+          <li>Si posa "no compatible", el teu mòbil és de 32 bits o té Android 9 o anterior. Avisa'ns amb el model de mòbil.</li>
+          <li>Si tenies l'OpenCfMoto <em>oficial</em> d'Alexandru, desinstal·la-la abans: estan signades amb claus diferents.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>"Accepta el selector de Wi‑Fi o de dispositius del telèfon…"<small>En connectar</small></summary>
+        <ul>
+          <li>Va sortir la finestra del Wi‑Fi de la moto i no es va acceptar a temps. Toca Connecta un altre cop i accepta de seguida.</li>
+          <li>Si la finestra no arriba a sortir: la moto ha d'estar engegada i a prop, i el quadre a la interfície 3.</li>
+          <li>Si surt però no connecta mai, comprova que vas escanejar el QR de la interfície 3 i no el d'Informació. Si en dubtes, torna'l a escanejar.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>"Concedeix Dispositius propers / Bluetooth i torna a tocar Connecta"<small>En connectar</small></summary>
+        <ul>
+          <li>Falta el permís <strong>Dispositius propers</strong>, que Android exigeix per connectar amb el Wi‑Fi i el Bluetooth de la moto.</li>
+          <li>Configuració del mòbil → Aplicacions → RideScreen AA → Permisos → <strong>Dispositius propers</strong> → Permet. Després toca Connecta.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>"La Wi‑Fi del mòbil està apagada" (phone Wi‑Fi is off)<small>En connectar</small></summary>
+        <p>Activa el Wi‑Fi al mòbil. No cal connectar-se a cap xarxa: l'app s'uneix sola a la de la moto.</p>
+      </details>
+      <details>
+        <summary>"Tanca l'app oficial i torna a connectar"<small>En connectar</small></summary>
+        <p>L'app oficial de la moto (Zontes / EasyConnection / Carbit) està ocupant la connexió amb el quadre. Configuració → Aplicacions → aquella app → <kbd>Força l'aturada</kbd>, i torna a Connecta. Si no la fas servir, el més senzill és desinstal·lar-la.</p>
+      </details>
+      <details>
+        <summary>"Android Auto no s'ha enganxat" / es connecta i es desconnecta<small>Wi‑Fi de la moto connectada, però no surt Android Auto</small></summary>
+        <ul>
+          <li>Gairebé sempre és el servidor d'unitat principal (pas 6): l'app mostra un avís amb el botó <strong>Obre Android Auto</strong>. Allà, ⋮ → Atura el servidor d'unitat principal, i després Inicia'l un altre cop (encara que semblés iniciat: de vegades es queda penjat).</li>
+          <li>Després de reiniciar el mòbil sempre cal tornar-lo a iniciar.</li>
+          <li>No desinstal·lis les actualitzacions d'Android Auto: no cal i ho empitjora.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Connecta el primer cop, però no en tornar a engegar la moto<small>Després d'apagar i engegar</small></summary>
+        <ul>
+          <li>En engegar, posa el quadre a la <strong>interfície 3</strong> i espera uns 20–30 segons: l'app troba la moto sola.</li>
+          <li>Si continua sense imatge, toca <strong>Atura</strong> i després <strong>Connecta</strong> a RideScreen.</li>
+          <li>Si mentrestant has reiniciat el mòbil, inicia abans el servidor d'unitat principal (pas 6).</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Vull veure el quadre original sense desconnectar<small>Interfícies 1 i 2</small></summary>
+        <ul>
+          <li>Connecta sempre a la <strong>interfície 3</strong>: és l'única en què el quadre encén el seu Wi‑Fi. Si ho intentes des de la 1 o la 2, l'app dirà que no troba el Wi‑Fi de la moto.</li>
+          <li>Quan ja surti Android Auto, canvia a la <strong>1 o la 2</strong> quan vulguis: l'app continua connectada, registra el viatge i Android Auto continua funcionant per darrere.</li>
+          <li>Torna a la 3 i Android Auto apareix a l'instant, sense reconnectar.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Res del que hi ha a dalt<small>Com demanar ajuda</small></summary>
+        <p>A RideScreen toca <strong>❓ Ajuda → Compartir registres</strong> just després de la fallada, i envia-ho al grup dient la teva moto i el teu mòbil. Els registres no inclouen contrasenyes ni números de sèrie.</p>
+      </details>
+    </div>
+  </section>
+
+  <p class="foot">RideScreen AA és gratuïta i de codi obert, basada en OpenCfMoto d'Alexandru (zanderp). No és una app oficial de Zontes. Les captures són il·lustratives: els textos exactes poden variar segons el teu mòbil.</p>
+</div>
+
+</body>
+</html>

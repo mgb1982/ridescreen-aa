@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RideScreen AA · Android Auto sense cables al quadre de la teva Zontes</title>
+<meta name="description" content="App gratuïta i sense anuncis que posa Android Auto sense fils al quadre de la teva Zontes (125X, 125V, 368G, 368K, 368E…) i altres motos amb quadre EasyConn/Carbit. Navegació, música, benzineres, viatges, vídeos i app per al rellotge.">
+<link rel="canonical" href="https://ridescreen.app/ca/">
+<link rel="alternate" hreflang="es" href="https://ridescreen.app/">
+<link rel="alternate" hreflang="ca" href="https://ridescreen.app/ca/">
+<link rel="alternate" hreflang="en" href="https://ridescreen.app/en/">
+<link rel="alternate" hreflang="x-default" href="https://ridescreen.app/">
+<link rel="icon" href="../img/icon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../img/icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ridescreen.app/ca/">
+<meta property="og:title" content="RideScreen AA · Android Auto sense cables a la teva Zontes">
+<meta property="og:description" content="Gratuïta, sense anuncis i de codi obert. Google Maps, Waze, Spotify i l'Assistent al quadre de la teva moto.">
+<meta property="og:image" content="https://ridescreen.app/img/og.jpg">
+<meta property="og:locale" content="ca_ES">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#161D18">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"RideScreen AA",
+ "operatingSystem":"Android 10+","applicationCategory":"TravelApplication",
+ "description":"Android Auto inalámbrico en el cuadro de motos Zontes y otras con cuadro EasyConn/Carbit.",
+ "url":"https://ridescreen.app/ca/","downloadUrl":"https://github.com/mgb1982/ridescreen-aa/releases/latest",
+ "offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"inLanguage":["ca","es","en"],
+ "license":"https://www.gnu.org/licenses/agpl-3.0.html"}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap">
+<style>
+/* Same palette and type as the guides (the app's own): forest green surfaces, brass accent. */
+:root {
+  --bg: #161D18; --surface: #212B24; --surface-2: #2A362E; --fg: #EEF2EA; --muted: #A9B5A6;
+  --accent: #D1A955; --accent-ink: #18211A; --line: #34423A;
+  --display: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --body: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+    --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+  --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 17px; line-height: 1.55; }
+a { color: var(--accent); }
+img { max-width: 100%; height: auto; display: block; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 18px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(34px, 6.4vw, 62px); line-height: 1.02; letter-spacing: -.01em; }
+h1 span, h2 span { color: var(--accent); }
+h2 { font-family: var(--display); font-weight: 400; font-size: clamp(26px, 4vw, 36px); line-height: 1.08; }
+h3 { font-size: 19px; font-weight: 700; }
+.eyebrow { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.muted { color: var(--muted); }
+
+/* top bar */
+.top { display: flex; align-items: center; gap: 14px; padding-block: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg); font-weight: 700; font-size: 18px; }
+.brand img { width: 34px; height: 34px; border-radius: 50%; }
+.top nav { margin-left: auto; display: flex; gap: 18px; flex-wrap: wrap; }
+.top nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 15px; }
+.top nav a:hover { color: var(--fg); }
+
+/* hero */
+.hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items: center; padding-block: 28px 56px; }
+.hero .lede { color: var(--muted); font-size: 19px; margin: 18px 0 26px; max-width: 54ch; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 22px; border-radius: 999px; font-weight: 700; text-decoration: none; font-size: 17px; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); }
+.btn.ghost { border: 2px solid var(--line); color: var(--fg); }
+.btn:hover { filter: brightness(1.06); }
+.facts { margin-top: 18px; font-size: 14px; color: var(--muted); }
+.hero-media { position: relative; justify-self: center; width: min(360px, 100%); }
+.hero-media .video { border-radius: 26px; border: 3px solid var(--line); aspect-ratio: 9 / 16; object-fit: cover; width: 100%; }
+.hero-media .phone { position: absolute; width: 46%; left: -18%; bottom: -6%; border-radius: 20px; border: 3px solid var(--line); box-shadow: 0 18px 50px rgba(0,0,0,.45); }
+.badge { position: absolute; right: -10px; top: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 8px 12px; font-size: 13px; font-weight: 700; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+
+/* sections */
+section { padding-block: 56px; border-top: 1px solid var(--line); }
+section > .eyebrow { display: block; margin-bottom: 6px; }
+.sub { color: var(--muted); max-width: 62ch; margin: 12px 0 0; }
+
+.bikes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.chip { background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; font-weight: 600; }
+.chip.main { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-top: 26px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px; }
+.card .ic { font-size: 28px; line-height: 1; }
+.card h3 { margin-top: 12px; }
+.card p { margin: 6px 0 0; color: var(--muted); font-size: 15.5px; }
+.card .tag { display: inline-block; margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .08em; }
+
+.shots { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; margin-top: 26px; }
+.shots figure { margin: 0; flex: 0 0 200px; scroll-snap-align: start; }
+.shots img { border-radius: 18px; border: 2px solid var(--line); }
+.shots figcaption { margin-top: 8px; font-size: 14px; color: var(--muted); text-align: center; }
+
+.duo { display: grid; grid-template-columns: 1.3fr 1fr; gap: 22px; margin-top: 26px; align-items: center; }
+.duo .dash img { border-radius: 18px; border: 2px solid var(--line); }
+.duo .watch { display: flex; gap: 16px; justify-content: center; }
+.duo .watch img { width: 140px; height: 140px; border-radius: 50%; box-shadow: 0 0 0 6px #2b2b2b, 0 0 0 8px #555; }
+.caption { margin-top: 10px; color: var(--muted); font-size: 15px; text-align: center; }
+
+.steps { counter-reset: s; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 26px; padding: 0; list-style: none; }
+.steps li { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px 20px 20px 70px; position: relative; }
+.steps li::before { counter-increment: s; content: counter(s); position: absolute; left: 18px; top: 18px; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-family: var(--display); display: grid; place-items: center; }
+
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; margin-top: 10px; }
+summary { cursor: pointer; font-weight: 700; }
+details p { margin: 10px 0 2px; color: var(--muted); }
+
+footer { border-top: 1px solid var(--line); padding-block: 34px 48px; color: var(--muted); font-size: 14px; }
+footer .links { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
+footer a { color: var(--fg); }
+
+@media (max-width: 820px) {
+  .hero { grid-template-columns: 1fr; gap: 34px; }
+  .hero-media { width: min(300px, 78%); margin-left: 14%; }
+  .duo { grid-template-columns: 1fr; }
+  .top nav { gap: 12px; }
+  .top nav .opt { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./"><img src="../img/icon.svg" alt="" width="34" height="34">RideScreen AA</a>
+    <nav>
+      <a href="#funciones" class="opt">Funcions</a>
+      <a href="guia/">Guia</a>
+      <a href="rellotge/" class="opt">Rellotge</a>
+      <a href="https://github.com/mgb1982/ridescreen-aa" class="opt">GitHub</a>
+      <a href="../" lang="es" hreflang="es" title="Español" data-lang="es">ES</a>
+      <a href="../en/" lang="en" hreflang="en" title="English" data-lang="en">EN</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Per a Zontes i motos amb quadre EasyConn / Carbit</div>
+      <h1>Android Auto al quadre de la teva moto, <span>sense cables</span></h1>
+      <p class="lede">Google Maps, Waze, Spotify i l'Assistent a la pantalla de la moto, connectant-se sol en engegar. I a més: les benzineres més barates, els teus viatges amb rècords, vídeos amb la velocitat a sobre i app per al rellotge.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/mgb1982/ridescreen-aa/releases/latest">⬇️ Descarregar per a Android</a>
+        <a class="btn ghost" href="guia/">Guia d'instal·lació</a>
+      </div>
+      <p class="facts">Gratuïta · sense anuncis · de codi obert · Android 10 o superior</p>
+    </div>
+    <div class="hero-media">
+      <img class="video" src="../img/hero-video.webp" alt="Vista des de la moto amb Android Auto al quadre i la velocitat del viatge sobreimpresa" width="720" height="1280">
+      <img class="phone" src="../img/inicio.webp" alt="Pantalla principal de RideScreen AA connectada a la moto" width="540" height="1198" loading="lazy">
+    </div>
+  </div>
+
+  <section id="motos">
+    <span class="eyebrow">Compatibilitat</span>
+    <h2>Funciona amb <span>la meva moto</span>?</h2>
+    <p class="sub">Si el teu quadre mostra un <b>codi QR</b> per connectar el mòbil (MotoPlay / EasyConnect), gairebé segur que sí. L'app es prova cada dia en una Zontes 125X; parteix d'OpenCfMoto, que funciona amb moltes marques que fan servir el mateix quadre.</p>
+    <div class="bikes">
+      <span class="chip main">Zontes 125X</span><span class="chip main">Zontes 125V</span><span class="chip main">Zontes 368 (G / K / E)</span>
+      <span class="chip">CFMoto</span><span class="chip">Voge</span><span class="chip">Moto Morini</span><span class="chip">QJ Motor</span><span class="chip">Benelli</span><span class="chip">Morbidelli</span><span class="chip">Rieju</span>
+      <span class="chip">Zontes 125M (en proves)</span>
+    </div>
+  </section>
+
+  <section id="funciones">
+    <span class="eyebrow">Què fa</span>
+    <h2>Molt més que <span>Android Auto</span></h2>
+    <div class="grid">
+      <div class="card"><div class="ic">🔌</div><h3>Es connecta sola</h3><p>Engegues la moto i Android Auto apareix al quadre, amb el mòbil a la butxaca.</p></div>
+      <div class="card"><div class="ic">🎯</div><h3>Imatge a mida</h3><p>Ajusta la imatge al quadre amb fletxes, veient el resultat en directe a la moto.</p></div>
+      <div class="card"><div class="ic">🎙️</div><h3>«Ok Google»</h3><p>Parla amb l'Assistent des de l'intercomunicador, el rellotge o les ulleres.</p></div>
+      <div class="card"><div class="ic">⛽</div><h3>Les benzineres més barates</h3><p>Preu oficial de la gasolina 95 a prop teu, i Maps t'hi porta. Només a Espanya.</p></div>
+      <div class="card"><div class="ic">🏍️</div><h3>Els teus viatges</h3><p>Cada sortida es desa sola: ruta per velocitat, mapa de calor, rècords i trofeus.</p></div>
+      <div class="card"><div class="ic">🎬</div><h3>Vídeo del viatge</h3><p>Ajunta els teus clips (Ray-Ban Meta, càmera, mòbil) amb mapa, velocitat i hora a sobre.</p></div>
+      <div class="card"><div class="ic">🚦</div><h3>Els teus semàfors</h3><p>On t'atures més, quant esperes i quin camí és de debò més ràpid.</p></div>
+      <div class="card"><div class="ic">📸</div><h3>On he aparcat</h3><p>Desa el lloc i una foto; la brúixola del rellotge et porta fins a la moto.</p></div>
+      <div class="card"><div class="ic">🔧</div><h3>Manteniment</h3><p>Oli, corretja, ITV… amb avís quan toca, i el teu consum real.</p></div>
+      <div class="card"><div class="ic">🆘</div><h3>Detector de caigudes</h3><p>Alarma al mòbil i al rellotge i, si no respons, SMS amb la teva ubicació.</p><span class="tag">Experimental</span></div>
+    </div>
+  </section>
+
+  <section id="capturas">
+    <span class="eyebrow">Captures</span>
+    <h2>Així es <span>veu</span></h2>
+    <div class="shots">
+      <figure><img src="../img/inicio.webp" alt="Pantalla principal" width="540" height="1198" loading="lazy"><figcaption>Pantalla principal</figcaption></figure>
+      <figure><img src="../img/gasolineras.webp" alt="Benzineres properes" width="540" height="1198" loading="lazy"><figcaption>Benzineres</figcaption></figure>
+      <figure><img src="../img/viaje.webp" alt="Viatge pintat per velocitat" width="540" height="1198" loading="lazy"><figcaption>Els teus viatges</figcaption></figure>
+      <figure><img src="../img/semaforos.webp" alt="Mapa de semàfors" width="540" height="1198" loading="lazy"><figcaption>Semàfors</figcaption></figure>
+      <figure><img src="../img/trofeos.webp" alt="Trofeus" width="540" height="1198" loading="lazy"><figcaption>Trofeus</figcaption></figure>
+      <figure><img src="../img/aparcamiento.webp" alt="Aparcament" width="540" height="1198" loading="lazy"><figcaption>Aparcament</figcaption></figure>
+      <figure><img src="../img/mantenimiento.webp" alt="Manteniment" width="540" height="1198" loading="lazy"><figcaption>Manteniment</figcaption></figure>
+      <figure><img src="../img/caidas.webp" alt="Detector de caigudes" width="540" height="1198" loading="lazy"><figcaption>Detector de caigudes</figcaption></figure>
+    </div>
+    <div class="duo">
+      <div class="dash"><img src="../img/cuadro.webp" alt="El quadre amb el marc groc d'ajust" width="720" height="392" loading="lazy"><p class="caption">Ajust de la imatge, en directe al quadre</p></div>
+      <div><div class="watch"><img src="../img/reloj-giro.webp" alt="Avís de gir al rellotge" width="300" height="300" loading="lazy"><img src="../img/reloj-brujula.webp" alt="Brúixola cap a la moto al rellotge" width="300" height="300" loading="lazy"></div><p class="caption">App per a rellotges Wear OS · <a href="rellotge/">guia del rellotge</a></p></div>
+    </div>
+  </section>
+
+  <section id="empezar">
+    <span class="eyebrow">Començar</span>
+    <h2>A punt en <span>10 minuts</span></h2>
+    <ol class="steps">
+      <li><h3>Descarrega l'APK</h3><p class="muted">Des de <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">GitHub</a>. Les versions següents te les ofereix la mateixa app.</p></li>
+      <li><h3>Prepara Android Auto</h3><p class="muted">Un ajust d'una sola vegada a Android Auto. La guia t'ho ensenya amb captures.</p></li>
+      <li><h3>Escaneja el QR del quadre</h3><p class="muted">I prem Connectar. A partir d'aquí, es connecta sola en engegar la moto.</p></li>
+    </ol>
+    <p class="sub"><a href="guia/">Veure la guia pas a pas →</a></p>
+  </section>
+
+  <section id="preguntas">
+    <span class="eyebrow">Preguntes</span>
+    <h2>Preguntes <span>freqüents</span></h2>
+    <details><summary>És una app oficial de Zontes?</summary><p>No. És un projecte independent, fet per un motorista per a la seva Zontes i compartit amb la comunitat. No està afiliat amb Zontes, CFMoto, Carbit ni Google.</p></details>
+    <details><summary>Quant costa?</summary><p>Res. És gratuïta, sense anuncis ni subscripcions, i el codi és obert (llicència AGPL-3.0). Si t'és útil, em pots <a href="https://ko-fi.com/mgb1982">convidar a un cafè</a>.</p></details>
+    <details><summary>Per què no és a Google Play?</summary><p>Està en camí. Mentrestant s'instal·la des de GitHub; si Play Protect avisa, és perquè encara no coneix l'app: Més detalls → Instal·la igualment.</p></details>
+    <details><summary>Què passa amb les meves dades?</summary><p>Els teus viatges, fotos i ajustos es queden al teu mòbil: no hi ha comptes ni núvol. L'app només envia informes anònims d'errors (sense res que t'identifiqui) per poder arreglar-los, i els pots desactivar.</p></details>
+    <details><summary>Necessito dades mòbils?</summary><p>Per als mapes, la música en streaming i les benzineres, sí, igual que amb Android Auto al cotxe. La connexió amb la moto és pel seu propi Wi‑Fi.</p></details>
+    <details><summary>Alguna cosa no funciona, què faig?</summary><p>Mira la <a href="guia/">guia</a>, que té els errors més habituals. Si continua, a l'app: ❓ Ajuda → Compartir registres, i envia-ho explicant què ha passat.</p></details>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">Descarregar</a>
+      <a href="guia/">Guia</a>
+      <a href="rellotge/">Rellotge</a>
+      <a href="https://github.com/mgb1982/ridescreen-aa">Codi font</a>
+      <a href="https://github.com/mgb1982/ridescreen-aa/blob/main/PRIVACY.md">Privadesa</a>
+      <a href="https://ko-fi.com/mgb1982">☕ Ko-fi</a>
+      <a href="../" lang="es" data-lang="es">Español</a>
+      <a href="../en/" lang="en" data-lang="en">English</a>
+    </div>
+    <p>RideScreen AA està basada en <a href="https://github.com/zanderp/open-cfmoto">OpenCfMoto</a> d'Alexandru (zanderp). Programari lliure amb llicència AGPL-3.0.</p>
+    <p>No és una app oficial ni està afiliada amb Zontes, CFMoto, Carbit ni Google. Android Auto és una marca de Google LLC. Fes-la servir amb responsabilitat: la mirada, sempre a la carretera.</p>
+  </div>
+</footer>
+</body>
+</html>

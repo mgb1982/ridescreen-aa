@@ -2,9 +2,30 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<script>
+/* Language: Spanish, Galician or Basque browsers stay here; Catalan ones go to the Catalan page and
+   everything else to the English one — unless the visitor picked a language on the site (that
+   choice always wins). Crawlers and link previews stay. */
+(function(){try{
+  var t=null, pick=localStorage.getItem("rs_lang");
+  if (pick) { if (pick==="en") t="../en/guide/"; else if (pick==="ca") t="../ca/guia/"; else return; }
+  else {
+    if (/bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegram/i.test(navigator.userAgent)) return;
+    var l=((navigator.languages&&navigator.languages[0])||navigator.language||"").toLowerCase();
+    if (!l || /^(es|gl|eu)\b/.test(l)) return;
+    t = /^ca\b/.test(l) ? "../ca/guia/" : "../en/guide/";
+  }
+  location.replace(t+location.hash);
+}catch(e){}})();
+</script>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Cómo instalar RideScreen AA en el móvil, preparar Android Auto y conectar con la Zontes.">
 <title>Guía RideScreen AA</title>
+<link rel="alternate" hreflang="es" href="https://ridescreen.app/guia/">
+<link rel="alternate" hreflang="ca" href="https://ridescreen.app/ca/guia/">
+<link rel="alternate" hreflang="en" href="https://ridescreen.app/en/guide/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap">
 <style>
@@ -86,7 +107,7 @@ a { color: var(--accent); }
 
 
 <div class="wrap">
-  <div class="eyebrow">RideScreen AA · app del móvil</div>
+  <div class="eyebrow">RideScreen AA · app del móvil · <a href="../ca/guia/" lang="ca" data-lang="ca">Català</a> · <a href="../en/guide/" lang="en" data-lang="en">English</a></div>
   <h1>Instalar y conectar <span>en 10 minutos</span></h1>
   <p class="lede">Android Auto en el cuadro de tu Zontes, paso a paso. La primera vez lleva unos minutos; después basta con un toque, o ninguno.</p>
   <p class="lede" style="font-size:15px;margin-top:6px">¿Tienes un reloj Wear OS? Después sigue con la <a href="../reloj/">guía del reloj</a>.</p>

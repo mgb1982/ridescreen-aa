@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Com instal·lar RideScreen AA en un rellotge Wear OS i fer-lo servir per controlar Android Auto al quadre de la moto.">
+<title>Guia del rellotge RideScreen AA</title>
+<link rel="canonical" href="https://ridescreen.app/ca/rellotge/">
+<link rel="alternate" hreflang="es" href="https://ridescreen.app/reloj/">
+<link rel="alternate" hreflang="ca" href="https://ridescreen.app/ca/rellotge/">
+<link rel="alternate" hreflang="en" href="https://ridescreen.app/en/watch/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap">
+<style>
+/* Same look as the phone guide (site/guia): forest green surfaces, brass accent, dark-first.
+   Watch faces are round images; install steps use small CSS "watch screens" instead of photos. */
+:root {
+  --bg: #161D18; --surface: #212B24; --surface-2: #2A362E; --fg: #EEF2EA; --muted: #A9B5A6;
+  --accent: #D1A955; --accent-ink: #18211A; --line: #34423A; --warn: #E9C46A; --screen: #000;
+  --display: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --body: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+    --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; --warn: #8A5A00; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+  --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; --warn: #8A5A00; color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 880px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 56px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 6vw, 46px); line-height: 1.05; }
+h1 span { color: var(--accent); }
+.lede { color: var(--muted); max-width: 62ch; margin: 12px 0 0; font-size: 17px; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+h2 { font-family: var(--display); font-weight: 400; font-size: 24px; margin-top: 44px; }
+section > .eyebrow { margin-top: 44px; display: block; }
+section > .eyebrow + h2 { margin-top: 4px; }
+p.sub { color: var(--muted); margin: 8px 0 0; max-width: 62ch; }
+a { color: var(--accent); }
+kbd { font-family: var(--body); font-weight: 700; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; }
+
+.hero { display: grid; grid-template-columns: 1fr 220px; gap: 24px; align-items: center; }
+.round { width: 100%; max-width: 220px; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%; display: block; justify-self: center; margin-inline: auto;
+         box-shadow: 0 0 0 7px #2b2b2b, 0 0 0 9px #555; background: #000; }
+
+.check { margin-top: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; }
+.check ul { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.check li { position: relative; padding-left: 26px; min-width: 0; }
+.check li::before { content: "✓"; color: var(--accent); font-weight: 700; position: absolute; left: 0; top: 0; }
+
+.gallery { margin-top: 18px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 18px; }
+.gallery figure { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px 12px 12px; text-align: center; }
+.gallery .round { max-width: 120px; box-shadow: 0 0 0 5px #2b2b2b, 0 0 0 6px #555; }
+.gallery figcaption { margin-top: 12px; font-size: 14px; }
+.gallery figcaption b { display: block; font-size: 15px; }
+.gallery figcaption span { color: var(--muted); }
+
+.steps { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 18px; counter-reset: s; }
+.step { counter-increment: s; display: grid; grid-template-columns: 1fr 200px; gap: 22px; align-items: center;
+        background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+.step .txt { min-width: 0; }
+.step h3 { font-size: 19px; font-weight: 700; display: flex; gap: 12px; align-items: baseline; }
+.step h3::before { content: counter(s); font-family: var(--display); font-weight: 400; color: var(--accent-ink); background: var(--accent);
+                   min-width: 30px; height: 30px; border-radius: 15px; display: inline-grid; place-items: center; font-size: 15px; flex: none; transform: translateY(4px); }
+.step p { margin: 10px 0 0; }
+.note { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); font-size: 14.5px; }
+.note.warn { border-left: 3px solid var(--warn); }
+.cta { display: inline-block; margin-top: 12px; background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 700; padding: 10px 16px; border-radius: 22px; }
+.cta:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* CSS watch screen for the install steps (always dark, like a real watch). */
+.mock { width: 180px; aspect-ratio: 1; border-radius: 50%; background: var(--screen); color: #EDEDED; justify-self: center;
+        box-shadow: 0 0 0 7px #2b2b2b, 0 0 0 9px #555; display: grid; align-content: center; justify-items: center; gap: 6px;
+        padding: 26px; text-align: center; font-size: 12.5px; line-height: 1.3; overflow: hidden; }
+.mock .t { font-size: 11px; color: #9a9a9a; text-transform: uppercase; letter-spacing: .08em; }
+.mock .row { width: 100%; background: #1f1f1f; border-radius: 14px; padding: 7px 10px; display: flex; justify-content: space-between; gap: 6px; align-items: center; }
+.mock .row.hi { outline: 2px solid #D1A955; }
+.mock .sw { width: 26px; height: 15px; border-radius: 8px; background: #D1A955; position: relative; flex: none; }
+.mock .sw::after { content: ""; position: absolute; right: 2px; top: 2px; width: 11px; height: 11px; border-radius: 50%; background: #111; }
+.mock .big { font-size: 26px; font-weight: 700; letter-spacing: .06em; color: #fff; }
+.mock .tap { color: #D1A955; font-weight: 700; }
+.mock .btn { background: #D1A955; color: #111; border-radius: 16px; padding: 6px 14px; font-weight: 700; }
+.mock .bar { width: 100%; height: 6px; background: #333; border-radius: 3px; overflow: hidden; }
+.mock .bar i { display: block; height: 100%; width: 62%; background: #D1A955; }
+
+/* Controls */
+.pad { margin-top: 18px; display: grid; grid-template-columns: 240px 1fr; gap: 24px; align-items: center;
+       background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+.pad .round { max-width: 230px; }
+.keys { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.keys li { display: grid; grid-template-columns: 70px 1fr; gap: 10px; align-items: baseline; min-width: 0; }
+.keys .k { font-weight: 700; text-align: center; background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 2px 4px; }
+.two { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 18px 20px; min-width: 0; }
+.card h3 { font-size: 18px; }
+.card p, .card ul { margin: 10px 0 0; }
+.card ul { padding-left: 20px; }
+.card svg { display: block; margin: 4px auto 0; width: 120px; height: 120px; }
+.pages { margin-top: 18px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.pages figure { margin: 0; text-align: center; }
+.pages .round { max-width: 130px; box-shadow: 0 0 0 5px #2b2b2b, 0 0 0 6px #555; }
+.pages figcaption { margin-top: 10px; font-size: 14px; }
+.pages figcaption b { display: block; }
+.pages figcaption span { color: var(--muted); }
+
+.faq { margin-top: 16px; display: grid; gap: 10px; }
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 18px; }
+.faq summary { cursor: pointer; font-weight: 700; }
+.faq summary small { display: block; font-weight: 400; color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+.faq details p, .faq details ul { margin: 10px 0 0; }
+.faq ul { padding-left: 20px; }
+.foot { margin-top: 40px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+@media (max-width: 680px) {
+  .hero, .step, .pad, .two { grid-template-columns: 1fr; }
+  .hero .round { max-width: 180px; }
+  .pages { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div>
+      <div class="eyebrow">RideScreen AA · app del rellotge · <a href="../../reloj/" lang="es" data-lang="es">Español</a> · <a href="../../en/watch/" lang="en" data-lang="en">English</a></div>
+      <h1>La teva moto <span>al canell</span></h1>
+      <p class="lede">L'app de Wear OS és opcional i va amb la del mòbil. Mostra la velocitat i la propera maniobra, vibra abans de cada gir, et porta fins a la moto aparcada i et deixa manejar Android Auto al quadre sense tocar el mòbil.</p>
+      <p class="sub">Encara no tens l'app al mòbil? Comença per la <a href="../guia/">guia del mòbil</a>.</p>
+    </div>
+    <img class="round" src="../../reloj/r_viaje.png" alt="Rellotge mostrant 123 km/h, 48,6 km, 52:10, màxima 123 i mitjana 56, connectat al quadre" width="300" height="300">
+  </div>
+
+  <section>
+    <span class="eyebrow">Què fa</span>
+    <h2>El que veuràs al rellotge</h2>
+    <div class="gallery">
+      <figure><img class="round" src="../../reloj/r_giro.png" alt="Propera maniobra a 120 m i velocitat 47 km/h" loading="lazy" width="300" height="300"><figcaption><b>Propera maniobra</b><span>i vibracions abans de cada gir</span></figcaption></figure>
+      <figure><img class="round" src="../../reloj/r_cruceta.png" alt="Creueta amb fletxes, OK, enrere, inici, micròfon i dades" loading="lazy" width="300" height="300"><figcaption><b>Creueta</b><span>per manejar Android Auto</span></figcaption></figure>
+      <figure><img class="round" src="../../reloj/r_brujula.png" alt="Brúixola apuntant a la moto aparcada a 350 m" loading="lazy" width="300" height="300"><figcaption><b>Brúixola cap a la teva moto</b><span>en tornar a l'aparcament</span></figcaption></figure>
+      <figure><img class="round" src="../../reloj/r_tile.png" alt="Targeta EN RUTA amb 12,4 km, 18 min i mitjana 41" loading="lazy" width="300" height="300"><figcaption><b>Targeta i complicació</b><span>el viatge d'un cop d'ull</span></figcaption></figure>
+      <figure><img class="round" src="../../reloj/r_viajes.png" alt="Llista de viatges amb quilòmetres, temps i velocitats" loading="lazy" width="300" height="300"><figcaption><b>Els teus viatges</b><span>amb el seu mapa en tocar-los</span></figcaption></figure>
+      <figure><img class="round" src="../../reloj/r_caida.png" alt="Alarma T'has caigut? amb compte enrere i botó ESTIC BÉ" loading="lazy" width="300" height="300"><figcaption><b>Alarma de caiguda</b><span>experimental, si l'actives</span></figcaption></figure>
+    </div>
+  </section>
+
+  <div class="check">
+    <strong>Abans de començar</strong>
+    <ul>
+      <li>Un rellotge amb <strong>Wear OS 3 o posterior</strong>: Galaxy Watch 4 i següents, Pixel Watch i altres. Els de Huawei, Amazfit o Garmin no fan servir Wear OS i no serveixen.</li>
+      <li>El rellotge ja emparellat amb el teu mòbil, i <strong>RideScreen AA 2.2 o posterior</strong> instal·lada al mòbil.</li>
+      <li>El mòbil i el rellotge a <strong>la mateixa xarxa Wi‑Fi</strong> (la de casa, per exemple). Només cal per a aquesta instal·lació.</li>
+      <li>Uns 10–15 minuts. Es fa <strong>un sol cop</strong>: les versions següents s'instal·len des del mòbil.</li>
+    </ul>
+  </div>
+
+  <section>
+    <span class="eyebrow">Part 1 · un sol cop</span>
+    <h2>Instal·lar l'app al rellotge</h2>
+    <p class="sub">Els rellotges no obren fitxers APK com el mòbil, així que aquest primer cop s'instal·la amb una app del mòbil que parla amb el rellotge per Wi‑Fi (depuració sense fil). Sona tècnic, però són uns quants tocs.</p>
+    <ol class="steps">
+      <li class="step">
+        <div class="txt">
+          <h3>Descarrega l'APK del rellotge al mòbil</h3>
+          <p>A la pàgina de l'última versió, a <strong>Assets</strong>, descarrega el que acaba en <strong>WearOS-reloj.apk</strong>. Deixa'l a la carpeta Baixades.</p>
+          <p>Instal·la també al mòbil una d'aquestes apps de Play Store: <strong>Wear Installer 2</strong> o <strong>Bugjaeger</strong>.</p>
+          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/latest">Obrir la descàrrega</a>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">Assets</span><div class="row">RideScreen-AA-v2.2.apk</div><div class="row hi">…-WearOS-reloj.apk <span class="tap">⬇</span></div></div>
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Activa les opcions de desenvolupador del rellotge</h3>
+          <p><strong>Galaxy Watch:</strong> Configuració → Quant al rellotge → Informació del programari → toca <strong>Versió del programari</strong> 5 vegades.</p>
+          <p><strong>Pixel Watch i altres:</strong> Configuració → Sistema → Informació → toca <strong>Número de compilació</strong> 7 vegades.</p>
+          <p>Apareix l'avís que les opcions de desenvolupador estan activades.</p>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">Informació del programari</span><div class="row hi">Versió del programari <span class="tap">×5</span></div><div class="row">Versió de One UI Watch</div></div>
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Connecta el rellotge al Wi‑Fi</h3>
+          <p>Configuració → Connexions → Wi‑Fi: posa'l a <strong>Activat</strong> (no a Automàtic) i connecta'l a la mateixa xarxa que el mòbil.</p>
+          <div class="note">Si més endavant el rellotge no mostra adreça IP, desactiva un moment el Bluetooth del mòbil: el rellotge només fa servir el Wi‑Fi quan no té el mòbil per Bluetooth.</div>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">Wi‑Fi</span><div class="row hi">Activat <span class="sw"></span></div><div class="row">Casa · Connectat</div></div>
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Activa la depuració sense fil</h3>
+          <p>Configuració → <strong>Opcions de desenvolupador</strong> → activa <strong>Depuració ADB</strong> i <strong>Depuració sense fil</strong>. Entra a Depuració sense fil → <strong>Emparella un dispositiu nou</strong>.</p>
+          <p>El rellotge mostra un <strong>codi de 6 xifres</strong> i una adreça amb port, per exemple <kbd>192.168.1.40:37115</kbd>.</p>
+          <div class="note warn">Puja abans el temps de pantalla del rellotge: si s'apaga mentre emparelles, el codi caduca.</div>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">Emparellar</span><span class="big">482 913</span><span>192.168.1.40:37115</span></div>
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Emparella i instal·la des del mòbil</h3>
+          <p>Obre <strong>Wear Installer 2</strong> (o Bugjaeger), escriu l'adreça i el codi d'emparellament, i després connecta amb l'adreça que apareix a la pantalla de Depuració sense fil.</p>
+          <p>Tria el fitxer <strong>…-WearOS-reloj.apk</strong> de Baixades i instal·la'l. En un minut apareix RideScreen AA al rellotge.</p>
+          <div class="note warn">El port per <strong>emparellar</strong> i el port per <strong>connectar</strong> són diferents. És l'error més habitual.</div>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">Instal·lant</span><span>RideScreen AA</span><div class="bar"><i></i></div><span class="tap">62 %</span></div>
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Obre-la i apaga la depuració</h3>
+          <p>Obre RideScreen AA al rellotge i accepta la <strong>ubicació</strong> (per a la brúixola cap a la teva moto) i les <strong>notificacions</strong>.</p>
+          <p>Ja pots desactivar la depuració sense fil i la depuració ADB: no calen per fer-la servir ni per actualitzar-la.</p>
+        </div>
+        <img class="round" src="../../reloj/r_reposo.png" alt="Rellotge amb RideScreen AA obert, sense viatge en curs" loading="lazy" width="300" height="300" style="max-width:180px">
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">Part 2</span>
+    <h2>Controlar Android Auto des del rellotge</h2>
+    <p class="sub">El quadre de la Zontes no és tàctil. Amb el rellotge manegues Android Auto com amb el comandament d'un cotxe: una roda per moure't per la pantalla i botons per triar, tornar o parlar amb l'Assistent.</p>
+
+    <div class="pad">
+      <img class="round" src="../../reloj/r_cruceta.png" alt="Pàgina de la creueta del rellotge" loading="lazy" width="300" height="300">
+      <div>
+        <h3 style="font-size:18px">La creueta (llisca a la segona pàgina)</h3>
+        <ul class="keys" style="margin-top:12px">
+          <li><span class="k">▲ ▼</span><span><strong>Toc:</strong> gira la roda d'Android Auto, salta d'un element a l'altre. <strong>Mantenir:</strong> fletxa amunt o avall.</span></li>
+          <li><span class="k">◀ ▶</span><span>Fletxes esquerra i dreta: canviar de columna o de pestanya.</span></li>
+          <li><span class="k">OK</span><span>Triar el que està marcat.</span></li>
+          <li><span class="k">↩</span><span>Enrere.</span></li>
+          <li><span class="k">⌂</span><span>Inici d'Android Auto.</span></li>
+          <li><span class="k">🎤</span><span>Assistent de Google («porta'm a…», «posa música»).</span></li>
+          <li><span class="k">📊</span><span>Tornar a les dades del viatge.</span></li>
+        </ul>
+        <div class="note">Sense connexió amb el quadre, aquesta pàgina es converteix en «Busca la teva moto» i obre la brúixola.</div>
+      </div>
+    </div>
+
+    <div class="two">
+      <div class="card">
+        <svg viewBox="0 0 120 120" role="img" aria-label="Rellotge amb bisell giratori i fletxes de gir">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="8" opacity=".35"/>
+          <circle cx="60" cy="60" r="40" fill="#000"/>
+          <path d="M60 6 A54 54 0 0 1 112 52" fill="none" stroke="#D1A955" stroke-width="4" stroke-linecap="round"/>
+          <path d="M108 44 L112 54 L101 51" fill="none" stroke="#D1A955" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M60 114 A54 54 0 0 1 8 68" fill="none" stroke="#D1A955" stroke-width="4" stroke-linecap="round"/>
+          <path d="M12 76 L8 66 L19 69" fill="none" stroke="#D1A955" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3>Amb bisell giratori o corona</h3>
+        <p>Galaxy Watch Classic, Pixel Watch i rellotges amb corona que gira.</p>
+        <ul>
+          <li><strong>Gira el bisell o la corona</strong> per moure't per Android Auto, igual que la roda d'un cotxe. Funciona a qualsevol pàgina del rellotge.</li>
+          <li>Prem <strong>OK</strong> a la creueta per triar.</li>
+          <li>A la pàgina de <strong>Viatges</strong>, el bisell desplaça la llista en lloc de moure Android Auto.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 120 120" role="img" aria-label="Rellotge sense bisell amb les fletxes amunt i avall a la pantalla">
+          <circle cx="60" cy="60" r="50" fill="#000" stroke="currentColor" stroke-width="3" opacity=".9"/>
+          <circle cx="60" cy="32" r="13" fill="none" stroke="#D1A955" stroke-width="3"/>
+          <path d="M54 35 L60 27 L66 35 Z" fill="#D1A955"/>
+          <circle cx="60" cy="88" r="13" fill="none" stroke="#D1A955" stroke-width="3"/>
+          <path d="M54 85 L60 93 L66 85 Z" fill="#D1A955"/>
+          <circle cx="60" cy="60" r="11" fill="#2A362E"/>
+          <text x="60" y="64" text-anchor="middle" font-size="10" font-weight="700" fill="#EDEDED" font-family="Archivo, sans-serif">OK</text>
+        </svg>
+        <h3>Sense bisell</h3>
+        <p>Galaxy Watch normals (4, 5, 6, 7…) i rellotges de pantalla llisa.</p>
+        <ul>
+          <li>Els botons <strong>▲ ▼</strong> de la creueta fan de roda: un toc, un pas.</li>
+          <li><strong>Mantén-los premuts</strong> quan necessitis la fletxa de debò, per exemple per pujar en una llista.</li>
+          <li>Als Galaxy Watch amb <strong>bisell tàctil</strong>, pots activar-lo als ajustos del rellotge i lliscar el dit per la vora de la pantalla com si fos el bisell.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Part 3</span>
+    <h2>Les pàgines de l'app</h2>
+    <p class="sub">Llisca a esquerra i dreta. Els punts de baix indiquen a quina pàgina ets.</p>
+    <div class="pages">
+      <figure><img class="round" src="../../reloj/r_viaje.png" alt="Pàgina del viatge" loading="lazy" width="300" height="300"><figcaption><b>1 · Viatge</b><span>velocitat, km, temps, màxima i mitjana</span></figcaption></figure>
+      <figure><img class="round" src="../../reloj/r_cruceta.png" alt="Pàgina de la creueta" loading="lazy" width="300" height="300"><figcaption><b>2 · Creueta</b><span>per manejar Android Auto</span></figcaption></figure>
+      <figure><img class="round" src="../../reloj/r_info.png" alt="Pàgina d'informació" loading="lazy" width="300" height="300"><figcaption><b>3 · Informació</b><span>hora, rumb, altitud, bateria del mòbil, volum</span></figcaption></figure>
+      <figure><img class="round" src="../../reloj/r_viajes.png" alt="Pàgina de viatges" loading="lazy" width="300" height="300"><figcaption><b>4 · Viatges</b><span>toca'n un per veure'n el mapa</span></figcaption></figure>
+    </div>
+    <div class="two">
+      <div class="card">
+        <h3>Vibracions de gir</h3>
+        <p>Amb la navegació d'Android Auto, el rellotge vibra abans de cada maniobra: <strong>2 tocs</strong> a l'esquerra, <strong>3</strong> a la dreta, <strong>un de llarg i N de curts</strong> per a la sortida N d'una rotonda i <strong>dos de llargs</strong> per a un canvi de sentit.</p>
+        <p>S'activa al mòbil: ⚙️ Ajustos → Extres de ruta → <strong>Vibracions de gir al rellotge</strong>. És experimental.</p>
+      </div>
+      <div class="card">
+        <h3>Targeta i complicació</h3>
+        <p>Afegeix la targeta <strong>Viatge</strong> (llisca des de l'esfera i toca <kbd>+</kbd>) per veure el viatge en curs o on has aparcat. La complicació <strong>RideScreen · km</strong> posa els km del viatge a la teva esfera.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Part 4</span>
+    <h2>Actualitzar el rellotge</h2>
+    <ol class="steps" style="counter-reset: s 0">
+      <li class="step">
+        <div class="txt">
+          <h3>Des del mòbil, sense ordinador</h3>
+          <p>A partir de la versió 2.2, quan surti una versió nova: al mòbil, <strong>❓ Ajuda → ⌚ Actualitza l'app del rellotge → Última versió</strong>.</p>
+          <p>El mòbil descarrega l'app del rellotge i l'hi envia per Bluetooth. <strong>Triga un parell de minuts</strong>: veuràs el progrés al mòbil i al rellotge. En acabar, toca <strong>Instal·la</strong> al rellotge.</p>
+          <div class="note">El primer cop, el rellotge et demanarà permetre que RideScreen AA instal·li apps: activa-ho i torna enrere.</div>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">Actualitzar</span><span>Instal·lada: 2.2<br>Nova: 2.3</span><span class="btn">Instal·la</span></div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">Si alguna cosa falla</span>
+    <h2>Problemes habituals</h2>
+    <div class="faq">
+      <details>
+        <summary>El rellotge no mostra adreça IP<small>En activar la depuració sense fil</small></summary>
+        <ul>
+          <li>Posa el Wi‑Fi del rellotge a <strong>Activat</strong>, no a Automàtic, i connecta'l a la mateixa xarxa que el mòbil.</li>
+          <li>Desactiva un moment el Bluetooth del mòbil perquè el rellotge passi a fer servir el Wi‑Fi. Torna'l a activar en acabar.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Wear Installer no connecta<small>En emparellar</small></summary>
+        <ul>
+          <li>Fes servir el port d' <strong>Emparella un dispositiu nou</strong> per emparellar, i el de la pantalla principal de Depuració sense fil per connectar. Són diferents.</li>
+          <li>Si el codi ha caducat, torna a tocar Emparella un dispositiu nou: en surt un de nou.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>"El paquet no és vàlid"<small>En instal·lar</small></summary>
+        <p>Probablement és l'APK del mòbil. Al rellotge va el que acaba en <strong>WearOS-reloj.apk</strong>.</p>
+      </details>
+      <details>
+        <summary>El rellotge diu "Sense dades del mòbil"<small>Amb l'app instal·lada</small></summary>
+        <ul>
+          <li>Obre RideScreen AA al mòbil almenys un cop i comprova que el rellotge està connectat al mòbil (app Galaxy Wearable o Pixel Watch).</li>
+          <li>L'app del mòbil i la del rellotge han de venir de la mateixa pàgina de descàrregues: no s'entenen amb la versió de Play Store ni amb l'OpenCfMoto original.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>"⚠️ Inicia el servidor d'AA"<small>A la pàgina del viatge</small></summary>
+        <p>El servidor d'unitat principal d'Android Auto està apagat al mòbil. A Android Auto: ⋮ → Inicia el servidor d'unitat principal (<a href="../guia/">pas 6 de la guia del mòbil</a>).</p>
+      </details>
+      <details>
+        <summary>"Aquest rellotge no deixa que les apps instal·lin actualitzacions"<small>En actualitzar des del mòbil</small></summary>
+        <p>El teu rellotge no permet que una app n'instal·li una altra. Instal·la la versió nova com el primer cop (Part 1).</p>
+      </details>
+      <details>
+        <summary>Res del que hi ha a dalt<small>Com demanar ajuda</small></summary>
+        <p>Al mòbil toca <strong>❓ Ajuda → Compartir registres</strong> i envia-ho al grup dient el model de rellotge i de mòbil.</p>
+      </details>
+    </div>
+  </section>
+
+  <p class="foot">RideScreen AA és gratuïta i de codi obert, basada en OpenCfMoto d'Alexandru (zanderp). No és una app oficial de Zontes ni de Google. Les pantalles són il·lustratives: els noms exactes dels ajustos poden variar segons el teu rellotge. · <a href="../guia/">Guia del mòbil</a></p>
+</div>
+</body>
+</html>
