@@ -181,4 +181,6 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="nearby_upfront_body">Per arribar al quadre (la seva Wi‑Fi i el seu Bluetooth), Android demana el permís «Dispositius propers». L\'app no el fa servir per a res més.</string>
     <string name="nearby_upfront_ok">Continua</string>
     <string name="nearby_upfront_later">Més tard</string>
+    <string name="conn_detail_dash_no_media">El quadre no demana la imatge: posa\'l a la interfície 3 i toca Connectar (si continua igual, apaga i encén el contacte)</string>
+    <string name="conn_detail_dash_no_media_retry">Esperant el quadre: posa\'l a la interfície 3</string>
 </resources>

@@ -31,6 +31,8 @@ object BikeLink {
     // serve, so streaming correctness is unchanged. Lives here so a MainActivity recreation
     // mid-startup doesn't lose the pending gate.
     @Volatile private var aaVideoSteady = false
+    /** Android Auto video has gone steady in this connect (read by the prober's hang-up diagnosis). */
+    fun isAaVideoSteady(): Boolean = aaVideoSteady
     /** When this connect began: a Wi‑Fi blip in the first seconds is not an Android Auto failure. */
     @Volatile private var connectStartedAt = 0L
     @Volatile private var bikeNetwork: Network? = null

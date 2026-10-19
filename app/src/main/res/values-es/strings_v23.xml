@@ -181,4 +181,6 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="nearby_upfront_body">Para llegar al cuadro (su Wi‑Fi y su Bluetooth), Android pide el permiso «Dispositivos cercanos». La app no lo usa para nada más.</string>
     <string name="nearby_upfront_ok">Continuar</string>
     <string name="nearby_upfront_later">Más tarde</string>
+    <string name="conn_detail_dash_no_media">El cuadro no pide la imagen: ponlo en la interfaz 3 y toca Conectar (si sigue igual, apaga y enciende el contacto)</string>
+    <string name="conn_detail_dash_no_media_retry">Esperando al cuadro: ponlo en la interfaz 3</string>
 </resources>

@@ -181,4 +181,6 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="nearby_upfront_body">To reach the dash (its Wi‑Fi and Bluetooth), Android asks for «Nearby devices». The app doesn\'t use it for anything else.</string>
     <string name="nearby_upfront_ok">Continue</string>
     <string name="nearby_upfront_later">Later</string>
+    <string name="conn_detail_dash_no_media">The dash isn\'t asking for the picture: put it on screen 3 and tap Connect (if it still won\'t, switch the ignition off and on)</string>
+    <string name="conn_detail_dash_no_media_retry">Waiting for the dash: put it on screen 3</string>
 </resources>
