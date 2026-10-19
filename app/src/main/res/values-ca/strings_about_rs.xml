@@ -14,5 +14,5 @@
     <string name="rs_thanks_github">OpenCfMoto a GitHub</string>
     <string name="rs_thanks_discord">Discord d\'OpenCfMoto</string>
     <string name="rs_bikes_tested_title">Provades amb RideScreen AA</string>
-    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · Zontes 125V: funciona tot, inclòs el rellotge del quadre sempre en hora, l\'app de Wear OS i els extres de ruta. Mateix quadre, diferent carenat.</string>
+    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: funciona tot, inclòs el rellotge del quadre sempre en hora, l\'app de Wear OS i els extres de ruta. Mateix quadre, diferent carenat.\nZontes 368 G / 368 K / 368 E: confirmades; la imatge s\'ajusta a la pantalla gran des de la primera connexió.\nEn proves: Zontes 125M (connecta fent servir el punt d\'accés del mòbil) i Zontes 350D (QR de Wi‑Fi Direct). Si en tens una, el teu log ens ajuda.</string>
 </resources>

@@ -14,5 +14,5 @@
     <string name="rs_thanks_github">OpenCfMoto en GitHub</string>
     <string name="rs_thanks_discord">Discord de OpenCfMoto</string>
     <string name="rs_bikes_tested_title">Probadas con RideScreen AA</string>
-    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · Zontes 125V: funciona todo, incluido el reloj del cuadro siempre en hora, la app de Wear OS y los extras de ruta. Mismo cuadro, distinto carenado.</string>
+    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: funciona todo, incluido el reloj del cuadro siempre en hora, la app de Wear OS y los extras de ruta. Mismo cuadro, distinto carenado.\nZontes 368 G / 368 K / 368 E: confirmadas; la imagen se ajusta a la pantalla grande desde la primera conexión.\nEn pruebas: Zontes 125M (conecta usando el punto de acceso del móvil) y Zontes 350D (QR de Wi‑Fi Direct). Si tienes una, tu log nos ayuda.</string>
 </resources>

@@ -14,5 +14,5 @@
     <string name="rs_thanks_github">OpenCfMoto on GitHub</string>
     <string name="rs_thanks_discord">OpenCfMoto Discord</string>
     <string name="rs_bikes_tested_title">Tested with RideScreen AA</string>
-    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · Zontes 125V: everything works, including the dash clock always on time, the Wear OS app and the ride extras. Same dash, different fairing.</string>
+    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: everything works, including the dash clock always on time, the Wear OS app and the ride extras. Same dash, different fairing.\nZontes 368 G / 368 K / 368 E: confirmed working; the image fits the big screen from the first connection.\nIn testing: Zontes 125M (connects through the phone hotspot) and Zontes 350D (Wi‑Fi Direct QR). Got one? Your log helps.</string>
 </resources>
