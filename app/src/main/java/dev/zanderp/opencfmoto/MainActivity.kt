@@ -575,6 +575,47 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    /**
+     * v2.3 · Xiaomi / Redmi / POCO (HyperOS, MIUI) block a closed app from waking on the dash's
+     * Bluetooth unless «Autostart» is on (field log 19 Oct: the trigger never fired after Stop).
+     * Once a bike is saved, explain it once and open that screen.
+     * @return true when the explanation was shown.
+     */
+    private fun maybeAskXiaomiAutostart(): Boolean {
+        val brand = (Build.MANUFACTURER + " " + Build.BRAND).lowercase()
+        if (!(brand.contains("xiaomi") || brand.contains("redmi") || brand.contains("poco"))) return false
+        if (BikeMemory.lastQr(this) == null || isFinishing || isDestroyed) return false
+        val prefs = getSharedPreferences(PREFS_PERMS, MODE_PRIVATE)
+        if (prefs.getBoolean(KEY_XIAOMI_AUTOSTART_ASKED, false)) return false
+        prefs.edit().putBoolean(KEY_XIAOMI_AUTOSTART_ASKED, true).apply()
+        log("→ Xiaomi: explaining Autostart (needed to connect by itself when the bike's Bluetooth comes up)")
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.xiaomi_autostart_title)
+            .setMessage(R.string.xiaomi_autostart_body)
+            .setPositiveButton(R.string.xiaomi_autostart_open) { _, _ -> openXiaomiAutostart() }
+            .setNegativeButton(R.string.nearby_upfront_later, null)
+            .show()
+        return true
+    }
+
+    private fun openXiaomiAutostart() {
+        val tries = listOf(
+            Intent().setComponent(android.content.ComponentName(
+                "com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity")),
+            Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                android.net.Uri.fromParts("package", packageName, null)),
+        )
+        for (i in tries) {
+            try {
+                startActivity(i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                log("→ Xiaomi Autostart: opened ${i.component?.className ?: i.action}")
+                return
+            } catch (e: Exception) {
+                log("→ Xiaomi Autostart: ${i.component?.className ?: i.action} failed (${e.javaClass.simpleName})")
+            }
+        }
+    }
+
     private fun showNearbyBtForAaDialog(needNearby: Boolean) {
         if (isFinishing || isDestroyed) return
         try {
@@ -917,7 +958,7 @@ class MainActivity : AppCompatActivity() {
             if (!SetupActivity.hasSeen(this)) SetupActivity.start(this)
             else {
                 maybeAutoConnect()
-                if (!maybeAskNearbyUpfront() && !WhatsNew.maybeShow(this)) TelemetryNotice.maybeShow(this)
+                if (!maybeAskNearbyUpfront() && !maybeAskXiaomiAutostart() && !WhatsNew.maybeShow(this)) TelemetryNotice.maybeShow(this)
             }
             maybeResumeFromParked(intent)
             maybeStartFromBtTrigger(intent)
@@ -2474,6 +2515,7 @@ class MainActivity : AppCompatActivity() {
         const val EXTRA_GPX_TO_BIKE = "gpx_to_bike"
         private const val REQ_BT_FOR_AA = 4
         private const val REQ_NEARBY_UPFRONT = 7343
+        private const val KEY_XIAOMI_AUTOSTART_ASKED = "xiaomi_autostart_asked"
         private const val PREFS_PERMS = "perm_flow"
         private const val KEY_BT_ASKED = "bt_asked"
         private const val KEY_MIC_ASKED = "mic_asked"

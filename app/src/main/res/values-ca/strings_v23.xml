@@ -188,4 +188,7 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="ext_control_switch">Acceptar accions d\'altres apps</string>
     <string name="ext_control_copy">Copiar noms d\'accions</string>
     <string name="ext_control_copied">Copiat</string>
+    <string name="xiaomi_autostart_title">Connexió automàtica a Xiaomi</string>
+    <string name="xiaomi_autostart_body">Als mòbils Xiaomi, Redmi i POCO, RideScreen AA només pot arrencar sola quan es connecta el Bluetooth de la moto si té activat l\'«Inici automàtic».\n\nActiva\'l per a RideScreen AA a la pantalla següent. Ja que hi ets, posa l\'estalvi de bateria a «Sense restriccions».</string>
+    <string name="xiaomi_autostart_open">Obre la configuració</string>
 </resources>
