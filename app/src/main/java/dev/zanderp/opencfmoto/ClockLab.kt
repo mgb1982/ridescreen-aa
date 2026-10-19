@@ -53,6 +53,9 @@ object ClockLab {
     @Volatile var resyncBusyUntil: Long = 0L
     fun resyncInProgress(): Boolean = android.os.SystemClock.elapsedRealtime() < resyncBusyUntil
 
+    /** v2.3 · The automatic resyncs ran out this dash boot: the clock may be wrong — offer the button. */
+    @Volatile var resyncGaveUp: Boolean = false
+
     fun applyFrom(
         query: ClockQueryMode,
         timeSync: ClockTimeSyncMode,

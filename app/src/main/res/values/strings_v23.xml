@@ -191,4 +191,9 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="xiaomi_autostart_title">Connect by itself on Xiaomi</string>
     <string name="xiaomi_autostart_body">On Xiaomi, Redmi and POCO phones, RideScreen AA can only start by itself when the bike\'s Bluetooth connects if «Autostart» is on.\n\nTurn it on for RideScreen AA on the next screen. While you\'re there, set battery saver to «No restrictions».</string>
     <string name="xiaomi_autostart_open">Open settings</string>
+    <string name="stat_clock_fix">check ⚠ tap</string>
+    <string name="clock_fix_title">Set the dash clock</string>
+    <string name="clock_fix_body">If the dash shows 00:00 or a wrong time, the app drops the link for a few seconds and reconnects so the dash takes the phone's time again. Android Auto keeps running.</string>
+    <string name="clock_fix_ok">Set the time</string>
+    <string name="clock_fix_not_connected">Connect to the bike first</string>
 </resources>

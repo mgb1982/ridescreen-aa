@@ -191,4 +191,9 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="xiaomi_autostart_title">Conexión automática en Xiaomi</string>
     <string name="xiaomi_autostart_body">En los móviles Xiaomi, Redmi y POCO, RideScreen AA solo puede arrancar sola al conectarse el Bluetooth de la moto si tiene activado el «Inicio automático».\n\nActívalo para RideScreen AA en la siguiente pantalla. Ya que estás, pon el ahorro de batería en «Sin restricciones».</string>
     <string name="xiaomi_autostart_open">Abrir ajustes</string>
+    <string name="stat_clock_fix">¿00:00? toca</string>
+    <string name="clock_fix_title">Poner en hora el cuadro</string>
+    <string name="clock_fix_body">Si el cuadro marca 00:00 o una hora que no es, la app corta el enlace unos segundos y vuelve a conectar para que el cuadro coja la hora del móvil. Android Auto sigue funcionando.</string>
+    <string name="clock_fix_ok">Poner en hora</string>
+    <string name="clock_fix_not_connected">Conecta antes con la moto</string>
 </resources>

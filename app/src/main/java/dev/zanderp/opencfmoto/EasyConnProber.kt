@@ -83,6 +83,17 @@ class EasyConnProber(
      * Drop every live bike socket on purpose. [onAllConnectionsClosed] then re-probes exactly like
      * after a dash-side drop, so the bike reconnects on its own (Android Auto keeps running).
      */
+    /** v2.3 · The rider tapped the dash clock: one more resync, outside the automatic budget. */
+    fun requestClockResync(): Boolean {
+        if (!running || synchronized(activeClients) { activeClients.isEmpty() }) return false
+        ClockLab.resyncGaveUp = false
+        ClockLab.resyncBusyUntil = android.os.SystemClock.elapsedRealtime() +
+            PxcHandshake.RESYNC_BUSY_GRACE_MS
+        ConnectionState.refresh()
+        forceResync("rider asked to set the dash clock")
+        return true
+    }
+
     private fun forceResync(reason: String) {
         if (!running) return
         val socks = synchronized(activeClients) { activeClients.toList() }

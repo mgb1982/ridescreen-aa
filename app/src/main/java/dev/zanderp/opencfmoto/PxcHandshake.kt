@@ -245,6 +245,7 @@ class PxcHandshake(
         if (mode == ClockResyncMode.OFF || channel != ZONTES_CHANNEL) return
         // A fresh QUERY_TIME answer ends any "adjusting the dash clock" hint from the last session.
         ClockLab.resyncBusyUntil = 0L
+        ClockLab.resyncGaveUp = false
         ConnectionState.refresh()
         val askedAfterMs = if (ctrlSelectedAt > 0) System.currentTimeMillis() - ctrlSelectedAt else -1L
         val slow = askedAfterMs >= SLOW_QUERY_TIME_MS
@@ -265,7 +266,9 @@ class PxcHandshake(
                 }
                 if (resyncsThisBoot >= MAX_RESYNCS_PER_BOOT) {
                     log("[RESYNC] smart: QUERY_TIME after ${askedAfterMs}ms but already resynced " +
-                        "$resyncsThisBoot× this dash boot — giving up (Stop + Connect by hand)")
+                        "$resyncsThisBoot× this dash boot — giving up (the rider can tap the dash clock to retry)")
+                    ClockLab.resyncGaveUp = true
+                    ConnectionState.refresh()
                     return
                 }
                 "smart: QUERY_TIME after ${askedAfterMs}ms (≥ ${SLOW_QUERY_TIME_MS}ms) — " +

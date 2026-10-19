@@ -951,6 +951,7 @@ class MainActivity : AppCompatActivity() {
             LogBus.logSessionBanner()
         }
 
+        wireDashClockTap()
         log("Ready. Tap Connect to project Android Auto to your dash.")
 
         // First launch: walk the user through the one-time prerequisites.
@@ -1285,10 +1286,33 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView?>(R.id.stat_clock_label)?.setText(
             when {
                 ClockLab.resyncInProgress() -> R.string.stat_clock_adjusting
+                ClockLab.resyncGaveUp && ConnectionState.phase == Phase.STREAMING -> R.string.stat_clock_fix
                 ConnectionState.phase == Phase.STREAMING -> R.string.stat_clock_ok
                 else -> R.string.stat_clock
             }
         )
+    }
+
+    /** v2.3 · Tap the dash clock while projecting: set it again (one extra resync). */
+    private fun wireDashClockTap() {
+        val box = findViewById<View?>(R.id.stat_clock)?.parent as? View ?: return
+        box.isClickable = true
+        box.setOnClickListener {
+            if (ConnectionState.phase != Phase.STREAMING) {
+                Toast.makeText(this, R.string.clock_fix_not_connected, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.clock_fix_title)
+                .setMessage(R.string.clock_fix_body)
+                .setPositiveButton(R.string.clock_fix_ok) { _, _ ->
+                    val ok = BikeLink.prober?.requestClockResync() == true
+                    log(if (ok) "→ rider: set the dash clock (manual resync)" else "→ rider: set the dash clock — no live link")
+                    if (!ok) Toast.makeText(this, R.string.clock_fix_not_connected, Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+        }
     }
 
     // ---- v2.2 home (proposal A) ----
