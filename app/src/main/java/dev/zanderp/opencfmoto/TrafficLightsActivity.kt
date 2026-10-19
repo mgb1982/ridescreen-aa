@@ -44,7 +44,7 @@ class TrafficLightsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Configuration.getInstance().userAgentValue = packageName
+        GpxOsmdroid.configure(this)  // v2.3 · shared persistent tile cache (90 days), so maps load instantly after an update
         enableEdgeToEdge()
         val scroll = ScrollView(this).apply { setBackgroundColor(color(R.color.bg)) }
         val root = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(16), dp(12), dp(16), dp(28)) }

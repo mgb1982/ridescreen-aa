@@ -57,7 +57,7 @@ class TripMapActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // osmdroid needs a non-default user agent or OSM tile servers reject the requests.
-        Configuration.getInstance().userAgentValue = packageName
+        GpxOsmdroid.configure(this)  // v2.3 · shared persistent tile cache (90 days), so maps load instantly after an update
 
         enableEdgeToEdge()
         setContentView(R.layout.activity_trip_map)
