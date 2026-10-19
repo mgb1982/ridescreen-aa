@@ -99,15 +99,19 @@ object Maintenance {
      * 6,000 and then every 6,000; parts on their own cycles (oil filter every 12,000 after the
      * first, air filter every 12,000, gearbox oil at 6,000 / 18,000 / 30,000, belt every 20,000,
      * spark plug every 24,000, brake fluid every 2 years, coolant every 30,000 km or 3 years).
+     * Notes 3 and 5: steering lock and drive/driven pulley bushings cleaned and greased every 10,000;
+     * note 7: valve clearance (cold) inlet 0.08–0.12 mm, exhaust 0.18–0.22 mm.
      */
     fun zontes125Plan(ctx: Context) = listOf(
         Task("service", ctx.getString(R.string.maint_service), 6000, 15, null, null, firstKm = 1000),
-        Task("oil", ctx.getString(R.string.maint_oil_engine), 6000, 12, null, null, firstKm = 1000),
+        Task("oil", ctx.getString(R.string.maint_oil_engine), 6000, 15, null, null, firstKm = 1000),
         Task("oil_filter", ctx.getString(R.string.maint_oil_filter), 12000, null, null, null, firstKm = 1000),
         Task("gear_oil", ctx.getString(R.string.maint_gear_oil), 12000, null, null, null, firstKm = 6000),
         Task("air", ctx.getString(R.string.maint_air), 12000, null, null, null, firstKm = 12000),
         Task("valves", ctx.getString(R.string.maint_valves), 6000, null, null, null, firstKm = 6000),
         Task("belt", ctx.getString(R.string.maint_belt), 20000, null, null, null, firstKm = 20000),
+        Task("pulleys", ctx.getString(R.string.maint_pulleys), 10000, null, null, null, firstKm = 10000),
+        Task("steer_lock", ctx.getString(R.string.maint_steer_lock), 10000, null, null, null, firstKm = 10000),
         Task("spark", ctx.getString(R.string.maint_spark), 24000, null, null, null, firstKm = 24000),
         Task("brake_fluid", ctx.getString(R.string.maint_brake_fluid), null, 24, null, null),
         Task("coolant", ctx.getString(R.string.maint_coolant), 30000, 36, null, null, firstKm = 30000),

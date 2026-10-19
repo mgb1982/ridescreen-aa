@@ -106,13 +106,15 @@
     <string name="maint_first_at">primera als %1$s</string>
     <string name="maint_then_every_km">després cada %1$s del comptaquilòmetres</string>
     <string name="maint_plan_125">📖 Pla del manual de la Zontes 125X</string>
-    <string name="maint_plan_125_msg">Substitueix les tasques per les de la taula del manual de la Zontes 125X: primera revisió als 1.000 km, la segona als 6.000 i després cada 6.000 (o 15 mesos), més filtre d\'oli, oli de transmissió, vàlvules, corretja, bugia, líquid de frens i refrigerant amb els seus propis cicles.\n\nEs conserva el que ja hagis apuntat i les teves tasques pròpies.</string>
+    <string name="maint_plan_125_msg">Substitueix les tasques per les de la taula del manual de la Zontes 125X: primera revisió als 1.000 km, la segona als 6.000 i després cada 6.000 (o 15 mesos), més filtre d\'oli, oli de transmissió, vàlvules, corretja, politges, pany de direcció, bugia, líquid de frens i refrigerant amb els seus propis cicles.\n\nEs conserva el que ja hagis apuntat i les teves tasques pròpies.\n\nSi circules amb humitat o pols, el manual demana escurçar els intervals.</string>
     <string name="maint_plan_apply">Aplica</string>
     <string name="maint_oil_engine">Oli de motor</string>
     <string name="maint_oil_filter">Filtre d\'oli</string>
     <string name="maint_gear_oil">Oli de transmissió</string>
-    <string name="maint_valves">Joc de vàlvules (revisar)</string>
+    <string name="maint_valves">Vàlvules (en fred): admissió 0,08–0,12 · escapament 0,18–0,22 mm</string>
     <string name="maint_spark">Bugia</string>
     <string name="maint_brake_fluid">Líquid de frens</string>
     <string name="maint_coolant">Refrigerant</string>
+    <string name="maint_pulleys">Casquets de politges (greixar)</string>
+    <string name="maint_steer_lock">Pany de direcció (netejar i greixar)</string>
 </resources>
