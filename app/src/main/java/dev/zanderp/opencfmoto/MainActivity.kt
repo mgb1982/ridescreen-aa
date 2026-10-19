@@ -535,6 +535,10 @@ class MainActivity : AppCompatActivity() {
             resumePendingAaConnect("mic answered")
             return
         }
+        if (requestCode == REQ_NEARBY_UPFRONT) {
+            log("→ Nearby devices up front: ${if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) "granted" else "not granted (asked again at Connect)"}")
+            return
+        }
         if (requestCode != REQ_BT_FOR_AA) return
         if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
             resumePendingAaConnect("Nearby devices granted")
@@ -543,6 +547,32 @@ class MainActivity : AppCompatActivity() {
         } else {
             log("→ Nearby devices denied — Android Auto Connect needs it")
         }
+    }
+
+    /**
+     * v2.3 · Ask for «Nearby devices» once, on launch, with one line of why — instead of only when
+     * Connect is tapped (telemetry, 19 Oct: ~40 riders a week hit the permission error at Connect).
+     * @return true when the explanation was shown (so other one-time sheets wait).
+     */
+    private fun maybeAskNearbyUpfront(): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return false
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) ==
+            PackageManager.PERMISSION_GRANTED) return false
+        val prefs = getSharedPreferences(PREFS_PERMS, MODE_PRIVATE)
+        if (prefs.getBoolean(KEY_BT_ASKED, false) || isFinishing || isDestroyed) return false
+        prefs.edit().putBoolean(KEY_BT_ASKED, true).apply()
+        log("→ asking for Nearby devices up front (needed to reach the dash)")
+        val perms = mutableListOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) perms += Manifest.permission.NEARBY_WIFI_DEVICES
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.nearby_upfront_title)
+            .setMessage(R.string.nearby_upfront_body)
+            .setPositiveButton(R.string.nearby_upfront_ok) { _, _ ->
+                ActivityCompat.requestPermissions(this, perms.toTypedArray(), REQ_NEARBY_UPFRONT)
+            }
+            .setNegativeButton(R.string.nearby_upfront_later, null)
+            .show()
+        return true
     }
 
     private fun showNearbyBtForAaDialog(needNearby: Boolean) {
@@ -887,7 +917,7 @@ class MainActivity : AppCompatActivity() {
             if (!SetupActivity.hasSeen(this)) SetupActivity.start(this)
             else {
                 maybeAutoConnect()
-                if (!WhatsNew.maybeShow(this)) TelemetryNotice.maybeShow(this)
+                if (!maybeAskNearbyUpfront() && !WhatsNew.maybeShow(this)) TelemetryNotice.maybeShow(this)
             }
             maybeResumeFromParked(intent)
             maybeStartFromBtTrigger(intent)
@@ -1016,7 +1046,7 @@ class MainActivity : AppCompatActivity() {
         }
         if (!WifiGate.isWifiEnabled(this)) {
             // Don't latch autoConnectStarted — retry once the rider turns Wi‑Fi back on.
-            WifiGate.ensureEnabledOrPrompt(this)
+            WifiGate.ensureEnabledOrPrompt(this, direct = false)
             logAutoConnectSkipOnce("phone Wi‑Fi is off — turn it on to connect")
             return
         }
@@ -2443,6 +2473,7 @@ class MainActivity : AppCompatActivity() {
         /** When set with [EXTRA_START_GPX], join the bike even if not already live. */
         const val EXTRA_GPX_TO_BIKE = "gpx_to_bike"
         private const val REQ_BT_FOR_AA = 4
+        private const val REQ_NEARBY_UPFRONT = 7343
         private const val PREFS_PERMS = "perm_flow"
         private const val KEY_BT_ASKED = "bt_asked"
         private const val KEY_MIC_ASKED = "mic_asked"

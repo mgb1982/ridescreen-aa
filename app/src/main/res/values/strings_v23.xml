@@ -177,4 +177,8 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="help_interfaces">💡 Original dash while connected</string>
     <string name="help_interfaces_title">💡 Original dash while connected</string>
     <string name="help_interfaces_body">Connect on screen 3 as usual. Once Android Auto is on the dash you can switch to screen 1 or 2 to see the bike's original dash: the app stays connected and keeps logging the ride, and Android Auto keeps running in the background.\n\nGo back to screen 3 and Android Auto is there straight away.\n\nThe dash only turns on its Wi‑Fi on screen 3, so the first connection always has to be made there.</string>
+    <string name="nearby_upfront_title">Connecting to the bike</string>
+    <string name="nearby_upfront_body">To reach the dash (its Wi‑Fi and Bluetooth), Android asks for «Nearby devices». The app doesn\'t use it for anything else.</string>
+    <string name="nearby_upfront_ok">Continue</string>
+    <string name="nearby_upfront_later">Later</string>
 </resources>

@@ -177,4 +177,8 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="help_interfaces">💡 Cuadro original sin desconectar</string>
     <string name="help_interfaces_title">💡 Cuadro original sin desconectar</string>
     <string name="help_interfaces_body">Conecta en la interfaz 3 como siempre. Cuando ya salga Android Auto en el cuadro, puedes pasar a la interfaz 1 o 2 para ver el cuadro original: la app sigue conectada, registra el viaje y Android Auto sigue funcionando por detrás.\n\nAl volver a la 3, Android Auto aparece al momento.\n\nEl cuadro solo enciende su Wi‑Fi en la interfaz 3, así que la primera conexión siempre tiene que hacerse ahí.</string>
+    <string name="nearby_upfront_title">Conectar con la moto</string>
+    <string name="nearby_upfront_body">Para llegar al cuadro (su Wi‑Fi y su Bluetooth), Android pide el permiso «Dispositivos cercanos». La app no lo usa para nada más.</string>
+    <string name="nearby_upfront_ok">Continuar</string>
+    <string name="nearby_upfront_later">Más tarde</string>
 </resources>
