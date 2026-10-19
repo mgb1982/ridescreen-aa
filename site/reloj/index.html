@@ -2,6 +2,20 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<script>
+/* Language: visitors whose browser/phone is not set to Spanish, Catalan, Galician or Basque go to the
+   English page — unless they picked a language on the site (that choice always wins). Crawlers stay. */
+(function(){try{
+  if (localStorage.getItem("rs_lang")) { if (localStorage.getItem("rs_lang")!=="en") return; }
+  else {
+    var l=((navigator.languages&&navigator.languages[0])||navigator.language||"").toLowerCase();
+    if (!l || /^(es|ca|gl|eu)\b/.test(l) || /bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegram/i.test(navigator.userAgent)) return;
+  }
+  location.replace("../en/watch/"+location.hash);
+}catch(e){}})();
+</script>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Cómo instalar RideScreen AA en un reloj Wear OS y usarlo para controlar Android Auto en el cuadro de la moto.">
 <title>Guía del reloj RideScreen AA</title>
@@ -128,7 +142,7 @@ kbd { font-family: var(--body); font-weight: 700; background: var(--surface-2); 
 
   <div class="hero">
     <div>
-      <div class="eyebrow">RideScreen AA · app del reloj · <a href="../en/watch/" lang="en">English</a></div>
+      <div class="eyebrow">RideScreen AA · app del reloj · <a href="../en/watch/" lang="en" data-lang="en">English</a></div>
       <h1>Tu moto <span>en la muñeca</span></h1>
       <p class="lede">La app de Wear OS es opcional y va con la del móvil. Muestra la velocidad y la próxima maniobra, vibra antes de cada giro, te lleva hasta la moto aparcada y te deja manejar Android Auto en el cuadro sin tocar el móvil.</p>
       <p class="sub">¿Aún no tienes la app en el móvil? Empieza por la <a href="../guia/">guía del móvil</a>.</p>

@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>RideScreen AA · Wireless Android Auto on your Zontes dash</title>
 <meta name="description" content="Free, ad-free app that puts wireless Android Auto on your Zontes dash (125X, 125V, 368G, 368K, 368E…) and other bikes with an EasyConn/Carbit dash. Navigation, music, fuel prices, rides, videos and a watch app.">
@@ -142,7 +144,7 @@ footer a { color: var(--fg); }
       <a href="guide/">Guide</a>
       <a href="watch/" class="opt">Watch</a>
       <a href="https://github.com/mgb1982/ridescreen-aa" class="opt">GitHub</a>
-      <a href="../" lang="es" hreflang="es" title="Español">ES</a>
+      <a href="../" lang="es" hreflang="es" title="Español" data-lang="es">ES</a>
     </nav>
   </header>
 
@@ -242,7 +244,7 @@ footer a { color: var(--fg); }
       <a href="watch/">Watch</a>
       <a href="https://github.com/mgb1982/ridescreen-aa">Source code</a>
       <a href="https://github.com/mgb1982/ridescreen-aa/blob/main/PRIVACY.md">Privacy</a>
-      <a href="../">Español</a>
+      <a href="../" data-lang="es">Español</a>
       <a href="https://ko-fi.com/mgb1982">☕ Ko-fi</a>
     </div>
     <p>RideScreen AA is based on <a href="https://github.com/zanderp/open-cfmoto">OpenCfMoto</a> by Alexandru (zanderp). Free software under the AGPL-3.0 licence.</p>

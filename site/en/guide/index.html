@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="How to install RideScreen AA on your phone, set up Android Auto and connect to your Zontes.">
 <title>RideScreen AA guide</title>
@@ -89,7 +91,7 @@ a { color: var(--accent); }
 
 
 <div class="wrap">
-  <div class="eyebrow">RideScreen AA · phone app · <a href="../../guia/" lang="es">Español</a></div>
+  <div class="eyebrow">RideScreen AA · phone app · <a href="../../guia/" lang="es" data-lang="es">Español</a></div>
   <h1>Install and connect <span>in 10 minutes</span></h1>
   <p class="lede">Android Auto on your Zontes dash, step by step. The first time takes a few minutes; after that it's one tap, or none.</p>
   <p class="lede" style="font-size:15px;margin-top:6px">Got a Wear OS watch? Carry on with the <a href="../watch/">watch guide</a> afterwards.</p>

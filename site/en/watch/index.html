@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="How to install RideScreen AA on a Wear OS watch and use it to control Android Auto on your bike's dash.">
 <title>RideScreen AA watch guide</title>
@@ -129,7 +131,7 @@ kbd { font-family: var(--body); font-weight: 700; background: var(--surface-2); 
 
   <div class="hero">
     <div>
-      <div class="eyebrow">RideScreen AA · watch app · <a href="../../reloj/" lang="es">Español</a></div>
+      <div class="eyebrow">RideScreen AA · watch app · <a href="../../reloj/" lang="es" data-lang="es">Español</a></div>
       <h1>Your bike <span>on your wrist</span></h1>
       <p class="lede">The Wear OS app is optional and works with the phone app. It shows your speed and the next manoeuvre, vibrates before each turn, leads you back to your parked bike and lets you control Android Auto on the dash without touching your phone.</p>
       <p class="sub">Don't have the phone app yet? Start with the <a href="../guide/">phone guide</a>.</p>

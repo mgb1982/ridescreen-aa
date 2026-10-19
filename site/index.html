@@ -2,6 +2,20 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<script>
+/* Language: visitors whose browser/phone is not set to Spanish, Catalan, Galician or Basque go to the
+   English page — unless they picked a language on the site (that choice always wins). Crawlers stay. */
+(function(){try{
+  if (localStorage.getItem("rs_lang")) { if (localStorage.getItem("rs_lang")!=="en") return; }
+  else {
+    var l=((navigator.languages&&navigator.languages[0])||navigator.language||"").toLowerCase();
+    if (!l || /^(es|ca|gl|eu)\b/.test(l) || /bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegram/i.test(navigator.userAgent)) return;
+  }
+  location.replace("en/"+location.hash);
+}catch(e){}})();
+</script>
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>RideScreen AA · Android Auto sin cables en el cuadro de tu Zontes</title>
 <meta name="description" content="App gratuita y sin anuncios que pone Android Auto inalámbrico en el cuadro de tu Zontes (125X, 125V, 368G, 368K, 368E…) y otras motos con cuadro EasyConn/Carbit. Navegación, música, gasolineras, viajes, vídeos y app para el reloj.">
@@ -142,7 +156,7 @@ footer a { color: var(--fg); }
       <a href="guia/">Guía</a>
       <a href="reloj/" class="opt">Reloj</a>
       <a href="https://github.com/mgb1982/ridescreen-aa" class="opt">GitHub</a>
-      <a href="en/" lang="en" hreflang="en" title="English">EN</a>
+      <a href="en/" lang="en" hreflang="en" title="English" data-lang="en">EN</a>
     </nav>
   </header>
 
@@ -242,7 +256,7 @@ footer a { color: var(--fg); }
       <a href="https://github.com/mgb1982/ridescreen-aa">Código fuente</a>
       <a href="https://github.com/mgb1982/ridescreen-aa/blob/main/PRIVACY.md">Privacidad</a>
       <a href="https://ko-fi.com/mgb1982">☕ Ko-fi</a>
-      <a href="en/" lang="en">English</a>
+      <a href="en/" lang="en" data-lang="en">English</a>
     </div>
     <p>RideScreen AA está basada en <a href="https://github.com/zanderp/open-cfmoto">OpenCfMoto</a> de Alexandru (zanderp). Software libre bajo licencia AGPL-3.0.</p>
     <p>No es una app oficial ni está afiliada con Zontes, CFMoto, Carbit ni Google. Android Auto es una marca de Google LLC. Úsala con responsabilidad: la vista, siempre en la carretera.</p>
