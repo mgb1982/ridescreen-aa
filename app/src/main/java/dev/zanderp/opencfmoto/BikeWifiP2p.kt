@@ -336,7 +336,7 @@ object BikeWifiP2p {
                             for (d: WifiP2pDevice in peers.deviceList) {
                                 log(
                                     "$TAG peer: name='${d.deviceName}' addr=${d.deviceAddress} " +
-                                        "status=${deviceStatus(d.status)} isGO=${d.isGroupOwner}",
+                                        "status=${deviceStatus(d.status)} isGO=${d.isGroupOwner} wps=${P2pWarmUp.wpsMethods(d)}",
                                 )
                                 val peerMac = normalizeMac(d.deviceAddress)
                                 if (wantMac != null && peerMac != null && macMatches(wantMac, peerMac)) {
