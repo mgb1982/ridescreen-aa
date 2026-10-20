@@ -93,6 +93,8 @@ object BikeWifi {
         onAvailable: (Network) -> Unit,
         onLost: () -> Unit,
         log: (String) -> Unit,
+        /** Also probe for the SSID by name (Wi‑Fi Direct dashes whose network rarely shows in scans). */
+        hidden: Boolean = false,
     ) {
         val cm = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         // Tear down any previous session's callback first.
@@ -112,7 +114,11 @@ object BikeWifi {
 
         val specifier = WifiNetworkSpecifier.Builder()
             .setSsid(ssid)
-            .setWpa2Passphrase(psk)
+            .apply {
+                // No password = an open network (a Wi‑Fi Direct dash's group seen open in the scan).
+                if (psk.isNotEmpty()) setWpa2Passphrase(psk)
+                if (hidden) setIsHiddenSsid(true)
+            }
             .build()
         request = NetworkRequest.Builder()
             .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
@@ -120,7 +126,7 @@ object BikeWifi {
             .setNetworkSpecifier(specifier)
             .build()
 
-        log("requesting Wi-Fi join: $ssid …")
+        log("requesting Wi-Fi join: $ssid …${if (hidden) " (also probing for it by name)" else ""}")
         // First join of a session: Android may show "<app> wants to connect to <bike>". Say so in
         // our own words first — the most common failure was riders not tapping Connect there.
         val app = context.applicationContext
@@ -145,6 +151,7 @@ object BikeWifi {
         onAvailable: (Network) -> Unit,
         onLost: () -> Unit,
         log: (String) -> Unit,
+        hidden: Boolean = false,
     ) {
         val net = currentNetwork
         if (active && net != null && this.ssid.equals(ssid, ignoreCase = true)) {
@@ -155,7 +162,7 @@ object BikeWifi {
             onAvailable(net)
             return
         }
-        join(context, ssid, psk, onAvailable, onLost, log)
+        join(context, ssid, psk, onAvailable, onLost, log, hidden)
     }
 
     private fun registerCallback() {

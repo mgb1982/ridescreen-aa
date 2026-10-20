@@ -1688,12 +1688,20 @@ class MainActivity : AppCompatActivity() {
                 return
             }
         }
+        // Wi‑Fi Direct dash whose group we join as a normal network (Zontes T350X: QR action=8 with
+        // ssid + password). Its network rarely appears in plain scans: probe for it by name and keep
+        // Wi‑Fi Direct discovery running alongside (see [P2pWarmUp]).
+        val p2pGroupAsAp = qr.supportsP2p && !qr.supportsAp && qr.pwd.isNotEmpty() &&
+            !qr.ssid.startsWith("DIRECT-", ignoreCase = true)
+        if (p2pGroupAsAp) P2pWarmUp.start(applicationContext, qr, LogBus::log)
         BikeWifi.reuseOrJoin(
             context = applicationContext,
             ssid = qr.ssid,
             psk = qr.pwd,
+            hidden = p2pGroupAsAp,
             onAvailable = { network ->
                 WifiGate.cancelNotification(applicationContext)
+                P2pWarmUp.stop("bike Wi‑Fi joined")
                 // SoftAP got Wi-Fi up for this bike → remember it so AUTO skips P2P next time.
                 BikeMemory.setWinningTransport(applicationContext, qr.ssid, "AP")
                 if (gateOnAaSteady) {
@@ -1936,6 +1944,43 @@ class MainActivity : AppCompatActivity() {
             },
             onFailed = { reason ->
                 if (qr.pwd.isEmpty() || qr.ssid.startsWith("PHONE-HOTSPOT", ignoreCase = true)) {
+                    // v2.3 · Zontes 350D (QR with only mac + name): Wi‑Fi Direct never formed a group.
+                    // If the dash's own group shows up in the scan cache (same name, or the QR address
+                    // apart from the first octet), join it like a normal network instead: open if it
+                    // is open, else with the Carbit default password seen on other Carbit dashes.
+                    val seen = P2pWarmUp.matchingScanResults(applicationContext, qr.name ?: qr.ssid, qr.mac)
+                    seen.take(3).forEach {
+                        @Suppress("DEPRECATION")
+                        LogBus.log("[P2P] dash network in the scan cache: '${it.SSID}' ${it.BSSID} ${it.frequency} MHz ${it.level} dBm ${it.capabilities}")
+                    }
+                    val legacy = seen.firstOrNull()
+                    @Suppress("DEPRECATION")
+                    val legacySsid = legacy?.SSID?.takeIf { it.isNotBlank() }
+                    if (legacy != null && legacySsid != null && !qr.ssid.startsWith("PHONE-HOTSPOT", ignoreCase = true)) {
+                        val caps = legacy.capabilities.orEmpty()
+                        val open = !caps.contains("WPA") && !caps.contains("SAE") && !caps.contains("WEP") && !caps.contains("PSK")
+                        val psk = if (open) "" else CARBIT_DEFAULT_PSK
+                        LogBus.log("P2P join failed: $reason — trying the dash's network '$legacySsid' as normal Wi‑Fi (${if (open) "open" else "Carbit default password"})")
+                        if (!WifiGate.ensureEnabledOrNotify(applicationContext)) return@connect
+                        BikeWifi.join(
+                            context = applicationContext,
+                            ssid = legacySsid,
+                            psk = psk,
+                            onAvailable = { network ->
+                                WifiGate.cancelNotification(applicationContext)
+                                LogBus.log("[P2P] joined the dash's network '$legacySsid' as normal Wi‑Fi")
+                                if (gateOnAaSteady) BikeLink.markWifiReady(network)
+                                else {
+                                    ConnectionState.set(Phase.PXC_CONNECTING)
+                                    try { (BikeLink.prober ?: prober).start(network) } catch (e: Exception) { LogBus.log("prober start failed: $e") }
+                                }
+                            },
+                            onLost = { LogBus.log("bike network lost") },
+                            log = LogBus::log,
+                        )
+                        return@connect
+                    }
+                    if (seen.isEmpty()) LogBus.log("[P2P] no network from the dash in the scan cache (name '${qr.name ?: qr.ssid}', address ${qr.mac})")
                     LogBus.log("P2P join failed: $reason — no SoftAP credentials to fall back to")
                     ConnectionState.set(Phase.ERROR, "Wi‑Fi Direct failed")
                     return@connect
@@ -2439,6 +2484,8 @@ class MainActivity : AppCompatActivity() {
         const val EXTRA_GPX_TO_BIKE = "gpx_to_bike"
         private const val REQ_BT_FOR_AA = 4
         private const val REQ_P2P_PERM = 7344
+        /** Group password of the Carbit Wi‑Fi Direct dashes we know (CFMoto 800MT "DIRECT-CF-…" QR). */
+        private const val CARBIT_DEFAULT_PSK = "12345678"
         private const val REQ_LOCAL_NET = 7345
         /** Android 17 (API 37); spelled out while compileSdk is older. */
         private const val PERM_LOCAL_NETWORK = "android.permission.ACCESS_LOCAL_NETWORK"
