@@ -1668,12 +1668,14 @@ class MainActivity : AppCompatActivity() {
         }
         if (effUseP2p) {
             val isDirect = qr.ssid.startsWith("DIRECT-", ignoreCase = true)
-            // P2P-only QRs with a SoftAP-style SSID but no MAC burn ~40s on MAC ERROR
-            // (Voge-5G / ZT5G / etc.). Prefer SoftAP immediately when we have a password.
-            if (!isDirect && qr.mac.isNullOrBlank() && qr.pwd.isNotEmpty()) {
+            // P2P-only QRs with a SoftAP-style SSID and a password burn ~40s on MAC ERROR
+            // (Voge-5G / ZT5G…). Prefer SoftAP immediately, MAC or not: the Zontes T350X (QR
+            // action=8 + ssid ZT5G… + pwd + mac, 20 Oct 2026) never formed a P2P group, then joined
+            // its SoftAP in 3 s.
+            if (!isDirect && qr.pwd.isNotEmpty()) {
                 log(
-                    "→ QR says P2P-only; SSID '${qr.ssid}' has no MAC — " +
-                        "joining SoftAP first (skip Wi‑Fi Direct by MAC)",
+                    "→ QR says P2P-only; SSID '${qr.ssid}' is not DIRECT-* and has a password — " +
+                        "joining SoftAP first (skip Wi‑Fi Direct)",
                 )
             } else {
                 if (!isDirect) {

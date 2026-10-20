@@ -136,7 +136,7 @@ class PxcHandshake(
                 }
                 val channel = lastClientInfo?.optString("channel")?.trim().orEmpty()
                 if (!clockFixDash(channel, ClockLab.phoneHotspotDash)) {
-                    log("[APPSTATUS] not sending (channel=${channel.ifEmpty { "-" }}, only Zontes $ZONTES_CHANNEL, the 368 and the 125M)")
+                    log("[APPSTATUS] not sending (channel=${channel.ifEmpty { "-" }}, only Zontes $ZONTES_CHANNEL, the 368, the T350X and the 125M)")
                     return@Thread
                 }
                 // The official app reports the phone's real portrait screen size here.
@@ -355,6 +355,13 @@ class PxcHandshake(
         const val ZONTES_368_CHANNEL = "21334"
 
         /**
+         * Zontes T350X (2023 dash, HUName ZHKJ08, sdk 0.9.19.1, 20 Oct 2026): links CAR_CTRL and
+         * CAR_DATA, then only polls 0x10430 / 0x10630 every 2 s and never opens the media ports —
+         * like the 368 that kept its QR on screen. Give it the official app's session messages.
+         */
+        const val ZONTES_T350X_CHANNEL = "34808"
+
+        /**
          * Dashes that get the Zontes clock fix (APPSTATUS loop, CHECK_SN_RESULT on CAR_DATA and the
          * time JSON in 0x10451): the 21340 family, and the Zontes 125M — channel 21322 on the phone's
          * hotspot. Other Carbit dashes keep the old path: upstream 2.0.12 sent a filled 0x10451 to
@@ -362,7 +369,7 @@ class PxcHandshake(
          */
         fun clockFixDash(channel: String?, phoneHotspotDash: Boolean): Boolean {
             val ch = channel?.trim().orEmpty()
-            return ch == ZONTES_CHANNEL || ch == ZONTES_368_CHANNEL ||
+            return ch == ZONTES_CHANNEL || ch == ZONTES_368_CHANNEL || ch == ZONTES_T350X_CHANNEL ||
                 (ch == ZONTES_125M_CHANNEL && phoneHotspotDash)
         }
         /** Master switch for the Zontes APPSTATUS loop. */
