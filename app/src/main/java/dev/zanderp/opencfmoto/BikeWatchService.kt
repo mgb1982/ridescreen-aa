@@ -35,6 +35,8 @@ class BikeWatchService : Service() {
     private val h = Handler(Looper.getMainLooper())
     private var mode = Mode.LONG
     private var until = 0L
+    /** While a SHORT burst interrupts a LONG wait: when the LONG wait ends. 0 = none. */
+    private var longUntil = 0L
     private var ssid = ""
     private var checks = 0
     private var wifiOffNotified = false
@@ -47,10 +49,18 @@ class BikeWatchService : Service() {
         ssid = BikeMemory.lastQr(this)?.ssid.orEmpty()
         if (ssid.isBlank()) { stopSelf(); return START_NOT_STICKY }
         val now = SystemClock.elapsedRealtime()
-        // A SHORT request never shortens an ongoing LONG wait.
-        if (!running || newMode == Mode.LONG || mode == Mode.SHORT) {
+        if (running && mode == Mode.LONG && newMode == Mode.SHORT) {
+            // The dash's Bluetooth just connected during the all-day LONG wait. That used to be
+            // ignored ("a SHORT request never shortens a LONG wait"), so no scans and no background
+            // join ran and the bike was never seen (125X log, 20 Oct 2026: BT trigger twice, no
+            // connect). Do the SHORT burst now and fall back to the LONG wait afterwards.
+            longUntil = until
+            mode = Mode.SHORT
+            until = now + SHORT_MAX_MS
+        } else if (!running || newMode == Mode.LONG || mode == Mode.SHORT) {
             mode = newMode
             until = now + if (mode == Mode.LONG) LONG_MAX_MS else SHORT_MAX_MS
+            if (mode == Mode.LONG) longUntil = 0L
         }
         try {
             ServiceCompat.startForeground(
@@ -73,7 +83,17 @@ class BikeWatchService : Service() {
     private val check = object : Runnable {
         override fun run() {
             if (!running) return
-            if (SystemClock.elapsedRealtime() > until) { stopNow("time limit"); return }
+            val nowMs = SystemClock.elapsedRealtime()
+            if (nowMs > until) {
+                if (mode == Mode.SHORT && longUntil > nowMs) {
+                    LogBus.log("[WATCH] Bluetooth burst over — back to the low-power wait")
+                    mode = Mode.LONG; until = longUntil; longUntil = 0L
+                    stopProbe()
+                    h.postDelayed(this, LONG_EVERY_MS)
+                    return
+                }
+                stopNow("time limit"); return
+            }
             checks++
             if (mode == Mode.SHORT) {
                 try { (applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager).startScan() } catch (_: Exception) {}
