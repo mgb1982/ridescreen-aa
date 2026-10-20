@@ -176,13 +176,13 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="remote_dedicated_service_explain">For the remote to work with the phone locked, turn on «RideScreen AA · handlebar remote» in Accessibility. It only reads that remote’s keys while Android Auto is on the dash.</string>
     <string name="help_interfaces">💡 Original dash while connected</string>
     <string name="help_interfaces_title">💡 Original dash while connected</string>
-    <string name="help_interfaces_body">Connect on screen 3 as usual. Once Android Auto is on the dash you can switch to screen 1 or 2 to see the bike\'s original dash: the app stays connected and keeps logging the ride, and Android Auto keeps running in the background.\n\nGo back to screen 3 and Android Auto is there straight away.\n\nThe dash only turns on its Wi‑Fi on screen 3, so the first connection always has to be made there.</string>
+    <string name="help_interfaces_body">Connect on the dash\'s screen mirroring interface as usual (on the 125X, screen 3). Once Android Auto is on the dash you can switch to another interface to see the bike\'s original dash: the app stays connected and keeps logging the ride, and Android Auto keeps running in the background.\n\nGo back to the screen mirroring interface and Android Auto is there straight away.\n\nThe dash only turns on its Wi‑Fi on that interface, so the first connection always has to be made there.</string>
     <string name="nearby_upfront_title">Connecting to the bike</string>
     <string name="nearby_upfront_body">To reach the dash (its Wi‑Fi and Bluetooth), Android asks for «Nearby devices». The app doesn\'t use it for anything else.</string>
     <string name="nearby_upfront_ok">Continue</string>
     <string name="nearby_upfront_later">Later</string>
-    <string name="conn_detail_dash_no_media">The dash isn\'t asking for the picture: put it on screen 3 and tap Connect (if it still won\'t, switch the ignition off and on)</string>
-    <string name="conn_detail_dash_no_media_retry">Waiting for the dash: put it on screen 3</string>
+    <string name="conn_detail_dash_no_media">The dash isn\'t asking for the picture: put it on its screen mirroring interface (screen 3 on the 125X) and tap Connect (if it still won\'t, switch the ignition off and on)</string>
+    <string name="conn_detail_dash_no_media_retry">Waiting for the dash: put it on its screen mirroring interface</string>
     <string name="ext_control_title">Remote with Key Mapper or Tasker</string>
     <string name="ext_control_desc">For a handlebar remote that only drives Android Auto (the intercom keeps the music): in Key Mapper (Play Store), turn on Expert mode with Shizuku so it works with the screen off, and map each button to the action Intent → Broadcast receiver with one of these names. RideScreen only obeys them while Android Auto is on the dash. Tasker and MacroDroid work too.</string>
     <string name="ext_control_switch">Accept actions from other apps</string>
