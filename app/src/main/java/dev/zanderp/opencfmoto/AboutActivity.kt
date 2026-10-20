@@ -23,7 +23,7 @@ class AboutActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_about)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.about_root)) { v, insets ->
-            val b = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val b = insets.getInsets(SafeInsets.BARS)
             v.setPadding(b.left, b.top, b.right, b.bottom)
             insets
         }

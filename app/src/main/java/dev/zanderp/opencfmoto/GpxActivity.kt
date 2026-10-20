@@ -145,7 +145,7 @@ class GpxActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_gpx)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.gpx_activity_root)) { v, insets ->
-            val b = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val b = insets.getInsets(SafeInsets.BARS)
             v.setPadding(b.left + 16, b.top + 16, b.right + 16, b.bottom + 16)
             insets
         }

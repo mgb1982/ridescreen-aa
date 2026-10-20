@@ -55,7 +55,7 @@ class ControlsActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_controls)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.controls_root)) { v, insets ->
-            val b = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val b = insets.getInsets(SafeInsets.BARS)
             v.setPadding(b.left, b.top, b.right, b.bottom)
             insets
         }
@@ -328,11 +328,11 @@ class ControlsActivity : AppCompatActivity() {
 
         if (on) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-            insetsController.hide(WindowInsetsCompat.Type.systemBars())
+            insetsController.hide(SafeInsets.BARS)
             Toast.makeText(this, "Pad fullscreen — screen stays on. Press Back to exit.", Toast.LENGTH_SHORT).show()
         } else {
             window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-            insetsController.show(WindowInsetsCompat.Type.systemBars())
+            insetsController.show(SafeInsets.BARS)
         }
     }
 
