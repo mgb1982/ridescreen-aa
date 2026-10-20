@@ -54,6 +54,7 @@ object BikeWifiP2p {
     private var channel: WifiP2pManager.Channel? = null
     private var receiver: BroadcastReceiver? = null
     private var appContext: Context? = null
+    private const val RETRY_EVERY_MS = 4_000L
     @Volatile private var active = false
     @Volatile private var connected = false
     @Volatile private var connectIssued = false
@@ -117,6 +118,47 @@ object BikeWifiP2p {
         }
 
         startTimeout(onFailed, log, timeoutMs)
+        startRetries(ctx, mgr, chan, qr, log)
+    }
+
+    /**
+     * Some phones (MediaTek / Xiaomi, Zontes 350D field log 20 Oct 2026) reject the first
+     * discoverPeers() and connect() with a bare ERROR and never surface the dash afterwards. Keep
+     * re-trying every few seconds until the group forms or the timeout fails the join, and say once
+     * what the phone's Location and Wi‑Fi switches are (both are usual causes of that ERROR).
+     */
+    @SuppressLint("MissingPermission")
+    private fun startRetries(
+        ctx: Context,
+        mgr: WifiP2pManager,
+        chan: WifiP2pManager.Channel,
+        qr: QrData,
+        log: (String) -> Unit,
+    ) {
+        try {
+            val lm = ctx.getSystemService(Context.LOCATION_SERVICE) as? android.location.LocationManager
+            val wm = ctx.getSystemService(Context.WIFI_SERVICE) as? android.net.wifi.WifiManager
+            val loc = lm?.let { androidx.core.location.LocationManagerCompat.isLocationEnabled(it) }
+            log("$TAG phone state: location=${loc ?: "?"} wifi=${wm?.isWifiEnabled ?: "?"}")
+        } catch (_: Exception) {}
+        thread(name = "p2p-retry", isDaemon = true) {
+            var n = 0
+            while (active && !connected && n < 8) {
+                try { Thread.sleep(RETRY_EVERY_MS) } catch (_: InterruptedException) { return@thread }
+                if (!active || connected || connectIssued) continue
+                n++
+                android.os.Handler(Looper.getMainLooper()).post {
+                    if (!active || connected || connectIssued) return@post
+                    mgr.discoverPeers(chan, object : WifiP2pManager.ActionListener {
+                        override fun onSuccess() { log("$TAG retry $n: discoverPeers started") }
+                        override fun onFailure(reason: Int) {
+                            log("$TAG retry $n: discoverPeers failed (${reasonStr(reason)})")
+                        }
+                    })
+                    attemptMacJoin(mgr, chan, qr, log)
+                }
+            }
+        }
     }
 
     @SuppressLint("MissingPermission")
