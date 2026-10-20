@@ -182,7 +182,11 @@ class AndroidAutoService : Service() {
         // Only park for a real Wi-Fi outage — a dash-only drop with Wi-Fi still up is the prober's job.
         val apConnected = BikeWifi.currentNetwork != null
         val p2pConnected = BikeWifiP2p.isConnected
-        if (!bikeTransportConnected(apConnected, p2pConnected)) {
+        // Phone-hotspot dashes (Zontes 125M) are neither on the bike's AP nor on P2P: the dash joins
+        // our own hotspot. Frames still reaching the dash mean the link is alive, whatever the
+        // transport — without this the 125M was parked 3 min into every ride (20 Oct 2026 log).
+        val liveLink = BikeLink.prober?.let { it.isRunning && it.msSinceLastFrame() < LIVE_LINK_MS } == true
+        if (!bikeTransportConnected(apConnected, p2pConnected, liveLink)) {
             if (AppSettings.keepWifiAfterDisconnect(this)) {
                 wifiDownSince = 0L
                 return
@@ -725,8 +729,11 @@ class AndroidAutoService : Service() {
         private const val GRACE_MS = 180_000L          // SoftAP blinks; 60s was parking mid-ride
         private const val RESUME_STEADY_TIMEOUT_MS = 12_000L // wait for AA video before falling back
 
-        internal fun bikeTransportConnected(apConnected: Boolean, p2pConnected: Boolean): Boolean =
-            apConnected || p2pConnected
+        internal fun bikeTransportConnected(apConnected: Boolean, p2pConnected: Boolean, liveLink: Boolean = false): Boolean =
+            apConnected || p2pConnected || liveLink
+
+        /** Frames sent to the dash this recently count as a live bike link (see the supervisor). */
+        internal const val LIVE_LINK_MS = 15_000L
 
         /** Intent extra: MainActivity should re-project on open (BAL-safe resume after a park). */
         const val EXTRA_RESUME = "dev.zanderp.opencfmoto.RESUME_PROJECTION"
