@@ -85,6 +85,8 @@ object VanProbeUi {
             for (f in vals) {
                 sb.append("\n").append(VanProtocol.name(f.id)).append(" (").append(f.id).append(") = ").append(f.raw)
                 if (f.bytes == 4) sb.append("  [0x").append(java.lang.Long.toHexString(f.raw and 0xFFFFFFFFL)).append("]")
+                val text = VanProtocol.describe(f)
+                if (text.isNotEmpty()) sb.append("\n   → ").append(text)
             }
         }
         sb.append("\n\n").append(activity.getString(R.string.van_log_hint))

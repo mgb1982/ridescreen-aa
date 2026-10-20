@@ -61,4 +61,14 @@ class VanProtocolTest {
         assertEquals(1, out.size)
         assertEquals(listOf(1, 2, 3), VanProtocol.handshakeItems(out[0].payload))
     }
+
+    @Test fun describesFieldsLikeTheOfficialApp() {
+        // Tyre pressure 2.6 / 2.5 in the top two bytes; temps carry the -40 offset.
+        val tyreP = VanProtocol.Field(10, (26L shl 24) or (25L shl 16), 4)
+        assertEquals("2.6 / 2.5 (bar?)", VanProtocol.describe(tyreP))
+        val tyreT = VanProtocol.Field(11, (60L shl 24) or (58L shl 16), 4)
+        assertEquals("20 / 18 °C", VanProtocol.describe(tyreT))
+        assertEquals("50 °C", VanProtocol.describe(VanProtocol.Field(9, 90, 1)))
+        assertEquals("12 V", VanProtocol.describe(VanProtocol.Field(17, 12, 1)))
+    }
 }

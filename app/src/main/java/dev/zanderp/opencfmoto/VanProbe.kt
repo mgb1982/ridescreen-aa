@@ -153,7 +153,10 @@ internal class VanProbe(
             }
             val notify = NOTIFY_CHARS.mapNotNull { hud.getCharacteristic(it) }
                 .filter { it.properties and (BluetoothGattCharacteristic.PROPERTY_NOTIFY or BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0 }
-            writeChar = WRITE_CHARS.firstNotNullOfOrNull { hud.getCharacteristic(it) }
+            // Same preference order as the official app: V3 (b364 notify+write), V2 (b363), V1 (b362).
+            writeChar = WRITE_CHARS.mapNotNull { hud.getCharacteristic(it) }.firstOrNull {
+                it.properties and (BluetoothGattCharacteristic.PROPERTY_WRITE or BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) != 0
+            }
             log("[VAN] notify=${notify.joinToString { it.uuid.toString().take(8) }} write=${writeChar?.uuid?.toString()?.take(8)}")
             for (c in notify) {
                 runCatching { g.setCharacteristicNotification(c, true) }
@@ -255,7 +258,7 @@ internal class VanProbe(
     private fun record(tag: String, fields: List<VanProtocol.Field>) {
         for (f in fields) {
             values[f.id] = f
-            log("[VAN] $tag ${VanProtocol.name(f.id)}(${f.id}) = ${f.raw} (0x${java.lang.Long.toHexString(f.raw and 0xFFFFFFFFL)})")
+            log("[VAN] $tag ${VanProtocol.name(f.id)}(${f.id}) = ${f.raw} (0x${java.lang.Long.toHexString(f.raw and 0xFFFFFFFFL)}) → ${VanProtocol.describe(f)}")
         }
         if (fields.isEmpty()) log("[VAN] $tag frame with no decodable field")
     }
@@ -275,6 +278,7 @@ internal class VanProbe(
             UUID.fromString("0000b364-d6d8-c7ec-bdf0-eab1bfc6bcbc"),
         )
         private val WRITE_CHARS = listOf(
+            UUID.fromString("0000b364-d6d8-c7ec-bdf0-eab1bfc6bcbc"),
             UUID.fromString("0000b363-d6d8-c7ec-bdf0-eab1bfc6bcbc"),
             UUID.fromString("0000b362-d6d8-c7ec-bdf0-eab1bfc6bcbc"),
         )

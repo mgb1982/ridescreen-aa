@@ -75,6 +75,32 @@ internal object VanProtocol {
         return out
     }
 
+    /**
+     * Human reading of a field, following how the official app formats it (VANFragment): byte values
+     * as-is for fuel %, water °C, battery V and range km; oil and tyre temperatures carry a −40
+     * offset; tyre pressure is two bytes (bits 24–31 then 16–23) in 0.1 steps (labelled "pa" in the
+     * app but by magnitude bar — unconfirmed), and front/rear order is not confirmed either.
+     * Trip and odometer are shown raw: their unit is unknown until a live value is compared.
+     */
+    fun describe(f: Field): String {
+        val v = f.raw and 0xFFFFFFFFL
+        val a = ((v shr 24) and 0xFF).toInt()
+        val b = ((v shr 16) and 0xFF).toInt()
+        return when (f.id) {
+            6 -> "${f.raw} %"
+            7 -> "${f.raw} °C"
+            9 -> "${f.raw - 40} °C"
+            17 -> "${f.raw} V"
+            12 -> "${f.raw} km"
+            10 -> "%.1f / %.1f (bar?)".format(java.util.Locale.US, a * 0.1, b * 0.1)
+            11 -> "${a - 40} / ${b - 40} °C"
+            13 -> "${f.raw} (trip, unit?)"
+            14 -> "${f.raw} (odometer, unit?)"
+            5 -> "warning bits 0x" + java.lang.Long.toHexString(v)
+            else -> ""
+        }
+    }
+
     fun hex(bytes: ByteArray): String = bytes.joinToString(" ") { "%02X".format(it) }
 
     /** Reassembles frames from BLE notifications (the dash may split them in 20-byte chunks). */
