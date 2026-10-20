@@ -196,4 +196,7 @@
     <string name="gw_cycle">Ciclo estimado: %1$d s</string>
     <string name="gw_ready">✅ Suficiente para avisar en el cuadro</string>
     <string name="gw_learning">Aprendiendo: necesita %1$d predicciones y un %2$d %% de aciertos</string>
+    <string name="tv_clips_pick">Marca los clips que quieres en el vídeo</string>
+    <string name="tv_clips_overlap">⚠️ Hay clips marcados que se solapan en el tiempo; deja solo uno de cada momento</string>
+    <string name="tv_clips_none">Marca al menos un clip</string>
 </resources>

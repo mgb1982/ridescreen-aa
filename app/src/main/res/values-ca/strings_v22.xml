@@ -190,4 +190,7 @@
     <string name="gw_cycle">Cicle estimat: %1$d s</string>
     <string name="gw_ready">✅ Suficient per avisar al quadre</string>
     <string name="gw_learning">Aprenent: necessita %1$d prediccions i un %2$d %% d\'encerts</string>
+    <string name="tv_clips_pick">Marca els clips que vols al vídeo</string>
+    <string name="tv_clips_overlap">⚠️ Hi ha clips marcats que se solapen en el temps; deixa\'n només un de cada moment</string>
+    <string name="tv_clips_none">Marca almenys un clip</string>
 </resources>

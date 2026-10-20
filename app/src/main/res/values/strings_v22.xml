@@ -190,4 +190,7 @@
     <string name="gw_cycle">Estimated cycle: %1$d s</string>
     <string name="gw_ready">✅ Good enough for dash hints</string>
     <string name="gw_learning">Learning: needs %1$d predictions and %2$d %% right</string>
+    <string name="tv_clips_pick">Tick the clips you want in the video</string>
+    <string name="tv_clips_overlap">⚠️ Some ticked clips overlap in time; keep only one per moment</string>
+    <string name="tv_clips_none">Tick at least one clip</string>
 </resources>

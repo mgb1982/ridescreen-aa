@@ -44,7 +44,11 @@ class TripVideoActivity : AppCompatActivity() {
     private lateinit var fastBtn: MaterialButton
     private lateinit var makeBtn: MaterialButton
     private lateinit var resultRow: LinearLayout
-    private var clips: List<TripVideo.Clip> = emptyList()
+    /** Every clip found for this trip; [clips] is the ones the rider left ticked (v2.3). */
+    private var allClips: List<TripVideo.Clip> = emptyList()
+    private val excluded = mutableSetOf<String>()
+    private val clips: List<TripVideo.Clip> get() = allClips.filter { it.uri.toString() !in excluded }
+    private lateinit var clipBox: LinearLayout
     private var speed = 1f
     private var offsetS = 0
     private lateinit var offsetLabel: TextView
@@ -106,6 +110,8 @@ class TripVideoActivity : AppCompatActivity() {
         root.addView(body(getString(R.string.tv_how)))
         status = body("").apply { setTextColor(color(R.color.text_primary)); textSize = 15f }
         root.addView(status)
+        clipBox = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        root.addView(clipBox)
         list = body("")
         root.addView(list)
 
@@ -346,23 +352,93 @@ class TripVideoActivity : AppCompatActivity() {
             val found = TripVideo.findClips(this, trip)
             runOnUiThread {
                 if (isFinishing || isDestroyed) return@runOnUiThread
-                clips = found
+                allClips = found
                 if (found.isEmpty()) {
                     status.setText(if (hasVideoAccess()) R.string.tv_none else R.string.tv_no_permission)
                     list.text = ""
+                    clipBox.removeAllViews()
                     return@runOnUiThread
                 }
-                val total = found.sumOf { it.durationMs } / 1000
-                status.text = getString(R.string.tv_found, found.size, total / 60, total % 60)
-                val fmt = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-                list.text = found.joinToString("\n") { "• ${fmt.format(Date(it.startMs))} · ${it.durationMs / 1000} s · ${it.name}" }
-                makeBtn.isEnabled = true; bestBtn.isEnabled = true
+                loadExcluded()
+                showClips()
                 recallOffset()
                 renderJob()
-                refreshPreview()
             }
         }
     }
+
+    // ── v2.3: pick which of the found clips go into the video (all ticked by default).
+
+    private fun excludedKey() = "excluded_" + trip.id
+
+    private fun loadExcluded() {
+        excluded.clear()
+        val saved = prefs().getStringSet(excludedKey(), emptySet()).orEmpty()
+        excluded += saved.filter { u -> allClips.any { it.uri.toString() == u } }
+    }
+
+    private fun saveExcluded() = prefs().edit().putStringSet(excludedKey(), excluded.toSet()).apply()
+
+    private fun showClips() {
+        clipBox.removeAllViews()
+        val fmt = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+        if (allClips.size > 1) clipBox.addView(body(getString(R.string.tv_clips_pick)))
+        val thumbs = arrayOfNulls<android.widget.ImageView>(allClips.size)
+        allClips.forEachIndexed { i, c ->
+            val row = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL; gravity = android.view.Gravity.CENTER_VERTICAL
+                setPadding(0, dp(4), 0, dp(4))
+            }
+            val box = android.widget.CheckBox(this).apply {
+                isChecked = c.uri.toString() !in excluded
+                buttonTintList = android.content.res.ColorStateList.valueOf(color(R.color.brand_orange))
+                contentDescription = c.name
+                setOnCheckedChangeListener { _, on ->
+                    if (on) excluded -= c.uri.toString() else excluded += c.uri.toString()
+                    saveExcluded(); onSelectionChanged()
+                }
+            }
+            row.addView(box)
+            val img = android.widget.ImageView(this).apply {
+                scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
+                setBackgroundColor(android.graphics.Color.BLACK)
+                setOnClickListener { box.isChecked = !box.isChecked }
+            }
+            thumbs[i] = img
+            row.addView(img, LinearLayout.LayoutParams(dp(80), dp(45)).apply { marginEnd = dp(10) })
+            val secs = c.durationMs / 1000
+            row.addView(TextView(this).apply {
+                text = "${fmt.format(Date(c.startMs))}–${fmt.format(Date(c.startMs + c.durationMs))} · " +
+                    "${secs / 60}:${String.format(Locale.US, "%02d", secs % 60)}\n${c.name}"
+                textSize = 13f; setTextColor(color(R.color.text_primary))
+                setOnClickListener { box.isChecked = !box.isChecked }
+            }, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+            clipBox.addView(row)
+        }
+        val forThumbs = allClips.toList()
+        io.execute {
+            forThumbs.forEachIndexed { i, c ->
+                val bmp = TripVideo.thumbnail(this, c.uri) ?: return@forEachIndexed
+                runOnUiThread { if (!isFinishing && !isDestroyed) thumbs.getOrNull(i)?.setImageBitmap(bmp) }
+            }
+        }
+        onSelectionChanged()
+    }
+
+    /** Count, buttons, overlap warning and preview follow the ticked clips. */
+    private fun onSelectionChanged() {
+        val sel = clips
+        val total = sel.sumOf { it.durationMs } / 1000
+        status.text = if (sel.isEmpty()) getString(R.string.tv_clips_none) else getString(R.string.tv_found, sel.size, total / 60, total % 60)
+        val overlap = sel.zipWithNext().any { (a, b) -> b.startMs < a.startMs + a.durationMs - 1000 }
+        list.text = if (overlap) getString(R.string.tv_clips_overlap) else ""
+        renderJob()
+        if (!TripVideoJob.busy || TripVideoJob.tripId != trip.id) { makeBtn.isEnabled = sel.isNotEmpty(); bestBtn.isEnabled = sel.isNotEmpty() }
+        val first = sel.firstOrNull()
+        if (first?.uri != previewClip) { previewClip = first?.uri; still = null; refreshPreview() }
+    }
+
+    private var previewClip: Uri? = null
 
     private fun markOffset() {
         offsetLabel.text = (if (offsetS == 0) getString(R.string.tv_sync_zero) else getString(R.string.tv_sync, (if (offsetS > 0) "+" else "") + offsetS)) +
