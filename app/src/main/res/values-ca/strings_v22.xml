@@ -193,4 +193,6 @@
     <string name="tv_clips_pick">Marca els clips que vols al vídeo</string>
     <string name="tv_clips_overlap">⚠️ Hi ha clips marcats que se solapen en el temps; deixa\'n només un de cada moment</string>
     <string name="tv_clips_none">Marca almenys un clip</string>
+    <string name="tv_look_drag">Arrossega el mapa, la velocitat o el títol a la previsualització per posar-los on vulguis; el vídeo sortirà tal qual.</string>
+    <string name="tv_look_reset">↺ Posicions originals</string>
 </resources>

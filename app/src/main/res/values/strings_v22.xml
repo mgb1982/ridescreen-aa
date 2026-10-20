@@ -193,4 +193,6 @@
     <string name="tv_clips_pick">Tick the clips you want in the video</string>
     <string name="tv_clips_overlap">⚠️ Some ticked clips overlap in time; keep only one per moment</string>
     <string name="tv_clips_none">Tick at least one clip</string>
+    <string name="tv_look_drag">Drag the map, the speed or the title on the preview to put them where you like; the video will be made just like that.</string>
+    <string name="tv_look_reset">↺ Default positions</string>
 </resources>

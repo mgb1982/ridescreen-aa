@@ -55,6 +55,17 @@ class TripVideoActivity : AppCompatActivity() {
     // v2.3 look
     private var style = VideoStyle.CLASSIC
     private var mapKind = VideoMap.LINE
+    /** v2.3: where the rider dragged the map, speed, title… (per style). */
+    private var layout = OverlayLayout()
+    private var previewLook: TripLook? = null
+    private var previewBase: android.graphics.Bitmap? = null
+    private val previewPlaced = LinkedHashMap<OverlayPart, android.graphics.RectF>()
+    private var dragPart: OverlayPart? = null
+    private var dragHome = android.graphics.RectF()
+    private var dragStart = floatArrayOf(0f, 0f)
+    private var dragFrom = PartOffset(0f, 0f)
+    private var dragJob = 0
+    private lateinit var resetLayoutBtn: View
     private var cards = true
     private var watermark = true
     private var streets: StreetTiles? = null
@@ -129,10 +140,17 @@ class TripVideoActivity : AppCompatActivity() {
             setBackgroundColor(android.graphics.Color.BLACK); visibility = View.GONE
         }
         root.addView(preview, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(320)).apply { topMargin = dp(6) })
+        preview.setOnTouchListener { _, e -> onPreviewTouch(e) }
+        root.addView(body(getString(R.string.tv_look_drag)))
+        resetLayoutBtn = button(getString(R.string.tv_look_reset)) {
+            layout = OverlayLayout(); saveLayout(); markLook(); refreshPreview()
+        }
+        root.addView(resetLayoutBtn, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
         root.addView(body(getString(R.string.tv_style)))
         styleRow = chipRow(VideoStyle.values().map { getString(it.labelRes) }) { i ->
             val before = nightStyle(style); style = VideoStyle.values()[i]
             if (nightStyle(style) != before) streets = null
+            loadLayout()
             saveLook(); markLook(); refreshPreview()
         }
         root.addView(scrollRow(styleRow))
@@ -481,7 +499,7 @@ class TripVideoActivity : AppCompatActivity() {
             ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             askNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
-        val req = TripVideoJob.Request(trip.id, clips, speed, offsetS * 1000L, TripVideo.Look(style, mapKind, cards, watermark),
+        val req = TripVideoJob.Request(trip.id, clips, speed, offsetS * 1000L, TripVideo.Look(style, mapKind, cards, watermark, layout),
             music, duck, highlights)
         resultRow.visibility = View.GONE
         if (!TripVideoJob.start(this, req)) {
@@ -508,6 +526,7 @@ class TripVideoActivity : AppCompatActivity() {
         for (i in 0 until styleRow.childCount) styleRow.getChildAt(i).alpha = if (i == style.ordinal) 1f else 0.45f
         for (i in 0 until mapRow.childCount) mapRow.getChildAt(i).alpha = if (i == mapKind.ordinal) 1f else 0.45f
         (window.decorView.findViewWithTag<View>("wm"))?.isEnabled = cards
+        if (::resetLayoutBtn.isInitialized) resetLayoutBtn.visibility = if (layout.isDefault) View.GONE else View.VISIBLE
     }
 
     private fun prefs() = getSharedPreferences("trip_video", MODE_PRIVATE)
@@ -520,7 +539,10 @@ class TripVideoActivity : AppCompatActivity() {
             contentResolver.persistedUriPermissions.any { it.uri == u && it.isReadPermission }
         }
         duck = p.getBoolean("duck", true)
+        loadLayout()
     }
+    private fun loadLayout() { layout = OverlayLayout.decode(prefs().getString("layout_" + style.name, null)) }
+    private fun saveLayout() = prefs().edit().putString("layout_" + style.name, layout.encode()).apply()
     private fun saveLook() = prefs().edit().putString("style", style.name).putString("map", mapKind.name)
         .putBoolean("cards", cards).putBoolean("wm", watermark)
         .putString("music", music?.toString()).putBoolean("duck", duck).apply()
@@ -536,13 +558,93 @@ class TripVideoActivity : AppCompatActivity() {
             if (wantStreets) streets = StreetTiles.prepare(this, trip, nightStyle(style)) { _, _ -> }
             val base = still ?: TripVideo.stillOf(this, clip).also { still = it } ?: return@execute
             val out = base.copy(android.graphics.Bitmap.Config.ARGB_8888, true)
-            val look = TripLook(this, trip, TripNames.title(this, trip), style, mapKind, streets)
-            look.drawFrame(android.graphics.Canvas(out), out.width, out.height, clip.startMs + offsetS * 1000L + clip.durationMs / 2)
+            val look = TripLook(this, trip, TripNames.title(this, trip), style, mapKind, streets, layout)
+            look.drawFrame(android.graphics.Canvas(out), out.width, out.height, previewTime(clip))
+            val placed = look.placed.mapValues { android.graphics.RectF(it.value) }
             runOnUiThread {
                 if (job != previewJob || isFinishing || isDestroyed) return@runOnUiThread
+                previewLook = look; previewBase = base
+                previewPlaced.clear(); previewPlaced.putAll(placed)
                 preview.setImageBitmap(out); preview.visibility = View.VISIBLE
                 if (wantStreets) status.text = if (streets == null) getString(R.string.tv_map_failed)
                     else getString(R.string.tv_found, clips.size, clips.sumOf { it.durationMs } / 60000, clips.sumOf { it.durationMs } / 1000 % 60)
+            }
+        }
+    }
+
+    private fun previewTime(clip: TripVideo.Clip) = clip.startMs + offsetS * 1000L + clip.durationMs / 2
+
+    // ── v2.3: drag the map, speed, title… on the preview; the export draws them where they were left.
+
+    private fun onPreviewTouch(e: android.view.MotionEvent): Boolean {
+        val base = previewBase ?: return false
+        val inv = android.graphics.Matrix()
+        if (!preview.imageMatrix.invert(inv)) return false
+        val pt = floatArrayOf(e.x - preview.paddingLeft, e.y - preview.paddingTop)
+        inv.mapPoints(pt)
+        val bw = base.width.toFloat(); val bh = base.height.toFloat()
+        when (e.actionMasked) {
+            android.view.MotionEvent.ACTION_DOWN -> {
+                val slop = minOf(bw, bh) * 0.03f
+                // Last drawn is on top: the map wins over text it covers.
+                val hit = previewPlaced.entries.reversed().firstOrNull { (_, r) ->
+                    pt[0] >= r.left - slop && pt[0] <= r.right + slop && pt[1] >= r.top - slop && pt[1] <= r.bottom + slop
+                } ?: return false
+                dragPart = hit.key
+                dragFrom = layout.offsets[hit.key] ?: PartOffset(0f, 0f)
+                dragHome = android.graphics.RectF(hit.value).apply { offset(-dragFrom.dx * bw, -dragFrom.dy * bh) }
+                dragStart = pt
+                preview.parent?.requestDisallowInterceptTouchEvent(true)
+                drawDrag()
+                return true
+            }
+            android.view.MotionEvent.ACTION_MOVE -> {
+                val part = dragPart ?: return false
+                val dx = (dragFrom.dx + (pt[0] - dragStart[0]) / bw).coerceIn(-dragHome.left / bw, (bw - dragHome.right) / bw)
+                val dy = (dragFrom.dy + (pt[1] - dragStart[1]) / bh).coerceIn(-dragHome.top / bh, (bh - dragHome.bottom) / bh)
+                layout = layout.with(part, dx, dy)
+                drawDrag()
+                return true
+            }
+            android.view.MotionEvent.ACTION_UP, android.view.MotionEvent.ACTION_CANCEL -> {
+                if (dragPart == null) return false
+                dragPart = null
+                preview.parent?.requestDisallowInterceptTouchEvent(false)
+                saveLayout(); markLook()
+                drawDrag()
+                if (e.actionMasked == android.view.MotionEvent.ACTION_UP) preview.performClick()
+                return true
+            }
+        }
+        return false
+    }
+
+    /** Quick redraw while dragging: same still and look, new layout, an outline round the piece in hand. */
+    private fun drawDrag() {
+        val look = previewLook ?: return
+        val base = previewBase ?: return
+        val clip = clips.firstOrNull() ?: return
+        val lay = layout; val part = dragPart; val job = ++dragJob
+        val accent = color(R.color.brand_orange)
+        io.execute {
+            if (job != dragJob) return@execute
+            val out = base.copy(android.graphics.Bitmap.Config.ARGB_8888, true)
+            val c = android.graphics.Canvas(out)
+            look.layout = lay
+            look.drawFrame(c, out.width, out.height, previewTime(clip))
+            val placed = look.placed.mapValues { android.graphics.RectF(it.value) }
+            if (part != null) placed[part]?.let { r ->
+                val u = minOf(out.width, out.height) / 100f
+                val pen = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+                    style = android.graphics.Paint.Style.STROKE; strokeWidth = 0.5f * u; color = accent
+                    pathEffect = android.graphics.DashPathEffect(floatArrayOf(1.5f * u, 1f * u), 0f)
+                }
+                c.drawRoundRect(android.graphics.RectF(r).apply { inset(-u, -u) }, u, u, pen)
+            }
+            runOnUiThread {
+                if (job != dragJob || isFinishing || isDestroyed) return@runOnUiThread
+                previewPlaced.clear(); previewPlaced.putAll(placed)
+                preview.setImageBitmap(out)
             }
         }
     }

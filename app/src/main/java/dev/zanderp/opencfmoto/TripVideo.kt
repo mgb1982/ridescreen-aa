@@ -178,7 +178,8 @@ object TripVideo {
     }
 
     /** How the video should look (v2.3). */
-    data class Look(val style: VideoStyle, val map: VideoMap, val cards: Boolean, val watermark: Boolean)
+    data class Look(val style: VideoStyle, val map: VideoMap, val cards: Boolean, val watermark: Boolean,
+                    /** v2.3: pieces moved in the preview. */ val layout: OverlayLayout = OverlayLayout())
 
     /** Size of the first clip as it plays (rotation applied). */
     fun frameSize(clip: Clip): Pair<Int, Int> {
@@ -250,7 +251,7 @@ object TripVideo {
             val effects = ArrayList<androidx.media3.common.Effect>()
             if (highlights) effects += androidx.media3.effect.Presentation.createForWidthAndHeight(
                 w, h, androidx.media3.effect.Presentation.LAYOUT_SCALE_TO_FIT_WITH_CROP)
-            val overlayLook = TripLook(ctx, trip, title, look.style, look.map, streets)
+            val overlayLook = TripLook(ctx, trip, title, look.style, look.map, streets, look.layout)
             val shown = clip.copy(startMs = clip.startMs + offsetMs + piece.fromMs)
             // ×4 (19 Oct field test): the overlay's speed/clock ran out of step. Speed change first, then
             // the overlay, which scales the (sped-up) frame times back to ride time — correct whichever

@@ -137,6 +137,30 @@ class StreetTiles private constructor(private val dir: File, val zoom: Int) {
     }
 }
 
+/** v2.3: the overlay pieces the rider can drag in the preview; the export draws them where they were left. */
+enum class OverlayPart { TITLE, SPEED, MAP, EXTRA }
+
+/** Offset of a piece from its home spot, as fractions of the frame width and height. */
+data class PartOffset(val dx: Float, val dy: Float)
+
+/** Per-look piece offsets; stored per style as "MAP:0.1,-0.2;SPEED:…". */
+data class OverlayLayout(val offsets: Map<OverlayPart, PartOffset> = emptyMap()) {
+    fun with(part: OverlayPart, dx: Float, dy: Float) = OverlayLayout(offsets + (part to PartOffset(dx, dy)))
+    val isDefault get() = offsets.values.all { it.dx == 0f && it.dy == 0f }
+    fun encode() = offsets.entries.filter { it.value.dx != 0f || it.value.dy != 0f }
+        .joinToString(";") { "${it.key.name}:${it.value.dx},${it.value.dy}" }
+
+    companion object {
+        fun decode(s: String?): OverlayLayout = OverlayLayout(s.orEmpty().split(';').mapNotNull { e ->
+            val kv = e.split(':')
+            if (kv.size != 2) return@mapNotNull null
+            val part = runCatching { OverlayPart.valueOf(kv[0]) }.getOrNull() ?: return@mapNotNull null
+            val xy = kv[1].split(',').mapNotNull { it.toFloatOrNull() }
+            if (xy.size == 2) part to PartOffset(xy[0], xy[1]) else null
+        }.toMap())
+    }
+}
+
 /**
  * Draws one look on a canvas: the per-frame overlay ([drawFrame]), the opening card ([drawIntro])
  * and the closing card ([drawOutro]). Shared by the video export and the in-app preview.
@@ -148,6 +172,8 @@ class TripLook(
     val style: VideoStyle,
     val map: VideoMap,
     private val streets: StreetTiles?,
+    /** v2.3: where the rider dragged each piece in the preview. */
+    var layout: OverlayLayout = OverlayLayout(),
 ) {
     private val pts = trip.points
     private val minLat = pts.minOf { it.lat }; private val maxLat = pts.maxOf { it.lat }
@@ -352,57 +378,83 @@ class TripLook(
         val kmh = (pt.speedMs * 3.6f).roundToInt().coerceAtLeast(0)
         val clock = hhmm.format(Date(tMs))
         val kmDone = cumKm[idx]
+        placed.clear()
         when (style) {
             VideoStyle.CLASSIC -> {
-                text(c, title, 3 * u, 7 * u, fitSize(title, Typeface.DEFAULT_BOLD, w - 40 * u, 4.2f * u), Typeface.DEFAULT_BOLD)
-                text(c, clock, 3 * u, 12 * u, 3.4f * u, Typeface.DEFAULT)
-                text(c, "$kmh", 3 * u, h - 6 * u, 12 * u, Typeface.DEFAULT_BOLD)
-                text(c, "km/h", 4.5f * u + measure("$kmh", Typeface.DEFAULT_BOLD, 12 * u), h - 6 * u, 4 * u, Typeface.DEFAULT)
+                val ts = fitSize(title, Typeface.DEFAULT_BOLD, w - 40 * u, 4.2f * u)
+                part(c, OverlayPart.TITLE, w, h, RectF(2 * u, 2 * u, 4 * u + max(measure(title, Typeface.DEFAULT_BOLD, ts), measure(clock, Typeface.DEFAULT, 3.4f * u)), 13 * u)) {
+                    text(c, title, 3 * u, 7 * u, ts, Typeface.DEFAULT_BOLD)
+                    text(c, clock, 3 * u, 12 * u, 3.4f * u, Typeface.DEFAULT)
+                }
+                val kw = measure("$kmh", Typeface.DEFAULT_BOLD, 12 * u)
+                part(c, OverlayPart.SPEED, w, h, RectF(2 * u, h - 16 * u, 5.5f * u + kw + measure("km/h", Typeface.DEFAULT, 4 * u), h - 4.5f * u)) {
+                    text(c, "$kmh", 3 * u, h - 6 * u, 12 * u, Typeface.DEFAULT_BOLD)
+                    text(c, "km/h", 4.5f * u + kw, h - 6 * u, 4 * u, Typeface.DEFAULT)
+                }
                 val s = 30 * u
-                minimap(c, RectF(w - s - 3 * u, 3 * u, w - 3 * u, 3 * u + s), false, Color.argb(110, 0, 0, 0), null, yellow, null, idx, u)
+                val box = RectF(w - s - 3 * u, 3 * u, w - 3 * u, 3 * u + s)
+                part(c, OverlayPart.MAP, w, h, box) {
+                    minimap(c, box, false, Color.argb(110, 0, 0, 0), null, yellow, null, idx, u)
+                }
             }
             VideoStyle.SPORT -> {
-                // Title chip + time chip
-                // Room for the chip: everything left of the round map (26u + margins).
+                // Title chip + time chip. Room for the chip: everything left of the round map (26u + margins).
                 val ts = fitSize(title.uppercase(), tfCondItalic, w - 3 * u - 26 * u - 3 * u - 4 * u - 5 * u, 4.6f * u)
                 p.typeface = tfCondItalic; p.textSize = ts
                 val tw = p.measureText(title.uppercase())
-                c.drawRoundRect(RectF(3 * u, 3 * u, 3 * u + tw + 5 * u, 10.5f * u), 1.8f * u, 1.8f * u, fill(Color.argb(140, 0, 0, 0)))
-                c.drawPath(Path().apply { moveTo(3 * u, 3 * u); lineTo(4.4f * u, 3 * u); lineTo(3 * u, 10.5f * u); close() }, fill(amber))
-                text(c, title.uppercase(), 5.5f * u, 6.75f * u + ts * 0.36f, ts, tfCondItalic, shadow = false)
-                c.drawRoundRect(RectF(3 * u, 11.5f * u, 16 * u, 16 * u), 1.4f * u, 1.4f * u, fill(amber))
-                text(c, clock, 9.5f * u, 15.1f * u, 3.3f * u, tfCond, Color.rgb(20, 20, 20), Paint.Align.CENTER, false)
+                part(c, OverlayPart.TITLE, w, h, RectF(3 * u, 3 * u, max(3 * u + tw + 5 * u, 16 * u), 16 * u)) {
+                    c.drawRoundRect(RectF(3 * u, 3 * u, 3 * u + tw + 5 * u, 10.5f * u), 1.8f * u, 1.8f * u, fill(Color.argb(140, 0, 0, 0)))
+                    c.drawPath(Path().apply { moveTo(3 * u, 3 * u); lineTo(4.4f * u, 3 * u); lineTo(3 * u, 10.5f * u); close() }, fill(amber))
+                    text(c, title.uppercase(), 5.5f * u, 6.75f * u + ts * 0.36f, ts, tfCondItalic, shadow = false)
+                    c.drawRoundRect(RectF(3 * u, 11.5f * u, 16 * u, 16 * u), 1.4f * u, 1.4f * u, fill(amber))
+                    text(c, clock, 9.5f * u, 15.1f * u, 3.3f * u, tfCond, Color.rgb(20, 20, 20), Paint.Align.CENTER, false)
+                }
                 // Gauge
                 val cx = 18 * u; val cy = h - 19 * u; val r = 13 * u
-                c.drawCircle(cx, cy, r + 2.2f * u, fill(Color.argb(120, 0, 0, 0)))
-                stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeWidth = 1.6f * u
-                stroke.strokeCap = Paint.Cap.ROUND
-                val arc = RectF(cx - r, cy - r, cx + r, cy + r)
-                stroke.color = Color.argb(70, 255, 255, 255); c.drawArc(arc, 135f, 270f, false, stroke)
-                stroke.color = amber; c.drawArc(arc, 135f, 270f * (kmh / 120f).coerceIn(0f, 1f), false, stroke)
-                text(c, "$kmh", cx, cy + 3 * u, 11 * u, tfCondItalic, align = Paint.Align.CENTER)
-                text(c, "KM/H", cx, cy + 8.5f * u, 3 * u, tfCond, amber, Paint.Align.CENTER)
+                part(c, OverlayPart.SPEED, w, h, RectF(cx - r - 2.2f * u, cy - r - 2.2f * u, cx + r + 2.2f * u, cy + r + 2.2f * u)) {
+                    c.drawCircle(cx, cy, r + 2.2f * u, fill(Color.argb(120, 0, 0, 0)))
+                    stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeWidth = 1.6f * u
+                    stroke.strokeCap = Paint.Cap.ROUND
+                    val arc = RectF(cx - r, cy - r, cx + r, cy + r)
+                    stroke.color = Color.argb(70, 255, 255, 255); c.drawArc(arc, 135f, 270f, false, stroke)
+                    stroke.color = amber; c.drawArc(arc, 135f, 270f * (kmh / 120f).coerceIn(0f, 1f), false, stroke)
+                    text(c, "$kmh", cx, cy + 3 * u, 11 * u, tfCondItalic, align = Paint.Align.CENTER)
+                    text(c, "KM/H", cx, cy + 8.5f * u, 3 * u, tfCond, amber, Paint.Align.CENTER)
+                }
                 // Distance bar
                 val bx0 = 38 * u; val bx1 = w - 4 * u; val by = h - 7 * u
-                c.drawRoundRect(RectF(bx0 - 1.5f * u, by - 6 * u, bx1 + 1.5f * u, by + 3.5f * u), 2 * u, 2 * u, fill(Color.argb(130, 0, 0, 0)))
-                text(c, "${km(kmDone)} KM", bx0, by - 1.8f * u, 3 * u, tfCond, shadow = false)
-                text(c, "${km(totalKm)} KM", bx1, by - 1.8f * u, 3 * u, tfCond, Color.argb(190, 255, 255, 255), Paint.Align.RIGHT, false)
-                c.drawRoundRect(RectF(bx0, by + 0.4f * u, bx1, by + 1.5f * u), u, u, fill(Color.argb(70, 255, 255, 255)))
-                c.drawRoundRect(RectF(bx0, by + 0.4f * u, bx0 + (bx1 - bx0) * (kmDone / totalKm).toFloat().coerceIn(0f, 1f), by + 1.5f * u), u, u, fill(amber))
+                val bar = RectF(bx0 - 1.5f * u, by - 6 * u, bx1 + 1.5f * u, by + 3.5f * u)
+                part(c, OverlayPart.EXTRA, w, h, bar) {
+                    c.drawRoundRect(bar, 2 * u, 2 * u, fill(Color.argb(130, 0, 0, 0)))
+                    text(c, "${km(kmDone)} KM", bx0, by - 1.8f * u, 3 * u, tfCond, shadow = false)
+                    text(c, "${km(totalKm)} KM", bx1, by - 1.8f * u, 3 * u, tfCond, Color.argb(190, 255, 255, 255), Paint.Align.RIGHT, false)
+                    c.drawRoundRect(RectF(bx0, by + 0.4f * u, bx1, by + 1.5f * u), u, u, fill(Color.argb(70, 255, 255, 255)))
+                    c.drawRoundRect(RectF(bx0, by + 0.4f * u, bx0 + (bx1 - bx0) * (kmDone / totalKm).toFloat().coerceIn(0f, 1f), by + 1.5f * u), u, u, fill(amber))
+                }
                 // Round mini-map with north
                 val ms = 26 * u
                 val box = RectF(w - ms - 3 * u, 3 * u, w - 3 * u, 3 * u + ms)
-                minimap(c, box, true, Color.argb(190, 15, 18, 20), amber, Color.argb(130, 255, 255, 255), amber, idx, u)
-                if (map != VideoMap.STREETS || streets == null) text(c, "N", box.centerX(), box.top + 3.4f * u, 2.6f * u, tfCond, amber, Paint.Align.CENTER, false)
+                part(c, OverlayPart.MAP, w, h, box) {
+                    minimap(c, box, true, Color.argb(190, 15, 18, 20), amber, Color.argb(130, 255, 255, 255), amber, idx, u)
+                    if (map != VideoMap.STREETS || streets == null) text(c, "N", box.centerX(), box.top + 3.4f * u, 2.6f * u, tfCond, amber, Paint.Align.CENTER, false)
+                }
             }
             VideoStyle.MINIMAL -> {
                 val line = "$clock   ·   ${title.uppercase()}"
-                text(c, line, 4 * u, 6.5f * u, fitSize(line, tfMedium, w - 8 * u, 2.6f * u), tfMedium)
-                text(c, "$kmh", 4 * u, h - 4 * u, 16 * u, tfLight)
-                text(c, "km/h", 5.5f * u + measure("$kmh", tfLight, 16 * u), h - 5 * u, 3.8f * u, tfLight)
+                val ls = fitSize(line, tfMedium, w - 8 * u, 2.6f * u)
+                part(c, OverlayPart.TITLE, w, h, RectF(3 * u, 3 * u, 5 * u + measure(line, tfMedium, ls), 8 * u)) {
+                    text(c, line, 4 * u, 6.5f * u, ls, tfMedium)
+                }
+                val kw = measure("$kmh", tfLight, 16 * u)
+                part(c, OverlayPart.SPEED, w, h, RectF(3 * u, h - 17 * u, 6.5f * u + kw + measure("km/h", tfLight, 3.8f * u), h - 2.5f * u)) {
+                    text(c, "$kmh", 4 * u, h - 4 * u, 16 * u, tfLight)
+                    text(c, "km/h", 5.5f * u + kw, h - 5 * u, 3.8f * u, tfLight)
+                }
                 val s = 20 * u
-                minimap(c, RectF(w - s - 3 * u, h - s - 3 * u, w - 3 * u, h - 3 * u), false, null,
-                    if (map == VideoMap.STREETS) Color.WHITE else null, Color.WHITE, null, idx, u)
+                val box = RectF(w - s - 3 * u, h - s - 3 * u, w - 3 * u, h - 3 * u)
+                part(c, OverlayPart.MAP, w, h, box) {
+                    minimap(c, box, false, null, if (map == VideoMap.STREETS) Color.WHITE else null, Color.WHITE, null, idx, u)
+                }
             }
             VideoStyle.CINEMA -> {
                 val bar = 13 * u
@@ -410,12 +462,19 @@ class TripLook(
                 c.drawRect(0f, h - bar, w.toFloat(), h.toFloat(), fill(Color.BLACK))
                 val date = DateFormat.getDateInstance(DateFormat.LONG).format(Date(tMs)).uppercase()
                 val rightW = max(measure("$date · $clock", tfLight, 2.3f * u), measure("$kmh KM/H", tfMedium, 2.8f * u))
-                text(c, title, 4.5f * u, h - bar / 2 + 1.8f * u, fitSize(title, tfSerifItalic, w - 9 * u - rightW - 4 * u, 5.2f * u),
-                    tfSerifItalic, Color.rgb(240, 232, 214), shadow = false)
-                text(c, "$date · $clock", w - 4.5f * u, h - bar / 2 - 1.2f * u, 2.3f * u, tfLight, Color.rgb(200, 190, 170), Paint.Align.RIGHT, false)
-                text(c, "$kmh KM/H", w - 4.5f * u, h - bar / 2 + 3.2f * u, 2.8f * u, tfMedium, Color.rgb(240, 232, 214), Paint.Align.RIGHT, false)
+                val ts = fitSize(title, tfSerifItalic, w - 9 * u - rightW - 4 * u, 5.2f * u)
+                part(c, OverlayPart.TITLE, w, h, RectF(4 * u, h - bar + u, 5 * u + measure(title, tfSerifItalic, ts), h - u)) {
+                    text(c, title, 4.5f * u, h - bar / 2 + 1.8f * u, ts, tfSerifItalic, Color.rgb(240, 232, 214), shadow = false)
+                }
+                part(c, OverlayPart.SPEED, w, h, RectF(w - 5 * u - rightW, h - bar + u, w - 4 * u, h - u)) {
+                    text(c, "$date · $clock", w - 4.5f * u, h - bar / 2 - 1.2f * u, 2.3f * u, tfLight, Color.rgb(200, 190, 170), Paint.Align.RIGHT, false)
+                    text(c, "$kmh KM/H", w - 4.5f * u, h - bar / 2 + 3.2f * u, 2.8f * u, tfMedium, Color.rgb(240, 232, 214), Paint.Align.RIGHT, false)
+                }
                 val s = bar - 3 * u
-                minimap(c, RectF(w - s - 4.5f * u, 1.5f * u, w - 4.5f * u, 1.5f * u + s), false, null, null, gold, null, idx, u * 0.7f)
+                val box = RectF(w - s - 4.5f * u, 1.5f * u, w - 4.5f * u, 1.5f * u + s)
+                part(c, OverlayPart.MAP, w, h, box) {
+                    minimap(c, box, false, null, null, gold, null, idx, u * 0.7f)
+                }
             }
             VideoStyle.RETRO -> {
                 // Scanlines
@@ -426,53 +485,92 @@ class TripLook(
                 text(c, "REC", 9 * u, 8.6f * u, 4.4f * u, tfMono)
                 text(c, "SP ▶", w - 4 * u, 8.6f * u, 4.4f * u, tfMono, align = Paint.Align.RIGHT)
                 val rt = deaccent(title.uppercase()).replace("→", ">")
-                text(c, rt, 4.5f * u, 14 * u, fitSize(rt, tfMono, w - 4.5f * u - 18 * u - 8 * u, 3.2f * u), tfMono)
-                text(c, String.format(Locale.US, "%03d KM/H", kmh), 4.5f * u, h - 7 * u, 6 * u, tfMono)
+                val rs = fitSize(rt, tfMono, w - 4.5f * u - 18 * u - 8 * u, 3.2f * u)
+                part(c, OverlayPart.TITLE, w, h, RectF(4 * u, 14 * u - rs - 0.5f * u, 5 * u + measure(rt, tfMono, rs), 15 * u)) {
+                    text(c, rt, 4.5f * u, 14 * u, rs, tfMono)
+                }
+                val sp = String.format(Locale.US, "%03d KM/H", kmh)
+                part(c, OverlayPart.SPEED, w, h, RectF(4 * u, h - 13.5f * u, 5 * u + measure(sp, tfMono, 6 * u), h - 6 * u)) {
+                    text(c, sp, 4.5f * u, h - 7 * u, 6 * u, tfMono)
+                }
                 val d = SimpleDateFormat("MMM.dd yyyy", Locale.ENGLISH).format(Date(tMs)).uppercase()
-                text(c, d, w - 4.5f * u, h - 12 * u, 4.4f * u, tfMono, align = Paint.Align.RIGHT)
-                text(c, SimpleDateFormat("HH:mm:ss", Locale.US).format(Date(tMs)), w - 4.5f * u, h - 6.5f * u, 4.4f * u, tfMono, align = Paint.Align.RIGHT)
+                val hms = SimpleDateFormat("HH:mm:ss", Locale.US).format(Date(tMs))
+                val dw = max(measure(d, tfMono, 4.4f * u), measure(hms, tfMono, 4.4f * u))
+                part(c, OverlayPart.EXTRA, w, h, RectF(w - 5 * u - dw, h - 17 * u, w - 4 * u, h - 5.5f * u)) {
+                    text(c, d, w - 4.5f * u, h - 12 * u, 4.4f * u, tfMono, align = Paint.Align.RIGHT)
+                    text(c, hms, w - 4.5f * u, h - 6.5f * u, 4.4f * u, tfMono, align = Paint.Align.RIGHT)
+                }
                 val s = 18 * u
-                minimap(c, RectF(w - s - 4 * u, 12 * u, w - 4 * u, 12 * u + s), false, null, null, Color.WHITE, null, idx, u)
+                val box = RectF(w - s - 4 * u, 12 * u, w - 4 * u, 12 * u + s)
+                part(c, OverlayPart.MAP, w, h, box) {
+                    minimap(c, box, false, null, null, Color.WHITE, null, idx, u)
+                }
             }
             VideoStyle.TELEMETRY -> {
-                text(c, title, 4 * u, 7 * u, fitSize(title, tfArchivo, w - 4 * u - 24 * u - 6 * u, 4 * u), tfArchivo)
+                val ts = fitSize(title, tfArchivo, w - 4 * u - 24 * u - 6 * u, 4 * u)
                 val sub = DateFormat.getDateInstance(DateFormat.MEDIUM).format(Date(tMs)) + " · " + clock
-                text(c, sub, 4 * u, 11.5f * u, fitSize(sub, tfArchivo, w - 4 * u - 24 * u - 6 * u, 2.6f * u), tfArchivo,
-                    Color.argb(220, 255, 255, 255))
+                val ss = fitSize(sub, tfArchivo, w - 4 * u - 24 * u - 6 * u, 2.6f * u)
+                part(c, OverlayPart.TITLE, w, h, RectF(3 * u, 2 * u, 5 * u + max(measure(title, tfArchivo, ts), measure(sub, tfArchivo, ss)), 12.5f * u)) {
+                    text(c, title, 4 * u, 7 * u, ts, tfArchivo)
+                    text(c, sub, 4 * u, 11.5f * u, ss, tfArchivo, Color.argb(220, 255, 255, 255))
+                }
                 // Glass panel
                 val panel = RectF(3 * u, h - 22 * u, w - 3 * u, h - 3 * u)
-                c.drawRoundRect(panel, 2.5f * u, 2.5f * u, fill(Color.argb(175, 12, 16, 20)))
-                stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeWidth = 0.15f * u
-                stroke.color = Color.argb(60, 255, 255, 255); c.drawRoundRect(panel, 2.5f * u, 2.5f * u, stroke)
-                text(c, ctx.getString(R.string.tvl_speed), panel.left + 3 * u, panel.top + 4.5f * u, 2 * u, tfArchivo, sky, shadow = false)
-                text(c, "$kmh", panel.left + 3 * u, panel.top + 13.5f * u, 10 * u, tfArchivoBlack, shadow = false)
-                text(c, "km/h", panel.left + 3 * u, panel.top + 17.5f * u, 2.4f * u, tfArchivo, Color.argb(210, 220, 230, 240), shadow = false)
-                text(c, ctx.getString(R.string.tvl_distance), panel.right - 3 * u, panel.top + 4.5f * u, 2 * u, tfArchivo, sky, Paint.Align.RIGHT, false)
-                text(c, km(kmDone), panel.right - 3 * u, panel.top + 12 * u, 6.5f * u, tfArchivoBlack, align = Paint.Align.RIGHT, shadow = false)
-                text(c, ctx.getString(R.string.tvl_of_km, km(totalKm)), panel.right - 3 * u, panel.top + 16.5f * u, 2.2f * u, tfArchivo,
-                    Color.argb(210, 220, 230, 240), Paint.Align.RIGHT, false)
-                // Speed over the whole trip, filled up to now
-                val gx0 = panel.left + 22 * u; val gx1 = panel.right - 21 * u
-                val gy0 = panel.top + 3 * u; val gy1 = panel.bottom - 3 * u
-                val n = speedSeries.size
-                val frac = (idx.toFloat() / pts.lastIndex).coerceIn(0f, 1f)
-                val cur = (frac * (n - 1)).roundToInt()
-                fun gx(i: Int) = gx0 + (gx1 - gx0) * i / (n - 1)
-                fun gy(v: Float) = gy1 - (gy1 - gy0) * (v / maxKmh).coerceIn(0f, 1f)
-                val area = Path().apply { moveTo(gx0, gy1); for (i in 0..cur) lineTo(gx(i), gy(speedSeries[i])); lineTo(gx(cur), gy1); close() }
-                c.drawPath(area, fill(Color.argb(70, 80, 170, 255)))
-                val all = Path(); val done = Path()
-                for (i in 0 until n) { if (i == 0) { all.moveTo(gx(i), gy(speedSeries[i])); done.moveTo(gx(i), gy(speedSeries[i])) } else { all.lineTo(gx(i), gy(speedSeries[i])); if (i <= cur) done.lineTo(gx(i), gy(speedSeries[i])) } }
-                stroke.strokeWidth = 0.35f * u; stroke.color = Color.argb(90, 255, 255, 255); c.drawPath(all, stroke)
-                stroke.strokeWidth = 0.5f * u; stroke.color = sky; c.drawPath(done, stroke)
-                stroke.strokeWidth = 0.15f * u; stroke.color = Color.argb(140, 255, 255, 255); c.drawLine(gx(cur), gy0, gx(cur), gy1, stroke)
-                c.drawCircle(gx(cur), gy(speedSeries[cur]), 0.9f * u, fill(Color.WHITE))
+                part(c, OverlayPart.SPEED, w, h, panel) { telemetryPanel(c, panel, u, kmh, kmDone, idx) }
                 // Mini-map, glass square
                 val s = 24 * u
-                minimap(c, RectF(w - s - 3 * u, 3 * u, w - 3 * u, 3 * u + s), false, Color.argb(175, 12, 16, 20), Color.argb(60, 255, 255, 255),
-                    Color.argb(110, 255, 255, 255), sky, idx, u)
+                val box = RectF(w - s - 3 * u, 3 * u, w - 3 * u, 3 * u + s)
+                part(c, OverlayPart.MAP, w, h, box) {
+                    minimap(c, box, false, Color.argb(175, 12, 16, 20), Color.argb(60, 255, 255, 255),
+                        Color.argb(110, 255, 255, 255), sky, idx, u)
+                }
             }
         }
+    }
+
+    /** Telemetry's bottom glass panel: speed, distance and the speed graph up to now. */
+    private fun telemetryPanel(c: Canvas, panel: RectF, u: Float, kmh: Int, kmDone: Double, idx: Int) {
+        c.drawRoundRect(panel, 2.5f * u, 2.5f * u, fill(Color.argb(175, 12, 16, 20)))
+        stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeWidth = 0.15f * u
+        stroke.color = Color.argb(60, 255, 255, 255); c.drawRoundRect(panel, 2.5f * u, 2.5f * u, stroke)
+        text(c, ctx.getString(R.string.tvl_speed), panel.left + 3 * u, panel.top + 4.5f * u, 2 * u, tfArchivo, sky, shadow = false)
+        text(c, "$kmh", panel.left + 3 * u, panel.top + 13.5f * u, 10 * u, tfArchivoBlack, shadow = false)
+        text(c, "km/h", panel.left + 3 * u, panel.top + 17.5f * u, 2.4f * u, tfArchivo, Color.argb(210, 220, 230, 240), shadow = false)
+        text(c, ctx.getString(R.string.tvl_distance), panel.right - 3 * u, panel.top + 4.5f * u, 2 * u, tfArchivo, sky, Paint.Align.RIGHT, false)
+        text(c, km(kmDone), panel.right - 3 * u, panel.top + 12 * u, 6.5f * u, tfArchivoBlack, align = Paint.Align.RIGHT, shadow = false)
+        text(c, ctx.getString(R.string.tvl_of_km, km(totalKm)), panel.right - 3 * u, panel.top + 16.5f * u, 2.2f * u, tfArchivo,
+            Color.argb(210, 220, 230, 240), Paint.Align.RIGHT, false)
+        // Speed over the whole trip, filled up to now
+        val gx0 = panel.left + 22 * u; val gx1 = panel.right - 21 * u
+        val gy0 = panel.top + 3 * u; val gy1 = panel.bottom - 3 * u
+        val n = speedSeries.size
+        val frac = (idx.toFloat() / pts.lastIndex).coerceIn(0f, 1f)
+        val cur = (frac * (n - 1)).roundToInt()
+        fun gx(i: Int) = gx0 + (gx1 - gx0) * i / (n - 1)
+        fun gy(v: Float) = gy1 - (gy1 - gy0) * (v / maxKmh).coerceIn(0f, 1f)
+        val area = Path().apply { moveTo(gx0, gy1); for (i in 0..cur) lineTo(gx(i), gy(speedSeries[i])); lineTo(gx(cur), gy1); close() }
+        c.drawPath(area, fill(Color.argb(70, 80, 170, 255)))
+        val all = Path(); val done = Path()
+        for (i in 0 until n) { if (i == 0) { all.moveTo(gx(i), gy(speedSeries[i])); done.moveTo(gx(i), gy(speedSeries[i])) } else { all.lineTo(gx(i), gy(speedSeries[i])); if (i <= cur) done.lineTo(gx(i), gy(speedSeries[i])) } }
+        stroke.strokeWidth = 0.35f * u; stroke.color = Color.argb(90, 255, 255, 255); c.drawPath(all, stroke)
+        stroke.strokeWidth = 0.5f * u; stroke.color = sky; c.drawPath(done, stroke)
+        stroke.strokeWidth = 0.15f * u; stroke.color = Color.argb(140, 255, 255, 255); c.drawLine(gx(cur), gy0, gx(cur), gy1, stroke)
+        c.drawCircle(gx(cur), gy(speedSeries[cur]), 0.9f * u, fill(Color.WHITE))
+    }
+
+    // ── v2.3: movable pieces
+
+    /** Where each piece was drawn in the last [drawFrame] (frame pixels), for dragging in the preview. */
+    val placed = LinkedHashMap<OverlayPart, RectF>()
+
+    /** Draw one piece moved by its [layout] offset, kept inside the frame; [home] is its default bounds. */
+    private inline fun part(c: Canvas, part: OverlayPart, w: Int, h: Int, home: RectF, draw: () -> Unit) {
+        val o = layout.offsets[part]
+        var dx = (o?.dx ?: 0f) * w; var dy = (o?.dy ?: 0f) * h
+        dx = if (home.width() < w) dx.coerceIn(-home.left, w - home.right) else 0f
+        dy = if (home.height() < h) dy.coerceIn(-home.top, h - home.bottom) else 0f
+        placed[part] = RectF(home).apply { offset(dx, dy) }
+        if (dx == 0f && dy == 0f) { draw() } else { c.save(); c.translate(dx, dy); draw(); c.restore() }
     }
 
     // ── opening and closing cards
