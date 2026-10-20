@@ -216,4 +216,17 @@ Oggi: %2$d min porta a porta · di solito: %3$d min.</string>
     <string name="pke_fail_no_code">Non hai ancora inserito il codice PKE.</string>
     <string name="pke_fail_not_found">Non trovo la scatola keyless. Avvicinati alla moto, assicurati che l\'app ufficiale non sia collegata, e riprova.</string>
     <string name="pke_fail_no_answer">La scatola ha risposto ma non ha fornito il voltaggio. Mandami il log, per favore.</string>
+    <string name="van_entry">🔬 Sonda dati del cruscotto (pneumatici, km)</string>
+    <string name="van_title">Sonda dati del cruscotto</string>
+    <string name="van_intro">Sperimentale e di sola lettura. Con la moto accesa e vicina (app ufficiale Zontes chiusa), si collega al cruscotto via Bluetooth e mostra ciò che comunica: pressione e temperatura dei pneumatici, chilometraggio…\n\n• Solo ascolto: registra solo ciò che offre il cruscotto.\n• Come l\'app ufficiale: chiede gli stessi dati dell\'app Zontes.\n• Ufficiale + km: chiede anche parziale e totale.\n\nNon viene mai inviato nulla per controllare la moto.</string>
+    <string name="van_mode_listen">Solo ascolto</string>
+    <string name="van_mode_official">Come l\'ufficiale</string>
+    <string name="van_mode_official_km">Ufficiale + km</string>
+    <string name="van_need_perm">Consenti il Bluetooth («Dispositivi nelle vicinanze») e tocca di nuovo.</string>
+    <string name="van_scanning">Cerco il cruscotto…</string>
+    <string name="van_stop">Stop</string>
+    <string name="van_last_frame">ultimo dato %1$s s fa</string>
+    <string name="van_offered">Il cruscotto offre (id=campo):</string>
+    <string name="van_values">Valori (grezzi, come li invia il cruscotto):</string>
+    <string name="van_log_hint">Poi invia il log: Aiuto → Condividi i log.</string>
 </resources>

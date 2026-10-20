@@ -216,4 +216,17 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="pke_fail_no_code">Encara no has posat el codi PKE.</string>
     <string name="pke_fail_not_found">No trobo la caixa del keyless. Acosta\'t a la moto, assegura\'t que l\'app oficial no hi estigui connectada i torna-ho a provar.</string>
     <string name="pke_fail_no_answer">La caixa ha respost però no ha donat el voltatge. Passa\'m el registre, si us plau.</string>
+    <string name="van_entry">🔬 Sonda de dades del quadre (pneumàtics, km)</string>
+    <string name="van_title">Sonda de dades del quadre</string>
+    <string name="van_intro">Experimental i només de lectura. Amb la moto encesa i a prop (app oficial de Zontes tancada), es connecta al quadre per Bluetooth i mostra el que informa: pressió i temperatura dels pneumàtics, quilometratge…\n\n• Només escoltar: només anota al registre el que ofereix el quadre.\n• Com l\'app oficial: demana les mateixes dades que l\'app de Zontes.\n• Oficial + km: demana també parcial i total.\n\nMai s\'envia res per controlar la moto.</string>
+    <string name="van_mode_listen">Només escoltar</string>
+    <string name="van_mode_official">Com l\'oficial</string>
+    <string name="van_mode_official_km">Oficial + km</string>
+    <string name="van_need_perm">Permet el Bluetooth («Dispositius propers») i torna a tocar.</string>
+    <string name="van_scanning">Buscant el quadre…</string>
+    <string name="van_stop">Parar</string>
+    <string name="van_last_frame">última dada fa %1$s s</string>
+    <string name="van_offered">El quadre ofereix (id=camp):</string>
+    <string name="van_values">Valors (en brut, tal com els envia el quadre):</string>
+    <string name="van_log_hint">Després envia el registre: Ajuda → Compartir registres.</string>
 </resources>

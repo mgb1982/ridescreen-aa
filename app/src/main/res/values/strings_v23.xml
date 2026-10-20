@@ -216,4 +216,17 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="pke_fail_no_code">No PKE code set yet.</string>
     <string name="pke_fail_not_found">Couldn\'t find the keyless box. Get closer to the bike, make sure the official app isn\'t connected to it, and try again.</string>
     <string name="pke_fail_no_answer">The box answered but didn\'t report the voltage. Please send me the log.</string>
+    <string name="van_entry">🔬 Dash data probe (tyres, mileage)</string>
+    <string name="van_title">Dash data probe</string>
+    <string name="van_intro">Experimental, read only. With the bike on and nearby (official Zontes app closed), this connects to the dash over Bluetooth and shows what it reports: tyre pressure and temperature, mileage…\n\n• Listen only: just logs what the dash offers.\n• Like the official app: asks for the same data the Zontes app does.\n• Official + km: also asks for trip and odometer.\n\nNothing is ever sent to control the bike.</string>
+    <string name="van_mode_listen">Listen only</string>
+    <string name="van_mode_official">Like official app</string>
+    <string name="van_mode_official_km">Official + km</string>
+    <string name="van_need_perm">Allow Bluetooth («Nearby devices») and tap again.</string>
+    <string name="van_scanning">Looking for the dash…</string>
+    <string name="van_stop">Stop</string>
+    <string name="van_last_frame">last data %1$s s ago</string>
+    <string name="van_offered">The dash offers (id=field):</string>
+    <string name="van_values">Values (raw, as the dash sends them):</string>
+    <string name="van_log_hint">Then send the log: Help → Share logs.</string>
 </resources>
