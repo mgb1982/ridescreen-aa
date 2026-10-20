@@ -301,7 +301,9 @@ class MainActivity : AppCompatActivity() {
                 log("→ Nearby devices needed for Android Auto — asking")
                 ActivityCompat.requestPermissions(
                     this,
-                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN),
+                    // Same «Nearby devices» group: ask the Wi‑Fi half too, Wi‑Fi Direct dashes need it.
+                    (listOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN) +
+                        (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) listOf(Manifest.permission.NEARBY_WIFI_DEVICES) else emptyList())).toTypedArray(),
                     REQ_BT_FOR_AA,
                 )
             } else {
@@ -489,6 +491,18 @@ class MainActivity : AppCompatActivity() {
             val ok = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
             log(if (ok) "→ microphone allowed — voice commands will work" else "→ microphone denied — voice commands won't work")
             resumePendingAaConnect("mic answered")
+            return
+        }
+        if (requestCode == REQ_P2P_PERM) {
+            val ok = grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }
+            val p = pendingP2p; pendingP2p = null
+            if (ok && p != null) {
+                log("→ Wi‑Fi Direct permission granted — joining the dash")
+                joinWifiP2p(p.first, p.second)
+            } else if (!ok) {
+                log("→ Wi‑Fi Direct permission denied — can't reach a Wi‑Fi Direct dash")
+                ConnectionState.set(Phase.ERROR, getString(R.string.conn_p2p_permission))
+            }
             return
         }
         if (requestCode != REQ_BT_FOR_AA) return
@@ -1837,8 +1851,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     /** Wi‑Fi Direct Group Owner path (CL‑C450 / some DIRECT- SSIDs / Zontes MAC join). */
+    /** A Wi‑Fi Direct join waiting for its permission answer. */
+    private var pendingP2p: Pair<QrData, Boolean>? = null
+
     private fun joinWifiP2p(qr: QrData, gateOnAaSteady: Boolean) {
         if (!WifiGate.ensureEnabledOrPrompt(this)) return
+        if (!BikeWifiP2p.hasPermission(this)) {
+            // Without it every Wi‑Fi Direct call fails with a bare ERROR (350D, 20 Oct 2026).
+            LogBus.log("→ Wi‑Fi Direct needs ${BikeWifiP2p.permissionName().substringAfterLast('.')} — asking")
+            pendingP2p = qr to gateOnAaSteady
+            ActivityCompat.requestPermissions(this, arrayOf(BikeWifiP2p.permissionName()), REQ_P2P_PERM)
+            return
+        }
         LogBus.log("→ joining via Wi‑Fi Direct (P2P)")
         // How long to wait for a P2P group before failing over to SoftAP:
         //  - "P2P" remembered  → proven P2P device on this phone; give it the full window.
@@ -2380,6 +2404,7 @@ class MainActivity : AppCompatActivity() {
         /** When set with [EXTRA_START_GPX], join the bike even if not already live. */
         const val EXTRA_GPX_TO_BIKE = "gpx_to_bike"
         private const val REQ_BT_FOR_AA = 4
+        private const val REQ_P2P_PERM = 7344
         private const val PREFS_PERMS = "perm_flow"
         private const val KEY_BT_ASKED = "bt_asked"
         private const val KEY_MIC_ASKED = "mic_asked"

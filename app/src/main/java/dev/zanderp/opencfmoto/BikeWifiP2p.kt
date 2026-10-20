@@ -139,7 +139,7 @@ object BikeWifiP2p {
             val lm = ctx.getSystemService(Context.LOCATION_SERVICE) as? android.location.LocationManager
             val wm = ctx.getSystemService(Context.WIFI_SERVICE) as? android.net.wifi.WifiManager
             val loc = lm?.let { androidx.core.location.LocationManagerCompat.isLocationEnabled(it) }
-            log("$TAG phone state: location=${loc ?: "?"} wifi=${wm?.isWifiEnabled ?: "?"}")
+            log("$TAG phone state: location=${loc ?: "?"} wifi=${wm?.isWifiEnabled ?: "?"} permission=${if (hasPermission(ctx)) "ok" else "MISSING ${permissionName()}"}")
         } catch (_: Exception) {}
         thread(name = "p2p-retry", isDaemon = true) {
             var n = 0
@@ -493,6 +493,19 @@ object BikeWifiP2p {
 
     private fun asInet4(a: InetAddress): Inet4Address? =
         (a as? Inet4Address) ?: try { InetAddress.getByName(a.hostAddress) as? Inet4Address } catch (_: Exception) { null }
+
+    /**
+     * The runtime permission Wi‑Fi Direct needs: «Nearby devices» (Wi‑Fi) on Android 13+, precise
+     * location before. Without it every P2P call fails at once with a bare ERROR (350D log, 20 Oct:
+     * the Connect prompt had only granted the Bluetooth half of «Nearby devices»).
+     */
+    fun permissionName(): String =
+        if (android.os.Build.VERSION.SDK_INT >= 33) android.Manifest.permission.NEARBY_WIFI_DEVICES
+        else android.Manifest.permission.ACCESS_FINE_LOCATION
+
+    fun hasPermission(ctx: Context): Boolean =
+        androidx.core.content.ContextCompat.checkSelfPermission(ctx, permissionName()) ==
+            android.content.pm.PackageManager.PERMISSION_GRANTED
 
     private fun reasonStr(reason: Int): String = when (reason) {
         WifiP2pManager.P2P_UNSUPPORTED -> "P2P_UNSUPPORTED"
