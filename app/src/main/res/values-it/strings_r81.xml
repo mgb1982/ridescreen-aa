@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="bike_gone_channel">Moto non trovata</string>
+    <string name="bike_gone_title">Smesso di aspettare la moto</string>
+    <string name="bike_gone_text">La moto è rimasta spenta per 20 minuti, quindi l\'app ha smesso di cercarla per risparmiare batteria. Tocca Collega quando sei di nuovo in sella.</string>
+    <string name="tr_channel">Trofei</string>
+    <string name="tr_unlocked_title">🏆 Trofeo sbloccato!</string>
+    <string name="tr_screen_title">Trofei</string>
+    <string name="tr_header">%1$d di %2$d sbloccati</string>
+    <string name="tr_next">Prossimi</string>
+    <string name="tr_earned_on">Ottenuto il %1$s</string>
+    <string name="tr_card_line">🏆 Trofei: %1$d di %2$d · vedi tutti ›</string>
+    <string name="tr_distance">Chilometri</string>
+    <string name="tr_distance_d">Percorri %1$s km in totale</string>
+    <string name="tr_longest">Viaggio lungo</string>
+    <string name="tr_longest_d">Un viaggio di %1$s km o più</string>
+    <string name="tr_speed">Velocità massima</string>
+    <string name="tr_speed_d">Raggiungi %1$s km/h (GPS)</string>
+    <string name="tr_streak">In serie</string>
+    <string name="tr_streak_d">Guida %1$s giorni di fila</string>
+    <string name="tr_rides">Abituale</string>
+    <string name="tr_rides_d">Salva %1$s viaggi</string>
+    <string name="tr_hours">Ore in sella</string>
+    <string name="tr_hours_d">%1$s ore di guida</string>
+    <string name="tr_months">Tutto l\'anno</string>
+    <string name="tr_months_d">Guida in %1$s mesi diversi</string>
+    <string name="tr_early">Mattiniero</string>
+    <string name="tr_early_d">Inizia un viaggio prima delle 7:00</string>
+    <string name="tr_night">Motociclista notturno</string>
+    <string name="tr_night_d">Finisci un viaggio dopo le 23:00</string>
+    <string name="tr_weekend">Motociclista del fine settimana</string>
+    <string name="tr_weekend_d">Guida sabato e domenica dello stesso fine settimana</string>
+</resources>
