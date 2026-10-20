@@ -55,6 +55,8 @@ object BikeWifiP2p {
     private var receiver: BroadcastReceiver? = null
     private var appContext: Context? = null
     private const val RETRY_EVERY_MS = 4_000L
+    /** How long an accepted connect() may sit without a group before we invite again. */
+    private const val ACCEPTED_WAIT_MS = 12_000L
     @Volatile private var active = false
     @Volatile private var connected = false
     @Volatile private var connectIssued = false
@@ -83,6 +85,7 @@ object BikeWifiP2p {
         active = true
         connected = false
         connectIssued = false
+        acceptedRetries = 0
         val ctx = context.applicationContext
         appContext = ctx
 
@@ -232,12 +235,21 @@ object BikeWifiP2p {
         val config = WifiP2pConfig().apply {
             deviceAddress = mac
             wps.setup = WpsInfo.PBC
+            // We join the dash's group: never volunteer to be the owner.
+            groupOwnerIntent = 0
         }
-        log("$TAG connect(): joining peer MAC=$mac (WPS PBC) …")
+        // 350D (Ricky, 20 Oct 2026): the request was accepted but the dash stayed INVITED and no group
+        // formed in 40 s. INVITED = Android re-invoking a remembered (persistent) group, likely stale
+        // from the official app. Ask for a fresh, temporary group instead (hidden field; best effort).
+        try {
+            WifiP2pConfig::class.java.getField("netId").setInt(config, -1) // WifiP2pGroup.NETWORK_ID_TEMPORARY
+        } catch (_: Throwable) {}
+        log("$TAG connect(): joining peer MAC=$mac (WPS PBC, client, temporary group) …")
         connectIssued = true
         mgr.connect(chan, config, object : WifiP2pManager.ActionListener {
             override fun onSuccess() {
                 log("$TAG connect(): MAC request accepted — waiting for group to form")
+                watchAcceptedJoin(mgr, chan, log)
             }
             override fun onFailure(reason: Int) {
                 log("$TAG connect(): MAC failed (${reasonStr(reason)}) — will retry if peer appears")
@@ -253,6 +265,37 @@ object BikeWifiP2p {
                 } catch (_: Exception) {}
             }
         })
+    }
+
+    @Volatile private var acceptedRetries = 0
+
+    /**
+     * After an accepted connect(), give the group [ACCEPTED_WAIT_MS] to form; if it doesn't, cancel
+     * the pending invitation and let the retry loop issue a fresh one (at most twice per attempt).
+     */
+    private fun watchAcceptedJoin(mgr: WifiP2pManager, chan: WifiP2pManager.Channel, log: (String) -> Unit) {
+        android.os.Handler(Looper.getMainLooper()).postDelayed({
+            if (!active || connected || acceptedRetries >= 2) return@postDelayed
+            acceptedRetries++
+            log("$TAG no group ${ACCEPTED_WAIT_MS / 1000}s after the accepted connect — cancelling and inviting again ($acceptedRetries/2)")
+            try {
+                mgr.cancelConnect(chan, object : WifiP2pManager.ActionListener {
+                    override fun onSuccess() { log("$TAG cancelConnect: ok") }
+                    override fun onFailure(reason: Int) { log("$TAG cancelConnect: ${reasonStr(reason)}") }
+                })
+                mgr.removeGroup(chan, object : WifiP2pManager.ActionListener {
+                    override fun onSuccess() {}
+                    override fun onFailure(reason: Int) {}
+                })
+            } catch (_: Exception) {}
+            connectIssued = false
+            try {
+                mgr.discoverPeers(chan, object : WifiP2pManager.ActionListener {
+                    override fun onSuccess() { log("$TAG discoverPeers: restarted for a fresh invite") }
+                    override fun onFailure(r: Int) { log("$TAG discoverPeers restart failed (${reasonStr(r)})") }
+                })
+            } catch (_: Exception) {}
+        }, ACCEPTED_WAIT_MS)
     }
 
     private fun registerReceiver(
