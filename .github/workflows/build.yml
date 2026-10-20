@@ -4,7 +4,7 @@ on:
   push:
     # Pushing a branch release/zontes-N (or a tag zontes-N) publishes a public GitHub Release
     # tagged zontes-N with the APK attached; the tag is created GitHub-side.
-    branches: [main, 'test/**', 'feature/**', 'release/**']
+    branches: [main, 'test/**', 'feature/**', 'release/**', 'prerelease/**']
     tags: ['v*']
 
 permissions:
@@ -119,6 +119,35 @@ jobs:
           files: dist/*.apk
           prerelease: false
           make_latest: true
+      # Pushing a branch prerelease/<name> publishes a GitHub *pre-release* with a direct APK link for
+      # testers without a GitHub account. The in-app updater only reads releases/latest, which skips
+      # pre-releases, and a "-dev" build is never nagged to update — so nobody else is offered it.
+      - name: Prepare test pre-release
+        id: pre
+        if: startsWith(github.ref, 'refs/heads/prerelease/')
+        shell: bash
+        run: |
+          NAME="${GITHUB_REF_NAME#prerelease/}"
+          TAG="test-${NAME}-${GITHUB_RUN_NUMBER}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          mkdir -p predist
+          cp "$(find app/build/outputs/apk/github/release -name '*.apk' | head -1)" "predist/RideScreen-AA-${TAG}.apk"
+      - name: Create test pre-release
+        if: steps.pre.outputs.tag != ''
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.pre.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          name: "Prueba ${{ steps.pre.outputs.name }} (build ${{ github.run_number }}, no estable)"
+          body: |
+            Versión de **prueba** para ayudar a probar motos nuevas. No es la versión estable: si tu moto ya funciona, usa la última versión normal.
+            Test build to help bring up new bikes. Not the stable version.
+
+            Instala el archivo `.apk` de abajo encima de la app que ya tengas (se mantienen los ajustes). Después de probar, envía el registro desde ❓ Ayuda → Compartir registros.
+          files: predist/*.apk
+          prerelease: true
+          make_latest: false
       # Test APKs get the build number in the file name: all of them used to be
       # "app-github-release.apk", and an older copy with the same name got sent/installed instead.
       - name: Name test APK
