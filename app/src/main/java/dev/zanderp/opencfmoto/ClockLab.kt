@@ -53,6 +53,12 @@ object ClockLab {
     @Volatile var resyncBusyUntil: Long = 0L
     fun resyncInProgress(): Boolean = android.os.SystemClock.elapsedRealtime() < resyncBusyUntil
 
+    /**
+     * The dash joins the phone's hotspot (Carbit QR action=128, Zontes 125M). Set from the QR on
+     * every connect; on channel 21322 it turns on the Zontes clock fix ([PxcHandshake.clockFixDash]).
+     */
+    @Volatile var phoneHotspotDash: Boolean = false
+
     fun applyFrom(
         query: ClockQueryMode,
         timeSync: ClockTimeSyncMode,

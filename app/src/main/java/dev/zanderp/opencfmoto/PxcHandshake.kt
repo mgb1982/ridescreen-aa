@@ -122,7 +122,8 @@ class PxcHandshake(
      *
      * Field-tested on a ZT125T-X (channel 21340, flavor 65561, V0.0.1): APPSTATUS alone and the
      * CAR_DATA CHECK_SN_RESULT alone both still leave the cluster clock at 00:00; with BOTH, the dash
-     * takes the phone's time on every connect, including cold starts. Gated to channel 21340.
+     * takes the phone's time on every connect, including cold starts. Gated to channel 21340 and
+     * the Zontes 125M (see [clockFixDash]).
      */
     private fun startAppStatusLoop(socket: Socket) {
         if (!APPSTATUS_ENABLED) return
@@ -134,8 +135,8 @@ class PxcHandshake(
                     Thread.sleep(100); waited += 100
                 }
                 val channel = lastClientInfo?.optString("channel")?.trim().orEmpty()
-                if (channel != ZONTES_CHANNEL) {
-                    log("[APPSTATUS] not sending (channel=${channel.ifEmpty { "-" }}, only Zontes $ZONTES_CHANNEL)")
+                if (!clockFixDash(channel, ClockLab.phoneHotspotDash)) {
+                    log("[APPSTATUS] not sending (channel=${channel.ifEmpty { "-" }}, only Zontes $ZONTES_CHANNEL and the 125M)")
                     return@Thread
                 }
                 // The official app reports the phone's real portrait screen size here.
@@ -197,9 +198,12 @@ class PxcHandshake(
         // DOES apply the 0x10451 body. An empty ack sets the cluster to 13:49, and a later good
         // reply in the same dash boot does not recover it. So the default (EMPTY) answers with the
         // OEM JSON on this channel; explicit Clock-lab choices (Carbit / no-ack) are respected.
-        val autoZontes = ClockLab.query == ClockQueryMode.EMPTY && channel == ZONTES_CHANNEL
+        // The Zontes 125M (Carbit dash on the phone's hotspot, channel 21322) counts from 00:00 at
+        // every power-on until it gets a time (CLIENT_INFO currentHUTime = ms since boot), so it
+        // needs the same answer (125M rider's log, 20 Oct 2026).
+        val autoZontes = ClockLab.query == ClockQueryMode.EMPTY && clockFixDash(channel, ClockLab.phoneHotspotDash)
         val mode = if (autoZontes) ClockQueryMode.ZONTES else ClockLab.query
-        if (autoZontes) log("[CLOCK-LAB] channel $ZONTES_CHANNEL: default empty 0x10451 → OEM Zontes JSON")
+        if (autoZontes) log("[CLOCK-LAB] channel $channel${if (channel == ZONTES_125M_CHANNEL) " (125M, phone hotspot)" else ""}: default empty 0x10451 → OEM Zontes JSON")
         val reply = when (mode) {
             ClockQueryMode.EMPTY -> "empty"
             ClockQueryMode.CARBIT, ClockQueryMode.ZONTES -> "json"
@@ -336,6 +340,23 @@ class PxcHandshake(
     companion object {
         /** Zontes Smart / CFDL16 dash channel (CLIENT_INFO "channel"). */
         const val ZONTES_CHANNEL = "21340"
+        /**
+         * Carbit Ride dashes (CLIENT_INFO "channel"). The Zontes 125M is one of them, and the only
+         * one so far that joins the phone's hotspot (QR action=128); Moto Morini dashes share the
+         * Carbit platform (21322/21333) but host their own Wi‑Fi.
+         */
+        const val ZONTES_125M_CHANNEL = "21322"
+
+        /**
+         * Dashes that get the Zontes clock fix (APPSTATUS loop, CHECK_SN_RESULT on CAR_DATA and the
+         * time JSON in 0x10451): the 21340 family, and the Zontes 125M — channel 21322 on the phone's
+         * hotspot. Other Carbit dashes keep the old path: upstream 2.0.12 sent a filled 0x10451 to
+         * every dash and some (X-Cape, Voge, QJ…) jumped hours.
+         */
+        fun clockFixDash(channel: String?, phoneHotspotDash: Boolean): Boolean {
+            val ch = channel?.trim().orEmpty()
+            return ch == ZONTES_CHANNEL || (ch == ZONTES_125M_CHANNEL && phoneHotspotDash)
+        }
         /** Master switch for the Zontes APPSTATUS loop. */
         const val APPSTATUS_ENABLED = true
         const val APPSTATUS_FOREGROUND = 0x20020      // ECP_P2C_APPSTATUS_FOREGROUND
@@ -398,7 +419,7 @@ class PxcHandshake(
             put("client_set", "easy_conn")
         }
         val body = result.toString().toByteArray(Charsets.UTF_8)
-        val zontes = lastClientInfo?.optString("channel")?.trim() == ZONTES_CHANNEL
+        val zontes = clockFixDash(lastClientInfo?.optString("channel"), ClockLab.phoneHotspotDash)
         val p2c = carDataSocket
         if (CHECK_SN_RESULT_ON_CAR_DATA && zontes && p2c != null && !p2c.isClosed) {
             val where = if (p2c === socket) "CAR_DATA (same socket)" else "CAR_DATA (P2C, like official)"

@@ -1583,6 +1583,7 @@ class MainActivity : AppCompatActivity() {
         if (!WifiGate.ensureEnabledOrPrompt(this)) return
         ConnectionState.set(Phase.JOINING_WIFI)
         val transport = AppSettings.transport(this)
+        ClockLab.phoneHotspotDash = qr.supportsPhoneHotspot && qr.pwd.isEmpty()
         // Phone-hosts-hotspot (Zontes action=128 / no SoftAP pwd): dash joins the phone.
         if (qr.supportsPhoneHotspot && qr.pwd.isEmpty()) {
             joinPhoneHotspot(qr, gateOnAaSteady)
