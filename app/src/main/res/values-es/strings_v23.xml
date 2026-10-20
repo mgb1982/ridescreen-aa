@@ -197,4 +197,5 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="clock_fix_ok">Poner en hora</string>
     <string name="clock_fix_not_connected">Conecta antes con la moto</string>
     <string name="conn_p2p_permission">Permite «Dispositivos cercanos» (Wi‑Fi) para que la app llegue a este cuadro por Wi‑Fi Direct</string>
+    <string name="conn_local_network">Android 17: permite «Dispositivos cercanos» para que la app pueda hablar con el cuadro por su Wi‑Fi</string>
 </resources>

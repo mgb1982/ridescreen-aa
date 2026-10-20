@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Android 17 local network protection: talking to the dash on its own Wi‑Fi (192.168.x.x). -->
+    <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <!-- Wi‑Fi Direct (P2P) join for dashes that are Group Owners (e.g. CL‑C450). -->
     <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES"

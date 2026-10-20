@@ -197,4 +197,5 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="clock_fix_ok">Posa en hora</string>
     <string name="clock_fix_not_connected">Connecta abans amb la moto</string>
     <string name="conn_p2p_permission">Permet «Dispositius propers» (Wi‑Fi) perquè l\'app arribi a aquest quadre per Wi‑Fi Direct</string>
+    <string name="conn_local_network">Android 17: permet «Dispositius propers» perquè l\'app pugui parlar amb el quadre pel seu Wi‑Fi</string>
 </resources>
