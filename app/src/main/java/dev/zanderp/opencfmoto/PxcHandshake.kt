@@ -136,7 +136,7 @@ class PxcHandshake(
                 }
                 val channel = lastClientInfo?.optString("channel")?.trim().orEmpty()
                 if (!clockFixDash(channel, ClockLab.phoneHotspotDash)) {
-                    log("[APPSTATUS] not sending (channel=${channel.ifEmpty { "-" }}, only Zontes $ZONTES_CHANNEL and the 125M)")
+                    log("[APPSTATUS] not sending (channel=${channel.ifEmpty { "-" }}, only Zontes $ZONTES_CHANNEL, the 368 and the 125M)")
                     return@Thread
                 }
                 // The official app reports the phone's real portrait screen size here.
@@ -346,6 +346,13 @@ class PxcHandshake(
          * Carbit platform (21322/21333) but host their own Wi‑Fi.
          */
         const val ZONTES_125M_CHANNEL = "21322"
+        /**
+         * Zontes 368 range (G/K/E/D), also a Zontes Smart dash. A 368 with the bigger 1280×535
+         * panel (HUName JCDZ34, 20 Oct 2026) took our video but kept showing its QR screen: it gets
+         * the same session messages the official app sends (APPSTATUS, CHECK_SN_RESULT on CAR_DATA)
+         * and the time answer. No automatic clock resync on it yet.
+         */
+        const val ZONTES_368_CHANNEL = "21334"
 
         /**
          * Dashes that get the Zontes clock fix (APPSTATUS loop, CHECK_SN_RESULT on CAR_DATA and the
@@ -355,7 +362,8 @@ class PxcHandshake(
          */
         fun clockFixDash(channel: String?, phoneHotspotDash: Boolean): Boolean {
             val ch = channel?.trim().orEmpty()
-            return ch == ZONTES_CHANNEL || (ch == ZONTES_125M_CHANNEL && phoneHotspotDash)
+            return ch == ZONTES_CHANNEL || ch == ZONTES_368_CHANNEL ||
+                (ch == ZONTES_125M_CHANNEL && phoneHotspotDash)
         }
         /** Master switch for the Zontes APPSTATUS loop. */
         const val APPSTATUS_ENABLED = true
