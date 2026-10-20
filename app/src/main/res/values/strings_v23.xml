@@ -198,4 +198,22 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="clock_fix_not_connected">Connect to the bike first</string>
     <string name="conn_p2p_permission">Allow «Nearby devices» (Wi‑Fi) so the app can reach this dash over Wi‑Fi Direct</string>
     <string name="conn_local_network">Android 17: allow «Nearby devices» so the app can talk to the dash on its Wi‑Fi</string>
+    <string name="pke_entry">🔋 Battery (keyless box)</string>
+    <string name="pke_title">Bike battery</string>
+    <string name="pke_code_title">Keyless code (PKE)</string>
+    <string name="pke_code_body">To read the battery over Bluetooth, type your bike\'s PKE code. You\'ll find it in the official Zontes Smart app → vehicle management, under the bike. Read only: RideScreen never locks, unlocks or changes anything on the bike.</string>
+    <string name="pke_code_invalid">Enter the PKE code (digits only)</string>
+    <string name="pke_change_code">Change code</string>
+    <string name="pke_reading">Reading the keyless box over Bluetooth… the bike must be nearby.</string>
+    <string name="pke_volts">🔋 %1$s V</string>
+    <string name="pke_no_volts">Battery voltage not reported</string>
+    <string name="pke_result">%1$s\n\nRead at %2$s.</string>
+    <string name="pke_locked">Bike locked.</string>
+    <string name="pke_unlocked">Bike unlocked.</string>
+    <string name="pke_low">⚠️ Low — if the bike has been parked a while, it may need a run or a charge.</string>
+    <string name="pke_need_nearby">Allow «Nearby devices» so the app can reach the keyless box over Bluetooth, then try again.</string>
+    <string name="pke_bt_off">Bluetooth is off — turn it on and try again.</string>
+    <string name="pke_fail_no_code">No PKE code set yet.</string>
+    <string name="pke_fail_not_found">Couldn\'t find the keyless box. Get closer to the bike, make sure the official app isn\'t connected to it, and try again.</string>
+    <string name="pke_fail_no_answer">The box answered but didn\'t report the voltage. Please send me the log.</string>
 </resources>

@@ -1,0 +1,277 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// Part of RideScreen AA (fork of OpenCfMoto). Free software under the GNU AGPL v3 or later.
+package dev.zanderp.opencfmoto
+
+import android.Manifest
+import android.annotation.SuppressLint
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothGatt
+import android.bluetooth.BluetoothGattCallback
+import android.bluetooth.BluetoothGattCharacteristic
+import android.bluetooth.BluetoothGattDescriptor
+import android.bluetooth.BluetoothManager
+import android.bluetooth.BluetoothProfile
+import android.bluetooth.le.ScanCallback
+import android.bluetooth.le.ScanResult
+import android.bluetooth.le.ScanSettings
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.content.ContextCompat
+import java.util.UUID
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.TimeUnit
+
+/**
+ * v2.3 · Battery voltage (and lock state) of the bike, read from its keyless box (Zontes "PKE 3.0")
+ * over Bluetooth LE — the same "voltage" Zontes Smart EU 1.12 shows (decompiled: MotorCtrlFragment,
+ * a.x44, a.jc9; 20 Oct 2026).
+ *  - The box advertises; its scan record, as hex, contains the bike's PKE code (x44: hex + contains).
+ *  - Nordic UART service 6E400001: write 6E400002, notify 6E400003. ASCII frames `*…#`.
+ *  - `*BT,<pke>,10,008#`   → `*AT,…,…,008,<challenge>,<volts×10>…#`
+ *  - `*BT,<pke>,10,001,7#` → `*AT,…,…,001,7,<1 locked | 2 unlocked>#`
+ *
+ * READ ONLY by design (Manel, 20 Oct 2026: "values from that box, read only"). [frame] builds only
+ * those two queries; there is no code path that sends lock / unlock / seat / fuel cap / keys /
+ * password / firmware commands, and the challenge is never answered.
+ */
+@SuppressLint("MissingPermission")
+object PkeBattery {
+    private val UART_SERVICE: UUID = UUID.fromString("6E400001-B5A3-F393-E0A9-E50E24DCCA9E")
+    private val UART_RX: UUID = UUID.fromString("6E400002-B5A3-F393-E0A9-E50E24DCCA9E") // phone → box
+    private val UART_TX: UUID = UUID.fromString("6E400003-B5A3-F393-E0A9-E50E24DCCA9E") // box → phone
+    private val CCC: UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
+
+    private const val PREFS = "pke_box"
+    private const val KEY_CODE = "code"
+    private const val KEY_MAC = "mac"
+    private const val KEY_VOLTS = "volts"
+    private const val KEY_LOCKED = "locked"
+    private const val KEY_AT = "at"
+
+    /** The only two things RideScreen ever asks the box. */
+    internal enum class Query(val cmd: String) { HANDSHAKE("008"), STATUS("001,7") }
+
+    data class Reading(val volts: Float?, val locked: Boolean?, val atMs: Long)
+
+    enum class Failure { NO_CODE, NO_PERMISSION, BLUETOOTH_OFF, NOT_FOUND, NO_LINK, NO_ANSWER }
+
+    class Result(val reading: Reading?, val failure: Failure?)
+
+    private fun log(s: String) = LogBus.log("[PKE] $s")
+
+    // ── pure bits (unit-tested)
+
+    /** Digits only; the code Zontes Smart shows under "vehicle management" (15 digits on the 125X). */
+    internal fun cleanCode(raw: String?): String = raw.orEmpty().filter { it.isDigit() }
+
+    internal fun frame(pke: String, q: Query): ByteArray = "*BT,$pke,10,${q.cmd}#".toByteArray(Charsets.US_ASCII)
+
+    /** Hex of the advertisement contains the PKE code; or the box is named "PKE-<last 4>". */
+    internal fun matches(scanRecord: ByteArray?, name: String?, pke: String): Boolean {
+        if (pke.length < 8) return false
+        if (scanRecord != null && scanRecord.joinToString("") { "%02x".format(it) }.contains(pke)) return true
+        val n = name.orEmpty().uppercase()
+        return n.contains(pke) || n == "PKE-" + pke.takeLast(4)
+    }
+
+    /** Voltage from a `008` reply (`*AT,a,b,008,<challenge>,<volts×10>…#`), sanity-checked. */
+    internal fun voltsFrom(reply: String): Float? {
+        val p = reply.trim().removeSuffix("#").split(",")
+        if (p.firstOrNull() != "*AT") return null
+        val i = p.indexOf("008").takeIf { it >= 1 } ?: return null
+        val v = p.getOrNull(i + 2)?.trim()?.toFloatOrNull() ?: return null
+        return (v / 10f).takeIf { it in 5f..20f }
+    }
+
+    /** Lock state from a `001,7` reply: true locked, false unlocked, null unknown. */
+    internal fun lockedFrom(reply: String): Boolean? {
+        val p = reply.trim().removeSuffix("#").split(",")
+        if (p.firstOrNull() != "*AT") return null
+        val i = p.indexOf("001").takeIf { it >= 1 } ?: return null
+        if (p.getOrNull(i + 1) != "7") return null
+        return when (p.getOrNull(i + 2)?.trim()) { "1" -> true; "2" -> false; else -> null }
+    }
+
+    /** Frames as they appear in the log: PKE code down to its last 4 digits, challenge hidden. */
+    internal fun masked(text: String, pke: String): String {
+        var t = if (pke.length >= 8) text.replace(pke, "…" + pke.takeLast(4)) else text
+        val p = t.split(",")
+        val i = p.indexOf("008")
+        if (p.firstOrNull() == "*AT" && i >= 1 && p.size > i + 1) t = p.toMutableList().also { it[i + 1] = "••••" }.joinToString(",")
+        return t
+    }
+
+    // ── storage
+
+    fun code(ctx: Context): String = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString(KEY_CODE, "").orEmpty()
+
+    fun setCode(ctx: Context, code: String) {
+        val c = cleanCode(code)
+        val p = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        if (c != p.getString(KEY_CODE, "")) p.edit().putString(KEY_CODE, c).remove(KEY_MAC).apply()
+    }
+
+    fun last(ctx: Context): Reading? {
+        val p = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val at = p.getLong(KEY_AT, 0L).takeIf { it > 0 } ?: return null
+        val v = p.getFloat(KEY_VOLTS, -1f).takeIf { it > 0 }
+        val l = if (p.contains(KEY_LOCKED)) p.getBoolean(KEY_LOCKED, false) else null
+        return Reading(v, l, at)
+    }
+
+    private fun save(ctx: Context, r: Reading) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().apply {
+            putLong(KEY_AT, r.atMs)
+            if (r.volts != null) putFloat(KEY_VOLTS, r.volts) else remove(KEY_VOLTS)
+            if (r.locked != null) putBoolean(KEY_LOCKED, r.locked) else remove(KEY_LOCKED)
+        }.apply()
+    }
+
+    // ── the read (blocking: call it off the main thread)
+
+    fun read(ctx: Context): Result {
+        val pke = code(ctx)
+        if (pke.length < 8) return Result(null, Failure.NO_CODE)
+        if (Build.VERSION.SDK_INT >= 31 && listOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT)
+                .any { ContextCompat.checkSelfPermission(ctx, it) != PackageManager.PERMISSION_GRANTED }) {
+            return Result(null, Failure.NO_PERMISSION)
+        }
+        val adapter = ctx.getSystemService(BluetoothManager::class.java)?.adapter
+        if (adapter == null || !adapter.isEnabled) return Result(null, Failure.BLUETOOTH_OFF)
+        log("reading the keyless box (read only: 008 + 001,7) for PKE …${pke.takeLast(4)}")
+        val prefs = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val known = prefs.getString(KEY_MAC, null)?.let { runCatching { adapter.getRemoteDevice(it) }.getOrNull() }
+        var link = known?.let { log("trying the box at ${it.address} directly"); open(ctx, it, pke, 8_000) }
+        if (link == null) {
+            val dev = scan(ctx, pke) ?: return Result(null, Failure.NOT_FOUND)
+            prefs.edit().putString(KEY_MAC, dev.address).apply()
+            link = open(ctx, dev, pke, 12_000) ?: return Result(null, Failure.NO_LINK)
+        }
+        try {
+            val volts = ask(link, pke, Query.HANDSHAKE, 6_000)?.let { voltsFrom(it) }
+            val locked = ask(link, pke, Query.STATUS, 4_000)?.let { lockedFrom(it) }
+            if (volts == null && locked == null) return Result(null, Failure.NO_ANSWER)
+            val r = Reading(volts, locked, System.currentTimeMillis())
+            save(ctx, r)
+            log("battery ${volts?.let { "%.1f V".format(it) } ?: "?"} · ${when (locked) { true -> "locked"; false -> "unlocked"; null -> "lock state ?" }}")
+            return Result(r, null)
+        } finally {
+            runCatching { link.gatt.disconnect() }; runCatching { link.gatt.close() }
+        }
+    }
+
+    private class Link(val gatt: BluetoothGatt, val rx: BluetoothGattCharacteristic, val replies: LinkedBlockingQueue<String>)
+
+    /** Sends one allowed query and waits for the reply to it (other frames are logged and skipped). */
+    private fun ask(link: Link, pke: String, q: Query, timeoutMs: Long): String? {
+        link.replies.clear()
+        val bytes = frame(pke, q)
+        val ok = if (Build.VERSION.SDK_INT >= 33) {
+            link.gatt.writeCharacteristic(link.rx, bytes, writeType(link.rx)) == 0
+        } else {
+            @Suppress("DEPRECATION") run { link.rx.writeType = writeType(link.rx); link.rx.value = bytes; link.gatt.writeCharacteristic(link.rx) }
+        }
+        log("→ ${masked(String(bytes, Charsets.US_ASCII), pke)}${if (ok) "" else " (write refused)"}")
+        val want = q.cmd.substringBefore(",")
+        val until = System.currentTimeMillis() + timeoutMs
+        while (true) {
+            val left = until - System.currentTimeMillis()
+            if (left <= 0) { log("no answer to ${q.cmd}"); return null }
+            val r = link.replies.poll(left, TimeUnit.MILLISECONDS) ?: continue
+            if (r.split(",").getOrNull(3) == want || r.split(",").contains(want)) return r
+        }
+    }
+
+    private fun writeType(c: BluetoothGattCharacteristic) =
+        if (c.properties and BluetoothGattCharacteristic.PROPERTY_WRITE != 0) BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
+        else BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
+
+    private fun scan(ctx: Context, pke: String): BluetoothDevice? {
+        val scanner = ctx.getSystemService(BluetoothManager::class.java)?.adapter?.bluetoothLeScanner ?: return null
+        var found: BluetoothDevice? = null
+        var seen = 0
+        var uart = 0
+        val latch = CountDownLatch(1)
+        val cb = object : ScanCallback() {
+            override fun onScanResult(type: Int, r: ScanResult) {
+                seen++
+                val name = r.scanRecord?.deviceName ?: runCatching { r.device.name }.getOrNull()
+                if (r.scanRecord?.serviceUuids?.any { it.uuid == UART_SERVICE } == true) uart++
+                if (found == null && matches(r.scanRecord?.bytes, name, pke)) {
+                    found = r.device
+                    log("found the box: ${r.device.address} '${name ?: "?"}' ${r.rssi} dBm")
+                    latch.countDown()
+                }
+            }
+        }
+        log("scanning Bluetooth LE for the keyless box (12 s)…")
+        try {
+            scanner.startScan(null, ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build(), cb)
+            latch.await(12, TimeUnit.SECONDS)
+        } catch (e: Exception) { log("scan failed: $e") } finally { runCatching { scanner.stopScan(cb) } }
+        if (found == null) log("box not found ($seen BLE adverts seen, $uart with the Nordic UART service). Too far, or the official app holding it?")
+        return found
+    }
+
+    private fun open(ctx: Context, dev: BluetoothDevice, pke: String, timeoutMs: Long): Link? {
+        val ready = CountDownLatch(1)
+        val replies = LinkedBlockingQueue<String>()
+        val text = StringBuilder()
+        var link: Link? = null
+        var fail: String? = null
+        val cb = object : BluetoothGattCallback() {
+            override fun onConnectionStateChange(g: BluetoothGatt, status: Int, newState: Int) {
+                if (newState == BluetoothProfile.STATE_CONNECTED) {
+                    if (!g.requestMtu(185)) g.discoverServices()
+                } else if (newState == BluetoothProfile.STATE_DISCONNECTED && link == null) {
+                    fail = "disconnected (status=$status)"; ready.countDown()
+                }
+            }
+            override fun onMtuChanged(g: BluetoothGatt, mtu: Int, status: Int) { g.discoverServices() }
+            override fun onServicesDiscovered(g: BluetoothGatt, status: Int) {
+                val svc = g.getService(UART_SERVICE)
+                val rx = svc?.getCharacteristic(UART_RX)
+                val tx = svc?.getCharacteristic(UART_TX)
+                if (rx == null || tx == null) { fail = "no Nordic UART service"; ready.countDown(); return }
+                g.setCharacteristicNotification(tx, true)
+                val d = tx.getDescriptor(CCC)
+                if (d == null) { link = Link(g, rx, replies); ready.countDown(); return }
+                if (Build.VERSION.SDK_INT >= 33) g.writeDescriptor(d, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)
+                else @Suppress("DEPRECATION") run { d.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE; g.writeDescriptor(d) }
+                link = Link(g, rx, replies)
+            }
+            override fun onDescriptorWrite(g: BluetoothGatt, d: BluetoothGattDescriptor, status: Int) { ready.countDown() }
+            override fun onCharacteristicChanged(g: BluetoothGatt, c: BluetoothGattCharacteristic, value: ByteArray) = got(value)
+            @Deprecated("pre-33")
+            override fun onCharacteristicChanged(g: BluetoothGatt, c: BluetoothGattCharacteristic) {
+                @Suppress("DEPRECATION") got(c.value ?: return)
+            }
+            private fun got(value: ByteArray) {
+                synchronized(text) {
+                    text.append(String(value, Charsets.US_ASCII))
+                    while (true) {
+                        val start = text.indexOf("*")
+                        val end = text.indexOf("#", maxOf(start, 0))
+                        if (start < 0 || end < 0) break
+                        val f = text.substring(start, end + 1)
+                        text.delete(0, end + 1)
+                        log("← ${masked(f, pke)}")
+                        replies.put(f)
+                    }
+                    if (text.length > 512) text.setLength(0)
+                }
+            }
+        }
+        val g = runCatching { dev.connectGatt(ctx, false, cb, BluetoothDevice.TRANSPORT_LE) }.getOrNull() ?: return null
+        if (!ready.await(timeoutMs, TimeUnit.MILLISECONDS)) fail = fail ?: "timeout"
+        val l = link
+        if (l == null) {
+            log("no link to the box: $fail")
+            runCatching { g.disconnect() }; runCatching { g.close() }
+            return null
+        }
+        return l
+    }
+}

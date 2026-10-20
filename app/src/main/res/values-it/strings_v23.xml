@@ -198,4 +198,22 @@ Oggi: %2$d min porta a porta · di solito: %3$d min.</string>
     <string name="clock_fix_not_connected">Prima collegati alla moto</string>
     <string name="conn_p2p_permission">Consenti «Dispositivi nelle vicinanze» (Wi‑Fi) perché l\'app possa raggiungere questo cruscotto via Wi‑Fi Direct</string>
     <string name="conn_local_network">Android 17: consenti «Dispositivi nelle vicinanze» perché l\'app possa parlare con il cruscotto tramite il suo Wi‑Fi</string>
+    <string name="pke_entry">🔋 Batteria (scatola keyless)</string>
+    <string name="pke_title">Batteria della moto</string>
+    <string name="pke_code_title">Codice keyless (PKE)</string>
+    <string name="pke_code_body">Per leggere la batteria via Bluetooth, scrivi il codice PKE della tua moto. Lo trovi nell\'app ufficiale Zontes Smart → gestione moto, sotto la moto. Sola lettura: RideScreen non blocca, sblocca né cambia nulla sulla moto.</string>
+    <string name="pke_code_invalid">Scrivi il codice PKE (solo numeri)</string>
+    <string name="pke_change_code">Cambia il codice</string>
+    <string name="pke_reading">Lettura della scatola keyless via Bluetooth… la moto deve essere vicina.</string>
+    <string name="pke_volts">🔋 %1$s V</string>
+    <string name="pke_no_volts">La scatola non fornisce il voltaggio</string>
+    <string name="pke_result">%1$s\n\nLetto alle %2$s.</string>
+    <string name="pke_locked">Moto bloccata.</string>
+    <string name="pke_unlocked">Moto sbloccata.</string>
+    <string name="pke_low">⚠️ Bassa — se la moto è ferma da giorni, forse ha bisogno di un giro o di una ricarica.</string>
+    <string name="pke_need_nearby">Consenti «Dispositivi nelle vicinanze» così l\'app può raggiungere la scatola keyless via Bluetooth, poi riprova.</string>
+    <string name="pke_bt_off">Il Bluetooth è spento: attivalo e riprova.</string>
+    <string name="pke_fail_no_code">Non hai ancora inserito il codice PKE.</string>
+    <string name="pke_fail_not_found">Non trovo la scatola keyless. Avvicinati alla moto, assicurati che l\'app ufficiale non sia collegata, e riprova.</string>
+    <string name="pke_fail_no_answer">La scatola ha risposto ma non ha fornito il voltaggio. Mandami il log, per favore.</string>
 </resources>

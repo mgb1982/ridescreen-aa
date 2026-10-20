@@ -1446,6 +1446,7 @@ class MainActivity : AppCompatActivity() {
             }; Unit
         })
         add(getString(R.string.pax_entry) to { CompanionActivity.start(this@MainActivity); Unit })
+        add(getString(R.string.pke_entry) to { PkeBatteryUi.show(this@MainActivity); Unit })
         add(getString(R.string.help_support) to { Support.open(this@MainActivity); Unit })
     }
 

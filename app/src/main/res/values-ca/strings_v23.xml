@@ -198,4 +198,22 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="clock_fix_not_connected">Connecta abans amb la moto</string>
     <string name="conn_p2p_permission">Permet «Dispositius propers» (Wi‑Fi) perquè l\'app arribi a aquest quadre per Wi‑Fi Direct</string>
     <string name="conn_local_network">Android 17: permet «Dispositius propers» perquè l\'app pugui parlar amb el quadre pel seu Wi‑Fi</string>
+    <string name="pke_entry">🔋 Bateria (caixa del keyless)</string>
+    <string name="pke_title">Bateria de la moto</string>
+    <string name="pke_code_title">Codi del keyless (PKE)</string>
+    <string name="pke_code_body">Per llegir la bateria per Bluetooth, escriu el codi PKE de la teva moto. El tens a l\'app oficial Zontes Smart → gestió de motos, sota la moto. Només lectura: RideScreen no bloqueja, desbloqueja ni canvia res a la moto.</string>
+    <string name="pke_code_invalid">Escriu el codi PKE (només números)</string>
+    <string name="pke_change_code">Canvia el codi</string>
+    <string name="pke_reading">Llegint la caixa del keyless per Bluetooth… la moto ha d\'estar a prop.</string>
+    <string name="pke_volts">🔋 %1$s V</string>
+    <string name="pke_no_volts">La caixa no dona el voltatge</string>
+    <string name="pke_result">%1$s\n\nLlegit a les %2$s.</string>
+    <string name="pke_locked">Moto bloquejada.</string>
+    <string name="pke_unlocked">Moto desbloquejada.</string>
+    <string name="pke_low">⚠️ Baixa — si la moto fa dies que no es fa servir, potser necessita una volta o una càrrega.</string>
+    <string name="pke_need_nearby">Permet «Dispositius propers» perquè l\'app arribi a la caixa del keyless per Bluetooth i torna-ho a provar.</string>
+    <string name="pke_bt_off">El Bluetooth està apagat: activa\'l i torna-ho a provar.</string>
+    <string name="pke_fail_no_code">Encara no has posat el codi PKE.</string>
+    <string name="pke_fail_not_found">No trobo la caixa del keyless. Acosta\'t a la moto, assegura\'t que l\'app oficial no hi estigui connectada i torna-ho a provar.</string>
+    <string name="pke_fail_no_answer">La caixa ha respost però no ha donat el voltatge. Passa\'m el registre, si us plau.</string>
 </resources>

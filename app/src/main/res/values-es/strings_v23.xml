@@ -198,4 +198,22 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="clock_fix_not_connected">Conecta antes con la moto</string>
     <string name="conn_p2p_permission">Permite «Dispositivos cercanos» (Wi‑Fi) para que la app llegue a este cuadro por Wi‑Fi Direct</string>
     <string name="conn_local_network">Android 17: permite «Dispositivos cercanos» para que la app pueda hablar con el cuadro por su Wi‑Fi</string>
+    <string name="pke_entry">🔋 Batería (caja del keyless)</string>
+    <string name="pke_title">Batería de la moto</string>
+    <string name="pke_code_title">Código del keyless (PKE)</string>
+    <string name="pke_code_body">Para leer la batería por Bluetooth, escribe el código PKE de tu moto. Lo tienes en la app oficial Zontes Smart → gestión de motos, debajo de la moto. Solo lectura: RideScreen nunca bloquea, desbloquea ni cambia nada en la moto.</string>
+    <string name="pke_code_invalid">Escribe el código PKE (solo números)</string>
+    <string name="pke_change_code">Cambiar el código</string>
+    <string name="pke_reading">Leyendo la caja del keyless por Bluetooth… la moto tiene que estar cerca.</string>
+    <string name="pke_volts">🔋 %1$s V</string>
+    <string name="pke_no_volts">La caja no da el voltaje</string>
+    <string name="pke_result">%1$s\n\nLeído a las %2$s.</string>
+    <string name="pke_locked">Moto bloqueada.</string>
+    <string name="pke_unlocked">Moto desbloqueada.</string>
+    <string name="pke_low">⚠️ Baja — si la moto lleva días parada, quizá necesite un paseo o una carga.</string>
+    <string name="pke_need_nearby">Permite «Dispositivos cercanos» para que la app llegue a la caja del keyless por Bluetooth y vuelve a intentarlo.</string>
+    <string name="pke_bt_off">El Bluetooth está apagado: actívalo y vuelve a intentarlo.</string>
+    <string name="pke_fail_no_code">Aún no has puesto el código PKE.</string>
+    <string name="pke_fail_not_found">No encuentro la caja del keyless. Acércate a la moto, asegúrate de que la app oficial no esté conectada a ella y vuelve a intentarlo.</string>
+    <string name="pke_fail_no_answer">La caja respondió pero no dio el voltaje. Pásame el registro, por favor.</string>
 </resources>
