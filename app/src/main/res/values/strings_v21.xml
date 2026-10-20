@@ -83,4 +83,5 @@
     <string name="mic_perm_settings">Open settings</string>
     <string name="mic_perm_not_now">Not now</string>
     <string name="conn_p2p_permission">Allow «Nearby devices» (Wi‑Fi) so the app can reach this dash over Wi‑Fi Direct</string>
+    <string name="conn_local_network">Android 17: allow «Nearby devices» so the app can talk to the dash on its Wi‑Fi</string>
 </resources>

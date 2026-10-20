@@ -197,6 +197,10 @@ class MainActivity : AppCompatActivity() {
                 pendingAaQr = qr
                 return
             }
+            if (!ensureLocalNetworkForConnect()) {
+                pendingAaQr = qr
+                return
+            }
             pendingAaQr = null
             BikeWatchService.stop(this)
             // Map / Mirror / stale PXC must die first — half-switches leave framesSent=0.
@@ -439,6 +443,28 @@ class MainActivity : AppCompatActivity() {
         startAaFlow(qr)
     }
 
+    private var localNetAsked = false
+
+    /**
+     * Android 17 · Local network protection: without ACCESS_LOCAL_NETWORK the dash's Wi‑Fi joins
+     * fine but every connection to it times out (Galaxy S25 Ultra on Android 17, 20 Oct 2026:
+     * "NSD register error: Missing local network permission", :10930 timeouts, port scan empty).
+     * It sits in the «Nearby devices» group. Asked at most once per app run; Connect goes on either way.
+     */
+    private fun ensureLocalNetworkForConnect(): Boolean {
+        if (Build.VERSION.SDK_INT < 37) return true
+        if (ContextCompat.checkSelfPermission(this, PERM_LOCAL_NETWORK) == PackageManager.PERMISSION_GRANTED) return true
+        if (localNetAsked) {
+            log("→ local network access NOT allowed — the dash will not answer (Settings → Apps → RideScreen AA → Permissions → Nearby devices)")
+            return true
+        }
+        localNetAsked = true
+        log("→ Android 17: local network access needed to talk to the dash — asking")
+        ConnectionState.set(Phase.ERROR, getString(R.string.conn_local_network))
+        ActivityCompat.requestPermissions(this, arrayOf(PERM_LOCAL_NETWORK), REQ_LOCAL_NET)
+        return false
+    }
+
     /** Asked at most once per app run, so Connect never loops on the microphone question. */
     private var micPromptDone = false
 
@@ -491,6 +517,12 @@ class MainActivity : AppCompatActivity() {
             val ok = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
             log(if (ok) "→ microphone allowed — voice commands will work" else "→ microphone denied — voice commands won't work")
             resumePendingAaConnect("mic answered")
+            return
+        }
+        if (requestCode == REQ_LOCAL_NET) {
+            val ok = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+            log(if (ok) "→ local network access allowed" else "→ local network access denied — the dash won't answer")
+            resumePendingAaConnect("local network answered")
             return
         }
         if (requestCode == REQ_P2P_PERM) {
@@ -2405,6 +2437,9 @@ class MainActivity : AppCompatActivity() {
         const val EXTRA_GPX_TO_BIKE = "gpx_to_bike"
         private const val REQ_BT_FOR_AA = 4
         private const val REQ_P2P_PERM = 7344
+        private const val REQ_LOCAL_NET = 7345
+        /** Android 17 (API 37); spelled out while compileSdk is older. */
+        private const val PERM_LOCAL_NETWORK = "android.permission.ACCESS_LOCAL_NETWORK"
         private const val PREFS_PERMS = "perm_flow"
         private const val KEY_BT_ASKED = "bt_asked"
         private const val KEY_MIC_ASKED = "mic_asked"
