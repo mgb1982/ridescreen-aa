@@ -68,7 +68,7 @@ class HudViewActivity : AppCompatActivity() {
         val baseRightPad = topbar.paddingRight
         ViewCompat.setOnApplyWindowInsetsListener(topbar) { v, insets ->
             val bars = insets.getInsets(
-                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+                SafeInsets.BARS or WindowInsetsCompat.Type.displayCutout()
             )
             v.setPadding(baseLeftPad + bars.left, baseTopPad + bars.top, baseRightPad + bars.right, v.paddingBottom)
             insets
@@ -242,7 +242,7 @@ class HudViewActivity : AppCompatActivity() {
         findViewById<View>(R.id.hud_controls).visibility = View.GONE
         findViewById<View>(R.id.hud_toggle_controls).visibility = View.GONE
         // Waze-style: ride immersive — no system status bar eating the map.
-        insetsController.hide(WindowInsetsCompat.Type.systemBars())
+        insetsController.hide(SafeInsets.BARS)
         titleView.text = when (GpxSession.mode) {
             GpxSession.Mode.GPX -> "GPX · ${GpxSession.trackName}"
             GpxSession.Mode.NAV_TO -> "Nav · ${GpxSession.trackName}"
@@ -262,7 +262,7 @@ class HudViewActivity : AppCompatActivity() {
         gpxUi = null
         gpxHost.removeAllViews()
         gpxHost.visibility = View.GONE
-        insetsController.show(WindowInsetsCompat.Type.systemBars())
+        insetsController.show(SafeInsets.BARS)
     }
 
     private fun cycleMapTheme() {
@@ -287,10 +287,10 @@ class HudViewActivity : AppCompatActivity() {
             findViewById<View>(R.id.hud_controls).visibility = if (on) View.GONE else View.VISIBLE
         }
         if (on) {
-            insetsController.hide(WindowInsetsCompat.Type.systemBars())
+            insetsController.hide(SafeInsets.BARS)
             Toast.makeText(this, "Fullscreen — press Back to exit", Toast.LENGTH_SHORT).show()
         } else {
-            insetsController.show(WindowInsetsCompat.Type.systemBars())
+            insetsController.show(SafeInsets.BARS)
         }
     }
 

@@ -119,7 +119,7 @@ class GpxDashUi(
         // Map goes edge-to-edge; chrome cards get cutout margins so we don't leave a black strip.
         ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
             val bars = insets.getInsets(
-                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout(),
+                SafeInsets.BARS or WindowInsetsCompat.Type.displayCutout(),
             )
             insetL = bars.left
             insetT = bars.top

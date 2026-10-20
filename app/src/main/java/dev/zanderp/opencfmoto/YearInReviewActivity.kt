@@ -69,7 +69,7 @@ class YearInReviewActivity : AppCompatActivity() {
         }
         setContentView(root)
         ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
-            val b = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val b = insets.getInsets(SafeInsets.BARS)
             v.setPadding(b.left + dp(16), b.top + dp(8), b.right + dp(16), b.bottom + dp(16))
             insets
         }

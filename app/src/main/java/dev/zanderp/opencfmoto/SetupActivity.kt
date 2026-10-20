@@ -63,7 +63,7 @@ class SetupActivity : AppCompatActivity() {
 
         // Draw content clear of the status/navigation bars (edge-to-edge is enforced on newer Android).
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.setup_root)) { v, insets ->
-            val b = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val b = insets.getInsets(SafeInsets.BARS)
             v.setPadding(v.paddingLeft, b.top, v.paddingRight, b.bottom)
             insets
         }

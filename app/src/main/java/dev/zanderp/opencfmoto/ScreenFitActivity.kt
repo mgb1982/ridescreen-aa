@@ -173,7 +173,7 @@ class ScreenFitActivity : AppCompatActivity() {
 
         setContentView(scroll)
         ViewCompat.setOnApplyWindowInsetsListener(scroll) { v, insets ->
-            val s = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val s = insets.getInsets(SafeInsets.BARS)
             v.setPadding(s.left, s.top, s.right, s.bottom)
             insets
         }
