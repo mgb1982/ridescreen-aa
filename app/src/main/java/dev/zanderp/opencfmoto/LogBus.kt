@@ -79,6 +79,7 @@ object LogBus {
                 "versionCode=${BuildConfig.VERSION_CODE} " +
                 "git=${BuildConfig.GIT_HASH} flags=$flags",
         )
+        log("[BUILD] phone=${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL} android=${android.os.Build.VERSION.RELEASE} (sdk ${android.os.Build.VERSION.SDK_INT})")
         log(ClockLab.banner(null))
         log("[BUILD] --- session start ---")
     }

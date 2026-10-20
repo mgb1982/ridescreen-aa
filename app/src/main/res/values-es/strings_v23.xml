@@ -196,4 +196,5 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="clock_fix_body">Si el cuadro marca 00:00 o una hora que no es, la app corta el enlace unos segundos y vuelve a conectar para que el cuadro coja la hora del móvil. Android Auto sigue funcionando.</string>
     <string name="clock_fix_ok">Poner en hora</string>
     <string name="clock_fix_not_connected">Conecta antes con la moto</string>
+    <string name="conn_p2p_permission">Permite «Dispositivos cercanos» (Wi‑Fi) para que la app llegue a este cuadro por Wi‑Fi Direct</string>
 </resources>

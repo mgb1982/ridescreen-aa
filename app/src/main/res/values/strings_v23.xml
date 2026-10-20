@@ -196,4 +196,5 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="clock_fix_body">If the dash shows 00:00 or a wrong time, the app drops the link for a few seconds and reconnects so the dash takes the phone\'s time again. Android Auto keeps running.</string>
     <string name="clock_fix_ok">Set the time</string>
     <string name="clock_fix_not_connected">Connect to the bike first</string>
+    <string name="conn_p2p_permission">Allow «Nearby devices» (Wi‑Fi) so the app can reach this dash over Wi‑Fi Direct</string>
 </resources>

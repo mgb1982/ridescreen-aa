@@ -196,4 +196,5 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="clock_fix_body">Si el quadre marca 00:00 o una hora que no toca, l\'app talla l\'enllaç uns segons i torna a connectar perquè el quadre agafi l\'hora del mòbil. Android Auto continua funcionant.</string>
     <string name="clock_fix_ok">Posa en hora</string>
     <string name="clock_fix_not_connected">Connecta abans amb la moto</string>
+    <string name="conn_p2p_permission">Permet «Dispositius propers» (Wi‑Fi) perquè l\'app arribi a aquest quadre per Wi‑Fi Direct</string>
 </resources>
