@@ -4,10 +4,16 @@
 package dev.zanderp.opencfmoto
 
 import android.app.Application
+import android.content.Context
 import org.maplibre.android.MapLibre
 
 /** Process entry — installs crash capture before any Activity runs. */
 class OpenCfMotoApp : Application() {
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        try { EarlyCrash.install(base) } catch (_: Throwable) {}
+    }
+
     override fun onCreate() {
         super.onCreate()
         try {
