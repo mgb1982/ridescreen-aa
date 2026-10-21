@@ -133,6 +133,9 @@ jobs:
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
           mkdir -p predist
           cp "$(find app/build/outputs/apk/github/release -name '*.apk' | head -1)" "predist/RideScreen-AA-${TAG}.apk"
+          # Watch APK too (the pre-release page is the only place a tester without a GitHub login can get it).
+          W="$(find wear/build/outputs/apk/github/release -name '*.apk' | head -1)"
+          [ -n "$W" ] && cp "$W" "predist/RideScreen-AA-${TAG}-WearOS-reloj.apk"
       - name: Create test pre-release
         if: steps.pre.outputs.tag != ''
         uses: softprops/action-gh-release@v2
