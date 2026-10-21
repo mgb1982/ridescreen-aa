@@ -1710,6 +1710,7 @@ class MainActivity : AppCompatActivity() {
         val busy = phase.busy
         // Connect/Stop always tappable except pure idle race — Stop while busy/live, Connect otherwise.
         connectBtn.isEnabled = true
+        applyCancelLockLook()
         // Scan only when not mid-flight.
         setEnabled(R.id.btn_aa_start, !busy)
         // Map / Mirror stay available while live so the rider can switch dash content.
@@ -1731,6 +1732,21 @@ class MainActivity : AppCompatActivity() {
                 findViewById<View>(R.id.hus_open).setOnClickListener { HeadUnitServer.openSettings(this) }
                 findViewById<View>(R.id.hus_how).setOnClickListener { HeadUnitServer.showHowTo(this) }
             } else if (sessionAlive(phase)) banner.visibility = View.GONE
+        }
+    }
+
+    private val cancelLockRestore = Runnable { applyCancelLockLook() }
+
+    /** While the Stop tap is ignored (first seconds of a connect), show the button faded so it reads as not pressable. */
+    private fun applyCancelLockLook() {
+        connectBtn.removeCallbacks(cancelLockRestore)
+        val left = CANCEL_LOCK_MS - (android.os.SystemClock.elapsedRealtime() - connectStartedAt)
+        if (ConnectionState.phase.busy && left in 1..CANCEL_LOCK_MS) {
+            connectBtn.animate().cancel()
+            connectBtn.alpha = 0.4f
+            connectBtn.postDelayed(cancelLockRestore, left)
+        } else if (connectBtn.alpha < 1f) {
+            connectBtn.animate().alpha(1f).setDuration(250).start()
         }
     }
 
