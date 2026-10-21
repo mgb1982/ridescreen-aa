@@ -201,32 +201,78 @@ class ButtonMappingActivity : AppCompatActivity() {
     }
 
     private fun teachRemote() {
-        if (!RemotePad.enabled(this)) {
-            Toast.makeText(this, "Turn remote pad on first", Toast.LENGTH_SHORT).show()
-            return
-        }
         val gestures = ButtonGesture.entries
+        val special = listOf(
+            "→ This device only controls MUSIC (e.g. intercom)",
+            "→ Forget media-key remaps and music-only devices",
+        )
+        val items = (special + gestures.map { it.label }).toTypedArray()
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.buttons_teach_remote_pick)
-            .setItems(gestures.map { it.label }.toTypedArray()) { _, which ->
-                waitForRemoteKey(gestures[which])
+            .setMessage("Connect to the dash first and turn on \"handlebar buttons drive Android Auto\" (log: mode=control dash). Now: ${MediaKeyRouting.summary(this)}.")
+            .setItems(items) { _, which ->
+                when (which) {
+                    0 -> waitForMediaKey(null)
+                    1 -> {
+                        MediaKeyRouting.clear(this)
+                        Toast.makeText(this, "Media-key remaps cleared", Toast.LENGTH_SHORT).show()
+                    }
+                    else -> waitForRemoteKey(gestures[which - special.size])
+                }
             }
             .setNegativeButton(android.R.string.cancel, null)
             .show()
     }
 
+    /** Wait for a media key (AVRCP / consumer keys): [gesture] null = mark the sending device "music only". */
+    private fun waitForMediaKey(gesture: ButtonGesture?) {
+        val dlg = MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.buttons_teach_remote_wait)
+            .setMessage(gesture?.label ?: "Press any button on the device that should only control music")
+            .setNegativeButton(android.R.string.cancel) { _, _ -> MediaButtonBridge.mediaTeachListener = null }
+            .setOnDismissListener { MediaButtonBridge.mediaTeachListener = null }
+            .create()
+        MediaButtonBridge.mediaTeachListener = listen@{ ke, device ->
+            runOnUiThread {
+                if (gesture == null) {
+                    MediaKeyRouting.addMusicDevice(this, device)
+                    Toast.makeText(this, "\"$device\" → music only", Toast.LENGTH_LONG).show()
+                } else {
+                    MediaKeyRouting.teachKey(this, device, ke.keyCode, gesture)
+                    Toast.makeText(
+                        this,
+                        "${KeyEvent.keyCodeToString(ke.keyCode)} (\"$device\") → ${gesture.label}",
+                        Toast.LENGTH_LONG,
+                    ).show()
+                }
+                LogBus.log("→ media key teach: ${KeyEvent.keyCodeToString(ke.keyCode)} from \"$device\" → ${gesture?.label ?: "music only"}")
+                dlg.dismiss()
+            }
+            MediaButtonBridge.mediaTeachListener = null
+            true
+        }
+        dlg.show()
+    }
+
     private fun waitForRemoteKey(gesture: ButtonGesture) {
         val dlg = MaterialAlertDialogBuilder(this)
             .setTitle(R.string.buttons_teach_remote_wait)
-            .setMessage(gesture.label)
-            .setNegativeButton(android.R.string.cancel) { _, _ -> RemotePad.teachListener = null }
-            .setOnDismissListener { RemotePad.teachListener = null }
+            .setMessage(gesture.label + "\n(press a key on the remote: HID keys and media keys both work)")
+            .setNegativeButton(android.R.string.cancel) { _, _ ->
+                RemotePad.teachListener = null
+                MediaButtonBridge.mediaTeachListener = null
+            }
+            .setOnDismissListener {
+                RemotePad.teachListener = null
+                MediaButtonBridge.mediaTeachListener = null
+            }
             .create()
         RemotePad.teachListener = listen@{ ev ->
             if (ev.device?.isVirtual == true) return@listen false
             if (ev.action == KeyEvent.ACTION_DOWN && ev.repeatCount == 0) {
                 RemotePad.teach(this, ev.keyCode, gesture)
                 RemotePad.teachListener = null
+                MediaButtonBridge.mediaTeachListener = null
                 dlg.dismiss()
                 Toast.makeText(
                     this,
@@ -239,6 +285,21 @@ class ButtonMappingActivity : AppCompatActivity() {
                 ).show()
                 LogBus.log("→ remote pad teach: ${KeyEvent.keyCodeToString(ev.keyCode)} → ${gesture.label}")
             }
+            true
+        }
+        MediaButtonBridge.mediaTeachListener = listen@{ ke, device ->
+            runOnUiThread {
+                MediaKeyRouting.teachKey(this, device, ke.keyCode, gesture)
+                RemotePad.teachListener = null
+                dlg.dismiss()
+                Toast.makeText(
+                    this,
+                    "${KeyEvent.keyCodeToString(ke.keyCode)} (\"$device\") → ${gesture.label}",
+                    Toast.LENGTH_LONG,
+                ).show()
+                LogBus.log("→ media key teach: ${KeyEvent.keyCodeToString(ke.keyCode)} from \"$device\" → ${gesture.label}")
+            }
+            MediaButtonBridge.mediaTeachListener = null
             true
         }
         dlg.show()
