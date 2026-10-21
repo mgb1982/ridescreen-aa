@@ -588,4 +588,27 @@
     <string name="setup_bt_trigger_pick">Elegir un dispositivo emparejado</string>
     <string name="setup_bt_trigger_none">Desactivado</string>
     <string name="setup_bt_trigger_set">Activador: %1$s</string>
+    <string name="buttons_remote_pad">Mando Bluetooth</string>
+    <string name="buttons_remote_pad_desc">Empareja un mando de juegos, un anillo o un teclado. Los mandos AVRCP ya controlan Android Auto cuando la captura del manillar está activada. La cruceta y los botones HID necesitan esta pantalla o la app principal en primer plano. Cada pulsación sustituye a un gesto del manillar.</string>
+    <string name="buttons_teach_remote">Enseñar un botón del mando…</string>
+    <string name="buttons_teach_remote_ok">Asignado: %1$s → %2$s</string>
+    <string name="buttons_teach_remote_pick">¿Qué gesto del manillar debe hacer la próxima pulsación del mando?</string>
+    <string name="buttons_teach_remote_wait">Pulsa un botón del mando…</string>
+    <string name="conn_detail_aa_dropped">Android Auto se enganchó y se cayó. El Wi‑Fi de la moto está activo: pulsa Conectar otra vez y deja el aviso de conexión de Android Auto. SoftAP/Espejo siguen demostrando que el enlace con la moto funciona.</string>
+    <string name="gpx_lap">Vuelta</string>
+    <string name="gpx_lap_pass_sf">Paso por meta</string>
+    <string name="gpx_lap_stop">Parar</string>
+    <string name="pref_mirror_orient_dash">Igualar el cuadro (recomendado)</string>
+    <string name="pref_mirror_orient_follow">Seguir al móvil</string>
+    <string name="pref_mirror_orient_land">Horizontal</string>
+    <string name="pref_mirror_orient_port">Vertical</string>
+    <string name="setup_aa_17_4_start_head_unit_server">En Android Auto 17.4 o superior, abre también el menú ⋮ de Ajustes de desarrollador y pulsa Iniciar servidor de la unidad principal antes de Conectar. Puede que tengas que repetirlo tras reiniciar o actualizar Android Auto. No desinstales las actualizaciones de Android Auto.</string>
+    <string name="setup_aa_dpi">Tamaño del texto de Android Auto (DPI)</string>
+    <string name="setup_aa_dpi_auto">Automático</string>
+    <string name="setup_aa_dpi_desc">Automático usa el perfil de la moto. Un DPI mayor agranda Maps y la interfaz de Android Auto (útil si la letra del cuadro es muy pequeña).</string>
+    <string name="setup_follow_phone">Seguir al móvil</string>
+    <string name="setup_match_dash">Igualar el cuadro</string>
+    <string name="setup_mirror_orientation">Orientación del espejo</string>
+    <string name="setup_mirror_orientation_desc">Mientras duplicas la pantalla, bloquea el móvil para que el cuadro se llene. Igualar el cuadro usa el último panel medido o el del perfil (TFT ancho → horizontal). Seguir al móvil lo deja como lo sujetes.</string>
+    <string name="setup_toast_mirror_orient">Orientación del espejo: %1$s</string>
 </resources>
