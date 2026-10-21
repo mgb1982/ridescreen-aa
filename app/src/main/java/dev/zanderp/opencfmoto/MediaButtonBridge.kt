@@ -810,31 +810,6 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
         override fun onMediaButtonEvent(mediaButtonIntent: Intent): Boolean {
             @Suppress("DEPRECATION")
             val ke = mediaButtonIntent.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT) ?: return true
-            val devName = MediaKeyRouting.deviceName(ke)
-            if (ke.action == KeyEvent.ACTION_DOWN && ke.repeatCount == 0) {
-                log("[BTN] media key ${KeyEvent.keyCodeToString(ke.keyCode)} from ${MediaKeyRouting.describe(ke)}")
-            }
-            // Teach mode (Controls ▸ Customise buttons ▸ Assign a remote button…): capture this key.
-            mediaTeachListener?.let { l ->
-                if (ke.action == KeyEvent.ACTION_DOWN && ke.repeatCount == 0) {
-                    try { if (l(ke, devName)) return true } catch (_: Exception) {}
-                } else if (ke.action == KeyEvent.ACTION_UP) return true
-            }
-            // A device taught as "music only" (the intercom): hand its keys back to the music app.
-            if (MediaKeyRouting.isMusicDevice(context, devName)) {
-                passThroughToMusic(ke)
-                return true
-            }
-            // A key taught for this device → a handlebar gesture (no hold timing; short press only).
-            val taught = MediaKeyRouting.gestureFor(context, devName, ke.keyCode)
-            if (taught != null) {
-                if (ke.action == KeyEvent.ACTION_DOWN && ke.repeatCount == 0) {
-                    log("[BTN] taught key ${KeyEvent.keyCodeToString(ke.keyCode)} (\"$devName\") → ${taught.label}")
-                    lastKeyAt = SystemClock.elapsedRealtime()
-                    run(taught)
-                }
-                return true
-            }
             when (ke.action) {
                 KeyEvent.ACTION_DOWN -> {
                     val repeat = if (ke.repeatCount > 0) " repeat=${ke.repeatCount}" else ""
@@ -853,35 +828,6 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
         override fun onPause() = detectDoubleTap(
             ButtonGesture.SELECT_PRESS, ButtonGesture.SELECT_DOUBLE, forceDouble = false,
         )
-    }
-
-    /**
-     * Give a media key back to whatever music app was playing before us: park our session for a moment, let the
-     * system route the key to the previous player, then take the session back. Best effort; the intercom's
-     * keys only need to reach the music app, not us.
-     */
-    private fun passThroughToMusic(ke: KeyEvent) {
-        try {
-            val audio = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-            if (ke.action == KeyEvent.ACTION_DOWN && ke.repeatCount == 0) {
-                handler.removeCallbacks(reactivateSession)
-                session?.isActive = false
-                log("[BTN] music-only device \"${MediaKeyRouting.deviceName(ke)}\" → ${KeyEvent.keyCodeToString(ke.keyCode)} passed to the music app")
-                handler.postDelayed(reactivateSession, PASS_THROUGH_MAX_MS)
-            }
-            audio.dispatchMediaKeyEvent(KeyEvent(ke))
-            if (ke.action == KeyEvent.ACTION_UP) {
-                handler.removeCallbacks(reactivateSession)
-                handler.postDelayed(reactivateSession, PASS_THROUGH_SETTLE_MS)
-            }
-        } catch (e: Exception) {
-            log("[BTN] pass-through failed: $e")
-            handler.post(reactivateSession)
-        }
-    }
-
-    private val reactivateSession = Runnable {
-        try { session?.isActive = ButtonMode.isControlAa(context) } catch (_: Exception) {}
     }
 
     private fun isSelectKey(keyCode: Int) = when (keyCode) {
@@ -988,11 +934,6 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
         private const val MEDIA_CHANNEL = "opencfmoto_media"
         private const val MEDIA_NOTIF_ID = 3   // must not collide with AndroidAutoService's NOTIF_ID (2)
 
-        /** How long our session stays parked after a music-only key, and the longest we ever wait for its release. */
-        private const val PASS_THROUGH_SETTLE_MS = 450L
-        private const val PASS_THROUGH_MAX_MS = 1_800L
-
-        /** Set by the teach dialog: receives the next media key (and the name of the device that sent it). */
         @Volatile var mediaTeachListener: ((KeyEvent, String) -> Boolean)? = null
 
         /** The live bridge (when Android Auto is running), so the settings toggle can reach it. */
