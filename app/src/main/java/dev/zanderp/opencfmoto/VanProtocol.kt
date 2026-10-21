@@ -23,6 +23,9 @@ internal object VanProtocol {
     const val CMD_REALTIME: Byte = 0x32
     const val CMD_NON_REALTIME: Byte = 0x33
 
+    /** Phone → dash "hello" of the official app's second stack: cmd 0x30 with a small JSON, sent 1 s after services are discovered. */
+    const val CMD_HELLO: Byte = 0x30
+
     /** What the official Zontes app asks for (warnings, oil, water/oil temp, tyres, range, battery). */
     val OFFICIAL_ITEMS = byteArrayOf(5, 6, 7, 9, 10, 11, 12, 17)
 
@@ -41,6 +44,13 @@ internal object VanProtocol {
 
     /** "Insist" mode, volunteered when the dash never speaks first: the replies above plus an empty list as a plain nudge. */
     val INSIST_ASKS: List<ByteArray> = INSIST_REPLIES + listOf(ByteArray(0))
+
+    /** The official app's first frame: `{"phoneType":0,"phoneID":"…"}`, plain or base64 (the SDK has a flag for it). The id is a fixed probe label, never a real device id. */
+    fun helloFrame(base64: Boolean, phoneId: String = "RideScreenProbe"): ByteArray {
+        val json = "{\"phoneType\":0,\"phoneID\":\"$phoneId\"}".toByteArray(Charsets.UTF_8)
+        val payload = if (base64) java.util.Base64.getEncoder().encode(json) else json
+        return EcBtpProtocol.build(CMD_HELLO, payload)
+    }
 
     /** Splits a frame into BLE writes of at most [size] bytes, like the official stack (20 bytes, no MTU request). */
     fun chunks(frame: ByteArray, size: Int = 20): List<ByteArray> {

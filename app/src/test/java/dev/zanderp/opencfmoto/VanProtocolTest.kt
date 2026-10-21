@@ -109,6 +109,14 @@ class VanProtocolTest {
         assertTrue(VanProtocol.INSIST_REPLIES.none { it.isEmpty() })
     }
 
+    @Test fun helloIsTheOfficialJsonPlainOrBase64() {
+        val plain = EcBtpProtocol.parse(VanProtocol.helloFrame(base64 = false))!!
+        assertEquals(VanProtocol.CMD_HELLO, plain.command)
+        assertEquals("{\"phoneType\":0,\"phoneID\":\"RideScreenProbe\"}", String(plain.payload, Charsets.UTF_8))
+        val b64 = EcBtpProtocol.parse(VanProtocol.helloFrame(base64 = true))!!
+        assertEquals(String(plain.payload, Charsets.UTF_8), String(java.util.Base64.getDecoder().decode(b64.payload), Charsets.UTF_8))
+    }
+
     @Test fun emptySubscriptionIsAValidFrame() {
         val frame = VanProtocol.handshakeResponse(ByteArray(0))
         assertEquals(5, frame.size)

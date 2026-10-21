@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  *     another, reconnecting if the dash drops the link),
  *  5. decodes the pushed values.
  *
- * The only frames it can write are EC-BTP 0x31 subscription lists (the phone's half of the VAN
+ * The only frames it can write are the official app's hello (cmd 0x30, a tiny JSON with a fixed probe label) and EC-BTP 0x31 subscription lists (the phone's half of the VAN
  * handshake): no control, lock, key, clock or firmware frame exists in this class. Every write goes
  * through one queue of ≤20-byte chunks, each waiting for the previous one to complete, and all
  * callbacks run on the main thread.
@@ -61,8 +61,17 @@ internal class VanProbe(
         Mode.INSIST -> VanProtocol.INSIST_REPLIES
     }
 
-    /** Lists volunteered, one per step, when the dash stays silent. */
-    private val askPlan: List<ByteArray> = if (mode == Mode.INSIST) VanProtocol.INSIST_ASKS else replyPlan
+    private class Ask(val label: String, val frame: ByteArray)
+
+    /** Frames volunteered, one per step, when the dash stays silent. Insist starts with the official app's own hello (cmd 0x30), plain then base64. */
+    private val askPlan: List<Ask> = buildList {
+        if (mode == Mode.INSIST) {
+            add(Ask("hello 0x30 plain", VanProtocol.helloFrame(base64 = false)))
+            add(Ask("hello 0x30 base64", VanProtocol.helloFrame(base64 = true)))
+        }
+        val lists = if (mode == Mode.INSIST) VanProtocol.INSIST_ASKS else replyPlan
+        for (items in lists) add(Ask("subscribe 0x31 (${idList(items)})", VanProtocol.handshakeResponse(items)))
+    }
 
     private var stream = VanProtocol.Stream()
     private var gatt: BluetoothGatt? = null
@@ -357,7 +366,7 @@ internal class VanProbe(
         ladderArmed = true
         if (askPlan.isEmpty()) { log("[VAN] listen only — nothing will be sent"); return }
         if (rung >= askPlan.size || answered) return
-        val wait = if (earlyDrop) EARLY_QUIET_MS else QUIET_MS
+        val wait = if (earlyDrop) EARLY_QUIET_MS else if (mode == Mode.INSIST) HELLO_QUIET_MS else QUIET_MS
         log("[VAN] listening; if the dash stays silent for ${wait / 1000.0} s the probe asks for the data itself")
         main.postDelayed(ladderTick, wait)
     }
@@ -376,12 +385,12 @@ internal class VanProbe(
             setStatus("Dash silent after $rung request(s)")
             return
         }
-        val items = askPlan[rung]
+        val ask = askPlan[rung]
         rung++
         lastTxMono = SystemClock.elapsedRealtime()
         txThisConn = true
-        note("#$rung ask ${idList(items)}")
-        send(g, VanProtocol.handshakeResponse(items), "ask #$rung (${idList(items)})")
+        note("#$rung ${ask.label}")
+        send(g, ask.frame, "ask #$rung (${ask.label})")
         setStatus("Asked the dash (#$rung)")
         main.postDelayed(ladderTick, RESPONSE_MS)
     }
@@ -501,6 +510,9 @@ internal class VanProbe(
 
         /** Silence after the notifications are on before the probe asks for the data itself. */
         private const val QUIET_MS = 6_000L
+
+        /** Insist: the official app sends its hello 1 s after services are discovered, so wait about as long. */
+        private const val HELLO_QUIET_MS = 1_500L
 
         /** After a drop with nothing sent, ask almost at once: the dash may expect a first word within seconds. */
         private const val EARLY_QUIET_MS = 300L
