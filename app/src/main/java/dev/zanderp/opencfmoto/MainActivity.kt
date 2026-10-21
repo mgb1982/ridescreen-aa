@@ -1556,7 +1556,7 @@ class MainActivity : AppCompatActivity() {
 
     // ── v2.3: battery + lock card from the keyless box (read only: PkeBattery asks only 008 + 001,7).
     // Only once the PKE code is set (Ayuda → Batería). Reads while the app is in front: every 45 s
-    // (30 s while projecting, to catch the engine starting / stopping); after two misses in a row (bike out of range) every 3 min. A reading
+    // (15 s while projecting, to catch the engine starting / stopping); after two misses in a row (bike out of range) every 3 min. A reading
     // older than 10 min hides the card.
     private val pkeTicker = object : Runnable {
         override fun run() {
@@ -1564,7 +1564,7 @@ class MainActivity : AppCompatActivity() {
             val running = ConnectionState.phase.let { it == Phase.STREAMING || it == Phase.MIRRORING }
             val next = when {
                 pkeFails >= 2 -> 180_000L
-                running -> 30_000L
+                running -> 15_000L
                 else -> 45_000L
             }
             statsHandler.postDelayed(this, next)
