@@ -38,7 +38,7 @@ internal class VanProbe(
     private val log: (String) -> Unit,
     private val onChange: () -> Unit,
 ) {
-    enum class Mode { LISTEN_ONLY, OFFICIAL, OFFICIAL_PLUS_MILEAGE }
+    enum class Mode { LISTEN_ONLY, OFFICIAL, OFFICIAL_PLUS_MILEAGE, FULL }
 
     private val appContext = context.applicationContext
     private val adapter = appContext.getSystemService(BluetoothManager::class.java)?.adapter
@@ -229,6 +229,7 @@ internal class VanProbe(
             Mode.LISTEN_ONLY -> null
             Mode.OFFICIAL -> VanProtocol.OFFICIAL_ITEMS
             Mode.OFFICIAL_PLUS_MILEAGE -> VanProtocol.OFFICIAL_PLUS_MILEAGE
+            Mode.FULL -> VanProtocol.FULL
         }
         if (items == null) { log("[VAN] listen only — handshake not answered"); return }
         val target = writeChar

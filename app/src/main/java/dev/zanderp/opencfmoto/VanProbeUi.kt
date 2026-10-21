@@ -40,9 +40,22 @@ object VanProbeUi {
         MaterialAlertDialogBuilder(activity)
             .setTitle(R.string.van_title)
             .setMessage(R.string.van_intro)
-            .setPositiveButton(R.string.van_mode_official_km) { _, _ -> run(activity, VanProbe.Mode.OFFICIAL_PLUS_MILEAGE) }
-            .setNegativeButton(R.string.van_mode_official) { _, _ -> run(activity, VanProbe.Mode.OFFICIAL) }
-            .setNeutralButton(R.string.van_mode_listen) { _, _ -> run(activity, VanProbe.Mode.LISTEN_ONLY) }
+            .setPositiveButton(R.string.van_continue) { _, _ -> chooseMode(activity) }
+            .setNegativeButton(R.string.dash_cancel, null)
+            .show()
+    }
+
+    private fun chooseMode(activity: Activity) {
+        val modes = listOf(
+            R.string.van_mode_official_km to VanProbe.Mode.OFFICIAL_PLUS_MILEAGE,
+            R.string.van_mode_full to VanProbe.Mode.FULL,
+            R.string.van_mode_official to VanProbe.Mode.OFFICIAL,
+            R.string.van_mode_listen to VanProbe.Mode.LISTEN_ONLY,
+        )
+        MaterialAlertDialogBuilder(activity)
+            .setTitle(R.string.van_title)
+            .setItems(modes.map { activity.getString(it.first) }.toTypedArray()) { _, which -> run(activity, modes[which].second) }
+            .setNegativeButton(R.string.dash_cancel, null)
             .show()
     }
 

@@ -71,4 +71,11 @@ class VanProtocolTest {
         assertEquals("50 °C", VanProtocol.describe(VanProtocol.Field(9, 90, 1)))
         assertEquals("12 V", VanProtocol.describe(VanProtocol.Field(17, 12, 1)))
     }
+
+    @Test fun fullListAddsSpeedRpmGearOnTopOfMileage() {
+        val extra = VanProtocol.FULL.toSet() - VanProtocol.OFFICIAL_PLUS_MILEAGE.toSet()
+        assertEquals(setOf<Byte>(1, 2, 3, 4, 8, 15), extra)
+        // Read-only subscription: only ids the protocol defines as data, nothing above 32.
+        assertTrue(VanProtocol.FULL.all { it in 1..32 })
+    }
 }

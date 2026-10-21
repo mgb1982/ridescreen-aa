@@ -218,7 +218,7 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="pke_fail_no_answer">La caixa ha respost però no ha donat el voltatge. Passa\'m el registre, si us plau.</string>
     <string name="van_entry">🔬 Sonda de dades del quadre (pneumàtics, km)</string>
     <string name="van_title">Sonda de dades del quadre</string>
-    <string name="van_intro">Experimental i només de lectura. Amb la moto encesa i a prop (app oficial de Zontes tancada), es connecta al quadre per Bluetooth i mostra el que informa: pressió i temperatura dels pneumàtics, quilometratge…\n\n• Només escoltar: només anota al registre el que ofereix el quadre.\n• Com l\'app oficial: demana les mateixes dades que l\'app de Zontes.\n• Oficial + km: demana també parcial i total.\n\nMai s\'envia res per controlar la moto.</string>
+    <string name="van_intro">Experimental i només de lectura. Amb la moto encesa i a prop (app oficial de Zontes tancada), es connecta al quadre per Bluetooth i mostra el que informa: pressió i temperatura dels pneumàtics, quilometratge…\n\n• Només escoltar: només anota al registre el que ofereix el quadre.\n• Com l\'app oficial: demana les mateixes dades que l\'app de Zontes.\n• Oficial + km: demana també parcial i total.\n• Tot: afegeix velocitat, RPM, marxa, llums, estat i consum.\n\nMai s\'envia res per controlar la moto.</string>
     <string name="van_mode_listen">Només escoltar</string>
     <string name="van_mode_official">Com l\'oficial</string>
     <string name="van_mode_official_km">Oficial + km</string>
@@ -229,4 +229,6 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="van_offered">El quadre ofereix (id=camp):</string>
     <string name="van_values">Valors (en brut, tal com els envia el quadre):</string>
     <string name="van_log_hint">Després envia el registre: Ajuda → Compartir registres.</string>
+    <string name="van_continue">Continuar</string>
+    <string name="van_mode_full">Tot (+ velocitat, RPM, marxa)</string>
 </resources>

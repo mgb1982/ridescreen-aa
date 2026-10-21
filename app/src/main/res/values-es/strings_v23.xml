@@ -218,7 +218,7 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="pke_fail_no_answer">La caja respondió pero no dio el voltaje. Pásame el registro, por favor.</string>
     <string name="van_entry">🔬 Sonda de datos del cuadro (neumáticos, km)</string>
     <string name="van_title">Sonda de datos del cuadro</string>
-    <string name="van_intro">Experimental y de solo lectura. Con la moto encendida y cerca (app oficial de Zontes cerrada), se conecta al cuadro por Bluetooth y muestra lo que informa: presión y temperatura de neumáticos, kilometraje…\n\n• Solo escuchar: solo anota en el registro lo que ofrece el cuadro.\n• Como la app oficial: pide los mismos datos que la app de Zontes.\n• Oficial + km: pide además parcial y total.\n\nNunca se envía nada para controlar la moto.</string>
+    <string name="van_intro">Experimental y de solo lectura. Con la moto encendida y cerca (app oficial de Zontes cerrada), se conecta al cuadro por Bluetooth y muestra lo que informa: presión y temperatura de neumáticos, kilometraje…\n\n• Solo escuchar: solo anota en el registro lo que ofrece el cuadro.\n• Como la app oficial: pide los mismos datos que la app de Zontes.\n• Oficial + km: pide además parcial y total.\n• Todo: añade velocidad, RPM, marcha, luces, estado y consumo.\n\nNunca se envía nada para controlar la moto.</string>
     <string name="van_mode_listen">Solo escuchar</string>
     <string name="van_mode_official">Como la oficial</string>
     <string name="van_mode_official_km">Oficial + km</string>
@@ -229,4 +229,6 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="van_offered">El cuadro ofrece (id=campo):</string>
     <string name="van_values">Valores (en bruto, tal como los manda el cuadro):</string>
     <string name="van_log_hint">Después envía el registro: Ayuda → Compartir registros.</string>
+    <string name="van_continue">Continuar</string>
+    <string name="van_mode_full">Todo (+ velocidad, RPM, marcha)</string>
 </resources>

@@ -27,6 +27,9 @@ internal object VanProtocol {
     /** The official list plus trip (13) and odometer (14). */
     val OFFICIAL_PLUS_MILEAGE = byteArrayOf(5, 6, 7, 9, 10, 11, 12, 13, 14, 17)
 
+    /** Everything the protocol defines for a petrol bike: adds speed, RPM, gear, lights, status, consumption. */
+    val FULL = byteArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17)
+
     data class Field(val id: Int, val raw: Long, val bytes: Int)
 
     fun name(id: Int): String = when (id) {
@@ -97,6 +100,12 @@ internal object VanProtocol {
             13 -> "${f.raw} (trip, unit?)"
             14 -> "${f.raw} (odometer, unit?)"
             5 -> "warning bits 0x" + java.lang.Long.toHexString(v)
+            1 -> "${f.raw} (speed, unit?)"
+            2 -> "${f.raw} (rpm?)"
+            8 -> "gear ${f.raw}"
+            3 -> "light bits 0x" + java.lang.Long.toHexString(v)
+            4 -> "status bits 0x" + java.lang.Long.toHexString(v)
+            15 -> "${f.raw} (consumption, unit?)"
             else -> ""
         }
     }
