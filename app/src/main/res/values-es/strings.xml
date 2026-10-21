@@ -583,4 +583,9 @@
     <string name="setup_anonymous_telemetry_on">Activado — pings y fallos anónimos</string>
     <string name="setup_anonymous_telemetry_off">Desactivado — no se sube nada</string>
     <string name="setup_anonymous_id">Id anónimo: %1$s</string>
+    <string name="setup_bt_trigger">Conectar cuando se una un dispositivo Bluetooth</string>
+    <string name="setup_bt_trigger_desc">Opcional. Empareja primero el dispositivo activador (mando del casco, reloj). La próxima vez que se conecte, RideScreen AA iniciará Conectar con la moto guardada.</string>
+    <string name="setup_bt_trigger_pick">Elegir un dispositivo emparejado</string>
+    <string name="setup_bt_trigger_none">Desactivado</string>
+    <string name="setup_bt_trigger_set">Activador: %1$s</string>
 </resources>
