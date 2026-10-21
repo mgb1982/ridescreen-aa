@@ -74,8 +74,19 @@ class VanProtocolTest {
 
     @Test fun fullListAddsSpeedRpmGearOnTopOfMileage() {
         val extra = VanProtocol.FULL.toSet() - VanProtocol.OFFICIAL_PLUS_MILEAGE.toSet()
-        assertEquals(setOf<Byte>(1, 2, 3, 4, 8, 15), extra)
+        assertEquals(setOf<Byte>(1, 2, 3, 4, 8, 15, 28, 30, 31), extra)
         // Read-only subscription: only ids the protocol defines as data, nothing above 32.
         assertTrue(VanProtocol.FULL.all { it in 1..32 })
+    }
+
+    @Test fun parsesMaxSpeedMaintenanceAndFaultByte() {
+        // id 28 / 30 are words, id 31 is a single byte, in either packet type.
+        val payload = byteArrayOf(28, 0x2C, 0x01, 30, 0x10, 0x27, 31, 2)
+        for (fields in listOf(VanProtocol.parseRealtime(payload), VanProtocol.parseNonRealtime(payload))) {
+            assertEquals(3, fields.size)
+            assertEquals(300L, fields[0].raw)
+            assertEquals(10000L, fields[1].raw)
+            assertEquals(2L, fields[2].raw)
+        }
     }
 }

@@ -27,8 +27,8 @@ internal object VanProtocol {
     /** The official list plus trip (13) and odometer (14). */
     val OFFICIAL_PLUS_MILEAGE = byteArrayOf(5, 6, 7, 9, 10, 11, 12, 13, 14, 17)
 
-    /** Everything the protocol defines for a petrol bike: adds speed, RPM, gear, lights, status, consumption. */
-    val FULL = byteArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17)
+    /** Everything the protocol defines for a petrol bike: adds speed, RPM, gear, lights, status, consumption, max speed, maintenance km left, fault byte. */
+    val FULL = byteArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 28, 30, 31)
 
     data class Field(val id: Int, val raw: Long, val bytes: Int)
 
@@ -46,18 +46,18 @@ internal object VanProtocol {
 
     fun parseRealtime(payload: ByteArray): List<Field> = parseFields(payload) { id ->
         when (id) {
-            1, 2, 3, 4 -> 2
+            1, 2, 3, 4, 28, 30 -> 2
             5, 10, 11 -> 4
-            6, 7, 8, 9 -> 1
+            6, 7, 8, 9, 31 -> 1
             else -> 0
         }
     }
 
     fun parseNonRealtime(payload: ByteArray): List<Field> = parseFields(payload) { id ->
         when (id) {
-            12, 13, 15, 16, 32 -> 2
+            12, 13, 15, 16, 28, 30, 32 -> 2
             14 -> 4
-            in 17..25 -> 1
+            in 17..25, 31 -> 1
             else -> 0
         }
     }
@@ -106,6 +106,9 @@ internal object VanProtocol {
             3 -> "light bits 0x" + java.lang.Long.toHexString(v)
             4 -> "status bits 0x" + java.lang.Long.toHexString(v)
             15 -> "${f.raw} (consumption, unit?)"
+            28 -> "${f.raw} (max speed, unit?)"
+            30 -> "${f.raw} (km to maintenance?)"
+            31 -> "fault byte ${f.raw}"
             else -> ""
         }
     }
