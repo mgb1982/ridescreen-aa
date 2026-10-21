@@ -218,7 +218,7 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="pke_fail_no_answer">The box answered but didn\'t report the voltage. Please send me the log.</string>
     <string name="van_entry">🔬 Dash data probe (tyres, mileage)</string>
     <string name="van_title">Dash data probe</string>
-    <string name="van_intro">Experimental, read only. With the bike on and nearby (official Zontes app closed), this connects to the dash over Bluetooth and shows what it reports: tyre pressure and temperature, mileage…\n\n• Listen only: just logs what the dash offers.\n• Like the official app: asks for the same data the Zontes app does.\n• Official + km: also asks for trip and odometer.\n• Everything: adds speed, RPM, gear, lights, status and consumption.\n\nNothing is ever sent to control the bike.</string>
+    <string name="van_intro">Experimental. With the bike on and nearby (official Zontes app closed), this connects to the dash over Bluetooth and shows what it reports: tyre pressure and temperature, mileage…\n\n• Insist: listens first; if the dash stays silent, it asks for the data itself (a few different requests, one after another).\n• Listen only: just logs what the dash offers; sends nothing.\n• Like the official app: the same data request the Zontes app makes.\n• Official + km: also asks for trip and odometer.\n• Everything: adds speed, RPM, gear, lights, status and consumption.\n\nExcept in «Listen only», if the dash says nothing for 6 s the probe sends its request by itself.\n\nOnly data requests are sent, never anything that controls the bike.</string>
     <string name="van_mode_listen">Listen only</string>
     <string name="van_mode_official">Like official app</string>
     <string name="van_mode_official_km">Official + km</string>
@@ -231,4 +231,6 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="van_log_hint">Then send the log: Help → Share logs.</string>
     <string name="van_continue">Continue</string>
     <string name="van_mode_full">Everything (+ speed, RPM, gear)</string>
+    <string name="van_mode_insist">Insist (ask the dash if it stays silent)</string>
+    <string name="van_sent">Sent to the dash:</string>
 </resources>

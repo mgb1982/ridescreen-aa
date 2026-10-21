@@ -16,19 +16,26 @@ import android.bluetooth.le.ScanSettings
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
- * Experimental, read-only probe of the dash's EasyConn "VAN" vehicle-data service over BLE
- * (service `0000b360-…`, the same HUD service the 125M uses for its clock). It:
+ * Experimental probe of the dash's EasyConn "VAN" vehicle-data service over BLE (service
+ * `0000b360-…`, the same HUD service the 125M uses for its clock). It:
  *  1. scans ~15 s for a device advertising the HUD service or an EasyConn-looking name,
  *  2. connects, dumps every service/characteristic to the log,
- *  3. listens to the notify characteristics and logs every frame,
- *  4. answers the dash's VAN handshake (0x31) with a subscription list — only in the modes that
- *     ask for it — and decodes the pushed values.
- * It never writes anything else: no control, lock, key or firmware frames exist in this class.
+ *  3. enables notifications and logs every frame the dash sends,
+ *  4. answers the dash's VAN handshake (0x31) with a subscription list and, if the dash stays silent
+ *     for [QUIET_MS], volunteers that list itself (in "Insist" mode several variants one after
+ *     another, reconnecting if the dash drops the link),
+ *  5. decodes the pushed values.
+ *
+ * The only frames it can write are EC-BTP 0x31 subscription lists (the phone's half of the VAN
+ * handshake): no control, lock, key, clock or firmware frame exists in this class. Every write goes
+ * through one queue of ≤20-byte chunks, each waiting for the previous one to complete, and all
+ * callbacks run on the main thread.
  */
 @SuppressLint("MissingPermission")
 @Suppress("DEPRECATION")
@@ -38,30 +45,80 @@ internal class VanProbe(
     private val log: (String) -> Unit,
     private val onChange: () -> Unit,
 ) {
-    enum class Mode { LISTEN_ONLY, OFFICIAL, OFFICIAL_PLUS_MILEAGE, FULL }
+    enum class Mode { LISTEN_ONLY, OFFICIAL, OFFICIAL_PLUS_MILEAGE, FULL, INSIST }
 
     private val appContext = context.applicationContext
     private val adapter = appContext.getSystemService(BluetoothManager::class.java)?.adapter
     private val main = Handler(Looper.getMainLooper())
     private val stopped = AtomicBoolean(false)
-    private val stream = VanProtocol.Stream()
+
+    /** Lists sent in answer to the dash's own 0x31: the nth offer gets the nth list, the last one repeats. */
+    private val replyPlan: List<ByteArray> = when (mode) {
+        Mode.LISTEN_ONLY -> emptyList()
+        Mode.OFFICIAL -> listOf(VanProtocol.OFFICIAL_ITEMS)
+        Mode.OFFICIAL_PLUS_MILEAGE -> listOf(VanProtocol.OFFICIAL_PLUS_MILEAGE)
+        Mode.FULL -> listOf(VanProtocol.FULL)
+        Mode.INSIST -> VanProtocol.INSIST_REPLIES
+    }
+
+    /** Lists volunteered, one per step, when the dash stays silent. */
+    private val askPlan: List<ByteArray> = if (mode == Mode.INSIST) VanProtocol.INSIST_ASKS else replyPlan
+
+    private var stream = VanProtocol.Stream()
     private var gatt: BluetoothGatt? = null
     private var scanner: android.bluetooth.le.BluetoothLeScanner? = null
     private var scanCb: ScanCallback? = null
+    private val seen = HashSet<String>()
+    private var device: BluetoothDevice? = null
     private var writeChar: BluetoothGattCharacteristic? = null
     private val pendingDescriptors = ArrayDeque<Pair<BluetoothGattCharacteristic, BluetoothGattDescriptor>>()
+    private val writeQueue = ArrayDeque<ByteArray>()
+    private var writing = false
+    private var writeRefusals = 0
+    private var noResponseFallback = false
+
+    // Per run (survive a reconnect).
+    private var rung = 0
+    private var reconnects = 0
     private var answered = false
-    private var device: BluetoothDevice? = null
+    private var earlyDrop = false
+
+    /** Consecutive failed attempts to establish a link (reset when one comes up), so not part of resetConnection. */
     private var connectRetries = 0
-    private var everConnected = false
+
+    // Per connection (reset in resetConnection).
+    private var linkUp = false
+    private var connectedAt = 0L
+    private var txThisConn = false
+    private var lastTxMono = 0L
+    private var lastRxMono = 0L
+    private var handshakeReplies = 0
+    private var ladderArmed = false
 
     @Volatile var status: String = "…"
         private set
     @Volatile var offered: List<Int> = emptyList()
         private set
+    @Volatile var sent: List<String> = emptyList()
+        private set
     val values = ConcurrentHashMap<Int, VanProtocol.Field>()
     @Volatile var lastFrameAt: Long = 0L
         private set
+
+    private val ladderTick = Runnable { tick() }
+    private val writeWatchdog = Runnable {
+        if (writing && !stopped.get()) {
+            log("[VAN] write callback never came — moving on")
+            writing = false
+            gatt?.let { pumpWrites(it) }
+        }
+    }
+    private val scanTimeout = Runnable {
+        if (stopped.get() || gatt != null || device != null) return@Runnable
+        scanCb?.let { cb -> runCatching { scanner?.stopScan(cb) } }
+        log("[VAN] no dash found in 15 s (${seen.size} devices seen)")
+        setStatus("Dash not found")
+    }
 
     fun start() {
         val ad = adapter
@@ -71,10 +128,9 @@ internal class VanProbe(
         scanner = sc
         setStatus("Scanning…")
         log("[VAN] start mode=$mode")
-        val seen = HashSet<String>()
         val callback = object : ScanCallback() {
             override fun onScanResult(callbackType: Int, result: ScanResult) {
-                if (stopped.get() || gatt != null) return
+                if (stopped.get() || gatt != null || device != null) return
                 val dev = result.device
                 val name = result.scanRecord?.deviceName ?: runCatching { dev.name }.getOrNull()
                 val services = result.scanRecord?.serviceUuids?.map { it.uuid } ?: emptyList()
@@ -84,6 +140,7 @@ internal class VanProbe(
                 if (looksLikeDash(name, services)) {
                     runCatching { sc.stopScan(this) }
                     scanner = null
+                    main.removeCallbacks(scanTimeout)
                     log("[VAN] candidate ${mask(dev.address)} name=$name — connecting")
                     connect(dev)
                 }
@@ -97,13 +154,7 @@ internal class VanProbe(
         scanCb = callback
         runCatching { sc.startScan(null, ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build(), callback) }
             .onFailure { log("[VAN] startScan: ${it.message}"); setStatus("Scan failed") }
-        main.postDelayed({
-            if (!stopped.get() && gatt == null) {
-                runCatching { sc.stopScan(callback) }
-                log("[VAN] no dash found in 15 s (${seen.size} devices seen)")
-                setStatus("Dash not found")
-            }
-        }, SCAN_MS)
+        main.postDelayed(scanTimeout, SCAN_MS)
     }
 
     fun stop() {
@@ -112,6 +163,7 @@ internal class VanProbe(
         scanCb?.let { cb -> runCatching { scanner?.stopScan(cb) } }
         gatt?.let { g -> runCatching { g.disconnect() }; runCatching { g.close() } }
         gatt = null
+        writeQueue.clear()
         log("[VAN] stopped")
     }
 
@@ -121,36 +173,53 @@ internal class VanProbe(
         return NAME_HINT.containsMatchIn(n)
     }
 
+    private fun resetConnection() {
+        main.removeCallbacks(ladderTick)
+        main.removeCallbacks(writeWatchdog)
+        stream = VanProtocol.Stream()
+        pendingDescriptors.clear()
+        writeQueue.clear()
+        writing = false
+        writeRefusals = 0
+        writeChar = null
+        linkUp = false
+        connectedAt = 0L
+        txThisConn = false
+        lastTxMono = 0L
+        lastRxMono = 0L
+        handshakeReplies = 0
+        ladderArmed = false
+    }
+
     private fun connect(dev: BluetoothDevice) {
         device = dev
+        resetConnection()
         setStatus("Connecting…")
-        gatt = runCatching { dev.connectGatt(appContext, false, gattCallback, BluetoothDevice.TRANSPORT_LE) }.getOrNull()
+        // Callbacks on the main looper, so the queue, timers and state below never race.
+        gatt = runCatching {
+            dev.connectGatt(appContext, false, gattCallback, BluetoothDevice.TRANSPORT_LE, BluetoothDevice.PHY_LE_1M_MASK, main)
+        }.getOrNull()
         if (gatt == null) { log("[VAN] connectGatt failed"); setStatus("Connect failed") }
     }
 
     private val gattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(g: BluetoothGatt, st: Int, newState: Int) {
             log("[VAN] connection state=$newState status=$st")
-            if (newState == BluetoothProfile.STATE_CONNECTED && !stopped.get()) {
-                everConnected = true
+            if (stopped.get()) return
+            if (newState == BluetoothProfile.STATE_CONNECTED) {
+                linkUp = true
+                connectedAt = SystemClock.elapsedRealtime()
+                connectRetries = 0
                 setStatus("Connected")
+                log("[VAN] bond state=${runCatching { g.device.bondState }.getOrNull()} (10 none, 12 bonded)")
                 runCatching { g.discoverServices() }
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                val dev = device
-                if (!everConnected && !stopped.get() && dev != null && connectRetries < 3) {
-                    // Same policy as the official stack: up to 3 retries, 200 ms apart.
-                    connectRetries++
-                    log("[VAN] connect retry $connectRetries/3")
-                    runCatching { g.close() }
-                    gatt = null
-                    main.postDelayed({ if (!stopped.get()) connect(dev) }, 200)
-                } else {
-                    setStatus("Disconnected ($st)")
-                }
+                onLinkClosed(g, st)
             }
         }
 
         override fun onServicesDiscovered(g: BluetoothGatt, st: Int) {
+            if (stopped.get()) return
             log("[VAN] services status=$st")
             var found: android.bluetooth.BluetoothGattService? = null
             for (s in g.services) {
@@ -179,11 +248,31 @@ internal class VanProbe(
             }
             nextDescriptor(g)
             setStatus("Listening")
+            // If a descriptor write never reports back, still start the clock for "dash is silent".
+            main.postDelayed({ if (!stopped.get() && gatt === g) armLadder() }, DISCOVERY_GRACE_MS)
         }
 
         override fun onDescriptorWrite(g: BluetoothGatt, d: BluetoothGattDescriptor, st: Int) {
+            if (stopped.get()) return
             log("[VAN] notify enabled on ${d.characteristic.uuid.toString().take(8)} status=$st")
             nextDescriptor(g)
+        }
+
+        override fun onCharacteristicWrite(g: BluetoothGatt, c: BluetoothGattCharacteristic, st: Int) {
+            if (stopped.get()) return
+            main.removeCallbacks(writeWatchdog)
+            writing = false
+            log("[VAN] write done status=$st")
+            if (st != BluetoothGatt.GATT_SUCCESS) {
+                // 3 = write not permitted, 5/15 = the dash wants pairing/encryption, 133 = generic stack error.
+                writeQueue.clear()
+                if (!noResponseFallback && c.properties and BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE != 0) {
+                    noResponseFallback = true
+                    log("[VAN] will use write-without-response from now on")
+                }
+                return
+            }
+            pumpWrites(g)
         }
 
         @Deprecated("Deprecated in API 33")
@@ -205,6 +294,42 @@ internal class VanProbe(
         }
     }
 
+    /** The link closed: retry a connection that never came up, or (Insist mode) reconnect and carry on with the next request. */
+    private fun onLinkClosed(g: BluetoothGatt, st: Int) {
+        val dev = device
+        val now = SystemClock.elapsedRealtime()
+        main.removeCallbacks(ladderTick)
+        main.removeCallbacks(writeWatchdog)
+        runCatching { g.close() }
+        if (gatt === g) gatt = null
+        if (!linkUp) {
+            // Never connected: same policy as the official stack, up to 3 retries 200 ms apart.
+            if (dev != null && connectRetries < 3) {
+                connectRetries++
+                log("[VAN] connect retry $connectRetries/3")
+                main.postDelayed({ if (!stopped.get()) connect(dev) }, 200)
+            } else {
+                setStatus("Disconnected ($st)")
+            }
+            return
+        }
+        val up = now - connectedAt
+        val after = if (txThisConn) "${now - lastTxMono} ms after our last frame" else "before we sent anything"
+        log("[VAN] link dropped (status=$st) $up ms after connecting, $after")
+        earlyDrop = !txThisConn
+        if (dev != null && canResume()) {
+            reconnects++
+            log("[VAN] reconnecting ($reconnects/$MAX_RECONNECTS), next request is #${rung + 1}" + if (earlyDrop) ", asked right away this time" else "")
+            setStatus("Reconnecting…")
+            main.postDelayed({ if (!stopped.get()) connect(dev) }, RECONNECT_DELAY_MS)
+        } else {
+            setStatus("Disconnected ($st)")
+        }
+    }
+
+    private fun canResume(): Boolean =
+        mode == Mode.INSIST && reconnects < MAX_RECONNECTS && rung < askPlan.size && !answered && values.isEmpty()
+
     private fun readRevision(g: BluetoothGatt) {
         val c = g.services.firstNotNullOfOrNull { it.getCharacteristic(SOFTWARE_REVISION) } ?: return
         runCatching { g.readCharacteristic(c) }.onFailure { log("[VAN] read revision: ${it.message}") }
@@ -212,7 +337,7 @@ internal class VanProbe(
 
     private fun nextDescriptor(g: BluetoothGatt) {
         val next = pendingDescriptors.removeFirstOrNull()
-        if (next == null) { readRevision(g); return }
+        if (next == null) { readRevision(g); armLadder(); return }
         val (c, d) = next
         val value = if (c.properties and BluetoothGattCharacteristic.PROPERTY_NOTIFY != 0)
             BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE else BluetoothGattDescriptor.ENABLE_INDICATION_VALUE
@@ -226,9 +351,45 @@ internal class VanProbe(
         }.onFailure { log("[VAN] writeDescriptor: ${it.message}") }
     }
 
+    /** Starts the "is the dash going to speak first?" clock, once per connection. */
+    private fun armLadder() {
+        if (ladderArmed || stopped.get()) return
+        ladderArmed = true
+        if (askPlan.isEmpty()) { log("[VAN] listen only — nothing will be sent"); return }
+        if (rung >= askPlan.size || answered) return
+        val wait = if (earlyDrop) EARLY_QUIET_MS else QUIET_MS
+        log("[VAN] listening; if the dash stays silent for ${wait / 1000.0} s the probe asks for the data itself")
+        main.postDelayed(ladderTick, wait)
+    }
+
+    /** The dash has been silent: volunteer the next subscription list, then give it [RESPONSE_MS] to react. */
+    private fun tick() {
+        if (stopped.get()) return
+        val g = gatt ?: return
+        if (answered || values.isNotEmpty()) return
+        if (lastTxMono > 0 && lastRxMono > lastTxMono) {
+            log("[VAN] the dash replied after our last frame — not sending more")
+            return
+        }
+        if (rung >= askPlan.size) {
+            log("[VAN] $rung request(s) sent and the dash never answered")
+            setStatus("Dash silent after $rung request(s)")
+            return
+        }
+        val items = askPlan[rung]
+        rung++
+        lastTxMono = SystemClock.elapsedRealtime()
+        txThisConn = true
+        note("#$rung ask ${idList(items)}")
+        send(g, VanProtocol.handshakeResponse(items), "ask #$rung (${idList(items)})")
+        setStatus("Asked the dash (#$rung)")
+        main.postDelayed(ladderTick, RESPONSE_MS)
+    }
+
     private fun handle(g: BluetoothGatt, from: UUID, value: ByteArray) {
         if (stopped.get()) return
         lastFrameAt = System.currentTimeMillis()
+        lastRxMono = SystemClock.elapsedRealtime()
         log("[VAN] rx ${from.toString().take(8)} ${VanProtocol.hex(value)}")
         for (f in stream.feed(value)) {
             val cmd = f.command.toInt() and 0xFF
@@ -255,35 +416,61 @@ internal class VanProbe(
     private fun onHandshake(g: BluetoothGatt, payload: ByteArray) {
         offered = VanProtocol.handshakeItems(payload)
         log("[VAN] dash offers ${offered.joinToString { "${it}=${VanProtocol.name(it)}" }}")
-        val items = when (mode) {
-            Mode.LISTEN_ONLY -> null
-            Mode.OFFICIAL -> VanProtocol.OFFICIAL_ITEMS
-            Mode.OFFICIAL_PLUS_MILEAGE -> VanProtocol.OFFICIAL_PLUS_MILEAGE
-            Mode.FULL -> VanProtocol.FULL
+        if (replyPlan.isEmpty()) { log("[VAN] listen only — handshake not answered"); return }
+        if (handshakeReplies >= MAX_HANDSHAKE_REPLIES) {
+            log("[VAN] already answered $handshakeReplies times on this connection — not answering again")
+            return
         }
-        if (items == null) { log("[VAN] listen only — handshake not answered"); return }
-        val target = writeChar
-        if (target == null) { log("[VAN] no write characteristic — cannot subscribe"); return }
-        val frame = VanProtocol.handshakeResponse(items)
+        val items = replyPlan[minOf(handshakeReplies, replyPlan.size - 1)]
+        handshakeReplies++
         answered = true
-        log("[VAN] subscribe ${items.joinToString { "${it.toInt()}" }} → ${VanProtocol.hex(frame)}")
-        // The official stack writes with response (WRITE_TYPE_DEFAULT); fall back to no-response only if needed.
-        val type = if (target.properties and BluetoothGattCharacteristic.PROPERTY_WRITE != 0)
-            BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT else BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
-        var offset = 0
-        while (offset < frame.size) {
-            val chunk = frame.copyOfRange(offset, minOf(offset + 20, frame.size))
-            val r = runCatching {
-                if (android.os.Build.VERSION.SDK_INT >= 33) {
-                    g.writeCharacteristic(target, chunk, type)
-                } else {
-                    target.writeType = type
-                    target.value = chunk
-                    g.writeCharacteristic(target)
-                }
-            }.getOrNull()
-            log("[VAN] tx ${chunk.size}B result=$r")
-            offset += chunk.size
+        main.removeCallbacks(ladderTick)
+        lastTxMono = SystemClock.elapsedRealtime()
+        txThisConn = true
+        note("reply ${idList(items)}")
+        send(g, VanProtocol.handshakeResponse(items), "subscribe (${idList(items)})")
+        setStatus("Subscribed")
+    }
+
+    /** Queues a frame as ≤20-byte writes; they go out one at a time, each after the previous one completed. */
+    private fun send(g: BluetoothGatt, frame: ByteArray, label: String) {
+        if (writeChar == null) { log("[VAN] no write characteristic — cannot send $label"); return }
+        log("[VAN] $label → ${VanProtocol.hex(frame)}")
+        for (chunk in VanProtocol.chunks(frame)) writeQueue.addLast(chunk)
+        pumpWrites(g)
+    }
+
+    private fun pumpWrites(g: BluetoothGatt) {
+        if (writing) return
+        val target = writeChar ?: return
+        val chunk = writeQueue.removeFirstOrNull() ?: return
+        // The official stack writes with response (WRITE_TYPE_DEFAULT); no-response only if the dash refused that.
+        val withResponse = !noResponseFallback && target.properties and BluetoothGattCharacteristic.PROPERTY_WRITE != 0
+        val type = if (withResponse) BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT else BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
+        val started = runCatching {
+            if (android.os.Build.VERSION.SDK_INT >= 33) {
+                g.writeCharacteristic(target, chunk, type) == 0 // BluetoothStatusCodes.SUCCESS
+            } else {
+                target.writeType = type
+                target.value = chunk
+                g.writeCharacteristic(target)
+            }
+        }.getOrDefault(false)
+        if (started) {
+            writing = true
+            writeRefusals = 0
+            main.postDelayed(writeWatchdog, WRITE_TIMEOUT_MS)
+            log("[VAN] tx ${chunk.size}B ${VanProtocol.hex(chunk)} (${if (withResponse) "with" else "without"} response)")
+        } else if (writeRefusals < MAX_WRITE_REFUSALS) {
+            // Usually another GATT operation (the revision read) is still in flight: try again shortly.
+            writeRefusals++
+            writeQueue.addFirst(chunk)
+            log("[VAN] the stack is busy — retrying the write ($writeRefusals/$MAX_WRITE_REFUSALS)")
+            main.postDelayed({ if (!stopped.get()) pumpWrites(g) }, WRITE_RETRY_MS)
+        } else {
+            log("[VAN] the stack refused the write — dropping ${writeQueue.size + 1} chunk(s)")
+            writeRefusals = 0
+            writeQueue.clear()
         }
     }
 
@@ -295,6 +482,13 @@ internal class VanProbe(
         if (fields.isEmpty()) log("[VAN] $tag frame with no decodable field")
     }
 
+    private fun idList(items: ByteArray): String =
+        if (items.isEmpty()) "empty list" else items.joinToString(",") { "${it.toInt() and 0xFF}" }
+
+    private fun note(text: String) {
+        sent = (sent + text).takeLast(6)
+    }
+
     private fun setStatus(s: String) {
         status = s
         main.post { onChange() }
@@ -304,6 +498,22 @@ internal class VanProbe(
 
     companion object {
         private const val SCAN_MS = 15_000L
+
+        /** Silence after the notifications are on before the probe asks for the data itself. */
+        private const val QUIET_MS = 6_000L
+
+        /** After a drop with nothing sent, ask almost at once: the dash may expect a first word within seconds. */
+        private const val EARLY_QUIET_MS = 300L
+
+        /** Time the dash gets to react to a volunteered request before the next one. */
+        private const val RESPONSE_MS = 8_000L
+        private const val WRITE_TIMEOUT_MS = 2_000L
+        private const val WRITE_RETRY_MS = 400L
+        private const val MAX_WRITE_REFUSALS = 3
+        private const val DISCOVERY_GRACE_MS = 4_000L
+        private const val RECONNECT_DELAY_MS = 1_500L
+        private const val MAX_RECONNECTS = 3
+        private const val MAX_HANDSHAKE_REPLIES = 3
         private val HUD_SERVICE: UUID = UUID.fromString("0000b360-d6d8-c7ec-bdf0-eab1bfc6bcbc")
         private val NOTIFY_CHARS = listOf(
             UUID.fromString("0000b362-d6d8-c7ec-bdf0-eab1bfc6bcbc"),

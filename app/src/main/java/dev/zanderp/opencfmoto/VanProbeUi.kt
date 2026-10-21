@@ -16,8 +16,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
  * "🔬 Dash data probe" in Help (test builds). Starts a [VanProbe] and shows what the dash offers and
- * pushes: tyre pressure/temperature, mileage, etc. Read only; the raw numbers are shown as the dash
- * sends them (units are not interpreted yet) and every frame also goes to the log.
+ * pushes: tyre pressure/temperature, mileage, etc. The probe only sends data-subscription requests
+ * (never anything that controls the bike); the raw numbers are shown as the dash sends them (units
+ * are not interpreted yet) and every frame, sent or received, also goes to the log.
  */
 object VanProbeUi {
     private const val REQ_PERM = 7347
@@ -47,6 +48,7 @@ object VanProbeUi {
 
     private fun chooseMode(activity: Activity) {
         val modes = listOf(
+            R.string.van_mode_insist to VanProbe.Mode.INSIST,
             R.string.van_mode_official_km to VanProbe.Mode.OFFICIAL_PLUS_MILEAGE,
             R.string.van_mode_full to VanProbe.Mode.FULL,
             R.string.van_mode_official to VanProbe.Mode.OFFICIAL,
@@ -88,6 +90,10 @@ object VanProbeUi {
         sb.append(p.status)
         val age = if (p.lastFrameAt > 0) (System.currentTimeMillis() - p.lastFrameAt) / 1000 else -1
         if (age >= 0) sb.append(" · ").append(activity.getString(R.string.van_last_frame, age.toString()))
+        if (p.sent.isNotEmpty()) {
+            sb.append("\n\n").append(activity.getString(R.string.van_sent))
+            for (line in p.sent) sb.append("\n").append(line)
+        }
         if (p.offered.isNotEmpty()) {
             sb.append("\n\n").append(activity.getString(R.string.van_offered))
             sb.append("\n").append(p.offered.joinToString(", ") { "$it=${VanProtocol.name(it)}" })

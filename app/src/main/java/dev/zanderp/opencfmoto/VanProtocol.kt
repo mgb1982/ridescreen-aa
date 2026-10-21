@@ -13,7 +13,9 @@ package dev.zanderp.opencfmoto
  *  - 0x32 dash → phone: realtime fields   (id + value, see [parseRealtime])
  *  - 0x33 dash → phone: slower fields     (id + value, see [parseNonRealtime])
  *
- * Read only: the phone never sends anything except the subscription list in answer to 0x31.
+ * The phone only ever sends one kind of frame, the 0x31 subscription list (its half of the handshake):
+ * in answer to the dash's offer or, in the probe, volunteered when the dash stays silent. Nothing
+ * that controls the bike exists here.
  */
 internal object VanProtocol {
     const val CMD_MODEL: Byte = 0x30
@@ -29,6 +31,27 @@ internal object VanProtocol {
 
     /** Everything the protocol defines for a petrol bike: adds speed, RPM, gear, lights, status, consumption, max speed, maintenance km left, fault byte. */
     val FULL = byteArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 28, 30, 31)
+
+    /**
+     * "Insist" mode, in answer to the dash's own 0x31 (one list per offer, so a dash that keeps
+     * re-offering sees the next one): the useful list, exactly the official one (in case the dash
+     * validates it), then everything.
+     */
+    val INSIST_REPLIES: List<ByteArray> = listOf(OFFICIAL_PLUS_MILEAGE, OFFICIAL_ITEMS, FULL)
+
+    /** "Insist" mode, volunteered when the dash never speaks first: the replies above plus an empty list as a plain nudge. */
+    val INSIST_ASKS: List<ByteArray> = INSIST_REPLIES + listOf(ByteArray(0))
+
+    /** Splits a frame into BLE writes of at most [size] bytes, like the official stack (20 bytes, no MTU request). */
+    fun chunks(frame: ByteArray, size: Int = 20): List<ByteArray> {
+        val out = ArrayList<ByteArray>()
+        var offset = 0
+        while (offset < frame.size) {
+            out += frame.copyOfRange(offset, minOf(offset + size, frame.size))
+            offset += size
+        }
+        return out
+    }
 
     data class Field(val id: Int, val raw: Long, val bytes: Int)
 

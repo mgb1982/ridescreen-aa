@@ -218,7 +218,7 @@ Oggi: %2$d min porta a porta · di solito: %3$d min.</string>
     <string name="pke_fail_no_answer">La scatola ha risposto ma non ha fornito il voltaggio. Mandami il log, per favore.</string>
     <string name="van_entry">🔬 Sonda dati del cruscotto (pneumatici, km)</string>
     <string name="van_title">Sonda dati del cruscotto</string>
-    <string name="van_intro">Sperimentale e di sola lettura. Con la moto accesa e vicina (app ufficiale Zontes chiusa), si collega al cruscotto via Bluetooth e mostra ciò che comunica: pressione e temperatura dei pneumatici, chilometraggio…\n\n• Solo ascolto: registra solo ciò che offre il cruscotto.\n• Come l\'app ufficiale: chiede gli stessi dati dell\'app Zontes.\n• Ufficiale + km: chiede anche parziale e totale.\n• Tutto: aggiunge velocità, RPM, marcia, luci, stato e consumo.\n\nNon viene mai inviato nulla per controllare la moto.</string>
+    <string name="van_intro">Sperimentale. Con la moto accesa e vicina (app ufficiale Zontes chiusa), si collega al cruscotto via Bluetooth e mostra ciò che comunica: pressione e temperatura dei pneumatici, chilometraggio…\n\n• Insistere: ascolta prima; se il cruscotto tace, chiede lui i dati (diverse richieste, una dopo l\'altra).\n• Solo ascolto: registra ciò che offre il cruscotto e non invia nulla.\n• Come l\'app ufficiale: chiede gli stessi dati dell\'app Zontes.\n• Ufficiale + km: chiede anche parziale e totale.\n• Tutto: aggiunge velocità, RPM, marcia, luci, stato e consumo.\n\nTranne in «Solo ascolto», se il cruscotto non dice nulla per 6 s la sonda invia da sé la richiesta.\n\nVengono inviate solo richieste di dati, mai nulla per controllare la moto.</string>
     <string name="van_mode_listen">Solo ascolto</string>
     <string name="van_mode_official">Come l\'ufficiale</string>
     <string name="van_mode_official_km">Ufficiale + km</string>
@@ -231,4 +231,6 @@ Oggi: %2$d min porta a porta · di solito: %3$d min.</string>
     <string name="van_log_hint">Poi invia il log: Aiuto → Condividi i log.</string>
     <string name="van_continue">Continua</string>
     <string name="van_mode_full">Tutto (+ velocità, RPM, marcia)</string>
+    <string name="van_mode_insist">Insistere (chiedere i dati se tace)</string>
+    <string name="van_sent">Inviato al cruscotto:</string>
 </resources>

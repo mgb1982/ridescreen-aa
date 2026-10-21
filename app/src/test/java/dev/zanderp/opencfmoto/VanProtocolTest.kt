@@ -79,6 +79,42 @@ class VanProtocolTest {
         assertTrue(VanProtocol.FULL.all { it in 1..32 })
     }
 
+    @Test fun chunksSplitAtTwentyBytesAndRejoinToTheSameFrame() {
+        val full = VanProtocol.handshakeResponse(VanProtocol.FULL)
+        assertEquals(24, full.size)
+        val parts = VanProtocol.chunks(full)
+        assertEquals(listOf(20, 4), parts.map { it.size })
+        assertTrue(parts.reduce { a, b -> a + b }.contentEquals(full))
+        // The official list fits in a single write; nothing to send is no write at all.
+        assertEquals(1, VanProtocol.chunks(VanProtocol.handshakeResponse(VanProtocol.OFFICIAL_ITEMS)).size)
+        assertTrue(VanProtocol.chunks(ByteArray(0)).isEmpty())
+    }
+
+    @Test fun everythingTheProbeCanVolunteerIsASubscriptionFrame() {
+        // The probe's only writes are built with handshakeResponse: command 0x31, ids inside the data range.
+        for (items in VanProtocol.INSIST_ASKS + VanProtocol.INSIST_REPLIES) {
+            val frame = EcBtpProtocol.parse(VanProtocol.handshakeResponse(items))!!
+            assertEquals(VanProtocol.CMD_HANDSHAKE, frame.command)
+            assertTrue(frame.payload.all { it in 1..32 })
+        }
+    }
+
+    @Test fun insistTriesTheUsefulListFirstThenOfficialThenEverythingThenAnEmptyNudge() {
+        assertEquals(4, VanProtocol.INSIST_ASKS.size)
+        assertTrue(VanProtocol.INSIST_ASKS[0].contentEquals(VanProtocol.OFFICIAL_PLUS_MILEAGE))
+        assertTrue(VanProtocol.INSIST_ASKS[1].contentEquals(VanProtocol.OFFICIAL_ITEMS))
+        assertTrue(VanProtocol.INSIST_ASKS[2].contentEquals(VanProtocol.FULL))
+        assertEquals(0, VanProtocol.INSIST_ASKS[3].size)
+        // Answers to the dash's own offer never use the empty nudge.
+        assertTrue(VanProtocol.INSIST_REPLIES.none { it.isEmpty() })
+    }
+
+    @Test fun emptySubscriptionIsAValidFrame() {
+        val frame = VanProtocol.handshakeResponse(ByteArray(0))
+        assertEquals(5, frame.size)
+        assertEquals(0, EcBtpProtocol.parse(frame)!!.payload.size)
+    }
+
     @Test fun parsesMaxSpeedMaintenanceAndFaultByte() {
         // id 28 / 30 are words, id 31 is a single byte, in either packet type.
         val payload = byteArrayOf(28, 0x2C, 0x01, 30, 0x10, 0x27, 31, 2)
