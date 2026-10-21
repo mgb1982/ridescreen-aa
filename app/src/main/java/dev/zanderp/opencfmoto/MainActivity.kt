@@ -1556,7 +1556,7 @@ class MainActivity : AppCompatActivity() {
 
     // ── v2.3: battery + lock card from the keyless box (read only: PkeBattery asks only 008 + 001,7).
     // Only once the PKE code is set (Ayuda → Batería). Reads while the app is in front: every 45 s
-    // (90 s while projecting); after two misses in a row (bike out of range) every 3 min. A reading
+    // (30 s while projecting, to catch the engine starting / stopping); after two misses in a row (bike out of range) every 3 min. A reading
     // older than 10 min hides the card.
     private val pkeTicker = object : Runnable {
         override fun run() {
@@ -1564,7 +1564,7 @@ class MainActivity : AppCompatActivity() {
             val running = ConnectionState.phase.let { it == Phase.STREAMING || it == Phase.MIRRORING }
             val next = when {
                 pkeFails >= 2 -> 180_000L
-                running -> 90_000L
+                running -> 30_000L
                 else -> 45_000L
             }
             statsHandler.postDelayed(this, next)
@@ -1572,6 +1572,33 @@ class MainActivity : AppCompatActivity() {
     }
     @Volatile private var pkeBusy = false
     private var pkeFails = 0
+
+    // Engine state from the battery voltage (Manel, 22 Oct: the dash starts projecting BEFORE the engine
+    // starts). The charging system lifts the battery above ~13.2 V; once the engine stops it falls back
+    // below ~12.8 V. Two readings in a row, hysteresis in between. Thresholds are a first guess: every
+    // transition is logged with its voltage ([PKE] engine ON/OFF) so they can be tuned from real rides.
+    private var engineRunning: Boolean? = null
+    private var engineHi = 0
+    private var engineLo = 0
+
+    private fun updateEngine(v: Float) {
+        if (v >= ENGINE_ON_V) { engineHi++; engineLo = 0 }
+        else if (v <= ENGINE_OFF_V) { engineLo++; engineHi = 0 }
+        else { engineHi = 0; engineLo = 0 }
+        val before = engineRunning
+        if (engineHi >= 2) engineRunning = true
+        if (engineLo >= 2) engineRunning = false
+        if (engineRunning != before) {
+            LogBus.log("[PKE] engine ${if (engineRunning == true) "ON" else "OFF"} at ${"%.1f".format(v)} V")
+            renderStatus(ConnectionState.phase, ConnectionState.detail)
+        }
+    }
+
+    /** True / false once known from a reading under 3 min old, else null. */
+    private fun engineState(): Boolean? {
+        val r = PkeBattery.last(this) ?: return null
+        return if (System.currentTimeMillis() - r.atMs <= 3 * 60_000L) engineRunning else null
+    }
 
     private fun pkeRefresh() {
         if (PkeBattery.code(this).length < 8) { renderPkeCard(); return }
@@ -1584,6 +1611,7 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread {
                 pkeBusy = false
                 if (res?.reading != null) pkeFails = 0 else pkeFails++
+                res?.reading?.volts?.let { updateEngine(it) }
                 renderPkeCard()
             }
         }, "pke-card").start()
@@ -1598,8 +1626,7 @@ class MainActivity : AppCompatActivity() {
             return
         }
         card.visibility = View.VISIBLE
-        val phase = ConnectionState.phase
-        val running = phase == Phase.STREAMING || phase == Phase.MIRRORING
+        val running = engineState() == true
         val v = r.volts
         val volts = findViewById<TextView>(R.id.pke_volts)
         volts.text = if (v != null) String.format(java.util.Locale.getDefault(), "%.1f", v) else "--"
@@ -1614,10 +1641,15 @@ class MainActivity : AppCompatActivity() {
                 else -> getColor(R.color.text_primary)
             },
         )
-        findViewById<TextView>(R.id.pke_sub).text = getString(
+        val readText = getString(
             R.string.pke_card_read,
             android.text.format.DateUtils.getRelativeTimeSpanString(r.atMs, now, android.text.format.DateUtils.SECOND_IN_MILLIS),
         )
+        findViewById<TextView>(R.id.pke_sub).text = when (engineState()) {
+            true -> getString(R.string.engine_running) + " · " + readText
+            false -> getString(R.string.engine_stopped) + " · " + readText
+            null -> readText
+        }
         findViewById<TextView>(R.id.pke_lock).apply {
             when (r.locked) {
                 true -> { text = getString(R.string.pke_card_locked); visibility = View.VISIBLE }
@@ -1728,8 +1760,10 @@ class MainActivity : AppCompatActivity() {
     /** Update the big status header + Connect button label from a [ConnectionState] transition. */
     private fun renderStatus(phase: Phase, detail: String) {
         statusView.text = getString(phase.labelRes) +
-            if (ClockLab.resyncInProgress() && phase != Phase.STOPPED && phase != Phase.IDLE)
-                " · " + getString(R.string.clock_resyncing) else ""
+            (if (ClockLab.resyncInProgress() && phase != Phase.STOPPED && phase != Phase.IDLE)
+                " · " + getString(R.string.clock_resyncing) else "") +
+            (if ((phase == Phase.STREAMING || phase == Phase.MIRRORING) && engineState() == true)
+                " · " + getString(R.string.engine_running) else "")
         bikeView.text = if (detail.isNotBlank()) detail else bikeLabelText()
         if (phase == Phase.ERROR && detail.isNotBlank() && !isHusConnectNoise(detail)) {
             try {
@@ -2786,6 +2820,8 @@ class MainActivity : AppCompatActivity() {
         const val EXTRA_START_GPX = "start_gpx"
         const val EXTRA_BT_TRIGGER = "bt_trigger"
         const val EXTRA_WIDGET_CONNECT = "widget_connect"
+        private const val ENGINE_ON_V = 13.2f
+        private const val ENGINE_OFF_V = 12.8f
         private const val CANCEL_LOCK_MS = 3_000L
         @Volatile private var connectStartedAt = 0L
         /** From "Fit to dash": restart Android Auto so a new panel shape takes effect. */
