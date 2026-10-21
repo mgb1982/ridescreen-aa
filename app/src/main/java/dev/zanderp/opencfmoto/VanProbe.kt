@@ -51,6 +51,9 @@ internal class VanProbe(
     private var writeChar: BluetoothGattCharacteristic? = null
     private val pendingDescriptors = ArrayDeque<Pair<BluetoothGattCharacteristic, BluetoothGattDescriptor>>()
     private var answered = false
+    private var device: BluetoothDevice? = null
+    private var connectRetries = 0
+    private var everConnected = false
 
     @Volatile var status: String = "…"
         private set
@@ -119,6 +122,7 @@ internal class VanProbe(
     }
 
     private fun connect(dev: BluetoothDevice) {
+        device = dev
         setStatus("Connecting…")
         gatt = runCatching { dev.connectGatt(appContext, false, gattCallback, BluetoothDevice.TRANSPORT_LE) }.getOrNull()
         if (gatt == null) { log("[VAN] connectGatt failed"); setStatus("Connect failed") }
@@ -128,10 +132,21 @@ internal class VanProbe(
         override fun onConnectionStateChange(g: BluetoothGatt, st: Int, newState: Int) {
             log("[VAN] connection state=$newState status=$st")
             if (newState == BluetoothProfile.STATE_CONNECTED && !stopped.get()) {
+                everConnected = true
                 setStatus("Connected")
                 runCatching { g.discoverServices() }
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                setStatus("Disconnected ($st)")
+                val dev = device
+                if (!everConnected && !stopped.get() && dev != null && connectRetries < 3) {
+                    // Same policy as the official stack: up to 3 retries, 200 ms apart.
+                    connectRetries++
+                    log("[VAN] connect retry $connectRetries/3")
+                    runCatching { g.close() }
+                    gatt = null
+                    main.postDelayed({ if (!stopped.get()) connect(dev) }, 200)
+                } else {
+                    setStatus("Disconnected ($st)")
+                }
             }
         }
 
@@ -172,6 +187,15 @@ internal class VanProbe(
         }
 
         @Deprecated("Deprecated in API 33")
+        override fun onCharacteristicRead(g: BluetoothGatt, c: BluetoothGattCharacteristic, status: Int) {
+            log("[VAN] software revision (status=$status) ${String(c.value ?: ByteArray(0), Charsets.UTF_8)}")
+        }
+
+        override fun onCharacteristicRead(g: BluetoothGatt, c: BluetoothGattCharacteristic, value: ByteArray, status: Int) {
+            log("[VAN] software revision (status=$status) ${String(value, Charsets.UTF_8)}")
+        }
+
+        @Deprecated("Deprecated in API 33")
         override fun onCharacteristicChanged(g: BluetoothGatt, c: BluetoothGattCharacteristic) {
             handle(g, c.uuid, c.value ?: return)
         }
@@ -181,8 +205,14 @@ internal class VanProbe(
         }
     }
 
+    private fun readRevision(g: BluetoothGatt) {
+        val c = g.services.firstNotNullOfOrNull { it.getCharacteristic(SOFTWARE_REVISION) } ?: return
+        runCatching { g.readCharacteristic(c) }.onFailure { log("[VAN] read revision: ${it.message}") }
+    }
+
     private fun nextDescriptor(g: BluetoothGatt) {
-        val next = pendingDescriptors.removeFirstOrNull() ?: return
+        val next = pendingDescriptors.removeFirstOrNull()
+        if (next == null) { readRevision(g); return }
         val (c, d) = next
         val value = if (c.properties and BluetoothGattCharacteristic.PROPERTY_NOTIFY != 0)
             BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE else BluetoothGattDescriptor.ENABLE_INDICATION_VALUE
@@ -237,8 +267,9 @@ internal class VanProbe(
         val frame = VanProtocol.handshakeResponse(items)
         answered = true
         log("[VAN] subscribe ${items.joinToString { "${it.toInt()}" }} → ${VanProtocol.hex(frame)}")
-        val type = if (target.properties and BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE != 0)
-            BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE else BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
+        // The official stack writes with response (WRITE_TYPE_DEFAULT); fall back to no-response only if needed.
+        val type = if (target.properties and BluetoothGattCharacteristic.PROPERTY_WRITE != 0)
+            BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT else BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
         var offset = 0
         while (offset < frame.size) {
             val chunk = frame.copyOfRange(offset, minOf(offset + 20, frame.size))
@@ -283,6 +314,7 @@ internal class VanProbe(
             UUID.fromString("0000b363-d6d8-c7ec-bdf0-eab1bfc6bcbc"),
             UUID.fromString("0000b362-d6d8-c7ec-bdf0-eab1bfc6bcbc"),
         )
+        private val SOFTWARE_REVISION: UUID = UUID.fromString("00002a28-0000-1000-8000-00805f9b34fb")
         private val CCC: UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
         private val NAME_HINT = Regex("^(EC[0-9A-Fa-f]{6,}|ZT[_-]?.*|ZONTES.*|CQKY.*)$", RegexOption.IGNORE_CASE)
     }
