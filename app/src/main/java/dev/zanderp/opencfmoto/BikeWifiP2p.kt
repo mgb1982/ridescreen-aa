@@ -61,6 +61,15 @@ object BikeWifiP2p {
     @Volatile private var connected = false
     @Volatile private var connectIssued = false
     @Volatile private var timeoutThread: Thread? = null
+    @Volatile private var failCb: ((String) -> Unit)? = null
+    @Volatile private var failLog: ((String) -> Unit)? = null
+    @Volatile private var lastMacConnectAt = 0L
+    /** After the dash accepts our request (it goes INVITED) give the group this long, counted from then. */
+    private const val ACCEPTED_DEADLINE_MS = 30_000L
+    /** Minimum gap between two connect() attempts: back-to-back ones got a bare ERROR on MediaTek/Xiaomi. */
+    private const val MAC_MIN_GAP_MS = 4_000L
+    /** Pause between stopPeerDiscovery() finishing and connect(). */
+    private const val AFTER_STOP_DISCOVERY_MS = 400L
 
     /** True only while Android reports an active Wi-Fi Direct group. */
     val isConnected: Boolean get() = active && connected
@@ -120,6 +129,8 @@ object BikeWifiP2p {
             attemptMacJoin(mgr, chan, qr, log)
         }
 
+        failCb = onFailed
+        failLog = log
         startTimeout(onFailed, log, timeoutMs)
         startRetries(ctx, mgr, chan, qr, log)
     }
@@ -221,17 +232,42 @@ object BikeWifiP2p {
             return
         }
         if (connectIssued) return
-        // Some stacks reject connect() while discovery is still running (Pixel ERROR).
+        val sinceLast = android.os.SystemClock.elapsedRealtime() - lastMacConnectAt
+        if (lastMacConnectAt != 0L && sinceLast < MAC_MIN_GAP_MS) return   // too soon after the last attempt
+        lastMacConnectAt = android.os.SystemClock.elapsedRealtime()
+        connectIssued = true   // hold the slot until this attempt has finished
+        // Some stacks reject connect() while discovery is still running (Pixel ERROR): stop it, wait for
+        // the stop to be reported, then pause briefly before connecting.
+        var proceeded = false
+        val proceed = Runnable {
+            if (proceeded) return@Runnable
+            proceeded = true
+            if (!active || connected) { connectIssued = false; return@Runnable }
+            issueMacConnect(mgr, chan, mac, log)
+        }
+        val h = android.os.Handler(Looper.getMainLooper())
         try {
             mgr.stopPeerDiscovery(chan, object : WifiP2pManager.ActionListener {
-                override fun onSuccess() { log("$TAG stopPeerDiscovery: ok (before MAC join)") }
+                override fun onSuccess() { log("$TAG stopPeerDiscovery: ok (before MAC join)"); h.postDelayed(proceed, AFTER_STOP_DISCOVERY_MS) }
                 override fun onFailure(reason: Int) {
                     log("$TAG stopPeerDiscovery: ${reasonStr(reason)} — connecting anyway")
+                    h.postDelayed(proceed, AFTER_STOP_DISCOVERY_MS)
                 }
             })
+            h.postDelayed(proceed, 1_500L)   // safety net if the stop is never reported
         } catch (e: Exception) {
             log("$TAG stopPeerDiscovery: ${e.message}")
+            h.post(proceed)
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun issueMacConnect(
+        mgr: WifiP2pManager,
+        chan: WifiP2pManager.Channel,
+        mac: String,
+        log: (String) -> Unit,
+    ) {
         val config = WifiP2pConfig().apply {
             deviceAddress = mac
             wps.setup = WpsInfo.PBC
@@ -248,7 +284,8 @@ object BikeWifiP2p {
         connectIssued = true
         mgr.connect(chan, config, object : WifiP2pManager.ActionListener {
             override fun onSuccess() {
-                log("$TAG connect(): MAC request accepted — waiting for group to form")
+                log("$TAG connect(): MAC request accepted — waiting for group to form (deadline restarted: ${ACCEPTED_DEADLINE_MS / 1000}s)")
+                extendDeadline(ACCEPTED_DEADLINE_MS)
                 watchAcceptedJoin(mgr, chan, log)
             }
             override fun onFailure(reason: Int) {
@@ -482,6 +519,14 @@ object BikeWifiP2p {
                 fail(onFailed, log, "no P2P group formed within ${timeoutMs / 1000}s")
             }
         }
+    }
+
+    /** Restart the failure timer so an accepted request isn't cut off by the original window. */
+    private fun extendDeadline(ms: Long) {
+        val cb = failCb ?: return
+        val lg = failLog ?: return
+        if (!active || connected) return
+        startTimeout(cb, lg, ms)
     }
 
     private fun cancelTimeout() {
