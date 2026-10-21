@@ -220,4 +220,6 @@ Oggi: %2$d min porta a porta · di solito: %3$d min.</string>
     <string name="pke_card_locked">🔒\nBloccata</string>
     <string name="pke_card_unlocked">🔓\nSbloccata</string>
     <string name="pke_card_read">Letto %1$s</string>
+    <string name="engine_running">motore acceso</string>
+    <string name="engine_stopped">motore spento</string>
 </resources>

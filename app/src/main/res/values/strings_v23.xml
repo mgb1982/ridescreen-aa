@@ -220,4 +220,6 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="pke_card_locked">🔒\nLocked</string>
     <string name="pke_card_unlocked">🔓\nUnlocked</string>
     <string name="pke_card_read">Read %1$s</string>
+    <string name="engine_running">engine running</string>
+    <string name="engine_stopped">engine off</string>
 </resources>

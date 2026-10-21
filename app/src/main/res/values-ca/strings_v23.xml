@@ -220,4 +220,6 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="pke_card_locked">🔒\nBloquejada</string>
     <string name="pke_card_unlocked">🔓\nDesbloquejada</string>
     <string name="pke_card_read">Llegit %1$s</string>
+    <string name="engine_running">motor en marxa</string>
+    <string name="engine_stopped">motor aturat</string>
 </resources>
