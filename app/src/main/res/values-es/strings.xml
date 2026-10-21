@@ -602,7 +602,7 @@
     <string name="pref_mirror_orient_follow">Seguir al móvil</string>
     <string name="pref_mirror_orient_land">Horizontal</string>
     <string name="pref_mirror_orient_port">Vertical</string>
-    <string name="setup_aa_17_4_start_head_unit_server">En Android Auto 17.4 o superior, abre también el menú ⋮ de Ajustes de desarrollador y pulsa Iniciar servidor de la unidad principal antes de Conectar. Puede que tengas que repetirlo tras reiniciar o actualizar Android Auto. No desinstales las actualizaciones de Android Auto.</string>
+    <string name="setup_aa_17_4_start_head_unit_server">En Android Auto 17.4 o superior, abre también el menú ⋮ de Ajustes de desarrollador y pulsa Start head unit server antes de Conectar. Puede que tengas que repetirlo tras reiniciar o actualizar Android Auto. No desinstales las actualizaciones de Android Auto.</string>
     <string name="setup_aa_dpi">Tamaño del texto de Android Auto (DPI)</string>
     <string name="setup_aa_dpi_auto">Automático</string>
     <string name="setup_aa_dpi_desc">Automático usa el perfil de la moto. Un DPI mayor agranda Maps y la interfaz de Android Auto (útil si la letra del cuadro es muy pequeña).</string>
