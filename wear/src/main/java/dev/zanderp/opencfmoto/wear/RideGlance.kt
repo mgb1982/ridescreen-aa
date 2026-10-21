@@ -41,6 +41,18 @@ object RideGlance {
     fun save(ctx: Context, json: String) {
         val o = try { JSONObject(json) } catch (_: Exception) { return }
         val p = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        // The phone remembers the last finished ride's numbers ("last"): keep them for the summary card.
+        o.optJSONObject("last")?.let { l ->
+            if (l.optDouble("dist", 0.0) > 0.0) {
+                p.edit()
+                    .putFloat("lr_dist", l.optDouble("dist", 0.0).toFloat())
+                    .putLong("lr_mov", l.optLong("mov"))
+                    .putFloat("lr_avg", l.optDouble("avg", 0.0).toFloat())
+                    .putFloat("lr_max", l.optDouble("max", 0.0).toFloat())
+                    .putLong("lr_end", l.optLong("end"))
+                    .apply()
+            }
+        }
         // End of ride: the phone's recorder may already be reset — keep the last numbers we had.
         if (!o.optBoolean("session") && o.optDouble("dist", 0.0) <= 0.0) {
             p.edit().putBoolean("riding", false).putLong("at", System.currentTimeMillis()).apply()
@@ -55,6 +67,17 @@ object RideGlance {
             .putLong("at", System.currentTimeMillis())
             .apply()
         refresh(ctx)
+    }
+
+    /** The last finished ride, for the summary card on the main page. */
+    data class LastRide(val distanceM: Double, val movingMs: Long, val avgKmh: Double, val maxKmh: Double, val endMs: Long)
+
+    fun lastRide(ctx: Context): LastRide? {
+        val p = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val end = p.getLong("lr_end", 0)
+        val dist = p.getFloat("lr_dist", 0f).toDouble()
+        if (end <= 0L || dist <= 0.0) return null
+        return LastRide(dist, p.getLong("lr_mov", 0), p.getFloat("lr_avg", 0f).toDouble(), p.getFloat("lr_max", 0f).toDouble(), end)
     }
 
     fun load(ctx: Context): State? {

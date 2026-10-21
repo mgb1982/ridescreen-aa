@@ -56,6 +56,7 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
     private var tvVolume: TextView? = null
     private var tvParked: TextView? = null
     private var tvParkedMain: TextView? = null
+    private var speedRing: SpeedRingView? = null
     private var rowMaxAvg: View? = null
     private var padBox: View? = null
     private var parkPage: View? = null
@@ -243,6 +244,20 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
         }
         dots.visibility = if (ambient) View.INVISIBLE else View.VISIBLE
 
+        // Ride over (or no phone): the last ride's summary card, from the numbers the watch kept.
+        val ridingNow = fresh && s != null && s.session
+        val last = if (ridingNow || ambient) null else RideGlance.lastRide(this)
+        if (last != null && System.currentTimeMillis() - last.endMs < SUMMARY_MAX_AGE_MS) {
+            renderSummary(last)
+            return
+        }
+        tvAvg?.visibility = View.VISIBLE
+        tvSpeedUnit?.setText(R.string.unit_kmh)
+        // Speed ring (not in ambient: always-on draws should stay minimal).
+        speedRing?.let { ring ->
+            if (ridingNow && !ambient && s != null && s.fix) ring.setSpeed(s.speedKmh, s.maxKmh.toInt()) else ring.clear()
+        }
+
         when {
             !fresh -> {
                 status.setText(R.string.status_no_phone)
@@ -299,6 +314,29 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
         tvMax?.text = getString(R.string.pill_max, s.maxKmh.toInt())
         tvAvg?.text = getString(R.string.pill_avg, s.avgKmh.toInt())
         tvHint?.visibility = if (s.session && !s.recording && !ambient) View.VISIBLE else View.GONE
+    }
+
+    /** Idle main page after a ride: km big, then time / average / top speed and how long ago. */
+    private fun renderSummary(last: RideGlance.LastRide) {
+        speedRing?.setSummary()
+        val status = tvStatus ?: return
+        status.setText(R.string.summary_title)
+        status.setTextColor(COLOR_ACCENT)
+        val km = last.distanceM / 1000.0
+        tvSpeed?.text = String.format(Locale.getDefault(), if (km < 100) "%.1f" else "%.0f", km)
+        tvSpeed?.setTextColor(Color.WHITE)
+        val ago = android.text.format.DateUtils.getRelativeTimeSpanString(
+            last.endMs, System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS,
+        )
+        tvSpeedUnit?.text = getString(R.string.summary_unit, ago)
+        tvSpeedUnit?.setTextColor(COLOR_GREY)
+        val pill = Color.parseColor("#F1F4EC")
+        tvDist?.text = formatDuration(last.movingMs)
+        tvTime?.text = getString(R.string.pill_avg, last.avgKmh.toInt())
+        tvMax?.text = getString(R.string.pill_max, last.maxKmh.toInt())
+        tvAvg?.visibility = View.GONE
+        listOf(tvDist, tvTime, tvMax).forEach { it?.setTextColor(pill) }
+        tvHint?.visibility = View.GONE
     }
 
     private fun renderInfo(s: RideStats?) {
@@ -359,6 +397,7 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
         tvAvg = v.findViewById(R.id.tv_avg)
         tvHint = v.findViewById(R.id.tv_hint)
         tvParkedMain = v.findViewById(R.id.tv_parked_main)
+        speedRing = v.findViewById(R.id.speed_ring)
         rowMaxAvg = v.findViewById(R.id.row_max_avg)
         render()
     }
@@ -484,6 +523,8 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
     companion object {
         private const val PAGES = 4
         private const val PAGE_TRIPS = 3
+        /** How long the last-ride card stays up after the ride ended. */
+        private const val SUMMARY_MAX_AGE_MS = 3 * 3_600_000L
         private const val SUBSCRIBE_EVERY_MS = 4_000L
         private const val STALE_MS = 6_000L
         private val COLOR_GREEN = Color.parseColor("#66BB6A")
