@@ -30,6 +30,7 @@ class OpenCfMotoApp : Application() {
         AppHttp.init(this)
         try { WeeklySummary.ensureScheduled(this) } catch (_: Exception) {}
         ConnectSound.init(this)
+        ConnectWidget.init(this)
         try {
             AnonymousTelemetry.onAppStart(this)
         } catch (_: Exception) {

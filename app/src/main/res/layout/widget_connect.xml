@@ -2,13 +2,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/wc_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_widget">
+    android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/wc_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="22dp"
         android:contentDescription="@string/widget_connect_label"
-        android:src="@drawable/ic_widget_power" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/bg_widget" />
 </FrameLayout>
