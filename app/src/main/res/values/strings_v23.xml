@@ -216,4 +216,8 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="pke_fail_no_code">No PKE code set yet.</string>
     <string name="pke_fail_not_found">Couldn\'t find the keyless box. Get closer to the bike, make sure the official app isn\'t connected to it, and try again.</string>
     <string name="pke_fail_no_answer">The box answered but didn\'t report the voltage. Please send me the log.</string>
+    <string name="pke_card_title">BIKE BATTERY</string>
+    <string name="pke_card_locked">🔒\nLocked</string>
+    <string name="pke_card_unlocked">🔓\nUnlocked</string>
+    <string name="pke_card_read">Read %1$s</string>
 </resources>

@@ -1030,6 +1030,7 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         statsHandler.removeCallbacks(todayTicker)
         statsHandler.removeCallbacks(husTicker)
+        statsHandler.removeCallbacks(pkeTicker)
         CrashGuard.persistSession(this)
         super.onPause()
     }
@@ -1074,6 +1075,8 @@ class MainActivity : AppCompatActivity() {
         statsHandler.post(todayTicker)
         statsHandler.removeCallbacks(husTicker)
         statsHandler.post(husTicker)
+        statsHandler.removeCallbacks(pkeTicker)
+        statsHandler.post(pkeTicker)
         renderStatus(ConnectionState.phase, ConnectionState.detail)
         if (WifiGate.isWifiEnabled(this)) WifiGate.cancelNotification(this)
         // Retry auto-connect on resume: after finishing first-run setup, or once the bike's Wi-Fi
@@ -1518,6 +1521,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView?>(R.id.hero_name)?.textSize = if (live) 34f else 46f
         placeLiveShare(big = live)
         renderParked()
+        renderPkeCard()
     }
 
     /**
@@ -1548,6 +1552,79 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.home_big_controls_sub), big = !big)
         controls.setOnClickListener { startActivity(Intent(this, ControlsActivity::class.java)) }
         renderLive()
+    }
+
+    // ── v2.3: battery + lock card from the keyless box (read only: PkeBattery asks only 008 + 001,7).
+    // Only once the PKE code is set (Ayuda → Batería). Reads while the app is in front: every 45 s
+    // (90 s while projecting); after two misses in a row (bike out of range) every 3 min. A reading
+    // older than 10 min hides the card.
+    private val pkeTicker = object : Runnable {
+        override fun run() {
+            pkeRefresh()
+            val running = ConnectionState.phase.let { it == Phase.STREAMING || it == Phase.MIRRORING }
+            val next = when {
+                pkeFails >= 2 -> 180_000L
+                running -> 90_000L
+                else -> 45_000L
+            }
+            statsHandler.postDelayed(this, next)
+        }
+    }
+    @Volatile private var pkeBusy = false
+    private var pkeFails = 0
+
+    private fun pkeRefresh() {
+        if (PkeBattery.code(this).length < 8) { renderPkeCard(); return }
+        // Don't compete with the connect flow for the radio.
+        if (pkeBusy || ConnectionState.phase.busy) { renderPkeCard(); return }
+        pkeBusy = true
+        val app = applicationContext
+        Thread({
+            val res = try { PkeBattery.read(app) } catch (_: Exception) { null }
+            runOnUiThread {
+                pkeBusy = false
+                if (res?.reading != null) pkeFails = 0 else pkeFails++
+                renderPkeCard()
+            }
+        }, "pke-card").start()
+    }
+
+    private fun renderPkeCard() {
+        val card = findViewById<View?>(R.id.pke_card) ?: return
+        val r = if (PkeBattery.code(this).length >= 8) PkeBattery.last(this) else null
+        val now = System.currentTimeMillis()
+        if (r == null || now - r.atMs > 10 * 60_000L || (r.volts == null && r.locked == null)) {
+            card.visibility = View.GONE
+            return
+        }
+        card.visibility = View.VISIBLE
+        val phase = ConnectionState.phase
+        val running = phase == Phase.STREAMING || phase == Phase.MIRRORING
+        val v = r.volts
+        val volts = findViewById<TextView>(R.id.pke_volts)
+        volts.text = if (v != null) String.format(java.util.Locale.getDefault(), "%.1f", v) else "--"
+        // Manel (22 Oct): orange < 11.5 V parked / < 12.1 V running; red < 11.2 V parked / < 11.8 V running.
+        val red = if (running) 11.8f else 11.2f
+        val orange = if (running) 12.1f else 11.5f
+        volts.setTextColor(
+            when {
+                v == null -> getColor(R.color.text_primary)
+                v < red -> 0xFFE05A5A.toInt()
+                v < orange -> 0xFFE5774E.toInt()
+                else -> getColor(R.color.text_primary)
+            },
+        )
+        findViewById<TextView>(R.id.pke_sub).text = getString(
+            R.string.pke_card_read,
+            android.text.format.DateUtils.getRelativeTimeSpanString(r.atMs, now, android.text.format.DateUtils.SECOND_IN_MILLIS),
+        )
+        findViewById<TextView>(R.id.pke_lock).apply {
+            when (r.locked) {
+                true -> { text = getString(R.string.pke_card_locked); visibility = View.VISIBLE }
+                false -> { text = getString(R.string.pke_card_unlocked); visibility = View.VISIBLE }
+                null -> visibility = View.GONE
+            }
+        }
     }
 
     private fun renderMaint() {

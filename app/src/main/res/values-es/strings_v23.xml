@@ -216,4 +216,8 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="pke_fail_no_code">Aún no has puesto el código PKE.</string>
     <string name="pke_fail_not_found">No encuentro la caja del keyless. Acércate a la moto, asegúrate de que la app oficial no esté conectada a ella y vuelve a intentarlo.</string>
     <string name="pke_fail_no_answer">La caja respondió pero no dio el voltaje. Pásame el registro, por favor.</string>
+    <string name="pke_card_title">BATERÍA DE LA MOTO</string>
+    <string name="pke_card_locked">🔒\nBloqueada</string>
+    <string name="pke_card_unlocked">🔓\nDesbloqueada</string>
+    <string name="pke_card_read">Leído %1$s</string>
 </resources>
