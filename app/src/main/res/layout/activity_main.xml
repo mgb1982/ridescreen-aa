@@ -562,6 +562,7 @@
                     <com.google.android.material.button.MaterialButton android:id="@+id/btn_mirror_start" style="@style/HomeMore" android:text="@string/main_mirror" />
                     <com.google.android.material.button.MaterialButton android:id="@+id/btn_aa_start" style="@style/HomeMore" android:text="@string/main_scan" />
                     <com.google.android.material.button.MaterialButton android:id="@+id/btn_devices" style="@style/HomeMore" android:text="@string/garage_garage" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/btn_controls_more" style="@style/HomeMore" android:text="@string/controls_controls" />
                     <com.google.android.material.button.MaterialButton android:id="@+id/btn_setup" style="@style/HomeMore" android:text="@string/home_settings_short" />
                 </LinearLayout>
 

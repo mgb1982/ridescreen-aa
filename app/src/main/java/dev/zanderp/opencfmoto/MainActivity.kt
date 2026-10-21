@@ -804,6 +804,7 @@ class MainActivity : AppCompatActivity() {
         (findViewById<View>(R.id.btn_mirror_start) as? MaterialButton)?.setIconResource(R.drawable.ic_cast)
         (findViewById<View>(R.id.btn_aa_start) as? MaterialButton)?.setIconResource(R.drawable.ic_qr)
         (findViewById<View>(R.id.btn_devices) as? MaterialButton)?.setIconResource(R.drawable.ic_devices)
+        (findViewById<View>(R.id.btn_controls_more) as? MaterialButton)?.setIconResource(R.drawable.ic_tune)
         (findViewById<View>(R.id.btn_setup) as? MaterialButton)?.setIconResource(R.drawable.ic_settings)
         setupHomeTiles()
 
@@ -969,6 +970,8 @@ class MainActivity : AppCompatActivity() {
             }
         })
         findViewById<View>(R.id.btn_devices).setOnClickListener { GarageActivity.start(this) }
+        // v2.3: Controls (handlebar-button mode, remote, map theme…) must be reachable while disconnected too.
+        findViewById<View>(R.id.btn_controls_more)?.setOnClickListener { startActivity(Intent(this, ControlsActivity::class.java)) }
 
         findViewById<View>(R.id.btn_trip).setOnClickListener { TripActivity.start(this) }
 

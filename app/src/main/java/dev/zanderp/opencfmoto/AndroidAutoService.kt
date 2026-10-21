@@ -815,14 +815,42 @@ class AndroidAutoService : Service() {
         const val ACTION_STOP = "dev.zanderp.opencfmoto.ACTION_STOP_AA"
         const val ACTION_GPX_WAKE = "dev.zanderp.opencfmoto.ACTION_GPX_WAKE"
 
+        /** A start request younger than this may not have reached startForeground() yet. */
+        private const val START_GRACE_MS = 2_500L
+        @Volatile private var lastStartRequestMs = 0L
+        private var pendingStop: Runnable? = null
+        private val mainHandler = Handler(Looper.getMainLooper())
+
         fun start(ctx: Context) {
+            // A fresh start cancels any stop that was deferred (e.g. the teardown of a mode switch).
+            pendingStop?.let { mainHandler.removeCallbacks(it); pendingStop = null }
+            lastStartRequestMs = android.os.SystemClock.elapsedRealtime()
             val i = Intent(ctx, AndroidAutoService::class.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) ctx.startForegroundService(i)
             else ctx.startService(i)
         }
 
+        /**
+         * Stopping a service whose startForegroundService() hasn't reached startForeground() yet makes
+         * Android kill the whole app (ForegroundServiceDidNotStartInTimeException, seen 21 Oct when the
+         * Bluetooth trigger and a stop crossed 100 ms apart). So a stop that arrives right after a start
+         * waits until the service has had time to go foreground.
+         */
         fun stop(ctx: Context) {
-            ctx.stopService(Intent(ctx, AndroidAutoService::class.java))
+            val app = ctx.applicationContext
+            val since = android.os.SystemClock.elapsedRealtime() - lastStartRequestMs
+            if (!isRunning && since in 0 until START_GRACE_MS) {
+                LogBus.log("[AA] stop requested ${since} ms after start — waiting for the service to go foreground")
+                pendingStop?.let { mainHandler.removeCallbacks(it) }
+                val r = Runnable {
+                    pendingStop = null
+                    try { app.stopService(Intent(app, AndroidAutoService::class.java)) } catch (_: Exception) {}
+                }
+                pendingStop = r
+                mainHandler.postDelayed(r, START_GRACE_MS - since + 300)
+                return
+            }
+            app.stopService(Intent(app, AndroidAutoService::class.java))
         }
     }
 }
