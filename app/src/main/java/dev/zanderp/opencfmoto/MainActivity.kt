@@ -2041,11 +2041,33 @@ class MainActivity : AppCompatActivity() {
         val p2pGroupAsAp = qr.supportsP2p && !qr.supportsAp && qr.pwd.isNotEmpty() &&
             !qr.ssid.startsWith("DIRECT-", ignoreCase = true)
         if (p2pGroupAsAp) P2pWarmUp.start(applicationContext, qr, LogBus::log)
+        // Zontes T350X on a Samsung A56 / Android 16 (Inky, 21 Oct 2026): the dash was in the scan cache at
+        // -40 dBm yet the "hidden SSID" request never matched it (picker: "no device found"), 90 s at a
+        // time. When the scan cache has it, ask for that exact access point as a normal visible network.
+        @Suppress("DEPRECATION")
+        val knownAp = if (p2pGroupAsAp) {
+            P2pWarmUp.matchingScanResults(applicationContext, qr.ssid, null).firstOrNull()?.BSSID
+        } else null
+        if (p2pGroupAsAp) {
+            LogBus.log(
+                if (knownAp != null) "→ T350X-style dash: '${qr.ssid}' is in the scan cache — asking for that exact access point ($knownAp)"
+                else "→ T350X-style dash: '${qr.ssid}' not in the scan cache yet — probing by name",
+            )
+            // If the SoftAP request has not produced a network after 30 s, try Wi‑Fi Direct by the QR address.
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                if (BikeWifi.isActive && BikeWifi.currentNetwork == null && !BikeWifiP2p.isConnected) {
+                    LogBus.log("→ SoftAP request produced no network in 30 s — trying Wi‑Fi Direct by the QR address")
+                    BikeWifi.leave(applicationContext, LogBus::log)
+                    joinWifiP2p(qr, gateOnAaSteady)
+                }
+            }, 30_000L)
+        }
         BikeWifi.reuseOrJoin(
             context = applicationContext,
             ssid = qr.ssid,
             psk = qr.pwd,
-            hidden = p2pGroupAsAp,
+            hidden = p2pGroupAsAp && knownAp == null,
+            bssid = knownAp,
             onAvailable = { network ->
                 WifiGate.cancelNotification(applicationContext)
                 P2pWarmUp.stop("bike Wi‑Fi joined")

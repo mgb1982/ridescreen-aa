@@ -86,6 +86,9 @@ object BikeWifi {
     private const val FIRST_JOIN_TIMEOUT_MS = 90_000
     private const val REJOIN_TIMEOUT_MS = 12_000
 
+    /** True from [join] until [leave]: the rider still wants this link. */
+    val isActive: Boolean get() = active
+
     fun join(
         context: Context,
         ssid: String,
@@ -95,6 +98,8 @@ object BikeWifi {
         log: (String) -> Unit,
         /** Also probe for the SSID by name (Wi‑Fi Direct dashes whose network rarely shows in scans). */
         hidden: Boolean = false,
+        /** Exact access point to ask for (from the scan cache). Some phones never match a plain SSID request. */
+        bssid: String? = null,
     ) {
         val cm = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         // Tear down any previous session's callback first.
@@ -118,6 +123,9 @@ object BikeWifi {
                 // No password = an open network (a Wi‑Fi Direct dash's group seen open in the scan).
                 if (psk.isNotEmpty()) setWpa2Passphrase(psk)
                 if (hidden) setIsHiddenSsid(true)
+                if (!bssid.isNullOrBlank()) {
+                    try { setBssid(android.net.MacAddress.fromString(bssid)) } catch (_: Exception) {}
+                }
             }
             .build()
         request = NetworkRequest.Builder()
@@ -126,7 +134,7 @@ object BikeWifi {
             .setNetworkSpecifier(specifier)
             .build()
 
-        log("requesting Wi-Fi join: $ssid …${if (hidden) " (also probing for it by name)" else ""}")
+        log("requesting Wi-Fi join: $ssid …${if (hidden) " (also probing for it by name)" else ""}${if (!bssid.isNullOrBlank()) " (exact access point $bssid)" else ""}")
         // First join of a session: Android may show "<app> wants to connect to <bike>". Say so in
         // our own words first — the most common failure was riders not tapping Connect there.
         val app = context.applicationContext
@@ -152,6 +160,7 @@ object BikeWifi {
         onLost: () -> Unit,
         log: (String) -> Unit,
         hidden: Boolean = false,
+        bssid: String? = null,
     ) {
         val net = currentNetwork
         if (active && net != null && this.ssid.equals(ssid, ignoreCase = true)) {
@@ -162,7 +171,7 @@ object BikeWifi {
             onAvailable(net)
             return
         }
-        join(context, ssid, psk, onAvailable, onLost, log, hidden)
+        join(context, ssid, psk, onAvailable, onLost, log, hidden, bssid)
     }
 
     private fun registerCallback() {
