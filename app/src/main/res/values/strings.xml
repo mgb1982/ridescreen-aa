@@ -638,7 +638,7 @@
     <string name="setup_anonymous_telemetry_off">Off — nothing uploaded</string>
     <string name="setup_anonymous_id">Anonymous id: %1$s</string>
     <string name="widget_connect_label">Connect</string>
-    <string name="widget_connect_description">One tap starts Connect with your saved bike. Tap again while it is still connecting to cancel (ignored for the first 3 seconds).</string>
+    <string name="widget_connect_description">One tap starts Connect with your saved bike.</string>
     <string name="widget_connect_starting">Connecting…</string>
     <string name="widget_connect_no_bike">No saved bike yet — connect once from the app first</string>
     <string name="widget_connect_already">Already connected</string>

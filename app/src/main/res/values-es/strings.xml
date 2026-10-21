@@ -607,7 +607,7 @@
     <string name="setup_mirror_orientation_desc">Mientras duplicas la pantalla, bloquea el móvil para que el cuadro se llene. Igualar el cuadro usa el último panel medido o el del perfil (TFT ancho → horizontal). Seguir al móvil lo deja como lo sujetes.</string>
     <string name="setup_toast_mirror_orient">Orientación del espejo: %1$s</string>
     <string name="widget_connect_label">Conectar</string>
-    <string name="widget_connect_description">Un toque inicia Conectar con tu moto guardada. Otro toque mientras conecta la cancela (se ignora durante los 3 primeros segundos).</string>
+    <string name="widget_connect_description">Un toque inicia Conectar con tu moto guardada.</string>
     <string name="widget_connect_starting">Conectando…</string>
     <string name="widget_connect_no_bike">Aún no hay moto guardada: conecta una vez desde la app</string>
     <string name="widget_connect_already">Ya está conectado</string>
