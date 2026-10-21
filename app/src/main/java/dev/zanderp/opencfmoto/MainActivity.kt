@@ -1012,6 +1012,7 @@ class MainActivity : AppCompatActivity() {
             }
             maybeResumeFromParked(intent)
             maybeStartFromBtTrigger(intent)
+            maybeStartFromWidget(intent)
         } catch (e: Exception) {
             log("startup failed (UI still up): $e")
             CrashGuard.persistSession(this)
@@ -1030,6 +1031,7 @@ class MainActivity : AppCompatActivity() {
         setIntent(intent)
         maybeResumeFromParked(intent)
         maybeStartFromBtTrigger(intent)
+        maybeStartFromWidget(intent)
         if (intent.getBooleanExtra(EXTRA_RECONNECT, false)) {
             intent.removeExtra(EXTRA_RECONNECT)
             log("→ Fit to dash: restarting Android Auto with the new panel shape")
@@ -1090,6 +1092,54 @@ class MainActivity : AppCompatActivity() {
         autoConnectStarted = true
         AndroidAutoService.notifyForegroundResuming()
         ProjectionHolder.projection = null
+        ensureLocationPermission()
+        startAaFlow(saved)
+    }
+
+    /**
+     * 1x1 Connect widget. Idle → Connect with the saved bike. Still connecting → a tap cancels, but only
+     * after [WIDGET_LOCK_MS] (Luis Gil: he kept hitting it while putting the phone in his bag). Already
+     * projecting → nothing (a brush must never cut a ride).
+     */
+    private fun maybeStartFromWidget(intent: Intent?) {
+        if (intent?.getBooleanExtra(EXTRA_WIDGET_CONNECT, false) != true) return
+        intent.removeExtra(EXTRA_WIDGET_CONNECT)
+        if (!SetupActivity.hasSeen(this)) return
+        val now = android.os.SystemClock.elapsedRealtime()
+        val phase = ConnectionState.phase
+        if (phase == Phase.STREAMING || phase == Phase.MIRRORING) {
+            log("→ widget tap: already connected — ignored")
+            Toast.makeText(this, R.string.widget_connect_already, Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (phase.busy) {
+            val since = now - widgetConnectAt
+            if (since < WIDGET_LOCK_MS) {
+                log("→ widget tap ${since} ms after starting — ignored (lock ${WIDGET_LOCK_MS} ms)")
+                return
+            }
+            log("→ widget tap while connecting — cancelling")
+            stopEverything()
+            Toast.makeText(this, R.string.widget_connect_cancelled, Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (AndroidAutoService.isParked) {
+            log("→ widget tap: resuming the parked session")
+            widgetConnectAt = now
+            AndroidAutoService.requestResume()
+            Toast.makeText(this, R.string.widget_connect_starting, Toast.LENGTH_SHORT).show()
+            return
+        }
+        val saved = BikeMemory.lastQr(this)
+        if (saved == null) {
+            Toast.makeText(this, R.string.widget_connect_no_bike, Toast.LENGTH_LONG).show()
+            return
+        }
+        log("→ widget tap: starting Connect for '${BikeMemory.lastBikeName(this)}'")
+        widgetConnectAt = now
+        autoConnectStarted = true
+        ProjectionHolder.projection = null
+        Toast.makeText(this, R.string.widget_connect_starting, Toast.LENGTH_SHORT).show()
         ensureLocationPermission()
         startAaFlow(saved)
     }
@@ -2641,6 +2691,9 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_START_GPX = "start_gpx"
         const val EXTRA_BT_TRIGGER = "bt_trigger"
+        const val EXTRA_WIDGET_CONNECT = "widget_connect"
+        private const val WIDGET_LOCK_MS = 3_000L
+        @Volatile private var widgetConnectAt = 0L
         /** From "Fit to dash": restart Android Auto so a new panel shape takes effect. */
         const val EXTRA_RECONNECT = "fit_reconnect"
         /** When set with [EXTRA_START_GPX], join the bike even if not already live. */
