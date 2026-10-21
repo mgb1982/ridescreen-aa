@@ -6,19 +6,18 @@
     android:background="@color/bg"
     android:orientation="vertical">
 
+    <!-- Title and stats get the full width; the buttons sit on their own row (a long title was squeezed into a sliver beside them). -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingHorizontal="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
@@ -40,6 +39,13 @@
             android:textSize="13sp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="end"
+        android:orientation="horizontal">
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/map_video"
             style="@style/Widget.OpenCfMoto.Button.Pill"
@@ -54,6 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_marginStart="10dp"
             android:text="@string/share_button" />
+    </LinearLayout>
     </LinearLayout>
 
     <!-- "Everything I've ridden": routes / heat, and the period. Hidden for a single trip. -->
