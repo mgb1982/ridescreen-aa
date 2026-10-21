@@ -637,7 +637,7 @@
     <string name="setup_anonymous_telemetry_off">Desactivat — no es puja res</string>
     <string name="setup_anonymous_id">Id anònim: %1$s</string>
     <string name="widget_connect_label">Connecta</string>
-    <string name="widget_connect_description">Un toc inicia Connecta amb la moto desada. Un altre toc mentre connecta la cancel·la (s’ignora durant els 3 primers segons).</string>
+    <string name="widget_connect_description">Un toc inicia Connecta amb la moto desada.</string>
     <string name="widget_connect_starting">Connectant…</string>
     <string name="widget_connect_no_bike">Encara no hi ha cap moto desada: connecta una vegada des de l’app</string>
     <string name="widget_connect_already">Ja està connectat</string>

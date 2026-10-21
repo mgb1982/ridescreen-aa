@@ -184,6 +184,7 @@ class MainActivity : AppCompatActivity() {
     /** Start the Android Auto → bike projection for [qr]. Shared by the one-tap Connect reconnect
      *  and a fresh scan, so both paths behave identically. */
     private fun startAaFlow(qr: QrData) {
+        connectStartedAt = android.os.SystemClock.elapsedRealtime()
         try {
             if (!WifiGate.ensureEnabledOrPrompt(this)) {
                 pendingAaQr = qr
@@ -865,6 +866,13 @@ class MainActivity : AppCompatActivity() {
         connectBtn.setOnClickListener {
             val phase = ConnectionState.phase
             if (phase.busy || phase == Phase.STREAMING || phase == Phase.MIRRORING) {
+                // Luis Gil: Cancel got hit by accident while putting the phone in a bag. For the first
+                // seconds of a connect attempt the button does nothing.
+                val since = android.os.SystemClock.elapsedRealtime() - connectStartedAt
+                if (phase.busy && since in 0 until CANCEL_LOCK_MS) {
+                    log("→ Cancel tap ${since} ms after starting — ignored (lock ${CANCEL_LOCK_MS} ms)")
+                    return@setOnClickListener
+                }
                 stopEverything()
                 return@setOnClickListener
             }
@@ -1097,9 +1105,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * 1x1 Connect widget. Idle → Connect with the saved bike. Still connecting → a tap cancels, but only
-     * after [WIDGET_LOCK_MS] (Luis Gil: he kept hitting it while putting the phone in his bag). Already
-     * projecting → nothing (a brush must never cut a ride).
+     * 1x1 Connect widget. Idle → Connect with the saved bike. Connecting or projecting → nothing (the
+     * widget never cancels: a brush must not undo a connect or cut a ride).
      */
     private fun maybeStartFromWidget(intent: Intent?) {
         if (intent?.getBooleanExtra(EXTRA_WIDGET_CONNECT, false) != true) return
@@ -1113,19 +1120,14 @@ class MainActivity : AppCompatActivity() {
             return
         }
         if (phase.busy) {
-            val since = now - widgetConnectAt
-            if (since < WIDGET_LOCK_MS) {
-                log("→ widget tap ${since} ms after starting — ignored (lock ${WIDGET_LOCK_MS} ms)")
-                return
-            }
-            log("→ widget tap while connecting — cancelling")
-            stopEverything()
-            Toast.makeText(this, R.string.widget_connect_cancelled, Toast.LENGTH_SHORT).show()
+            // Cancelling lives on the app's own button (locked for the first seconds); the widget only
+            // brings the app up so a brush can't undo a connect.
+            log("→ widget tap while connecting — nothing to do")
             return
         }
         if (AndroidAutoService.isParked) {
             log("→ widget tap: resuming the parked session")
-            widgetConnectAt = now
+            connectStartedAt = now
             AndroidAutoService.requestResume()
             Toast.makeText(this, R.string.widget_connect_starting, Toast.LENGTH_SHORT).show()
             return
@@ -1136,7 +1138,6 @@ class MainActivity : AppCompatActivity() {
             return
         }
         log("→ widget tap: starting Connect for '${BikeMemory.lastBikeName(this)}'")
-        widgetConnectAt = now
         autoConnectStarted = true
         ProjectionHolder.projection = null
         Toast.makeText(this, R.string.widget_connect_starting, Toast.LENGTH_SHORT).show()
@@ -2692,8 +2693,8 @@ class MainActivity : AppCompatActivity() {
         const val EXTRA_START_GPX = "start_gpx"
         const val EXTRA_BT_TRIGGER = "bt_trigger"
         const val EXTRA_WIDGET_CONNECT = "widget_connect"
-        private const val WIDGET_LOCK_MS = 3_000L
-        @Volatile private var widgetConnectAt = 0L
+        private const val CANCEL_LOCK_MS = 3_000L
+        @Volatile private var connectStartedAt = 0L
         /** From "Fit to dash": restart Android Auto so a new panel shape takes effect. */
         const val EXTRA_RECONNECT = "fit_reconnect"
         /** When set with [EXTRA_START_GPX], join the bike even if not already live. */
