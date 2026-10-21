@@ -259,6 +259,18 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/parking_widget_info" />
         </receiver>
+        <!-- 1x1 "Connect" widget: one tap starts Connect with the saved bike. -->
+        <receiver
+            android:name=".ConnectWidget"
+            android:exported="false"
+            android:label="@string/widget_connect_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/connect_widget_info" />
+        </receiver>
     </application>
 
 </manifest>
