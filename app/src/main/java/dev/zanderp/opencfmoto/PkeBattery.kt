@@ -162,10 +162,12 @@ object PkeBattery {
         }
     }
 
-    private class Link(val gatt: BluetoothGatt, val rx: BluetoothGattCharacteristic, val replies: LinkedBlockingQueue<String>)
+    internal class Link(val gatt: BluetoothGatt, val rx: BluetoothGattCharacteristic, val replies: LinkedBlockingQueue<String>) {
+        @Volatile var dead = false
+    }
 
     /** Sends one allowed query and waits for the reply to it (other frames are logged and skipped). */
-    private fun ask(link: Link, pke: String, q: Query, timeoutMs: Long): String? {
+    private fun ask(link: Link, pke: String, q: Query, timeoutMs: Long, quiet: Boolean = false): String? {
         link.replies.clear()
         val bytes = frame(pke, q)
         val ok = if (Build.VERSION.SDK_INT >= 33) {
@@ -173,7 +175,7 @@ object PkeBattery {
         } else {
             @Suppress("DEPRECATION") run { link.rx.writeType = writeType(link.rx); link.rx.value = bytes; link.gatt.writeCharacteristic(link.rx) }
         }
-        log("→ ${masked(String(bytes, Charsets.US_ASCII), pke)}${if (ok) "" else " (write refused)"}")
+        if (!quiet || !ok) log("→ ${masked(String(bytes, Charsets.US_ASCII), pke)}${if (ok) "" else " (write refused)"}")
         val want = q.cmd.substringBefore(",")
         val until = System.currentTimeMillis() + timeoutMs
         while (true) {
@@ -215,7 +217,7 @@ object PkeBattery {
         return found
     }
 
-    private fun open(ctx: Context, dev: BluetoothDevice, pke: String, timeoutMs: Long): Link? {
+    private fun open(ctx: Context, dev: BluetoothDevice, pke: String, timeoutMs: Long, verbose: Boolean = true): Link? {
         val ready = CountDownLatch(1)
         val replies = LinkedBlockingQueue<String>()
         val text = StringBuilder()
@@ -225,8 +227,9 @@ object PkeBattery {
             override fun onConnectionStateChange(g: BluetoothGatt, status: Int, newState: Int) {
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
                     if (!g.requestMtu(185)) g.discoverServices()
-                } else if (newState == BluetoothProfile.STATE_DISCONNECTED && link == null) {
-                    fail = "disconnected (status=$status)"; ready.countDown()
+                } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                    if (link == null) { fail = "disconnected (status=$status)"; ready.countDown() }
+                    else { link?.dead = true; if (!verbose) log("live link dropped by the box (status=$status)") }
                 }
             }
             override fun onMtuChanged(g: BluetoothGatt, mtu: Int, status: Int) { g.discoverServices() }
@@ -257,7 +260,7 @@ object PkeBattery {
                         if (start < 0 || end < 0) break
                         val f = text.substring(start, end + 1)
                         text.delete(0, end + 1)
-                        log("← ${masked(f, pke)}")
+                        if (verbose) log("← ${masked(f, pke)}")
                         replies.put(f)
                     }
                     if (text.length > 512) text.setLength(0)
@@ -273,5 +276,45 @@ object PkeBattery {
             return null
         }
         return l
+    }
+
+    // ── v2.4: live mode — ONE connection kept open while projecting, polling the voltage every couple
+    // of seconds. Same two read-only queries; the challenge is never answered.
+
+    class Live internal constructor(private val ctx: Context, private val pke: String, private val link: Link) {
+        val alive: Boolean get() = !link.dead
+        /** Voltage now (null if the box did not answer in 3 s). Saved like a normal reading. */
+        fun volts(): Float? {
+            val v = ask(link, pke, Query.HANDSHAKE, 3_000, quiet = true)?.let { voltsFrom(it) } ?: return null
+            save(ctx, Reading(v, last(ctx)?.locked, System.currentTimeMillis()))
+            return v
+        }
+        /** Lock state (true locked / false unlocked / null unknown). */
+        fun locked(): Boolean? {
+            val l = ask(link, pke, Query.STATUS, 3_000, quiet = true)?.let { lockedFrom(it) } ?: return null
+            save(ctx, Reading(last(ctx)?.volts, l, System.currentTimeMillis()))
+            return l
+        }
+        fun close() { runCatching { link.gatt.disconnect() }; runCatching { link.gatt.close() } }
+    }
+
+    /** Blocking. Opens the persistent link (known address first, else scan). Null if it cannot (reason in the log). */
+    fun openLive(ctx: Context): Live? {
+        val pke = code(ctx)
+        if (pke.length < 8) return null
+        if (Build.VERSION.SDK_INT >= 31 && listOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT)
+                .any { ContextCompat.checkSelfPermission(ctx, it) != PackageManager.PERMISSION_GRANTED }) return null
+        val adapter = ctx.getSystemService(BluetoothManager::class.java)?.adapter
+        if (adapter == null || !adapter.isEnabled) return null
+        val prefs = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val known = prefs.getString(KEY_MAC, null)?.let { runCatching { adapter.getRemoteDevice(it) }.getOrNull() }
+        var link = known?.let { open(ctx, it, pke, 8_000, verbose = false) }
+        if (link == null) {
+            val dev = scan(ctx, pke) ?: return null
+            prefs.edit().putString(KEY_MAC, dev.address).apply()
+            link = open(ctx, dev, pke, 12_000, verbose = false) ?: return null
+        }
+        log("live link open (read only: 008 + 001,7)")
+        return Live(ctx, pke, link)
     }
 }

@@ -1031,6 +1031,7 @@ class MainActivity : AppCompatActivity() {
         statsHandler.removeCallbacks(todayTicker)
         statsHandler.removeCallbacks(husTicker)
         statsHandler.removeCallbacks(pkeTicker)
+        resumedNow = false
         CrashGuard.persistSession(this)
         super.onPause()
     }
@@ -1077,6 +1078,8 @@ class MainActivity : AppCompatActivity() {
         statsHandler.post(husTicker)
         statsHandler.removeCallbacks(pkeTicker)
         statsHandler.post(pkeTicker)
+        resumedNow = true
+        maybeStartLive()
         renderStatus(ConnectionState.phase, ConnectionState.detail)
         if (WifiGate.isWifiEnabled(this)) WifiGate.cancelNotification(this)
         // Retry auto-connect on resume: after finishing first-run setup, or once the bike's Wi-Fi
@@ -1603,7 +1606,7 @@ class MainActivity : AppCompatActivity() {
     private fun pkeRefresh() {
         if (PkeBattery.code(this).length < 8) { renderPkeCard(); return }
         // Don't compete with the connect flow for the radio.
-        if (pkeBusy || ConnectionState.phase.busy) { renderPkeCard(); return }
+        if (pkeBusy || liveOn || ConnectionState.phase.busy) { renderPkeCard(); return }
         pkeBusy = true
         val app = applicationContext
         Thread({
@@ -1615,6 +1618,76 @@ class MainActivity : AppCompatActivity() {
                 renderPkeCard()
             }
         }, "pke-card").start()
+    }
+
+
+    // ── v2.4: live voltage while projecting. One BLE link kept open, 008 every 2 s and 001,7 every 10 s
+    // (read only, same two queries). Runs only while the app is in front AND streaming/mirroring; if
+    // the box won't keep the link (3 sessions without a single answer) it gives up for 5 min and the
+    // normal 15 s reads carry on. Every minute it logs reads / average latency / drops so we learn what
+    // the box and the Bluetooth–Wi‑Fi coexistence really do.
+    @Volatile private var liveOn = false
+    @Volatile private var resumedNow = false
+    private var liveGaveUpAt = 0L
+
+    private fun liveShouldRun() = resumedNow && ConnectionState.phase.let { it == Phase.STREAMING || it == Phase.MIRRORING }
+
+    private fun maybeStartLive() {
+        if (liveOn || !liveShouldRun() || PkeBattery.code(this).length < 8) return
+        if (liveGaveUpAt != 0L && android.os.SystemClock.elapsedRealtime() - liveGaveUpAt < 5 * 60_000L) return
+        liveOn = true
+        val app = applicationContext
+        Thread({
+            var emptySessions = 0
+            try {
+                // Let a read in flight (15 s ticker) finish first: the box takes one client at a time.
+                var w = 0
+                while (pkeBusy && w++ < 40) Thread.sleep(500)
+                while (liveShouldRun()) {
+                    val live = PkeBattery.openLive(app)
+                    if (live == null) {
+                        if (++emptySessions >= 3) break
+                        Thread.sleep(6_000); continue
+                    }
+                    var n = 0; var miss = 0; var tick = 0
+                    var sumMs = 0L; var maxMs = 0L
+                    var statAt = android.os.SystemClock.elapsedRealtime()
+                    val t0 = statAt
+                    while (liveShouldRun() && live.alive && miss < 3) {
+                        val t = android.os.SystemClock.elapsedRealtime()
+                        val v = live.volts()
+                        val took = android.os.SystemClock.elapsedRealtime() - t
+                        if (v != null) {
+                            miss = 0; n++; sumMs += took; if (took > maxMs) maxMs = took
+                            runOnUiThread { pkeFails = 0; updateEngine(v); renderPkeCard() }
+                        } else miss++
+                        if (++tick % 5 == 0 && live.alive) {
+                            val before = PkeBattery.last(app)?.locked
+                            val l = live.locked()
+                            if (l != null && l != before) runOnUiThread { renderPkeCard() }
+                        }
+                        val now = android.os.SystemClock.elapsedRealtime()
+                        if (now - statAt >= 60_000L) {
+                            statAt = now
+                            LogBus.log("[PKE] live: $n reads in ${(now - t0) / 1000} s, avg ${if (n > 0) sumMs / n else 0} ms, max $maxMs ms, misses $miss")
+                        }
+                        val rest = 2_000L - (android.os.SystemClock.elapsedRealtime() - t)
+                        if (rest > 0) Thread.sleep(rest)
+                    }
+                    live.close()
+                    LogBus.log("[PKE] live: link closed after $n reads in ${(android.os.SystemClock.elapsedRealtime() - t0) / 1000} s" +
+                        (if (!live.alive) " (the box dropped it)" else if (miss >= 3) " (3 unanswered queries)" else ""))
+                    if (n == 0) { if (++emptySessions >= 3) break } else emptySessions = 0
+                    if (liveShouldRun()) Thread.sleep(3_000)
+                }
+                if (emptySessions >= 3) {
+                    liveGaveUpAt = android.os.SystemClock.elapsedRealtime()
+                    LogBus.log("[PKE] live mode not possible with this box/link — back to 15 s reads for 5 min")
+                }
+            } catch (_: InterruptedException) {
+            } catch (e: Exception) { LogBus.log("[PKE] live error: $e")
+            } finally { liveOn = false }
+        }, "pke-live").start()
     }
 
     private fun renderPkeCard() {
@@ -1759,6 +1832,7 @@ class MainActivity : AppCompatActivity() {
 
     /** Update the big status header + Connect button label from a [ConnectionState] transition. */
     private fun renderStatus(phase: Phase, detail: String) {
+        maybeStartLive()
         statusView.text = getString(phase.labelRes) +
             (if (ClockLab.resyncInProgress() && phase != Phase.STOPPED && phase != Phase.IDLE)
                 " · " + getString(R.string.clock_resyncing) else "") +
