@@ -612,4 +612,7 @@
     <string name="widget_connect_no_bike">Aún no hay moto guardada: conecta una vez desde la app</string>
     <string name="widget_connect_already">Ya está conectado</string>
     <string name="widget_connect_cancelled">Conexión cancelada</string>
+    <string name="rain_parked_title">Va a llover donde has aparcado</string>
+    <string name="rain_parked_soon">Se espera lluvia en la próxima hora: cubre la moto.</string>
+    <string name="rain_parked_in_hours">Se espera lluvia dentro de unas %1$d h: cubre la moto.</string>
 </resources>

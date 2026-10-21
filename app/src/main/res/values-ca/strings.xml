@@ -642,4 +642,7 @@
     <string name="widget_connect_no_bike">Encara no hi ha cap moto desada: connecta una vegada des de l’app</string>
     <string name="widget_connect_already">Ja està connectat</string>
     <string name="widget_connect_cancelled">Connexió cancel·lada</string>
+    <string name="rain_parked_title">Plourà on has aparcat</string>
+    <string name="rain_parked_soon">S’espera pluja en la propera hora: cobreix la moto.</string>
+    <string name="rain_parked_in_hours">S’espera pluja d’aquí a unes %1$d h: cobreix la moto.</string>
 </resources>

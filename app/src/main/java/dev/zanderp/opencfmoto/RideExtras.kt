@@ -45,6 +45,7 @@ object RideExtras {
             if (rain(app)) RainCheck.runSoon(app)
         } else if (parking(app)) {
             Parking.saveNow(app)
+            if (rain(app)) RainCheck.onParked(app)
         }
     }
 
@@ -197,6 +198,60 @@ object RainCheck {
                 lastRunAt = 0L
             }
         }
+    }
+
+    // ── v2.4: "will it rain where I parked?" — one request when the projection ends and the spot is saved.
+    private const val PARKED_NOTIF_ID = 4202
+    private const val PARKED_HOURS = 6
+
+    fun onParked(ctx: Context) {
+        io.execute {
+            try {
+                checkParked(ctx.applicationContext)
+            } catch (e: Exception) {
+                LogBus.log("[RAIN] parked check failed: ${e.message}")
+            }
+        }
+    }
+
+    private fun checkParked(ctx: Context) {
+        val spot = Parking.get(ctx) ?: return
+        val lat = String.format(Locale.ROOT, "%.2f", spot.lat)
+        val lon = String.format(Locale.ROOT, "%.2f", spot.lon)
+        val body = AppHttp.getText(
+            "https://api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$lon" +
+                "&hourly=precipitation,precipitation_probability&forecast_hours=$PARKED_HOURS&timezone=auto",
+        )
+        val hourly = JSONObject(body).optJSONObject("hourly") ?: return
+        val mm = hourly.optJSONArray("precipitation")
+        val prob = hourly.optJSONArray("precipitation_probability")
+        var first = -1
+        for (h in 0 until PARKED_HOURS) {
+            if ((mm?.optDouble(h, 0.0) ?: 0.0) >= 0.3 || (prob?.optInt(h, 0) ?: 0) >= RAIN_PROBABILITY) { first = h; break }
+        }
+        LogBus.log("[RAIN] parked: next $PARKED_HOURS h first rain hour=$first")
+        if (first < 0) return
+        val text = if (first == 0) ctx.getString(R.string.rain_parked_soon) else ctx.getString(R.string.rain_parked_in_hours, first)
+        val nm = ctx.getSystemService(NotificationManager::class.java) ?: return
+        nm.createNotificationChannel(
+            NotificationChannel(CHANNEL, ctx.getString(R.string.rain_channel), NotificationManager.IMPORTANCE_HIGH),
+        )
+        val open = PendingIntent.getActivity(
+            ctx, 0,
+            Intent(ctx, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP),
+            PendingIntent.FLAG_IMMUTABLE,
+        )
+        val n = NotificationCompat.Builder(ctx, CHANNEL)
+            .setSmallIcon(R.drawable.ic_launcher_monochrome)
+            .setContentTitle(ctx.getString(R.string.rain_parked_title))
+            .setContentText(text)
+            .setSubText(ctx.getString(R.string.rain_source))
+            .setCategory(NotificationCompat.CATEGORY_REMINDER)
+            .setAutoCancel(true)
+            .setTimeoutAfter(3 * 60 * 60_000L)
+            .setContentIntent(open)
+            .build()
+        try { nm.notify(PARKED_NOTIF_ID, n) } catch (_: SecurityException) {}
     }
 
     private fun check(ctx: Context) {
