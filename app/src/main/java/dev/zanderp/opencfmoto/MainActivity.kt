@@ -397,7 +397,7 @@ class MainActivity : AppCompatActivity() {
         if (thenStop && saved && live) {
             log("→ Park with photo: photo taken — saving the spot and disconnecting")
             Parking.saveNow(this)
-            stopEverything()
+            DashCards.farewell(this) { stopEverything() }
         } else if (thenStop && !saved) {
             log("→ Park with photo: no photo taken — staying connected")
         }
@@ -873,7 +873,7 @@ class MainActivity : AppCompatActivity() {
                     log("→ Cancel tap ${since} ms after starting — ignored (lock ${CANCEL_LOCK_MS} ms)")
                     return@setOnClickListener
                 }
-                stopEverything()
+                DashCards.farewell(this) { stopEverything() }
                 return@setOnClickListener
             }
             if (DependencyPrompt.showForConnect(this, forScan = false)) {

@@ -306,8 +306,12 @@ class VideoPipeline(
             log("[VIDEO] bike canvas ${w}x$h configured; AA source ${src.width}x${src.height} " +
                 "usable ${usableW}x$usableH (margins ${margins.marginW}x${margins.marginH}) → " +
                 "fit=$fit power=${power.fps}fps")
+            try { DashCards.onDashReady(context, this) } catch (e: Exception) { log("[CARD] welcome failed: $e") }
         }
     }
+
+    /** v2.4: show a card on the dash instead of Android Auto for [ms] (null build = nothing). */
+    fun showCard(ms: Long, build: (Int, Int) -> android.graphics.Bitmap?) { aaCompositor?.showCard(ms, build) }
 
     /**
      * Mirror the phone (whole display or a single app on Android 14+) into the bike encoder.

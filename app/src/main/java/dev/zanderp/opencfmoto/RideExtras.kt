@@ -43,6 +43,7 @@ object RideExtras {
             try { Maintenance.checkDue(app) } catch (_: Exception) {}
             Parking.clear(app)
             if (rain(app)) RainCheck.runSoon(app)
+            try { DashCards.refreshWeather(app) } catch (_: Exception) {}
         } else if (parking(app)) {
             Parking.saveNow(app)
             if (rain(app)) RainCheck.onParked(app)

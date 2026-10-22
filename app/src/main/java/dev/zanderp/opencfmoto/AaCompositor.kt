@@ -1,6 +1,8 @@
 package dev.zanderp.opencfmoto
 
+import android.graphics.Bitmap
 import android.graphics.SurfaceTexture
+import android.opengl.GLUtils
 import android.opengl.EGL14
 import android.opengl.EGLConfig
 import android.opengl.EGLContext
@@ -95,6 +97,87 @@ class AaCompositor(private val log: (String) -> Unit) {
     @Volatile private var calibrating = false
 
     private val texMatrix = FloatArray(16)
+
+    // v2.4 · welcome / goodbye card: a bitmap shown on the dash INSTEAD of the AA frame for a few seconds
+    // (it covers the usable area; the rest stays black). Built on the GL thread once the area is known.
+    @Volatile private var cardUntil = 0L
+    private var cardPending: Bitmap? = null
+    private var cardTex = 0
+    private var cardProg = 0
+    private var cardPos = 0
+    private var cardTc = 0
+    private var cardSampler = 0
+    private val cardQuad: FloatBuffer = ByteBuffer
+        .allocateDirect(4 * 4 * 4).order(ByteOrder.nativeOrder()).asFloatBuffer().apply {
+            // Same positions as [quad]; v flipped because a Bitmap's first row is the TOP.
+            put(floatArrayOf(
+                -1f, -1f, 0f, 1f,
+                 1f, -1f, 1f, 1f,
+                -1f,  1f, 0f, 0f,
+                 1f,  1f, 1f, 0f,
+            ))
+            position(0)
+        }
+
+    /** Show a card on the dash for [ms]. [build] gets the usable area size and runs on the GL thread. */
+    fun showCard(ms: Long, build: (Int, Int) -> Bitmap?) {
+        handler.post {
+            if (canvasW == 0 || canvasH == 0 || windowSurface == EGL14.EGL_NO_SURFACE) {
+                log("[CARD] dash output not ready — card skipped"); return@post
+            }
+            val w = if (areaWpx > 0) areaWpx else canvasW
+            val h = if (areaHpx > 0) areaHpx else canvasH
+            val bmp = try { build(w, h) } catch (e: Exception) { log("[CARD] build failed: $e"); null } ?: return@post
+            cardPending = bmp
+            val until = android.os.SystemClock.uptimeMillis() + ms
+            cardUntil = until
+            log("[CARD] showing ${w}x$h card for ${ms} ms")
+            drawFrame()
+            handler.postDelayed({
+                if (cardUntil == until) { cardUntil = 0L; log("[CARD] done — back to Android Auto"); drawFrame() }
+            }, ms + 30)
+        }
+    }
+
+    private fun drawCard() {
+        if (cardProg == 0) {
+            cardProg = linkProgram(
+                "attribute vec4 aPos; attribute vec2 aTc; varying vec2 vTc; void main(){ gl_Position=aPos; vTc=aTc; }",
+                "precision mediump float; varying vec2 vTc; uniform sampler2D sTex; void main(){ gl_FragColor=texture2D(sTex,vTc); }",
+            )
+            cardPos = GLES20.glGetAttribLocation(cardProg, "aPos")
+            cardTc = GLES20.glGetAttribLocation(cardProg, "aTc")
+            cardSampler = GLES20.glGetUniformLocation(cardProg, "sTex")
+            val ids = IntArray(1); GLES20.glGenTextures(1, ids, 0); cardTex = ids[0]
+        }
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, cardTex)
+        cardPending?.let { b ->
+            cardPending = null
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR)
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR)
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE)
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE)
+            GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, b, 0)
+            b.recycle()
+        }
+        val w = if (areaWpx > 0) areaWpx else canvasW
+        val h = if (areaHpx > 0) areaHpx else canvasH
+        val x = if (areaWpx > 0) areaX else 0
+        val y = if (areaWpx > 0) canvasH - areaY - areaHpx else 0
+        GLES20.glViewport(x, y, w, h)
+        GLES20.glUseProgram(cardProg)
+        cardQuad.position(0)
+        GLES20.glVertexAttribPointer(cardPos, 2, GLES20.GL_FLOAT, false, 16, cardQuad)
+        GLES20.glEnableVertexAttribArray(cardPos)
+        cardQuad.position(2)
+        GLES20.glVertexAttribPointer(cardTc, 2, GLES20.GL_FLOAT, false, 16, cardQuad)
+        GLES20.glEnableVertexAttribArray(cardTc)
+        GLES20.glUniform1i(cardSampler, 0)
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4)
+        GLES20.glDisableVertexAttribArray(cardPos)
+        GLES20.glDisableVertexAttribArray(cardTc)
+    }
 
     // Frame pacing (battery): the compositor throttles live AA frames to [minFrameIntervalMs] (set
     // from the user's PowerMode) so we don't GPU-composite + hardware-encode + Wi-Fi-transmit more
@@ -476,6 +559,14 @@ class AaCompositor(private val log: (String) -> Unit) {
         // Black background (the letterbox bars).
         GLES20.glClearColor(0f, 0f, 0f, 1f)
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
+
+        // Welcome / goodbye card: replaces the AA frame on the bike output while it lasts.
+        if (target === windowSurface && cardUntil > android.os.SystemClock.uptimeMillis()) {
+            drawCard()
+            EGLExt.eglPresentationTimeANDROID(eglDisplay, target, System.nanoTime())
+            EGL14.eglSwapBuffers(eglDisplay, target)
+            return
+        }
 
         // FILL may compute a viewport taller/wider than the canvas (center-crop). Scissor so we
         // never paint outside the bike encoder surface.
