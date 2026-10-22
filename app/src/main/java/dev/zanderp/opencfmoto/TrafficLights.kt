@@ -167,6 +167,31 @@ object TrafficLights {
         return out to failed
     }
 
+    private fun clusterJunctions(nodes: List<DoubleArray>): List<Junction> {
+        val grid = HashMap<Long, MutableList<Int>>()
+        val sumLat = ArrayList<Double>(); val sumLon = ArrayList<Double>(); val n = ArrayList<Int>()
+        fun g(lat: Double, lon: Double): Long = (floor(lat / 0.0005).toLong() shl 32) xor (floor(lon / 0.0005).toLong() and 0xffffffffL)
+        for (p in nodes) {
+            var best = -1
+            var bestD = JUNCTION_MERGE_M
+            val gy = floor(p[0] / 0.0005).toLong(); val gx = floor(p[1] / 0.0005).toLong()
+            for (dy in -1L..1L) for (dx in -1L..1L) {
+                val k = ((gy + dy) shl 32) xor ((gx + dx) and 0xffffffffL)
+                for (j in grid[k].orEmpty()) {
+                    val d = metres(p[0], p[1], sumLat[j] / n[j], sumLon[j] / n[j])
+                    if (d < bestD) { bestD = d; best = j }
+                }
+            }
+            if (best >= 0) {
+                sumLat[best] += p[0]; sumLon[best] += p[1]; n[best] += 1
+            } else {
+                sumLat += p[0]; sumLon += p[1]; n += 1
+                grid.getOrPut(g(p[0], p[1])) { ArrayList() } += n.lastIndex
+            }
+        }
+        return n.indices.map { Junction(it, sumLat[it] / n[it], sumLon[it] / n[it]) }
+    }
+
     // ── Analysis
 
     fun analyse(ctx: Context, progress: (String) -> Unit): Result {
