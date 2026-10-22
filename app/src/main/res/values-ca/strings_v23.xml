@@ -222,4 +222,9 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="pke_card_read">Llegit %1$s</string>
     <string name="engine_running">motor en marxa</string>
     <string name="engine_stopped">motor aturat</string>
+    <string name="trips_import">📥 Importa un viatge (GPX)</string>
+    <string name="trips_import_done">Viatge importat: %1$s</string>
+    <string name="trips_import_exists">Aquest viatge ja és als teus viatges</string>
+    <string name="trips_import_empty">Aquest fitxer no té cap recorregut amb hores</string>
+    <string name="trips_import_failed">No s\'ha pogut importar: %1$s</string>
 </resources>
