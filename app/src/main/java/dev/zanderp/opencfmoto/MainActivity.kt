@@ -1077,6 +1077,8 @@ class MainActivity : AppCompatActivity() {
         statsHandler.post(husTicker)
         statsHandler.removeCallbacks(pkeTicker)
         statsHandler.post(pkeTicker)
+        // Engine state straight away from the last reading (if fresh), not after the next read.
+        if (engineRunning == null) PkeBattery.last(this)?.takeIf { System.currentTimeMillis() - it.atMs <= 3 * 60_000L }?.volts?.let { updateEngine(it) }
         renderStatus(ConnectionState.phase, ConnectionState.detail)
         if (WifiGate.isWifiEnabled(this)) WifiGate.cancelNotification(this)
         // Retry auto-connect on resume: after finishing first-run setup, or once the bike's Wi-Fi
@@ -1352,6 +1354,8 @@ class MainActivity : AppCompatActivity() {
     private val todayTicker = object : Runnable {
         override fun run() {
             renderToday()
+            // Manel (22 Oct): "Leído hace 0 s" never moved — the card was only redrawn right after a read.
+            renderPkeCard()
             // Live speed on the card while projecting: refresh every second then.
             statsHandler.postDelayed(this, if (ConnectionState.phase == Phase.STREAMING) 1_000L else 5_000L)
         }
@@ -1589,8 +1593,11 @@ class MainActivity : AppCompatActivity() {
         else if (v <= ENGINE_OFF_V) { engineLo++; engineHi = 0 }
         else { engineHi = 0; engineLo = 0 }
         val before = engineRunning
-        if (engineHi >= 2) engineRunning = true
-        if (engineLo >= 2) engineRunning = false
+        // Manel (22 Oct): the voltage showed the start at once but "motor en marcha" lagged a read (15 s).
+        // A charging voltage can't come from a parked bike: one reading turns it ON. Going OFF still
+        // takes two in a row (a load dip mustn't flicker it) — one is enough while it's still unknown.
+        if (engineHi >= 1) engineRunning = true
+        if (engineLo >= 2 || (engineLo >= 1 && engineRunning == null)) engineRunning = false
         if (engineRunning != before) {
             LogBus.log("[PKE] engine ${if (engineRunning == true) "ON" else "OFF"} at ${"%.1f".format(v)} V")
             renderStatus(ConnectionState.phase, ConnectionState.detail)
@@ -1646,7 +1653,8 @@ class MainActivity : AppCompatActivity() {
         )
         val readText = getString(
             R.string.pke_card_read,
-            android.text.format.DateUtils.getRelativeTimeSpanString(r.atMs, now, android.text.format.DateUtils.SECOND_IN_MILLIS),
+            if (now - r.atMs < 10_000L) getString(R.string.pke_card_just_now)
+            else android.text.format.DateUtils.getRelativeTimeSpanString(r.atMs, now, android.text.format.DateUtils.SECOND_IN_MILLIS),
         )
         findViewById<TextView>(R.id.pke_sub).text = when (engineState()) {
             true -> getString(R.string.engine_running) + " · " + readText
