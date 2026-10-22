@@ -80,8 +80,8 @@ object AdaptivePolicy {
 
 /**
  * Runs [AdaptivePolicy] against the live [VideoPipeline] once per watchdog tick (see
- * [AndroidAutoService]). Only active while the rider has chosen [PowerMode.AUTO]; the fixed power
- * modes short-circuit it entirely, so their behaviour is byte-for-byte unchanged.
+ * [AndroidAutoService]). With [PowerMode.AUTO] it adapts bitrate and fps (thermal + link); in the
+ * fixed power modes (v2.3) only the link back-off runs, which leaves a clean link untouched.
  */
 class AdaptiveVideoController(
     private val context: Context,
@@ -97,6 +97,8 @@ class AdaptiveVideoController(
     private var appliedFps = -1
     /** True once we have adapted this session, so a switch away from AUTO can restore the fixed rate. */
     private var adapting = false
+    /** The AUTO path (thermal fps cap included) ran this session. */
+    private var autoAdapted = false
 
     /** New session (or resume): forget prior link state so we start fresh at the user's target. */
     fun reset() {
@@ -105,16 +107,45 @@ class AdaptiveVideoController(
         appliedBitrate = -1
         appliedFps = -1
         adapting = false
+        autoAdapted = false
+    }
+
+    /**
+     * v2.3 · Fixed power modes: link back-off only (bitrate, never fps). A dash that keeps falling
+     * behind — encoded frames dropped tick after tick, the grey-screen reports — gets fewer bits per
+     * frame until it keeps up, then recovers. On a clean link nothing changes.
+     */
+    private fun linkOnly(pipe: VideoPipeline) {
+        val base = pipe.targetBitrate()
+        if (base <= 0) return
+        val total = pipe.droppedFramesTotal()
+        if (appliedBitrate == -1) {
+            // First tick (new session, or just back from AUTO): take the drop counter as the baseline.
+            lastDropTotal = total
+            appliedBitrate = base
+            return
+        }
+        val drops = (total - lastDropTotal).coerceAtLeast(0L).toInt()
+        lastDropTotal = total
+        linkFactor = AdaptivePolicy.nextLinkFactor(linkFactor, drops)
+        val bitrate = (base * linkFactor).toInt().coerceIn(AdaptivePolicy.MIN_BITRATE.coerceAtMost(base), base)
+        if (bitrate != appliedBitrate) {
+            pipe.setEncoderBitrate(bitrate)
+            appliedBitrate = bitrate
+            log("[adaptive-link] drops/tick=$drops link=${pct(linkFactor)} → ${bitrate / 1000}kbps (power ${VideoPrefs.power(context).label})")
+        }
     }
 
     fun onTick(pipeline: VideoPipeline?) {
         val pipe = pipeline ?: return
 
         if (VideoPrefs.power(context) != PowerMode.AUTO) {
-            // Rider switched to a fixed mode mid-session: hand the rate back once, then stay out.
-            if (adapting) restoreFixed(pipe)
+            // Rider switched to a fixed mode mid-session: hand the rate back once.
+            if (adapting && autoAdapted) restoreFixed(pipe)
+            linkOnly(pipe)
             return
         }
+        autoAdapted = true
 
         val base = pipe.targetBitrate()
         if (base <= 0) return   // encoder not created yet (pre-canvas)

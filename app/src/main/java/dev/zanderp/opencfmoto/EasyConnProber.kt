@@ -47,6 +47,7 @@ class EasyConnProber(
         /** Cap before Phase.ERROR; watchdog [rearmFromError] resets this so a bike back in range recovers. */
         private const val MAX_RECONNECT_ATTEMPTS = 20
         private const val MAX_EMPTY_SESSIONS = 3
+        private const val MAX_CONTROL_ONLY_SESSIONS = 12
         /** Proactive PXC heartbeat interval on each :10922 channel socket (CAR_CTRL + CAR_DATA). */
         private const val PXC_HEARTBEAT_INTERVAL_MS = 2000L
 
@@ -82,6 +83,17 @@ class EasyConnProber(
      * Drop every live bike socket on purpose. [onAllConnectionsClosed] then re-probes exactly like
      * after a dash-side drop, so the bike reconnects on its own (Android Auto keeps running).
      */
+    /** v2.3 · The rider tapped the dash clock: one more resync, outside the automatic budget. */
+    fun requestClockResync(): Boolean {
+        if (!running || synchronized(activeClients) { activeClients.isEmpty() }) return false
+        ClockLab.resyncGaveUp = false
+        ClockLab.resyncBusyUntil = android.os.SystemClock.elapsedRealtime() +
+            PxcHandshake.RESYNC_BUSY_GRACE_MS
+        ConnectionState.refresh()
+        forceResync("rider asked to set the dash clock")
+        return true
+    }
+
     private fun forceResync(reason: String) {
         if (!running) return
         val socks = synchronized(activeClients) { activeClients.toList() }
@@ -142,6 +154,10 @@ class EasyConnProber(
      * [MAX_EMPTY_SESSIONS] and tell the rider instead.
      */
     @Volatile private var emptySessions = 0
+    /** The dash opened its media plane (10921/10920) during the current session. */
+    @Volatile private var mediaSeen = false
+    /** Sessions where the dash only opened the control socket and hung up (19 Oct, realme/125X). */
+    @Volatile private var controlOnlySessions = 0
 
     /**
      * @param gatewayOverride when set (Wi‑Fi Direct P2P path), use this bike GO IP instead of
@@ -165,6 +181,8 @@ class EasyConnProber(
         everConnected = false
         reconnectAttempts = 0
         emptySessions = 0
+        mediaSeen = false
+        controlOnlySessions = 0
         liveConns.set(0)
         this.network = network
         dumpEnvironment(network)
@@ -620,6 +638,7 @@ class EasyConnProber(
                 }
                 log("[:$port] <<< bike connected from ${client.remoteSocketAddress}")
                 everConnected = true
+                if (port != PORT_PXC_CTRL) { mediaSeen = true; controlOnlySessions = 0 }
                 reconnectAttempts = 0            // a fresh connection resets the retry budget
                 liveConns.incrementAndGet()
                 activeClients.add(client)
@@ -641,7 +660,23 @@ class EasyConnProber(
      */
     private fun onAllConnectionsClosed() {
         if (!running || !everConnected || reprobing) return
-        if (framesSent == 0 && (yunmo?.framesSent ?: 0) == 0) emptySessions++ else emptySessions = 0
+        val noFrames = framesSent == 0 && (yunmo?.framesSent ?: 0) == 0
+        // v2.3 · The dash talked on the control socket but never asked for the picture: that's the
+        // dash not being on its projection screen (or still booting), not Android Auto failing.
+        // Keep inviting it back and tell the rider what to do instead of blaming Android Auto.
+        if (noFrames && !mediaSeen && BikeLink.isAaVideoSteady()) {
+            controlOnlySessions++
+            mediaSeen = false
+            log("[reconnect] dash hung up without asking for the picture ($controlOnlySessions×) — Android Auto is live; the dash is probably not on screen 3")
+            if (controlOnlySessions >= MAX_CONTROL_ONLY_SESSIONS) {
+                ConnectionState.set(Phase.ERROR, context.getString(R.string.conn_detail_dash_no_media))
+                return
+            }
+            ConnectionState.set(Phase.RECONNECTING, context.getString(R.string.conn_detail_dash_no_media_retry))
+        } else {
+            mediaSeen = false
+            if (noFrames) emptySessions++ else emptySessions = 0
+        }
         if (emptySessions >= MAX_EMPTY_SESSIONS) {
             log("[reconnect] dash hung up $emptySessions times without getting a single frame — no video source (Android Auto not running?). Stopping the re-probe loop.")
             ConnectionState.set(Phase.ERROR, "Android Auto isn't sending video — tap Connect")
@@ -653,7 +688,7 @@ class EasyConnProber(
             return
         }
         reprobing = true
-        ConnectionState.set(Phase.RECONNECTING, "attempt ${reconnectAttempts + 1}")
+        if (controlOnlySessions == 0) ConnectionState.set(Phase.RECONNECTING, "attempt ${reconnectAttempts + 1}")
         thread(name = "ec-reprobe", isDaemon = true) {
             try {
                 while (running && liveConns.get() == 0 && reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {

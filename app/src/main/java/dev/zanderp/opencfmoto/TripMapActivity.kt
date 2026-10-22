@@ -31,6 +31,7 @@ import org.osmdroid.views.overlay.Overlay
 import org.osmdroid.views.overlay.Polyline
 import java.util.Calendar
 import java.util.Locale
+import kotlin.math.roundToInt
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -49,18 +50,19 @@ class TripMapActivity : AppCompatActivity() {
     private var period = Period.ALL
     private var framed = false
     private var renderGen = 0
+    private var shownTrip: Trip? = null
 
     enum class Period { MONTH, YEAR, ALL }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // osmdroid needs a non-default user agent or OSM tile servers reject the requests.
-        Configuration.getInstance().userAgentValue = packageName
+        GpxOsmdroid.configure(this)  // v2.3 · shared persistent tile cache (90 days), so maps load instantly after an update
 
         enableEdgeToEdge()
         setContentView(R.layout.activity_trip_map)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.trip_map_root)) { v, insets ->
-            val b = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val b = insets.getInsets(SafeInsets.BARS)
             v.setPadding(b.left, b.top, b.right, b.bottom)
             insets
         }
@@ -81,6 +83,7 @@ class TripMapActivity : AppCompatActivity() {
             finish()
             return
         }
+        shownTrip = trip
 
         findViewById<TextView>(R.id.map_title).text = TripNames.title(this, trip)
         findViewById<TextView>(R.id.map_stats).text =
@@ -88,11 +91,80 @@ class TripMapActivity : AppCompatActivity() {
             getString(R.string.map_speed_legend)
 
         renderRoute(trip)
+        compareWithUsual(trip)
         findViewById<View>(R.id.map_share).setOnClickListener { RideShare.shareTrip(this, trip) }
         findViewById<View>(R.id.map_video).apply {
             visibility = View.VISIBLE
             setOnClickListener { TripVideoActivity.start(this@TripMapActivity, trip.id) }
         }
+    }
+
+    /** "🎬 Vídeo · 2 creado(s)" once this trip has videos made (refreshed when coming back). */
+    private fun showMadeCount() {
+        val trip = shownTrip ?: return
+        Thread {
+            val n = TripVideo.madeFor(this, trip).size
+            runOnUiThread {
+                if (isFinishing || isDestroyed) return@runOnUiThread
+                findViewById<TextView>(R.id.map_video)?.text =
+                    if (n > 0) getString(R.string.tv_button_made, n) else getString(R.string.tv_button)
+            }
+        }.start()
+    }
+
+    /**
+     * v2.3 · 🆚 "Why did today take longer?": one line under the stats when this ride has at least three
+     * twins (same start and end); tap it for the breakdown.
+     */
+    private fun compareWithUsual(trip: Trip) {
+        Thread {
+            val r = try { TripCompare.compare(trip, TripStore.list(this)) } catch (e: Exception) {
+                LogBus.log("[COMPARE] failed: $e"); null
+            } ?: return@Thread
+            runOnUiThread {
+                if (isFinishing || isDestroyed) return@runOnUiThread
+                val stats = findViewById<TextView>(R.id.map_stats)
+                stats.append("\n" + compareLine(r))
+                stats.setOnClickListener {
+                    com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.cmp_title)
+                        .setMessage(compareDetail(r))
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show()
+                }
+            }
+        }.start()
+    }
+
+    private fun mins(s: Int) = Math.round(kotlin.math.abs(s) / 60.0).toInt()
+
+    private fun factorText(f: TripCompare.Factor, slower: Boolean) = getString(when (f) {
+        TripCompare.Factor.STILL -> if (slower) R.string.cmp_why_still else R.string.cmp_why_still_less
+        TripCompare.Factor.PACE -> if (slower) R.string.cmp_why_pace else R.string.cmp_why_pace_more
+        TripCompare.Factor.ROUTE -> if (slower) R.string.cmp_why_route else R.string.cmp_why_route_less
+    })
+
+    private fun compareLine(r: TripCompare.Result): String {
+        if (!TripCompare.significant(r.diffS)) return getString(R.string.cmp_line_same, r.others)
+        val slower = r.diffS > 0
+        val base = getString(if (slower) R.string.cmp_line_slower else R.string.cmp_line_faster, mins(r.diffS))
+        return base + (r.main?.let { " · " + factorText(it, slower) } ?: "") + " ›"
+    }
+
+    private fun compareDetail(r: TripCompare.Result): String {
+        val t = r.today; val u = r.usual
+        val sb = StringBuilder()
+        sb.append(getString(R.string.cmp_detail_head, r.others, mins(t.totalS), mins(u.totalS)))
+        sb.append("\n\n").append(getString(R.string.cmp_detail_still, mins(t.stillS), t.stops, mins(u.stillS), u.stops))
+        sb.append("\n").append(getString(R.string.cmp_detail_pace, t.movingKmh.roundToInt(), u.movingKmh.roundToInt()))
+        sb.append("\n").append(getString(R.string.cmp_detail_km,
+            String.format(Locale.getDefault(), "%.1f", t.km), String.format(Locale.getDefault(), "%.1f", u.km)))
+        if (TripCompare.significant(r.diffS)) {
+            val slower = r.diffS > 0
+            sb.append("\n\n").append(r.main?.let { getString(R.string.cmp_detail_main, factorText(it, slower)) }
+                ?: getString(R.string.cmp_detail_mixed))
+        }
+        return sb.toString()
     }
 
     // ---------------------------------------------------------------- single trip
@@ -311,6 +383,7 @@ class TripMapActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if (this::map.isInitialized) map.onResume()
+        showMadeCount()
     }
 
     override fun onPause() {

@@ -119,7 +119,7 @@ class GpxDashUi(
         // Map goes edge-to-edge; chrome cards get cutout margins so we don't leave a black strip.
         ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
             val bars = insets.getInsets(
-                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout(),
+                SafeInsets.BARS or WindowInsetsCompat.Type.displayCutout(),
             )
             insetL = bars.left
             insetT = bars.top
@@ -936,6 +936,11 @@ class GpxDashUi(
                         isFocusable = true
                         setOnClickListener { onTap() }
                     }
+                // v2.3: a visible "Go" — riders didn't find that tapping the name opens the route
+                // card (Zontes 125X user, 18 Oct 2026).
+                actions.addView(actionChip("➤ ${context.getString(R.string.main_go)}") {
+                    startNavigationTo(p)
+                }.also { it.setTextColor(0xFF188038.toInt()) })
                 actions.addView(actionChip("★ Save") {
                     MapPlaces.addFavorite(context, p)
                     searchStatus.text = "Saved ${p.name} to favorites"

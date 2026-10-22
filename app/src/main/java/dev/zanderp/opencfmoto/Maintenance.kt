@@ -35,6 +35,12 @@ object Maintenance {
         val lastKm: Double?,
         val lastAt: Long?,
         val enabled: Boolean = true,
+        /**
+         * Manufacturer-style schedule: the first service at this odometer reading (e.g. 1,000 km
+         * running-in), then every [everyKm] counted on the odometer itself (6,000 · 12,000 · …),
+         * not from whenever it was last done. Null = plain "every N km since last time".
+         */
+        val firstKm: Int? = null,
     )
 
     data class Entry(val at: Long, val km: Double, val kind: String, val taskId: String?, val liters: Double?, val euros: Double?)
@@ -88,6 +94,43 @@ object Maintenance {
         ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putString("book_${b.bikeKey}", o.toString()).apply()
     }
 
+    /**
+     * The Zontes 125X owner's manual maintenance table: first service at 1,000 km, the second at
+     * 6,000 and then every 6,000; parts on their own cycles (oil filter every 12,000 after the
+     * first, air filter every 12,000, gearbox oil at 6,000 / 18,000 / 30,000, belt every 20,000,
+     * spark plug every 24,000, brake fluid every 2 years, coolant every 30,000 km or 3 years).
+     * Notes 3 and 5: steering lock and drive/driven pulley bushings cleaned and greased every 10,000;
+     * note 7: valve clearance (cold) inlet 0.08–0.12 mm, exhaust 0.18–0.22 mm.
+     */
+    fun zontes125Plan(ctx: Context) = listOf(
+        Task("service", ctx.getString(R.string.maint_service), 6000, 15, null, null, firstKm = 1000),
+        Task("oil", ctx.getString(R.string.maint_oil_engine), 6000, 15, null, null, firstKm = 1000),
+        Task("oil_filter", ctx.getString(R.string.maint_oil_filter), 12000, null, null, null, firstKm = 1000),
+        Task("gear_oil", ctx.getString(R.string.maint_gear_oil), 12000, null, null, null, firstKm = 6000),
+        Task("air", ctx.getString(R.string.maint_air), 12000, null, null, null, firstKm = 12000),
+        Task("valves", ctx.getString(R.string.maint_valves), 6000, null, null, null, firstKm = 6000),
+        Task("belt", ctx.getString(R.string.maint_belt), 20000, null, null, null, firstKm = 20000),
+        Task("pulleys", ctx.getString(R.string.maint_pulleys), 10000, null, null, null, firstKm = 10000),
+        Task("steer_lock", ctx.getString(R.string.maint_steer_lock), 10000, null, null, null, firstKm = 10000),
+        Task("spark", ctx.getString(R.string.maint_spark), 24000, null, null, null, firstKm = 24000),
+        Task("brake_fluid", ctx.getString(R.string.maint_brake_fluid), null, 24, null, null),
+        Task("coolant", ctx.getString(R.string.maint_coolant), 30000, 36, null, null, firstKm = 30000),
+        Task("brakes", ctx.getString(R.string.maint_brakes), 6000, 12, null, null, firstKm = 6000),
+        Task("tyres", ctx.getString(R.string.maint_tyres), 6000, 12, null, null, firstKm = 6000),
+        Task("itv", ctx.getString(R.string.maint_itv), null, 24, null, null),
+        Task("insurance", ctx.getString(R.string.maint_insurance), null, 12, null, null),
+    )
+
+    /** Swap the task list for [plan], keeping when each matching task was last done and the rider's own tasks. */
+    fun applyPlan(ctx: Context, plan: List<Task>) {
+        val b = load(ctx)
+        val old = b.tasks.associateBy { it.id }
+        val merged = plan.map { p -> old[p.id]?.let { o -> p.copy(lastKm = o.lastKm, lastAt = o.lastAt) } ?: p }
+        val custom = b.tasks.filter { it.id.startsWith("custom_") }
+        save(ctx, b.copy(tasks = merged + custom))
+        LogBus.log("[MAINT] plan applied: ${plan.size} tasks (+${custom.size} custom)")
+    }
+
     private fun defaultTasks(ctx: Context) = listOf(
         Task("oil", ctx.getString(R.string.maint_oil), 3000, 12, null, null),
         Task("air", ctx.getString(R.string.maint_air), 6000, 12, null, null),
@@ -104,6 +147,7 @@ object Maintenance {
         t.everyMonths?.let { put("months", it) }
         t.lastKm?.let { put("lastKm", it) }
         t.lastAt?.let { put("lastAt", it) }
+        t.firstKm?.let { put("firstKm", it) }
     }
 
     private fun taskFrom(o: JSONObject) = Task(
@@ -113,6 +157,7 @@ object Maintenance {
         if (o.has("lastKm")) o.getDouble("lastKm") else null,
         if (o.has("lastAt")) o.getLong("lastAt") else null,
         o.optBoolean("on", true),
+        if (o.has("firstKm")) o.getInt("firstKm") else null,
     )
 
     private fun entryJson(e: Entry) = JSONObject().put("at", e.at).put("km", e.km).put("kind", e.kind).apply {
@@ -155,10 +200,12 @@ object Maintenance {
         save(ctx, b.copy(tasks = b.tasks.map { if (it.id == task.id) task else it }))
     }
 
-    fun addTask(ctx: Context, name: String, everyKm: Int?, everyMonths: Int?) {
+    fun addTask(ctx: Context, name: String, everyKm: Int?, everyMonths: Int?, firstKm: Int? = null) {
         val b = load(ctx)
         val id = "custom_${System.currentTimeMillis()}"
-        save(ctx, b.copy(tasks = b.tasks + Task(id, name, everyKm, everyMonths, b.odometer, System.currentTimeMillis())))
+        // With a first-service km the count runs on the odometer, so it doesn't start "now".
+        val lastKm = if (firstKm != null) null else b.odometer
+        save(ctx, b.copy(tasks = b.tasks + Task(id, name, everyKm, everyMonths, lastKm, System.currentTimeMillis(), firstKm = firstKm)))
     }
 
     fun deleteTask(ctx: Context, taskId: String) {
@@ -180,14 +227,57 @@ object Maintenance {
 
     // ---------------------------------------------------------------- status
 
+    /**
+     * The odometer readings a manufacturer-style task falls on: [Task.firstKm], then the
+     * [Task.everyKm] grid. A small first service (running-in: 1,000 of 6,000) is followed by the
+     * plain grid (6,000 · 12,000 …); a first service far into the interval sets the grid's phase
+     * (gearbox oil 6,000 of 12,000 → 18,000 · 30,000 …).
+     */
+    internal fun milestones(firstKm: Int, everyKm: Int?, upTo: Double): List<Double> {
+        val out = arrayListOf(firstKm.toDouble())
+        if (everyKm == null || everyKm <= 0) return out
+        val rem = firstKm % everyKm
+        val phase = if (rem * 4 >= everyKm) rem else 0
+        var n = 1
+        while ((out.size < 2 || out.last() <= upTo) && n < 10_000) {
+            val g = (phase + n * everyKm).toDouble()
+            if (g > firstKm) out += g
+            n++
+        }
+        return out
+    }
+
+    /** (previous mark, next due km) for a task's km cycle, or null when it can't be known yet. */
+    internal fun kmWindow(t: Task, odo: Double?): Pair<Double, Double>? {
+        val first = t.firstKm
+        if (first == null) {
+            val every = t.everyKm ?: return null
+            val last = t.lastKm ?: return null
+            return last to last + every
+        }
+        val last = t.lastKm
+        if (last == null) {
+            // Never logged: the first service is due, unless the bike is clearly past it already
+            // (then ask when it was last done rather than shouting "overdue by 9,000 km").
+            if (odo == null || odo > first + (t.everyKm ?: first) / 2.0) return null
+            return 0.0 to first.toDouble()
+        }
+        // The service done at [last] covers the nearest mark; the next mark is due.
+        val ms = milestones(first, t.everyKm, last + 2.0 * (t.everyKm ?: 0))
+        val i = ms.indices.minByOrNull { kotlin.math.abs(ms[it] - last) } ?: return null
+        val next = ms.getOrNull(i + 1) ?: return null
+        return last to next
+    }
+
     fun status(b: Book, t: Task, now: Long = System.currentTimeMillis()): Status {
         val odo = b.odometer
         var kmLeft: Double? = null
         var daysLeft: Int? = null
         var frac = 0f
-        if (t.everyKm != null && t.lastKm != null && odo != null) {
-            kmLeft = t.lastKm + t.everyKm - odo
-            frac = maxOf(frac, ((odo - t.lastKm) / t.everyKm).toFloat())
+        val w = kmWindow(t, odo)
+        if (w != null && odo != null) {
+            kmLeft = w.second - odo
+            frac = maxOf(frac, ((odo - w.first) / (w.second - w.first).coerceAtLeast(1.0)).toFloat())
         }
         if (t.everyMonths != null && t.lastAt != null) {
             val due = Calendar.getInstance().apply { timeInMillis = t.lastAt; add(Calendar.MONTH, t.everyMonths) }.timeInMillis

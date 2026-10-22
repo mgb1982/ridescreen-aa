@@ -35,6 +35,8 @@ class BikeWatchService : Service() {
     private val h = Handler(Looper.getMainLooper())
     private var mode = Mode.LONG
     private var until = 0L
+    /** While a SHORT burst interrupts a LONG wait: when the LONG wait ends. 0 = none. */
+    private var longUntil = 0L
     private var ssid = ""
     private var checks = 0
     private var wifiOffNotified = false
@@ -47,10 +49,18 @@ class BikeWatchService : Service() {
         ssid = BikeMemory.lastQr(this)?.ssid.orEmpty()
         if (ssid.isBlank()) { stopSelf(); return START_NOT_STICKY }
         val now = SystemClock.elapsedRealtime()
-        // A SHORT request never shortens an ongoing LONG wait.
-        if (!running || newMode == Mode.LONG || mode == Mode.SHORT) {
+        if (running && mode == Mode.LONG && newMode == Mode.SHORT) {
+            // The dash's Bluetooth just connected during the all-day LONG wait. That used to be
+            // ignored ("a SHORT request never shortens a LONG wait"), so no scans and no background
+            // join ran and the bike was never seen (125X log, 20 Oct 2026: BT trigger twice, no
+            // connect). Do the SHORT burst now and fall back to the LONG wait afterwards.
+            longUntil = until
+            mode = Mode.SHORT
+            until = now + SHORT_MAX_MS
+        } else if (!running || newMode == Mode.LONG || mode == Mode.SHORT) {
             mode = newMode
             until = now + if (mode == Mode.LONG) LONG_MAX_MS else SHORT_MAX_MS
+            if (mode == Mode.LONG) longUntil = 0L
         }
         try {
             ServiceCompat.startForeground(
@@ -73,18 +83,30 @@ class BikeWatchService : Service() {
     private val check = object : Runnable {
         override fun run() {
             if (!running) return
-            if (SystemClock.elapsedRealtime() > until) { stopNow("time limit"); return }
+            val nowMs = SystemClock.elapsedRealtime()
+            if (nowMs > until) {
+                if (mode == Mode.SHORT && longUntil > nowMs) {
+                    LogBus.log("[WATCH] Bluetooth burst over — back to the low-power wait")
+                    mode = Mode.LONG; until = longUntil; longUntil = 0L
+                    stopProbe()
+                    h.postDelayed(this, LONG_EVERY_MS)
+                    return
+                }
+                stopNow("time limit"); return
+            }
             checks++
             if (mode == Mode.SHORT) {
                 try { (applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager).startScan() } catch (_: Exception) {}
             }
             val wm = applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager
             val wifiOn = wm?.isWifiEnabled == true
-            val seen = BikeWifi.isSsidInRange(this@BikeWatchService, ssid)
+            // LONG (hours): only read the results of the scans Android does anyway (screen on etc.).
+            // Asking for a Wi-Fi scan every minute for 14 h cost real battery.
+            val seen = BikeWifi.isSsidInRange(this@BikeWatchService, ssid, refresh = mode == Mode.SHORT)
             // v2.2 field test: logs showed "waiting…" and then nothing, so we couldn't tell "bike off"
             // from "phone Wi-Fi off" from "the process died". Log every check (SHORT) / every 10th
             // (LONG) and flush the log to disk so it survives the process being killed.
-            if (mode == Mode.SHORT || checks % 10 == 1) {
+            if (mode == Mode.SHORT || checks % 30 == 1) {
                 LogBus.log("[WATCH] check $checks: phone Wi-Fi ${if (wifiOn) "on" else "OFF"} · '$ssid' ${when (seen) { true -> "seen"; false -> "not seen"; null -> "unknown (no fresh scan)" }}")
                 try { CrashGuard.persistSessionAsync(applicationContext) } catch (_: Exception) {}
             }

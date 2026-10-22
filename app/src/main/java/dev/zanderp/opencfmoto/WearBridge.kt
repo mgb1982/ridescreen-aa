@@ -92,6 +92,7 @@ object WearBridge {
         val dropTooLong = phase == Phase.WAITING_FOR_BIKE ||
             (reconnectingSince > 0L && now - reconnectingSince > RIDE_END_AFTER_DROP_MS)
         val active = phase == Phase.STREAMING || (sessionActive && phase.busy && !dropTooLong)
+        if (active && sessionActive) rememberRide()
         // Tile / complication on the watch: a summary about once a minute while riding.
         if (active && sessionActive && SystemClock.elapsedRealtime() - lastTileAt >= TILE_EVERY_MS) {
             lastTileAt = SystemClock.elapsedRealtime()
@@ -159,6 +160,28 @@ object WearBridge {
         else try { sink(delta) } catch (e: Exception) { LogBus.log("[WEAR] scroll failed: ${e.message}") }
     }
 
+    /**
+     * The ride's numbers as of the last few seconds, kept after the recorder resets at the end of the
+     * ride so the watch can show a summary card ("last"). {dist, mov, avg, max, end}.
+     */
+    @Volatile private var lastRide: JSONObject? = null
+    @Volatile private var lastRideAt = 0L
+
+    private fun rememberRide() {
+        val now = SystemClock.elapsedRealtime()
+        if (now - lastRideAt < 5_000L) return
+        val s = TripLogger.current?.snapshot() ?: return
+        if (s.distanceMeters <= 0.0) return
+        lastRideAt = now
+        val movH = s.movingTimeMs / 3_600_000.0
+        lastRide = JSONObject()
+            .put("dist", s.distanceMeters)
+            .put("mov", s.movingTimeMs)
+            .put("avg", if (movH > 0.0) (s.distanceMeters / 1000.0) / movH else 0.0)
+            .put("max", s.maxSpeedMs * 3.6f)
+            .put("end", System.currentTimeMillis())
+    }
+
     private fun snapshotJson(ctx: Context): String {
         val s = TripLogger.current?.snapshot()
         val o = JSONObject()
@@ -175,6 +198,7 @@ object WearBridge {
         o.put("el", if (sessionActive) SystemClock.elapsedRealtime() - sessionStartedAt else 0L)
         o.put("acc", s?.accuracyM ?: 0)
         o.put("clk", ClockLab.resyncInProgress())
+        if (!sessionActive) lastRide?.let { o.put("last", it) }
         TurnHaptics.current()?.let { o.put("turn", it) }
         if (!sessionActive) {
             // Re-check now and then while the watch is looking (works with the phone app closed).

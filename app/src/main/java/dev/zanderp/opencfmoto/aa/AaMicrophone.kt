@@ -83,7 +83,7 @@ class AaMicrophone(
             log("[MIC] failed to update service foreground type: $e")
         }
         try {
-            preferBluetoothMic()
+            val btIn = preferBluetoothMic()
             val minBuf = AudioRecord.getMinBufferSize(
                 SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT
             ).coerceAtLeast(CHUNK_SAMPLES * 2 * 4)
@@ -94,6 +94,9 @@ class AaMicrophone(
             if (r.state != AudioRecord.STATE_INITIALIZED) {
                 log("[MIC] AudioRecord init failed"); r.release(); return
             }
+            // Pin capture to the helmet mic too: on some phones (Samsung) the communication device
+            // alone doesn't move a VOICE_RECOGNITION recording off the phone's own mic.
+            if (btIn != null) try { r.preferredDevice = btIn } catch (_: Exception) {}
             recorder = r
             recording = true
             r.startRecording()
@@ -109,7 +112,8 @@ class AaMicrophone(
      * Prefer the rider's Bluetooth mic (helmet → bike → phone) over the phone's own, which is
      * useless in a pocket at speed.
      */
-    private fun preferBluetoothMic() {
+    private fun preferBluetoothMic(): AudioDeviceInfo? {
+        var input: AudioDeviceInfo? = null
         try {
             val am = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -118,7 +122,9 @@ class AaMicrophone(
                 }
                 if (bt != null) {
                     am.setCommunicationDevice(bt)
-                    log("[MIC] using Bluetooth headset mic (${bt.productName})")
+                    input = am.getDevices(AudioManager.GET_DEVICES_INPUTS)
+                        .firstOrNull { it.type == AudioDeviceInfo.TYPE_BLUETOOTH_SCO }
+                    log("[MIC] using Bluetooth headset mic (${bt.productName})${if (input == null) " — input not listed yet" else ""}")
                 } else {
                     log("[MIC] no Bluetooth mic available — using the phone's mic")
                 }
@@ -129,6 +135,7 @@ class AaMicrophone(
         } catch (e: Exception) {
             log("[MIC] bluetooth mic routing failed ($e) — using the phone's mic")
         }
+        return input
     }
 
     private fun releaseBluetoothMic() {
@@ -149,6 +156,10 @@ class AaMicrophone(
             try {
                 transport.send(micData(buf, n))
                 if (++sent <= 2L || sent % 250L == 0L) log("[MIC] chunks sent=$sent")
+                if (sent == 25L) {   // ~0.5 s in: report which mic Android actually gave us
+                    val d = try { r.routedDevice } catch (_: Exception) { null }
+                    log("[MIC] actual input: ${d?.let { "${it.productName} (type ${it.type}${if (it.type == AudioDeviceInfo.TYPE_BLUETOOTH_SCO) ", Bluetooth" else if (it.type == AudioDeviceInfo.TYPE_BUILTIN_MIC) ", phone mic" else ""})" } ?: "unknown"}")
+                }
             } catch (e: Exception) {
                 log("[MIC] send failed: $e"); break
             }

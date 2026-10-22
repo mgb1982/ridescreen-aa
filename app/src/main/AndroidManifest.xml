@@ -3,11 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- v2.3: suggest today's appointments as one-tap destinations (only read when the rider allows it). -->
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Android 17 local network protection: talking to the dash on its own Wi‑Fi (192.168.x.x). -->
+    <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <!-- Wi‑Fi Direct (P2P) join for dashes that are Group Owners (e.g. CL‑C450). -->
     <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES"
@@ -28,6 +32,8 @@
         android:usesPermissionFlags="neverForLocation" />
     <uses-permission
         android:name="android.permission.BLUETOOTH_CONNECT" />
+    <!-- v2.3 passenger mode (Nearby Connections between two RideScreen phones). -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
     <!-- Streams the phone/helmet mic to Android Auto so the Assistant can hear you (voice
          destination entry). Optional: only used when you tap the Voice control. -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -38,8 +44,10 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <!-- Trip video: find the clips filmed during a ride (Ray-Ban Meta imports, action cams). -->
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
@@ -64,6 +72,14 @@
         <package android:name="com.google.android.gms" />
         <!-- So we can detect + best-effort close the official CFMoto app when it grabs the link ports. -->
         <package android:name="com.cfmoto.cfmotointernational" />
+        <!-- v2.3: navigation app choice (Google Maps / Waze). -->
+        <package android:name="com.google.android.apps.maps" />
+        <package android:name="com.waze" />
+        <!-- v2.3: "on my way" by WhatsApp (text ready). -->
+        <package android:name="com.whatsapp" />
+        <package android:name="com.whatsapp.w4b" />
+        <!-- Carbit Ride (Zontes 125M): it may hold the dash's Bluetooth channel; we tell the rider. -->
+        <package android:name="net.easyconn.easyride.wws" />
     </queries>
 
     <application
@@ -154,6 +170,13 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:name=".CompanionActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".BlackBoxActivity"
+            android:exported="false" />
+        <activity
             android:name=".CrashAlertActivity"
             android:exported="false"
             android:excludeFromRecents="true"
@@ -163,6 +186,14 @@
         <receiver
             android:name=".CrashActionReceiver"
             android:exported="false" />
+        <receiver
+            android:name=".WeeklySummaryReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".ScreenFitActivity"
             android:exported="false"
@@ -185,6 +216,10 @@
                 <data android:scheme="wear" android:host="*" android:pathPrefix="/ocm/" />
             </intent-filter>
         </service>
+        <service
+            android:name=".TripVideoService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
         <service
             android:name=".ProjectionService"
             android:exported="false"
@@ -223,6 +258,18 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/parking_widget_info" />
+        </receiver>
+        <!-- 1x1 "Connect" widget: one tap starts Connect with the saved bike. -->
+        <receiver
+            android:name=".ConnectWidget"
+            android:exported="false"
+            android:label="@string/widget_connect_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/connect_widget_info" />
         </receiver>
     </application>
 

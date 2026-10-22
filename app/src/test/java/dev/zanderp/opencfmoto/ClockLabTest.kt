@@ -50,6 +50,20 @@ class ClockLabTest {
     }
 
     @Test
+    fun clockFixReachesThe125mOnlyOnThePhoneHotspot() {
+        assertEquals(true, PxcHandshake.clockFixDash("21340", phoneHotspotDash = false))
+        assertEquals(true, PxcHandshake.clockFixDash(" 21340 ", phoneHotspotDash = true))
+        assertEquals(true, PxcHandshake.clockFixDash("21322", phoneHotspotDash = true))
+        assertEquals(true, PxcHandshake.clockFixDash("21334", phoneHotspotDash = false))
+        assertEquals(true, PxcHandshake.clockFixDash("34808", phoneHotspotDash = false))
+        // Moto Morini & co. share the Carbit channels but host their own Wi‑Fi: no change for them.
+        assertEquals(false, PxcHandshake.clockFixDash("21322", phoneHotspotDash = false))
+        assertEquals(false, PxcHandshake.clockFixDash("21333", phoneHotspotDash = true))
+        assertEquals(false, PxcHandshake.clockFixDash(null, phoneHotspotDash = true))
+        assertEquals(false, PxcHandshake.clockFixDash("", phoneHotspotDash = false))
+    }
+
+    @Test
     fun mixedKnobsHaveNoPreset() {
         ClockLab.applyFrom(ClockQueryMode.ZONTES, ClockTimeSyncMode.PHONE, true)
         assertNull(ClockLab.matchingPreset())

@@ -95,6 +95,8 @@ class VideoPipeline(
     // them fast enough). A rising count is the downstream-congestion signal the adaptive controller
     // uses to back the bitrate off. See [droppedFramesTotal] and [AdaptiveVideoController].
     @Volatile private var droppedFrames = 0L
+    private var backlogDrops = 0
+    private var lastBacklogLog = 0L
 
     private val frameQueue = LinkedBlockingDeque<ByteArray>(8)
     @Volatile private var codecConfig: ByteArray? = null   // SPS/PPS
@@ -298,7 +300,7 @@ class VideoPipeline(
             val margins = BikeProfileHolder.aaContentMargins
             val usableW = (src.width - margins.marginW).coerceIn(16, src.width)
             val usableH = (src.height - margins.marginH).coerceIn(16, src.height)
-            aaCompositor?.setFrameCap(power.fps)
+            aaCompositor?.setFrameCap(profileCap(power.fps))
             aaCompositor?.setSourceCrop(usableW.toFloat() / src.width, usableH.toFloat() / src.height)
             aaCompositor?.setOutput(surf, w, h, usableW, usableH, fit)
             log("[VIDEO] bike canvas ${w}x$h configured; AA source ${src.width}x${src.height} " +
@@ -569,13 +571,32 @@ class VideoPipeline(
                         if (isKey) awaitKeyframe = false
                         val out = if (isKey && codecConfig != null) codecConfig!! + bytes else bytes
                         writeDump(out)
-                        // Keep the queue fresh: if full, drop oldest so we never lag far behind. A
-                        // sustained drop rate means the bike can't pull as fast as we encode
-                        // (downstream/Wi-Fi congestion) — counted for the adaptive controller.
+                        // The bike fell behind (Wi‑Fi hiccup) and the queue is full. Dropping just the
+                        // oldest frame (as before) breaks the H.264 reference chain: every later
+                        // P-frame points at a picture the dash never got, and its decoder paints grey
+                        // until a keyframe happens to get through (Francis, 15 Oct: seconds of grey on
+                        // the map). Instead: drop the whole backlog, keep the dash on its last good
+                        // picture and restart from a fresh keyframe right away.
                         if (!frameQueue.offerLast(out)) {
-                            frameQueue.pollFirst()
-                            frameQueue.offerLast(out)
-                            droppedFrames++
+                            val lost = frameQueue.size + 1
+                            frameQueue.clear()
+                            droppedFrames += lost
+                            if (isKey) {
+                                frameQueue.offerLast(out)      // a keyframe is a clean restart by itself
+                            } else {
+                                awaitKeyframe = true
+                                try {
+                                    codec.setParameters(android.os.Bundle().apply {
+                                        putInt(MediaCodec.PARAMETER_KEY_REQUEST_SYNC_FRAME, 0)
+                                    })
+                                } catch (_: Exception) {}
+                            }
+                            val now = System.currentTimeMillis()
+                            backlogDrops++
+                            if (now - lastBacklogLog > 5_000) {
+                                log("[VIDEO] dash fell behind — dropped $lost queued frames, restarting on a keyframe (${backlogDrops}× so far)")
+                                lastBacklogLog = now
+                            }
                         }
                     }
                 }
@@ -629,7 +650,18 @@ class VideoPipeline(
      * the phone heats up. No-op outside compositor mode.
      */
     fun setFrameCap(fps: Int) {
-        aaCompositor?.setFrameCap(fps)
+        aaCompositor?.setFrameCap(profileCap(fps))
+    }
+
+    /**
+     * Never feed the encoder faster than a low-rate dash's own OEM rate (Carbit / Morini profile,
+     * 10 fps — also the Zontes 125M). Moisés's 125M, 20 Oct 2026: 24 fps in, the dash pulling ~13,
+     * the 8-frame queue overflowed ~every 3 s (171× in 9 min) and each overflow cost a 32 KB
+     * keyframe. At the dash's own rate the queue stays short and P-frames keep flowing.
+     */
+    private fun profileCap(fps: Int): Int {
+        val oem = BikeProfileHolder.active.videoFrameRate
+        return if (oem in 1 until 30) minOf(fps, oem) else fps
     }
 
     /** Compositor mode: the surface the AA decoder renders into (letterboxed before the encoder). */

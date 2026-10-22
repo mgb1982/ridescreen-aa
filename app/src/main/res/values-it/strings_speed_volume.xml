@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="speed_volume_title">Volume in base alla velocità</string>
+    <string name="speed_volume_desc">Alza il volume multimediale del telefono (voce del navigatore e musica) quando vai più veloce, per vincere il rumore del vento. La base è il tuo volume: cambialo quando vuoi e l\'aumento lo segue. In pausa mentre i pulsanti del manubrio controllano Android Auto.</string>
+    <string name="speed_volume_off">Spento</string>
+    <string name="speed_volume_low">Basso</string>
+    <string name="speed_volume_medium">Medio</string>
+    <string name="speed_volume_high">Alto</string>
+    <string name="speed_volume_status_off">Spento</string>
+    <string name="speed_volume_status_waiting">In attesa del collegamento con la moto…</string>
+    <string name="speed_volume_status_paused">In pausa: i pulsanti del manubrio stanno bloccando il volume</string>
+    <string name="speed_volume_status_no_gps">Attivo: in attesa della velocità GPS…</string>
+    <string name="speed_volume_status_live">Attivo: %1$d km/h · aumento +%2$d</string>
+    <string name="speed_volume_advanced_show">Avanzate ▾</string>
+    <string name="speed_volume_advanced_hide">Avanzate ▴</string>
+    <string name="speed_volume_custom">Curva personalizzata (sostituisce quella del livello)</string>
+    <string name="speed_volume_start_label">Inizia ad alzare da: %1$d km/h</string>
+    <string name="speed_volume_step_label">Un passo in più ogni: %1$d km/h</string>
+    <string name="speed_volume_max_label">Aumento massimo: +%1$d passi</string>
+    <string name="speed_volume_custom_hint">I passi sono su una scala di volume da 15. Per usare la curva personalizzata deve comunque essere scelto un livello diverso da Spento.</string>
+</resources>

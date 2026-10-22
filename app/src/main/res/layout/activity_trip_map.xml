@@ -6,20 +6,15 @@
     android:background="@color/bg"
     android:orientation="vertical">
 
+    <!-- v2.3: title and stats full width, buttons on their own row underneath (a longer
+         "🎬 Vídeo · N creat(s)" squeezed the title into one letter per line, 17 Oct). -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingHorizontal="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp">
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
 
         <TextView
             android:id="@+id/map_title"
@@ -38,22 +33,30 @@
             android:text=""
             android:textColor="@color/text_secondary"
             android:textSize="13sp" />
-    </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/map_video"
-            style="@style/Widget.OpenCfMoto.Button.Pill"
-            android:layout_width="wrap_content"
-            android:layout_marginStart="10dp"
-            android:visibility="gone"
-            android:text="@string/tv_button" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="end|center_vertical"
+            android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/map_share"
-            style="@style/Widget.OpenCfMoto.Button.Pill"
-            android:layout_width="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="@string/share_button" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/map_video"
+                style="@style/Widget.OpenCfMoto.Button.Pill"
+                android:layout_width="wrap_content"
+                android:maxLines="1"
+                android:visibility="gone"
+                android:text="@string/tv_button" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/map_share"
+                style="@style/Widget.OpenCfMoto.Button.Pill"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="10dp"
+                android:maxLines="1"
+                android:text="@string/share_button" />
+        </LinearLayout>
     </LinearLayout>
 
     <!-- "Everything I've ridden": routes / heat, and the period. Hidden for a single trip. -->

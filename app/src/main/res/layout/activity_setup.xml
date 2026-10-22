@@ -1308,6 +1308,31 @@
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
 
+                <!-- v2.3: chime on connect / link lost. -->
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switch_connect_sound"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/sound_setting"
+                    android:textColor="@color/text_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/sound_setting_desc"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_connect_sound_style"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:textAllCaps="false" />
+
                 <!-- Auto-recovery -->
                 <TextView
                     android:layout_width="match_parent"

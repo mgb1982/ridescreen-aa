@@ -59,6 +59,8 @@ class AaReceiver(
     @Volatile private var sessionStarting = false
     private val sessionLock = Any()
     @Volatile private var steadyVideoFired = false
+    /** Consecutive seconds with real (≥10 fps) but slow video: slow phones never reach 25 fps. */
+    @Volatile private var slowVideoSeconds = 0
 
     /**
      * Fired when an AA session ends. [userExit] is true when the rider tapped Exit in Android Auto
@@ -72,7 +74,8 @@ class AaReceiver(
         onFpsChanged = { fps ->
             log("[AA] decode fps=$fps")
             AaVideoBridge.aaDecoding = true
-            if (!steadyVideoFired && fps >= 25) {
+            slowVideoSeconds = if (fps >= 10) slowVideoSeconds + 1 else 0
+            if (!steadyVideoFired && (fps >= 25 || slowVideoSeconds >= 2)) {
                 steadyVideoFired = true
                 log("[AA] steady video reached (fps=$fps) — signalling ready for bike hand-off")
                 try { AaVideoBridge.onSteadyVideo?.invoke() } catch (_: Exception) {}
@@ -215,7 +218,7 @@ class AaReceiver(
         AaVideoBridge.aaSessionLive = true
         AaVideoBridge.aaSessionSeen = true
         AaVideoBridge.aaDecoding = false
-        steadyVideoFired = false
+        steadyVideoFired = false; slowVideoSeconds = 0
 
         // Bike touchscreen → Android Auto: EasyConnProber decodes dash touches (PXC cmdType 32) and
         // calls this sink with raw bike-canvas coords + a normalised action. Letterbox-map into AA
@@ -257,6 +260,7 @@ class AaReceiver(
             log("[AA] handshake FAILED")
             if (client.port == HEADUNIT_SERVER_PORT) {
                 // TCP accepted but no VERSION_RESPONSE: Android Auto's head unit server is wedged.
+                dev.zanderp.opencfmoto.AaVideoBridge.husWedged = true
                 log(
                     "[AA] → Android Auto's head unit server accepted the connection but didn't answer. " +
                         "Restart it: Android Auto settings → ⋮ → Stop head unit server, then Start head unit server " +
@@ -269,6 +273,7 @@ class AaReceiver(
             connection = null
             return
         }
+        dev.zanderp.opencfmoto.AaVideoBridge.husWedged = false
         log("[AA] handshake OK — pointing decoder at encoder surface and starting read loop")
         videoDecoder.setSurface(encoderSurface)
         t.startReading()

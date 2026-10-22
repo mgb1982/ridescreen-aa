@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="setup_clock_resync">Risincronizza l\'orologio del cruscotto (Zontes)</string>
+    <string name="setup_clock_resync_desc">Interrompe il collegamento per qualche secondo e si ricollega, così il cruscotto riprende l\'ora. Intelligente: solo quando il cruscotto ha chiesto l\'ora in ritardo (il segno di una sincronizzazione fallita), fino a 3 volte. Sempre una volta: al primo collegamento di ogni accensione del cruscotto. Agisce solo sui cruscotti Zontes.</string>
+    <string name="setup_clock_resync_smart">Intelligente</string>
+    <string name="setup_clock_resync_once">Sempre una volta</string>
+    <string name="clock_resyncing">⏱ Regolazione dell\'orologio del cruscotto…</string>
+</resources>

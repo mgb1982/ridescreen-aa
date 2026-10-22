@@ -48,6 +48,9 @@ object TrafficLights {
         val avgWaitS: Int get() = if (stops == 0) 0 else waitS / stops
         var cycleS: Int? = null
         var cycleConfidence = 0f
+        /** v2.3 · every pass, for the green-wave observation ([GreenWave]). */
+        val log = ArrayList<GreenWave.Pass>()
+        var wave: GreenWave.Score? = null
     }
 
     class JunctionStats(val junction: Junction, val approaches: List<Approach>) {
@@ -84,47 +87,82 @@ object TrafficLights {
     private fun cellKey(lat: Double, lon: Double) =
         "${floor(lat / CELL_DEG).toInt()}_${floor(lon / CELL_DEG).toInt()}"
 
-    /** Blocking (network for uncached cells). @return signal nodes, and whether some cell failed. */
+    private const val CACHE_MAX_AGE_MS = 60L * 24 * 3600_000L
+    private const val FAIL_BACKOFF_MS = 30L * 60_000L
+    private val OVERPASS = listOf(
+        "https://overpass-api.de/api/interpreter",
+        "https://overpass.kumi.systems/api/interpreter",
+    )
+
+    private fun readCell(f: File): List<DoubleArray>? {
+        if (!f.isFile || System.currentTimeMillis() - f.lastModified() >= CACHE_MAX_AGE_MS) return null
+        return try {
+            val a = JSONArray(f.readText())
+            (0 until a.length()).map { a.getJSONArray(it).let { p -> doubleArrayOf(p.getDouble(0), p.getDouble(1)) } }
+        } catch (_: Exception) { null }
+    }
+
+    /**
+     * Blocking (network only for cells not cached). All missing cells go in ONE Overpass request (it used
+     * to be one request per cell: 8 cells = 8 slow round trips, and a failed cell was retried on every
+     * visit). A failure is remembered for 30 min so reopening the screen doesn't start the wait again.
+     * @return signal nodes, and whether some cell is missing.
+     */
     private fun signalsFor(ctx: Context, trips: List<Trip>, progress: (String) -> Unit): Pair<List<DoubleArray>, Boolean> {
         val cells = LinkedHashSet<String>()
         for (t in trips) for (p in t.points) cells += cellKey(p.lat, p.lon)
         val out = ArrayList<DoubleArray>()
-        var failed = false
-        var done = 0
+        val missing = ArrayList<String>()
         for (key in cells) {
-            done++
-            val f = File(cacheDir(ctx), "$key.json")
-            val text = if (f.isFile && System.currentTimeMillis() - f.lastModified() < 60L * 24 * 3600_000L) {
-                f.readText()
+            val cached = readCell(File(cacheDir(ctx), "$key.json"))
+            if (cached != null) out += cached else missing += key
+        }
+        var failed = false
+        if (missing.isNotEmpty()) {
+            val marker = File(cacheDir(ctx), "fail.stamp")
+            val recentFail = marker.isFile && System.currentTimeMillis() - marker.lastModified() < FAIL_BACKOFF_MS
+            if (recentFail) {
+                LogBus.log("[TL] ${missing.size} cells missing, last download failed < 30 min ago — not retrying yet")
+                failed = true
             } else {
-                progress(ctx.getString(R.string.tl_progress_signals, done, cells.size))
-                try {
+                progress(ctx.getString(R.string.tl_progress_signals, 1, 1))
+                val parts = missing.joinToString("") { key ->
                     val (y, x) = key.split('_').map { it.toInt() }
-                    val s = y * CELL_DEG; val w = x * CELL_DEG
-                    val q = String.format(
-                        Locale.ROOT,
-                        "[out:json][timeout:25];node[\"highway\"=\"traffic_signals\"](%.4f,%.4f,%.4f,%.4f);out skel;",
-                        s, w, s + CELL_DEG, w + CELL_DEG,
-                    )
-                    AppHttp.throttle("overpass-api.de", 1_000)
-                    val body = AppHttp.postForm("https://overpass-api.de/api/interpreter", "data=" + AppHttp.encode(q))
+                    val sLat = y * CELL_DEG; val w = x * CELL_DEG
+                    String.format(Locale.ROOT, "node[\"highway\"=\"traffic_signals\"](%.4f,%.4f,%.4f,%.4f);", sLat, w, sLat + CELL_DEG, w + CELL_DEG)
+                }
+                val q = "[out:json][timeout:40];($parts);out skel;"
+                var body: String? = null
+                for (url in OVERPASS) {
+                    try {
+                        AppHttp.throttle(java.net.URI(url).host, 1_000)
+                        body = AppHttp.postForm(url, "data=" + AppHttp.encode(q), connectTimeoutMs = 10_000, readTimeoutMs = 45_000)
+                        break
+                    } catch (e: Exception) {
+                        LogBus.log("[TL] signals from ${java.net.URI(url).host} failed: ${e.message}")
+                    }
+                }
+                if (body == null) {
+                    failed = true
+                    try { marker.writeText(System.currentTimeMillis().toString()) } catch (_: Exception) {}
+                } else try {
+                    marker.delete()
                     val arr = JSONObject(body).optJSONArray("elements") ?: JSONArray()
-                    val slim = JSONArray()
+                    val perCell = HashMap<String, JSONArray>().also { m -> missing.forEach { m[it] = JSONArray() } }
                     for (i in 0 until arr.length()) {
                         val e = arr.getJSONObject(i)
-                        slim.put(JSONArray().put(e.optDouble("lat")).put(e.optDouble("lon")))
+                        val lat = e.optDouble("lat"); val lon = e.optDouble("lon")
+                        if (lat.isNaN() || lon.isNaN()) continue
+                        perCell[cellKey(lat, lon)]?.put(JSONArray().put(lat).put(lon))
+                        out += doubleArrayOf(lat, lon)
                     }
-                    slim.toString().also { f.writeText(it) }
+                    for ((key, a) in perCell) File(cacheDir(ctx), "$key.json").writeText(a.toString())
+                    LogBus.log("[TL] downloaded ${arr.length()} signals for ${missing.size} cells in one request")
                 } catch (e: Exception) {
-                    LogBus.log("[TL] signals for $key failed: ${e.message}")
+                    LogBus.log("[TL] signals parse failed: ${e.message}")
                     failed = true
-                    null
                 }
-            } ?: continue
-            try {
-                val a = JSONArray(text)
-                for (i in 0 until a.length()) a.getJSONArray(i).let { out += doubleArrayOf(it.getDouble(0), it.getDouble(1)) }
-            } catch (_: Exception) {}
+            }
         }
         return out to failed
     }
@@ -202,17 +240,31 @@ object TrafficLights {
                 if (dir >= 0 && runS <= MAX_STOP_S) {
                     val a = approaches.getOrPut(j.id.toLong() * 8 + dir) { Approach(j, dir) }
                     a.passes++
+                    // Where the bike was ~300 m before (for "will you make the green?").
+                    var k = i - 1
+                    while (k > 0 && metres(pts[k].lat, pts[k].lon, j.lat, j.lon) < GreenWave.APPROACH_M &&
+                        pts[i].time - pts[k].time < 90_000L) k--
+                    val dApp = if (k >= 0 && k < i) metres(pts[k].lat, pts[k].lon, j.lat, j.lon) else 0.0
+                    val app = if (dApp >= 200.0) pts[k] else null
+                    var closest = i
+                    for (q in i..end) if (metres(pts[q].lat, pts[q].lon, j.lat, j.lon) < metres(pts[closest].lat, pts[closest].lon, j.lat, j.lon)) closest = q
                     if (runS >= MIN_STOP_S) {
                         a.stops++; a.waitS += runS; tripStops++
                         val off = bestRunEnd + 1
-                        if (off < pts.size && off <= end + 5) a.greenStarts += pts[off].time
+                        if (off < pts.size && off <= end + 5) {
+                            a.greenStarts += pts[off].time
+                            a.log += GreenWave.Pass(pts[off].time, true, pts[bestRunEnd - bestRun + 1].time, pts[off].time,
+                                app?.time ?: 0L, dApp, app?.speedMs ?: 0f)
+                        }
+                    } else {
+                        a.log += GreenWave.Pass(pts[closest].time, false, 0L, 0L, app?.time ?: 0L, dApp, app?.speedMs ?: 0f)
                     }
                 }
                 i = end + 1
             }
             stopsPerTrip[t.id] = tripStops
         }
-        approaches.values.forEach { estimateCycle(it) }
+        approaches.values.forEach { estimateCycle(it); if (it.stops >= 6) it.wave = GreenWave.evaluate(it.log) }
         val byJunction = approaches.values.groupBy { it.junction.id }
             .map { (_, list) -> JunctionStats(list.first().junction, list) }
             .filter { it.passes >= MIN_PASSES_SHOWN }

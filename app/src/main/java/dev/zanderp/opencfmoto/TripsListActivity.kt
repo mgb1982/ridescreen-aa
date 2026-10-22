@@ -54,7 +54,7 @@ class TripsListActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_trips)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.trips_root)) { v, insets ->
-            val b = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val b = insets.getInsets(SafeInsets.BARS)
             v.setPadding(b.left, b.top, b.right, b.bottom)
             insets
         }
@@ -73,6 +73,20 @@ class TripsListActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.trips_all_map).setOnClickListener { TripMapActivity.startAll(this) }
         findViewById<MaterialButton>(R.id.trips_year).setOnClickListener { YearInReviewActivity.start(this) }
         findViewById<MaterialButton>(R.id.trips_traffic_lights).setOnClickListener { TrafficLightsActivity.start(this) }
+        findViewById<MaterialButton?>(R.id.trips_import)?.setOnClickListener {
+            try { importLauncher.launch(arrayOf("*/*")) } catch (e: Exception) {
+                Toast.makeText(this, getString(R.string.trips_import_failed, e.message ?: "?"), Toast.LENGTH_LONG).show()
+            }
+        }
+        // v2.3 · 📊 this week so far (the same text as Sunday's notification).
+        findViewById<MaterialButton>(R.id.trips_week).setOnClickListener {
+            val w = WeeklySummary.compute(this)
+            com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.week_title_sofar)
+                .setMessage(if (w.rides == 0) getString(R.string.week_none) else WeeklySummary.text(this, w) + "\n\n" + getString(R.string.week_hint))
+                .setPositiveButton(android.R.string.ok, null)
+                .show()
+        }
         findViewById<MaterialButton>(R.id.trips_logging_enable).setOnClickListener {
             AppSettings.setLogTrips(this, true)
             LogBus.log("[trip] logging turned on from the Trips screen")
@@ -285,8 +299,36 @@ class TripsListActivity : AppCompatActivity() {
         videoBtn.layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
         ).apply { topMargin = dp(4) }
-        if (TripVideo.hasVideoAccess(this)) {
-            clipCounter.execute {
+        // Videos already made of this trip are our own files: listed even without video access.
+        clipCounter.execute {
+            val madeList = TripVideo.madeFor(this, trip)
+            val made = madeList.size
+            // v2.3: a frame of the newest video on the card, tap to watch it.
+            val thumb = madeList.firstOrNull()?.let { TripVideo.thumbnail(this, it.uri) }
+            if (made > 0) runOnUiThread {
+                if (thumb != null && videoBtn.parent is ViewGroup) {
+                    val parent = videoBtn.parent as ViewGroup
+                    parent.addView(android.widget.ImageView(this).apply {
+                        setImageBitmap(thumb)
+                        scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
+                        contentDescription = getString(R.string.tv_open)
+                        clipToOutline = true
+                        outlineProvider = object : android.view.ViewOutlineProvider() {
+                            override fun getOutline(v: View, o: android.graphics.Outline) { o.setRoundRect(0, 0, v.width, v.height, dp(10).toFloat()) }
+                        }
+                        setOnClickListener {
+                            try {
+                                startActivity(Intent(Intent.ACTION_VIEW).setDataAndType(madeList.first().uri, "video/mp4")
+                                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION))
+                            } catch (_: Exception) {}
+                        }
+                    }, parent.indexOfChild(videoBtn), LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(140)).apply { topMargin = dp(6) })
+                }
+                videoBtn.text = getString(R.string.tv_button_made, made)
+                videoBtn.strokeColor = android.content.res.ColorStateList.valueOf(ContextCompat.getColor(this, R.color.brand_gold))
+                videoBtn.setTextColor(ContextCompat.getColor(this, R.color.brand_gold))
+            }
+            else if (TripVideo.hasVideoAccess(this)) {
                 val n = TripVideo.quickClipCount(this, trip)
                 if (n > 0) runOnUiThread {
                     videoBtn.text = getString(R.string.tv_button_clips, n)
@@ -344,6 +386,41 @@ class TripsListActivity : AppCompatActivity() {
             setTypeface(typeface, android.graphics.Typeface.BOLD)
         })
         return box
+    }
+
+    /** v2.3: 📥 import a ride from a GPX file (any app's export, or a ride rebuilt from Google Timeline). */
+    private val importLauncher = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri == null) return@registerForActivityResult
+        val app = applicationContext
+        Thread({
+            val msg: String = try {
+                val text = contentResolver.openInputStream(uri)?.use { it.readBytes().toString(Charsets.UTF_8) } ?: ""
+                val imp = TripGpx.fromXml(text)
+                when {
+                    imp == null -> getString(R.string.trips_import_empty)
+                    TripStore.get(app, imp.trip.id) != null -> getString(R.string.trips_import_exists)
+                    else -> {
+                        val t = imp.trip
+                        TripStore.save(app, t)
+                        LogBus.log("[trip] imported ride from GPX: ${t.distanceText()} in ${t.durationText()} (${imp.pointCount} points)")
+                        try { TripNames.ensure(app, listOf(t)) } catch (_: Exception) {}
+                        try { Records.onTripSaved(app, t) } catch (_: Exception) {}
+                        try { Trophies.onTripSaved(app) } catch (_: Exception) {}
+                        try { Maintenance.onTripSaved(app, t) } catch (_: Exception) {}
+                        runOnUiThread {
+                            allTrips = TripStore.summaries(this)
+                            dayStartMs = startOfDay(t.start)
+                            renderDay()
+                        }
+                        getString(R.string.trips_import_done, t.distanceText())
+                    }
+                }
+            } catch (e: Exception) {
+                LogBus.log("[trip] GPX import failed: $e")
+                getString(R.string.trips_import_failed, e.message ?: e.toString())
+            }
+            runOnUiThread { Toast.makeText(this, msg, Toast.LENGTH_LONG).show() }
+        }, "trip-import").start()
     }
 
     private fun confirmDelete(trip: Trip) {

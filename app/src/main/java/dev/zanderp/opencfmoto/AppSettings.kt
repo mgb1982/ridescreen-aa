@@ -28,6 +28,7 @@ object AppSettings {
     private const val KEY_INCLUDE_SECRETS = "include_secrets_in_logs"
     private const val KEY_TRANSPORT = "wifi_transport"
     private const val KEY_ANON_TELEMETRY = "anonymous_telemetry"
+    private const val KEY_EXTERNAL_CONTROL = "external_control"
     private const val KEY_BT_CLOCK = "bluetooth_clock_sync"
     private const val KEY_CLOCK_LAB_QUERY = "clock_lab_query"
     private const val KEY_CLOCK_LAB_TIMESYNC = "clock_lab_timesync"
@@ -151,6 +152,11 @@ object AppSettings {
         ClockLab.resyncMode = mode
     }
 
+    /** v2.3 · Obey app.ridescreen.action.* broadcasts (Key Mapper / Tasker) while projecting. */
+    fun externalControl(ctx: Context): Boolean = prefs(ctx).getBoolean(KEY_EXTERNAL_CONTROL, false)
+    fun setExternalControl(ctx: Context, on: Boolean) =
+        prefs(ctx).edit().putBoolean(KEY_EXTERNAL_CONTROL, on).apply()
+
     fun anonymousTelemetry(ctx: Context): Boolean = prefs(ctx).getBoolean(KEY_ANON_TELEMETRY, true)
     fun setAnonymousTelemetry(ctx: Context, on: Boolean) {
         prefs(ctx).edit().putBoolean(KEY_ANON_TELEMETRY, on).apply()
@@ -167,6 +173,10 @@ object AppSettings {
 
     fun btTriggerName(ctx: Context): String? =
         prefs(ctx).getString(KEY_BT_TRIGGER_NAME, null)?.takeIf { it.isNotBlank() }
+
+    /** True once the rider picked the trigger (or "none") themselves. */
+    fun btTriggerChosen(ctx: Context): Boolean = prefs(ctx).getBoolean("bt_trigger_chosen", false)
+    fun setBtTriggerChosen(ctx: Context) { prefs(ctx).edit().putBoolean("bt_trigger_chosen", true).apply() }
 
     fun setBtTrigger(ctx: Context, mac: String?, name: String?) {
         prefs(ctx).edit()

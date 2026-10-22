@@ -31,6 +31,10 @@ object BikeLink {
     // serve, so streaming correctness is unchanged. Lives here so a MainActivity recreation
     // mid-startup doesn't lose the pending gate.
     @Volatile private var aaVideoSteady = false
+    /** Android Auto video has gone steady in this connect (read by the prober's hang-up diagnosis). */
+    fun isAaVideoSteady(): Boolean = aaVideoSteady
+    /** When this connect began: a Wi‑Fi blip in the first seconds is not an Android Auto failure. */
+    @Volatile private var connectStartedAt = 0L
     @Volatile private var bikeNetwork: Network? = null
     @Volatile private var networkReady = false
     @Volatile private var proberStarted = false
@@ -38,19 +42,24 @@ object BikeLink {
     @Volatile private var p2pBindIp: Inet4Address? = null
     @Volatile private var p2pGatewayIp: Inet4Address? = null
     @Volatile private var aaDropRetried = false
+    /** Re-triggers spent on drops that happen once the bike is already linked (125M, 19 Oct). */
+    @Volatile private var aaLiveDropRetries = 0
 
     /** Reset the gate at the start of a fresh Android Auto connection attempt. */
     @Synchronized
     fun beginHandoff(context: Context? = null) {
         if (context != null) appContext = context.applicationContext
         aaVideoSteady = false
+        connectStartedAt = android.os.SystemClock.elapsedRealtime()
         bikeNetwork = null
         networkReady = false
         proberStarted = false
         p2pBindIp = null
         p2pGatewayIp = null
         aaDropRetried = false
+        aaLiveDropRetries = 0
         AaVideoBridge.aaSessionSeen = false
+        AaVideoBridge.husWedged = false
         // Leave the bike Network held, but unpin the process so AA can use 127.0.0.1.
         appContext?.let { BikeWifi.unbindProcess(context = it) }
     }
@@ -61,6 +70,18 @@ object BikeLink {
         if (aaDropRetried || aaVideoSteady) return false
         aaDropRetried = true
         return true
+    }
+
+    /**
+     * Android Auto dropped *after* the bike was linked (seen on the Zontes 125M: AA went quiet a few
+     * seconds after our own hotspot came up, and the dash kept showing the last frozen frame).
+     * Allow a few self-mode re-triggers per connect so AA comes back on its own.
+     */
+    @Synchronized
+    fun takeAaLiveDropRetry(): Int {
+        if (!aaVideoSteady || !(proberStarted || networkReady) || aaLiveDropRetries >= 3) return 0
+        aaLiveDropRetries++
+        return aaLiveDropRetries
     }
 
     @Synchronized
@@ -135,7 +156,15 @@ object BikeLink {
             bikeNetwork = network
             networkReady = true
             proberStarted = false
-            ConnectionState.set(Phase.ERROR, "Android Auto isn't sending video — tap Connect")
+            // Right after Connect, Android often swaps the bike network once (e.g. the watch-mode
+            // request hands over to ours) before Android Auto has had time to start: that is not an
+            // error, keep waiting. Only a later drop without video is worth telling the rider.
+            val sinceStart = android.os.SystemClock.elapsedRealtime() - connectStartedAt
+            if (connectStartedAt > 0 && sinceStart < 45_000L) {
+                ConnectionState.set(Phase.STARTING_AA, "waiting for Android Auto video")
+            } else {
+                ConnectionState.set(Phase.ERROR, "Android Auto isn't sending video — tap Connect")
+            }
             return
         }
         LogBus.log("→ restarting bike link on re-acquired Wi-Fi")

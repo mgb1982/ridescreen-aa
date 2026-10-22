@@ -1,19 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-   Sample data extraction rules file; uncomment and customize as necessary.
-   See https://developer.android.com/about/versions/12/backup-restore#xml-changes
-   for details.
--->
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RideScreen AA · cloud backup and device-to-device transfer (API 31+). Same exclusions as
+     backup_rules.xml: Wi‑Fi passwords, emergency / arrival contacts and passenger pairing. -->
 <data-extraction-rules>
     <cloud-backup>
-        <!-- TODO: Use <include> and <exclude> to control what is backed up.
-        <include .../>
-        <exclude .../>
-        -->
+        <exclude domain="sharedpref" path="opencfmoto_bike.xml" />
+        <exclude domain="sharedpref" path="opencfmoto_phone_hotspot.xml" />
+        <exclude domain="sharedpref" path="crash_detector.xml" />
+        <exclude domain="sharedpref" path="arrival_notice.xml" />
+        <exclude domain="sharedpref" path="companion.xml" />
     </cloud-backup>
-    <!--
     <device-transfer>
-        <include .../>
-        <exclude .../>
+        <exclude domain="sharedpref" path="opencfmoto_bike.xml" />
+        <exclude domain="sharedpref" path="opencfmoto_phone_hotspot.xml" />
+        <exclude domain="sharedpref" path="crash_detector.xml" />
+        <exclude domain="sharedpref" path="arrival_notice.xml" />
+        <exclude domain="sharedpref" path="companion.xml" />
     </device-transfer>
-    -->
 </data-extraction-rules>

@@ -45,6 +45,8 @@ class VideoDecoder {
     var dimensionsListener: VideoDimensionsListener? = null
     var onFpsChanged: ((Int) -> Unit)? = null
     private var frameCount = 0
+    @Volatile private var inputCount = 0
+    @Volatile private var silenceLogged = false
     private var lastFpsLogTime = 0L
     @Volatile var onFirstFrameListener: (() -> Unit)? = null
     @Volatile var lastFrameRenderedMs: Long = 0L
@@ -95,10 +97,26 @@ class VideoDecoder {
             } catch (e: Exception) {}
             outputThread = null
 
-            try { codec?.stop() } catch (e: Exception) {}
-            try { codec?.release() } catch (e: Exception) { AaLog.e("Error releasing decoder", e) }
-
+            // v2.3 (22 Oct 2026, Samsung S23 / c2.qti.avc.decoder): the process died while stopping a
+            // hardware decoder that had wedged (input flowing, no output for 5 s) — "Decoder stopped"
+            // never came and Android relaunched the app 8 s later, with no Java crash. On a restart the
+            // codec is suspect: skip stop() and only release() it (what Android advises after a codec
+            // error), on a helper thread with a time limit, so a stuck codec is abandoned instead of
+            // taking the session with it.
+            val old = codec
             codec = null
+            if (old != null) {
+                val suspect = reason.startsWith("restart")
+                val t = Thread({
+                    if (!suspect) try { old.stop() } catch (e: Exception) {}
+                    try { old.release() } catch (e: Exception) { AaLog.e("Error releasing decoder", e) }
+                }, "codec-release")
+                t.isDaemon = true
+                t.start()
+                try { t.join(1_500) } catch (_: InterruptedException) {}
+                if (t.isAlive) AaLog.w("Decoder release still blocked after 1.5 s — abandoning it, a new one takes over")
+            }
+
             codecBufferInfo = null
             codecConfigured = false
             if (!reason.startsWith("restart")) {
@@ -112,7 +130,18 @@ class VideoDecoder {
         }
     }
 
+    /** Hardware decoder stalls this session; from [HW_STALLS_BEFORE_SW] on, use the software decoder. */
+    @Volatile private var hwStalls = 0
+    private val HW_STALLS_BEFORE_SW = 2
+
     private fun scheduleRestart(reason: String) {
+        if (reason.contains("stall") && currentCodecName?.startsWith("c2.android") == false &&
+            currentCodecName?.startsWith("OMX.google") == false) {
+            hwStalls++
+            if (hwStalls == HW_STALLS_BEFORE_SW) {
+                AaLog.w("Hardware decoder $currentCodecName stalled $hwStalls times — switching to the software decoder for this session")
+            }
+        }
         decoderRestartReason = reason
         decoderNeedsRestart = true
     }
@@ -209,7 +238,7 @@ class VideoDecoder {
         try {
             startTime = System.nanoTime()
             val mimeType = "video/avc"
-            val bestCodec = findBestCodec(mimeType, true)
+            val bestCodec = findBestCodec(mimeType, preferHardware = hwStalls < HW_STALLS_BEFORE_SW)
                 ?: throw IllegalStateException("No decoder available for $mimeType")
             this.currentCodecName = bestCodec
 
@@ -301,6 +330,8 @@ class VideoDecoder {
             val pts = (System.nanoTime() - startTime) / 1000
             currentCodec.queueInputBuffer(inputIndex, 0, inputBuffer.limit(), pts, flags)
             lastInputMs = SystemClock.elapsedRealtime()
+            inputCount++
+            silenceLogged = false
             return true
         } catch (e: Exception) {
             AaLog.e("Error feeding input buffer", e)
@@ -333,8 +364,14 @@ class VideoDecoder {
                     val now = System.currentTimeMillis()
                     val elapsed = now - lastFpsLogTime
                     if (elapsed >= 1000) {
-                        if (lastFpsLogTime != 0L) onFpsChanged?.invoke((frameCount * 1000 / elapsed).toInt())
+                        if (lastFpsLogTime != 0L) {
+                            val outFps = (frameCount * 1000 / elapsed).toInt()
+                            val inFps = (inputCount * 1000 / elapsed).toInt()
+                            if (outFps < 25) AaLog.i("video in=$inFps/s out=$outFps/s ($currentCodecName)")
+                            onFpsChanged?.invoke(outFps)
+                        }
                         frameCount = 0
+                        inputCount = 0
                         lastFpsLogTime = now
                     }
                 } else if (outputIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
@@ -350,6 +387,10 @@ class VideoDecoder {
                     // decoder recovery) — stay idle and let it resume; the compositor keep-alive holds
                     // the bike connection meanwhile. This avoids tearing down a healthy decoder and
                     // fighting AA's own Media Stop/Start sequence.
+                    if (inputGap > 3000L && !silenceLogged) {
+                        silenceLogged = true
+                        AaLog.w("Android Auto sent no video for ${inputGap}ms (last output ${stallGap}ms ago, decoder $currentCodecName)")
+                    }
                     if (stallGap > 3000L && inputGap < 1000L) {
                         AaLog.w("Decoder stall detected (no output for ${stallGap}ms, input ${inputGap}ms ago). Forcing restart.")
                         scheduleRestart("sync_stall")
@@ -377,7 +418,11 @@ class VideoDecoder {
         val infos = codecInfos.filter { !it.isEncoder && it.supportedTypes.any { t -> t.equals(mimeType, true) } }
         val hw = infos.find { isHardwareAccelerated(it) }
         val sw = infos.find { !isHardwareAccelerated(it) }
-        val selected = if (preferHardware && hw != null) hw.name else sw?.name ?: hw?.name
+        // v2.2.1: old OMX hardware decoders (e.g. OMX.MTK.VIDEO.DECODER.AVC on MediaTek phones) stalled
+        // Android Auto after a few frames. 800×480 H.264 is trivial in software, so prefer that there.
+        val legacyHw = hw != null && hw.name.startsWith("OMX.", ignoreCase = true) && sw != null
+        val selected = if (preferHardware && hw != null && !legacyHw) hw.name else sw?.name ?: hw?.name
+        if (legacyHw) AaLog.i("findBestCodec: legacy OMX hardware decoder ${hw?.name} → using software ${sw?.name}")
         AaLog.i("findBestCodec: hw=${hw?.name}, sw=${sw?.name}, preferHardware=$preferHardware, selected=$selected")
         return selected
     }

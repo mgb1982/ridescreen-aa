@@ -39,13 +39,20 @@ object WifiGate {
      * Foreground path: show a modal with **Wi‑Fi settings**. Prefer this from activities.
      * @return true when phone Wi‑Fi is on and the caller may proceed.
      */
-    fun ensureEnabledOrPrompt(activity: Activity): Boolean {
+    fun ensureEnabledOrPrompt(activity: Activity, direct: Boolean = true): Boolean {
         if (isWifiEnabled(activity)) {
             clearOffState(activity)
             return true
         }
-        LogBus.log("[WIFI] phone Wi‑Fi is OFF — prompting for Wi‑Fi settings")
         ConnectionState.set(Phase.ERROR, activity.getString(R.string.conn_detail_wifi_off))
+        // v2.3 · The rider tapped Connect: open Android's Wi‑Fi switch straight away (one tap, then
+        // Connect carries on by itself in onResume) instead of a dialog that only points to it.
+        if (direct && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !activity.isFinishing && !activity.isDestroyed) {
+            LogBus.log("[WIFI] phone Wi‑Fi is OFF — opening the Wi‑Fi panel")
+            openWifiPanel(activity)
+            return false
+        }
+        LogBus.log("[WIFI] phone Wi‑Fi is OFF — prompting for Wi‑Fi settings")
         showDialog(activity)
         return false
     }

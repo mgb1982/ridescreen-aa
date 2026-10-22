@@ -75,7 +75,7 @@ class GarageActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_garage)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.garage_root)) { v, insets ->
-            val b = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val b = insets.getInsets(SafeInsets.BARS)
             v.setPadding(b.left, b.top, b.right, b.bottom)
             insets
         }
@@ -173,6 +173,7 @@ class GarageActivity : AppCompatActivity() {
         val items = buildList {
             if (!isActive) add("Use this bike")
             add("Rename")
+            add(getString(R.string.bike_picker_menu))
             add(if (hasPhoto) "Change photo" else "Add photo")
             if (hasPhoto) add("Remove photo")
             add("Remove bike")
@@ -188,6 +189,7 @@ class GarageActivity : AppCompatActivity() {
                         refresh()
                     }
                     "Rename" -> promptRename(bike)
+                    getString(R.string.bike_picker_menu) -> BikePicker.show(this, bike.raw) { refresh() }
                     "Add photo", "Change photo" -> {
                         photoTargetRaw = bike.raw
                         photoLauncher.launch("image/*")
@@ -248,9 +250,27 @@ class GarageActivity : AppCompatActivity() {
         val opts = BitmapFactory.Options().apply {
             inSampleSize = sampleSizeFor(bounds.outWidth, bounds.outHeight, 720)
         }
-        val bmp = contentResolver.openInputStream(uri)?.use {
+        val decoded = contentResolver.openInputStream(uri)?.use {
             BitmapFactory.decodeStream(it, null, opts)
         } ?: return null
+        // Pablo M (22 Oct): phone photos came out sideways. Cameras store "rotate 90°" in EXIF instead of
+        // turning the pixels, and re-saving as JPEG drops that tag — so apply it here, once.
+        val degrees = try {
+            contentResolver.openInputStream(uri)?.use {
+                when (android.media.ExifInterface(it).getAttributeInt(
+                    android.media.ExifInterface.TAG_ORIENTATION, android.media.ExifInterface.ORIENTATION_NORMAL,
+                )) {
+                    android.media.ExifInterface.ORIENTATION_ROTATE_90, android.media.ExifInterface.ORIENTATION_TRANSPOSE -> 90f
+                    android.media.ExifInterface.ORIENTATION_ROTATE_180 -> 180f
+                    android.media.ExifInterface.ORIENTATION_ROTATE_270, android.media.ExifInterface.ORIENTATION_TRANSVERSE -> 270f
+                    else -> 0f
+                }
+            } ?: 0f
+        } catch (_: Exception) { 0f }
+        val bmp = if (degrees == 0f) decoded else {
+            val m = android.graphics.Matrix().apply { postRotate(degrees) }
+            Bitmap.createBitmap(decoded, 0, 0, decoded.width, decoded.height, m, true).also { if (it !== decoded) decoded.recycle() }
+        }
         val out = File(photosDir(), BikeScope.idFor(raw) + ".jpg")
         out.outputStream().use { bmp.compress(Bitmap.CompressFormat.JPEG, 85, it) }
         bmp.recycle()

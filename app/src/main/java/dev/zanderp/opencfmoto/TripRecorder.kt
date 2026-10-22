@@ -91,6 +91,7 @@ class TripRecorder(private val appContext: Context) : LocationListener {
     fun discard() {
         try { lm?.removeUpdates(this) } catch (_: Exception) {}
         recording = false
+        checkpointIo.execute { TripStore.clearCheckpoint(appContext) }
         resetLeg()
         curSpeedKmh = 0
         hasFix = false
@@ -158,7 +159,22 @@ class TripRecorder(private val appContext: Context) : LocationListener {
         points.add(TrackPoint(location.latitude, location.longitude, System.currentTimeMillis(), speedMs))
         lastFix = location
         lastFixAt = now
+        maybeCheckpoint(now)
         emit()
+    }
+
+    private var lastCheckpointAt = 0L
+
+    /** Every ~30 s, copy the ride so far to disk (off the main thread) so a dead process can't lose it. */
+    private fun maybeCheckpoint(now: Long) {
+        if (!recording || points.size < 2 || now - lastCheckpointAt < CHECKPOINT_EVERY_MS) return
+        lastCheckpointAt = now
+        val trip = Trip(
+            id = startTime.toString(), start = startTime, end = System.currentTimeMillis(),
+            distanceMeters = distanceMeters, movingTimeMs = movingTimeMs, maxSpeedMs = maxSpeedMs,
+            points = ArrayList(points),
+        )
+        checkpointIo.execute { TripStore.writeCheckpoint(appContext, trip) }
     }
 
     override fun onProviderEnabled(provider: String) {}
@@ -167,6 +183,7 @@ class TripRecorder(private val appContext: Context) : LocationListener {
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
 
     private fun resetLeg() {
+        lastCheckpointAt = 0L
         points.clear()
         distanceMeters = 0.0
         movingTimeMs = 0L
@@ -178,6 +195,8 @@ class TripRecorder(private val appContext: Context) : LocationListener {
     }
 
     private fun finalizeLeg(save: Boolean) {
+        // The leg ends here either way: its checkpoint goes (same executor, so after any pending write).
+        checkpointIo.execute { TripStore.clearCheckpoint(appContext) }
         if (!save) return
         if (distanceMeters < MIN_SAVE_DISTANCE_M || movingTimeMs < MIN_SAVE_TIME_MS || points.size < 2) return
         val trip = Trip(
@@ -210,6 +229,37 @@ class TripRecorder(private val appContext: Context) : LocationListener {
     }
 
     companion object {
+        private const val CHECKPOINT_EVERY_MS = 30_000L
+        private val checkpointIo = java.util.concurrent.Executors.newSingleThreadExecutor { r ->
+            Thread(r, "trip-checkpoint").apply { isDaemon = true }
+        }
+
+        /**
+         * At app start: a ride the previous process was recording when it died is saved as a normal
+         * trip (named, records, maintenance km). Only meaningful rides; an already-saved id is skipped.
+         */
+        fun recoverAtStart(ctx: Context) {
+            val app = ctx.applicationContext
+            checkpointIo.execute {
+                try {
+                    val t = TripStore.takeCheckpoint(app) ?: return@execute
+                    if (t.distanceMeters < MIN_SAVE_DISTANCE_M || t.movingTimeMs < MIN_SAVE_TIME_MS || t.points.size < 2) {
+                        LogBus.log("[trip] left-over ride from the last session too short to keep (${t.distanceText()})")
+                        return@execute
+                    }
+                    if (TripStore.get(app, t.id) != null) return@execute
+                    TripStore.save(app, t)
+                    LogBus.log("[trip] RECOVERED ride ${t.distanceText()} in ${t.durationText()} — the app had closed mid-ride")
+                    try { TripNames.ensure(app, listOf(t)) } catch (_: Exception) {}
+                    try { Records.onTripSaved(app, t) } catch (_: Exception) {}
+                    try { Trophies.onTripSaved(app) } catch (_: Exception) {}
+                    try { Maintenance.onTripSaved(app, t) } catch (_: Exception) {}
+                } catch (e: Exception) {
+                    LogBus.log("[trip] recovery failed: ${e.message}")
+                }
+            }
+        }
+
         /** Latest GPS fix seen, kept across legs/stops (where the bike was parked: [Parking]). */
         @Volatile var lastSeen: Location? = null
 

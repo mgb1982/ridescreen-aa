@@ -92,6 +92,17 @@ class AndroidAutoService : Service() {
         // FGS type — targetSdk 36 throws and AMS crash-loops the service.
         val stickyRestart = intent == null || (flags and START_FLAG_REDELIVERY) != 0 ||
             (intent.flags and Intent.FLAG_FROM_BACKGROUND) != 0
+        if (intent == null) {
+            // v2.3 (22 Oct 2026 log): after the process died mid-ride, Android restarted this service on
+            // its own. The receiver came up and Android Auto went live, but nothing joins the bike from
+            // here (that is MainActivity's flow) — and the running service then blocked auto-connect and
+            // the Bluetooth trigger ("session already running"). A restart with no session: just go.
+            LogBus.log("[AA] restarted by Android after the app closed — no session to resume, stopping (auto-connect / Bluetooth trigger take over)")
+            try { tryStartAsForeground(allowMicrophone = false) } catch (_: Exception) {}
+            if (active === this) active = null
+            stopSelf()
+            return START_NOT_STICKY
+        }
         if (!tryStartAsForeground(allowMicrophone = !stickyRestart)) {
             return START_NOT_STICKY
         }
@@ -182,7 +193,11 @@ class AndroidAutoService : Service() {
         // Only park for a real Wi-Fi outage — a dash-only drop with Wi-Fi still up is the prober's job.
         val apConnected = BikeWifi.currentNetwork != null
         val p2pConnected = BikeWifiP2p.isConnected
-        if (!bikeTransportConnected(apConnected, p2pConnected)) {
+        // Phone-hotspot dashes (Zontes 125M) are neither on the bike's AP nor on P2P: the dash joins
+        // our own hotspot. Frames still reaching the dash mean the link is alive, whatever the
+        // transport — without this the 125M was parked 3 min into every ride (20 Oct 2026 log).
+        val liveLink = BikeLink.prober?.let { it.isRunning && it.msSinceLastFrame() < LIVE_LINK_MS } == true
+        if (!bikeTransportConnected(apConnected, p2pConnected, liveLink)) {
             if (AppSettings.keepWifiAfterDisconnect(this)) {
                 wifiDownSince = 0L
                 return
@@ -217,6 +232,7 @@ class AndroidAutoService : Service() {
         try { BikeLink.prober?.stop() } catch (_: Exception) {}
         try { mediaButtons?.stop() } catch (_: Exception) {}
         mediaButtons = null
+        try { ExternalControl.stop(applicationContext) } catch (_: Exception) {}
         try { receiver?.stop() } catch (_: Exception) {}
         receiver = null
         AaVideoBridge.pipeline = null
@@ -553,6 +569,7 @@ class AndroidAutoService : Service() {
             return
         }
         mediaButtons = MediaButtonBridge(applicationContext, LogBus::log).also { it.start() }
+        try { ExternalControl.start(applicationContext) } catch (e: Exception) { LogBus.log("[EXT] start failed: $e") }
     }
 
     /** Handlebar bridge needs BT on + CONNECT (API 31+); otherwise it fights phone media for nothing. */
@@ -635,6 +652,19 @@ class AndroidAutoService : Service() {
                 } catch (e: Exception) {
                     LogBus.log("[AA] drop re-trigger failed: $e")
                 }
+                return
+            }
+            val n = BikeLink.takeAaLiveDropRetry()
+            if (n > 0) {
+                LogBus.log("[AA] Android Auto dropped while the dash is linked — bringing it back (try $n/3)")
+                watchdogHandler.postDelayed({
+                    if (ConnectionState.phase == Phase.STOPPED) return@postDelayed
+                    try {
+                        dev.zanderp.opencfmoto.aa.AaSelfMode.trigger(this, log = LogBus::log)
+                    } catch (e: Exception) {
+                        LogBus.log("[AA] live re-trigger failed: $e")
+                    }
+                }, 1500L * n)
             }
             return
         }
@@ -712,8 +742,11 @@ class AndroidAutoService : Service() {
         private const val GRACE_MS = 180_000L          // SoftAP blinks; 60s was parking mid-ride
         private const val RESUME_STEADY_TIMEOUT_MS = 12_000L // wait for AA video before falling back
 
-        internal fun bikeTransportConnected(apConnected: Boolean, p2pConnected: Boolean): Boolean =
-            apConnected || p2pConnected
+        internal fun bikeTransportConnected(apConnected: Boolean, p2pConnected: Boolean, liveLink: Boolean = false): Boolean =
+            apConnected || p2pConnected || liveLink
+
+        /** Frames sent to the dash this recently count as a live bike link (see the supervisor). */
+        internal const val LIVE_LINK_MS = 15_000L
 
         /** Intent extra: MainActivity should re-project on open (BAL-safe resume after a park). */
         const val EXTRA_RESUME = "dev.zanderp.opencfmoto.RESUME_PROJECTION"
@@ -726,6 +759,13 @@ class AndroidAutoService : Service() {
 
         /** True while AA is parked (torn down, waiting for the bike's Wi-Fi to return). */
         val isParked: Boolean get() = active?.aaParked == true
+
+        /**
+         * Running, not parked, yet no connect flow behind it (phase IDLE / STOPPED): a left-over service.
+         * Auto-connect and the Bluetooth trigger must not treat it as "already connected".
+         */
+        val isOrphan: Boolean get() = isRunning && !isParked &&
+            (ConnectionState.phase == Phase.IDLE || ConnectionState.phase == Phase.STOPPED)
 
         /** Ask a parked service to rebuild AA and reconnect (called by [BikeWifi] on AP re-acquire). */
         fun requestResume() {
@@ -793,14 +833,42 @@ class AndroidAutoService : Service() {
         const val ACTION_STOP = "dev.zanderp.opencfmoto.ACTION_STOP_AA"
         const val ACTION_GPX_WAKE = "dev.zanderp.opencfmoto.ACTION_GPX_WAKE"
 
+        /** A start request younger than this may not have reached startForeground() yet. */
+        private const val START_GRACE_MS = 2_500L
+        @Volatile private var lastStartRequestMs = 0L
+        private var pendingStop: Runnable? = null
+        private val mainHandler = Handler(Looper.getMainLooper())
+
         fun start(ctx: Context) {
+            // A fresh start cancels any stop that was deferred (e.g. the teardown of a mode switch).
+            pendingStop?.let { mainHandler.removeCallbacks(it); pendingStop = null }
+            lastStartRequestMs = android.os.SystemClock.elapsedRealtime()
             val i = Intent(ctx, AndroidAutoService::class.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) ctx.startForegroundService(i)
             else ctx.startService(i)
         }
 
+        /**
+         * Stopping a service whose startForegroundService() hasn't reached startForeground() yet makes
+         * Android kill the whole app (ForegroundServiceDidNotStartInTimeException, seen 21 Oct when the
+         * Bluetooth trigger and a stop crossed 100 ms apart). So a stop that arrives right after a start
+         * waits until the service has had time to go foreground.
+         */
         fun stop(ctx: Context) {
-            ctx.stopService(Intent(ctx, AndroidAutoService::class.java))
+            val app = ctx.applicationContext
+            val since = android.os.SystemClock.elapsedRealtime() - lastStartRequestMs
+            if (!isRunning && since in 0 until START_GRACE_MS) {
+                LogBus.log("[AA] stop requested ${since} ms after start — waiting for the service to go foreground")
+                pendingStop?.let { mainHandler.removeCallbacks(it) }
+                val r = Runnable {
+                    pendingStop = null
+                    try { app.stopService(Intent(app, AndroidAutoService::class.java)) } catch (_: Exception) {}
+                }
+                pendingStop = r
+                mainHandler.postDelayed(r, START_GRACE_MS - since + 300)
+                return
+            }
+            app.stopService(Intent(app, AndroidAutoService::class.java))
         }
     }
 }

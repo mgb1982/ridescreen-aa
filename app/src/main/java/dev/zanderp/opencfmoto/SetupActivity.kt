@@ -63,7 +63,7 @@ class SetupActivity : AppCompatActivity() {
 
         // Draw content clear of the status/navigation bars (edge-to-edge is enforced on newer Android).
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.setup_root)) { v, insets ->
-            val b = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val b = insets.getInsets(SafeInsets.BARS)
             v.setPadding(v.paddingLeft, b.top, v.paddingRight, b.bottom)
             insets
         }
@@ -131,6 +131,33 @@ class SetupActivity : AppCompatActivity() {
             setOnCheckedChangeListener { _, on ->
                 AppSettings.setWaitForBike(this@SetupActivity, on)
                 if (!on) BikeWatchService.stop(this@SetupActivity)
+            }
+        }
+        findViewById<com.google.android.material.materialswitch.MaterialSwitch>(R.id.switch_connect_sound).apply {
+            isChecked = ConnectSound.enabled(this@SetupActivity)
+            setOnCheckedChangeListener { _, on ->
+                ConnectSound.setEnabled(this@SetupActivity, on)
+                if (on) ConnectSound.preview(this@SetupActivity)
+                findViewById<android.view.View>(R.id.btn_connect_sound_style)?.isEnabled = on
+            }
+        }
+        // Which chime: each choice plays as you pick it.
+        findViewById<MaterialButton>(R.id.btn_connect_sound_style).apply {
+            fun label() { text = getString(R.string.sound_style_button, getString(ConnectSound.style(this@SetupActivity).labelRes)) }
+            label()
+            isEnabled = ConnectSound.enabled(this@SetupActivity)
+            setOnClickListener {
+                val styles = ConnectSound.Style.values()
+                var picked = styles.indexOf(ConnectSound.style(this@SetupActivity))
+                com.google.android.material.dialog.MaterialAlertDialogBuilder(this@SetupActivity)
+                    .setTitle(R.string.sound_style_title)
+                    .setSingleChoiceItems(styles.map { getString(it.labelRes) }.toTypedArray(), picked) { _, i ->
+                        picked = i
+                        ConnectSound.preview(this@SetupActivity, styles[i])
+                    }
+                    .setPositiveButton(android.R.string.ok) { _, _ -> ConnectSound.setStyle(this@SetupActivity, styles[picked]); label() }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show()
             }
         }
         findViewById<MaterialButton>(R.id.theme_auto).setOnClickListener { setMapTheme(MapTheme.AUTO) }
@@ -346,6 +373,7 @@ class SetupActivity : AppCompatActivity() {
             .setTitle(R.string.setup_bt_trigger_pick)
             .setItems(labels.toTypedArray()) { _, which ->
                 AppSettings.setBtTrigger(this, macs[which], names[which])
+                AppSettings.setBtTriggerChosen(this)   // a deliberate "none" is respected (no auto-adopt)
                 refreshOptions()
                 val toast = if (macs[which] == null) getString(R.string.setup_bt_trigger_none)
                 else getString(R.string.setup_bt_trigger_set, names[which])

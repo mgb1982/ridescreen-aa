@@ -37,7 +37,15 @@ class BtConnectTrigger : BroadcastReceiver() {
             return
         }
         val name = try { device?.name } catch (_: SecurityException) { null }
-        val want = AppSettings.btTriggerMac(context)
+        var want = AppSettings.btTriggerMac(context)
+        if (want == null && mac != null && !AppSettings.btTriggerChosen(context) && looksLikeSavedBike(context, mac, name)) {
+            // v2.3: riders believe "connect on Bluetooth" is on but never picked the device (field log
+            // 17 Oct: "no trigger device set" all day while the dash kept connecting). The dash's
+            // Bluetooth carries the same name as its Wi-Fi (ZT…) / the QR's address: adopt it.
+            LogBus.log("[BT-TRIG] ${name ?: "?"} ($mac) is the saved bike — using it as the Bluetooth trigger from now on")
+            AppSettings.setBtTrigger(context, mac, name ?: BikeMemory.lastQr(context)?.ssid)
+            want = mac
+        }
         if (want == null || mac == null) {
             LogBus.logThrottled("bttrig-off", "[BT-TRIG] ${name ?: "?"} connected · no trigger device set", 10 * 60_000L)
             return
@@ -48,7 +56,9 @@ class BtConnectTrigger : BroadcastReceiver() {
             return
         }
         LogBus.log("[BT-TRIG] trigger device ${name ?: "?"} ($mac) connected · AA service=${AndroidAutoService.isRunning}")
-        if (AndroidAutoService.isRunning) {
+        if (AndroidAutoService.isOrphan) {
+            LogBus.log("[BT-TRIG] Android Auto service is up but has no session (left over) — connecting normally")
+        } else if (AndroidAutoService.isRunning) {
             // v2: within 20 min of switching off, the service is still up and parked — it used to
             // swallow the trigger here. The dash's Bluetooth means the bike is on: resume now.
             if (AndroidAutoService.isParked) {
@@ -118,6 +128,16 @@ class BtConnectTrigger : BroadcastReceiver() {
         if (!name.isNullOrBlank() && !wantName.isNullOrBlank() && name.trim().length >= 4 &&
             name.trim().equals(wantName.trim(), ignoreCase = true)) return true
         return mac.length == 17 && wantMac.length == 17 && mac.substring(3).equals(wantMac.substring(3), ignoreCase = true)
+    }
+
+    /** The dash of the saved bike: same name as its Wi-Fi, or the address in its QR (last 5 bytes). */
+    private fun looksLikeSavedBike(ctx: Context, mac: String, name: String?): Boolean {
+        val qr = BikeMemory.lastQr(ctx) ?: return false
+        val n = name?.trim().orEmpty()
+        if (n.isNotEmpty() && qr.ssid.isNotBlank() && n.equals(qr.ssid.trim(), ignoreCase = true)) return true
+        val tail = qr.mac?.uppercase()?.replace(":", "")?.takeLast(10) ?: return false
+        if (tail.length == 10 && mac.uppercase().replace(":", "").endsWith(tail)) return true
+        return n.length >= 6 && DashClock.nameLooksLikeDash(n) && n.uppercase().endsWith(tail.takeLast(6))
     }
 
     private fun deviceFrom(intent: Intent): BluetoothDevice? =
