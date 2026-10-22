@@ -171,11 +171,11 @@ kbd { font-family: var(--body); font-weight: 700; background: var(--surface-2); 
       <li class="step">
         <div class="txt">
           <h3>Descarrega l'APK del rellotge al mòbil</h3>
-          <p>A la pàgina de l'última versió, a <strong>Assets</strong>, descarrega el que acaba en <strong>WearOS-reloj.apk</strong>. Deixa'l a la carpeta Baixades.</p>
+          <p>Toca el botó per descarregar directament l'APK del rellotge (el que acaba en <strong>WearOS-reloj.apk</strong>). Deixa'l a la carpeta Baixades.</p>
           <p>Instal·la també al mòbil una d'aquestes apps de Play Store: <strong>Wear Installer 2</strong> o <strong>Bugjaeger</strong>.</p>
-          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/latest">Obrir la descàrrega</a>
+          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/latest" data-apk="watch">Descarregar l’APK del rellotge<span class="apk-meta"></span></a>
         </div>
-        <div class="mock" aria-hidden="true"><span class="t">Assets</span><div class="row">RideScreen-AA-v2.2.apk</div><div class="row hi">…-WearOS-reloj.apk <span class="tap">⬇</span></div></div>
+        <div class="mock" aria-hidden="true"><span class="t">Assets</span><div class="row">RideScreen-AA-v2.3.apk</div><div class="row hi">…-WearOS-reloj.apk <span class="tap">⬇</span></div></div>
       </li>
       <li class="step">
         <div class="txt">
@@ -369,5 +369,15 @@ kbd { font-family: var(--body); font-weight: 700; background: var(--surface-2); 
 
   <p class="foot">RideScreen AA és gratuïta i de codi obert, basada en OpenCfMoto d'Alexandru (zanderp). No és una app oficial de Zontes ni de Google. Les pantalles són il·lustratives: els noms exactes dels ajustos poden variar segons el teu rellotge. · <a href="../guia/">Guia del mòbil</a></p>
 </div>
+<script>
+/* Direct APK download: point [data-apk] links at the latest release's APK (phone or watch) and show version + size.
+   Without JS, or if the GitHub API fails, they keep pointing at the release page. */
+(function(){var els=document.querySelectorAll("[data-apk]");if(!els.length||!window.fetch)return;
+fetch("https://api.github.com/repos/mgb1982/ridescreen-aa/releases/latest").then(function(r){return r.ok?r.json():null}).then(function(j){if(!j)return;
+var ph=null,w=null;(j.assets||[]).forEach(function(a){if(!/\.apk$/i.test(a.name))return;if(/wear/i.test(a.name)){w=w||a}else{ph=ph||a}});
+var v=(j.tag_name||"").replace(/^v/,"");
+els.forEach(function(e){var a=e.getAttribute("data-apk")==="watch"?w:ph;if(!a)return;e.href=a.browser_download_url;e.setAttribute("download","");
+var m=e.querySelector(".apk-meta");if(m)m.textContent=" · v"+v+" · "+Math.round(a.size/1048576)+" MB";});}).catch(function(){});})();
+</script>
 </body>
 </html>

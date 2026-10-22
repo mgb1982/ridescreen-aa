@@ -83,6 +83,8 @@ h3 { font-size: 19px; font-weight: 700; }
 .btn.ghost { border: 2px solid var(--line); color: var(--fg); }
 .btn:hover { filter: brightness(1.06); }
 .facts { margin-top: 18px; font-size: 14px; color: var(--muted); }
+.facts.alt { margin-top: 6px; }
+.facts.alt a { color: var(--muted); text-decoration: underline; }
 .hero-media { position: relative; justify-self: center; width: min(360px, 100%); }
 .hero-media .video { border-radius: 26px; border: 3px solid var(--line); aspect-ratio: 9 / 16; object-fit: cover; width: 100%; }
 .hero-media .phone { position: absolute; width: 46%; left: -18%; bottom: -6%; border-radius: 20px; border: 3px solid var(--line); box-shadow: 0 18px 50px rgba(0,0,0,.45); }
@@ -156,10 +158,11 @@ footer a { color: var(--fg); }
       <h1>Android Auto on your bike's dash, <span>wireless</span></h1>
       <p class="lede">Google Maps, Waze, Spotify and the Assistant on the bike's screen, connecting by itself when you start the bike. Plus: cheapest fuel nearby, your rides with records, videos with your speed overlaid and a watch app.</p>
       <div class="cta">
-        <a class="btn primary" href="https://github.com/mgb1982/ridescreen-aa/releases/latest">⬇️ Download for Android</a>
+        <a class="btn primary" href="https://github.com/mgb1982/ridescreen-aa/releases/latest" data-apk="phone">⬇️ Download the APK<span class="apk-meta"></span></a>
         <a class="btn ghost" href="guide/">Install guide</a>
       </div>
       <p class="facts">Free · no ads · open source · Android 10 or newer</p>
+      <p class="facts alt">Direct download of the latest version · <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">also on GitHub</a> · <a href="https://github.com/mgb1982/ridescreen-aa/releases/tag/v2.3">what’s new in v2.3</a></p>
     </div>
     <div class="hero-media">
       <img class="video" src="../img/hero-video.webp" alt="Rider's view with Android Auto on the dash and the ride speed overlaid" width="720" height="1280">
@@ -192,6 +195,10 @@ footer a { color: var(--fg); }
       <div class="card"><div class="ic">📸</div><h3>Where I parked</h3><p>Saves the spot and a photo; the watch compass leads you back to the bike.</p></div>
       <div class="card"><div class="ic">🔧</div><h3>Maintenance</h3><p>Oil, belt, inspection… with a reminder when it's due, and your real fuel consumption.</p></div>
       <div class="card"><div class="ic">🆘</div><h3>Crash detection</h3><p>Alarm on phone and watch and, if you don't respond, an SMS with your location.</p><span class="tag">Experimental</span></div>
+      <div class="card"><div class="ic">🔋</div><h3>Your bike’s battery</h3><p>Voltage and lock state, read from the keyless box. Read-only: it never sends commands.</p><span class="tag">New in 2.3</span></div>
+      <div class="card"><div class="ic">📲</div><h3>“Connect” widget</h3><p>One tap on your home screen connects to your bike, with your Garage photo.</p><span class="tag">New in 2.3</span></div>
+      <div class="card"><div class="ic">👥</div><h3>Passenger mode</h3><p>Your passenger picks the destination and music and moves Android Auto from their phone.</p><span class="tag">New in 2.3</span></div>
+      <div class="card"><div class="ic">🛟</div><h3>Rides kept safe</h3><p>Your ride is saved every 30 s even if the app closes. And you can import GPX routes.</p><span class="tag">New in 2.3</span></div>
     </div>
   </section>
 
@@ -218,7 +225,7 @@ footer a { color: var(--fg); }
     <span class="eyebrow">Get started</span>
     <h2>Ready in <span>10 minutes</span></h2>
     <ol class="steps">
-      <li><h3>Download the APK</h3><p class="muted">From <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">GitHub</a>. The app itself offers you later versions.</p></li>
+      <li><h3>Download the APK</h3><p class="muted">With the button above, directly (or <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">from GitHub</a>). The app itself offers you later versions.</p></li>
       <li><h3>Set up Android Auto</h3><p class="muted">A one-time setting in Android Auto. The guide shows you how, with screenshots.</p></li>
       <li><h3>Scan the dash QR</h3><p class="muted">And tap Connect. From then on it connects by itself when you start the bike.</p></li>
     </ol>
@@ -230,7 +237,7 @@ footer a { color: var(--fg); }
     <h2>Frequently asked <span>questions</span></h2>
     <details><summary>Is it an official Zontes app?</summary><p>No. It's an independent project, made by a rider for his own Zontes and shared with the community. It is not affiliated with Zontes, CFMoto, Carbit or Google.</p></details>
     <details><summary>How much does it cost?</summary><p>Nothing. It's free, with no ads or subscriptions, and the code is open (AGPL-3.0 licence). If you find it useful, you can <a href="https://ko-fi.com/mgb1982">buy me a coffee</a>.</p></details>
-    <details><summary>Why isn't it on Google Play?</summary><p>It's on its way. Meanwhile you install it from GitHub; if Play Protect warns you, it's because it doesn't know the app yet: More details → Install anyway.</p></details>
+    <details><summary>Why isn't it on Google Play?</summary><p>It's on its way. Meanwhile you download it from this site; if Play Protect warns you, it's because it doesn't know the app yet: More details → Install anyway.</p></details>
     <details><summary>What about my data?</summary><p>Your rides, photos and settings stay on your phone: no accounts, no cloud. The app only sends anonymous error reports (nothing that identifies you) so we can fix them, and you can turn them off.</p></details>
     <details><summary>Do I need mobile data?</summary><p>For maps, streaming music and fuel prices, yes, just like Android Auto in a car. The link to the bike uses the bike's own Wi‑Fi.</p></details>
     <details><summary>Something isn't working, what do I do?</summary><p>Check the <a href="guide/">guide</a>, which covers the most common errors. If it persists, in the app: ❓ Help → Share logs, and send it telling us what happened.</p></details>
@@ -240,7 +247,7 @@ footer a { color: var(--fg); }
 <footer>
   <div class="wrap">
     <div class="links">
-      <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">Download</a>
+      <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest" data-apk="phone">Download</a>
       <a href="guide/">Guide</a>
       <a href="watch/">Watch</a>
       <a href="https://github.com/mgb1982/ridescreen-aa">Source code</a>
@@ -253,5 +260,15 @@ footer a { color: var(--fg); }
     <p>Not an official app and not affiliated with Zontes, CFMoto, Carbit or Google. Android Auto is a trademark of Google LLC. Ride responsibly: eyes on the road, always.</p>
   </div>
 </footer>
+<script>
+/* Direct APK download: point [data-apk] links at the latest release's APK (phone or watch) and show version + size.
+   Without JS, or if the GitHub API fails, they keep pointing at the release page. */
+(function(){var els=document.querySelectorAll("[data-apk]");if(!els.length||!window.fetch)return;
+fetch("https://api.github.com/repos/mgb1982/ridescreen-aa/releases/latest").then(function(r){return r.ok?r.json():null}).then(function(j){if(!j)return;
+var ph=null,w=null;(j.assets||[]).forEach(function(a){if(!/\.apk$/i.test(a.name))return;if(/wear/i.test(a.name)){w=w||a}else{ph=ph||a}});
+var v=(j.tag_name||"").replace(/^v/,"");
+els.forEach(function(e){var a=e.getAttribute("data-apk")==="watch"?w:ph;if(!a)return;e.href=a.browser_download_url;e.setAttribute("download","");
+var m=e.querySelector(".apk-meta");if(m)m.textContent=" · v"+v+" · "+Math.round(a.size/1048576)+" MB";});}).catch(function(){});})();
+</script>
 </body>
 </html>

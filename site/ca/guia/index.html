@@ -115,8 +115,9 @@ a { color: var(--accent); }
       <li class="step">
         <div class="txt">
           <h3>Descarrega l'APK del mòbil</h3>
-          <p>Obre la pàgina de l'última versió i, a <strong>Assets</strong>, toca l'APK que comença per <strong>RideScreen-AA-v</strong> (per exemple <strong>RideScreen-AA-v2.2.apk</strong>).</p>
-          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/latest">Obrir la descàrrega</a>
+          <p>Toca el botó: es descarrega directament l'última versió (<strong>RideScreen-AA-v2.3.apk</strong> o la que toqui).</p>
+          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/latest" data-apk="phone">Descarregar l'APK<span class="apk-meta"></span></a>
+          <p>Prefereixes GitHub? A la <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">pàgina de l'última versió</a>, a <strong>Assets</strong>, toca l'APK que comença per <strong>RideScreen-AA-v</strong>.</p>
           <div class="note warn">No descarreguis el que diu <strong>WearOS-reloj</strong>: és per al rellotge i al mòbil dona "el paquet no és vàlid".</div>
         </div>
         <img src="g1_descarga.png" alt="Pàgina de descàrrega a GitHub amb l'APK del mòbil ressaltat" loading="lazy">
@@ -274,5 +275,15 @@ a { color: var(--accent); }
   <p class="foot">RideScreen AA és gratuïta i de codi obert, basada en OpenCfMoto d'Alexandru (zanderp). No és una app oficial de Zontes. Les captures són il·lustratives: els textos exactes poden variar segons el teu mòbil.</p>
 </div>
 
+<script>
+/* Direct APK download: point [data-apk] links at the latest release's APK (phone or watch) and show version + size.
+   Without JS, or if the GitHub API fails, they keep pointing at the release page. */
+(function(){var els=document.querySelectorAll("[data-apk]");if(!els.length||!window.fetch)return;
+fetch("https://api.github.com/repos/mgb1982/ridescreen-aa/releases/latest").then(function(r){return r.ok?r.json():null}).then(function(j){if(!j)return;
+var ph=null,w=null;(j.assets||[]).forEach(function(a){if(!/\.apk$/i.test(a.name))return;if(/wear/i.test(a.name)){w=w||a}else{ph=ph||a}});
+var v=(j.tag_name||"").replace(/^v/,"");
+els.forEach(function(e){var a=e.getAttribute("data-apk")==="watch"?w:ph;if(!a)return;e.href=a.browser_download_url;e.setAttribute("download","");
+var m=e.querySelector(".apk-meta");if(m)m.textContent=" · v"+v+" · "+Math.round(a.size/1048576)+" MB";});}).catch(function(){});})();
+</script>
 </body>
 </html>

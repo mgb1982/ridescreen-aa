@@ -83,6 +83,8 @@ h3 { font-size: 19px; font-weight: 700; }
 .btn.ghost { border: 2px solid var(--line); color: var(--fg); }
 .btn:hover { filter: brightness(1.06); }
 .facts { margin-top: 18px; font-size: 14px; color: var(--muted); }
+.facts.alt { margin-top: 6px; }
+.facts.alt a { color: var(--muted); text-decoration: underline; }
 .hero-media { position: relative; justify-self: center; width: min(360px, 100%); }
 .hero-media .video { border-radius: 26px; border: 3px solid var(--line); aspect-ratio: 9 / 16; object-fit: cover; width: 100%; }
 .hero-media .phone { position: absolute; width: 46%; left: -18%; bottom: -6%; border-radius: 20px; border: 3px solid var(--line); box-shadow: 0 18px 50px rgba(0,0,0,.45); }
@@ -156,10 +158,11 @@ footer a { color: var(--fg); }
       <h1>Android Auto al quadre de la teva moto, <span>sense cables</span></h1>
       <p class="lede">Google Maps, Waze, Spotify i l'Assistent a la pantalla de la moto, connectant-se sol en engegar. I a més: les benzineres més barates, els teus viatges amb rècords, vídeos amb la velocitat a sobre i app per al rellotge.</p>
       <div class="cta">
-        <a class="btn primary" href="https://github.com/mgb1982/ridescreen-aa/releases/latest">⬇️ Descarregar per a Android</a>
+        <a class="btn primary" href="https://github.com/mgb1982/ridescreen-aa/releases/latest" data-apk="phone">⬇️ Descarregar l’APK<span class="apk-meta"></span></a>
         <a class="btn ghost" href="guia/">Guia d'instal·lació</a>
       </div>
       <p class="facts">Gratuïta · sense anuncis · de codi obert · Android 10 o superior</p>
+      <p class="facts alt">Descàrrega directa de l’última versió · <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">també a GitHub</a> · <a href="https://github.com/mgb1982/ridescreen-aa/releases/tag/v2.3">novetats de la v2.3</a></p>
     </div>
     <div class="hero-media">
       <img class="video" src="../img/hero-video.webp" alt="Vista des de la moto amb Android Auto al quadre i la velocitat del viatge sobreimpresa" width="720" height="1280">
@@ -192,6 +195,10 @@ footer a { color: var(--fg); }
       <div class="card"><div class="ic">📸</div><h3>On he aparcat</h3><p>Desa el lloc i una foto; la brúixola del rellotge et porta fins a la moto.</p></div>
       <div class="card"><div class="ic">🔧</div><h3>Manteniment</h3><p>Oli, corretja, ITV… amb avís quan toca, i el teu consum real.</p></div>
       <div class="card"><div class="ic">🆘</div><h3>Detector de caigudes</h3><p>Alarma al mòbil i al rellotge i, si no respons, SMS amb la teva ubicació.</p><span class="tag">Experimental</span></div>
+      <div class="card"><div class="ic">🔋</div><h3>La bateria de la teva moto</h3><p>Voltatge i si està bloquejada, llegits de la caixa keyless. Només lectura: mai no envia ordres.</p><span class="tag">Nou a la 2.3</span></div>
+      <div class="card"><div class="ic">📲</div><h3>Widget «Connecta»</h3><p>Un toc a la pantalla d’inici i es connecta amb la moto, amb la foto del teu Garatge.</p><span class="tag">Nou a la 2.3</span></div>
+      <div class="card"><div class="ic">👥</div><h3>Mode passatger</h3><p>El teu acompanyant tria destinació i música i mou Android Auto des del seu mòbil.</p><span class="tag">Nou a la 2.3</span></div>
+      <div class="card"><div class="ic">🛟</div><h3>Viatges a salvo</h3><p>El viatge es desa cada 30 s encara que l’app es tanqui. I pots importar rutes GPX.</p><span class="tag">Nou a la 2.3</span></div>
     </div>
   </section>
 
@@ -218,7 +225,7 @@ footer a { color: var(--fg); }
     <span class="eyebrow">Començar</span>
     <h2>A punt en <span>10 minuts</span></h2>
     <ol class="steps">
-      <li><h3>Descarrega l'APK</h3><p class="muted">Des de <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">GitHub</a>. Les versions següents te les ofereix la mateixa app.</p></li>
+      <li><h3>Descarrega l'APK</h3><p class="muted">Amb el botó de dalt, directe (o <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">des de GitHub</a>). Les versions següents te les ofereix la mateixa app.</p></li>
       <li><h3>Prepara Android Auto</h3><p class="muted">Un ajust d'una sola vegada a Android Auto. La guia t'ho ensenya amb captures.</p></li>
       <li><h3>Escaneja el QR del quadre</h3><p class="muted">I prem Connectar. A partir d'aquí, es connecta sola en engegar la moto.</p></li>
     </ol>
@@ -230,7 +237,7 @@ footer a { color: var(--fg); }
     <h2>Preguntes <span>freqüents</span></h2>
     <details><summary>És una app oficial de Zontes?</summary><p>No. És un projecte independent, fet per un motorista per a la seva Zontes i compartit amb la comunitat. No està afiliat amb Zontes, CFMoto, Carbit ni Google.</p></details>
     <details><summary>Quant costa?</summary><p>Res. És gratuïta, sense anuncis ni subscripcions, i el codi és obert (llicència AGPL-3.0). Si t'és útil, em pots <a href="https://ko-fi.com/mgb1982">convidar a un cafè</a>.</p></details>
-    <details><summary>Per què no és a Google Play?</summary><p>Està en camí. Mentrestant s'instal·la des de GitHub; si Play Protect avisa, és perquè encara no coneix l'app: Més detalls → Instal·la igualment.</p></details>
+    <details><summary>Per què no és a Google Play?</summary><p>Està en camí. Mentrestant es descarrega des d'aquest web; si Play Protect avisa, és perquè encara no coneix l'app: Més detalls → Instal·la igualment.</p></details>
     <details><summary>Què passa amb les meves dades?</summary><p>Els teus viatges, fotos i ajustos es queden al teu mòbil: no hi ha comptes ni núvol. L'app només envia informes anònims d'errors (sense res que t'identifiqui) per poder arreglar-los, i els pots desactivar.</p></details>
     <details><summary>Necessito dades mòbils?</summary><p>Per als mapes, la música en streaming i les benzineres, sí, igual que amb Android Auto al cotxe. La connexió amb la moto és pel seu propi Wi‑Fi.</p></details>
     <details><summary>Alguna cosa no funciona, què faig?</summary><p>Mira la <a href="guia/">guia</a>, que té els errors més habituals. Si continua, a l'app: ❓ Ajuda → Compartir registres, i envia-ho explicant què ha passat.</p></details>
@@ -240,7 +247,7 @@ footer a { color: var(--fg); }
 <footer>
   <div class="wrap">
     <div class="links">
-      <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">Descarregar</a>
+      <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest" data-apk="phone">Descarregar</a>
       <a href="guia/">Guia</a>
       <a href="rellotge/">Rellotge</a>
       <a href="https://github.com/mgb1982/ridescreen-aa">Codi font</a>
@@ -253,5 +260,15 @@ footer a { color: var(--fg); }
     <p>No és una app oficial ni està afiliada amb Zontes, CFMoto, Carbit ni Google. Android Auto és una marca de Google LLC. Fes-la servir amb responsabilitat: la mirada, sempre a la carretera.</p>
   </div>
 </footer>
+<script>
+/* Direct APK download: point [data-apk] links at the latest release's APK (phone or watch) and show version + size.
+   Without JS, or if the GitHub API fails, they keep pointing at the release page. */
+(function(){var els=document.querySelectorAll("[data-apk]");if(!els.length||!window.fetch)return;
+fetch("https://api.github.com/repos/mgb1982/ridescreen-aa/releases/latest").then(function(r){return r.ok?r.json():null}).then(function(j){if(!j)return;
+var ph=null,w=null;(j.assets||[]).forEach(function(a){if(!/\.apk$/i.test(a.name))return;if(/wear/i.test(a.name)){w=w||a}else{ph=ph||a}});
+var v=(j.tag_name||"").replace(/^v/,"");
+els.forEach(function(e){var a=e.getAttribute("data-apk")==="watch"?w:ph;if(!a)return;e.href=a.browser_download_url;e.setAttribute("download","");
+var m=e.querySelector(".apk-meta");if(m)m.textContent=" · v"+v+" · "+Math.round(a.size/1048576)+" MB";});}).catch(function(){});})();
+</script>
 </body>
 </html>
