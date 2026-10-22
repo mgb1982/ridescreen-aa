@@ -75,6 +75,8 @@ object BikeWifiP2p {
     @Volatile private var lastConnectAt = 0L
     @Volatile private var macFailures = 0
     @Volatile private var waitingLogged = false
+    @Volatile private var acceptedAt = 0L
+    private const val ACCEPT_GRACE_MS = 25_000L
     private const val MIN_CONNECT_GAP_MS = 2_500L
     /** No peer list at all after this long (discovery broken?): allow one blind attempt. */
     private const val BLIND_AFTER_MS = 8_000L
@@ -107,7 +109,7 @@ object BikeWifiP2p {
         connected = false
         connectIssued = false
         acceptedRetries = 0
-        listedPeers = emptySet(); peersSeenAt = 0L; lastConnectAt = 0L; macFailures = 0; waitingLogged = false
+        listedPeers = emptySet(); peersSeenAt = 0L; acceptedAt = 0L; lastConnectAt = 0L; macFailures = 0; waitingLogged = false
         startedAt = android.os.SystemClock.elapsedRealtime()
         val ctx = context.applicationContext
         appContext = ctx
@@ -305,6 +307,7 @@ object BikeWifiP2p {
             "${if (listed) "listed among ${listedPeers.size} peer(s)" else "NOT listed — blind try"}) …")
         mgr.connect(chan, config, object : WifiP2pManager.ActionListener {
             override fun onSuccess() {
+                acceptedAt = android.os.SystemClock.elapsedRealtime()
                 log("$TAG connect(): MAC request accepted — waiting for group to form")
                 watchAcceptedJoin(mgr, chan, log)
             }
@@ -538,6 +541,13 @@ object BikeWifiP2p {
         cancelTimeout()
         timeoutThread = thread(name = "p2p-timeout", isDaemon = true) {
             try { Thread.sleep(timeoutMs) } catch (_: InterruptedException) { return@thread }
+            // Ricky's 350E log (22 Oct): the one connect() that was accepted came 34 s in, the dash went
+            // INVITED, and the 40 s window closed 6 s later. An accepted invitation gets 25 s of its own.
+            val sinceAccept = android.os.SystemClock.elapsedRealtime() - acceptedAt
+            if (active && !connected && acceptedAt > 0L && sinceAccept < ACCEPT_GRACE_MS) {
+                log("$TAG timeout reached while an accepted invitation is pending — waiting ${(ACCEPT_GRACE_MS - sinceAccept) / 1000}s more")
+                try { Thread.sleep(ACCEPT_GRACE_MS - sinceAccept) } catch (_: InterruptedException) { return@thread }
+            }
             if (active && !connected) {
                 fail(onFailed, log, "no P2P group formed within ${timeoutMs / 1000}s")
             }
