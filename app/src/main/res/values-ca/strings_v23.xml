@@ -23,7 +23,7 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="week_title_sofar">📊 Aquesta setmana, fins ara</string>
     <string name="week_button">📊 Aquesta setmana</string>
     <string name="week_none">Aquesta setmana encara no has agafat la moto.</string>
-    <string name="week_hint">Cada diumenge a les 20:00 et arriba com a notificació.</string>
+    <string name="week_hint">Cada diumenge a les 20:00 t\'arriba com a notificació.</string>
     <string name="week_line_main">%1$s km en %2$d viatges · %3$s rodant</string>
     <string name="week_line_more">Un %1$d %% més que la setmana passada</string>
     <string name="week_line_less">Un %1$d %% menys que la setmana passada</string>
