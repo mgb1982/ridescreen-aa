@@ -1153,7 +1153,7 @@ class MainActivity : AppCompatActivity() {
         if (intent?.getBooleanExtra(EXTRA_BT_TRIGGER, false) != true) return
         intent.removeExtra(EXTRA_BT_TRIGGER)
         BtConnectTrigger.clearNotification(this)
-        if (AndroidAutoService.isRunning) return
+        if (AndroidAutoService.isRunning && !AndroidAutoService.isOrphan) return
         if (ConnectionState.phase.busy ||
             ConnectionState.phase == Phase.STREAMING ||
             ConnectionState.phase == Phase.MIRRORING
@@ -1176,7 +1176,7 @@ class MainActivity : AppCompatActivity() {
     private fun maybeAutoConnect() {
         if (autoConnectStarted) return
         if (!AppSettings.autoConnect(this)) return
-        if (AndroidAutoService.isRunning) return
+        if (AndroidAutoService.isRunning && !AndroidAutoService.isOrphan) return
         if (ConnectionState.phase.busy ||
             ConnectionState.phase == Phase.STREAMING ||
             ConnectionState.phase == Phase.MIRRORING) return
@@ -1218,7 +1218,10 @@ class MainActivity : AppCompatActivity() {
                     autoConnectStarted = false
                     return@postDelayed
                 }
-                if (!AndroidAutoService.isRunning && !ConnectionState.phase.busy) {
+                if (AndroidAutoService.isOrphan) {
+                    log("→ Auto-connect: Android Auto service running with no session (left over) — starting a fresh Connect")
+                }
+                if ((!AndroidAutoService.isRunning || AndroidAutoService.isOrphan) && !ConnectionState.phase.busy) {
                     activity.startAaFlow(saved)
                 }
             } catch (e: Exception) {

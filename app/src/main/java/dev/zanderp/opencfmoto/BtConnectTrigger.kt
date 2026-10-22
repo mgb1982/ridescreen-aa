@@ -56,7 +56,9 @@ class BtConnectTrigger : BroadcastReceiver() {
             return
         }
         LogBus.log("[BT-TRIG] trigger device ${name ?: "?"} ($mac) connected · AA service=${AndroidAutoService.isRunning}")
-        if (AndroidAutoService.isRunning) {
+        if (AndroidAutoService.isOrphan) {
+            LogBus.log("[BT-TRIG] Android Auto service is up but has no session (left over) — connecting normally")
+        } else if (AndroidAutoService.isRunning) {
             // v2: within 20 min of switching off, the service is still up and parked — it used to
             // swallow the trigger here. The dash's Bluetooth means the bike is on: resume now.
             if (AndroidAutoService.isParked) {
