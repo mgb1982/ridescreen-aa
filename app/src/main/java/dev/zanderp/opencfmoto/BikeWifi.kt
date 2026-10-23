@@ -86,6 +86,11 @@ object BikeWifi {
     private const val FIRST_JOIN_TIMEOUT_MS = 90_000
     private const val REJOIN_TIMEOUT_MS = 12_000
 
+    /** True from [join] until [leave]: the rider still wants this link. */
+    val isActive: Boolean get() = active
+
+    @Volatile private var onFirstJoinFailedCb: (() -> Unit)? = null
+
     fun join(
         context: Context,
         ssid: String,
@@ -95,7 +100,15 @@ object BikeWifi {
         log: (String) -> Unit,
         /** Also probe for the SSID by name (Wi‑Fi Direct dashes whose network rarely shows in scans). */
         hidden: Boolean = false,
+        /** Exact access point to ask for (from the scan cache). Some phones never match a plain SSID request. */
+        bssid: String? = null,
+        /**
+         * Called instead of the retry loop when the FIRST join fails (picker declined, or the phone could
+         * not authenticate). The caller then tries another transport. Null = old behaviour (retry).
+         */
+        onFirstJoinFailed: (() -> Unit)? = null,
     ) {
+        this.onFirstJoinFailedCb = onFirstJoinFailed
         val cm = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         // Tear down any previous session's callback first.
         handler.removeCallbacksAndMessages(null)
@@ -118,6 +131,9 @@ object BikeWifi {
                 // No password = an open network (a Wi‑Fi Direct dash's group seen open in the scan).
                 if (psk.isNotEmpty()) setWpa2Passphrase(psk)
                 if (hidden) setIsHiddenSsid(true)
+                if (!bssid.isNullOrBlank()) {
+                    try { setBssid(android.net.MacAddress.fromString(bssid)) } catch (_: Exception) {}
+                }
             }
             .build()
         request = NetworkRequest.Builder()
@@ -126,7 +142,7 @@ object BikeWifi {
             .setNetworkSpecifier(specifier)
             .build()
 
-        log("requesting Wi-Fi join: $ssid …${if (hidden) " (also probing for it by name)" else ""}")
+        log("requesting Wi-Fi join: $ssid …${if (hidden) " (also probing for it by name)" else ""}${if (!bssid.isNullOrBlank()) " (exact access point $bssid)" else ""}")
         // First join of a session: Android may show "<app> wants to connect to <bike>". Say so in
         // our own words first — the most common failure was riders not tapping Connect there.
         val app = context.applicationContext
@@ -152,6 +168,8 @@ object BikeWifi {
         onLost: () -> Unit,
         log: (String) -> Unit,
         hidden: Boolean = false,
+        bssid: String? = null,
+        onFirstJoinFailed: (() -> Unit)? = null,
     ) {
         val net = currentNetwork
         if (active && net != null && this.ssid.equals(ssid, ignoreCase = true)) {
@@ -162,7 +180,7 @@ object BikeWifi {
             onAvailable(net)
             return
         }
-        join(context, ssid, psk, onAvailable, onLost, log, hidden)
+        join(context, ssid, psk, onAvailable, onLost, log, hidden, bssid, onFirstJoinFailed)
     }
 
     private fun registerCallback() {
@@ -238,6 +256,16 @@ object BikeWifi {
                 // Join timed out with no live Network — make sure we aren't still pinned to a
                 // previous dead bike AP (resume / auto-connect path).
                 if (currentNetwork == null) unbindProcess()
+                // T350X (Inky, 22 Oct 2026): the picker showed the dash, Samsung answered "No se ha podido
+                // conectar", and every re-request after that failed instantly. Hand over to the caller's
+                // other transport (Wi‑Fi Direct) instead of looping on a request the phone already refused.
+                val fallback = onFirstJoinFailedCb
+                if (!firstDelivered && fallback != null) {
+                    onFirstJoinFailedCb = null
+                    logCb?.invoke("→ first Wi‑Fi join refused — handing over to the other transport")
+                    handler.post { fallback() }
+                    return
+                }
                 if (active) scheduleRejoin()
             }
         }

@@ -706,6 +706,9 @@ private class LearnedGeometryProfile(
  * EasyConn links and frames flow, but mis-scoring as CFDL26 800MT was common — keep a dedicated
  * Baseline landscape profile so CLIENT_INFO / canvas stay on the Morini SoftAP shape.
  */
+/** Zontes dash channels that work on the Baseline CFDL16 MotoPlay Landscape profile (125X, 368, T350X). */
+private val ZONTES_CHANNELS = setOf("21340", "21334", "34808")
+
 object MoriniMlSoftApProfile : BikeProfile {
     override val name = "Morini SoftAP / Alltrhike (MLN)"
     override val requiresSockServerAuth = false
@@ -734,6 +737,11 @@ object MoriniMlSoftApProfile : BikeProfile {
     override fun score(info: JSONObject): Int {
         var s = 0
         val channel = info.optString("channel")
+        // Zontes dashes share flavor 51 and no touch, which alone gave this profile 7 points on the
+        // T350X (channel 34808, Inky, 22 Oct 2026). Without forced Baseline the Samsung A56 encoded
+        // High profile and the dash showed a grey screen while frames flowed. Zontes 125X/368 run on
+        // CFDL16 MotoPlay Landscape (Baseline@3.1): never pick Morini for a Zontes channel.
+        if (channel in ZONTES_CHANNELS) return -20
         if (channel == "21333" || channel == "21322") s += 12
         val huid = info.optString("HUID")
         if (huid.startsWith("CARB", ignoreCase = true)) s += 8

@@ -62,6 +62,29 @@ object BikeWifiP2p {
     @Volatile private var connectIssued = false
     @Volatile private var timeoutThread: Thread? = null
 
+    // 350E / T350X field logs (Alberto, Inky, 22 Oct 2026): every connect() came back ERROR, 78/78 and
+    // 51/51, on a OnePlus 8T (Android 14) and a Samsung A56 (Android 16). Each one was issued right after
+    // stopPeerDiscovery(), with the phone's peer list empty ("peers: (none yet)"). Android refuses to
+    // connect to a peer it does not currently list, and answers with that bare ERROR. So: connect only
+    // while the dash IS in the latest peer list, keep discovery running, and only every third failure
+    // fall back to the old stop-discovery-first order (Pixel needed it once).
+    /** Normalised MACs in the latest requestPeers() answer. */
+    @Volatile private var listedPeers: Set<String> = emptySet()
+    @Volatile private var startedAt = 0L
+    @Volatile private var peersSeenAt = 0L
+    @Volatile private var lastConnectAt = 0L
+    @Volatile private var macFailures = 0
+    @Volatile private var waitingLogged = false
+    @Volatile private var acceptedAt = 0L
+    private const val ACCEPT_GRACE_MS = 25_000L
+    private const val MIN_CONNECT_GAP_MS = 2_500L
+    /** No peer list at all after this long (discovery broken?): allow one blind attempt. */
+    private const val BLIND_AFTER_MS = 8_000L
+
+    /** The listed address that matches [mac] (exact, or the ±1 neighbour some dashes use), else null. */
+    private fun listedAs(mac: String): String? =
+        listedPeers.firstOrNull { it.equals(mac, ignoreCase = true) } ?: listedPeers.firstOrNull { macMatches(mac, it) }
+
     /** True only while Android reports an active Wi-Fi Direct group. */
     val isConnected: Boolean get() = active && connected
 
@@ -86,6 +109,8 @@ object BikeWifiP2p {
         connected = false
         connectIssued = false
         acceptedRetries = 0
+        listedPeers = emptySet(); peersSeenAt = 0L; acceptedAt = 0L; lastConnectAt = 0L; macFailures = 0; waitingLogged = false
+        startedAt = android.os.SystemClock.elapsedRealtime()
         val ctx = context.applicationContext
         appContext = ctx
 
@@ -215,23 +240,54 @@ object BikeWifiP2p {
         log: (String) -> Unit,
     ) {
         if (!active || connected) return
-        val mac = normalizeMac(qr.mac)
-        if (mac == null) {
+        val qrMac = normalizeMac(qr.mac)
+        if (qrMac == null) {
             log("$TAG MAC-join skipped — QR has no usable mac=")
             return
         }
         if (connectIssued) return
-        // Some stacks reject connect() while discovery is still running (Pixel ERROR).
+        val listedMac = listedAs(qrMac)
+        val mac = listedMac ?: qrMac
+        val now = android.os.SystemClock.elapsedRealtime()
+        if (now - lastConnectAt < MIN_CONNECT_GAP_MS) return
+        val listed = listedMac != null
+        val blind = peersSeenAt == 0L && now - startedAt >= BLIND_AFTER_MS
+        if (!listed && !blind) {
+            if (!waitingLogged) {
+                log("$TAG waiting for the dash ($mac) to show up in the peer list before connecting")
+                waitingLogged = true
+            }
+            return
+        }
+        waitingLogged = false
+        lastConnectAt = now
+        connectIssued = true
+        // Every third failure, try the old order once: stop discovery first (some Pixels needed it).
+        val stopFirst = macFailures > 0 && macFailures % 3 == 2
+        if (!stopFirst) {
+            issueMacConnect(mgr, chan, mac, listed, log)
+            return
+        }
+        log("$TAG fallback: stopping discovery before this connect (failures so far: $macFailures)")
         try {
             mgr.stopPeerDiscovery(chan, object : WifiP2pManager.ActionListener {
-                override fun onSuccess() { log("$TAG stopPeerDiscovery: ok (before MAC join)") }
-                override fun onFailure(reason: Int) {
-                    log("$TAG stopPeerDiscovery: ${reasonStr(reason)} — connecting anyway")
-                }
+                override fun onSuccess() { issueMacConnect(mgr, chan, mac, listed, log) }
+                override fun onFailure(reason: Int) { issueMacConnect(mgr, chan, mac, listed, log) }
             })
         } catch (e: Exception) {
-            log("$TAG stopPeerDiscovery: ${e.message}")
+            issueMacConnect(mgr, chan, mac, listed, log)
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun issueMacConnect(
+        mgr: WifiP2pManager,
+        chan: WifiP2pManager.Channel,
+        mac: String,
+        listed: Boolean,
+        log: (String) -> Unit,
+    ) {
+        if (!active || connected) { connectIssued = false; return }
         val config = WifiP2pConfig().apply {
             deviceAddress = mac
             wps.setup = WpsInfo.PBC
@@ -241,18 +297,23 @@ object BikeWifiP2p {
         // 350D (Ricky, 20 Oct 2026): the request was accepted but the dash stayed INVITED and no group
         // formed in 40 s. INVITED = Android re-invoking a remembered (persistent) group, likely stale
         // from the official app. Ask for a fresh, temporary group instead (hidden field; best effort).
-        try {
+        // 22 Oct: builds without this hack also got ERROR, but alternate it so neither variant is the
+        // only one tried: even attempts ask for a temporary group, odd ones use Android's default.
+        val temporary = macFailures % 2 == 0
+        if (temporary) try {
             WifiP2pConfig::class.java.getField("netId").setInt(config, -1) // WifiP2pGroup.NETWORK_ID_TEMPORARY
         } catch (_: Throwable) {}
-        log("$TAG connect(): joining peer MAC=$mac (WPS PBC, client, temporary group) …")
-        connectIssued = true
+        log("$TAG connect(): joining peer MAC=$mac (WPS PBC, client, ${if (temporary) "temporary" else "default"} group; " +
+            "${if (listed) "listed among ${listedPeers.size} peer(s)" else "NOT listed — blind try"}) …")
         mgr.connect(chan, config, object : WifiP2pManager.ActionListener {
             override fun onSuccess() {
+                acceptedAt = android.os.SystemClock.elapsedRealtime()
                 log("$TAG connect(): MAC request accepted — waiting for group to form")
                 watchAcceptedJoin(mgr, chan, log)
             }
             override fun onFailure(reason: Int) {
-                log("$TAG connect(): MAC failed (${reasonStr(reason)}) — will retry if peer appears")
+                macFailures++
+                log("$TAG connect(): MAC failed (${reasonStr(reason)}) #$macFailures — will retry when the dash is listed again")
                 connectIssued = false
                 // Re-arm discovery so PEERS_CHANGED can retry the MAC join.
                 try {
@@ -327,10 +388,12 @@ object BikeWifiP2p {
                     WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION -> {
                         mgr.requestPeers(chan) { peers ->
                             if (!active || connected) return@requestPeers
+                            listedPeers = peers.deviceList.mapNotNull { normalizeMac(it.deviceAddress) }.toSet()
                             if (peers.deviceList.isEmpty()) {
                                 log("$TAG peers: (none yet)")
                                 return@requestPeers
                             }
+                            peersSeenAt = android.os.SystemClock.elapsedRealtime()
                             val wantMac = normalizeMac(qr.mac)
                             var matched: WifiP2pDevice? = null
                             for (d: WifiP2pDevice in peers.deviceList) {
@@ -478,6 +541,13 @@ object BikeWifiP2p {
         cancelTimeout()
         timeoutThread = thread(name = "p2p-timeout", isDaemon = true) {
             try { Thread.sleep(timeoutMs) } catch (_: InterruptedException) { return@thread }
+            // Ricky's 350E log (22 Oct): the one connect() that was accepted came 34 s in, the dash went
+            // INVITED, and the 40 s window closed 6 s later. An accepted invitation gets 25 s of its own.
+            val sinceAccept = android.os.SystemClock.elapsedRealtime() - acceptedAt
+            if (active && !connected && acceptedAt > 0L && sinceAccept < ACCEPT_GRACE_MS) {
+                log("$TAG timeout reached while an accepted invitation is pending — waiting ${(ACCEPT_GRACE_MS - sinceAccept) / 1000}s more")
+                try { Thread.sleep(ACCEPT_GRACE_MS - sinceAccept) } catch (_: InterruptedException) { return@thread }
+            }
             if (active && !connected) {
                 fail(onFailed, log, "no P2P group formed within ${timeoutMs / 1000}s")
             }

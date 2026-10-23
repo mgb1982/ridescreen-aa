@@ -2046,6 +2046,10 @@ class MainActivity : AppCompatActivity() {
      * Uses applicationContext + the process-global prober (not this activity) so the hand-off
      * completes even if the activity is destroyed/recreated after it was armed.
      */
+    /** T350X-style dashes: switch from the SoftAP request to Wi‑Fi Direct once per connect. */
+    private val p2pFallbackDone = java.util.concurrent.atomic.AtomicBoolean(false)
+    private var p2pFallback: (String) -> Unit = {}
+
     private fun joinWifi(qr: QrData, gateOnAaSteady: Boolean) {
         if (!WifiGate.ensureEnabledOrPrompt(this)) return
         ConnectionState.set(Phase.JOINING_WIFI)
@@ -2093,7 +2097,8 @@ class MainActivity : AppCompatActivity() {
             // (Voge-5G / ZT5G…). Prefer SoftAP immediately, MAC or not: the Zontes T350X (QR
             // action=8 + ssid ZT5G… + pwd + mac, 20 Oct 2026) never formed a P2P group, then joined
             // its SoftAP in 3 s.
-            if (!isDirect && qr.pwd.isNotEmpty()) {
+            // Once Wi‑Fi Direct has worked for this dash, go straight there next time.
+            if (!isDirect && qr.pwd.isNotEmpty() && remembered != "P2P") {
                 log(
                     "→ QR says P2P-only; SSID '${qr.ssid}' is not DIRECT-* and has a password — " +
                         "joining SoftAP first (skip Wi‑Fi Direct)",
@@ -2115,11 +2120,41 @@ class MainActivity : AppCompatActivity() {
         val p2pGroupAsAp = qr.supportsP2p && !qr.supportsAp && qr.pwd.isNotEmpty() &&
             !qr.ssid.startsWith("DIRECT-", ignoreCase = true)
         if (p2pGroupAsAp) P2pWarmUp.start(applicationContext, qr, LogBus::log)
+        // Zontes T350X on a Samsung A56 / Android 16 (Inky, 21 Oct 2026): the dash was in the scan cache at
+        // -40 dBm yet the "hidden SSID" request never matched it (picker: "no device found"), 90 s at a
+        // time. When the scan cache has it, ask for that exact access point as a normal visible network.
+        @Suppress("DEPRECATION")
+        val knownAp = if (p2pGroupAsAp) {
+            P2pWarmUp.matchingScanResults(applicationContext, qr.ssid, null).firstOrNull()?.BSSID
+        } else null
+        if (p2pGroupAsAp) {
+            LogBus.log(
+                if (knownAp != null) "→ T350X-style dash: '${qr.ssid}' is in the scan cache — asking for that exact access point ($knownAp)"
+                else "→ T350X-style dash: '${qr.ssid}' not in the scan cache yet — probing by name",
+            )
+            // If the SoftAP request has not produced a network after 30 s, try Wi‑Fi Direct by the QR address.
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                if (BikeWifi.isActive && BikeWifi.currentNetwork == null && !BikeWifiP2p.isConnected) {
+                    p2pFallback("SoftAP request produced no network in 30 s")
+                }
+            }, 30_000L)
+        }
+        p2pFallbackDone.set(false)
+        p2pFallback = { why ->
+            if (p2pFallbackDone.compareAndSet(false, true)) {
+                LogBus.log("→ $why — trying Wi‑Fi Direct by the QR address")
+                BikeWifi.leave(applicationContext, LogBus::log)
+                P2pWarmUp.stop("handing over to Wi‑Fi Direct")
+                joinWifiP2p(qr, gateOnAaSteady)
+            }
+        }
         BikeWifi.reuseOrJoin(
             context = applicationContext,
             ssid = qr.ssid,
             psk = qr.pwd,
-            hidden = p2pGroupAsAp,
+            hidden = p2pGroupAsAp && knownAp == null,
+            bssid = knownAp,
+            onFirstJoinFailed = if (p2pGroupAsAp) ({ p2pFallback("the phone refused the dash's access point") }) else null,
             onAvailable = { network ->
                 WifiGate.cancelNotification(applicationContext)
                 P2pWarmUp.stop("bike Wi‑Fi joined")
