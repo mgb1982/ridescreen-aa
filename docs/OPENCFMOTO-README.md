@@ -24,9 +24,9 @@ every ride — all from an Android phone in your pocket.
 
 <br/>
 
-<img src="screenshots/01_main.png" width="220" alt="Home screen"/>&nbsp;
-<img src="screenshots/14_map_hub.png" width="220" alt="Map hub"/>&nbsp;
-<img src="screenshots/08_trips.png" width="220" alt="Saved trips by day"/>
+<img src="screenshots/opencfmoto/01_main.png" width="220" alt="Home screen"/>&nbsp;
+<img src="screenshots/opencfmoto/14_map_hub.png" width="220" alt="Map hub"/>&nbsp;
+<img src="screenshots/opencfmoto/08_trips.png" width="220" alt="Saved trips by day"/>
 
 <br/><br/>
 
@@ -123,7 +123,7 @@ required. US CRCP and international dashes both work. OpenCfMoto projects **wire
 (not Apple CarPlay).
 
 <p>
-<img src="screenshots/12_supported_bikes.png" width="240" alt="In-app supported bikes list"/>
+<img src="screenshots/opencfmoto/12_supported_bikes.png" width="240" alt="In-app supported bikes list"/>
 </p>
 
 ### Confirmed with OpenCfMoto
@@ -273,15 +273,15 @@ mirroring link).
   **Export GPX**; tap a card for the full OpenStreetMap route, or long-press to delete.
 - Manual **Start / Pause / Reset** controls are there too.
 
-<img src="screenshots/04_trip.png" width="220" alt="Trip computer"/>&nbsp;
-<img src="screenshots/08_trips.png" width="220" alt="Saved trips by day"/>&nbsp;
-<img src="screenshots/09_trip_map.png" width="220" alt="Ride route on the map"/>
+<img src="screenshots/opencfmoto/04_trip.png" width="220" alt="Trip computer"/>&nbsp;
+<img src="screenshots/opencfmoto/08_trips.png" width="220" alt="Saved trips by day"/>&nbsp;
+<img src="screenshots/opencfmoto/09_trip_map.png" width="220" alt="Ride route on the map"/>
 
 <br clear="all"/>
 
 ### 🏍️ Garage (multiple bikes)
 
-<img src="screenshots/07_devices.png" width="240" align="right" alt="Garage — saved bikes"/>
+<img src="screenshots/opencfmoto/07_devices.png" width="240" align="right" alt="Garage — saved bikes"/>
 
 The **Garage** holds every bike you've paired. Tap a bike to **make it active**, **rename** it, give it
 a **photo**, or **remove** it — and **Scan new bike** to add another. The active bike is what one-tap
@@ -327,7 +327,7 @@ own day/night map styles.
 
 ### 🔋 Battery & power, startup & recovery
 
-<img src="screenshots/03_setup2.png" width="240" align="right" alt="Setup — power & recovery"/>
+<img src="screenshots/opencfmoto/03_setup2.png" width="240" align="right" alt="Setup — power & recovery"/>
 
 This app runs a live video transcoder, so it always draws power and warms the phone. To manage that:
 
@@ -378,8 +378,8 @@ native menus; mirrored AA is handlebar-first so buttons keep working.)
 On the home screen, tap the big **Controls** button (next to **Dash view**).
 
 <p>
-<img src="screenshots/10_controls.png" width="220" alt="Controls — on-screen pad + handlebar toggle"/>&nbsp;
-<img src="screenshots/11_button_mapping.png" width="220" alt="Handlebar button mapping"/>
+<img src="screenshots/opencfmoto/10_controls.png" width="220" alt="Controls — on-screen pad + handlebar toggle"/>&nbsp;
+<img src="screenshots/opencfmoto/11_button_mapping.png" width="220" alt="Handlebar button mapping"/>
 </p>
 
 <br clear="all"/>
@@ -408,9 +408,9 @@ photo that matches your bars, then in **Controls → Customize buttons → Apply
 the matching config (or follow the tables below by hand).
 
 <p>
-<img src="screenshots/16_cluster_back_set.png" width="220" alt="Cluster A — BACK / SET diamond"/>&nbsp;
-<img src="screenshots/17_cluster_mode_ent.png" width="220" alt="Cluster B — MODE / ENT"/>&nbsp;
-<img src="screenshots/18_cluster_5way_explore.png" width="220" alt="Cluster C — 5-way Explore"/>
+<img src="screenshots/opencfmoto/16_cluster_back_set.png" width="220" alt="Cluster A — BACK / SET diamond"/>&nbsp;
+<img src="screenshots/opencfmoto/17_cluster_mode_ent.png" width="220" alt="Cluster B — MODE / ENT"/>&nbsp;
+<img src="screenshots/opencfmoto/18_cluster_5way_explore.png" width="220" alt="Cluster C — 5-way Explore"/>
 </p>
 
 | Photo | Cluster | What the bike can send | Preset in the app |
@@ -573,14 +573,14 @@ before you ride — then pocket it. On touch dashes you can **drive it with your
 **⛶** for fullscreen; **Back** exits. The **🌗** button cycles [map dark mode](#-map-dark-mode) live.
 
 <p>
-<img src="screenshots/13_dash_view.png" width="240" alt="In-app Dash view — live Android Auto with on-screen controls"/>
+<img src="screenshots/opencfmoto/13_dash_view.png" width="240" alt="In-app Dash view — live Android Auto with on-screen controls"/>
 </p>
 
 <br clear="all"/>
 
 ### 🧰 Diagnostics, updates & About
 
-<img src="screenshots/06_logs.png" width="240" align="right" alt="Diagnostics log"/>
+<img src="screenshots/opencfmoto/06_logs.png" width="240" align="right" alt="Diagnostics log"/>
 
 - **Logs** — live connection narrative. **Share** exports the log (**Wi‑Fi passwords / serials are
   redacted by default**; Setup → *Include secrets in shared logs* only if you need them locally).
@@ -624,7 +624,7 @@ OpenStreetMap data:
 | **Region packs** | Offline PMTiles + routing graphs (download on home Wi‑Fi) |
 | **Map backup** | Export / import favorites, markers, history, parked, map prefs |
 
-<img src="screenshots/14_map_hub.png" width="240" alt="Map hub — start ride, search, history"/>
+<img src="screenshots/opencfmoto/14_map_hub.png" width="240" alt="Map hub — start ride, search, history"/>
 
 **Your own API keys (optional).** Map tiles, search/POI, and basic routing work out of the box via
 public OpenStreetMap / OSRM / Valhalla endpoints — **no key required**. For stricter

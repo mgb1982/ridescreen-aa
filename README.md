@@ -74,7 +74,7 @@ Está basada en [OpenCfMoto](https://github.com/zanderp/open-cfmoto), de Alexand
 <img src="docs/screenshots/ridescreen/movil/19_video_del_viaje.png" width="200" alt="Vídeo del viaje"/>
 </p>
 <p align="center">
-<img src="docs/screenshots/ridescreen/imagenes/03_fotograma_video_recreacion.png" width="560" alt="Fotograma de un vídeo del viaje con mapa, velocidad y hora"/>
+<img src="docs/screenshots/ridescreen/imagenes/04_fotograma_video_real.jpg" width="320" alt="Fotograma de un vídeo del viaje con mapa, velocidad y hora"/>
 </p>
 
 ### 🆘 Detector de caídas (experimental, opcional)
