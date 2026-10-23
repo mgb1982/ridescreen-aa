@@ -33,6 +33,8 @@ class OpenCfMotoApp : Application() {
         }
         // After hydrate so Share Logs still show prior crash, then stamp this process build.
         LogBus.logSessionBanner()
+        try { LastExit.check(this) } catch (_: Exception) {}
+        try { TripRecorder.recoverAtStart(this) } catch (_: Exception) {}
         AppHttp.init(this)
         try { WeeklySummary.ensureScheduled(this) } catch (_: Exception) {}
         ConnectSound.init(this)

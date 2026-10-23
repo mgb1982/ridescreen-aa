@@ -97,10 +97,26 @@ class VideoDecoder {
             } catch (e: Exception) {}
             outputThread = null
 
-            try { codec?.stop() } catch (e: Exception) {}
-            try { codec?.release() } catch (e: Exception) { AaLog.e("Error releasing decoder", e) }
-
+            // v2.3 (22 Oct 2026, Samsung S23 / c2.qti.avc.decoder): the process died while stopping a
+            // hardware decoder that had wedged (input flowing, no output for 5 s) — "Decoder stopped"
+            // never came and Android relaunched the app 8 s later, with no Java crash. On a restart the
+            // codec is suspect: skip stop() and only release() it (what Android advises after a codec
+            // error), on a helper thread with a time limit, so a stuck codec is abandoned instead of
+            // taking the session with it.
+            val old = codec
             codec = null
+            if (old != null) {
+                val suspect = reason.startsWith("restart")
+                val t = Thread({
+                    if (!suspect) try { old.stop() } catch (e: Exception) {}
+                    try { old.release() } catch (e: Exception) { AaLog.e("Error releasing decoder", e) }
+                }, "codec-release")
+                t.isDaemon = true
+                t.start()
+                try { t.join(1_500) } catch (_: InterruptedException) {}
+                if (t.isAlive) AaLog.w("Decoder release still blocked after 1.5 s — abandoning it, a new one takes over")
+            }
+
             codecBufferInfo = null
             codecConfigured = false
             if (!reason.startsWith("restart")) {
@@ -114,7 +130,18 @@ class VideoDecoder {
         }
     }
 
+    /** Hardware decoder stalls this session; from [HW_STALLS_BEFORE_SW] on, use the software decoder. */
+    @Volatile private var hwStalls = 0
+    private val HW_STALLS_BEFORE_SW = 2
+
     private fun scheduleRestart(reason: String) {
+        if (reason.contains("stall") && currentCodecName?.startsWith("c2.android") == false &&
+            currentCodecName?.startsWith("OMX.google") == false) {
+            hwStalls++
+            if (hwStalls == HW_STALLS_BEFORE_SW) {
+                AaLog.w("Hardware decoder $currentCodecName stalled $hwStalls times — switching to the software decoder for this session")
+            }
+        }
         decoderRestartReason = reason
         decoderNeedsRestart = true
     }
@@ -211,7 +238,7 @@ class VideoDecoder {
         try {
             startTime = System.nanoTime()
             val mimeType = "video/avc"
-            val bestCodec = findBestCodec(mimeType, true)
+            val bestCodec = findBestCodec(mimeType, preferHardware = hwStalls < HW_STALLS_BEFORE_SW)
                 ?: throw IllegalStateException("No decoder available for $mimeType")
             this.currentCodecName = bestCodec
 

@@ -219,7 +219,13 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="pke_card_title">BATERÍA DE LA MOTO</string>
     <string name="pke_card_locked">🔒\nBloqueada</string>
     <string name="pke_card_unlocked">🔓\nDesbloqueada</string>
+    <string name="pke_card_just_now">justo ahora</string>
     <string name="pke_card_read">Leído %1$s</string>
     <string name="engine_running">motor en marcha</string>
     <string name="engine_stopped">motor parado</string>
+    <string name="trips_import">📥 Importar viaje (GPX)</string>
+    <string name="trips_import_done">Viaje importado: %1$s</string>
+    <string name="trips_import_exists">Ese viaje ya está en tus viajes</string>
+    <string name="trips_import_empty">Ese archivo no tiene un recorrido con horas</string>
+    <string name="trips_import_failed">No se ha podido importar: %1$s</string>
 </resources>

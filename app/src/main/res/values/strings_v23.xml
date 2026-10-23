@@ -219,7 +219,13 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="pke_card_title">BIKE BATTERY</string>
     <string name="pke_card_locked">🔒\nLocked</string>
     <string name="pke_card_unlocked">🔓\nUnlocked</string>
+    <string name="pke_card_just_now">just now</string>
     <string name="pke_card_read">Read %1$s</string>
     <string name="engine_running">engine running</string>
     <string name="engine_stopped">engine off</string>
+    <string name="trips_import">📥 Import a ride (GPX)</string>
+    <string name="trips_import_done">Ride imported: %1$s</string>
+    <string name="trips_import_exists">That ride is already in your rides</string>
+    <string name="trips_import_empty">No track with times in that file</string>
+    <string name="trips_import_failed">Couldn\'t import it: %1$s</string>
 </resources>

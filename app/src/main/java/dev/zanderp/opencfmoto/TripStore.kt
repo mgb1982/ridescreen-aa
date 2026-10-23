@@ -113,6 +113,39 @@ object TripStore {
         updateIndex(ctx) { l -> l.removeAll { it.id == id } }
     }
 
+    // ── v2.3: the ride in progress, written every ~30 s by TripRecorder. If the app process dies mid-ride
+    // (22 Oct 2026, Manel: a native crash while restarting the video decoder) the ride used to exist only
+    // in memory and was lost. On the next start [recoverCheckpoint] saves it as a normal trip.
+
+    private fun checkpointFile(ctx: Context) = File(ctx.applicationContext.filesDir, "trip-in-progress.json")
+
+    fun writeCheckpoint(ctx: Context, trip: Trip) {
+        val obj = JSONObject()
+            .put("id", trip.id).put("start", trip.start).put("end", trip.end)
+            .put("distanceMeters", trip.distanceMeters).put("movingTimeMs", trip.movingTimeMs)
+            .put("maxSpeedMs", trip.maxSpeedMs.toDouble())
+        val pts = JSONArray()
+        for (p in trip.points) pts.put(JSONArray().put(p.lat).put(p.lon).put(p.time).put(p.speedMs.toDouble()))
+        obj.put("points", pts)
+        runCatching {
+            val f = checkpointFile(ctx)
+            val tmp = File(f.parentFile, f.name + ".tmp")
+            tmp.writeText(obj.toString())
+            if (!tmp.renameTo(f)) { f.delete(); tmp.renameTo(f) }
+        }
+    }
+
+    fun clearCheckpoint(ctx: Context) { runCatching { checkpointFile(ctx).delete() } }
+
+    /** A ride left behind by a process that died while recording, if any (and removes the file). */
+    fun takeCheckpoint(ctx: Context): Trip? {
+        val f = checkpointFile(ctx)
+        if (!f.isFile) return null
+        val t = parse(f)
+        f.delete()
+        return t
+    }
+
     private fun parse(file: File): Trip? = runCatching {
         val o = JSONObject(file.readText())
         val ptsArr = o.optJSONArray("points") ?: JSONArray()

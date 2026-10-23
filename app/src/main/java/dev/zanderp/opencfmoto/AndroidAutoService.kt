@@ -92,6 +92,17 @@ class AndroidAutoService : Service() {
         // FGS type — targetSdk 36 throws and AMS crash-loops the service.
         val stickyRestart = intent == null || (flags and START_FLAG_REDELIVERY) != 0 ||
             (intent.flags and Intent.FLAG_FROM_BACKGROUND) != 0
+        if (intent == null) {
+            // v2.3 (22 Oct 2026 log): after the process died mid-ride, Android restarted this service on
+            // its own. The receiver came up and Android Auto went live, but nothing joins the bike from
+            // here (that is MainActivity's flow) — and the running service then blocked auto-connect and
+            // the Bluetooth trigger ("session already running"). A restart with no session: just go.
+            LogBus.log("[AA] restarted by Android after the app closed — no session to resume, stopping (auto-connect / Bluetooth trigger take over)")
+            try { tryStartAsForeground(allowMicrophone = false) } catch (_: Exception) {}
+            if (active === this) active = null
+            stopSelf()
+            return START_NOT_STICKY
+        }
         if (!tryStartAsForeground(allowMicrophone = !stickyRestart)) {
             return START_NOT_STICKY
         }
@@ -748,6 +759,13 @@ class AndroidAutoService : Service() {
 
         /** True while AA is parked (torn down, waiting for the bike's Wi-Fi to return). */
         val isParked: Boolean get() = active?.aaParked == true
+
+        /**
+         * Running, not parked, yet no connect flow behind it (phase IDLE / STOPPED): a left-over service.
+         * Auto-connect and the Bluetooth trigger must not treat it as "already connected".
+         */
+        val isOrphan: Boolean get() = isRunning && !isParked &&
+            (ConnectionState.phase == Phase.IDLE || ConnectionState.phase == Phase.STOPPED)
 
         /** Ask a parked service to rebuild AA and reconnect (called by [BikeWifi] on AP re-acquire). */
         fun requestResume() {

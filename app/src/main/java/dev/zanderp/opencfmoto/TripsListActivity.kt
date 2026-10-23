@@ -73,6 +73,11 @@ class TripsListActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.trips_all_map).setOnClickListener { TripMapActivity.startAll(this) }
         findViewById<MaterialButton>(R.id.trips_year).setOnClickListener { YearInReviewActivity.start(this) }
         findViewById<MaterialButton>(R.id.trips_traffic_lights).setOnClickListener { TrafficLightsActivity.start(this) }
+        findViewById<MaterialButton?>(R.id.trips_import)?.setOnClickListener {
+            try { importLauncher.launch(arrayOf("*/*")) } catch (e: Exception) {
+                Toast.makeText(this, getString(R.string.trips_import_failed, e.message ?: "?"), Toast.LENGTH_LONG).show()
+            }
+        }
         // v2.3 · 📊 this week so far (the same text as Sunday's notification).
         findViewById<MaterialButton>(R.id.trips_week).setOnClickListener {
             val w = WeeklySummary.compute(this)
@@ -381,6 +386,41 @@ class TripsListActivity : AppCompatActivity() {
             setTypeface(typeface, android.graphics.Typeface.BOLD)
         })
         return box
+    }
+
+    /** v2.3: 📥 import a ride from a GPX file (any app's export, or a ride rebuilt from Google Timeline). */
+    private val importLauncher = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri == null) return@registerForActivityResult
+        val app = applicationContext
+        Thread({
+            val msg: String = try {
+                val text = contentResolver.openInputStream(uri)?.use { it.readBytes().toString(Charsets.UTF_8) } ?: ""
+                val imp = TripGpx.fromXml(text)
+                when {
+                    imp == null -> getString(R.string.trips_import_empty)
+                    TripStore.get(app, imp.trip.id) != null -> getString(R.string.trips_import_exists)
+                    else -> {
+                        val t = imp.trip
+                        TripStore.save(app, t)
+                        LogBus.log("[trip] imported ride from GPX: ${t.distanceText()} in ${t.durationText()} (${imp.pointCount} points)")
+                        try { TripNames.ensure(app, listOf(t)) } catch (_: Exception) {}
+                        try { Records.onTripSaved(app, t) } catch (_: Exception) {}
+                        try { Trophies.onTripSaved(app) } catch (_: Exception) {}
+                        try { Maintenance.onTripSaved(app, t) } catch (_: Exception) {}
+                        runOnUiThread {
+                            allTrips = TripStore.summaries(this)
+                            dayStartMs = startOfDay(t.start)
+                            renderDay()
+                        }
+                        getString(R.string.trips_import_done, t.distanceText())
+                    }
+                }
+            } catch (e: Exception) {
+                LogBus.log("[trip] GPX import failed: $e")
+                getString(R.string.trips_import_failed, e.message ?: e.toString())
+            }
+            runOnUiThread { Toast.makeText(this, msg, Toast.LENGTH_LONG).show() }
+        }, "trip-import").start()
     }
 
     private fun confirmDelete(trip: Trip) {
