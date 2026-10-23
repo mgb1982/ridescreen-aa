@@ -159,6 +159,11 @@ class EasyConnProber(
     /** Sessions where the dash only opened the control socket and hung up (19 Oct, realme/125X). */
     @Volatile private var controlOnlySessions = 0
 
+    /** Diagnostic build for Wi‑Fi Direct-only dashes (modelid 21313) — see [P2pDiag]. */
+    @Volatile private var diag = false
+    private var diagSniffer: P2pDiag.MdnsSniffer? = null
+    private var diagNsdExp: P2pDiag.NsdExp? = null
+
     /**
      * @param gatewayOverride when set (Wi‑Fi Direct P2P path), use this bike GO IP instead of
      *   resolving from [Network] link properties — P2P often has no default route.
@@ -257,6 +262,9 @@ class EasyConnProber(
             return
         }
 
+        diag = P2pDiag.isTarget(context, p2p = network == null && gatewayOverride != null)
+        if (diag) startDiag(myIp, bikeIp)
+
         // 2. Discover EasyConn (NSD → :10930 wake → nearby port scan), then MDNS_RESPOND.
         thread(name = "ec-probe", isDaemon = true) {
             discoverAndProbe(bikeIp, myIp, network)
@@ -343,6 +351,7 @@ class EasyConnProber(
         // by AndroidAutoService and must outlive a bike disconnect.
         if (ownsVideo) video?.stop()
         video = null; ownsVideo = false
+        stopDiag()
         heartbeatThread?.interrupt(); heartbeatThread = null
         synchronized(pointers) { cancelPendingUp(); pointers.clear(); aaIdOf.clear() }
         stitchExec?.shutdownNow(); stitchExec = null
@@ -462,6 +471,21 @@ class EasyConnProber(
                 EasyConnDiscovery.scanThinkerridePorts(
                     bikeIp, network, myIp, ::openOnBikeNetwork, log,
                 )
+            }
+
+            // Diagnostic build (350D/E, modelid 21313): full port scan + meta-type browse.
+            if (running && diag) {
+                ConnectionState.set(Phase.PXC_CONNECTING, "Diagnóstico del cuadro (hasta 2 min)…")
+                P2pDiag.nsdBrowseAll(context, 8_000L, log)
+                val open = P2pDiag.fullTcpScan(bikeIp, myIp, log)
+                if (!running) return
+                if (everConnected || liveConns.get() > 0) {
+                    log("[DIAG] the dash connected back during diagnostics — leaving the session alone")
+                    return
+                }
+                val fresh = open.filter { it != BIKE_PROBE_PORT && it !in 10915..10935 && it != YunmoFrame.DEFAULT_PORT }
+                log("[DIAG] summary: fullscan open=$open (new vs earlier probes: $fresh); " +
+                    "check [MDNS] lines for what the dash asks for")
             }
 
             val bindErr = BikeWifi.testBikeSocketBind(context)
@@ -1155,6 +1179,30 @@ class EasyConnProber(
                 )
             }
         }
+    }
+
+    /**
+     * Diagnostic build (Wi‑Fi Direct-only dash, modelid 21313): dump the network, sniff mDNS on the
+     * P2P interface for 3 min and run experiment H1 — advertise our own `_EasyConn._tcp.` (raw mDNS
+     * + NsdManager) pointing at :10922, in case the dash looks for the phone instead of being probed.
+     */
+    private fun startDiag(myIp: Inet4Address, bikeIp: Inet4Address) {
+        log("[DIAG] diagnostic build active (modelid ${P2pDiag.TARGET_MODEL_ID}, Wi‑Fi Direct) — " +
+            "read-only scans + [NSD-EXP] _EasyConn._tcp advert on :$PORT_PXC_CTRL")
+        val listeners = synchronized(servers) { servers.toList() }
+        thread(name = "diag-start", isDaemon = true) {
+            P2pDiag.dumpNetwork(myIp, bikeIp, listeners, log)
+        }
+        diagSniffer?.stop()
+        diagSniffer = P2pDiag.MdnsSniffer(myIp, announce = true, announcePort = PORT_PXC_CTRL, log = log)
+            .also { it.start(180_000L) }
+        diagNsdExp?.unregister()
+        diagNsdExp = P2pDiag.NsdExp(context, log).also { it.register(PORT_PXC_CTRL) }
+    }
+
+    private fun stopDiag() {
+        diagSniffer?.stop(); diagSniffer = null
+        diagNsdExp?.unregister(); diagNsdExp = null
     }
 
     private fun dumpEnvironment(network: Network?) {
