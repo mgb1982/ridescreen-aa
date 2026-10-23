@@ -7,7 +7,7 @@ import datetime as dt
 
 BIKE = "Zontes 125X"
 DASH_SSID = "ZT000000"            # invented; real dash codes look like ZT + 6 hex
-RIDER = {"es": "Álex", "ca": "Àlex", "en": "Alex"}
+RIDER = {"es": "Álex", "ca": "Àlex", "en": "Alex", "it": "Alex"}
 CONTACTS = [("Laura", "+34 6•• ••• 412"), ("Jordi", "+34 6•• ••• 087")]
 # Plaça de Catalunya: public, central, nobody's home.
 CRASH_POS = (41.387015, 2.170047)
@@ -15,12 +15,12 @@ CRASH_POS_2 = (41.387021, 2.170052)
 
 # The headline trip, used on phone, watch, share card and web.
 TRIP = dict(
-    name={"es": "Sants → Zona Franca", "ca": "Sants → Zona Franca", "en": "Sants → Zona Franca"},
+    name={"es": "Sants → Zona Franca", "ca": "Sants → Zona Franca", "en": "Sants → Zona Franca", "it": "Sants → Zona Franca"},
     date=dt.date(2026, 10, 6), start="08:12", end="08:31",
     km=6.8, secs=18 * 60 + 40, avg=22, max=71, clips=3,
 )
 TRIP_2 = dict(
-    name={"es": "Por Sants", "ca": "Per Sants", "en": "Around Sants"},
+    name={"es": "Por Sants", "ca": "Per Sants", "en": "Around Sants", "it": "Giro per Sants"},
     date=dt.date(2026, 10, 6), start="13:31", end="13:42",
     km=2.4, secs=5 * 60 + 29, avg=25, max=53, clips=0,
 )
@@ -30,7 +30,7 @@ TROPHIES = (11, 31)
 STREAK_NOW = 5
 TODAY = dict(km=9.2, max=71, trips=2)
 PARKED = dict(dist="350 m", minutes=12)
-MAINT = dict(task={"es": "Aceite y filtro", "ca": "Oli i filtre", "en": "Oil & filter"}, left_km=420)
+MAINT = dict(task={"es": "Aceite y filtro", "ca": "Oli i filtre", "en": "Oil & filter", "it": "Olio e filtro"}, left_km=420)
 
 # Ride in progress (watch, live screens): consistent across turn alert, tile and ride page.
 LIVE = dict(speed=47, km=4.2, mins=12, secs=12 * 60 + 40, avg=23, max=64, clock="18:32",
@@ -48,8 +48,8 @@ REPO = "mgb1982/ridescreen-aa"
 
 # ---------------------------------------------------------------- locale formatting
 
-DEC = {"es": ",", "ca": ",", "en": "."}
-THOUS = {"es": ".", "ca": ".", "en": ","}
+DEC = {"es": ",", "ca": ",", "en": ".", "it": ","}
+THOUS = {"es": ".", "ca": ".", "en": ",", "it": "."}
 
 
 def num(lang, x, decimals=1):
@@ -71,18 +71,22 @@ WEEKDAYS = {
     "es": ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"],
     "ca": ["dilluns", "dimarts", "dimecres", "dijous", "divendres", "dissabte", "diumenge"],
     "en": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    "it": ["lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato", "domenica"],
 }
 WD_SHORT = {"es": ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"],
             "ca": ["dl.", "dt.", "dc.", "dj.", "dv.", "ds.", "dg."],
-            "en": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
+            "en": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            "it": ["lun", "mar", "mer", "gio", "ven", "sab", "dom"]}
 MONTHS = {
     "es": ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
     "ca": ["gener", "febrer", "març", "abril", "maig", "juny", "juliol", "agost", "setembre", "octubre", "novembre", "desembre"],
     "en": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    "it": ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"],
 }
 MON_SHORT = {"es": ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sept", "oct", "nov", "dic"],
              "ca": ["gen.", "febr.", "març", "abr.", "maig", "juny", "jul.", "ag.", "set.", "oct.", "nov.", "des."],
-             "en": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]}
+             "en": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+             "it": ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"]}
 
 
 def long_date(lang, d):
@@ -91,6 +95,8 @@ def long_date(lang, d):
         return f"{wd}, {d.day} de {mo}"
     if lang == "ca":
         return f"{wd}, {d.day} " + (f"d'{mo}" if mo[0] in "aeiouà" else f"de {mo}")
+    if lang == "it":
+        return f"{wd} {d.day} {mo}"
     return f"{wd}, {mo} {d.day}"
 
 
@@ -104,4 +110,4 @@ def short_date(lang, d):
 
 
 def ago_minutes(lang, n):
-    return {"es": f"hace {n} minutos", "ca": f"fa {n} minuts", "en": f"{n} minutes ago"}[lang]
+    return {"es": f"hace {n} minutos", "ca": f"fa {n} minuts", "en": f"{n} minutes ago", "it": f"{n} minuti fa"}[lang]

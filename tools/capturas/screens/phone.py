@@ -107,7 +107,7 @@ def _more(s):
     return f'<div class="more-t">{esc(s("main_more"))}</div><div class="more">{cells}</div>'
 
 
-def home(lang, connected=False, sheet=False, battery=None):
+def home(lang, connected=False, sheet=False, battery=None, locked=True):
     s = Strings(lang)
     if connected:
         state, dot, sub = s("conn_streaming"), "var(--live)", D.BIKE
@@ -124,7 +124,7 @@ def home(lang, connected=False, sheet=False, battery=None):
               f'<div class="stats">{stats}</div></div>')
     body = '<div class="scroll">' + _hero(s, 190 if connected else 280) + '<div class="wrap">' + status
     if battery:
-        body += battery_card(lang, running=(battery == "running"))
+        body += battery_card(lang, running=(battery == "running"), locked=locked)
     if connected:
         nav = s("dest_home"), s("dest_work")
         body += (f'<div class="tiles">{_tile("📸", "park", s("home_big_park"), s("home_big_park_sub"), big=True, sel=True)}'
@@ -230,7 +230,7 @@ def _has(name):
 
 # ---------------------------------------------------------------- trip map
 
-AVG_MAX = {"es": ("media", "máx"), "ca": ("mitjana", "màx"), "en": ("avg", "max")}
+AVG_MAX = {"es": ("media", "máx"), "ca": ("mitjana", "màx"), "en": ("avg", "max"), "it": ("media", "max")}
 
 
 def trip_map(lang):
@@ -291,8 +291,8 @@ def crash(lang):
 # ---------------------------------------------------------------- SMS the contact receives
 
 SMS_EXAMPLE = {"es": "(Ejemplo: lo que reciben tus contactos)", "ca": "(Exemple: el que reben els teus contactes)",
-               "en": "(Example: what your contacts receive)"}
-TODAY_WORD = {"es": "Hoy", "ca": "Avui", "en": "Today"}
+               "en": "(Example: what your contacts receive)", "it": "(Esempio: quello che ricevono i tuoi contatti)"}
+TODAY_WORD = {"es": "Hoy", "ca": "Avui", "en": "Today", "it": "Oggi"}
 
 
 def sms(lang):
@@ -330,7 +330,7 @@ def share_card(lang):
     t = D.TRIP
     wd, mo = D.WEEKDAYS[lang][t["date"].weekday()], D.MONTHS[lang][t["date"].month - 1]
     date = {"es": f"{wd} {t['date'].day} {mo} 2026", "ca": f"{wd} {t['date'].day} {mo} 2026",
-            "en": f"{wd} {t['date'].day} {mo} 2026"}[lang]
+            "en": f"{wd} {t['date'].day} {mo} 2026", "it": f"{wd} {t['date'].day} {mo} 2026"}[lang]
     date = date[0].upper() + date[1:]
     title = f'{t["name"][lang]} · {date}'
     stats = [(s("share_km"), D.num(lang, t["km"])), (s("share_time"), D.dur(t["secs"])),
@@ -429,7 +429,7 @@ def widget(lang):
     ago = ago[0].upper() + ago[1:]
     ride = (f'{s("widget_last_ride")}: {D.km(lang, t["km"])} · ' + s("widget_last_ride_sub", t["avg"], t["max"]))
     apps = [("#4285F4", "Maps"), ("#25D366", "WhatsApp"), (None, "RideScreen"),
-            ("#EA4335", {"es": "Fotos", "ca": "Fotos", "en": "Photos"}[lang])]
+            ("#EA4335", {"es": "Fotos", "ca": "Fotos", "en": "Photos", "it": "Foto"}[lang])]
     icons = "".join(
         f'<div style="display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;color:#fff">'
         + (f'<img src="{LAUNCHER}" style="width:52px;height:52px;border-radius:50%">' if c is None
@@ -489,7 +489,7 @@ def dialog(lang, title, message, buttons, top=230):
 def wifi_off(lang):
     s = Strings(lang)
     return dialog(lang, s("wifi_off_title"), s("wifi_off_message"), [s("cancel_btn") if "cancel_btn" in s.s else
-                  {"es": "Cancelar", "ca": "Cancel·la", "en": "Cancel"}[lang], s("wifi_off_turn_on")], top=260)
+                  {"es": "Cancelar", "ca": "Cancel·la", "en": "Cancel", "it": "Annulla"}[lang], s("wifi_off_turn_on")], top=260)
 
 
 def mic(lang):
@@ -506,7 +506,7 @@ def whats_new(lang):
     items = "".join(f'<div style="margin-bottom:9px">{esc(p)}</div>' for p in paras)
     inner = (f'<div class="dim"></div><div class="dlg" style="top:70px"><h3>{esc(s("whats_new_title"))}</h3>'
              f'<div class="m" style="font-size:13.5px;line-height:1.38;white-space:normal">{items}</div>'
-             f'<div class="bt"><span>{esc({"es": "Entendido", "ca": "Entesos", "en": "Got it"}[lang])}</span></div></div>')
+             f'<div class="bt"><span>{esc({"es": "Entendido", "ca": "Entesos", "en": "Got it", "it": "Ho capito"}[lang])}</span></div></div>')
     return _over_home(lang, inner, height=WHATS_NEW_H)
 
 
@@ -580,8 +580,8 @@ SHADE_CSS = """
 .cfg p{font-size:13px;color:var(--text2);line-height:1.42;margin-top:8px}
 """
 AGO = {"es": ("ahora", "hace 1 min", "hace 2 h", "ayer"), "ca": ("ara", "fa 1 min", "fa 2 h", "ahir"),
-       "en": ("now", "1 min ago", "2 h ago", "yesterday")}
-CONFIG = {"es": "Configuración", "ca": "Configuració", "en": "Settings"}
+       "en": ("now", "1 min ago", "2 h ago", "yesterday"), "it": ("ora", "1 min fa", "2 h fa", "ieri")}
+CONFIG = {"es": "Configuración", "ca": "Configuració", "en": "Settings", "it": "Impostazioni"}
 
 
 def _notif(lang, when, title, text, action=""):
