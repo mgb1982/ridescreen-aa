@@ -1,6 +1,6 @@
 # OpenCfMoto — Privacy & Permissions
 
-_Last updated: 2026-10-06 (RideScreen AA v1.1)_
+_Last updated: 2026-10-23 (RideScreen AA v2.3 / v2.4 test builds)_
 
 > **RideScreen AA** is a fork of OpenCfMoto maintained by Manel (GitHub: mgb1982). Everything
 > below applies to it; the only difference is **who receives the anonymous reports** — since
@@ -24,7 +24,9 @@ This document explains what the app can access, why, and where data goes.
   Cloudflare Worker operated by the RideScreen AA maintainer — so we can see roughly how many
   phones use the app and fix crashes. Turn it off anytime under
   **Setup → Privacy → Anonymous usage & crash reports**.
-- **Your ride data stays on the device** (bike profiles, trip GPS logs).
+- **Your ride data stays on the device** (bike profiles, trip GPS logs, black-box recordings, keyless-box
+  readings, passenger pairing). The few features that do contact a server are listed in
+  [Data that leaves the phone](#data-that-leaves-the-phone-other) and each one can be left unused.
 - Other traffic that leaves the phone (not to us as “who you are”):
   - **Map tiles** for the trip map are fetched from **OpenStreetMap** servers.
   - **Android Auto** content (Maps/Waze/media) is handled by Google's Android
@@ -42,7 +44,12 @@ This document explains what the app can access, why, and where data goes.
 | **Camera** | When you scan a bike's pairing QR code | Reads the T-Box QR shown on the dash | Not needed for normal streaming; frames are not recorded or uploaded |
 | **Location (fine)** | With Wi-Fi actions, and while recording a trip | Android requires location permission for Wi-Fi scanning/join; **and** the trip computer reads GPS to record your ride | See "Trip logging" below — this is the one feature that *does* record location, locally and only when enabled |
 | **Nearby Wi-Fi / network state** | When connecting to a saved or new bike | Finds and requests the bike's Wi-Fi access point and talks to the local T-Box | Not used to access unrelated networks or the internet on your behalf |
-| **Bluetooth (scan/connect)** | On the Setup screen's Bluetooth helper | Reports whether the phone is paired to the bike so the handlebar media/call buttons work | Declared `neverForLocation`; not used to derive your location |
+| **Bluetooth (scan/connect)** | On the Setup screen's Bluetooth helper, and when you set the bike's keyless-box code | Reports whether the phone is paired to the bike so the handlebar media/call buttons work; connects to the bike's keyless box to read its battery voltage and lock state (read only) | Declared `neverForLocation`; not used to derive your location. The app does not lock or unlock the bike |
+| **Bluetooth (advertise) / Nearby** | Only with Passenger mode | Lets a rider's phone and a paired passenger's phone find each other | No internet and no server involved; see "Passenger mode" below |
+| **Microphone** | When Android Auto is projected | Relays your helmet or phone microphone to Android Auto so “Ok Google” works | The app does not record or store audio |
+| **Calendar (read)** *(optional)* | Only if you enable calendar destinations | Suggests the location of your next calendar event as a one-tap destination | Read on the phone only; nothing is uploaded |
+| **Photos & videos (read)** *(optional)* | When you pick clips for the trip video | Lets the video editor read the clips you choose | Processed on the phone; shared only when you tap Share |
+| **SMS (send)** *(GitHub build only)* | If you add emergency contacts for the fall detector | Sends the alert text if a crash is detected and you do not respond | Not in the Play Store build; never used otherwise |
 | **Notifications** | When starting mirroring / Android Auto (Android 13+) | Shows the required foreground-service status with controls to stop the session | Not telemetry; notifications stay on the phone |
 
 ### System confirmations and optional access
@@ -68,8 +75,8 @@ Google account.
 
 | Data | Where | Notes |
 | --- | --- | --- |
-| **Bike profiles** — SSID, Wi-Fi password, QR metadata, display name | App-private storage (`SharedPreferences`) | Stored in the app's sandbox on the device. It is **not** transmitted anywhere by the app. It is currently stored in plaintext within app-private storage (encryption at rest is a planned improvement); anyone with a rooted device or a full device backup could read it. |
-| **Trip logs** — GPS route points, distance, duration, max/avg speed, timestamps | App-private storage | Created only when *Log trips automatically* is on, or when you start a manual recording. Viewable under **Trip ▸ Saved trips**, shown on a map, and deletable by long-press. Never uploaded by the app. |
+| **Bike profiles** — SSID, Wi-Fi password, QR metadata, display name | App-private storage (`SharedPreferences`) | Stored in the app's sandbox on the device. It is **not** transmitted anywhere by the app. It is currently stored in plaintext within app-private storage (encryption at rest is a planned improvement); anyone with a rooted device could read it. It is **excluded from Android backups and phone-to-phone transfers** (since v2.4). |
+| **Trip logs** — GPS route points, distance, duration, max/avg speed, timestamps | App-private storage | Created only when *Log trips automatically* is on, or when you start a manual recording. Viewable under **Trip ▸ Saved trips**, shown on a map, and deletable by long-press. Never uploaded by the app. They are **not** excluded from Android's own backup, so if you have Google's device backup on, Android may keep a copy in your Google account (see "Android backups"). |
 | **Diagnostic log** | In-memory / app-private storage | A rolling technical log for troubleshooting. Shared **only** when you tap **Logs ▸ Share** and pick a destination yourself. |
 
 ### Trip logging (location history)
@@ -143,6 +150,59 @@ project's service ([opencfmoto-telemetry](https://github.com/zanderp/opencfmoto-
   leaves the device.
 - **Watch compass.** The watch asks for location permission to point at the parked bike; the position
   stays on the watch.
+
+## v2.1 – v2.4 additions
+
+- **Passenger mode (v2.3).** Two RideScreen phones talk directly through Google's Nearby Connections
+  (Bluetooth, no internet, no server of ours). You pair once: both phones show the same 4-digit code and
+  both confirm, and a shared secret is stored on both phones. Afterwards your phone is only visible to
+  passengers it knows, and every connection must prove the secret before any command (destination,
+  Android Auto navigation keys, music) is accepted. You can delete a passenger in the app. The pairing is
+  excluded from Android backups.
+- **Keyless-box reading (v2.3/v2.4).** If you enter the code of your bike's keyless (PKE) box, the app
+  connects to it over Bluetooth and **only reads** the battery voltage and the lock state, to show the
+  battery card and to tell whether the engine is running (above ~13.2 V on, below ~12.8 V off). It does not
+  lock, unlock or write anything. The box's code and Bluetooth address are stored on the phone only, are
+  never uploaded and are excluded from Android backups.
+- **Fall detector and black box (v2.3, experimental).** While armed during a ride, the detector keeps the
+  last ~65 s of motion (acceleration, lean, GPS speed/heading/position) **in memory only**; nothing is written
+  during a normal ride. If it detects an impact, the 60 s before and 30 s after are saved to a small file
+  on the phone (the last 10 are kept) so you can read or share a summary. If you do not respond, the app
+  sends an SMS with a map link to up to 3 emergency contacts you chose (GitHub build only; the Play build
+  offers to call the first contact instead) and a second one later with a fresh position. It never calls
+  emergency services by itself. The detector can be wrong: it is not a certified safety device. The
+  contacts and the recordings stay on the phone and are excluded from Android backups.
+- **Traffic lights and road data.** The app downloads traffic-signal positions from OpenStreetMap through
+  the public Overpass service (`overpass-api.de`, with `overpass.kumi.systems` as a fallback), one request
+  per ~5 km map cell you ride through, and caches them on the phone. Offline map areas and nearby speed
+  limits or points of interest use the same service. The requests contain the map area (or a position),
+  no ID and no history; Overpass sees them like any website would, including your IP address. The street
+  name of each junction shown in *Your traffic lights* is looked up on Nominatim from the junction's
+  coordinates (about 1 m precision, only for the few junctions shown, then cached on the phone); the
+  request carries no ID, but those junctions are places where you stop. These name lookups happen only
+  when you open the *Your traffic lights* screen.
+- **Fuel prices (Spain).** The app downloads petrol prices from `ridescreen.app/fuel/`, a set of ~25 km
+  tiles generated every hour from the Ministry's open data. It asks only for the tile(s) around you, so
+  the server can see roughly which area you are in (and your IP address, like any website), but no ID
+  and no exact position.
+- **Routes and place search.** When you plan a route or navigate to a place from the map, the start and
+  destination coordinates go to a public routing service: Valhalla (`valhalla1.openstreetmap.de`) or the
+  OSRM demo server, or OpenRouteService if you add your own free API key. Place search sends the text you
+  type, with an approximate position to rank nearby results, to Photon (`photon.komoot.io`) and
+  Nominatim. The dash map style and tiles come from OpenFreeMap (`tiles.openfreemap.org`).
+- **Trip video, maintenance, records, trophies, year in review.** Created and stored only on the phone.
+- **Updates.** The app and the watch app ask GitHub's public API (`api.github.com`) for the latest
+  RideScreen AA release. GitHub receives the request like any website would, including your IP address.
+  Nothing about you is sent.
+
+## Android backups
+
+RideScreen AA allows Android's own backup. These are **excluded** from cloud backups and phone-to-phone
+transfers: the bike's Wi‑Fi password (inside the saved QR), the phone-hotspot password, emergency and
+arrival contacts, the passenger pairing, the keyless-box code and the black-box recordings. Everything
+else (for example saved trips, saved places, the maintenance log and your settings) may be included if
+backups are switched on for your phone; in that case Android stores them in your Google account under
+Google's terms, not on any server of this project. After a restore you scan the bike's QR again.
 
 ## Data that leaves the phone (other)
 

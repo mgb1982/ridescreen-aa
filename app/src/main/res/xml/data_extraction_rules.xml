@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- RideScreen AA · cloud backup and device-to-device transfer (API 31+). Same exclusions as
-     backup_rules.xml: Wi‑Fi passwords, emergency / arrival contacts and passenger pairing. -->
+     backup_rules.xml: Wi‑Fi passwords, emergency / arrival contacts, passenger pairing, keyless-box
+     code and black-box recordings. -->
 <data-extraction-rules>
     <cloud-backup>
         <exclude domain="sharedpref" path="opencfmoto_bike.xml" />
@@ -8,6 +9,8 @@
         <exclude domain="sharedpref" path="crash_detector.xml" />
         <exclude domain="sharedpref" path="arrival_notice.xml" />
         <exclude domain="sharedpref" path="companion.xml" />
+        <exclude domain="sharedpref" path="pke_box.xml" />
+        <exclude domain="file" path="blackbox/" />
     </cloud-backup>
     <device-transfer>
         <exclude domain="sharedpref" path="opencfmoto_bike.xml" />
@@ -15,5 +18,7 @@
         <exclude domain="sharedpref" path="crash_detector.xml" />
         <exclude domain="sharedpref" path="arrival_notice.xml" />
         <exclude domain="sharedpref" path="companion.xml" />
+        <exclude domain="sharedpref" path="pke_box.xml" />
+        <exclude domain="file" path="blackbox/" />
     </device-transfer>
 </data-extraction-rules>
