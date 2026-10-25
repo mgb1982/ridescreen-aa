@@ -82,7 +82,7 @@ object PkeUnlock {
         CUSHION("6", "cushion"),
     }
 
-    enum class Failure { NO_CODE, NO_MCU_ID, NO_PERMISSION, BLUETOOTH_OFF, NOT_FOUND, NO_LINK, NO_CHALLENGE, NO_ANSWER }
+    enum class Failure { NO_CODE, NO_MCU_ID, INVALID_MCU_ID, NO_PERMISSION, BLUETOOTH_OFF, NOT_FOUND, NO_LINK, NO_CHALLENGE, NO_ANSWER }
 
     class Result(val ok: Boolean, val failure: Failure?)
 
@@ -94,8 +94,12 @@ object PkeUnlock {
     fun mcuId(ctx: Context): String = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString(KEY_MCU_ID, "").orEmpty()
 
     fun setMcuId(ctx: Context, id: String) {
-        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putString(KEY_MCU_ID, id.trim()).apply()
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putString(KEY_MCU_ID, id.trim().uppercase()).apply()
     }
+
+    /** McuID is AES-128 plaintext: exactly one 16-byte block represented as 32 hex digits. */
+    internal fun isValidMcuId(id: String): Boolean =
+        id.length == 32 && id.all { (it in '0'..'9') || (it.lowercaseChar() in 'a'..'f') }
 
     // ── pure bits (unit-testable, same style as PkeBattery's)
 
@@ -122,7 +126,8 @@ object PkeUnlock {
     /** The exact derivation read from BlueToothOperateActivity.java / a/vf9.java (its h/K/i/e). */
     internal fun derive(pkeCode: String, mcuId: String, challenge: ByteArray): String? {
         if (challenge.size != 4) return null
-        val mcuBytes = runCatching { BleProtocol.hexToBytes(mcuId) }.getOrNull() ?: return null
+        if (!isValidMcuId(mcuId)) return null
+        val mcuBytes = runCatching { BleProtocol.hexToBytes(mcuId) }.getOrNull()?.takeIf { it.size == 16 } ?: return null
         val h = runCatching { aesEcbEncrypt(AES_KEY_ASCII.toByteArray(Charsets.US_ASCII), mcuBytes) }.getOrNull() ?: return null
         if (h.size != 16) return null
         val k = ByteArray(16)
@@ -160,7 +165,8 @@ object PkeUnlock {
         val pke = PkeBattery.code(ctx)
         if (pke.length < 8) return Result(false, Failure.NO_CODE)
         val mcu = mcuId(ctx)
-        if (mcu.length < 4) return Result(false, Failure.NO_MCU_ID)
+        if (mcu.isBlank()) return Result(false, Failure.NO_MCU_ID)
+        if (!isValidMcuId(mcu)) return Result(false, Failure.INVALID_MCU_ID)
         if (Build.VERSION.SDK_INT >= 31 && listOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT)
                 .any { ContextCompat.checkSelfPermission(ctx, it) != PackageManager.PERMISSION_GRANTED }) {
             return Result(false, Failure.NO_PERMISSION)
