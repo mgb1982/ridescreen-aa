@@ -72,6 +72,7 @@ Riders have projected Android Auto with these (US + international as noted):
 | **Zontes 125X** | Community-confirmed (2026-08) — Carbit / EasyConnect QR |
 | **Zontes 368G** / **368K** / **368E** | Community-confirmed (368G 2025 on OpenCfMoto; 368K + 368E 2026-10 on RideScreen AA) — same screen and dash across the 368 range; Carbit / EasyConnect QR |
 | **Zontes 125M** | Confirmed (2026-10-24) — dash joins the phone's hotspot (Carbit + BLE); works on RideScreen AA 2.3 |
+| **Zontes T350X** | Tested (Inky, 2026-10-22) — Wi‑Fi Direct-only QR (ssid + password); connection fixes are in `prerelease/350-p2p`, not yet in a public release |
 | **Zontes 703RR** | Confirmed (2026-10-24) — works on RideScreen AA 2.3 with Google Maps full screen; same screen as the 703 range (maintainer's check, not measured); Carbit / EasyConnect QR |
 | **Zontes 350D** | In progress (2026-10) — Wi‑Fi Direct-only QR (`action=8`, MAC, no SSID); supported from RideScreen AA 2.3 builds, awaiting a ride log |
 | **Zontes** (other TFT + pairing QR) | Same Carbit / EasyConnect path — try Connect; report logs in Discord |
@@ -96,7 +97,7 @@ promote models to “confirmed.”
 | Brand | Notes / examples |
 | --- | --- |
 | **Voge** | **DS800 Rally** + **DS900X** confirmed; other EasyConnect TFT models welcome |
-| **Zontes** | **125X**, **125V**, **125M**, **703RR** and the **368 range (G / K / E)** confirmed; **350D** testing; other TFT dashes with pairing QR welcome |
+| **Zontes** | **125X**, **125V**, **125M**, **703RR**, **T350X** (tested) and the **368 range (G / K / E)** confirmed; **350D** testing; other TFT dashes with pairing QR welcome |
 | **Moto Morini** | **X-Cape 649 / 700** and **Seiemmezzo** (incl. 2026) confirmed; **1200** SoftAP joins (keep MotoFun/pairing QR open — EasyConn may not sit on `:10930`). Pairing QR may be `admin.motomorini.com/…?Wifi=SSID#password#mac&MachineID=…&ProductID=…` — supported. Do **not** scan the vehicle info QR (`code:…color:…`). Dash clock jumping hours / **1970** after connect: **2.0.10** echoes the bike stamp unless it is epoch (log `HU_TIME_SYNC … mode=echo|phone`). |
 | **Benelli** | TRK 702 / 702X class — SoftAP SSID/password or QR when shown; grant **Nearby devices / Bluetooth** |
 | **Rieju** | **307 confirmed**; other EasyConnect TFTs welcome (`#rieju-307`) |
