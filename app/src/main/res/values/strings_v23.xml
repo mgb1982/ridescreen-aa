@@ -238,6 +238,7 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="pke_unlock_sent">Command sent. Check the bike to confirm it worked — this feature hasn\'t been validated against hardware yet, please send me the log either way.</string>
     <string name="pke_unlock_need_mcu">No device key (McuID) set yet.</string>
     <string name="pke_unlock_fail_no_challenge">The box didn\'t answer the handshake, so nothing was sent. Get closer to the bike, make sure the official app isn\'t connected to it, and try again.</string>
+    <string name="pke_card_just_now">just now</string>
     <string name="engine_running">engine running</string>
     <string name="engine_stopped">engine off</string>
     <string name="trips_import">📥 Import a ride (GPX)</string>
