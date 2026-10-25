@@ -75,6 +75,11 @@ object PkeUnlock {
     private const val PREFS = "pke_unlock"
     private const val KEY_MCU_ID = "mcu_id"
 
+    // Shared with PkeBattery: remember the keyless box BLE address, so a button press
+    // can connect directly instead of paying for a full 12-second scan every time.
+    private const val PKE_PREFS = "pke_box"
+    private const val KEY_MAC = "mac"
+
     enum class Action(val code: String, val label: String) {
         LOCK("1", "lock"),
         UNLOCK("2", "unlock"),
@@ -173,23 +178,49 @@ object PkeUnlock {
         }
         val adapter = ctx.getSystemService(BluetoothManager::class.java)?.adapter
         if (adapter == null || !adapter.isEnabled) return Result(false, Failure.BLUETOOTH_OFF)
+        val operationStarted = System.currentTimeMillis()
         log("sending '${action.label}' to the keyless box for PKE …${pke.takeLast(4)}")
-        val dev = scan(ctx, pke) ?: return Result(false, Failure.NOT_FOUND)
-        val link = open(ctx, dev) ?: return Result(false, Failure.NO_LINK)
+        val prefs = ctx.getSharedPreferences(PKE_PREFS, Context.MODE_PRIVATE)
+        val cachedMac = prefs.getString(KEY_MAC, null)
+        var link: Link? = null
+
+        // Fast path: reuse the last MAC saved by PkeBattery. A scan can take up to 12 seconds,
+        // while the cached address usually lets GATT connect immediately.
+        if (!cachedMac.isNullOrBlank()) {
+            val cachedDevice = runCatching { adapter.getRemoteDevice(cachedMac) }.getOrNull()
+            if (cachedDevice != null) {
+                val connectStarted = System.currentTimeMillis()
+                log("trying cached PKE box directly at $cachedMac")
+                link = open(ctx, cachedDevice, 4_500)
+                log("cached GATT attempt: ${System.currentTimeMillis() - connectStarted} ms")
+            }
+        }
+
+        // Fallback remains exactly the previous discovery path if the saved address no longer works.
+        if (link == null) {
+            val dev = scan(ctx, pke) ?: return Result(false, Failure.NOT_FOUND)
+            prefs.edit().putString(KEY_MAC, dev.address).apply()
+            link = open(ctx, dev, 12_000) ?: return Result(false, Failure.NO_LINK)
+        }
+        val activeLink = link ?: return Result(false, Failure.NO_LINK)
         try {
-            val challengeReply = ask(link, pke, "*BT,$pke,10,008#".toByteArray(Charsets.US_ASCII), "008", 6_000)
+            val challengeStarted = System.currentTimeMillis()
+            val challengeReply = ask(activeLink, pke, "*BT,$pke,10,008#".toByteArray(Charsets.US_ASCII), "008", 6_000)
                 ?: return Result(false, Failure.NO_CHALLENGE)
             val challenge = challengeFrom(challengeReply) ?: return Result(false, Failure.NO_CHALLENGE)
             val cipherHex = derive(pke, mcu, challenge) ?: return Result(false, Failure.NO_CHALLENGE)
+            log("challenge + key derivation: ${System.currentTimeMillis() - challengeStarted} ms")
             val bytes = frame(pke, action, cipherHex)
-            link.replies.clear()
-            val ok = writeBytes(link, bytes)
+            activeLink.replies.clear()
+            val ok = writeBytes(activeLink, bytes)
             log("→ ${masked(String(bytes, Charsets.US_ASCII), pke)}${if (ok) "" else " (write refused)"}")
-            val reply = link.replies.poll(4_000, TimeUnit.MILLISECONDS)
+            val replyStarted = System.currentTimeMillis()
+            val reply = activeLink.replies.poll(4_000, TimeUnit.MILLISECONDS)
             log(if (reply != null) "← ${masked(reply, pke)}" else "no reply to '${action.label}' within 4s")
+            log("action response wait: ${System.currentTimeMillis() - replyStarted} ms; total send: ${System.currentTimeMillis() - operationStarted} ms")
             return Result(ok, if (ok) null else Failure.NO_ANSWER)
         } finally {
-            runCatching { link.gatt.disconnect() }; runCatching { link.gatt.close() }
+            runCatching { activeLink.gatt.disconnect() }; runCatching { activeLink.gatt.close() }
         }
     }
 
@@ -238,16 +269,18 @@ object PkeUnlock {
                 }
             }
         }
+        val scanStarted = System.currentTimeMillis()
         log("scanning Bluetooth LE for the keyless box (12 s)…")
         try {
             scanner.startScan(null, ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build(), cb)
             latch.await(12, TimeUnit.SECONDS)
         } catch (e: Exception) { log("scan failed: $e") } finally { runCatching { scanner.stopScan(cb) } }
+        log("BLE scan duration: ${System.currentTimeMillis() - scanStarted} ms")
         if (found == null) log("box not found")
         return found
     }
 
-    private fun open(ctx: Context, dev: BluetoothDevice): Link? {
+    private fun open(ctx: Context, dev: BluetoothDevice, timeoutMs: Long = 12_000): Link? {
         val ready = CountDownLatch(1)
         val replies = LinkedBlockingQueue<String>()
         val text = StringBuilder()
@@ -295,14 +328,16 @@ object PkeUnlock {
                 }
             }
         }
+        val connectStarted = System.currentTimeMillis()
         val g = runCatching { dev.connectGatt(ctx, false, cb, BluetoothDevice.TRANSPORT_LE) }.getOrNull() ?: return null
-        if (!ready.await(12_000, TimeUnit.MILLISECONDS)) fail = fail ?: "timeout"
+        if (!ready.await(timeoutMs, TimeUnit.MILLISECONDS)) fail = fail ?: "timeout"
         val l = link
         if (l == null) {
-            log("no link to the box: $fail")
+            log("no link to the box: $fail (${System.currentTimeMillis() - connectStarted} ms)")
             runCatching { g.disconnect() }; runCatching { g.close() }
             return null
         }
+        log("GATT ready in ${System.currentTimeMillis() - connectStarted} ms")
         return l
     }
 }
