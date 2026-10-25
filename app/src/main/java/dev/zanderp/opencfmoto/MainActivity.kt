@@ -397,7 +397,7 @@ class MainActivity : AppCompatActivity() {
         if (thenStop && saved && live) {
             log("→ Park with photo: photo taken — saving the spot and disconnecting")
             Parking.saveNow(this)
-            DashCards.farewell(this) { stopEverything() }
+            stopEverything()
         } else if (thenStop && !saved) {
             log("→ Park with photo: no photo taken — staying connected")
         }
@@ -873,7 +873,7 @@ class MainActivity : AppCompatActivity() {
                     log("→ Cancel tap ${since} ms after starting — ignored (lock ${CANCEL_LOCK_MS} ms)")
                     return@setOnClickListener
                 }
-                DashCards.farewell(this) { stopEverything() }
+                stopEverything()
                 return@setOnClickListener
             }
             if (DependencyPrompt.showForConnect(this, forScan = false)) {
@@ -1031,7 +1031,6 @@ class MainActivity : AppCompatActivity() {
         statsHandler.removeCallbacks(todayTicker)
         statsHandler.removeCallbacks(husTicker)
         statsHandler.removeCallbacks(pkeTicker)
-        resumedNow = false
         CrashGuard.persistSession(this)
         super.onPause()
     }
@@ -1078,10 +1077,6 @@ class MainActivity : AppCompatActivity() {
         statsHandler.post(husTicker)
         statsHandler.removeCallbacks(pkeTicker)
         statsHandler.post(pkeTicker)
-        resumedNow = true
-        maybeStartLive()
-        // Engine state straight away from the last reading (if fresh), not after the next read.
-        if (engineRunning == null) PkeBattery.last(this)?.takeIf { System.currentTimeMillis() - it.atMs <= 3 * 60_000L }?.volts?.let { updateEngine(it) }
         renderStatus(ConnectionState.phase, ConnectionState.detail)
         if (WifiGate.isWifiEnabled(this)) WifiGate.cancelNotification(this)
         // Retry auto-connect on resume: after finishing first-run setup, or once the bike's Wi-Fi
@@ -1158,7 +1153,7 @@ class MainActivity : AppCompatActivity() {
         if (intent?.getBooleanExtra(EXTRA_BT_TRIGGER, false) != true) return
         intent.removeExtra(EXTRA_BT_TRIGGER)
         BtConnectTrigger.clearNotification(this)
-        if (AndroidAutoService.isRunning && !AndroidAutoService.isOrphan) return
+        if (AndroidAutoService.isRunning) return
         if (ConnectionState.phase.busy ||
             ConnectionState.phase == Phase.STREAMING ||
             ConnectionState.phase == Phase.MIRRORING
@@ -1181,7 +1176,7 @@ class MainActivity : AppCompatActivity() {
     private fun maybeAutoConnect() {
         if (autoConnectStarted) return
         if (!AppSettings.autoConnect(this)) return
-        if (AndroidAutoService.isRunning && !AndroidAutoService.isOrphan) return
+        if (AndroidAutoService.isRunning) return
         if (ConnectionState.phase.busy ||
             ConnectionState.phase == Phase.STREAMING ||
             ConnectionState.phase == Phase.MIRRORING) return
@@ -1223,10 +1218,7 @@ class MainActivity : AppCompatActivity() {
                     autoConnectStarted = false
                     return@postDelayed
                 }
-                if (AndroidAutoService.isOrphan) {
-                    log("→ Auto-connect: Android Auto service running with no session (left over) — starting a fresh Connect")
-                }
-                if ((!AndroidAutoService.isRunning || AndroidAutoService.isOrphan) && !ConnectionState.phase.busy) {
+                if (!AndroidAutoService.isRunning && !ConnectionState.phase.busy) {
                     activity.startAaFlow(saved)
                 }
             } catch (e: Exception) {
@@ -1357,8 +1349,6 @@ class MainActivity : AppCompatActivity() {
     private val todayTicker = object : Runnable {
         override fun run() {
             renderToday()
-            // Manel (22 Oct): "Leído hace 0 s" never moved — the card was only redrawn right after a read.
-            renderPkeCard()
             // Live speed on the card while projecting: refresh every second then.
             statsHandler.postDelayed(this, if (ConnectionState.phase == Phase.STREAMING) 1_000L else 5_000L)
         }
@@ -1514,6 +1504,7 @@ class MainActivity : AppCompatActivity() {
         })
         add(getString(R.string.pax_entry) to { CompanionActivity.start(this@MainActivity); Unit })
         add(getString(R.string.pke_entry) to { PkeBatteryUi.show(this@MainActivity); Unit })
+        add(getString(R.string.pke_unlock_entry) to { PkeUnlockUi.show(this@MainActivity); Unit })
         add(getString(R.string.help_support) to { Support.open(this@MainActivity); Unit })
     }
 
@@ -1596,11 +1587,8 @@ class MainActivity : AppCompatActivity() {
         else if (v <= ENGINE_OFF_V) { engineLo++; engineHi = 0 }
         else { engineHi = 0; engineLo = 0 }
         val before = engineRunning
-        // Manel (22 Oct): the voltage showed the start at once but "motor en marcha" lagged a read (15 s).
-        // A charging voltage can't come from a parked bike: one reading turns it ON. Going OFF still
-        // takes two in a row (a load dip mustn't flicker it) — one is enough while it's still unknown.
-        if (engineHi >= 1) engineRunning = true
-        if (engineLo >= 2 || (engineLo >= 1 && engineRunning == null)) engineRunning = false
+        if (engineHi >= 2) engineRunning = true
+        if (engineLo >= 2) engineRunning = false
         if (engineRunning != before) {
             LogBus.log("[PKE] engine ${if (engineRunning == true) "ON" else "OFF"} at ${"%.1f".format(v)} V")
             renderStatus(ConnectionState.phase, ConnectionState.detail)
@@ -1616,7 +1604,7 @@ class MainActivity : AppCompatActivity() {
     private fun pkeRefresh() {
         if (PkeBattery.code(this).length < 8) { renderPkeCard(); return }
         // Don't compete with the connect flow for the radio.
-        if (pkeBusy || liveOn || ConnectionState.phase.busy) { renderPkeCard(); return }
+        if (pkeBusy || ConnectionState.phase.busy) { renderPkeCard(); return }
         pkeBusy = true
         val app = applicationContext
         Thread({
@@ -1628,76 +1616,6 @@ class MainActivity : AppCompatActivity() {
                 renderPkeCard()
             }
         }, "pke-card").start()
-    }
-
-
-    // ── v2.4: live voltage while projecting. One BLE link kept open, 008 every 2 s and 001,7 every 10 s
-    // (read only, same two queries). Runs only while the app is in front AND streaming/mirroring; if
-    // the box won't keep the link (3 sessions without a single answer) it gives up for 5 min and the
-    // normal 15 s reads carry on. Every minute it logs reads / average latency / drops so we learn what
-    // the box and the Bluetooth–Wi‑Fi coexistence really do.
-    @Volatile private var liveOn = false
-    @Volatile private var resumedNow = false
-    private var liveGaveUpAt = 0L
-
-    private fun liveShouldRun() = resumedNow && ConnectionState.phase.let { it == Phase.STREAMING || it == Phase.MIRRORING }
-
-    private fun maybeStartLive() {
-        if (liveOn || !liveShouldRun() || PkeBattery.code(this).length < 8) return
-        if (liveGaveUpAt != 0L && android.os.SystemClock.elapsedRealtime() - liveGaveUpAt < 5 * 60_000L) return
-        liveOn = true
-        val app = applicationContext
-        Thread({
-            var emptySessions = 0
-            try {
-                // Let a read in flight (15 s ticker) finish first: the box takes one client at a time.
-                var w = 0
-                while (pkeBusy && w++ < 40) Thread.sleep(500)
-                while (liveShouldRun()) {
-                    val live = PkeBattery.openLive(app)
-                    if (live == null) {
-                        if (++emptySessions >= 3) break
-                        Thread.sleep(6_000); continue
-                    }
-                    var n = 0; var miss = 0; var tick = 0
-                    var sumMs = 0L; var maxMs = 0L
-                    var statAt = android.os.SystemClock.elapsedRealtime()
-                    val t0 = statAt
-                    while (liveShouldRun() && live.alive && miss < 3) {
-                        val t = android.os.SystemClock.elapsedRealtime()
-                        val v = live.volts()
-                        val took = android.os.SystemClock.elapsedRealtime() - t
-                        if (v != null) {
-                            miss = 0; n++; sumMs += took; if (took > maxMs) maxMs = took
-                            runOnUiThread { pkeFails = 0; updateEngine(v); renderPkeCard() }
-                        } else miss++
-                        if (++tick % 5 == 0 && live.alive) {
-                            val before = PkeBattery.last(app)?.locked
-                            val l = live.locked()
-                            if (l != null && l != before) runOnUiThread { renderPkeCard() }
-                        }
-                        val now = android.os.SystemClock.elapsedRealtime()
-                        if (now - statAt >= 60_000L) {
-                            statAt = now
-                            LogBus.log("[PKE] live: $n reads in ${(now - t0) / 1000} s, avg ${if (n > 0) sumMs / n else 0} ms, max $maxMs ms, misses $miss")
-                        }
-                        val rest = 2_000L - (android.os.SystemClock.elapsedRealtime() - t)
-                        if (rest > 0) Thread.sleep(rest)
-                    }
-                    live.close()
-                    LogBus.log("[PKE] live: link closed after $n reads in ${(android.os.SystemClock.elapsedRealtime() - t0) / 1000} s" +
-                        (if (!live.alive) " (the box dropped it)" else if (miss >= 3) " (3 unanswered queries)" else ""))
-                    if (n == 0) { if (++emptySessions >= 3) break } else emptySessions = 0
-                    if (liveShouldRun()) Thread.sleep(3_000)
-                }
-                if (emptySessions >= 3) {
-                    liveGaveUpAt = android.os.SystemClock.elapsedRealtime()
-                    LogBus.log("[PKE] live mode not possible with this box/link — back to 15 s reads for 5 min")
-                }
-            } catch (_: InterruptedException) {
-            } catch (e: Exception) { LogBus.log("[PKE] live error: $e")
-            } finally { liveOn = false }
-        }, "pke-live").start()
     }
 
     private fun renderPkeCard() {
@@ -1726,8 +1644,7 @@ class MainActivity : AppCompatActivity() {
         )
         val readText = getString(
             R.string.pke_card_read,
-            if (now - r.atMs < 10_000L) getString(R.string.pke_card_just_now)
-            else android.text.format.DateUtils.getRelativeTimeSpanString(r.atMs, now, android.text.format.DateUtils.SECOND_IN_MILLIS),
+            android.text.format.DateUtils.getRelativeTimeSpanString(r.atMs, now, android.text.format.DateUtils.SECOND_IN_MILLIS),
         )
         findViewById<TextView>(R.id.pke_sub).text = when (engineState()) {
             true -> getString(R.string.engine_running) + " · " + readText
@@ -1843,7 +1760,6 @@ class MainActivity : AppCompatActivity() {
 
     /** Update the big status header + Connect button label from a [ConnectionState] transition. */
     private fun renderStatus(phase: Phase, detail: String) {
-        maybeStartLive()
         statusView.text = getString(phase.labelRes) +
             (if (ClockLab.resyncInProgress() && phase != Phase.STOPPED && phase != Phase.IDLE)
                 " · " + getString(R.string.clock_resyncing) else "") +
@@ -2046,10 +1962,6 @@ class MainActivity : AppCompatActivity() {
      * Uses applicationContext + the process-global prober (not this activity) so the hand-off
      * completes even if the activity is destroyed/recreated after it was armed.
      */
-    /** T350X-style dashes: switch from the SoftAP request to Wi‑Fi Direct once per connect. */
-    private val p2pFallbackDone = java.util.concurrent.atomic.AtomicBoolean(false)
-    private var p2pFallback: (String) -> Unit = {}
-
     private fun joinWifi(qr: QrData, gateOnAaSteady: Boolean) {
         if (!WifiGate.ensureEnabledOrPrompt(this)) return
         ConnectionState.set(Phase.JOINING_WIFI)
@@ -2097,8 +2009,7 @@ class MainActivity : AppCompatActivity() {
             // (Voge-5G / ZT5G…). Prefer SoftAP immediately, MAC or not: the Zontes T350X (QR
             // action=8 + ssid ZT5G… + pwd + mac, 20 Oct 2026) never formed a P2P group, then joined
             // its SoftAP in 3 s.
-            // Once Wi‑Fi Direct has worked for this dash, go straight there next time.
-            if (!isDirect && qr.pwd.isNotEmpty() && remembered != "P2P") {
+            if (!isDirect && qr.pwd.isNotEmpty()) {
                 log(
                     "→ QR says P2P-only; SSID '${qr.ssid}' is not DIRECT-* and has a password — " +
                         "joining SoftAP first (skip Wi‑Fi Direct)",
@@ -2120,41 +2031,11 @@ class MainActivity : AppCompatActivity() {
         val p2pGroupAsAp = qr.supportsP2p && !qr.supportsAp && qr.pwd.isNotEmpty() &&
             !qr.ssid.startsWith("DIRECT-", ignoreCase = true)
         if (p2pGroupAsAp) P2pWarmUp.start(applicationContext, qr, LogBus::log)
-        // Zontes T350X on a Samsung A56 / Android 16 (Inky, 21 Oct 2026): the dash was in the scan cache at
-        // -40 dBm yet the "hidden SSID" request never matched it (picker: "no device found"), 90 s at a
-        // time. When the scan cache has it, ask for that exact access point as a normal visible network.
-        @Suppress("DEPRECATION")
-        val knownAp = if (p2pGroupAsAp) {
-            P2pWarmUp.matchingScanResults(applicationContext, qr.ssid, null).firstOrNull()?.BSSID
-        } else null
-        if (p2pGroupAsAp) {
-            LogBus.log(
-                if (knownAp != null) "→ T350X-style dash: '${qr.ssid}' is in the scan cache — asking for that exact access point ($knownAp)"
-                else "→ T350X-style dash: '${qr.ssid}' not in the scan cache yet — probing by name",
-            )
-            // If the SoftAP request has not produced a network after 30 s, try Wi‑Fi Direct by the QR address.
-            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                if (BikeWifi.isActive && BikeWifi.currentNetwork == null && !BikeWifiP2p.isConnected) {
-                    p2pFallback("SoftAP request produced no network in 30 s")
-                }
-            }, 30_000L)
-        }
-        p2pFallbackDone.set(false)
-        p2pFallback = { why ->
-            if (p2pFallbackDone.compareAndSet(false, true)) {
-                LogBus.log("→ $why — trying Wi‑Fi Direct by the QR address")
-                BikeWifi.leave(applicationContext, LogBus::log)
-                P2pWarmUp.stop("handing over to Wi‑Fi Direct")
-                joinWifiP2p(qr, gateOnAaSteady)
-            }
-        }
         BikeWifi.reuseOrJoin(
             context = applicationContext,
             ssid = qr.ssid,
             psk = qr.pwd,
-            hidden = p2pGroupAsAp && knownAp == null,
-            bssid = knownAp,
-            onFirstJoinFailed = if (p2pGroupAsAp) ({ p2pFallback("the phone refused the dash's access point") }) else null,
+            hidden = p2pGroupAsAp,
             onAvailable = { network ->
                 WifiGate.cancelNotification(applicationContext)
                 P2pWarmUp.stop("bike Wi‑Fi joined")
