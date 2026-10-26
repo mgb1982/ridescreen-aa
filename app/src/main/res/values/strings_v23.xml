@@ -225,7 +225,7 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="pke_unlock_need_code">Set your PKE code first, in Help → 🔋 Battery (keyless box).</string>
     <string name="pke_unlock_mcu_title">Device key (McuID)</string>
     <string name="pke_unlock_mcu_body">Needed once, only for locking/unlocking/releases. It isn\'t on the bike\'s QR code and isn\'t readable over Bluetooth: the official Zontes Smart app fetches it from Zontes\' own servers after login and keeps it on your phone. You\'ll need to get it from a phone where that app is already set up on your bike.</string>
-    <string name="pke_unlock_mcu_invalid">Enter the McuID (hex, at least 4 characters)</string>
+    <string name="pke_unlock_mcu_invalid">McuID must be exactly 32 hexadecimal digits (16 bytes). Nothing is sent until it is valid.</string>
     <string name="pke_unlock_change_mcu">Change device key</string>
     <string name="pke_unlock_action_unlock">🔓 Unlock</string>
     <string name="pke_unlock_action_lock">🔒 Lock</string>
@@ -238,6 +238,9 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="pke_unlock_sent">Command sent. Check the bike to confirm it worked — this feature hasn\'t been validated against hardware yet, please send me the log either way.</string>
     <string name="pke_unlock_need_mcu">No device key (McuID) set yet.</string>
     <string name="pke_unlock_fail_no_challenge">The box didn\'t answer the handshake, so nothing was sent. Get closer to the bike, make sure the official app isn\'t connected to it, and try again.</string>
+    <string name="pke_unlock_fail_derive">The AES command could not be derived from the challenge and McuID. Nothing was sent; please share the log.</string>
+    <string name="pke_unlock_fail_bad_mcu">McuID must be 32 hexadecimal digits (16 bytes). Nothing was sent.</string>
+    <string name="pke_unlock_fail_bad_challenge">The box replied, but its challenge could not be decoded. Nothing was sent; please share the log.</string>
     <string name="engine_running">engine running</string>
     <string name="engine_stopped">engine off</string>
 </resources>
