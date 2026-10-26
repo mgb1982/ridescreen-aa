@@ -38,7 +38,7 @@ object PkeUnlockUi {
                 .show()
             return
         }
-        if (PkeUnlock.mcuId(activity).length < 4) { askMcuId(activity) { pickAction(activity) }; return }
+        if (!PkeUnlock.isValidMcuId(PkeUnlock.mcuId(activity))) { askMcuId(activity) { pickAction(activity) }; return }
         pickAction(activity)
     }
 
@@ -46,7 +46,7 @@ object PkeUnlockUi {
         val input = EditText(activity).apply {
             inputType = InputType.TYPE_CLASS_TEXT
             setText(PkeUnlock.mcuId(activity))
-            hint = "A1B2C3D4"
+            hint = "32 hexadecimal digits"
         }
         MaterialAlertDialogBuilder(activity)
             .setTitle(R.string.pke_unlock_mcu_title)
@@ -54,7 +54,7 @@ object PkeUnlockUi {
             .setView(input)
             .setPositiveButton(R.string.dest_save) { _, _ ->
                 val id = input.text?.toString()?.trim().orEmpty()
-                if (id.length < 4) { Toast.makeText(activity, R.string.pke_unlock_mcu_invalid, Toast.LENGTH_LONG).show(); return@setPositiveButton }
+                if (!PkeUnlock.isValidMcuId(id)) { Toast.makeText(activity, R.string.pke_unlock_mcu_invalid, Toast.LENGTH_LONG).show(); return@setPositiveButton }
                 PkeUnlock.setMcuId(activity, id)
                 then()
             }
@@ -111,7 +111,7 @@ object PkeUnlockUi {
                     .setMessage(message(activity, res))
                     .setPositiveButton(R.string.whats_new_ok, null)
                     .apply {
-                        if (res.failure == PkeUnlock.Failure.NO_MCU_ID) {
+                        if (res.failure == PkeUnlock.Failure.NO_MCU_ID || res.failure == PkeUnlock.Failure.BAD_MCU_ID) {
                             setNeutralButton(R.string.pke_unlock_change_mcu) { _, _ -> askMcuId(activity) { pickAction(activity) } }
                         }
                     }
@@ -131,6 +131,9 @@ object PkeUnlockUi {
                 PkeUnlock.Failure.NOT_FOUND -> R.string.pke_fail_not_found
                 PkeUnlock.Failure.NO_LINK -> R.string.pke_fail_not_found
                 PkeUnlock.Failure.NO_CHALLENGE -> R.string.pke_unlock_fail_no_challenge
+                PkeUnlock.Failure.BAD_CHALLENGE -> R.string.pke_unlock_fail_bad_challenge
+                PkeUnlock.Failure.BAD_MCU_ID -> R.string.pke_unlock_fail_bad_mcu
+                PkeUnlock.Failure.DERIVE_FAILED -> R.string.pke_unlock_fail_derive
                 PkeUnlock.Failure.NO_ANSWER -> R.string.pke_fail_no_answer
                 null -> R.string.pke_fail_no_answer
             },
