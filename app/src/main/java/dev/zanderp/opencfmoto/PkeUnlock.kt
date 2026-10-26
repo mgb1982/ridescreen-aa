@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Part of RideScreen AA (fork of OpenCfMoto). Free software under the GNU AGPL v3 or later.
-// Regression-isolation build: retain the pre-v24-pke-fast PKE command path.
 package dev.zanderp.opencfmoto
 
 import android.Manifest
