@@ -148,6 +148,9 @@ object PkeUnlock {
      */
     internal fun derive(pkeCode: String, mcuId: String, challenge: ByteArray): Derived {
         if (challenge.size != 4) return Derived.Failed
+        // Keep this pure validation ahead of diagnostic logging: JVM unit tests do not provide
+        // Android's android.util.Log implementation, and malformed input needs no AES work.
+        if (!isValidMcuId(mcuId)) return Derived.BadMcuId
         val mcuBytes = runCatching { BleProtocol.hexToBytes(mcuId) }.getOrNull()
         if (mcuBytes == null) {
             log("derive: McuID is not valid hex (len=${mcuId.length}) — check it was entered as hex digits only")
