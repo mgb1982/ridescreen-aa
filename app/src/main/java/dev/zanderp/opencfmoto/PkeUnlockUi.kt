@@ -38,7 +38,7 @@ object PkeUnlockUi {
                 .show()
             return
         }
-        if (!PkeUnlock.isValidMcuId(PkeUnlock.mcuId(activity)) { askMcuId(activity) { pickAction(activity) }; return }
+        if (!PkeUnlock.isValidMcuId(PkeUnlock.mcuId(activity))) { askMcuId(activity) { pickAction(activity) }; return }
         pickAction(activity)
     }
 
