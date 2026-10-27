@@ -111,7 +111,7 @@ object PkeUnlockUi {
                     .setMessage(message(activity, res))
                     .setPositiveButton(R.string.whats_new_ok, null)
                     .apply {
-                        if (res.failure == PkeUnlock.Failure.NO_MCU_ID) {
+                        if (res.failure == PkeUnlock.Failure.NO_MCU_ID || res.failure == PkeUnlock.Failure.BAD_MCU_ID) {
                             setNeutralButton(R.string.pke_unlock_change_mcu) { _, _ -> askMcuId(activity) { pickAction(activity) } }
                         }
                     }
@@ -126,12 +126,14 @@ object PkeUnlockUi {
             when (res.failure) {
                 PkeUnlock.Failure.NO_CODE -> R.string.pke_fail_no_code
                 PkeUnlock.Failure.NO_MCU_ID -> R.string.pke_unlock_need_mcu
-                PkeUnlock.Failure.INVALID_MCU_ID -> R.string.pke_unlock_mcu_invalid
+                PkeUnlock.Failure.BAD_MCU_ID -> R.string.pke_unlock_fail_bad_mcu
                 PkeUnlock.Failure.NO_PERMISSION -> R.string.pke_need_nearby
                 PkeUnlock.Failure.BLUETOOTH_OFF -> R.string.pke_bt_off
                 PkeUnlock.Failure.NOT_FOUND -> R.string.pke_fail_not_found
                 PkeUnlock.Failure.NO_LINK -> R.string.pke_fail_not_found
                 PkeUnlock.Failure.NO_CHALLENGE -> R.string.pke_unlock_fail_no_challenge
+                PkeUnlock.Failure.BAD_CHALLENGE -> R.string.pke_unlock_fail_bad_challenge
+                PkeUnlock.Failure.DERIVE_FAILED -> R.string.pke_unlock_fail_derive
                 PkeUnlock.Failure.NO_ANSWER -> R.string.pke_fail_no_answer
                 null -> R.string.pke_fail_no_answer
             },

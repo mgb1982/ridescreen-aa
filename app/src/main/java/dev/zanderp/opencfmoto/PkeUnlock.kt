@@ -75,11 +75,6 @@ object PkeUnlock {
     private const val PREFS = "pke_unlock"
     private const val KEY_MCU_ID = "mcu_id"
 
-    // Shared with PkeBattery: remember the keyless box BLE address, so a button press
-    // can connect directly instead of paying for a full 12-second scan every time.
-    private const val PKE_PREFS = "pke_box"
-    private const val KEY_MAC = "mac"
-
     enum class Action(val code: String, val label: String) {
         LOCK("1", "lock"),
         UNLOCK("2", "unlock"),
@@ -87,7 +82,7 @@ object PkeUnlock {
         CUSHION("6", "cushion"),
     }
 
-    enum class Failure { NO_CODE, NO_MCU_ID, INVALID_MCU_ID, NO_PERMISSION, BLUETOOTH_OFF, NOT_FOUND, NO_LINK, NO_CHALLENGE, NO_ANSWER }
+    enum class Failure { NO_CODE, NO_MCU_ID, NO_PERMISSION, BLUETOOTH_OFF, NOT_FOUND, NO_LINK, NO_CHALLENGE, BAD_CHALLENGE, BAD_MCU_ID, DERIVE_FAILED, NO_ANSWER }
 
     class Result(val ok: Boolean, val failure: Failure?)
 
@@ -101,25 +96,36 @@ object PkeUnlock {
     fun setMcuId(ctx: Context, id: String) {
         ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putString(KEY_MCU_ID, id.trim().uppercase()).apply()
     }
-
-    /** McuID is AES-128 plaintext: exactly one 16-byte block represented as 32 hex digits. */
+    
+    /** AES plaintext must be one 16-byte block, written as 32 hexadecimal digits. */
     internal fun isValidMcuId(id: String): Boolean =
-        id.length == 32 && id.all { (it in '0'..'9') || (it.lowercaseChar() in 'a'..'f') }
+        id.length == 32 && id.all { it in '0'..'9' || it.lowercaseChar() in 'a'..'f' }
 
     // ── pure bits (unit-testable, same style as PkeBattery's)
 
-    /**
-     * 4-byte challenge out of a `008` reply (`*AT,a,b,008,<challenge>,…#`). The official app
-     * drops the reply field's last character before hex-decoding (BlueToothOperateActivity.java:
-     * `str2.substring(0, str2.length() - 1)`) — kept exactly, not an oversight.
-     */
-    internal fun challengeFrom(reply: String): ByteArray? {
+    /** The raw challenge field (between `008` and the voltage) of a `008` reply, unparsed. */
+    internal fun challengeField(reply: String): String? {
         val p = reply.trim().removeSuffix("#").split(",")
         if (p.firstOrNull() != "*AT") return null
         val i = p.indexOf("008").takeIf { it >= 1 } ?: return null
-        val hex = p.getOrNull(i + 1)?.trim() ?: return null
-        if (hex.length < 2) return null
-        return runCatching { BleProtocol.hexToBytes(hex.dropLast(1)) }.getOrNull()?.takeIf { it.size == 4 }
+        return p.getOrNull(i + 1)?.trim()
+    }
+
+    /**
+     * 4-byte challenge out of a `008` reply (`*AT,a,b,008,<challenge>,…#`). The decompiled official
+     * app does `str2.substring(0, str2.length() - 1)` before hex-decoding — but that app reads a raw
+     * buffer that still carries a trailing byte our frame splitter already strips, so we don't know
+     * up front which form is already clean. Try the field as-is first, then the drop-last variant;
+     * accept whichever hex-decodes to exactly 4 bytes. The challenge is a per-session nonce, not a
+     * secret, so it is safe to inspect/log.
+     */
+    internal fun challengeFrom(reply: String): ByteArray? {
+        val hex = challengeField(reply) ?: return null
+        for (c in listOf(hex, hex.dropLast(1))) {
+            val b = runCatching { BleProtocol.hexToBytes(c) }.getOrNull()
+            if (b != null && b.size == 4) return b
+        }
+        return null
     }
 
     private fun aesEcbEncrypt(key: ByteArray, plaintext: ByteArray): ByteArray {
@@ -128,20 +134,40 @@ object PkeUnlock {
         return cipher.doFinal(plaintext)
     }
 
-    /** The exact derivation read from BlueToothOperateActivity.java / a/vf9.java (its h/K/i/e). */
-    internal fun derive(pkeCode: String, mcuId: String, challenge: ByteArray): String? {
-        if (challenge.size != 4) return null
-        if (!isValidMcuId(mcuId)) return null
-        val mcuBytes = runCatching { BleProtocol.hexToBytes(mcuId) }.getOrNull()?.takeIf { it.size == 16 } ?: return null
-        val h = runCatching { aesEcbEncrypt(AES_KEY_ASCII.toByteArray(Charsets.US_ASCII), mcuBytes) }.getOrNull() ?: return null
-        if (h.size != 16) return null
+    /** Distinguishes "the McuID itself is unusable" from "something else in the chain broke". */
+    sealed class Derived {
+        data class Ok(val cipherHex: String) : Derived()
+        object BadMcuId : Derived()
+        object Failed : Derived()
+    }
+
+    /**
+     * The exact derivation read from BlueToothOperateActivity.java / a/vf9.java (its h/K/i/e).
+     * Logs the shape of each stage (never the McuID value, only its byte length) so a failed
+     * attempt tells us which step broke.
+     */
+    internal fun derive(pkeCode: String, mcuId: String, challenge: ByteArray): Derived {
+        if (challenge.size != 4) return Derived.Failed
+        val mcuBytes = runCatching { BleProtocol.hexToBytes(mcuId) }.getOrNull()
+        if (mcuBytes == null) {
+            log("derive: McuID is not valid hex (len=${mcuId.length}) — check it was entered as hex digits only")
+            return Derived.BadMcuId
+        }
+        log("derive: McuID decodes to ${mcuBytes.size} bytes, challenge ${BleProtocol.bytesToHex(challenge)}")
+        if (mcuBytes.size != 16) {
+            log("derive: McuID is ${mcuBytes.size} bytes, AES needs exactly 16 — the stored McuID is the wrong length/format")
+            return Derived.BadMcuId
+        }
+        val h = runCatching { aesEcbEncrypt(AES_KEY_ASCII.toByteArray(Charsets.US_ASCII), mcuBytes) }.getOrNull()
+        if (h == null || h.size != 16) { log("derive: AES step 1 (h) failed"); return Derived.BadMcuId }
         val k = ByteArray(16)
         for (i in 0 until 16) k[i] = if (i < 12) h[i] else (challenge[i - 12].toInt() xor h[i].toInt()).toByte()
         val block = ByteArray(16)
         val codeBytes = pkeCode.toByteArray(Charsets.US_ASCII)
         System.arraycopy(codeBytes, 0, block, 0, minOf(15, codeBytes.size))
-        val cipher = runCatching { aesEcbEncrypt(k, block) }.getOrNull() ?: return null
-        return BleProtocol.bytesToHex(cipher)
+        val cipher = runCatching { aesEcbEncrypt(k, block) }.getOrNull() ?: return Derived.Failed.also { log("derive: AES step 4 (cipher) failed") }
+        log("derive: cipher ready (${cipher.size} bytes)")
+        return Derived.Ok(BleProtocol.bytesToHex(cipher))
     }
 
     internal fun frame(pke: String, action: Action, cipherHex: String): ByteArray =
@@ -171,56 +197,41 @@ object PkeUnlock {
         if (pke.length < 8) return Result(false, Failure.NO_CODE)
         val mcu = mcuId(ctx)
         if (mcu.isBlank()) return Result(false, Failure.NO_MCU_ID)
-        if (!isValidMcuId(mcu)) return Result(false, Failure.INVALID_MCU_ID)
+        if (!isValidMcuId(mcu)) {
+            log("invalid McuID format: expected 32 hexadecimal digits (16 bytes), received length=${mcu.length}; nothing sent")
+            return Result(false, Failure.BAD_MCU_ID)
+        }
         if (Build.VERSION.SDK_INT >= 31 && listOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT)
                 .any { ContextCompat.checkSelfPermission(ctx, it) != PackageManager.PERMISSION_GRANTED }) {
             return Result(false, Failure.NO_PERMISSION)
         }
         val adapter = ctx.getSystemService(BluetoothManager::class.java)?.adapter
         if (adapter == null || !adapter.isEnabled) return Result(false, Failure.BLUETOOTH_OFF)
-        val operationStarted = System.currentTimeMillis()
         log("sending '${action.label}' to the keyless box for PKE …${pke.takeLast(4)}")
-        val prefs = ctx.getSharedPreferences(PKE_PREFS, Context.MODE_PRIVATE)
-        val cachedMac = prefs.getString(KEY_MAC, null)
-        var link: Link? = null
-
-        // Fast path: reuse the last MAC saved by PkeBattery. A scan can take up to 12 seconds,
-        // while the cached address usually lets GATT connect immediately.
-        if (!cachedMac.isNullOrBlank()) {
-            val cachedDevice = runCatching { adapter.getRemoteDevice(cachedMac) }.getOrNull()
-            if (cachedDevice != null) {
-                val connectStarted = System.currentTimeMillis()
-                log("trying cached PKE box directly at $cachedMac")
-                link = open(ctx, cachedDevice, 4_500)
-                log("cached GATT attempt: ${System.currentTimeMillis() - connectStarted} ms")
-            }
-        }
-
-        // Fallback remains exactly the previous discovery path if the saved address no longer works.
-        if (link == null) {
-            val dev = scan(ctx, pke) ?: return Result(false, Failure.NOT_FOUND)
-            prefs.edit().putString(KEY_MAC, dev.address).apply()
-            link = open(ctx, dev, 12_000) ?: return Result(false, Failure.NO_LINK)
-        }
-        val activeLink = link ?: return Result(false, Failure.NO_LINK)
+        val dev = scan(ctx, pke) ?: return Result(false, Failure.NOT_FOUND)
+        val link = open(ctx, dev, pke) ?: return Result(false, Failure.NO_LINK)
         try {
-            val challengeStarted = System.currentTimeMillis()
-            val challengeReply = ask(activeLink, pke, "*BT,$pke,10,008#".toByteArray(Charsets.US_ASCII), "008", 6_000)
+            val challengeReply = ask(link, pke, "*BT,$pke,10,008#".toByteArray(Charsets.US_ASCII), "008", 6_000)
                 ?: return Result(false, Failure.NO_CHALLENGE)
-            val challenge = challengeFrom(challengeReply) ?: return Result(false, Failure.NO_CHALLENGE)
-            val cipherHex = derive(pke, mcu, challenge) ?: return Result(false, Failure.NO_CHALLENGE)
-            log("challenge + key derivation: ${System.currentTimeMillis() - challengeStarted} ms")
+            val challenge = challengeFrom(challengeReply)
+            if (challenge == null) {
+                log("challenge field '${challengeField(challengeReply) ?: "?"}' didn't decode to 4 bytes — nothing sent")
+                return Result(false, Failure.BAD_CHALLENGE)
+            }
+            val cipherHex = when (val d = derive(pke, mcu, challenge)) {
+                is Derived.Ok -> d.cipherHex
+                is Derived.BadMcuId -> return Result(false, Failure.BAD_MCU_ID)
+                is Derived.Failed -> return Result(false, Failure.DERIVE_FAILED)
+            }
             val bytes = frame(pke, action, cipherHex)
-            activeLink.replies.clear()
-            val ok = writeBytes(activeLink, bytes)
+            link.replies.clear()
+            val ok = writeBytes(link, bytes)
             log("→ ${masked(String(bytes, Charsets.US_ASCII), pke)}${if (ok) "" else " (write refused)"}")
-            val replyStarted = System.currentTimeMillis()
-            val reply = activeLink.replies.poll(4_000, TimeUnit.MILLISECONDS)
-            log(if (reply != null) "← ${masked(reply, pke)}" else "no reply to '${action.label}' within 4s")
-            log("action response wait: ${System.currentTimeMillis() - replyStarted} ms; total send: ${System.currentTimeMillis() - operationStarted} ms")
+            val reply = link.replies.poll(4_000, TimeUnit.MILLISECONDS)
+            if (reply == null) log("no reply to '${action.label}' within 4s (the box may still have acted — check the bike)")
             return Result(ok, if (ok) null else Failure.NO_ANSWER)
         } finally {
-            runCatching { activeLink.gatt.disconnect() }; runCatching { activeLink.gatt.close() }
+            runCatching { link.gatt.disconnect() }; runCatching { link.gatt.close() }
         }
     }
 
@@ -269,18 +280,16 @@ object PkeUnlock {
                 }
             }
         }
-        val scanStarted = System.currentTimeMillis()
         log("scanning Bluetooth LE for the keyless box (12 s)…")
         try {
             scanner.startScan(null, ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build(), cb)
             latch.await(12, TimeUnit.SECONDS)
         } catch (e: Exception) { log("scan failed: $e") } finally { runCatching { scanner.stopScan(cb) } }
-        log("BLE scan duration: ${System.currentTimeMillis() - scanStarted} ms")
         if (found == null) log("box not found")
         return found
     }
 
-    private fun open(ctx: Context, dev: BluetoothDevice, timeoutMs: Long = 12_000): Link? {
+    private fun open(ctx: Context, dev: BluetoothDevice, pke: String): Link? {
         val ready = CountDownLatch(1)
         val replies = LinkedBlockingQueue<String>()
         val text = StringBuilder()
@@ -322,22 +331,21 @@ object PkeUnlock {
                         if (start < 0 || end < 0) break
                         val f = text.substring(start, end + 1)
                         text.delete(0, end + 1)
+                        log("← ${masked(f, pke)}")
                         replies.put(f)
                     }
                     if (text.length > 512) text.setLength(0)
                 }
             }
         }
-        val connectStarted = System.currentTimeMillis()
         val g = runCatching { dev.connectGatt(ctx, false, cb, BluetoothDevice.TRANSPORT_LE) }.getOrNull() ?: return null
-        if (!ready.await(timeoutMs, TimeUnit.MILLISECONDS)) fail = fail ?: "timeout"
+        if (!ready.await(12_000, TimeUnit.MILLISECONDS)) fail = fail ?: "timeout"
         val l = link
         if (l == null) {
-            log("no link to the box: $fail (${System.currentTimeMillis() - connectStarted} ms)")
+            log("no link to the box: $fail")
             runCatching { g.disconnect() }; runCatching { g.close() }
             return null
         }
-        log("GATT ready in ${System.currentTimeMillis() - connectStarted} ms")
         return l
     }
 }
