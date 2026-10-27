@@ -2,7 +2,6 @@ package dev.zanderp.opencfmoto
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -19,7 +18,10 @@ class PkeUnlockTest {
 
     @Test
     fun deriveRejectsMalformedMcuIdBeforeAes() {
-        assertNull(PkeUnlock.derive("123456789012345", "A1B2", byteArrayOf(1, 2, 3, 4)))
+        assertEquals(
+            PkeUnlock.Derived.BadMcuId,
+            PkeUnlock.derive("123456789012345", "A1B2", byteArrayOf(1, 2, 3, 4))
+        )
     }
 
     @Test
