@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Line icon set (v2.4): 24 dp grid, 1.8 stroke, round caps. Tint with the function's accent colour. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M10.1 2.5 H13.9 A2.6 2.6 0 0 1 16.5 5.1 V18.9 A2.6 2.6 0 0 1 13.9 21.5 H10.1 A2.6 2.6 0 0 1 7.5 18.9 V5.1 A2.6 2.6 0 0 1 10.1 2.5 Z"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="1.8" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M10.3 7.3 a1.7 1.7 0 1 0 3.4 0 a1.7 1.7 0 1 0 -3.4 0 M10.3 12 a1.7 1.7 0 1 0 3.4 0 a1.7 1.7 0 1 0 -3.4 0 M10.3 16.7 a1.7 1.7 0 1 0 3.4 0 a1.7 1.7 0 1 0 -3.4 0"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="1.8" />
+</vector>
