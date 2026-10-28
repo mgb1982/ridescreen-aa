@@ -35,6 +35,9 @@ class PkeUnlockTest {
         // No key, but a single 32-hex run in the text: take it.
         assertEquals(id, PkeUnlock.mcuIdFromQr("$id"))
         assertEquals(id, PkeUnlock.mcuIdFromQr("random preamble $id trailing"))
+        // The real Zontes 125X information QR: 10 ';'-separated positional fields, no key names,
+        // the McuID the only 32-hex field (shape confirmed from Manel's bike, 28 Oct 2026).
+        assertEquals(id, PkeUnlock.mcuIdFromQr("1A2;B3C;0123456789ABCDE;AABBCCDD;11223344;;;$id;;99887766"))
         // Lower case is normalised up.
         assertEquals(id, PkeUnlock.mcuIdFromQr("mcuid=${id.lowercase()}"))
         // Nothing usable.
