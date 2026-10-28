@@ -224,7 +224,7 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="pke_unlock_title">Lock / unlock</string>
     <string name="pke_unlock_need_code">Set your PKE code first, in Help → 🔋 Battery (keyless box).</string>
     <string name="pke_unlock_mcu_title">Device key (McuID)</string>
-    <string name="pke_unlock_mcu_body">Needed once, only for locking/unlocking/releases. It isn\'t on the bike\'s QR code and isn\'t readable over Bluetooth: the official Zontes Smart app fetches it from Zontes\' own servers after login and keeps it on your phone. You\'ll need to get it from a phone where that app is already set up on your bike.</string>
+    <string name="pke_unlock_mcu_body">Needed once, only for locking, unlocking and the seat and fuel cap releases. You\'ll find it in your bike\'s information QR code: scan it and copy the McuID (32 hexadecimal digits). It can\'t be read over Bluetooth.</string>
     <string name="pke_unlock_mcu_invalid">Enter the McuID as exactly 32 hexadecimal characters (16 bytes)</string>
     <string name="pke_unlock_change_mcu">Change device key</string>
     <string name="pke_unlock_action_unlock">🔓 Unlock</string>
