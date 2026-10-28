@@ -887,6 +887,7 @@ class MainActivity : AppCompatActivity() {
                 ProjectionHolder.projection = null
                 GpxSession.clear()
                 ensureLocationPermission()
+                PkeUnlockUi.unlockWithConnect(applicationContext)
                 startAaFlow(saved)
             } else {
                 log("→ Connect: no saved bike — scan the dash QR.")
@@ -1137,6 +1138,7 @@ class MainActivity : AppCompatActivity() {
             log("→ widget tap: resuming the parked session")
             connectStartedAt = now
             AndroidAutoService.requestResume()
+            PkeUnlockUi.unlockWithConnect(applicationContext)
             Toast.makeText(this, R.string.widget_connect_starting, Toast.LENGTH_SHORT).show()
             return
         }
@@ -1150,6 +1152,7 @@ class MainActivity : AppCompatActivity() {
         ProjectionHolder.projection = null
         Toast.makeText(this, R.string.widget_connect_starting, Toast.LENGTH_SHORT).show()
         ensureLocationPermission()
+        PkeUnlockUi.unlockWithConnect(applicationContext)
         startAaFlow(saved)
     }
 

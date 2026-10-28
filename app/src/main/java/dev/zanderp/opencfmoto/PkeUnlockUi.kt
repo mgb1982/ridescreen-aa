@@ -71,9 +71,22 @@ object PkeUnlockUi {
             PkeUnlock.Action.OILBOX to activity.getString(R.string.pke_unlock_action_oilbox),
             PkeUnlock.Action.CUSHION to activity.getString(R.string.pke_unlock_action_cushion),
         )
+        val onConnect = PkeUnlock.unlockOnConnect(activity)
+        val toggle = activity.getString(if (onConnect) R.string.pke_unlock_on_connect_on else R.string.pke_unlock_on_connect_off)
         MaterialAlertDialogBuilder(activity)
             .setTitle(R.string.pke_unlock_title)
-            .setItems(actions.map { it.second }.toTypedArray()) { _, i -> confirm(activity, actions[i].first, actions[i].second) }
+            .setItems((actions.map { it.second } + toggle).toTypedArray()) { _, i ->
+                if (i < actions.size) confirm(activity, actions[i].first, actions[i].second)
+                else {
+                    PkeUnlock.setUnlockOnConnect(activity, !onConnect)
+                    Toast.makeText(
+                        activity,
+                        if (onConnect) R.string.pke_unlock_on_connect_toast_off else R.string.pke_unlock_on_connect_toast_on,
+                        Toast.LENGTH_LONG,
+                    ).show()
+                    pickAction(activity)
+                }
+            }
             .setNeutralButton(R.string.pke_unlock_change_mcu) { _, _ -> askMcuId(activity) { pickAction(activity) } }
             .show()
     }
@@ -117,6 +130,24 @@ object PkeUnlockUi {
             .setNegativeButton(R.string.dash_cancel) { _, _ -> PkeUnlock.release() }
             .setOnCancelListener { PkeUnlock.release() }
             .show()
+    }
+
+    /**
+     * One-step Connect: when the rider turned on "Unlock when connecting", a Connect tap also unlocks the
+     * bike, in parallel with the connection (it never delays or blocks it). Called only from an explicit
+     * tap (the Connect button or the widget), never from auto-connect or the Bluetooth trigger: coming
+     * into range must not open the bike.
+     */
+    fun unlockWithConnect(app: Context) {
+        if (!PkeUnlock.unlockOnConnect(app)) return
+        if (PkeBattery.code(app).length < 8 || !PkeUnlock.isValidMcuId(PkeUnlock.mcuId(app))) return
+        LogBus.log("[PKE-unlock] Connect tapped — unlocking the bike in parallel")
+        io.execute {
+            val res = PkeUnlock.send(app, PkeUnlock.Action.UNLOCK)
+            main.post {
+                Toast.makeText(app, if (res.ok) doneText(app, PkeUnlock.Action.UNLOCK) else message(app, res), if (res.ok) Toast.LENGTH_SHORT else Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun runQuick(activity: Activity, action: PkeUnlock.Action, then: () -> Unit) {

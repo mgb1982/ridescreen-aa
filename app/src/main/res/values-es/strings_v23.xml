@@ -252,6 +252,10 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="pke_unlock_sending_short">Enviando: %1$s…</string>
     <string name="pke_notif_channel">Órdenes a la moto</string>
     <string name="pke_notif_sending">Enviando a la caja del keyless…</string>
+    <string name="pke_unlock_on_connect_on">☑ Desbloquear al conectar: sí</string>
+    <string name="pke_unlock_on_connect_off">☐ Desbloquear al conectar: no</string>
+    <string name="pke_unlock_on_connect_toast_on">Activado: al pulsar Conectar también se desbloquea la moto. Solo cuando pulsas Conectar, nunca en la conexión automática.</string>
+    <string name="pke_unlock_on_connect_toast_off">Desactivado: Conectar ya no desbloquea la moto.</string>
     <string name="engine_running">motor en marcha</string>
     <string name="engine_stopped">motor parado</string>
     <string name="trips_import">📥 Importar viaje (GPX)</string>

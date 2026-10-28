@@ -77,6 +77,7 @@ object PkeUnlock {
 
     private const val PREFS = "pke_unlock"
     private const val KEY_MCU_ID = "mcu_id"
+    private const val KEY_UNLOCK_ON_CONNECT = "unlock_on_connect"
 
     enum class Action(val code: String, val label: String) {
         LOCK("1", "lock"),
@@ -95,6 +96,14 @@ object PkeUnlock {
     //    never duplicated, so there is exactly one place that holds each value.
 
     fun mcuId(ctx: Context): String = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString(KEY_MCU_ID, "").orEmpty()
+
+    /** "Unlock when connecting": a Connect tap also unlocks the bike. Off by default. */
+    fun unlockOnConnect(ctx: Context): Boolean =
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_UNLOCK_ON_CONNECT, false)
+
+    fun setUnlockOnConnect(ctx: Context, on: Boolean) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putBoolean(KEY_UNLOCK_ON_CONNECT, on).apply()
+    }
 
     fun setMcuId(ctx: Context, id: String) {
         ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putString(KEY_MCU_ID, id.trim().uppercase()).apply()
