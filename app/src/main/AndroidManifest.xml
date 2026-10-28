@@ -293,6 +293,12 @@
             android:exported="false"
             android:taskAffinity=""
             android:theme="@style/Theme.OpenCfMoto.Dialog" />
+        <activity
+            android:name=".PkeMcuScanActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:taskAffinity=""
+            android:theme="@style/Theme.OpenCfMoto.Dialog" />
     </application>
 
 </manifest>

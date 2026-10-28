@@ -2,6 +2,7 @@ package dev.zanderp.opencfmoto
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -22,6 +23,27 @@ class PkeUnlockTest {
             PkeUnlock.Derived.BadMcuId,
             PkeUnlock.derive("123456789012345", "A1B2", byteArrayOf(1, 2, 3, 4))
         )
+    }
+
+    @Test
+    fun mcuIdExtractedFromInfoQrText() {
+        val id = "A1B2C3D4E5F60718293A4B5C6D7E8F90"
+        // A key named mcuid/McuID wins, as a URL param, JSON field or key:value line.
+        assertEquals(id, PkeUnlock.mcuIdFromQr("https://x/y?sn=abc&McuID=$id&color=black"))
+        assertEquals(id, PkeUnlock.mcuIdFromQr("{\"vin\":\"XXX\",\"mcuid\":\"$id\"}"))
+        assertEquals(id, PkeUnlock.mcuIdFromQr("model:125X\nMcuId: $id\ncolor:black"))
+        // No key, but a single 32-hex run in the text: take it.
+        assertEquals(id, PkeUnlock.mcuIdFromQr("$id"))
+        assertEquals(id, PkeUnlock.mcuIdFromQr("random preamble $id trailing"))
+        // Lower case is normalised up.
+        assertEquals(id, PkeUnlock.mcuIdFromQr("mcuid=${id.lowercase()}"))
+        // Nothing usable.
+        assertNull(PkeUnlock.mcuIdFromQr("no hex here at all"))
+        assertNull(PkeUnlock.mcuIdFromQr("sn=0501234567890123"))
+        // Several unkeyed 32-hex runs are ambiguous, so give up rather than guess.
+        assertNull(PkeUnlock.mcuIdFromQr("$id and also 00112233445566778899AABBCCDDEEFF"))
+        // A 40-hex token must not yield a 32-char slice of it.
+        assertNull(PkeUnlock.mcuIdFromQr("hash=A1B2C3D4E5F60718293A4B5C6D7E8F9000112233"))
     }
 
     @Test

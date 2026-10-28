@@ -1713,18 +1713,33 @@ class MainActivity : AppCompatActivity() {
         val ready = PkeBattery.code(this).length >= 8 && PkeUnlock.isValidMcuId(PkeUnlock.mcuId(this))
         card.visibility = if (ready) View.VISIBLE else View.GONE
         if (!ready) return
-        fun bind(id: Int, emoji: String, label: Int, action: PkeUnlock.Action) {
+        val dp = resources.displayMetrics.density
+        fun bind(id: Int, icon: Int, accent: Int, label: Int, action: PkeUnlock.Action) {
             findViewById<TextView>(id).apply {
-                text = android.text.SpannableString(emoji + "\n" + getString(label)).apply {
-                    setSpan(android.text.style.RelativeSizeSpan(1.9f), 0, emoji.length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                // Tinted circle + line icon on top, label below — same look as the home tiles and the widget.
+                val circle = (ContextCompat.getDrawable(this@MainActivity, icon)!!.mutate()).apply { setTint(accent) }
+                val size = (34 * dp).toInt()
+                val inset = (8 * dp).toInt()
+                val bubble = android.graphics.drawable.LayerDrawable(arrayOf(
+                    android.graphics.drawable.GradientDrawable().apply {
+                        shape = android.graphics.drawable.GradientDrawable.OVAL
+                        setColor((accent and 0x00FFFFFF) or 0x33000000)
+                    },
+                    circle,
+                )).apply {
+                    setLayerInset(1, inset, inset, inset, inset)
+                    setBounds(0, 0, size, size)
                 }
+                setCompoundDrawables(null, bubble, null, null)
+                compoundDrawablePadding = (4 * dp).toInt()
+                text = getString(label)
                 setOnClickListener { PkeUnlockUi.quick(this@MainActivity, action) { pkeRefresh() } }
             }
         }
-        bind(R.id.pke_act_unlock, "🔓", R.string.pke_short_unlock, PkeUnlock.Action.UNLOCK)
-        bind(R.id.pke_act_lock, "🔒", R.string.pke_short_lock, PkeUnlock.Action.LOCK)
-        bind(R.id.pke_act_seat, "🪑", R.string.pke_short_seat, PkeUnlock.Action.CUSHION)
-        bind(R.id.pke_act_fuel, "⛽", R.string.pke_short_fuel, PkeUnlock.Action.OILBOX)
+        bind(R.id.pke_act_unlock, R.drawable.ic_line_unlock, 0xFF5FD07A.toInt(), R.string.pke_short_unlock, PkeUnlock.Action.UNLOCK)
+        bind(R.id.pke_act_lock, R.drawable.ic_line_lock, 0xFF5B8DEF.toInt(), R.string.pke_short_lock, PkeUnlock.Action.LOCK)
+        bind(R.id.pke_act_seat, R.drawable.ic_line_seat, 0xFF4FB6A6.toInt(), R.string.pke_short_seat, PkeUnlock.Action.CUSHION)
+        bind(R.id.pke_act_fuel, R.drawable.ic_line_fuel, 0xFFE5774E.toInt(), R.string.pke_short_fuel, PkeUnlock.Action.OILBOX)
     }
 
     private fun renderPkeCard() {

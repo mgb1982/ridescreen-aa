@@ -106,6 +106,9 @@ class ControlWidget : AppWidgetProvider() {
         /** Header share of the widget height; the rest is the button band (matches the weights in widget_control.xml). */
         private const val HEADER = 0.61f
 
+        /** Below this height (dp) the widget is one row: the compact 5×1 icon strip. */
+        private const val COMPACT_MAX_DP = 130f
+
         private class Spec(val id: Int, val icon: Int, val accent: Int, val label: Int)
 
         private fun render(ctx: Context, mgr: AppWidgetManager, ids: IntArray, st: St) {
@@ -137,10 +140,13 @@ class ControlWidget : AppWidgetProvider() {
                     val (wDp, hDp, k) = sizeFor(ctx, mgr, id)
                     val w = (wDp * k).toInt()
                     val h = (hDp * k).toInt()
-                    val v = RemoteViews(ctx.packageName, R.layout.widget_control)
-                    v.setImageViewBitmap(R.id.wk_bg, header(ctx, w, h, k))
+                    // One row (resized short) → compact 5×1: just the icon row, no photo header, no labels.
+                    val compact = hDp < COMPACT_MAX_DP
+                    val v = RemoteViews(ctx.packageName, if (compact) R.layout.widget_control_compact else R.layout.widget_control)
+                    v.setImageViewBitmap(R.id.wk_bg, if (compact) plainCard(w, h, k) else header(ctx, w, h, k))
+                    val bandH = if (compact) h else h - (h * HEADER).toInt()
                     for (s in specs) {
-                        v.setImageViewBitmap(s.id, button(ctx, w / 5, h - (h * HEADER).toInt(), k, s, st == St.CONNECTING && s.id == R.id.wk_connect))
+                        v.setImageViewBitmap(s.id, button(ctx, w / 5, bandH, k, s, st == St.CONNECTING && s.id == R.id.wk_connect, labelled = !compact))
                         v.setOnClickPendingIntent(s.id, pis.getValue(s.id))
                     }
                     mgr.updateAppWidget(id, v)
@@ -257,13 +263,13 @@ class ControlWidget : AppWidgetProvider() {
             return out
         }
 
-        /** One button of the band: a tinted circle with the line icon, and its label underneath. */
-        private fun button(ctx: Context, w: Int, h: Int, k: Float, s: Spec, ring: Boolean): Bitmap {
+        /** One button of the band: a tinted circle with the line icon, and (when labelled) its label underneath. */
+        private fun button(ctx: Context, w: Int, h: Int, k: Float, s: Spec, ring: Boolean, labelled: Boolean): Bitmap {
             val out = Bitmap.createBitmap(maxOf(1, w), maxOf(1, h), Bitmap.Config.ARGB_8888)
             val c = Canvas(out)
-            val d = minOf(h * 0.58f, w * 0.70f)
-            val labelSize = (h * 0.20f).coerceIn(8f * k, 11f * k)
-            val gap = 3f * k
+            val labelSize = if (labelled) (h * 0.20f).coerceIn(8f * k, 11f * k) else 0f
+            val gap = if (labelled) 3f * k else 0f
+            val d = if (labelled) minOf(h * 0.58f, w * 0.70f) else minOf(h * 0.80f, w * 0.72f)
             val total = d + gap + labelSize * 1.15f
             val top = (h - total) / 2f
             val cx = w / 2f
@@ -281,14 +287,31 @@ class ControlWidget : AppWidgetProvider() {
             }
             drawIcon(c, icon(ctx, s.icon, s.accent), cx, cy, d * 0.58f)
 
-            val tp = TextPaint(Paint.ANTI_ALIAS_FLAG)
-            tp.typeface = font(ctx, R.font.archivo_medium)
-            tp.color = TEXT
-            tp.textSize = labelSize
-            val label = ctx.getString(s.label)
-            while (tp.measureText(label) > w - 2f * k && tp.textSize > 7f * k) tp.textSize -= 0.5f * k
-            tp.textAlign = Paint.Align.CENTER
-            c.drawText(label, cx, top + d + gap + tp.textSize * 0.9f, tp)
+            if (labelled) {
+                val tp = TextPaint(Paint.ANTI_ALIAS_FLAG)
+                tp.typeface = font(ctx, R.font.archivo_medium)
+                tp.color = TEXT
+                tp.textSize = labelSize
+                val label = ctx.getString(s.label)
+                while (tp.measureText(label) > w - 2f * k && tp.textSize > 7f * k) tp.textSize -= 0.5f * k
+                tp.textAlign = Paint.Align.CENTER
+                c.drawText(label, cx, top + d + gap + tp.textSize * 0.9f, tp)
+            }
+            return out
+        }
+
+        /** The plain rounded card (surface + gold edge), used behind the compact 5×1 strip (no photo). */
+        private fun plainCard(w: Int, h: Int, k: Float): Bitmap {
+            val out = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+            val c = Canvas(out)
+            val rad = 22f * k
+            val p = Paint(Paint.ANTI_ALIAS_FLAG)
+            p.color = SURFACE
+            c.drawRoundRect(RectF(0f, 0f, w.toFloat(), h.toFloat()), rad, rad, p)
+            p.style = Paint.Style.STROKE
+            p.strokeWidth = k
+            p.color = GOLD
+            c.drawRoundRect(RectF(k / 2, k / 2, w - k / 2, h - k / 2), rad, rad, p)
             return out
         }
 

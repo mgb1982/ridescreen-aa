@@ -259,6 +259,10 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="widget_state_locked">Locked</string>
     <string name="widget_state_unlocked">Unlocked</string>
     <string name="widget_state_none">No reading yet</string>
+    <string name="pke_unlock_scan">Scan QR</string>
+    <string name="pke_unlock_scan_confirm">Found this device key on the QR:\n\n%1$s\n\nSave it?</string>
+    <string name="pke_unlock_scan_saved">Device key saved</string>
+    <string name="pke_unlock_scan_not_found">No device key (McuID) found on that QR. Scan your bike\'s information QR, or type it by hand.</string>
     <string name="engine_running">engine running</string>
     <string name="engine_stopped">engine off</string>
     <string name="trips_import">📥 Import a ride (GPX)</string>

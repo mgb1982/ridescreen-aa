@@ -113,6 +113,25 @@ object PkeUnlock {
     internal fun isValidMcuId(id: String): Boolean =
         id.length == 32 && id.all { it in '0'..'9' || it.lowercaseChar() in 'a'..'f' }
 
+    /**
+     * Pull the McuID out of the text of the bike's information QR, which the rider scans instead of
+     * typing 32 hex digits by hand. We don't have a verified sample of that QR's exact layout, so this
+     * is deliberately tolerant and the caller confirms the result before saving:
+     *  1. a `mcuid`/`McuID` key (URL query, JSON, or `key:value` / `key=value`) → the 32-hex run after it;
+     *  2. otherwise, the single 32-hex run in the whole text (ambiguous if there are several → give up).
+     * Returns the value upper-cased, or null when nothing usable is found. Only the McuID is taken; the
+     * rest of the QR (which may carry other vehicle data) is ignored and never stored or logged.
+     */
+    internal fun mcuIdFromQr(raw: String): String? {
+        val hex = Regex("(?<![0-9A-Fa-f])[0-9A-Fa-f]{32}(?![0-9A-Fa-f])")
+        val keyed = Regex("mcu[_-]?id", RegexOption.IGNORE_CASE).find(raw)
+        if (keyed != null) {
+            hex.find(raw, keyed.range.last + 1)?.let { return it.value.uppercase() }
+        }
+        val all = hex.findAll(raw).map { it.value }.toList()
+        return all.singleOrNull()?.uppercase()
+    }
+
     // ── pure bits (unit-testable, same style as PkeBattery's)
 
     /** The raw challenge field (between `008` and the voltage) of a `008` reply, unparsed. */

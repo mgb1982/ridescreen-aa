@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wk_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/wk_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_widget" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <ImageView android:id="@+id/wk_connect" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:contentDescription="@string/widget_connect_label" android:scaleType="fitCenter" />
+        <ImageView android:id="@+id/wk_unlock" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:contentDescription="@string/pke_short_unlock" android:scaleType="fitCenter" />
+        <ImageView android:id="@+id/wk_lock" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:contentDescription="@string/pke_short_lock" android:scaleType="fitCenter" />
+        <ImageView android:id="@+id/wk_seat" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:contentDescription="@string/pke_short_seat" android:scaleType="fitCenter" />
+        <ImageView android:id="@+id/wk_fuel" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:contentDescription="@string/pke_short_fuel" android:scaleType="fitCenter" />
+    </LinearLayout>
+</FrameLayout>

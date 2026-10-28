@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Line icon set (v2.4): 24 dp grid, 1.8 stroke, round caps. Tint with the function's accent colour. -->
+<!-- Winding road in perspective: two edges and the centre dashes. 24 dp grid, 1.8 stroke. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
@@ -7,14 +7,35 @@
     android:viewportHeight="24">
     <path
         android:fillColor="#00000000"
-        android:pathData="M2.6 16 a3.4 3.4 0 1 0 6.8 0 a3.4 3.4 0 1 0 -6.8 0 M14.6 16 a3.4 3.4 0 1 0 6.8 0 a3.4 3.4 0 1 0 -6.8 0"
+        android:pathData="M13.38 23.00 L13.33 22.47 L13.28 22.37 L13.28 22.18 L13.39 21.87 L13.64 21.45 L14.02 20.95 L14.51 20.38 L15.11 19.74 L15.76 19.03 L16.45 18.22 L17.14 17.30 L17.78 16.22 L18.30 14.97 L18.61 13.57 L18.64 12.07 L18.40 10.66 L18.04 9.61 L17.62 8.75 L17.15 7.99 L16.66 7.34 L16.16 6.78 L15.69 6.29 L15.25 5.88 L14.85 5.51 L14.50 5.19 L14.20 4.90 L13.94 4.64 L13.73 4.38 L13.56 4.10 L13.42 3.78 L13.32 3.37 L13.29 2.75"
         android:strokeColor="#FFFFFFFF"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"
         android:strokeWidth="1.8" />
     <path
         android:fillColor="#00000000"
-        android:pathData="M6 16 L9.6 10.6 H14 L18 16 M14 10.6 L15.6 7.4 H18.6 M8.2 10.6 H11.6"
+        android:pathData="M4.62 22.20 L4.84 20.91 L5.36 19.36 L6.09 18.04 L6.92 16.96 L7.78 16.07 L8.61 15.34 L9.40 14.73 L10.12 14.21 L10.75 13.75 L11.26 13.36 L11.66 13.03 L11.95 12.78 L12.14 12.60 L12.27 12.44 L12.38 12.22 L12.40 11.74 L12.40 11.43 L12.34 11.06 L12.25 10.69 L12.11 10.29 L11.92 9.88 L11.69 9.43 L11.41 8.95 L11.10 8.44 L10.78 7.87 L10.46 7.25 L10.16 6.57 L9.92 5.82 L9.76 5.01 L9.70 4.15 L9.75 3.26 L9.91 2.45"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="1.8" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M9.08 21.69 L9.32 20.86 L9.68 20.11 L10.15 19.41 L10.71 18.76"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="1.8" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M14.86 14.50 L15.22 13.78 L15.44 13.00 L15.51 12.15 L15.40 11.20"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="1.8" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M13.33 7.42 L12.97 6.98 L12.64 6.53 L12.33 6.08 L12.05 5.60"
         android:strokeColor="#FFFFFFFF"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"

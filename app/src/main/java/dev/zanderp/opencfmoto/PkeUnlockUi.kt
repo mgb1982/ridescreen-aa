@@ -59,6 +59,9 @@ object PkeUnlockUi {
                 PkeUnlock.setMcuId(activity, id)
                 then()
             }
+            .setNeutralButton(R.string.pke_unlock_scan) { _, _ ->
+                activity.startActivity(android.content.Intent(activity, PkeMcuScanActivity::class.java))
+            }
             .setNegativeButton(R.string.dash_cancel, null)
             .show()
     }
