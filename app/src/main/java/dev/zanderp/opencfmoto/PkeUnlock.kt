@@ -17,6 +17,9 @@ import android.bluetooth.le.ScanSettings
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
 import androidx.core.content.ContextCompat
 import java.util.UUID
 import java.util.concurrent.CountDownLatch
@@ -211,11 +214,27 @@ object PkeUnlock {
         val adapter = ctx.getSystemService(BluetoothManager::class.java)?.adapter
         if (adapter == null || !adapter.isEnabled) return Result(false, Failure.BLUETOOTH_OFF)
         log("sending '${action.label}' to the keyless box for PKE …${pke.takeLast(4)}")
-        val dev = scan(ctx, pke) ?: return Result(false, Failure.NOT_FOUND)
-        val link = open(ctx, dev, pke) ?: return Result(false, Failure.NO_LINK)
+        sending = true
+        val t0 = SystemClock.elapsedRealtime()
+        val link: Link
+        val warmLink = takeWarm()
+        if (warmLink != null) {
+            link = warmLink
+            log("using the pre-opened link (${SystemClock.elapsedRealtime() - t0} ms)")
+        } else {
+            val dev = scan(ctx, pke)
+            if (dev == null) { sending = false; return Result(false, Failure.NOT_FOUND) }
+            val tScan = SystemClock.elapsedRealtime()
+            val opened = open(ctx, dev, pke)
+            if (opened == null) { sending = false; return Result(false, Failure.NO_LINK) }
+            link = opened
+            log("timing: scan ${tScan - t0} ms, connect+discover ${SystemClock.elapsedRealtime() - tScan} ms")
+        }
         try {
+            val tChallenge = SystemClock.elapsedRealtime()
             val challengeReply = ask(link, pke, "*BT,$pke,10,008#".toByteArray(Charsets.US_ASCII), "008", 6_000)
                 ?: return Result(false, Failure.NO_CHALLENGE)
+            log("timing: challenge round trip ${SystemClock.elapsedRealtime() - tChallenge} ms")
             val challenge = challengeFrom(challengeReply)
             if (challenge == null) {
                 log("challenge field '${challengeField(challengeReply) ?: "?"}' didn't decode to 4 bytes — nothing sent")
@@ -230,19 +249,99 @@ object PkeUnlock {
             link.replies.clear()
             val ok = writeBytes(link, bytes)
             log("→ ${masked(String(bytes, Charsets.US_ASCII), pke)}${if (ok) "" else " (write refused)"}")
-            val reply = link.replies.poll(4_000, TimeUnit.MILLISECONDS)
-            if (reply == null) log("no reply to '${action.label}' within 4s (the box may still have acted — check the bike)")
+            val tWrite = SystemClock.elapsedRealtime()
+            val reply = link.replies.poll(1_500, TimeUnit.MILLISECONDS)
+            if (reply == null) log("no reply to '${action.label}' within 1.5 s (the box may still have acted — check the bike)")
+            else log("timing: action reply after ${SystemClock.elapsedRealtime() - tWrite} ms")
+            log("timing: total ${SystemClock.elapsedRealtime() - t0} ms")
             return Result(ok, if (ok) null else Failure.NO_ANSWER)
         } finally {
             runCatching { link.gatt.disconnect() }; runCatching { link.gatt.close() }
+            sending = false
         }
+    }
+
+    // ── pre-opened link: the GATT setup (connect, MTU, discovery, notifications) is what makes a tap
+    //    feel slow (1-4 s on this box), not the challenge or the write. warmUp() does that setup while
+    //    the rider is still choosing, send() then only needs the challenge round trip and the write.
+    //    The box takes one client at a time, so while a link is held or being opened [holdingBox] is
+    //    true and MainActivity skips its own battery reads. It closes by itself after WARM_IDLE_MS.
+
+    private const val WARM_IDLE_MS = 40_000L
+    // lazy: Looper isn't available in plain JVM unit tests, which touch this object (PkeUnlockTest)
+    private val idleHandler by lazy { Handler(Looper.getMainLooper()) }
+    private val idleClose = Runnable { releaseWarm("idle ${WARM_IDLE_MS / 1000} s") }
+    private val warmLock = Any()
+    @Volatile private var warm: Link? = null
+    @Volatile private var warming = false
+    @Volatile private var warmDone: CountDownLatch? = null
+    @Volatile private var sending = false
+
+    /** True while this class holds (or is opening) a link to the box: other readers must stay off it. */
+    val holdingBox: Boolean get() = warming || sending || warm?.alive == true
+
+    private fun rearmIdle() {
+        idleHandler.removeCallbacks(idleClose)
+        idleHandler.postDelayed(idleClose, WARM_IDLE_MS)
+    }
+
+    private fun releaseWarm(why: String) {
+        idleHandler.removeCallbacks(idleClose)
+        val l = synchronized(warmLock) { warm.also { warm = null } } ?: return
+        log("closing the pre-opened link ($why)")
+        runCatching { l.gatt.disconnect() }; runCatching { l.gatt.close() }
+    }
+
+    /** Hands the pre-opened link to send(), waiting for it if it is still being opened. */
+    private fun takeWarm(): Link? {
+        warmDone?.let { runCatching { it.await(14, TimeUnit.SECONDS) } }
+        idleHandler.removeCallbacks(idleClose)
+        val l = synchronized(warmLock) { warm.also { warm = null } } ?: return null
+        if (!l.alive) { runCatching { l.gatt.close() }; log("pre-opened link was already gone"); return null }
+        return l
+    }
+
+    /** Non-blocking: starts opening a link in the background (call when the rider opens the action menu). */
+    fun warmUp(ctx: Context) {
+        val app = ctx.applicationContext
+        synchronized(warmLock) {
+            if (warming || sending) return
+            if (warm?.alive == true) { rearmIdle(); return }
+            warming = true
+            warmDone = CountDownLatch(1)
+        }
+        Thread({
+            try {
+                val pke = PkeBattery.code(app)
+                if (pke.length < 8 || !isValidMcuId(mcuId(app))) return@Thread
+                if (Build.VERSION.SDK_INT >= 31 && listOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT)
+                        .any { ContextCompat.checkSelfPermission(app, it) != PackageManager.PERMISSION_GRANTED }) return@Thread
+                val adapter = app.getSystemService(BluetoothManager::class.java)?.adapter
+                if (adapter == null || !adapter.isEnabled) return@Thread
+                val t0 = SystemClock.elapsedRealtime()
+                log("pre-opening the link while the rider chooses…")
+                val dev = scan(app, pke) ?: return@Thread
+                val tScan = SystemClock.elapsedRealtime()
+                val l = open(app, dev, pke) ?: return@Thread
+                synchronized(warmLock) { warm = l }
+                log("timing: pre-opened link ready (scan ${tScan - t0} ms, connect+discover ${SystemClock.elapsedRealtime() - tScan} ms)")
+                rearmIdle()
+            } catch (e: Exception) {
+                log("pre-open failed: $e")
+            } finally {
+                warming = false
+                warmDone?.countDown()
+            }
+        }, "pke-warm").start()
     }
 
     // ── GATT plumbing — deliberately a separate copy of PkeBattery's connect/scan logic rather
     //    than a shared helper: PkeBattery stays read-only by its own documented design, and this
     //    file alone owns every write this protocol can do. Duplication traded for isolation.
 
-    private class Link(val gatt: BluetoothGatt, val rx: BluetoothGattCharacteristic, val replies: LinkedBlockingQueue<String>)
+    private class Link(val gatt: BluetoothGatt, val rx: BluetoothGattCharacteristic, val replies: LinkedBlockingQueue<String>) {
+        @Volatile var alive = true
+    }
 
     private fun writeType(c: BluetoothGattCharacteristic) =
         if (c.properties and BluetoothGattCharacteristic.PROPERTY_WRITE != 0) BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
@@ -301,9 +400,11 @@ object PkeUnlock {
         val cb = object : BluetoothGattCallback() {
             override fun onConnectionStateChange(g: BluetoothGatt, status: Int, newState: Int) {
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
+                    runCatching { g.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH) }
                     if (!g.requestMtu(185)) g.discoverServices()
-                } else if (newState == BluetoothProfile.STATE_DISCONNECTED && link == null) {
-                    fail = "disconnected (status=$status)"; ready.countDown()
+                } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                    link?.alive = false
+                    if (link == null) { fail = "disconnected (status=$status)"; ready.countDown() }
                 }
             }
             override fun onMtuChanged(g: BluetoothGatt, mtu: Int, status: Int) { g.discoverServices() }
@@ -313,11 +414,11 @@ object PkeUnlock {
                 val tx = svc?.getCharacteristic(UART_TX)
                 if (rx == null || tx == null) { fail = "no Nordic UART service"; ready.countDown(); return }
                 g.setCharacteristicNotification(tx, true)
+                link = Link(g, rx, replies)
                 val d = tx.getDescriptor(CCC)
-                if (d == null) { link = Link(g, rx, replies); ready.countDown(); return }
+                if (d == null) { ready.countDown(); return }
                 if (Build.VERSION.SDK_INT >= 33) g.writeDescriptor(d, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)
                 else @Suppress("DEPRECATION") run { d.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE; g.writeDescriptor(d) }
-                link = Link(g, rx, replies)
             }
             override fun onDescriptorWrite(g: BluetoothGatt, d: BluetoothGattDescriptor, status: Int) { ready.countDown() }
             override fun onCharacteristicChanged(g: BluetoothGatt, c: BluetoothGattCharacteristic, value: ByteArray) = got(value)

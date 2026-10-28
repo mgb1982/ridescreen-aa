@@ -1617,7 +1617,7 @@ class MainActivity : AppCompatActivity() {
     private fun pkeRefresh() {
         if (PkeBattery.code(this).length < 8) { renderPkeCard(); return }
         // Don't compete with the connect flow for the radio.
-        if (pkeBusy || liveOn || ConnectionState.phase.busy) { renderPkeCard(); return }
+        if (pkeBusy || liveOn || PkeUnlock.holdingBox || ConnectionState.phase.busy) { renderPkeCard(); return }
         pkeBusy = true
         val app = applicationContext
         Thread({
@@ -1644,7 +1644,7 @@ class MainActivity : AppCompatActivity() {
     private fun liveShouldRun() = resumedNow && ConnectionState.phase.let { it == Phase.STREAMING || it == Phase.MIRRORING }
 
     private fun maybeStartLive() {
-        if (liveOn || !liveShouldRun() || PkeBattery.code(this).length < 8) return
+        if (liveOn || PkeUnlock.holdingBox || !liveShouldRun() || PkeBattery.code(this).length < 8) return
         if (liveGaveUpAt != 0L && android.os.SystemClock.elapsedRealtime() - liveGaveUpAt < 5 * 60_000L) return
         liveOn = true
         val app = applicationContext

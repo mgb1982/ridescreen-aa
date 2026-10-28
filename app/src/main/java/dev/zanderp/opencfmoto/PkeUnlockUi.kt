@@ -63,6 +63,7 @@ object PkeUnlockUi {
     }
 
     private fun pickAction(activity: Activity) {
+        PkeUnlock.warmUp(activity)
         val actions = listOf(
             PkeUnlock.Action.UNLOCK to activity.getString(R.string.pke_unlock_action_unlock),
             PkeUnlock.Action.LOCK to activity.getString(R.string.pke_unlock_action_lock),
@@ -77,6 +78,7 @@ object PkeUnlockUi {
     }
 
     private fun confirm(activity: Activity, action: PkeUnlock.Action, label: String) {
+        PkeUnlock.warmUp(activity)
         MaterialAlertDialogBuilder(activity)
             .setTitle(activity.getString(R.string.pke_unlock_confirm_title, label))
             .setMessage(R.string.pke_unlock_confirm_body)
