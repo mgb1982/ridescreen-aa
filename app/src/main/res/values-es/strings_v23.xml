@@ -242,6 +242,16 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="pke_unlock_fail_bad_challenge">La caja respondió, pero no se pudo leer su desafío. No se envió nada; pásame el registro.</string>
     <string name="pke_unlock_fail_bad_mcu">El McuID debe tener 32 dígitos hexadecimales (16 bytes). No se envió nada.</string>
     <string name="pke_unlock_fail_derive">No se pudo calcular la orden a partir del desafío y el McuID. No se envió nada; pásame el registro.</string>
+    <string name="widget_control_label">Controles de la moto</string>
+    <string name="widget_control_description">Conecta, desbloquea, bloquea y abre el asiento o el depósito desde la pantalla de inicio.</string>
+    <string name="pke_short_unlock">Desbloquear</string>
+    <string name="pke_short_lock">Bloquear</string>
+    <string name="pke_short_seat">Asiento</string>
+    <string name="pke_short_fuel">Depósito</string>
+    <string name="pke_done">%1$s ✓</string>
+    <string name="pke_unlock_sending_short">Enviando: %1$s…</string>
+    <string name="pke_notif_channel">Órdenes a la moto</string>
+    <string name="pke_notif_sending">Enviando a la caja del keyless…</string>
     <string name="engine_running">motor en marcha</string>
     <string name="engine_stopped">motor parado</string>
     <string name="trips_import">📥 Importar viaje (GPX)</string>

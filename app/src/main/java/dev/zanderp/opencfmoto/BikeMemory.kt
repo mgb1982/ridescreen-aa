@@ -77,6 +77,8 @@ object BikeMemory {
     fun select(ctx: Context, raw: String) {
         prefs(ctx).edit().putString(KEY_SELECTED, raw).apply()
         try { ParkingWidget.updateAll(ctx) } catch (_: Exception) {}
+        try { ConnectWidget.refresh(ctx) } catch (_: Exception) {}
+        try { ControlWidget.refresh(ctx) } catch (_: Exception) {}
         try { WearBikePhoto.push(ctx) } catch (_: Exception) {}
     }
 
@@ -91,8 +93,10 @@ object BikeMemory {
     /** Attach (or clear, with null) a bike's photo path. */
     fun setPhoto(ctx: Context, raw: String, path: String?) {
         writeList(ctx, devices(ctx).map { if (it.raw == raw) it.copy(photoPath = path) else it })
-        // The home-screen widget and the watch use the selected bike's photo.
+        // The home-screen widgets and the watch use the selected bike's photo.
         try { ParkingWidget.updateAll(ctx) } catch (_: Exception) {}
+        try { ConnectWidget.refresh(ctx) } catch (_: Exception) {}
+        try { ControlWidget.refresh(ctx) } catch (_: Exception) {}
         try { WearBikePhoto.push(ctx) } catch (_: Exception) {}
     }
 

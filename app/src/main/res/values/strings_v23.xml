@@ -242,6 +242,16 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="pke_unlock_fail_bad_challenge">The box replied, but its challenge could not be decoded. Nothing was sent; please share the log.</string>
     <string name="pke_unlock_fail_bad_mcu">McuID must be 32 hexadecimal digits (16 bytes). Nothing was sent.</string>
     <string name="pke_unlock_fail_derive">The AES command could not be derived from the challenge and McuID. Nothing was sent; please share the log.</string>
+    <string name="widget_control_label">Bike controls</string>
+    <string name="widget_control_description">Connect, unlock, lock and open the seat or the fuel cap from the home screen.</string>
+    <string name="pke_short_unlock">Unlock</string>
+    <string name="pke_short_lock">Lock</string>
+    <string name="pke_short_seat">Seat</string>
+    <string name="pke_short_fuel">Fuel cap</string>
+    <string name="pke_done">%1$s ✓</string>
+    <string name="pke_unlock_sending_short">Sending: %1$s…</string>
+    <string name="pke_notif_channel">Bike commands</string>
+    <string name="pke_notif_sending">Sending to the keyless box…</string>
     <string name="engine_running">engine running</string>
     <string name="engine_stopped">engine off</string>
     <string name="trips_import">📥 Import a ride (GPX)</string>

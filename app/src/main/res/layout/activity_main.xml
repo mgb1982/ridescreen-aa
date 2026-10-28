@@ -369,6 +369,35 @@
                         android:textSize="14sp" />
                 </LinearLayout>
 
+                <!-- v2.4: unlock / lock / seat / fuel cap from the keyless box; shown once the PKE code and McuID are set. -->
+                <LinearLayout
+                    android:id="@+id/pke_actions_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_stat_tile"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="6dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/pke_act_unlock"
+                        style="@style/PkeAction" />
+
+                    <TextView
+                        android:id="@+id/pke_act_lock"
+                        style="@style/PkeAction" />
+
+                    <TextView
+                        android:id="@+id/pke_act_seat"
+                        style="@style/PkeAction" />
+
+                    <TextView
+                        android:id="@+id/pke_act_fuel"
+                        style="@style/PkeAction" />
+                </LinearLayout>
+
                 <!-- Android Auto's head unit server isn't running (RideScreen AA v2). -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/hus_banner"

@@ -36,6 +36,9 @@ class ConnectWidget : AppWidgetProvider() {
         @Volatile private var app: Context? = null
         @Volatile private var lastState: St? = null
 
+        /** Redraw now (the Garage photo or the selected bike changed). */
+        fun refresh(ctx: Context) { app = ctx.applicationContext; lastState = null; onPhase(ConnectionState.phase) }
+
         /** Remember the app context and redraw once, so a tile left on "connected" by a dead process refreshes. */
         fun init(ctx: Context) { app = ctx.applicationContext; lastState = null; onPhase(ConnectionState.phase) }
 
@@ -102,7 +105,9 @@ class ConnectWidget : AppWidgetProvider() {
                 p.color = 0xFF243028.toInt()
                 c.drawRect(rect, p)
             }
-            // Dim so the ring always reads; a green tint once connected.
+            // Dim so the ring always reads; a green tint once connected. SRC_ATOP, not SRC_IN: SRC_IN
+            // would replace the photo with the dim colour, leaving a plain translucent tile.
+            p.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP)
             p.color = if (st == St.CONNECTED) 0x80103A1E.toInt() else 0x6B0E1410
             c.drawRect(rect, p)
             p.xfermode = null
@@ -147,7 +152,7 @@ class ConnectWidget : AppWidgetProvider() {
         }
 
         /** The ⏻ glyph: an open ring with a stroke through the gap. */
-        private fun power(c: Canvas, p: Paint, cx: Float, cy: Float, s: Float, color: Int) {
+        internal fun power(c: Canvas, p: Paint, cx: Float, cy: Float, s: Float, color: Int) {
             p.color = color
             p.style = Paint.Style.STROKE
             p.strokeCap = Paint.Cap.ROUND

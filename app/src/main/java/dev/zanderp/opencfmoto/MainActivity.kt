@@ -1701,7 +1701,28 @@ class MainActivity : AppCompatActivity() {
         }, "pke-live").start()
     }
 
+    /** Unlock / lock / seat / fuel-cap buttons: only once the PKE code and a valid McuID are set. */
+    private fun renderPkeActions() {
+        val card = findViewById<View?>(R.id.pke_actions_card) ?: return
+        val ready = PkeBattery.code(this).length >= 8 && PkeUnlock.isValidMcuId(PkeUnlock.mcuId(this))
+        card.visibility = if (ready) View.VISIBLE else View.GONE
+        if (!ready) return
+        fun bind(id: Int, emoji: String, label: Int, action: PkeUnlock.Action) {
+            findViewById<TextView>(id).apply {
+                text = android.text.SpannableString(emoji + "\n" + getString(label)).apply {
+                    setSpan(android.text.style.RelativeSizeSpan(1.9f), 0, emoji.length, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                }
+                setOnClickListener { PkeUnlockUi.quick(this@MainActivity, action) { pkeRefresh() } }
+            }
+        }
+        bind(R.id.pke_act_unlock, "🔓", R.string.pke_short_unlock, PkeUnlock.Action.UNLOCK)
+        bind(R.id.pke_act_lock, "🔒", R.string.pke_short_lock, PkeUnlock.Action.LOCK)
+        bind(R.id.pke_act_seat, "🪑", R.string.pke_short_seat, PkeUnlock.Action.CUSHION)
+        bind(R.id.pke_act_fuel, "⛽", R.string.pke_short_fuel, PkeUnlock.Action.OILBOX)
+    }
+
     private fun renderPkeCard() {
+        renderPkeActions()
         val card = findViewById<View?>(R.id.pke_card) ?: return
         val r = if (PkeBattery.code(this).length >= 8) PkeBattery.last(this) else null
         val now = System.currentTimeMillis()

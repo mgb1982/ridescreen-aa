@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- RideScreen AA · Android Auto backup (API ≤ 30). Everything is backed up except what must not
      leave the phone: the bike's Wi‑Fi password (inside the saved QR), the phone-hotspot password,
-     emergency / arrival contacts, the passenger-mode pairing, the keyless-box code (pke_box) and the
+     emergency / arrival contacts, the passenger-mode pairing, the keyless-box code (pke_box) and device key (pke_unlock) and the
      black-box impact recordings (GPS + motion). After a restore the rider scans the bike QR again. Keep in sync with data_extraction_rules.xml. -->
 <full-backup-content>
     <exclude domain="sharedpref" path="opencfmoto_bike.xml" />
@@ -10,5 +10,6 @@
     <exclude domain="sharedpref" path="arrival_notice.xml" />
     <exclude domain="sharedpref" path="companion.xml" />
     <exclude domain="sharedpref" path="pke_box.xml" />
+    <exclude domain="sharedpref" path="pke_unlock.xml" />
     <exclude domain="file" path="blackbox/" />
 </full-backup-content>

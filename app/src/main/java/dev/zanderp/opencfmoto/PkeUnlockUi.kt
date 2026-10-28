@@ -4,6 +4,7 @@ package dev.zanderp.opencfmoto
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
@@ -88,6 +89,57 @@ object PkeUnlockUi {
             .show()
     }
 
+    /** Lock and unlock go out on one tap; the seat and fuel-cap releases ask first. */
+    internal fun needsConfirm(a: PkeUnlock.Action) = a == PkeUnlock.Action.OILBOX || a == PkeUnlock.Action.CUSHION
+
+    internal fun actionLabel(ctx: Context, a: PkeUnlock.Action): String = ctx.getString(
+        when (a) {
+            PkeUnlock.Action.UNLOCK -> R.string.pke_unlock_action_unlock
+            PkeUnlock.Action.LOCK -> R.string.pke_unlock_action_lock
+            PkeUnlock.Action.OILBOX -> R.string.pke_unlock_action_oilbox
+            PkeUnlock.Action.CUSHION -> R.string.pke_unlock_action_cushion
+        },
+    )
+
+    internal fun doneText(ctx: Context, a: PkeUnlock.Action): String = ctx.getString(R.string.pke_done, actionLabel(ctx, a))
+
+    /** Buttons on the home card: not configured yet -> the setup flow; seat/fuel cap -> confirmation first. */
+    fun quick(activity: Activity, action: PkeUnlock.Action, then: () -> Unit = {}) {
+        if (activity.isFinishing || activity.isDestroyed) return
+        if (PkeBattery.code(activity).length < 8 || !PkeUnlock.isValidMcuId(PkeUnlock.mcuId(activity))) { show(activity); return }
+        if (!needsConfirm(action)) { runQuick(activity, action, then); return }
+        PkeUnlock.warmUp(activity)
+        val label = actionLabel(activity, action)
+        MaterialAlertDialogBuilder(activity)
+            .setTitle(activity.getString(R.string.pke_unlock_confirm_title, label))
+            .setMessage(R.string.pke_unlock_confirm_body)
+            .setPositiveButton(activity.getString(R.string.pke_unlock_confirm_yes, label)) { _, _ -> runQuick(activity, action, then) }
+            .setNegativeButton(R.string.dash_cancel) { _, _ -> PkeUnlock.release() }
+            .setOnCancelListener { PkeUnlock.release() }
+            .show()
+    }
+
+    private fun runQuick(activity: Activity, action: PkeUnlock.Action, then: () -> Unit) {
+        if (Build.VERSION.SDK_INT >= 31) {
+            val need = listOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT)
+                .filter { ContextCompat.checkSelfPermission(activity, it) != PackageManager.PERMISSION_GRANTED }
+            if (need.isNotEmpty()) {
+                Toast.makeText(activity, R.string.pke_need_nearby, Toast.LENGTH_LONG).show()
+                ActivityCompat.requestPermissions(activity, need.toTypedArray(), REQ_BT_PERM)
+                return
+            }
+        }
+        val app = activity.applicationContext
+        Toast.makeText(app, app.getString(R.string.pke_unlock_sending_short, actionLabel(app, action)), Toast.LENGTH_SHORT).show()
+        io.execute {
+            val res = PkeUnlock.send(app, action)
+            main.post {
+                Toast.makeText(app, if (res.ok) doneText(app, action) else message(app, res), if (res.ok) Toast.LENGTH_SHORT else Toast.LENGTH_LONG).show()
+                if (!activity.isFinishing && !activity.isDestroyed) then()
+            }
+        }
+    }
+
     private fun send(activity: Activity, action: PkeUnlock.Action) {
         if (Build.VERSION.SDK_INT >= 31) {
             val need = listOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT)
@@ -122,9 +174,9 @@ object PkeUnlockUi {
         }
     }
 
-    private fun message(activity: Activity, res: PkeUnlock.Result): String {
-        if (res.ok) return activity.getString(R.string.pke_unlock_sent)
-        return activity.getString(
+    internal fun message(ctx: Context, res: PkeUnlock.Result): String {
+        if (res.ok) return ctx.getString(R.string.pke_unlock_sent)
+        return ctx.getString(
             when (res.failure) {
                 PkeUnlock.Failure.NO_CODE -> R.string.pke_fail_no_code
                 PkeUnlock.Failure.NO_MCU_ID -> R.string.pke_unlock_need_mcu

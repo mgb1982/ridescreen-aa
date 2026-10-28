@@ -55,6 +55,28 @@
 
     <style name="Theme.OpenCfMoto" parent="Base.Theme.OpenCfMoto" />
 
+    <!-- Transparent host for the widget's seat / fuel-cap confirmation dialog. -->
+    <style name="Theme.OpenCfMoto.Dialog" parent="Theme.OpenCfMoto">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <!-- Buttons of the home "bike controls" card (emoji over a short label). -->
+    <style name="PkeAction">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/archivo_semibold</item>
+    </style>
+
+
     <style name="TextAppearance.Ocm.Display" parent="TextAppearance.Material3.DisplaySmall">
         <item name="android:fontFamily">@font/archivo_black</item>
         <item name="fontFamily">@font/archivo_black</item>

@@ -280,6 +280,9 @@ object PkeUnlock {
     /** True while this class holds (or is opening) a link to the box: other readers must stay off it. */
     val holdingBox: Boolean get() = warming || sending || warm?.alive == true
 
+    /** Drops a pre-opened link now (the rider cancelled), instead of waiting for the idle timeout. */
+    fun release() = releaseWarm("cancelled")
+
     private fun rearmIdle() {
         idleHandler.removeCallbacks(idleClose)
         idleHandler.postDelayed(idleClose, WARM_IDLE_MS)
