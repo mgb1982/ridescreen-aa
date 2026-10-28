@@ -256,6 +256,9 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="pke_unlock_on_connect_off">☐ Unlock when connecting: off</string>
     <string name="pke_unlock_on_connect_toast_on">On: tapping Connect also unlocks the bike. Only when you tap Connect, never on auto-connect.</string>
     <string name="pke_unlock_on_connect_toast_off">Off: Connect no longer unlocks the bike.</string>
+    <string name="widget_state_locked">Locked</string>
+    <string name="widget_state_unlocked">Unlocked</string>
+    <string name="widget_state_none">No reading yet</string>
     <string name="engine_running">engine running</string>
     <string name="engine_stopped">engine off</string>
     <string name="trips_import">📥 Import a ride (GPX)</string>

@@ -9,59 +9,66 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@null"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:src="@drawable/bg_widget" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="6dp">
+        android:orientation="vertical"
+        android:weightSum="100">
 
-        <ImageView
-            android:id="@+id/wk_connect"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:contentDescription="@string/widget_connect_label"
-            android:padding="3dp"
-            android:scaleType="fitCenter" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="61" />
 
-        <ImageView
-            android:id="@+id/wk_unlock"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:contentDescription="@string/pke_short_unlock"
-            android:padding="3dp"
-            android:scaleType="fitCenter" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="39"
+            android:orientation="horizontal"
+            android:weightSum="5">
 
-        <ImageView
-            android:id="@+id/wk_lock"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:contentDescription="@string/pke_short_lock"
-            android:padding="3dp"
-            android:scaleType="fitCenter" />
+            <ImageView
+                android:id="@+id/wk_connect"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="@string/widget_connect_label"
+                android:scaleType="fitCenter" />
 
-        <ImageView
-            android:id="@+id/wk_seat"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:contentDescription="@string/pke_short_seat"
-            android:padding="3dp"
-            android:scaleType="fitCenter" />
+            <ImageView
+                android:id="@+id/wk_unlock"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="@string/pke_short_unlock"
+                android:scaleType="fitCenter" />
 
-        <ImageView
-            android:id="@+id/wk_fuel"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:contentDescription="@string/pke_short_fuel"
-            android:padding="3dp"
-            android:scaleType="fitCenter" />
+            <ImageView
+                android:id="@+id/wk_lock"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="@string/pke_short_lock"
+                android:scaleType="fitCenter" />
+
+            <ImageView
+                android:id="@+id/wk_seat"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="@string/pke_short_seat"
+                android:scaleType="fitCenter" />
+
+            <ImageView
+                android:id="@+id/wk_fuel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="@string/pke_short_fuel"
+                android:scaleType="fitCenter" />
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

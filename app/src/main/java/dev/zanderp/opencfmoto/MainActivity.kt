@@ -1726,6 +1726,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun renderPkeCard() {
         renderPkeActions()
+        try { ControlWidget.onReading(applicationContext) } catch (_: Exception) {}
         val card = findViewById<View?>(R.id.pke_card) ?: return
         val r = if (PkeBattery.code(this).length >= 8) PkeBattery.last(this) else null
         val now = System.currentTimeMillis()
