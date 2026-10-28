@@ -201,7 +201,7 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="pke_entry">🔋 Bateria (caixa del keyless)</string>
     <string name="pke_title">Bateria de la moto</string>
     <string name="pke_code_title">Codi del keyless (PKE)</string>
-    <string name="pke_code_body">Per llegir la bateria per Bluetooth, escriu el codi PKE de la teva moto. El tens a l\'app oficial Zontes Smart → gestió de motos, sota la moto. Només lectura: RideScreen no bloqueja, desbloqueja ni canvia res a la moto.</string>
+    <string name="pke_code_body">Per llegir la bateria per Bluetooth, escriu el codi PKE de la teva moto. El tens a l\'app oficial Zontes Smart → gestió de motos, sota la moto. Llegir la bateria no bloqueja, desbloqueja ni canvia res a la moto (això és una acció a part, que confirmes cada vegada, a Ajuda → 🔒 Bloquejar / desbloquejar).</string>
     <string name="pke_code_invalid">Escriu el codi PKE (només números)</string>
     <string name="pke_change_code">Canvia el codi</string>
     <string name="pke_reading">Llegint la caixa del keyless per Bluetooth… la moto ha d\'estar a prop.</string>
