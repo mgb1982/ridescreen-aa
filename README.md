@@ -60,6 +60,14 @@ Está basada en [OpenCfMoto](https://github.com/zanderp/open-cfmoto), de Alexand
 <img src="docs/screenshots/ridescreen/movil/22_mantenimiento.png" width="200" alt="Mantenimiento"/>
 </p>
 
+### 🔐 Caja sin llave PKE (2.4)
+
+En las motos compatibles, RideScreen AA puede leer por Bluetooth el voltaje de la batería de la caja sin llave y el estado de bloqueo que esta comunica. También permite enviar órdenes para bloquear o desbloquear la moto y abrir el asiento o la tapa del depósito, desde la app o el widget de la pantalla de inicio.
+
+La configuración requiere el código PKE y el McuID del QR de información de la moto. El McuID se guarda en el dispositivo y se excluye de las copias de seguridad. El desbloqueo al tocar **Conectar** es opcional, está desactivado por defecto y nunca actúa en la conexión automática. Abrir el asiento o el depósito requiere confirmación.
+
+**Límites importantes:** la caja PKE no proporciona telemetría completa del vehículo; la app no lee las RPM ni datos de la ECU. El widget no muestra el estado real de la cerradura, que debe consultarse en la tarjeta de batería/estado. Enviar una orden no garantiza que la moto la haya ejecutado: comprueba el resultado en la propia moto. La compatibilidad depende de la moto y de su caja; esta función se ha probado en una Zontes 125X.
+
 ### 🏍️ Tus viajes
 - Cada salida se guarda sola: **ruta coloreada por velocidad**, km, tiempos y nombre automático («Sants → Zona Franca»).
 - **Mapa de calor** de todo lo que has rodado, **récords**, **trofeos** y **tu año en moto** para compartir.
@@ -112,11 +120,12 @@ RideScreen AA es gratis y sin anuncios. Si te resulta útil, puedes [invitarme a
 
 - **Auto‑connect** when the bike starts (dash Bluetooth or Wi‑Fi in low‑power mode); **live screen fit** with arrows; voice assistant.
 - **Parking spot** with photo and walking directions; **cheapest petrol nearby** (Spain); **maintenance log** and real fuel consumption.
+- **PKE keyless-box controls** on compatible bikes: read reported battery voltage and lock state, lock/unlock, and release the seat or fuel cap from the app or home widget. Requires the PKE code and McuID from the bike information QR. Unlock-on-Connect is optional and only acts when you tap Connect; seat and fuel-cap commands require confirmation. No ECU or RPM telemetry is available, and the widget does not show the actual lock state.
 - **Ride log** coloured by speed, heat map, records, trophies, year in review; **traffic‑light analysis**; **ride video** with map/speed overlay; **live location sharing**.
 - **Crash detection** (experimental, opt‑in): alarm on phone and watch, then an SMS with your location to up to 3 contacts. Not a certified safety device.
 - **Wear OS app**: next turn, compass to your parked bike, D‑pad for Android Auto, crash alarm.
 
-The app is in Spanish, Catalan and English. Download the APK from **[Releases](https://github.com/mgb1982/ridescreen-aa/releases/latest)**. The original OpenCfMoto documentation (supported bikes, handlebar buttons, protocol notes) is kept in **[docs/OPENCFMOTO-README.md](docs/OPENCFMOTO-README.md)**.
+The app is in Catalan, Spanish and English, and almost entirely in Italian. French, German, Portuguese, Greek and Russian cover the newest screens (keyless box, widget); the rest still shows in English. Download the APK from **[Releases](https://github.com/mgb1982/ridescreen-aa/releases/latest)**. The original OpenCfMoto documentation (supported bikes, handlebar buttons, protocol notes) is kept in **[docs/OPENCFMOTO-README.md](docs/OPENCFMOTO-README.md)**.
 
 ## Licencia · License
 AGPL‑3.0‑or‑later. Ver [LICENSE](LICENSE) y [NOTICE](NOTICE). Not affiliated with Zontes, CFMoto or Google. Android Auto is a trademark of Google LLC.
