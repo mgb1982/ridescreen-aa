@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from lib.base import PHONE_DPR, PHONE_H, PHONE_W, WATCH_DPR, WATCH_W  # noqa: E402
 from lib.render import Job, render  # noqa: E402
-from screens import phone, watch  # noqa: E402
+from screens import phone, stats, watch  # noqa: E402
 
 DOCS_M = "docs/screenshots/ridescreen/movil/"
 DOCS_W = "docs/screenshots/ridescreen/reloj/"
@@ -82,6 +82,26 @@ SCREENS = {
                lambda l: [(DOCS_M + "29_widget.png", PHONE_DOCS)] if l == "es" else []),
     "guide_download": (lambda l: phone.guide_download(l), "phone",
                        lambda l: [(WEB_GUIDE[l] + "g1_descarga.png", GUIDE)]),
+    # 2.3 screens 16–23 (screens/stats.py)
+    "heat": (lambda l: stats.heat_map(l), "phone",
+             lambda l: [(DOCS_M + "16_mapa_de_calor.png", PHONE_DOCS)] if l == "es" else []),
+    "lights": (lambda l: stats.lights(l), "phone",
+               lambda l: ([(DOCS_M + "17_semaforos.png", PHONE_DOCS)] if l == "es" else [])
+               + [(WEB_IMG[l] + "semaforos.webp", PHONE_WEB)]),
+    "routes": (lambda l: stats.routes(l), "phone",
+               lambda l: [(DOCS_M + "18_trayectos.png", PHONE_DOCS)] if l == "es" else []),
+    "video": (lambda l: stats.video(l), "phone",
+              lambda l: [(DOCS_M + "19_video_del_viaje.png", PHONE_DOCS)] if l == "es" else []),
+    "trophies": (lambda l: stats.trophies(l), "phone",
+                 lambda l: ([(DOCS_M + "20_trofeos.png", PHONE_DOCS)] if l == "es" else [])
+                 + [(WEB_IMG[l] + "trofeos.webp", PHONE_WEB)]),
+    "trophies_next": (lambda l: stats.trophies_next(l), "phone",
+                      lambda l: [(DOCS_M + "21_trofeos_proximos.png", PHONE_DOCS)] if l == "es" else []),
+    "maint": (lambda l: stats.maintenance(l), "phone",
+              lambda l: ([(DOCS_M + "22_mantenimiento.png", PHONE_DOCS)] if l == "es" else [])
+              + [(WEB_IMG[l] + "mantenimiento.webp", PHONE_WEB)]),
+    "year": (lambda l: stats.year(l), "phone",
+             lambda l: [(DOCS_M + "23_tu_ano_en_moto.png", PHONE_DOCS)] if l == "es" else []),
     "share": (lambda l: phone.share_card(l), "share",
               lambda l: [(DOCS_I + "01_compartir_viaje.png", 720)] if l == "es" else []),
     # Watch
