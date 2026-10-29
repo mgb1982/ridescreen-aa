@@ -1,19 +1,20 @@
 <!doctype html>
 <html lang="es">
 <head>
+<link rel="canonical" href="https://ridescreen.app/reloj/">
 <meta charset="utf-8">
 <script>
-/* Language: Spanish, Galician or Basque browsers stay here; Catalan ones go to the Catalan page and
-   everything else to the English one — unless the visitor picked a language on the site (that
-   choice always wins). Crawlers and link previews stay. */
+/* Spanish/Galician/Basque browsers stay on this Spanish watch guide; Catalan, Greek, Russian and Italian
+   browsers go to their matching guide; other languages go to English. A saved language choice wins.
+   Crawlers and link previews stay on this entry page. */
 (function(){try{
   var t=null, pick=localStorage.getItem("rs_lang");
-  if (pick) { if (pick==="en") t="../en/watch/"; else if (pick==="ca") t="../ca/rellotge/"; else return; }
+  if (pick) { if (pick==="en") t="../en/watch/"; else if (pick==="ca") t="../ca/rellotge/"; else if (pick==="el") t="../el/watch/"; else if (pick==="ru") t="../ru/watch/"; else if (pick==="it") t="../it/watch/"; else return; }
   else {
     if (/bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegram/i.test(navigator.userAgent)) return;
     var l=((navigator.languages&&navigator.languages[0])||navigator.language||"").toLowerCase();
     if (!l || /^(es|gl|eu)\b/.test(l)) return;
-    t = /^ca\b/.test(l) ? "../ca/rellotge/" : "../en/watch/";
+    t = /^ca\b/.test(l) ? "../ca/rellotge/" : /^el\b/.test(l) ? "../el/watch/" : /^ru\b/.test(l) ? "../ru/watch/" : /^it\b/.test(l) ? "../it/watch/" : "../en/watch/";
   }
   location.replace(t+location.hash);
 }catch(e){}})();
@@ -26,6 +27,9 @@
 <link rel="alternate" hreflang="es" href="https://ridescreen.app/reloj/">
 <link rel="alternate" hreflang="ca" href="https://ridescreen.app/ca/rellotge/">
 <link rel="alternate" hreflang="en" href="https://ridescreen.app/en/watch/">
+<link rel="alternate" hreflang="it" href="https://ridescreen.app/it/watch/">
+<link rel="alternate" hreflang="el" href="https://ridescreen.app/el/watch/">
+<link rel="alternate" hreflang="ru" href="https://ridescreen.app/ru/watch/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap">
 <style>
@@ -147,7 +151,7 @@ kbd { font-family: var(--body); font-weight: 700; background: var(--surface-2); 
 
   <div class="hero">
     <div>
-      <div class="eyebrow">RideScreen AA · app del reloj · <a href="../ca/rellotge/" lang="ca" data-lang="ca">Català</a> · <a href="../en/watch/" lang="en" data-lang="en">English</a></div>
+      <div class="eyebrow">RideScreen AA · app del reloj · <a href="../ca/rellotge/" lang="ca" data-lang="ca">Català</a> · <a href="../en/watch/" lang="en" data-lang="en">English</a> · <a href="../el/watch/" lang="el" data-lang="el">Ελληνικά</a> · <a href="../ru/watch/" lang="ru" data-lang="ru">Русский</a> · <a href="../it/watch/" lang="it" data-lang="it">Italiano</a></div>
       <h1>Tu moto <span>en la muñeca</span></h1>
       <p class="lede">La app de Wear OS es opcional y va con la del móvil. Muestra la velocidad y la próxima maniobra, vibra antes de cada giro, te lleva hasta la moto aparcada y te deja manejar Android Auto en el cuadro sin tocar el móvil.</p>
       <p class="sub">¿Aún no tienes la app en el móvil? Empieza por la <a href="../guia/">guía del móvil</a>.</p>
