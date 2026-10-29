@@ -1,6 +1,6 @@
 # Greek and Russian website localization
 
-These files are translation handoffs for the public pages currently visible at [ridescreen.app](https://ridescreen.app/). They are organized by page so they can be moved into the website's real source without reconstructing text from this PR.
+These files are page-by-page Greek and Russian translation drafts for the public pages currently visible at [ridescreen.app](https://ridescreen.app/). They are prepared for integration into the website's real source while preserving the current layout, screenshots, download buttons and other assets.
 
 ## Included
 
@@ -16,12 +16,16 @@ Proposed URL structure, subject to the website's actual routing conventions:
 | Phone guide | `/el/guide/` | `/ru/guide/` |
 | Watch guide | `/el/watch/` | `/ru/watch/` |
 
-## Deployment blocker
+## Website source and publishing
 
-The connected GitHub repositories do not include the source or deployment configuration for `ridescreen.app`. These translations are therefore not published by this PR. To integrate them into the live site, provide access to the website repository or its supported publishing workflow. Keep the existing screenshots, download buttons, and image assets in their current positions when inserting the translations.
+The user indicates that the source and deployment workflow should be in the `ridescreen` repository. However, `mgb1982/ridescreen` is not present in the repositories currently exposed by the connected GitHub integration, and a direct content lookup returns 404. Do not assume the repository does not exist; its access may need to be enabled for the GitHub integration.
 
-## Source-page notes before publishing
+These drafts are not published by the app-repository PR. Once the `ridescreen` repository is accessible, inspect its current source, routing, assets and deployment workflow, then integrate these translations using that project's conventions.
 
-The currently public website still contains v2.3 copy, including references to older APK version examples and a statement that the PKE battery card is read-only. The current 2.4 preview line has newer PKE controls. This handoff translates the currently published page structure rather than silently changing the product claims; review and update the Spanish/Catalan/English source copy at the same time before a public release.
+## Stable-release-only website rule
+
+Public website copy and download links must refer only to the latest stable release. Do not mention prerelease builds, test APKs, test branch names or preview-version features on the website, and do not link public download buttons to GitHub prereleases. The translated homepage currently follows the existing stable public page's version wording; verify the stable-release URL in the actual site source before publishing.
+
+The currently published source copy includes a statement that the PKE battery card is read-only. Keep public feature descriptions aligned with the stable release actually distributed by the download link; do not replace this claim with preview-only functionality.
 
 The translations preserve product names and interface labels where readers need to recognize them in the app or Android settings: RideScreen AA, Android Auto, Wear OS, OpenCfMoto, Zontes, CFMoto, Carbit, EasyConnection, MotoPlay, PKE, McuID, APK, ADB, Wi-Fi, Bluetooth, Key Mapper, Tasker, Bugjaeger and Wear Installer 2.
