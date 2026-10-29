@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <script>
-/* Language: Spanish, Galician or Basque browsers stay here; Catalan ones go to the Catalan page and
-   everything else to the English one — unless the visitor picked a language on the site (that
-   choice always wins). Crawlers and link previews stay. */
+/* Spanish/Galician/Basque browsers stay on the Spanish page; Catalan, Greek, Russian and Italian
+   browsers go to their matching language page; other languages go to English. A saved language
+   choice wins. Crawlers and link previews stay on this entry page. */
 (function(){try{
   var t=null, pick=localStorage.getItem("rs_lang");
   if (pick) { if (pick==="en") t="en/"; else if (pick==="ca") t="ca/"; else if (pick==="el") t="el/"; else if (pick==="ru") t="ru/"; else if (pick==="it") t="it/"; else return; }
