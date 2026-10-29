@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crash_title">Είχες ατύχημα;</string>
+    <string name="crash_im_ok">ΕΙΜΑΙ ΚΑΛΑ</string>
+    <string name="crash_sent">Η ειδοποίηση στάλθηκε στις επαφές σου</string>
+    <string name="crash_close">Κλείσιμο</string>
+    <string name="wupd_title">Ενημέρωση RideScreen AA</string>
+    <string name="wupd_ready">Ελήφθη νέα έκδοση από το τηλέφωνο · πάτησε για εγκατάσταση</string>
+    <string name="wupd_install">Εγκατάσταση</string>
+    <string name="wupd_versions">Εγκατεστημένη: %1$s\nΝέα: %2$s</string>
+    <string name="wupd_nothing">Δεν υπάρχει ενημέρωση σε αναμονή. Στείλε την από το τηλέφωνο: ❓ Βοήθεια → ⌚ Ενημέρωση εφαρμογής ρολογιού</string>
+    <string name="wupd_installing">Εγκατάσταση… επιβεβαίωσε αν το ζητήσει το ρολόι</string>
+    <string name="wupd_allow_unknown">Επίτρεψε στο RideScreen AA να εγκαθιστά εφαρμογές και επέστρεψε εδώ</string>
+    <string name="wupd_no_unknown_setting">Αυτό το ρολόι δεν επιτρέπει στις εφαρμογές να εγκαθιστούν ενημερώσεις. Εγκατέστησέ την από υπολογιστή, όπως την πρώτη φορά.</string>
+    <string name="wupd_failed_signature">Αυτή η έκδοση έχει διαφορετική υπογραφή από την εγκατεστημένη. Απεγκατέστησε την εφαρμογή του ρολογιού και εγκατέστησέ την ξανά από υπολογιστή.</string>
+    <string name="wupd_cancelled">Η εγκατάσταση ακυρώθηκε</string>
+    <string name="wupd_failed">Αποτυχία εγκατάστασης (%1$s)</string>
+    <string name="wupd_receiving">Λήψη ενημέρωσης από το τηλέφωνο…</string>
+</resources>
