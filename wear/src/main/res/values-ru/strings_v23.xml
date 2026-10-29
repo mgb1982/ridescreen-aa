@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="summary_title">Последняя поездка</string>
+    <string name="summary_unit">км · %1$s</string>
+</resources>
