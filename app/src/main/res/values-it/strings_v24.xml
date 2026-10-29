@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: benvenuto e saluto sul cruscotto -->
+    <string name="dc_good_morning">Buongiorno</string>
+    <string name="dc_good_afternoon">Buon pomeriggio</string>
+    <string name="dc_good_evening">Buonasera</string>
+    <string name="dc_streak_days">giorni di fila</string>
+    <string name="dc_rain_soon">Pioggia probabile: %1$d %% nelle prossime ore</string>
+    <string name="dc_wx_clear">sereno</string>
+    <string name="dc_wx_cloudy">nuvoloso</string>
+    <string name="dc_wx_fog">nebbia</string>
+    <string name="dc_wx_rain">pioggia</string>
+    <string name="dc_wx_snow">neve</string>
+    <string name="dc_wx_storm">temporale</string>
+    <string name="dc_bye_title">A presto · riepilogo di oggi</string>
+    <string name="dc_km_today">km oggi</string>
+    <string name="dc_min">min</string>
+    <string name="dc_kmh_avg">km/h media</string>
+    <string name="dc_kmh_max">km/h max</string>
+    <string name="dc_parked_photo">Parcheggiata · foto salvata</string>
+    <string name="dc_parked">Parcheggiata</string>
+    <string name="dc_rain_tomorrow">Domani alle 8:00: %1$d %% di pioggia · porta l\'antipioggia</string>
+</resources>

@@ -645,4 +645,5 @@
     <string name="rain_parked_title">Plourà on has aparcat</string>
     <string name="rain_parked_soon">S’espera pluja en la propera hora: cobreix la moto.</string>
     <string name="rain_parked_in_hours">S’espera pluja d’aquí a unes %1$d h: cobreix la moto.</string>
+    <string name="setup_toast_mirror_orient">Orientació de la duplicació: %1$s</string>
 </resources>

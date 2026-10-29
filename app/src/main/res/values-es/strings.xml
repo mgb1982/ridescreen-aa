@@ -615,4 +615,21 @@
     <string name="rain_parked_title">Va a llover donde has aparcado</string>
     <string name="rain_parked_soon">Se espera lluvia en la próxima hora: cubre la moto.</string>
     <string name="rain_parked_in_hours">Se espera lluvia dentro de unas %1$d h: cubre la moto.</string>
+    <string name="setup_clock_lab">Laboratorio del reloj (EXPERIMENTAL)</string>
+    <string name="setup_clock_lab_desc">Un único paquete de pruebas para todos los experimentos con el reloj: consulta/sincronización por Wi‑Fi, escucha Bluetooth (ZT / EC-BTP) y mantener el Wi‑Fi de la moto. Los valores por defecto coinciden con la última 2.0.13 (0x10451 vacío, eco 0x10600, BLE apagado). Elige una combinación, conecta una vez y comparte los registros en el Discord #clock-issue. No dejes ninguna combinación activada para el uso diario.</string>
+    <string name="setup_clock_lab_bt">Escucha Bluetooth</string>
+    <string name="setup_clock_lab_presets">Configuraciones predefinidas (solo rellenan los parámetros)</string>
+    <string name="setup_clock_lab_preset_latest">Última</string>
+    <string name="setup_clock_lab_preset_2012">2.0.12</string>
+    <string name="setup_clock_lab_preset_zontes">OEM Zontes</string>
+    <string name="setup_clock_lab_preset_phone">Sincronizar con el móvil</string>
+    <string name="setup_clock_lab_preset_bt">Escucha BT</string>
+    <string name="setup_clock_lab_query">0x10450 / QUERY_TIME</string>
+    <string name="setup_clock_lab_query_empty">ACK vacío</string>
+    <string name="setup_clock_lab_query_carbit">JSON Carbit</string>
+    <string name="setup_clock_lab_query_zontes">OEM Zontes</string>
+    <string name="setup_clock_lab_query_none">Sin ACK</string>
+    <string name="setup_clock_lab_timesync">0x10600 / TIME_SYNC</string>
+    <string name="setup_clock_lab_timesync_echo">Eco de la moto</string>
+    <string name="setup_clock_lab_timesync_phone">Hora local del móvil</string>
 </resources>

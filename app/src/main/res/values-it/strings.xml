@@ -627,4 +627,13 @@
     <string name="setup_anonymous_telemetry_on">Attivo — segnali anonimi e rapporti di arresto</string>
     <string name="setup_anonymous_telemetry_off">Spento — non viene inviato nulla</string>
     <string name="setup_anonymous_id">Id anonimo: %1$s</string>
+    <string name="widget_connect_label">Collega</string>
+    <string name="widget_connect_description">Un tocco avvia Collega con la tua moto salvata.</string>
+    <string name="widget_connect_starting">Connessione…</string>
+    <string name="widget_connect_no_bike">Nessuna moto salvata — collegati prima una volta dall\'app</string>
+    <string name="widget_connect_already">Già collegato</string>
+    <string name="widget_connect_cancelled">Connessione annullata</string>
+    <string name="rain_parked_title">Pioggia prevista dove hai parcheggiato</string>
+    <string name="rain_parked_soon">Pioggia prevista entro un\'ora — copri la moto.</string>
+    <string name="rain_parked_in_hours">Pioggia prevista tra circa %1$d h — copri la moto.</string>
 </resources>

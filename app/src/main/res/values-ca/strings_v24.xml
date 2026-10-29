@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: benvinguda i comiat al quadre -->
+    <string name="dc_good_morning">Bon dia</string>
+    <string name="dc_good_afternoon">Bona tarda</string>
+    <string name="dc_good_evening">Bon vespre</string>
+    <string name="dc_streak_days">dies seguits</string>
+    <string name="dc_rain_soon">Pluja probable: %1$d %% en les properes hores</string>
+    <string name="dc_wx_clear">serè</string>
+    <string name="dc_wx_cloudy">ennuvolat</string>
+    <string name="dc_wx_fog">boira</string>
+    <string name="dc_wx_rain">pluja</string>
+    <string name="dc_wx_snow">neu</string>
+    <string name="dc_wx_storm">tempesta</string>
+    <string name="dc_bye_title">Fins aviat · resum d’avui</string>
+    <string name="dc_km_today">km avui</string>
+    <string name="dc_min">min</string>
+    <string name="dc_kmh_avg">km/h mitjana</string>
+    <string name="dc_kmh_max">km/h màx</string>
+    <string name="dc_parked_photo">Aparcada · foto desada</string>
+    <string name="dc_parked">Aparcada</string>
+    <string name="dc_rain_tomorrow">Demà a les 8:00: %1$d %% de pluja · porta l’impermeable</string>
+</resources>
