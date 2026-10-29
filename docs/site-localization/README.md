@@ -1,28 +1,26 @@
-# Greek, Russian and Italian website localization
+# Italian, Greek and Russian localization
 
-These Markdown files are translation handoffs for the homepage, phone installation guide and Wear OS guide. The live website source is in `site/` in this repository, and the Pages workflow is `.github/workflows/pages.yml`.
+The actual website source is in `site/` in this repository. Its deployment workflow is `.github/workflows/pages.yml`.
 
-## Included drafts
+## App resources
 
-- `el/home.md` and `ru/home.md`: home page.
-- `el/phone-guide.md` and `ru/phone-guide.md`: installation and troubleshooting guide for the phone.
-- `el/watch-guide.md` and `ru/watch-guide.md`: Wear OS watch guide.
+The Italian resource file `app/src/main/res/values-it/strings_v23.xml` has been updated to the current 267-key set. Greek and Russian each also contain all 267 keys. The app translations and localization notes are in this branch and PR #2.
 
-## Website integration
+## Website pages
 
-The Greek, Russian and Italian HTML translations have been integrated into the actual static site in a separate pull request targeting `main`, because `.github/workflows/pages.yml` publishes `site/**` to ridescreen.app only from `main`:
+The HTML translations are integrated in a separate pull request targeting `main`, because the Pages workflow publishes `site/**` from `main`:
 
 - Website PR: [ridescreen-aa#3](https://github.com/mgb1982/ridescreen-aa/pull/3)
-- Greek pages: `/el/`, `/el/guide/`, `/el/watch/`
-- Russian pages: `/ru/`, `/ru/guide/`, `/ru/watch/`
-- Italian pages: `/it/`, `/it/guide/`, `/it/watch/`
+- Italian: `/it/`, `/it/guide/`, `/it/watch/`
+- Greek: `/el/`, `/el/guide/`, `/el/watch/`
+- Russian: `/ru/`, `/ru/guide/`, `/ru/watch/`
 
-The site PR keeps the existing CSS, screenshots and asset paths, adds Italian, Greek and Russian language navigation and browser-language routing, sets canonical and `hreflang` metadata, and updates `site/sitemap.xml`. The pages will not go live until PR #3 is reviewed and merged.
+The translated HTML preserves the existing layout, CSS, screenshots and asset paths; language navigation/routing, canonical URLs, `hreflang` alternates and the sitemap include the six supported languages. The pages will not go live until PR #3 is reviewed and merged.
 
 ## Stable-release-only rule
 
-Public website copy and download buttons must refer only to the latest stable release. Do not mention prerelease builds, test APKs, test branch names or preview-version features on the website, and never link public download buttons to GitHub prereleases. The new pages are based on the current public stable website copy and keep its `releases/latest` download URL; they do not mention the 2.4 test line.
+Public website copy and download buttons must refer only to the latest stable release. Do not mention prerelease builds, test APKs, test branch names or preview-version features, and never link public download buttons to GitHub prereleases. The localized pages use `releases/latest` and do not mention the 2.4 test line.
 
-The public feature descriptions must stay aligned with the stable release actually distributed by the download link. For example, do not replace the current read-only PKE battery description with controls that only exist in a test build.
+Keep feature descriptions aligned with the stable release actually distributed by the download link. For example, do not replace the read-only PKE battery description with controls that exist only in a test build.
 
-The translations preserve product names and interface labels where readers need to recognize them in the app or Android settings: RideScreen AA, Android Auto, Wear OS, OpenCfMoto, Zontes, CFMoto, Carbit, EasyConnection, MotoPlay, PKE, McuID, APK, ADB, Wi-Fi, Bluetooth, Key Mapper, Tasker, Bugjaeger and Wear Installer 2.
+Product names and interface labels are preserved where readers need to recognize them in the app or Android settings: RideScreen AA, Android Auto, Wear OS, OpenCfMoto, Zontes, CFMoto, Carbit, EasyConnection, MotoPlay, PKE, McuID, APK, ADB, Wi-Fi, Bluetooth, Key Mapper, Tasker, Bugjaeger and Wear Installer 2.
