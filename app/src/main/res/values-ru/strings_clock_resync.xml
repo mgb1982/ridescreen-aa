@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_clock_resync">Повторная синхронизация часов дисплея (Zontes)</string>
+    <string name="setup_clock_resync_desc">Связь разрывается на несколько секунд и восстанавливается, чтобы дисплей снова запросил время. Умный режим: только если дисплей слишком поздно запросил время (признак неудачной синхронизации), не более 3 раз. Всегда один раз: при первом подключении после каждого включения дисплея. Работает только с дисплеями Zontes.</string>
+    <string name="setup_clock_resync_smart">Умный режим</string>
+    <string name="setup_clock_resync_once">Всегда один раз</string>
+    <string name="clock_resyncing">⏱ Настройка часов дисплея…</string>
+</resources>
