@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crash_title">Hattest du einen Unfall?</string>
+    <string name="crash_im_ok">MIR GEHT ES GUT</string>
+    <string name="crash_sent">Alarm an deine Kontakte gesendet</string>
+    <string name="crash_close">Schließen</string>
+    <string name="wupd_title">RideScreen AA aktualisieren</string>
+    <string name="wupd_ready">Neue Version vom Telefon empfangen · zum Installieren tippen</string>
+    <string name="wupd_install">Installieren</string>
+    <string name="wupd_versions">Installiert: %1$s\nNeu: %2$s</string>
+    <string name="wupd_nothing">Kein Update vorhanden. Sende es vom Telefon: ❓ Hilfe → ⌚ Uhr-App aktualisieren</string>
+    <string name="wupd_installing">Installation läuft … bestätige, falls die Uhr danach fragt</string>
+    <string name="wupd_allow_unknown">Erlaube RideScreen AA, Apps zu installieren, und komm dann hierher zurück</string>
+    <string name="wupd_no_unknown_setting">Diese Uhr erlaubt Apps nicht, Updates zu installieren. Installiere die App wie beim ersten Mal über einen Computer.</string>
+    <string name="wupd_failed_signature">Diese Version ist anders signiert als die installierte. Deinstalliere die Uhr-App und installiere sie erneut über einen Computer.</string>
+    <string name="wupd_cancelled">Installation abgebrochen</string>
+    <string name="wupd_failed">Installation fehlgeschlagen (%1$s)</string>
+    <string name="wupd_receiving">Update wird vom Telefon empfangen …</string>
+</resources>
