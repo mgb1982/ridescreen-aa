@@ -71,7 +71,7 @@ PILLS = [
              "micròfon.",
          steps=[
              "En prémer [[main_connect]] l'app et demanarà el micròfon: tria **Mentre s'utilitza l'aplicació**.",
-             "Amb «Només aquesta vegada» o «Pregunta-ho sempre», la veu pot deixar de funcionar a mig viatge.",
+             "Amb «Només aquesta vegada» o «Pregunta sempre», la veu pot deixar de funcionar a mig viatge.",
              "Si l'has denegat: Configuració del mòbil → Aplicacions → **RideScreen AA** → Permisos → **Micròfon** → "
              "Permet només mentre s'utilitza l'aplicació.",
              "El micròfon que es fa servir és el del dispositiu Bluetooth connectat (intercomunicador, ulleres…).",

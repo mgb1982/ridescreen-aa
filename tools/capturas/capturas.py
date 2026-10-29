@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from lib.base import PHONE_DPR, PHONE_H, PHONE_W, WATCH_DPR, WATCH_W  # noqa: E402
 from lib.render import Job, render  # noqa: E402
-from screens import phone, pills, stats, watch  # noqa: E402
+from screens import guide, phone, pills, stats, watch  # noqa: E402
 
 DOCS_M = "docs/screenshots/ridescreen/movil/"
 DOCS_W = "docs/screenshots/ridescreen/reloj/"
@@ -81,6 +81,12 @@ SCREENS = {
                lambda l: [(DOCS_M + "29_widget.png", PHONE_DOCS)] if l == "es" else []),
     "guide_download": (lambda l: phone.guide_download(l), "phone",
                        lambda l: [(WEB_GUIDE[l] + "g1_descarga.png", GUIDE)]),
+    "guide_g2": (lambda l: guide.unknown_sources(l), "phone", lambda l: [(WEB_GUIDE[l] + "g2_fuentes.png", GUIDE)]),
+    "guide_g3": (lambda l: guide.play_protect(l), "phone", lambda l: [(WEB_GUIDE[l] + "g3_playprotect.png", GUIDE)]),
+    "guide_g4": (lambda l: guide.setup_permissions(l), "phone", lambda l: [(WEB_GUIDE[l] + "g4_permisos.png", GUIDE)]),
+    "guide_g5": (lambda l: guide.aa_version(l), "phone", lambda l: [(WEB_GUIDE[l] + "g5_aa_version.png", GUIDE)]),
+    "guide_g6": (lambda l: guide.aa_server(l), "phone", lambda l: [(WEB_GUIDE[l] + "g6_aa_servidor.png", GUIDE)]),
+    "guide_g7": (lambda l: guide.scan_qr(l), "phone", lambda l: [(WEB_GUIDE[l] + "g7_qr.png", GUIDE)]),
     "fuel": (lambda l: stats.fuel(l), "phone",
              lambda l: ([(DOCS_M + "12_gasolineras.png", PHONE_DOCS)] if l == "es" else [])
              + [(WEB_IMG[l] + "gasolineras.webp", PHONE_WEB)]),

@@ -39,6 +39,8 @@ Los HTML intermedios y los másters quedan en `tools/capturas/out/`, que git ign
 | `screens/phone.py`, `screens/watch.py` | Las pantallas |
 | `screens/stats.py` | Pantallas 12 y 16–23 (gasolineras, mapa de calor, semáforos, trayectos, vídeo, trofeos, mantenimiento, tu año) |
 | `screens/pills.py`, `pills/<idioma>.py` | Píldoras: plantilla y textos (ver abajo) |
+| `screens/guide.py` | Guía de instalación, pasos g2–g7 |
+| `lib/android_aosp.json` | Textos de Android (AOSP) en los 6 idiomas |
 | `fonts/` | Roboto (latin, griego, cirílico) |
 | `assets/hero.png` | Foto del Garaje de la cabecera (ver abajo) |
 
@@ -93,6 +95,12 @@ Los HTML intermedios y los másters quedan en `tools/capturas/out/`, que git ign
 - **Móvil:** 07 ajustar pantalla, 10–11 cámara y foto del aparcamiento y 25 alarma.
 - **Vídeo del viaje (19):** se muestra la parte de abajo; la vista previa con el vídeo no se recrea.
 - **Otras:** el marco amarillo del cuadro (`cuadro/01`), la historia del año (`imagenes/02`) y el fotograma real del vídeo (`imagenes/04`, una foto real).
-- **Guía:** los pasos g2–g7. g2, g3, g5 y g6 son pantallas de Android, Play Protect y Android Auto (sus textos no están en el código); g4 no coincide con la pantalla real de permisos y hay que rehacerla desde `activity_setup.xml`; g7 es el QR del cuadro.
+
+
+## Textos que no son de la app (guía g2–g7 y píldoras)
+- **Android** (fuentes desconocidas, permisos, «Mostrar sobre otras aplicaciones», ajustes restringidos): textos de AOSP en `lib/android_aosp.json`, en los 6 idiomas. Son los de Android puro; Samsung o Xiaomi pueden decirlo distinto.
+- **Play Protect y Android Auto** (g3, g5, g6) no son de código abierto: ES/CA/EN mantienen los textos de la guía publicada; IT/EL/RU están traducidos del inglés y **sin verificar** (`screens/guide.py`).
+- **g4** es nuestra pantalla de configuración (`activity_setup.xml`), con los textos de la app.
+- **g7:** el QR del cuadro es inventado (nunca uno real) y el cuadro se dibuja sin sus rótulos.
 
 Para añadir una pantalla: una función en `screens/` que devuelva HTML, y una línea en `SCREENS` de `capturas.py`.
