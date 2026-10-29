@@ -12,7 +12,7 @@
     <string name="supported_bikes_other_title">Outras marcas (Carbit / EasyConnect)</string>
     <string name="supported_bikes_other">Método de QR Carbit: experimenta Ligar se o painel apresentar um QR de emparelhamento. Comunica os resultados no Discord.\nVoge (DS800 Rally / DS900X confirmado) · Moto Morini (X-Cape 649/700 / Seiemmezzo confirmado; MotoFun) · Zontes (125X / 125V / 368 G·K·E confirmado; 125M e 350D em testes) · Benelli (por exemplo, TRK 702 / 702X) · QJ Motor (SRK800RR / SRK250RD / SRK450RR / SRT/SRV 600 confirmado; 600SX / 550SX em testes; Fort 4.0) · Morbidelli / MBP (T1002VX confirmado) · Longjia (por exemplo, V-Bob 650; MotoFUN / Carbit Ride, não confirmado)</string>
     <string name="supported_bikes_full_title">Lista completa – painéis conhecidos do CFMoto EasyConnect / MotoPlay</string>
-    <string name="supported_bikes_full">Naked: 125NK · 450NK · 675NK · 800NK · 800NK Advanced · 800NK Sport · 800NK (US CRCP)\nDesportivas: 300SR · 450SR · 450SR-S · 450SR TC · 500SR VOOM · 675SR · 675SR-R\nTurismo / Trail: 450MT · 700MT · 700MT Adventure · 800MT-X · 800MT Explore · 800MT Explore GT · 1000 MT-X\nCruiser: 450CL-C · CL-C450\nScooter: 150SC\nATV / SSV (TFT): CFORCE 800 · CFORCE 850 Touring · CFORCE 1000 · CFORCE 1000 Touring · GOES Terrox 1000 / Gladiator G3 1000\nOutras: U10 Pro (se o painel apresentar o QR)</string>
+    <string name="supported_bikes_full">Naked: 125NK · 450NK · 675NK · 800NK · 800NK Advanced · 800NK Sport · 800NK (US CRCP)\nDesportivas: 300SR · 450SR · 450SR-S · 450SR TC · 500SR VOOM · 675SR · 675SR-R\nTurismo / Trail: 450MT · 700MT · 700MT Adventure · 800MT-X · 800MT Explore · 800MT Explore GT · 1000 MT-X\nCustom: 450CL-C · CL-C450\nScooter: 150SC\nATV / SSV (TFT): CFORCE 800 · CFORCE 850 Touring · CFORCE 1000 · CFORCE 1000 Touring · GOES Terrox 1000 / Gladiator G3 1000\nOutras: U10 Pro (se o painel apresentar o QR)</string>
     <string name="supported_bikes_unlikely_title">Geralmente sem projeção QR</string>
     <string name="supported_bikes_unlikely">800MT Sport · 800MT Touring · 450SR World Champion Edition · 700CL-X (Adventure / Heritage / Sport) · PAPIO, a menos que a tua unidade apresente o QR.</string>
     <string name="supported_bikes_footer">Lista completa: github.com/zanderp/open-cfmoto → docs/SUPPORTED-BIKES.md. Comunica novas motas no Discord.</string>
@@ -196,7 +196,7 @@
     <string name="setup_a_one_time_setup_so_android_auto_can_project_to_">Uma configuração única para que o Android Auto possa projetar no teu painel CFMoto, além de opções de ecrã e bateria.</string>
     <string name="setup_get_started">Começar</string>
     <string name="setup_1_android_auto">1. Android Auto</string>
-    <string name="setup_android_auto_runs_maps_waze_opencfmoto_relays_it">O Android Auto executa o Maps/Waze. RideScreen AA transmite tua ecrã para a mota.</string>
+    <string name="setup_android_auto_runs_maps_waze_opencfmoto_relays_it">O Android Auto executa o Maps/Waze. O RideScreen AA transmite o ecrã do telemóvel para a mota.</string>
     <string name="setup_install_android_auto">Instala o Android Auto</string>
     <string name="setup_2_permissions">2. Permissões</string>
     <string name="setup_camera_scan_the_dash_qr_location_join_the_bike_w">Câmara (lê o QR do painel), Localização (liga-te ao Wi-Fi da mota), Notificações (permitem que a aplicação continue em execução durante a condução).</string>
@@ -372,7 +372,7 @@
     <string name="main_mirror_ready_title">Espelhamento pronto</string>
     <string name="main_rival_title">A aplicação oficial da CFMoto está a interferir</string>
     <string name="main_bike_search_hint">Pesquisar painéis de motas — escreve aqui</string>
-    <string name="notif_aa_channel">Receptor Android Auto</string>
+    <string name="notif_aa_channel">Recetor Android Auto</string>
     <string name="notif_aa_title">RideScreen AA – Android Auto</string>
     <string name="notif_aa_reconnecting">A restabelecer a ligação ao painel da mota…</string>
     <string name="notif_aa_receiving">A receber o Android Auto para o painel da mota — toca para abrir</string>
