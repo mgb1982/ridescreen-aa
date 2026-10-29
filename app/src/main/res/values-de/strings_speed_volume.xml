@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="speed_volume_title">Lautstärke nach Geschwindigkeit</string>
+    <string name="speed_volume_desc">Erhöht die Medienlautstärke des Telefons (Navigationsansagen und Musik) bei höherer Geschwindigkeit, um Windgeräusche auszugleichen. Deine eingestellte Lautstärke ist die Basis: Du kannst sie jederzeit ändern, die Verstärkung passt sich an. Pausiert, solange die Lenkerknöpfe Android Auto steuern.</string>
+    <string name="speed_volume_off">Aus</string>
+    <string name="speed_volume_low">Niedrig</string>
+    <string name="speed_volume_medium">Mittel</string>
+    <string name="speed_volume_high">Hoch</string>
+    <string name="speed_volume_status_off">Aus</string>
+    <string name="speed_volume_status_waiting">Warte auf die Motorradverbindung …</string>
+    <string name="speed_volume_status_paused">Pausiert: Die Lenkerknöpfe halten die Lautstärke fest</string>
+    <string name="speed_volume_status_no_gps">Aktiv: Warte auf GPS-Geschwindigkeit …</string>
+    <string name="speed_volume_status_live">Aktiv: %1$d km/h · Verstärkung +%2$d</string>
+    <string name="speed_volume_advanced_show">Erweitert ▾</string>
+    <string name="speed_volume_advanced_hide">Erweitert ▴</string>
+    <string name="speed_volume_custom">Eigene Kurve (ersetzt die Kurve der Stufe)</string>
+    <string name="speed_volume_start_label">Verstärkung ab: %1$d km/h</string>
+    <string name="speed_volume_step_label">Ein weiterer Schritt alle: %1$d km/h</string>
+    <string name="speed_volume_max_label">Maximale Verstärkung: +%1$d Stufen</string>
+    <string name="speed_volume_custom_hint">Die Schritte verwenden eine Lautstärkeskala mit 15 Stufen. Für die eigene Kurve muss weiterhin eine andere Stufe als Aus gewählt sein.</string>
+</resources>
