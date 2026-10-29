@@ -48,7 +48,7 @@
     <string name="fit_status_live">● В реальном времени: посмотри на дисплей мотоцикла</string>
     <string name="fit_status_offline">Нет подключения: настройки можно менять, но для просмотра в реальном времени подключись к мотоциклу.</string>
     <string name="fit_how">На дисплее появится жёлтая рамка: в её пределах отображается Android Auto. Передвигай каждый край стрелками, пока жёлтая линия не совпадёт с видимым краем экрана со всех четырёх сторон. Удерживай стрелку, чтобы двигать быстрее.</string>
-    <string name="fit_margins_now">Сверху %1$d · снизу %2$d · слева %3$d · справа %4$d px | Область Android Auto: %5$d × %6$d</string>
+    <string name="fit_margins_now">Сверху %1$d · снизу %2$d · слева %3$d · справа %4$d px\nОбласть Android Auto: %5$d × %6$d</string>
     <string name="fit_step_fine">Точно (2 px)</string>
     <string name="fit_step_coarse">Быстро (10 px)</string>
     <string name="fit_mode_title">Как заполнить рамку</string>
