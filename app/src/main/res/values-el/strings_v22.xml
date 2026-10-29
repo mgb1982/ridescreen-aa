@@ -188,4 +188,10 @@
     <string name="tv_clips_none">Επίλεξε τουλάχιστον ένα κλιπ</string>
     <string name="tv_look_drag">Σύρε τον χάρτη, την ταχύτητα ή τον τίτλο στην προεπισκόπηση στη θέση που θέλεις· το βίντεο θα δημιουργηθεί έτσι.</string>
     <string name="tv_look_reset">↺ Προεπιλεγμένες θέσεις</string>
+    <string-array name="tl_dirs">
+        <item>Βορράς</item>
+        <item>Ανατολή</item>
+        <item>Νότος</item>
+        <item>Δύση</item>
+    </string-array>
 </resources>
