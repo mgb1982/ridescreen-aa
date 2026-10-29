@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="speed_volume_title">Ένταση ανάλογα με την ταχύτητα</string>
+    <string name="speed_volume_desc">Αυξάνει την ένταση πολυμέσων του τηλεφώνου (φωνητικές οδηγίες και μουσική) όσο αυξάνεται η ταχύτητα, για να καλύπτει τον θόρυβο του αέρα. Η δική σου ένταση είναι η βάση: άλλαξέ την όποτε θέλεις και η ενίσχυση προσαρμόζεται. Σε παύση όταν τα κουμπιά του τιμονιού χειρίζονται το Android Auto.</string>
+    <string name="speed_volume_off">Ανενεργό</string>
+    <string name="speed_volume_low">Χαμηλή</string>
+    <string name="speed_volume_medium">Μεσαία</string>
+    <string name="speed_volume_high">Υψηλή</string>
+    <string name="speed_volume_status_off">Ανενεργό</string>
+    <string name="speed_volume_status_waiting">Αναμονή σύνδεσης με τη μοτοσικλέτα…</string>
+    <string name="speed_volume_status_paused">Σε παύση: τα κουμπιά του τιμονιού σταθεροποιούν την ένταση</string>
+    <string name="speed_volume_status_no_gps">Ενεργό: αναμονή ταχύτητας GPS…</string>
+    <string name="speed_volume_status_live">Ενεργό: %1$d km/h · ενίσχυση +%2$d</string>
+    <string name="speed_volume_advanced_show">Για προχωρημένους ▾</string>
+    <string name="speed_volume_advanced_hide">Για προχωρημένους ▴</string>
+    <string name="speed_volume_custom">Προσαρμοσμένη καμπύλη (αντικαθιστά την καμπύλη του επιπέδου)</string>
+    <string name="speed_volume_start_label">Έναρξη ενίσχυσης στα: %1$d km/h</string>
+    <string name="speed_volume_step_label">Ένα επιπλέον βήμα κάθε: %1$d km/h</string>
+    <string name="speed_volume_max_label">Μέγιστη ενίσχυση: +%1$d βήματα</string>
+    <string name="speed_volume_custom_hint">Τα βήματα χρησιμοποιούν κλίμακα έντασης 15 βαθμίδων. Για να λειτουργήσει η προσαρμοσμένη καμπύλη πρέπει να έχει επιλεγεί κάποιο επίπεδο εκτός από το Ανενεργό.</string>
+</resources>
