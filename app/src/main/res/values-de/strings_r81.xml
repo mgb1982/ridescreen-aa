@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bike_gone_channel">Motorrad nicht gefunden</string>
+    <string name="bike_gone_title">Warten auf das Motorrad beendet</string>
+    <string name="bike_gone_text">Das Motorrad war 20 Minuten ausgeschaltet. Deshalb hat die App die Suche beendet, um Akku zu sparen. Tippe auf Verbinden, wenn du wieder auf dem Motorrad bist.</string>
+    <string name="tr_channel">Trophäen</string>
+    <string name="tr_unlocked_title">🏆 Trophäe freigeschaltet!</string>
+    <string name="tr_screen_title">Trophäen</string>
+    <string name="tr_header">%1$d von %2$d freigeschaltet</string>
+    <string name="tr_next">Als Nächstes</string>
+    <string name="tr_earned_on">Erhalten am %1$s</string>
+    <string name="tr_card_line">🏆 Trophäen: %1$d von %2$d · alle ansehen ›</string>
+    <string name="tr_distance">Kilometer</string>
+    <string name="tr_distance_d">Insgesamt %1$s km fahren</string>
+    <string name="tr_longest">Lange Fahrt</string>
+    <string name="tr_longest_d">Eine Fahrt von mindestens %1$s km</string>
+    <string name="tr_speed">Höchstgeschwindigkeit</string>
+    <string name="tr_speed_d">%1$s km/h erreichen (GPS)</string>
+    <string name="tr_streak">Im Lauf</string>
+    <string name="tr_streak_d">%1$s Tage hintereinander fahren</string>
+    <string name="tr_rides">Regelmäßig</string>
+    <string name="tr_rides_d">%1$s Fahrten speichern</string>
+    <string name="tr_hours">Zeit im Sattel</string>
+    <string name="tr_hours_d">%1$s Stunden unterwegs</string>
+    <string name="tr_months">Ganzjährig</string>
+    <string name="tr_months_d">In %1$s verschiedenen Monaten fahren</string>
+    <string name="tr_early">Früher Vogel</string>
+    <string name="tr_early_d">Eine Fahrt vor 7:00 Uhr beginnen</string>
+    <string name="tr_night">Nachtfahrer</string>
+    <string name="tr_night_d">Eine Fahrt nach 23:00 Uhr beenden</string>
+    <string name="tr_weekend">Wochenendfahrer</string>
+    <string name="tr_weekend_d">An einem Wochenende sowohl Samstag als auch Sonntag fahren</string>
+</resources>
