@@ -82,7 +82,7 @@ Los HTML intermedios y los másters quedan en `tools/capturas/out/`, que git ign
 - Textos en `pills/<idioma>.py`, una lista por idioma en el mismo orden; el número N/total sale solo.
 - Los botones de la app se escriben `[[clave]]` y salen de `strings.xml` en cada idioma (en griego y ruso, en inglés, como en el móvil). `[[w:clave]]` es un texto del reloj y `[[=texto]]` uno que no es nuestro (Android, Android Auto, ⋮). Detalle en `screens/pills.py`.
 - 1–16 conservan su número; 17–21 son de la 2.3. Se publican en `docs/pildoras/<idioma>/`.
-- Textos de Android y Android Auto en IT/EL/RU (permisos, menú de desarrollador): **sin verificar** en un móvil en esos idiomas. En EL/RU el menú de desarrollador de Android Auto lleva también el nombre en inglés.
+- Textos de Android: los de AOSP (ver abajo). Los de Android Auto en IT/EL/RU, **sin verificar**; en EL/RU el menú de desarrollador lleva también el nombre en inglés.
 
 ## Diferencias conocidas con la app (a 23 oct 2026)
 - **Cabecera del mapa del viaje:** la app muestra `6.80 km · 00:18:40 · avg 22 · max 71 km/h` en todos los idiomas (`TripMapActivity` y `TripModel.distanceText` usan `Locale.US` y «avg/max» fijos). Las capturas muestran la versión localizada. Hay que arreglarlo en la app.
