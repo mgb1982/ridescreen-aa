@@ -4,8 +4,6 @@ Changes for the RideScreen AA fork. Version 2.4 is currently a preview line, not
 
 ## 2.4 preview · build 368
 
-Builds are produced from `prerelease/v24-pke-widget`. The table below reflects the feature line recorded in `rea-lab/ridescreen/STATE.md`.
-
 - **PKE battery/status card:** read the keyless box battery voltage and reported lock state over Bluetooth; live voltage is available while projecting.
 - **PKE controls:** explicitly lock or unlock the bike and release the seat or fuel cap. Seat and fuel-cap actions ask for confirmation.
 - **Home controls:** a bike-controls card and a home-screen widget with Connect, Unlock, Lock, Seat and Fuel cap actions. The widget adapts to a compact icon-only layout when space is limited.
