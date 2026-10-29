@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bike_gone_channel">Мотоцикл не найден</string>
+    <string name="bike_gone_title">Ожидание мотоцикла остановлено</string>
+    <string name="bike_gone_text">Мотоцикл был выключен 20 минут, поэтому приложение перестало искать его, чтобы сэкономить заряд. Нажми «Подключить», когда снова сядешь на мотоцикл.</string>
+    <string name="tr_channel">Трофеи</string>
+    <string name="tr_unlocked_title">🏆 Трофей разблокирован!</string>
+    <string name="tr_screen_title">Трофеи</string>
+    <string name="tr_header">Открыто %1$d из %2$d</string>
+    <string name="tr_next">Дальше</string>
+    <string name="tr_earned_on">Получено %1$s</string>
+    <string name="tr_card_line">🏆 Трофеи: %1$d из %2$d · все ›</string>
+    <string name="tr_distance">Километры</string>
+    <string name="tr_distance_d">Проедь в сумме %1$s км</string>
+    <string name="tr_longest">Дальняя поездка</string>
+    <string name="tr_longest_d">Одна поездка длиной не менее %1$s км</string>
+    <string name="tr_speed">Максимальная скорость</string>
+    <string name="tr_speed_d">Разгонись до %1$s км/ч (GPS)</string>
+    <string name="tr_streak">Серия</string>
+    <string name="tr_streak_d">Езди %1$s дней подряд</string>
+    <string name="tr_rides">Регулярность</string>
+    <string name="tr_rides_d">Сохрани %1$s поездок</string>
+    <string name="tr_hours">Время в седле</string>
+    <string name="tr_hours_d">%1$s часов в пути</string>
+    <string name="tr_months">Круглый год</string>
+    <string name="tr_months_d">Езди в %1$s разных месяцев</string>
+    <string name="tr_early">Ранняя пташка</string>
+    <string name="tr_early_d">Начни поездку до 7:00</string>
+    <string name="tr_night">Ночной ездок</string>
+    <string name="tr_night_d">Заверши поездку после 23:00</string>
+    <string name="tr_weekend">Поездки в выходные</string>
+    <string name="tr_weekend_d">Поезди и в субботу, и в воскресенье одних выходных</string>
+</resources>
