@@ -267,4 +267,6 @@
     <string name="trips_import_exists">Ce trajet figure déjà dans vos trajets</string>
     <string name="trips_import_empty">Aucune trace horodatée dans ce fichier</string>
     <string name="trips_import_failed">Impossible de l’importer : %1$s</string>
+    <string name="pke_state_left_unlocked">La moto est restée DÉVERROUILLÉE — verrouille-la à nouveau.</string>
+    <string name="pke_state_left_locked">La moto est restée VERROUILLÉE — déverrouille-la à nouveau.</string>
 </resources>

@@ -267,4 +267,6 @@
     <string name="trips_import_exists">Essa viagem já está nas tuas viagens</string>
     <string name="trips_import_empty">O ficheiro não contém um percurso com horários</string>
     <string name="trips_import_failed">Não foi possível importar: %1$s</string>
+    <string name="pke_state_left_unlocked">A mota ficou DESBLOQUEADA — volta a bloquear.</string>
+    <string name="pke_state_left_locked">A mota ficou BLOQUEADA — volta a desbloquear.</string>
 </resources>

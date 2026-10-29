@@ -267,4 +267,6 @@
     <string name="trips_import_exists">Αυτή η διαδρομή υπάρχει ήδη στις διαδρομές σου</string>
     <string name="trips_import_empty">Το αρχείο δεν περιέχει καταγεγραμμένη διαδρομή με χρονικές σημάνσεις</string>
     <string name="trips_import_failed">Δεν ήταν δυνατή η εισαγωγή: %1$s</string>
+    <string name="pke_state_left_unlocked">Η μοτοσικλέτα έμεινε ΞΕΚΛΕΙΔΩΤΗ — κλείδωσέ την ξανά.</string>
+    <string name="pke_state_left_locked">Η μοτοσικλέτα έμεινε ΚΛΕΙΔΩΜΕΝΗ — ξεκλείδωσέ την ξανά.</string>
 </resources>

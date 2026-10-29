@@ -267,4 +267,6 @@
     <string name="trips_import_exists">Diese Fahrt ist bereits in deinen Fahrten enthalten</string>
     <string name="trips_import_empty">Die Datei enthält keine aufgezeichnete Strecke mit Zeitangaben</string>
     <string name="trips_import_failed">Import fehlgeschlagen: %1$s</string>
+    <string name="pke_state_left_unlocked">Das Motorrad ist ENTRIEGELT geblieben — verriegle es erneut.</string>
+    <string name="pke_state_left_locked">Das Motorrad ist VERRIEGELT geblieben — entriegle es erneut.</string>
 </resources>

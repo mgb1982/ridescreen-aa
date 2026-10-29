@@ -267,4 +267,6 @@
     <string name="trips_import_exists">Эта поездка уже есть в твоих поездках</string>
     <string name="trips_import_empty">В файле нет трека с временными метками</string>
     <string name="trips_import_failed">Не удалось импортировать: %1$s</string>
+    <string name="pke_state_left_unlocked">Мотоцикл остался РАЗБЛОКИРОВАН — заблокируй его снова.</string>
+    <string name="pke_state_left_locked">Мотоцикл остался ЗАБЛОКИРОВАН — разблокируй его снова.</string>
 </resources>
