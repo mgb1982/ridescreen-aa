@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="find_title">🅿️ Η ΜΟΤΟΣΙΚΛΕΤΑ ΣΟΥ</string>
+    <string name="find_waiting_gps">Αναζήτηση GPS…</string>
+    <string name="find_maps">Οδηγίες</string>
+    <string name="find_none">Δεν έχει αποθηκευτεί ακόμη θέση στάθμευσης</string>
+    <string name="find_parked_ago">Στάθμευση %1$s</string>
+    <string name="find_here">Είσαι ακριβώς εδώ! 🏍️</string>
+    <string name="status_hus_off">⚠️ Εκκίνηση διακομιστή head unit Android Auto</string>
+    <string name="tile_tap_compass">Πάτησε για εντοπισμό</string>
+    <string name="park_page_find">🧭 Εντόπισέ τη</string>
+</resources>

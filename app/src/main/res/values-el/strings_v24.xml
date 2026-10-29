@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dc_good_morning">Καλημέρα</string>
+    <string name="dc_good_afternoon">Καλό απόγευμα</string>
+    <string name="dc_good_evening">Καλησπέρα</string>
+    <string name="dc_streak_days">συνεχόμενες ημέρες</string>
+    <string name="dc_rain_soon">Πιθανή βροχή: %1$d%% τις επόμενες ώρες</string>
+    <string name="dc_wx_clear">καθαρός</string>
+    <string name="dc_wx_cloudy">συννεφιασμένος</string>
+    <string name="dc_wx_fog">ομίχλη</string>
+    <string name="dc_wx_rain">βροχή</string>
+    <string name="dc_wx_snow">χιόνι</string>
+    <string name="dc_wx_storm">καταιγίδα</string>
+    <string name="dc_bye_title">Τα λέμε · σύνοψη της σημερινής ημέρας</string>
+    <string name="dc_km_today">km σήμερα</string>
+    <string name="dc_min">λεπτά</string>
+    <string name="dc_kmh_avg">μέση ταχύτητα km/h</string>
+    <string name="dc_kmh_max">μέγιστη ταχύτητα km/h</string>
+    <string name="dc_parked_photo">Σταθμευμένη · η φωτογραφία αποθηκεύτηκε</string>
+    <string name="dc_parked">Σταθμευμένη</string>
+    <string name="dc_rain_tomorrow">Αύριο στις 8:00: πιθανότητα βροχής %1$d%% · πάρε αδιάβροχα</string>
+</resources>

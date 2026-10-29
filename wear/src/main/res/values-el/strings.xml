@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RideScreen AA</string>
+    <string name="status_no_phone">Δεν υπάρχουν δεδομένα από το τηλέφωνο</string>
+    <string name="status_streaming">● Συνδέθηκε στο ταμπλό</string>
+    <string name="status_reconnecting">● Επανασύνδεση…</string>
+    <string name="status_idle">Δεν οδηγείς</string>
+    <string name="unit_kmh">km/h</string>
+    <string name="label_dist">km</string>
+    <string name="label_time">σε κίνηση</string>
+    <string name="label_max">μέγ. km/h</string>
+    <string name="label_avg">μ.ό. km/h</string>
+    <string name="hint_logging_off">Η καταγραφή διαδρομών είναι απενεργοποιημένη στο τηλέφωνο</string>
+    <string name="btn_ok">OK</string>
+    <string name="channel_ride">Διαδρομή σε εξέλιξη</string>
+    <string name="ride_active">Διαδρομή σε εξέλιξη · πάτησε για τα δεδομένα</string>
+    <string name="label_total">Χρόνος οδήγησης</string>
+    <string name="label_alt">υψόμετρο m</string>
+    <string name="label_heading">κατεύθυνση</string>
+    <string name="label_gps">GPS ±m</string>
+    <string name="label_battery">τηλέφωνο</string>
+    <string name="label_volume">ένταση</string>
+    <string name="status_clock_resync">⏱ Ρύθμιση ρολογιού ταμπλό…</string>
+    <string name="trips_title">Διαδρομές</string>
+    <string name="trips_loading">Φόρτωση διαδρομών…</string>
+    <string name="trips_none">Δεν υπάρχουν ακόμη αποθηκευμένες διαδρομές</string>
+    <string name="trips_no_phone">Δεν απαντά το τηλέφωνο</string>
+    <string name="trip_line">%1$s · μ.ό. %2$d · μέγ. %3$d</string>
+    <string name="map_loading">Σχεδίαση χάρτη…</string>
+    <string name="map_no_phone">Δεν υπάρχει ακόμη χάρτης — είναι κοντά το τηλέφωνο;</string>
+    <string name="map_desc">Χάρτης διαδρομής</string>
+    <string name="pill_max">μέγ. %d</string>
+    <string name="pill_avg">μ.ό. %d</string>
+    <string name="parked_line">🅿️ Στάθμευσες τη μοτοσικλέτα %1$s · εντόπισέ την</string>
+    <string name="parked_no_maps">Δεν υπάρχει εφαρμογή χαρτών στο ρολόι</string>
+    <string name="tile_label">Διαδρομή</string>
+    <string name="tile_riding">ΟΔΗΓΕΙΣ</string>
+    <string name="tile_parked">🅿️ ΣΤΑΘΜΕΥΜΕΝΗ</string>
+    <string name="tile_tap_directions">Πάτησε: άνοιγμα και μετά 🅿️ για οδηγίες</string>
+    <string name="tile_last_ride">ΤΕΛΕΥΤΑΙΑ ΔΙΑΔΡΟΜΗ</string>
+    <string name="tile_no_data">Δεν υπάρχουν ακόμη διαδρομές</string>
+    <string name="complication_label">RideScreen · km</string>
+    <string name="complication_desc">km διαδρομής</string>
+</resources>

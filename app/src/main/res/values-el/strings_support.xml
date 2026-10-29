@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_button">❤ Υποστήριξε το έργο</string>
+    <string name="support_title">Υποστήριξε το RideScreen AA</string>
+    <string name="support_title_play">Κέρασέ με…</string>
+    <string name="support_body">Το RideScreen AA είναι δωρεάν και χωρίς διαφημίσεις. Αν κάνει τις διαδρομές σου καλύτερες, μπορείς να με κεράσεις έναν καφέ για να βοηθήσεις στα έξοδα (όπως ο λογαριασμός προγραμματιστή του Google Play). Ευχαριστώ!</string>
+    <string name="support_kofi">Κέρασέ με έναν καφέ (Ko-fi)</string>
+    <string name="support_original">Υποστήριξε τον δημιουργό του OpenCfMoto</string>
+    <string name="support_later">Όχι τώρα</string>
+    <string name="support_coffee">☕ Ένας καφές</string>
+    <string name="support_sandwich">🥪 Ένα σάντουιτς</string>
+    <string name="support_tank">⛽ Ένα γεμάτο ρεζερβουάρ</string>
+    <string name="support_thanks">Σε ευχαριστώ πάρα πολύ! 🙌</string>
+    <string name="support_unavailable">Οι δωρεές δεν είναι διαθέσιμες αυτή τη στιγμή. Δοκίμασε ξανά αργότερα.</string>
+</resources>
