@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bike_gone_channel">Mota não encontrada</string>
+    <string name="bike_gone_title">A espera pela mota foi interrompida</string>
+    <string name="bike_gone_text">A mota esteve desligada durante 20 minutos, por isso a aplicação deixou de a procurar para poupar bateria. Toca em Ligar quando voltares à mota.</string>
+    <string name="tr_channel">Troféus</string>
+    <string name="tr_unlocked_title">🏆 Troféu desbloqueado!</string>
+    <string name="tr_screen_title">Troféus</string>
+    <string name="tr_header">%1$d de %2$d desbloqueados</string>
+    <string name="tr_next">A seguir</string>
+    <string name="tr_earned_on">Conquistado em %1$s</string>
+    <string name="tr_card_line">🏆 Troféus: %1$d de %2$d · ver todos ›</string>
+    <string name="tr_distance">Quilómetros</string>
+    <string name="tr_distance_d">Conduz %1$s km no total</string>
+    <string name="tr_longest">Percurso longo</string>
+    <string name="tr_longest_d">Um percurso de pelo menos %1$s km</string>
+    <string name="tr_speed">Velocidade máxima</string>
+    <string name="tr_speed_d">Atinge %1$s km/h (GPS)</string>
+    <string name="tr_streak">Em sequência</string>
+    <string name="tr_streak_d">Conduz %1$s dias seguidos</string>
+    <string name="tr_rides">Regularidade</string>
+    <string name="tr_rides_d">Guarda %1$s percursos</string>
+    <string name="tr_hours">Tempo na sela</string>
+    <string name="tr_hours_d">%1$s horas a conduzir</string>
+    <string name="tr_months">Todo o ano</string>
+    <string name="tr_months_d">Conduz em %1$s meses diferentes</string>
+    <string name="tr_early">Madrugador</string>
+    <string name="tr_early_d">Começa um percurso antes das 7:00</string>
+    <string name="tr_night">Condutor noturno</string>
+    <string name="tr_night_d">Termina um percurso depois das 23:00</string>
+    <string name="tr_weekend">Condutor de fim de semana</string>
+    <string name="tr_weekend_d">Conduz no sábado e no domingo do mesmo fim de semana</string>
+</resources>
