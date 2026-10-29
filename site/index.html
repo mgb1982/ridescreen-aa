@@ -8,12 +8,12 @@
    choice always wins). Crawlers and link previews stay. */
 (function(){try{
   var t=null, pick=localStorage.getItem("rs_lang");
-  if (pick) { if (pick==="en") t="en/"; else if (pick==="ca") t="ca/"; else return; }
+  if (pick) { if (pick==="en") t="en/"; else if (pick==="ca") t="ca/"; else if (pick==="el") t="el/"; else if (pick==="ru") t="ru/"; else return; }
   else {
     if (/bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegram/i.test(navigator.userAgent)) return;
     var l=((navigator.languages&&navigator.languages[0])||navigator.language||"").toLowerCase();
     if (!l || /^(es|gl|eu)\b/.test(l)) return;
-    t = /^ca\b/.test(l) ? "ca/" : "en/";
+    t = /^ca\b/.test(l) ? "ca/" : /^el\b/.test(l) ? "el/" : /^ru\b/.test(l) ? "ru/" : "en/";
   }
   location.replace(t+location.hash);
 }catch(e){}})();
@@ -165,6 +165,8 @@ footer a { color: var(--fg); }
       <a href="https://github.com/mgb1982/ridescreen-aa" class="opt">GitHub</a>
       <a href="ca/" lang="ca" hreflang="ca" title="Català" data-lang="ca">CA</a>
       <a href="en/" lang="en" hreflang="en" title="English" data-lang="en">EN</a>
+      <a href="el/" lang="el" hreflang="el" title="Ελληνικά" data-lang="el">EL</a>
+      <a href="ru/" lang="ru" hreflang="ru" title="Русский" data-lang="ru">RU</a>
     </nav>
   </header>
 
@@ -275,7 +277,7 @@ footer a { color: var(--fg); }
       <a href="https://github.com/mgb1982/ridescreen-aa/blob/main/PRIVACY.md">Privacidad</a>
       <a href="https://ko-fi.com/mgb1982">☕ Ko-fi</a>
       <a href="ca/" lang="ca" data-lang="ca">Català</a>
-      <a href="en/" lang="en" data-lang="en">English</a>
+      <a href="en/" lang="en" data-lang="en">English</a> · <a href="el/" lang="el" data-lang="el">Ελληνικά</a> · <a href="ru/" lang="ru" data-lang="ru">Русский</a>
     </div>
     <p>RideScreen AA está basada en <a href="https://github.com/zanderp/open-cfmoto">OpenCfMoto</a> de Alexandru (zanderp). Software libre bajo licencia AGPL-3.0.</p>
     <p>No es una app oficial ni está afiliada con Zontes, CFMoto, Carbit ni Google. Android Auto es una marca de Google LLC. Úsala con responsabilidad: la vista, siempre en la carretera.</p>
