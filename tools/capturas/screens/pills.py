@@ -8,6 +8,7 @@ Texts live in tools/capturas/pills/<lang>.py, one list per language in the same 
     [[key|🚦]]               same, with an emoji in front (when the string itself has none)
     [[key(3)]]               a string with arguments: %1$s/%1$d get 3
     [[=text]]                a label that is not ours (Android, Android Auto, ⋮): literal text
+    [[w:key]]                a label of the watch app (wear/…/strings.xml)
 
 Footers render labels as plain text. Every pill is numbered N/total automatically.
 """
@@ -15,7 +16,7 @@ import importlib
 import re
 
 from lib.base import root_css
-from lib.res import Strings, esc
+from lib.res import WEAR_RES, Strings, esc
 
 W = 1080
 WORD = {"es": "píldora", "ca": "píndola", "en": "tip", "it": "pillola", "el": "συμβουλή", "ru": "совет"}
@@ -49,6 +50,8 @@ def label(s, spec):
     """Resolve a [[...]] spec to its visible text."""
     if spec.startswith("="):
         return spec[1:]
+    if spec.startswith("w:"):
+        s, spec = Strings(s.lang, WEAR_RES), spec[2:]
     emoji = ""
     if "|" in spec:
         spec, emoji = spec.split("|", 1)
@@ -81,12 +84,15 @@ def pill(lang, n):
     """n is 1-based."""
     s = Strings(lang)
     ps = texts(lang)
+    if len(ps) != len(texts("es")):
+        raise ValueError(f"pills/{lang}.py has {len(ps)} pills, pills/es.py has {len(texts('es'))}")
     p = ps[n - 1]
     steps = "".join(f'<div class="st"><div class="n">{i}</div><div class="tx">{markup(s, t)}</div></div>'
                     for i, t in enumerate(p["steps"], 1))
     note = f'<div class="note">{markup(s, p["note"])}</div>' if p.get("note") else ""
     foot = (markup(s, p["foot"], chips=False) + " · " if p.get("foot") else "") + f"{WORD[lang]} {n}/{len(ps)}"
-    return f"""<!doctype html><html><head><meta charset="utf-8"><style>{root_css()}{CSS}</style></head><body>
+    # lang= lets Chromium uppercase Greek without accents (ΞΕΚΙΝΗΜΑ, not ΞΕΚΊΝΗΜΑ).
+    return f"""<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><style>{root_css()}{CSS}</style></head><body>
 <div class="pl"><div class="tag"><i>{p["icon"]}</i>RideScreen AA · {esc(p["tag"])}</div>
 <h1>{markup(s, p["title"], chips=False)}</h1><div class="sub">{markup(s, p["sub"])}</div>
 <div class="steps">{steps}</div>{note}<div class="ft">{foot}</div></div></body></html>"""

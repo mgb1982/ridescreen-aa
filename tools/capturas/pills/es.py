@@ -30,7 +30,8 @@ PILLS = [
              "Deja activado **[[watch_setting]]**: si tardas en volver, la app sigue pendiente del Wi‑Fi de la moto "
              "y conecta sola.",
          ],
-         note="Si alguna vez no arranca sola, te saldrá una notificación «**ZT… encendida · Toca para conectar**». "
+         note="Si alguna vez no arranca sola, te saldrá una notificación «**[[bt_trigger_title(ZT…)]] · "
+              "[[bt_trigger_text]]**». "
               "Un toque y listo. En Xiaomi, Redmi y POCO activa también el **Inicio automático** (la app te avisa).",
          foot="Funciona con la moto guardada en el Garaje"),
 
@@ -192,7 +193,7 @@ PILLS = [
              "hasta ella.",
              "¿Reloj sin bisel? ▲ ▼ recorren los menús; **mantén pulsado** para moverte por Android Auto.",
          ],
-         note="Si salta el detector de caídas, puedes pulsar «Estoy bien» directamente en el reloj.",
+         note="Si salta el detector de caídas, puedes pulsar [[w:crash_im_ok]] directamente en el reloj.",
          foot="Necesita el móvil cerca, conectado por Bluetooth"),
 
     dict(slug="14-si-algo-falla", icon="❓", tag="Ayuda",
