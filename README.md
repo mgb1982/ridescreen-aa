@@ -125,7 +125,7 @@ RideScreen AA es gratis y sin anuncios. Si te resulta útil, puedes [invitarme a
 - **Crash detection** (experimental, opt‑in): alarm on phone and watch, then an SMS with your location to up to 3 contacts. Not a certified safety device.
 - **Wear OS app**: next turn, compass to your parked bike, D‑pad for Android Auto, crash alarm.
 
-The interface is available in English, Spanish, Catalan, French, Italian, German and Portuguese. Download the APK from **[Releases](https://github.com/mgb1982/ridescreen-aa/releases/latest)**. The original OpenCfMoto documentation (supported bikes, handlebar buttons, protocol notes) is kept in **[docs/OPENCFMOTO-README.md](docs/OPENCFMOTO-README.md)**.
+The app is in Catalan, Spanish and English, and almost entirely in Italian. French, German, Portuguese, Greek and Russian cover the newest screens (keyless box, widget); the rest still shows in English. Download the APK from **[Releases](https://github.com/mgb1982/ridescreen-aa/releases/latest)**. The original OpenCfMoto documentation (supported bikes, handlebar buttons, protocol notes) is kept in **[docs/OPENCFMOTO-README.md](docs/OPENCFMOTO-README.md)**.
 
 ## Licencia · License
 AGPL‑3.0‑or‑later. Ver [LICENSE](LICENSE) y [NOTICE](NOTICE). Not affiliated with Zontes, CFMoto or Google. Android Auto is a trademark of Google LLC.

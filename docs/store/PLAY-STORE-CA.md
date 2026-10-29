@@ -1,24 +1,32 @@
 # Fitxa de Google Play · Català
 
-**Títol (19/30):** RideScreen AA: Moto
+**Títol (26/30):** RideScreen: quadre de moto
 
-**Descripció breu (75/80):** Android Auto sense fils per a quadres de moto Carbit/EasyConnect compatibles.
+**Descripció breu (77/80):** Android Auto sense fils per a quadres de moto Carbit/EasyConnect compatibles.
 
 **Descripció completa (menys de 4.000 caràcters):**
 
-Porta Android Auto al quadre compatible de la teva moto des del mòbil Android mitjançant Wi‑Fi. RideScreen AA és una bifurcació independent d’OpenCfMoto per a quadres Carbit/EasyConnect que fan servir una interfície de duplicació de pantalla MotoPlay. La compatibilitat depèn de la moto i del quadre; s’ha provat en una Zontes 125X.
+Porta Android Auto al quadre de la teva moto des del mòbil Android, per Wi‑Fi. RideScreen és una bifurcació independent d’OpenCfMoto per a quadres Carbit/EasyConnect (els que mostren un QR per aparellar el mòbil amb MotoPlay/EasyConnect). Es fa servir cada dia en una Zontes 125X i els usuaris l’han confirmada a les Zontes 125V, 125M, 368 (G/K/E), 703RR, T350X, 703F i 703T. La compatibilitat depèn de la moto i del quadre.
 
-**Controls de la caixa sense clau PKE**
+**Al quadre**
 
-- Consulta per Bluetooth el voltatge de la bateria de la caixa sense clau i l’estat de bloqueig que comunica.
-- Envia ordres explícites de bloqueig o desbloqueig, o d’obertura del seient i de la tapa del dipòsit, des de l’app o el giny de la pantalla d’inici.
-- Configura el codi PKE i el McuID, que s’obté del QR d’informació de la moto. El McuID es desa al dispositiu i queda exclòs de les còpies de seguretat d’Android.
-- Pots activar que es desbloquegi quan toques Connectar. Aquesta opció està desactivada per defecte i no desbloqueja mai durant la connexió automàtica. Obrir el seient i la tapa del dipòsit requereix confirmació.
+- Google Maps, Waze, Spotify i l’Assistent a la pantalla de la moto.
+- Connexió automàtica en arrencar, amb el mòbil a la butxaca.
+- Ajust de la pantalla en directe i assistent de veu.
 
-La caixa sense clau no ofereix telemetria completa del vehicle. RideScreen AA no llegeix actualment les RPM del motor ni dades de l’ECU. El giny no mostra l’estat real del pany; consulta la targeta de bateria/estat. L’enviament d’una ordre no confirma que la moto l’hagi executada, així que comprova la moto.
+**Al voltant de la ruta**
 
-La projecció requereix un quadre compatible i la seva configuració de connexió. No es garanteix la compatibilitat amb altres motos.
+- On has aparcat, amb foto i indicacions a peu.
+- Benzina més barata a prop (Espanya), llibre de manteniment i consum real.
+- Registre de viatges acolorit per velocitat, mapa de calor, rècords, trofeus i el teu any en moto.
+- Vídeo del viatge amb mapa i velocitat, i ubicació en directe per compartir.
+- Detector de caigudes (experimental, opcional): alarma al mòbil i al rellotge i, després, un SMS amb la teva ubicació a fins a tres contactes. No és un dispositiu de seguretat certificat.
+- App per a Wear OS: propera girada, brúixola cap a la moto aparcada, creueta per a Android Auto i alarma de caiguda.
 
-RideScreen AA és programari lliure amb llicència AGPL-3.0 o posterior. **No és una app oficial de Zontes ni de CFMoto**, ni està afiliada ni avalada per cap d’aquestes marques. Android Auto és una marca de Google LLC.
+**Caixa sense clau (PKE)**
 
-Pots desactivar els informes anònims d’errors a Configuració → Privadesa.
+A la Zontes 125X, RideScreen pot llegir per Bluetooth el voltatge de la bateria i l’estat de bloqueig de la caixa sense clau i, si ho configures, bloquejar o desbloquejar la moto i obrir el seient o la tapa del dipòsit des de l’app o un giny. Necessita el codi PKE de la teva moto i el McuID del seu QR d’informació; el McuID es queda al mòbil i no va a les còpies de seguretat. «Desbloquejar en connectar» és opcional, ve desactivat i només actua quan toques Connectar, mai en la connexió automàtica. Seient i dipòsit demanen confirmació. Comprova la moto després de cada ordre. No s’ha provat amb altres motos ni altres caixes.
+
+RideScreen és programari lliure amb llicència AGPL‑3.0 o posterior, gratuït i sense anuncis. **No és una app oficial de Zontes ni de CFMoto**, ni està afiliada ni avalada per cap de les dues. Android Auto és una marca de Google LLC.
+
+Pots desactivar els informes anònims d’ús i errors a Configuració → Privacitat.

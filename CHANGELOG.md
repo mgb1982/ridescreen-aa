@@ -11,7 +11,7 @@ Changes for the RideScreen AA fork. Version 2.4 is currently a preview line, not
 - **Faster PKE actions:** open the Bluetooth LE link while the rider chooses an action and record timings for the connection, challenge and command reply.
 - **McuID setup:** scan the bike's information QR to find the McuID. The stored McuID is excluded from Android backup and device transfer.
 - **Visual refresh:** line icons for the home tiles and PKE controls, plus road/seat icons and a garage photo in the widget.
-- **Language coverage:** English, Spanish and Catalan resources are joined by French, Italian, German and Portuguese translations.
+- **Language coverage:** the 2.4 texts are also available in French, Italian, German and Portuguese.
 
 ### Compatibility and limitations
 
@@ -20,6 +20,7 @@ Changes for the RideScreen AA fork. Version 2.4 is currently a preview line, not
 - The widget does not display the actual lock state. Check the battery/status card instead.
 - Sending a command is not confirmation that the bike acted on it. Check the bike after each command.
 - The keyless box accepts one Bluetooth client at a time. If another app is connected to it, RideScreen AA cannot connect.
+- Known issue in build 368: while projecting, the live voltage reading holds the keyless box, so commands fail with "box not found" until you stop projecting. Fixed in the next preview build.
 
 ## 2.4 preview · builds 363–367
 
