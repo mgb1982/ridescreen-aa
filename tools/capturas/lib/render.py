@@ -48,12 +48,17 @@ def render(jobs, dry=False):
             hp = os.path.abspath(os.path.join(OUT, "html", j.name + ".html"))
             with open(hp, "w", encoding="utf-8") as f:
                 f.write(j.html)
-            pg = br.new_page(viewport={"width": j.w, "height": j.h}, device_scale_factor=j.dpr)
+            pg = br.new_page(viewport={"width": j.w, "height": j.h or 800}, device_scale_factor=j.dpr)
             pg.goto("file://" + hp)
             pg.evaluate("document.fonts.ready")
             pg.wait_for_timeout(250)
+            h = j.h
+            if h is None:   # height follows the content (pills)
+                h = pg.evaluate("Math.ceil(document.querySelector('body > *').getBoundingClientRect().height)")
+                pg.set_viewport_size({"width": j.w, "height": h})
+                pg.wait_for_timeout(50)
             mp = os.path.join(OUT, "masters", j.name + ".png")
-            pg.screenshot(path=mp, omit_background=True, clip={"x": 0, "y": 0, "width": j.w, "height": j.h})
+            pg.screenshot(path=mp, omit_background=True, clip={"x": 0, "y": 0, "width": j.w, "height": h})
             pg.close()
             master = Image.open(mp).convert("RGBA")
             for rel, width in j.outputs:

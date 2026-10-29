@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from lib.base import PHONE_DPR, PHONE_H, PHONE_W, WATCH_DPR, WATCH_W  # noqa: E402
 from lib.render import Job, render  # noqa: E402
-from screens import phone, watch  # noqa: E402
+from screens import phone, pills, watch  # noqa: E402
 
 DOCS_M = "docs/screenshots/ridescreen/movil/"
 DOCS_W = "docs/screenshots/ridescreen/reloj/"
@@ -118,12 +118,29 @@ SCREENS = {
               lambda l: [(DOCS_W + "11_mapa.png", WATCH_DOCS)] if l == "es" else []),
 }
 
+# Pills: 1080 px wide, height from the content; one folder per language, same file names.
+PILLS_DIR = "docs/pildoras/"
+
+
+def _has_pills(lang):
+    try:
+        pills.texts(lang)
+        return True
+    except ModuleNotFoundError:
+        return False
+
+
+for _n, _slug in enumerate(pills.slugs(), 1):
+    SCREENS[f"pill{_n:02d}"] = ((lambda n: lambda l: pills.pill(l, n))(_n), "pill",
+                                (lambda slug: lambda l: [(f"{PILLS_DIR}{l}/{slug}.png", None)] if _has_pills(l) else [])(_slug))
+
 CANVAS = {
     "phone": (PHONE_W, PHONE_H, PHONE_DPR),
     "watch": (WATCH_W, WATCH_W, WATCH_DPR),
     "share": (phone.SHARE_W, phone.SHARE_H, 1),
     "widget": (phone.WIDGET_W, phone.WIDGET_H, PHONE_DPR),
     "whats_new": (PHONE_W, phone.WHATS_NEW_H, PHONE_DPR),
+    "pill": (pills.W, None, 1),
 }
 
 
@@ -135,7 +152,7 @@ def jobs(names=None, langs=LANGS):
         w, h, dpr = CANVAS[kind]
         for lang in langs:
             o = outputs(lang)
-            if o:
+            if o:   # build only what has an output (pills without texts in a language are skipped)
                 out.append(Job(f"{name}_{lang}", build(lang), w, h, dpr, o))
     return out
 
