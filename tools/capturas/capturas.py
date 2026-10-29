@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """RideScreen AA capture generator.
 
-    python3 tools/capturas/capturas.py              # everything, ES/CA/EN
+    python3 tools/capturas/capturas.py              # everything, ES/CA/EN/IT/EL/RU
+    python3 tools/capturas/capturas.py --lang=it,el # only some languages
     python3 tools/capturas/capturas.py home trips   # only some screens
     python3 tools/capturas/capturas.py --list       # what is generated and where it goes
     python3 tools/capturas/capturas.py --dry        # write into tools/capturas/out/dry instead of the repo
@@ -21,10 +22,15 @@ DOCS_M = "docs/screenshots/ridescreen/movil/"
 DOCS_W = "docs/screenshots/ridescreen/reloj/"
 DOCS_I = "docs/screenshots/ridescreen/imagenes/"
 # Web folders per language.
-WEB_IMG = {"es": "site/img/", "ca": "site/img/ca/", "en": "site/img/en/"}
-WEB_GUIDE = {"es": "site/guia/", "ca": "site/ca/guia/", "en": "site/en/guide/"}
-WEB_WATCH = {"es": "site/reloj/", "ca": "site/ca/rellotge/", "en": "site/en/watch/"}
-LANGS = ("es", "ca", "en")
+# el/ru follow the pages in PR #3 (site/el/guide/, site/el/watch/). There is no Italian site yet: guida/orologio
+# is a guess, change it here when the pages exist.
+WEB_IMG = {"es": "site/img/", "ca": "site/img/ca/", "en": "site/img/en/", "it": "site/img/it/",
+           "el": "site/img/el/", "ru": "site/img/ru/"}
+WEB_GUIDE = {"es": "site/guia/", "ca": "site/ca/guia/", "en": "site/en/guide/", "it": "site/it/guida/",
+             "el": "site/el/guide/", "ru": "site/ru/guide/"}
+WEB_WATCH = {"es": "site/reloj/", "ca": "site/ca/rellotge/", "en": "site/en/watch/", "it": "site/it/orologio/",
+             "el": "site/el/watch/", "ru": "site/ru/watch/"}
+LANGS = ("es", "ca", "en", "it", "el", "ru")
 
 PHONE_DOCS, PHONE_WEB, GUIDE = 540, 540, 824
 WATCH_DOCS, WATCH_WEB = 360, 300
@@ -137,7 +143,11 @@ def jobs(names=None, langs=LANGS):
 def main(argv):
     dry = "--dry" in argv
     names = [a for a in argv if not a.startswith("--")]
-    js = jobs(names)
+    langs = LANGS
+    for a in argv:
+        if a.startswith("--lang="):
+            langs = tuple(a.split("=", 1)[1].split(","))
+    js = jobs(names, langs)
     if "--list" in argv:
         for j in js:
             for rel, wpx in j.outputs:

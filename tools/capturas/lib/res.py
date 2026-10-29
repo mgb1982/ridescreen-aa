@@ -11,7 +11,7 @@ WEAR_RES = os.path.join(ROOT, "wear", "src", "main", "res")
 FONT_DIR = os.path.join(APP_RES, "font")
 
 # Language code → Android values folder suffix ("" = default, which is English).
-LANG_DIR = {"es": "-es", "ca": "-ca", "en": "", "it": "-it"}
+LANG_DIR = {"es": "-es", "ca": "-ca", "en": "", "it": "-it", "el": "-el", "ru": "-ru"}
 
 
 def colors():
@@ -59,8 +59,19 @@ class Strings:
 
     def plural(self, key, n, *args):
         forms = self.p[key]
-        v = forms.get("one" if n == 1 else "other") or forms["other"]
+        v = forms.get(plural_category(self.lang, n)) or forms["other"]
         return fmt(v, *(args or (n,)))
+
+
+def plural_category(lang, n):
+    """CLDR plural category for an integer (what Android picks from <plurals>)."""
+    if lang == "ru":
+        if n % 10 == 1 and n % 100 != 11:
+            return "one"
+        if n % 10 in (2, 3, 4) and n % 100 not in (12, 13, 14):
+            return "few"
+        return "many"
+    return "one" if n == 1 else "other"
 
 
 def fmt(template, *args):

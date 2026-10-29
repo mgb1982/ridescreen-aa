@@ -6,6 +6,7 @@ from lib import demo as D
 from lib.base import ASSETS, dots, watch_page
 from lib.maps import svg as map_svg
 from lib.res import WEAR_RES, Strings, esc
+from lib.system import sys_text
 
 PHOTO = "file://" + os.path.join(ASSETS, "hero.png")
 GREY, GOLD, GREEN = "#9E9E9E", "#D1A955", "#5BD47A"
@@ -120,7 +121,7 @@ def tile(lang):
 
 def trophy(lang):
     app = Strings(lang)
-    now = {"es": "ahora", "ca": "ara", "en": "now"}[lang]
+    now = sys_text("now", lang)
     title = app("tr_unlocked_title").replace("🏆 ", "")
     text = f'{app("tr_distance")}: {app("tr_distance_d", D.num(lang, 1000, 0))}'
     body = (f'<div style="color:#BDBDBD;font-size:11px">RideScreen AA · {now}</div>'

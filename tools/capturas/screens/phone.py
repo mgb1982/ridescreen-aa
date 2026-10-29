@@ -5,6 +5,7 @@ from lib import demo as D
 from lib.base import ASSETS, PHONE_H, phone_page
 from lib.maps import svg as map_svg
 from lib.res import Strings, esc, icon
+from lib.system import sys_text
 
 HERO = "file://" + os.path.join(ASSETS, "hero.png")
 
@@ -91,7 +92,7 @@ def _hero(s, h=280):
 
 def _tiles_grid(s, lang):
     trips_sub = " · ".join([s("home_streak", D.STREAK_NOW), s.plural("home_tile_trips_today", D.TODAY["trips"])])
-    maint_sub = f'{D.MAINT["task"][lang]}: ' + s("maint_status_km_left", D.km(lang, D.MAINT["left_km"], 0))
+    maint_sub = f'{s(D.MAINT["task_key"])}: ' + s("maint_status_km_left", D.km(lang, D.MAINT["left_km"], 0))
     return (f'<div class="tiles">{_tile("🏍️", "trips", s("home_tile_trips"), trips_sub)}'
             f'{_tile("⛽", "fuel", s("home_tile_fuel"), s("home_tile_fuel_sub"))}'
             f'{_tile("🔧", "maint", s("home_tile_maint"), maint_sub)}</div>'
@@ -230,7 +231,10 @@ def _has(name):
 
 # ---------------------------------------------------------------- trip map
 
-AVG_MAX = {"es": ("media", "máx"), "ca": ("mitjana", "màx"), "en": ("avg", "max"), "it": ("media", "max")}
+# The app has no strings for these yet (TripMapActivity hard-codes "avg/max", see README). Greek and Russian
+# keep the English words because there is no translation to show.
+AVG_MAX = {"es": ("media", "máx"), "ca": ("mitjana", "màx"), "en": ("avg", "max"), "it": ("media", "max"),
+           "el": ("avg", "max"), "ru": ("avg", "max")}
 
 
 def trip_map(lang):
@@ -291,8 +295,8 @@ def crash(lang):
 # ---------------------------------------------------------------- SMS the contact receives
 
 SMS_EXAMPLE = {"es": "(Ejemplo: lo que reciben tus contactos)", "ca": "(Exemple: el que reben els teus contactes)",
-               "en": "(Example: what your contacts receive)", "it": "(Esempio: quello che ricevono i tuoi contatti)"}
-TODAY_WORD = {"es": "Hoy", "ca": "Avui", "en": "Today", "it": "Oggi"}
+               "en": "(Example: what your contacts receive)", "it": "(Esempio: quello che ricevono i tuoi contatti)",
+               "el": "(Παράδειγμα: αυτό που λαμβάνουν οι επαφές σου)", "ru": "(Пример: что получат твои контакты)"}
 
 
 def sms(lang):
@@ -315,7 +319,7 @@ def sms(lang):
 .ex{text-align:center;color:var(--text2);font-size:13px;margin-top:16px}
 """
     body = (f'<div class="hd"><span class="av">{rider[0]}</span><b>{rider}</b></div>'
-            f'<div class="ts">{TODAY_WORD[lang]} · 18:47</div><div class="bub">{b1}</div>'
+            f'<div class="ts">{sys_text("today", lang)} · 18:47</div><div class="bub">{b1}</div>'
             f'<div class="ts">18:52</div><div class="bub">{b2}</div><div class="ex">{SMS_EXAMPLE[lang]}</div>')
     return phone_page(body, extra_css=css)
 
@@ -329,8 +333,7 @@ def share_card(lang):
     s = Strings(lang)
     t = D.TRIP
     wd, mo = D.WEEKDAYS[lang][t["date"].weekday()], D.MONTHS[lang][t["date"].month - 1]
-    date = {"es": f"{wd} {t['date'].day} {mo} 2026", "ca": f"{wd} {t['date'].day} {mo} 2026",
-            "en": f"{wd} {t['date'].day} {mo} 2026", "it": f"{wd} {t['date'].day} {mo} 2026"}[lang]
+    date = f"{wd} {t['date'].day} {mo} {t['date'].year}"   # RideShare.kt: "EEEE d MMMM yyyy"
     date = date[0].upper() + date[1:]
     title = f'{t["name"][lang]} · {date}'
     stats = [(s("share_km"), D.num(lang, t["km"])), (s("share_time"), D.dur(t["secs"])),
@@ -373,6 +376,13 @@ G1 = {
            "✅ Aquest és el del <b>mòbil</b>.<br>❌ El que diu <b>WearOS-reloj</b> és per al rellotge: al mòbil dona \"el paquet no és vàlid\"."),
     "en": ("RideScreen AA is wireless Android Auto on your bike's dash…",
            "✅ This is the <b>phone</b>.<br>❌ The one with <b>WearOS-reloj</b> is for the watch: on a phone it says \"package appears to be invalid\"."),
+    # The release text on GitHub is in English for these: only the guide's note is translated.
+    "it": ("RideScreen AA is wireless Android Auto on your bike's dash…",
+           "✅ Questo è quello del <b>telefono</b>.<br>❌ Quello con <b>WearOS-reloj</b> è per l'orologio: sul telefono non si installa (pacchetto non valido)."),
+    "el": ("RideScreen AA is wireless Android Auto on your bike's dash…",
+           "✅ Αυτό είναι για το <b>κινητό</b>.<br>❌ Αυτό με το <b>WearOS-reloj</b> είναι για το ρολόι: στο κινητό δεν εγκαθίσταται (μη έγκυρο πακέτο)."),
+    "ru": ("RideScreen AA is wireless Android Auto on your bike's dash…",
+           "✅ Этот — для <b>телефона</b>.<br>❌ Файл с <b>WearOS-reloj</b> — для часов: на телефон он не установится (недопустимый пакет)."),
 }
 APK_MB, WATCH_MB = 29.6, 11.5   # v2.3 release assets (31,024,282 and 12,100,956 bytes)
 
@@ -488,8 +498,7 @@ def dialog(lang, title, message, buttons, top=230):
 
 def wifi_off(lang):
     s = Strings(lang)
-    return dialog(lang, s("wifi_off_title"), s("wifi_off_message"), [s("cancel_btn") if "cancel_btn" in s.s else
-                  {"es": "Cancelar", "ca": "Cancel·la", "en": "Cancel", "it": "Annulla"}[lang], s("wifi_off_turn_on")], top=260)
+    return dialog(lang, s("wifi_off_title"), s("wifi_off_message"), [sys_text("cancel", lang), s("wifi_off_turn_on")], top=260)
 
 
 def mic(lang):
@@ -506,7 +515,7 @@ def whats_new(lang):
     items = "".join(f'<div style="margin-bottom:9px">{esc(p)}</div>' for p in paras)
     inner = (f'<div class="dim"></div><div class="dlg" style="top:70px"><h3>{esc(s("whats_new_title"))}</h3>'
              f'<div class="m" style="font-size:13.5px;line-height:1.38;white-space:normal">{items}</div>'
-             f'<div class="bt"><span>{esc({"es": "Entendido", "ca": "Entesos", "en": "Got it", "it": "Ho capito"}[lang])}</span></div></div>')
+             f'<div class="bt"><span>{esc(s("whats_new_ok"))}</span></div></div>')
     return _over_home(lang, inner, height=WHATS_NEW_H)
 
 
@@ -522,6 +531,15 @@ G8 = {
     "en": ("RideScreen AA wants to connect to", "Cancel", "Connect",
            "Tap <b>Connect</b>: it's your bike's Wi‑Fi. If you missed it, tap <b>Connect</b> in the app again."
            "<br><br>Don't leave this window open: it expires after a minute and a half. Phone <b>Wi‑Fi has to be on</b>."),
+    "it": ("RideScreen AA vuole connettersi a", "Annulla", "Connetti",
+           "Tocca <b>Connetti</b>: è il Wi‑Fi della tua moto. Se ti è sfuggito, tocca di nuovo <b>Connetti</b> nell'app."
+           "<br><br>Non lasciare aperta questa finestra: scade dopo un minuto e mezzo. Il <b>Wi‑Fi del telefono deve essere attivo</b>."),
+    "el": ("Το RideScreen AA θέλει να συνδεθεί στο", "Ακύρωση", "Σύνδεση",
+           "Πάτησε <b>Σύνδεση</b>: είναι το Wi‑Fi της μηχανής σου. Αν σου ξέφυγε, πάτησε ξανά το κουμπί σύνδεσης στην εφαρμογή."
+           "<br><br>Μην αφήνεις αυτό το παράθυρο ανοιχτό: λήγει σε ενάμισι λεπτό. Το <b>Wi‑Fi του κινητού πρέπει να είναι ενεργό</b>."),
+    "ru": ("RideScreen AA хочет подключиться к сети", "Отмена", "Подключить",
+           "Нажми <b>Подключить</b>: это Wi‑Fi твоего мотоцикла. Если не успел, снова нажми кнопку подключения в приложении."
+           "<br><br>Не оставляй это окно открытым: через полторы минуты оно закроется. <b>Wi‑Fi на телефоне должен быть включён</b>."),
 }
 
 
@@ -579,9 +597,8 @@ SHADE_CSS = """
 .tog:after{content:"";position:absolute;right:4px;top:4px;width:22px;height:22px;border-radius:50%;background:var(--bg)}
 .cfg p{font-size:13px;color:var(--text2);line-height:1.42;margin-top:8px}
 """
-AGO = {"es": ("ahora", "hace 1 min", "hace 2 h", "ayer"), "ca": ("ara", "fa 1 min", "fa 2 h", "ahir"),
-       "en": ("now", "1 min ago", "2 h ago", "yesterday"), "it": ("ora", "1 min fa", "2 h fa", "ieri")}
-CONFIG = {"es": "Configuración", "ca": "Configuració", "en": "Settings", "it": "Impostazioni"}
+def AGO_(lang):
+    return tuple(sys_text(k, lang) for k in ("now", "1min", "2h", "yesterday"))
 
 
 def _notif(lang, when, title, text, action=""):
@@ -592,22 +609,22 @@ def _notif(lang, when, title, text, action=""):
 
 def waiting(lang):
     s = Strings(lang)
-    now, m1, _, _ = AGO[lang]
+    now, m1, _, _ = AGO_(lang)
     d = D.TODAY_DATE if hasattr(D, "TODAY_DATE") else D.TRIP["date"]
     body = (f'<div class="clk"><b>18:42</b><span>{esc(D.long_date(lang, d))}</span></div>'
             + _notif(lang, now, s("watch_title", D.BIKE), esc(s("watch_text")), s("watch_stop"))
             + _notif(lang, m1, s("bt_trigger_title", D.BIKE), esc(s("bt_trigger_text")))
-            + f'<div class="cfg"><h4>{CONFIG[lang].upper()}</h4><div class="r"><span>{esc(s("watch_setting"))}</span>'
+            + f'<div class="cfg"><h4>{sys_text("settings", lang).upper()}</h4><div class="r"><span>{esc(s("watch_setting"))}</span>'
               f'<span class="tog"></span></div><p>{esc(s("watch_setting_desc"))}</p></div>')
     return phone_page(body, bg="#141A16", extra_css=SHADE_CSS)
 
 
 def notifications(lang):
     s = Strings(lang)
-    now, _, h2, yday = AGO[lang]
+    now, _, h2, yday = AGO_(lang)
     tr = (f'🥇 {esc(s("tr_distance"))}: {esc(s("tr_distance_d", D.num(lang, 1000, 0)))}<br>'
           f'🥇 {esc(s("tr_streak"))}: {esc(s("tr_streak_d", D.STREAK_NOW))}')
-    maint = esc(f'{D.MAINT["task"][lang]}: ' + s("maint_status_km_left", D.km(lang, D.MAINT["left_km"], 0)))
+    maint = esc(f'{s(D.MAINT["task_key"])}: ' + s("maint_status_km_left", D.km(lang, D.MAINT["left_km"], 0)))
     body = (f'<div class="clk"><b>18:42</b><span>{esc(D.long_date(lang, D.TRIP["date"]))}</span></div>'
             + _notif(lang, now, s("tr_unlocked_title"), tr)
             + _notif(lang, now, s("record_title"), esc(s("record_longest", D.km(lang, D.RECORDS["longest"]))))

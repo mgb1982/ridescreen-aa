@@ -1,5 +1,6 @@
 """Shared look: colour tokens from colors.xml, the app's own fonts, status bar, phone canvas."""
 import os
+import re
 from .res import FONT_DIR, colors
 
 HERE = os.path.dirname(__file__)
@@ -29,15 +30,28 @@ def _face(family, file, weight):
             f"font-weight:{weight};font-style:normal}}")
 
 
-def _watch_fonts():
-    # The watch uses the system font (Roboto on Wear OS). Drop Roboto-*.ttf into tools/capturas/fonts/
-    # and it is used; otherwise Inter, the closest installed face.
-    out = []
-    if os.path.isdir(EXTRA_FONTS):
-        for f in sorted(os.listdir(EXTRA_FONTS)):
-            if f.lower().startswith("roboto") and f.lower().endswith((".ttf", ".otf", ".woff2")):
-                w = 700 if "bold" in f.lower() else 500 if "medium" in f.lower() else 400
-                out.append(f"@font-face{{font-family:'WatchSans';src:url('file://{os.path.join(EXTRA_FONTS, f)}');font-weight:{w}}}")
+def _roboto():
+    """Roboto, Android's system font (fonts/roboto.css: latin, latin-ext, greek and cyrillic subsets, OFL).
+
+    - As 'Roboto': the watch (Wear OS) and Android's own UI.
+    - Grafted onto 'Archivo' and 'ArchivoBlack' for Greek and Cyrillic only: Archivo has no such glyphs, so on a
+      phone Android falls back to Roboto for them. Faces declared later are tried first, and their unicode-range
+      keeps them off Latin text, so Latin still renders in Archivo exactly as before.
+    """
+    p = os.path.join(EXTRA_FONTS, "roboto.css")
+    if not os.path.exists(p):
+        return ""
+    css = open(p, encoding="utf-8").read()
+    css = re.sub(r"url\('([^']+)'\)", lambda m: "url('file://" + os.path.join(EXTRA_FONTS, m.group(1)) + "')", css)
+    faces = re.findall(r"@font-face\{[^}]*\}", css)
+    out = list(faces)
+    # Archivo weight → Roboto weight used for its Greek/Cyrillic glyphs.
+    graft = {("Archivo", 400): 400, ("Archivo", 500): 500, ("Archivo", 600): 700, ("Archivo", 800): 700,
+             ("ArchivoBlack", 400): 900}
+    for (family, weight), rw in graft.items():
+        for f in faces:
+            if f"font-weight:{rw};" in f and ("roboto-greek-" in f or "roboto-cyrillic-" in f):
+                out.append(f.replace("'Roboto'", f"'{family}'").replace(f"font-weight:{rw};", f"font-weight:{weight};"))
     return "".join(out)
 
 
@@ -47,12 +61,12 @@ FONTS = "".join([
     _face("Archivo", "archivo_semibold.ttf", 600),
     _face("Archivo", "archivo_extrabold.ttf", 800),
     _face("ArchivoBlack", "archivo_black.ttf", 400),
-]) + _watch_fonts()
+]) + _roboto()
 
 EMOJI = "'Noto Color Emoji'"
 SANS = f"'Archivo',{EMOJI},sans-serif"
 DISPLAY = f"'ArchivoBlack','Archivo',{EMOJI},sans-serif"
-WATCH_SANS = f"'WatchSans','Inter',{EMOJI},sans-serif"
+WATCH_SANS = f"'Roboto','Inter',{EMOJI},sans-serif"
 
 
 def root_css():
