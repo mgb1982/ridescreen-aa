@@ -22,13 +22,12 @@ DOCS_M = "docs/screenshots/ridescreen/movil/"
 DOCS_W = "docs/screenshots/ridescreen/reloj/"
 DOCS_I = "docs/screenshots/ridescreen/imagenes/"
 # Web folders per language.
-# el/ru follow the pages in PR #3 (site/el/guide/, site/el/watch/). There is no Italian site yet: guida/orologio
-# is a guess, change it here when the pages exist.
+# it/el/ru follow the pages in PR #3 (site/<lang>/guide/, site/<lang>/watch/).
 WEB_IMG = {"es": "site/img/", "ca": "site/img/ca/", "en": "site/img/en/", "it": "site/img/it/",
            "el": "site/img/el/", "ru": "site/img/ru/"}
-WEB_GUIDE = {"es": "site/guia/", "ca": "site/ca/guia/", "en": "site/en/guide/", "it": "site/it/guida/",
+WEB_GUIDE = {"es": "site/guia/", "ca": "site/ca/guia/", "en": "site/en/guide/", "it": "site/it/guide/",
              "el": "site/el/guide/", "ru": "site/ru/guide/"}
-WEB_WATCH = {"es": "site/reloj/", "ca": "site/ca/rellotge/", "en": "site/en/watch/", "it": "site/it/orologio/",
+WEB_WATCH = {"es": "site/reloj/", "ca": "site/ca/rellotge/", "en": "site/en/watch/", "it": "site/it/watch/",
              "el": "site/el/watch/", "ru": "site/ru/watch/"}
 LANGS = ("es", "ca", "en", "it", "el", "ru")
 
