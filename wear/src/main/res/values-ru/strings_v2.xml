@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="find_title">🅿️ ТВОЙ МОТОЦИКЛ</string>
+    <string name="find_waiting_gps">Поиск GPS…</string>
+    <string name="find_maps">Маршрут</string>
+    <string name="find_none">Место парковки ещё не сохранено</string>
+    <string name="find_parked_ago">Припаркован %1$s</string>
+    <string name="find_here">Ты прямо здесь! 🏍️</string>
+    <string name="status_hus_off">⚠️ Запусти сервер головного устройства Android Auto</string>
+    <string name="tile_tap_compass">Нажми, чтобы найти</string>
+    <string name="park_page_find">🧭 Найти</string>
+</resources>
