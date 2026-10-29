@@ -1661,6 +1661,9 @@ class MainActivity : AppCompatActivity() {
                 var w = 0
                 while (pkeBusy && w++ < 40) Thread.sleep(500)
                 while (liveShouldRun()) {
+                    // A command (menu, card or widget) holds the box: wait it out, don't fight it for the link.
+                    while (liveShouldRun() && PkeUnlock.holdingBox) Thread.sleep(500)
+                    if (!liveShouldRun()) break
                     val live = PkeBattery.openLive(app)
                     if (live == null) {
                         if (++emptySessions >= 3) break
@@ -1670,7 +1673,7 @@ class MainActivity : AppCompatActivity() {
                     var sumMs = 0L; var maxMs = 0L
                     var statAt = android.os.SystemClock.elapsedRealtime()
                     val t0 = statAt
-                    while (liveShouldRun() && live.alive && miss < 3) {
+                    while (liveShouldRun() && !PkeUnlock.holdingBox && live.alive && miss < 3) {
                         val t = android.os.SystemClock.elapsedRealtime()
                         val v = live.volts()
                         val took = android.os.SystemClock.elapsedRealtime() - t
@@ -1678,7 +1681,7 @@ class MainActivity : AppCompatActivity() {
                             miss = 0; n++; sumMs += took; if (took > maxMs) maxMs = took
                             runOnUiThread { pkeFails = 0; updateEngine(v); renderPkeCard() }
                         } else miss++
-                        if (++tick % 5 == 0 && live.alive) {
+                        if (++tick % 5 == 0 && live.alive && !PkeUnlock.holdingBox) {
                             val before = PkeBattery.last(app)?.locked
                             val l = live.locked()
                             if (l != null && l != before) runOnUiThread { renderPkeCard() }
@@ -1689,11 +1692,13 @@ class MainActivity : AppCompatActivity() {
                             LogBus.log("[PKE] live: $n reads in ${(now - t0) / 1000} s, avg ${if (n > 0) sumMs / n else 0} ms, max $maxMs ms, misses $miss")
                         }
                         val rest = 2_000L - (android.os.SystemClock.elapsedRealtime() - t)
-                        if (rest > 0) Thread.sleep(rest)
+                        PkeBattery.livePause(rest) { PkeUnlock.holdingBox }
                     }
+                    val handedOver = PkeUnlock.holdingBox && live.alive
                     live.close()
                     LogBus.log("[PKE] live: link closed after $n reads in ${(android.os.SystemClock.elapsedRealtime() - t0) / 1000} s" +
-                        (if (!live.alive) " (the box dropped it)" else if (miss >= 3) " (3 unanswered queries)" else ""))
+                        (if (handedOver) " (handed the box to an action)" else if (!live.alive) " (the box dropped it)" else if (miss >= 3) " (3 unanswered queries)" else ""))
+                    if (handedOver) continue
                     if (n == 0) { if (++emptySessions >= 3) break } else emptySessions = 0
                     if (liveShouldRun()) Thread.sleep(3_000)
                 }

@@ -228,4 +228,6 @@ Oggi: %2$d min porta a porta · di solito: %3$d min.</string>
     <string name="trips_import_exists">Questo viaggio è già tra i tuoi viaggi</string>
     <string name="trips_import_empty">Il file non ha un percorso con orari</string>
     <string name="trips_import_failed">Impossibile importare: %1$s</string>
+    <string name="pke_state_left_unlocked">La moto è rimasta SBLOCCATA — blocca di nuovo.</string>
+    <string name="pke_state_left_locked">La moto è rimasta BLOCCATA — sblocca di nuovo.</string>
 </resources>

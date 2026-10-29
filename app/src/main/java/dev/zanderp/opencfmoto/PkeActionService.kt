@@ -48,8 +48,8 @@ class PkeActionService : Service() {
             ui.post {
                 Toast.makeText(
                     app,
-                    if (res.ok) PkeUnlockUi.doneText(app, action) else PkeUnlockUi.message(app, res),
-                    if (res.ok) Toast.LENGTH_SHORT else Toast.LENGTH_LONG,
+                    PkeUnlockUi.resultText(app, action, res),
+                    PkeUnlockUi.toastLength(res),
                 ).show()
             }
             ui.post { stopSelf(startId) }

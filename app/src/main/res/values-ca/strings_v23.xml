@@ -270,4 +270,6 @@ Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="widget_state_locked">Bloquejada</string>
     <string name="widget_state_unlocked">Desbloquejada</string>
     <string name="widget_state_none">Encara sense lectura</string>
+    <string name="pke_state_left_unlocked">La moto ha quedat DESBLOQUEJADA — torna a bloquejar.</string>
+    <string name="pke_state_left_locked">La moto ha quedat BLOQUEJADA — torna a desbloquejar.</string>
 </resources>

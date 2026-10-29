@@ -270,4 +270,6 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="trips_import_exists">That ride is already in your rides</string>
     <string name="trips_import_empty">No track with times in that file</string>
     <string name="trips_import_failed">Couldn\'t import it: %1$s</string>
+    <string name="pke_state_left_unlocked">The bike was left UNLOCKED — tap Lock again.</string>
+    <string name="pke_state_left_locked">The bike was left LOCKED — tap Unlock again.</string>
 </resources>

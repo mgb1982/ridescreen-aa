@@ -281,6 +281,39 @@ object PkeBattery {
     // ── v2.4: live mode — ONE connection kept open while projecting, polling the voltage every couple
     // of seconds. Same two read-only queries; the challenge is never answered.
 
+    // The box takes one client and stops advertising while it has one, so a command (PkeUnlock) can't
+    // even find it while the live link is open (case 20261029: four 'box not found' while projecting).
+    // [liveOpen] lets PkeUnlock see that link from outside the Activity; [wakeLive] cuts the live loop's
+    // pause short so it hands the box over at once; [awaitLiveClosed] waits for that.
+    private val liveSignal = java.lang.Object()
+
+    @Volatile var liveOpen = false
+        private set
+
+    fun wakeLive() = synchronized(liveSignal) { liveSignal.notifyAll() }
+
+    /** The live loop's pause between reads: up to [ms], ended early by [wakeLive] or when [stop] is true. */
+    fun livePause(ms: Long, stop: () -> Boolean) {
+        if (ms <= 0) return
+        synchronized(liveSignal) { if (!stop()) liveSignal.wait(ms) }
+    }
+
+    /** Waits up to [ms] for the live link to close. True if it is closed. */
+    fun awaitLiveClosed(ms: Long): Boolean {
+        val until = android.os.SystemClock.elapsedRealtime() + ms
+        synchronized(liveSignal) {
+            while (liveOpen) {
+                val left = until - android.os.SystemClock.elapsedRealtime()
+                if (left <= 0) return false
+                liveSignal.wait(left)
+            }
+        }
+        return true
+    }
+
+    /** Stores a lock state read by someone else (PkeUnlock's check after a command), like a normal reading. */
+    fun noteLocked(ctx: Context, locked: Boolean) = save(ctx, Reading(last(ctx)?.volts, locked, System.currentTimeMillis()))
+
     class Live internal constructor(private val ctx: Context, private val pke: String, private val link: Link) {
         val alive: Boolean get() = !link.dead
         /** Voltage now (null if the box did not answer in 3 s). Saved like a normal reading. */
@@ -295,7 +328,10 @@ object PkeBattery {
             save(ctx, Reading(last(ctx)?.volts, l, System.currentTimeMillis()))
             return l
         }
-        fun close() { runCatching { link.gatt.disconnect() }; runCatching { link.gatt.close() } }
+        fun close() {
+            runCatching { link.gatt.disconnect() }; runCatching { link.gatt.close() }
+            synchronized(liveSignal) { liveOpen = false; liveSignal.notifyAll() }
+        }
     }
 
     /** Blocking. Opens the persistent link (known address first, else scan). Null if it cannot (reason in the log). */
@@ -314,6 +350,7 @@ object PkeBattery {
             prefs.edit().putString(KEY_MAC, dev.address).apply()
             link = open(ctx, dev, pke, 12_000, verbose = false) ?: return null
         }
+        liveOpen = true
         log("live link open (read only: 008 + 001,7)")
         return Live(ctx, pke, link)
     }

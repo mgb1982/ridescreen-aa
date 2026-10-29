@@ -54,4 +54,23 @@ class PkeUnlockTest {
         val frame = PkeUnlock.frame("123456789012345", PkeUnlock.Action.UNLOCK, "00112233445566778899AABBCCDDEEFF")
         assertEquals("*BT,123456789012345,10,001,2,00112233445566778899AABBCCDDEEFF#", String(frame, Charsets.US_ASCII))
     }
+
+    @Test
+    fun readBackFlagsOnlyALockOrUnlockThatEndedTheOtherWayRound() {
+        fun r(a: PkeUnlock.Action, after: Boolean?) = PkeUnlock.Result(true, null, a, after)
+        assertTrue(r(PkeUnlock.Action.LOCK, false).mismatch)
+        assertTrue(r(PkeUnlock.Action.UNLOCK, true).mismatch)
+        assertFalse(r(PkeUnlock.Action.LOCK, true).mismatch)
+        assertFalse(r(PkeUnlock.Action.UNLOCK, false).mismatch)
+        assertFalse(r(PkeUnlock.Action.LOCK, null).mismatch)
+        assertFalse(r(PkeUnlock.Action.CUSHION, true).mismatch)
+        assertFalse(PkeUnlock.Result(false, PkeUnlock.Failure.NOT_FOUND).mismatch)
+    }
+
+    @Test
+    fun stateReadBackParsesTheBoxReplyFromTheCase() {
+        assertEquals(false, PkeBattery.lockedFrom("*AT,…4404,10,001,7,2#"))
+        assertEquals(true, PkeBattery.lockedFrom("*AT,…4404,10,001,7,1#"))
+        assertNull(PkeBattery.lockedFrom("*AT,…4404,10,001,1,1#"))
+    }
 }

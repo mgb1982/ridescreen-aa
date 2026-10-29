@@ -270,4 +270,6 @@ Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="trips_import_exists">Ese viaje ya está en tus viajes</string>
     <string name="trips_import_empty">Ese archivo no tiene un recorrido con horas</string>
     <string name="trips_import_failed">No se ha podido importar: %1$s</string>
+    <string name="pke_state_left_unlocked">La moto ha quedado DESBLOQUEADA — vuelve a bloquear.</string>
+    <string name="pke_state_left_locked">La moto ha quedado BLOQUEADA — vuelve a desbloquear.</string>
 </resources>

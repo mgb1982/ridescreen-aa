@@ -88,7 +88,19 @@ object PkeUnlock {
 
     enum class Failure { NO_CODE, NO_MCU_ID, NO_PERMISSION, BLUETOOTH_OFF, NOT_FOUND, NO_LINK, NO_CHALLENGE, BAD_CHALLENGE, BAD_MCU_ID, DERIVE_FAILED, NO_ANSWER }
 
-    class Result(val ok: Boolean, val failure: Failure?)
+    /**
+     * [lockedAfter] is the lock state read back ~1.5 s after a lock/unlock (null: not read or no answer).
+     * [mismatch] means the box confirmed the command but the bike ended up the other way round
+     * (case 20261029: a confirmed 'lock' read back as unlocked). Never retried automatically.
+     */
+    class Result(val ok: Boolean, val failure: Failure?, val action: Action? = null, val lockedAfter: Boolean? = null) {
+        val mismatch: Boolean get() {
+            val want = PkeUnlock.expectedLocked(action ?: return false) ?: return false
+            return lockedAfter != null && lockedAfter != want
+        }
+    }
+
+    internal fun expectedLocked(a: Action): Boolean? = when (a) { Action.LOCK -> true; Action.UNLOCK -> false; else -> null }
 
     private fun log(s: String) = LogBus.log("[PKE-unlock] $s")
 
@@ -250,6 +262,7 @@ object PkeUnlock {
             link = warmLink
             log("using the pre-opened link (${SystemClock.elapsedRealtime() - t0} ms)")
         } else {
+            freeTheBox()
             val dev = scan(ctx, pke)
             if (dev == null) { sending = false; return Result(false, Failure.NOT_FOUND) }
             val tScan = SystemClock.elapsedRealtime()
@@ -282,12 +295,59 @@ object PkeUnlock {
             if (reply == null) log("no reply to '${action.label}' within 1.5 s (the box may still have acted — check the bike)")
             else log("timing: action reply after ${SystemClock.elapsedRealtime() - tWrite} ms")
             log("timing: total ${SystemClock.elapsedRealtime() - t0} ms")
-            return Result(ok, if (ok) null else Failure.NO_ANSWER)
+            val after = if (ok && expectedLocked(action) != null) stateAfter(ctx, link, pke, action, tWrite) else null
+            return Result(ok, if (ok) null else Failure.NO_ANSWER, action, after)
         } finally {
             runCatching { link.gatt.disconnect() }; runCatching { link.gatt.close() }
             sending = false
         }
     }
+
+    /**
+     * Reads the lock state (the read-only `001,7` query) on the same link ~1.5 s after the command and
+     * logs it against what the command should have left. Stored like a battery reading so the card
+     * shows what the box says, not what we asked for.
+     */
+    private fun stateAfter(ctx: Context, link: Link, pke: String, action: Action, tWrite: Long): Boolean? {
+        val want = expectedLocked(action) ?: return null
+        val wait = STATE_CHECK_MS - (SystemClock.elapsedRealtime() - tWrite)
+        if (wait > 0) runCatching { Thread.sleep(wait) }
+        fun word(l: Boolean) = if (l) "locked" else "unlocked"
+        if (!link.alive) { log("state after '${action.label}': unknown — the box closed the link (expected ${word(want)})"); return null }
+        link.replies.clear()
+        val bytes = "*BT,$pke,10,001,7#".toByteArray(Charsets.US_ASCII)
+        val ok = writeBytes(link, bytes)
+        log("→ ${masked(String(bytes, Charsets.US_ASCII), pke)}${if (ok) "" else " (write refused)"}")
+        var locked: Boolean? = null
+        val until = SystemClock.elapsedRealtime() + 2_000
+        while (ok && locked == null) {
+            val left = until - SystemClock.elapsedRealtime()
+            if (left <= 0) break
+            val r = link.replies.poll(left, TimeUnit.MILLISECONDS) ?: break
+            locked = PkeBattery.lockedFrom(r)
+        }
+        if (locked == null) { log("state after '${action.label}': unknown — no answer (expected ${word(want)})"); return null }
+        log("state after '${action.label}': ${word(locked)} (expected ${word(want)})" + if (locked != want) " — MISMATCH, rider warned, no retry" else "")
+        PkeBattery.noteLocked(ctx, locked)
+        return locked
+    }
+
+    /**
+     * The box takes one client and stops advertising while the live voltage link holds it, so a scan
+     * would come back empty. Wake the live loop (it sees [holdingBox] and hands the box over) and give it
+     * up to [LIVE_HANDOVER_MS] to close; scan anyway after that. Call only once [holdingBox] is true.
+     */
+    private fun freeTheBox() {
+        if (!PkeBattery.liveOpen) return
+        val t = SystemClock.elapsedRealtime()
+        PkeBattery.wakeLive()
+        val closed = runCatching { PkeBattery.awaitLiveClosed(LIVE_HANDOVER_MS) }.getOrDefault(false)
+        log(if (closed) "live voltage link handed the box over (${SystemClock.elapsedRealtime() - t} ms)"
+            else "live voltage link still open after ${LIVE_HANDOVER_MS} ms — scanning anyway")
+    }
+
+    private const val LIVE_HANDOVER_MS = 1_000L
+    private const val STATE_CHECK_MS = 1_500L
 
     // ── pre-opened link: the GATT setup (connect, MTU, discovery, notifications) is what makes a tap
     //    feel slow (1-4 s on this box), not the challenge or the write. warmUp() does that setup while
@@ -351,6 +411,7 @@ object PkeUnlock {
                 if (adapter == null || !adapter.isEnabled) return@Thread
                 val t0 = SystemClock.elapsedRealtime()
                 log("pre-opening the link while the rider chooses…")
+                freeTheBox()
                 val dev = scan(app, pke) ?: return@Thread
                 val tScan = SystemClock.elapsedRealtime()
                 val l = open(app, dev, pke) ?: return@Thread

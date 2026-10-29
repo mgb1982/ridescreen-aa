@@ -148,7 +148,7 @@ object PkeUnlockUi {
         io.execute {
             val res = PkeUnlock.send(app, PkeUnlock.Action.UNLOCK)
             main.post {
-                Toast.makeText(app, if (res.ok) doneText(app, PkeUnlock.Action.UNLOCK) else message(app, res), if (res.ok) Toast.LENGTH_SHORT else Toast.LENGTH_LONG).show()
+                Toast.makeText(app, resultText(app, PkeUnlock.Action.UNLOCK, res), toastLength(res)).show()
             }
         }
     }
@@ -168,7 +168,7 @@ object PkeUnlockUi {
         io.execute {
             val res = PkeUnlock.send(app, action)
             main.post {
-                Toast.makeText(app, if (res.ok) doneText(app, action) else message(app, res), if (res.ok) Toast.LENGTH_SHORT else Toast.LENGTH_LONG).show()
+                Toast.makeText(app, resultText(app, action, res), toastLength(res)).show()
                 if (!activity.isFinishing && !activity.isDestroyed) then()
             }
         }
@@ -208,7 +208,14 @@ object PkeUnlockUi {
         }
     }
 
+    /** Toast text: "<action> ✓", the read-back warning, or why it failed. */
+    internal fun resultText(ctx: Context, a: PkeUnlock.Action, res: PkeUnlock.Result): String =
+        if (res.ok && !res.mismatch) doneText(ctx, a) else message(ctx, res)
+
+    internal fun toastLength(res: PkeUnlock.Result) = if (res.ok && !res.mismatch) Toast.LENGTH_SHORT else Toast.LENGTH_LONG
+
     internal fun message(ctx: Context, res: PkeUnlock.Result): String {
+        if (res.mismatch) return ctx.getString(if (res.lockedAfter == true) R.string.pke_state_left_locked else R.string.pke_state_left_unlocked)
         if (res.ok) return ctx.getString(R.string.pke_unlock_sent)
         return ctx.getString(
             when (res.failure) {
