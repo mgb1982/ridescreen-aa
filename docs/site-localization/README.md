@@ -1,4 +1,4 @@
-# Greek and Russian website localization
+# Greek, Russian and Italian website localization
 
 These Markdown files are translation handoffs for the homepage, phone installation guide and Wear OS guide. The live website source is in `site/` in this repository, and the Pages workflow is `.github/workflows/pages.yml`.
 
@@ -10,13 +10,14 @@ These Markdown files are translation handoffs for the homepage, phone installati
 
 ## Website integration
 
-The HTML translations have been integrated into the actual static site in a separate pull request targeting `main`, because `.github/workflows/pages.yml` publishes `site/**` to ridescreen.app only from `main`:
+The Greek, Russian and Italian HTML translations have been integrated into the actual static site in a separate pull request targeting `main`, because `.github/workflows/pages.yml` publishes `site/**` to ridescreen.app only from `main`:
 
 - Website PR: [ridescreen-aa#3](https://github.com/mgb1982/ridescreen-aa/pull/3)
 - Greek pages: `/el/`, `/el/guide/`, `/el/watch/`
 - Russian pages: `/ru/`, `/ru/guide/`, `/ru/watch/`
+- Italian pages: `/it/`, `/it/guide/`, `/it/watch/`
 
-The site PR keeps the existing CSS, screenshots and asset paths, adds Greek/Russian language navigation and browser-language routing, sets canonical and `hreflang` metadata, and updates `site/sitemap.xml`. The pages will not go live until PR #3 is reviewed and merged.
+The site PR keeps the existing CSS, screenshots and asset paths, adds Italian, Greek and Russian language navigation and browser-language routing, sets canonical and `hreflang` metadata, and updates `site/sitemap.xml`. The pages will not go live until PR #3 is reviewed and merged.
 
 ## Stable-release-only rule
 
