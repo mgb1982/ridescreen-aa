@@ -44,12 +44,14 @@ class Strings:
 
     def __init__(self, lang, res=APP_RES):
         self.lang = lang
-        self.s, self.p = {}, {}
+        self.s, self.p, self.a = {}, {}, {}
         for folder in ["values", "values" + LANG_DIR[lang]] if LANG_DIR[lang] else ["values"]:
             for f in sorted(glob.glob(os.path.join(res, folder, "strings*.xml"))):
                 root = ET.parse(f).getroot()
                 for el in root.iter("string"):
                     self.s[el.get("name")] = _text(el)
+                for el in root.iter("string-array"):
+                    self.a[el.get("name")] = [_text(i) for i in el.iter("item")]
                 for el in root.iter("plurals"):
                     self.p[el.get("name")] = {i.get("quantity"): _text(i) for i in el.iter("item")}
 

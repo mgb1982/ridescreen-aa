@@ -50,9 +50,12 @@ def fit_bbox(pts, aspect, pad=0.22, min_span=260):
 
 
 def svg(width, height, style="light", route="main", bbox="auto", speed_colours=False,
-        markers=True, line_w=None, watch=False, pad=0.22):
-    """Return an <svg> of the area cropped to bbox (x0,y0,x1,y1 in the 1000 box), scaled to width×height."""
-    pts = ROUTE if route == "main" else ROUTE_SHORT
+        markers=True, line_w=None, watch=False, pad=0.22, dim=True, overlay=""):
+    """Return an <svg> of the area cropped to bbox (x0,y0,x1,y1 in the 1000 box), scaled to width×height.
+
+    route=None draws no route; dim=False keeps the plain OSM look (screens that don't dim the base map);
+    overlay is extra SVG in map coordinates (heat cells, traffic-light markers)."""
+    pts = ROUTE if route in ("main", None) else ROUTE_SHORT
     if bbox == "auto":
         bbox = fit_bbox(pts, width / height, pad)
     x0, y0, x1, y1 = bbox
@@ -74,8 +77,11 @@ def svg(width, height, style="light", route="main", bbox="auto", speed_colours=F
         if watch:  # WearTrips.kt: plain map, white casing, #E8541C route
             base = f'{defs}{base}'
             casing, single = "#FFFFFF", "#E8541C"
-        else:      # TripMapActivity.dimBaseMap(): saturation .25, ×0.82
+        elif dim:  # TripMapActivity.dimBaseMap(): saturation .25, ×0.82
             base = f'{defs}<g style="filter:saturate(.25) brightness(.82)">{base}</g>'
+            casing, single = "#14201A", None
+        else:      # plain osmdroid MAPNIK (e.g. TrafficLightsActivity)
+            base = f'{defs}{base}'
             casing, single = "#14201A", None
     else:  # "dark": thumbnails in the trips list
         base = (f'<rect x="-500" y="-500" width="2000" height="2000" fill="#2B302C"/>'
@@ -114,5 +120,8 @@ def svg(width, height, style="light", route="main", bbox="auto", speed_colours=F
         else:
             route_svg += (f'<circle cx="{pts[0][0]}" cy="{pts[0][1]}" r="{r}" fill="#1A231D" stroke="#9FD3C7" stroke-width="{1.8 * scale}"/>'
                           f'<circle cx="{pts[-1][0]}" cy="{pts[-1][1]}" r="{r}" fill="#1A231D" stroke="#D1A955" stroke-width="{1.8 * scale}"/>')
+    if route is None:
+        route_svg = ""
+    route_svg += overlay
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="{vb}" '
             f'preserveAspectRatio="xMidYMid slice" style="display:block">{base}{route_svg}</svg>')

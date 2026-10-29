@@ -125,3 +125,100 @@ def ago_minutes(lang, n):
     ru = "минут" if n % 10 in (0, 5, 6, 7, 8, 9) or 11 <= n % 100 <= 14 else ("минуту" if n % 10 == 1 else "минуты")
     return {"es": f"hace {n} minutos", "ca": f"fa {n} minuts", "en": f"{n} minutes ago", "it": f"{n} minuti fa",
             "el": f"πριν από {n} λεπτά", "ru": f"{n} {ru} назад"}[lang]
+
+
+def medium_date(lang, d):
+    """java.text.DateFormat MEDIUM in that locale (CLDR, same data as Android)."""
+    from babel.dates import format_date
+    return format_date(d, format="medium", locale={"en": "en_US"}.get(lang, lang))
+
+
+# ---------------------------------------------------------------- everything recorded with the app (screens 16–23)
+# One history, so trophies, year, heat map and records agree. The app has been in use since mid-August 2026;
+# "today" is 6 October 2026, the day of the headline trip.
+NOW = dt.datetime(2026, 10, 6, 18, 42)
+CAREER = dict(first=dt.date(2026, 8, 17), trips=63, km=1248.0, hours=47.2, days=38, longest=48.6, top=98,
+              best_streak=5, months=3, early=True, night=False, weekend=False)
+LONGEST_NAME = {l: "Sants → Garraf" for l in ("es", "ca", "en", "it", "el", "ru")}
+BEST_MONTH = dict(month=9, km=612)          # September
+TIME_OF_DAY = 0                              # morning commuter
+# Trophies.Family order, tiers and when each one was earned (None = locked). 11 of 31, see TROPHIES.
+TROPHY_FAMILIES = [
+    # (family, emoji, title key, desc key, tiers, unit, current value)
+    ("DISTANCE", "🛣️", "tr_distance", "tr_distance_d", [100, 500, 1000, 2500, 5000, 10000], "km", CAREER["km"]),
+    ("LONGEST", "🧭", "tr_longest", "tr_longest_d", [25, 50, 100, 200], "km", CAREER["longest"]),
+    ("SPEED", "⚡", "tr_speed", "tr_speed_d", [70, 90, 110], "km/h", CAREER["top"]),
+    ("STREAK", "🔥", "tr_streak", "tr_streak_d", [3, 7, 14, 30], "", CAREER["best_streak"]),
+    ("RIDES", "🏍️", "tr_rides", "tr_rides_d", [10, 50, 100, 250, 500], "", CAREER["trips"]),
+    ("HOURS", "⏱️", "tr_hours", "tr_hours_d", [10, 50, 100, 250], "h", CAREER["hours"]),
+    ("MONTHS", "📅", "tr_months", "tr_months_d", [6, 12], "", CAREER["months"]),
+    ("EARLY", "🌅", "tr_early", "tr_early_d", [1], "", 1),
+    ("NIGHT", "🌙", "tr_night", "tr_night_d", [1], "", 0),
+    ("WEEKEND", "🎉", "tr_weekend", "tr_weekend_d", [1], "", 0),
+]
+TROPHY_EARNED = {
+    ("SPEED", 70): dt.datetime(2026, 8, 17, 8, 30), ("DISTANCE", 100): dt.datetime(2026, 8, 21, 19, 5),
+    ("RIDES", 10): dt.datetime(2026, 8, 24, 8, 31), ("STREAK", 3): dt.datetime(2026, 8, 26, 8, 29),
+    ("HOURS", 10): dt.datetime(2026, 9, 1, 19, 12), ("EARLY", 1): dt.datetime(2026, 9, 9, 7, 14),
+    ("DISTANCE", 500): dt.datetime(2026, 9, 12, 13, 40), ("LONGEST", 25): dt.datetime(2026, 9, 27, 12, 55),
+    ("SPEED", 90): dt.datetime(2026, 9, 27, 12, 55), ("RIDES", 50): dt.datetime(2026, 9, 29, 19, 2),
+    ("DISTANCE", 1000): dt.datetime(2026, 10, 5, 8, 33),
+}
+
+# Maintenance book (default tasks, Maintenance.defaultTasks): odometer and what was logged.
+MAINT_BOOK = dict(
+    odometer=4512.0,
+    tasks=[  # (string key, every km, every months, last km, last date)
+        ("maint_oil", 3000, 12, 1932.0, dt.date(2026, 5, 12)),
+        ("maint_air", 6000, 12, 1000.0, dt.date(2026, 4, 20)),
+        ("maint_belt", 12000, None, None, None),
+        ("maint_brakes", 6000, None, None, None),
+        ("maint_tyres", 5000, None, None, None),
+        ("maint_service", 6000, 12, 1000.0, dt.date(2026, 4, 20)),
+        ("maint_itv", None, 24, None, None),
+        ("maint_insurance", None, 12, None, dt.date(2026, 3, 14)),
+    ],
+    fills=[(3.1, 5.52), (6.4, 10.11), (6.2, 9.86), (6.6, 10.62)],   # litres, euros; first fill doesn't count
+    fill_km=(4096.0, 4512.0),
+)
+
+# Your red lights (TrafficLights.Result). Big public avenues on the example route, nothing personal.
+TL = dict(
+    trips=63, junctions=41,
+    worst=[  # name, stops, passes, avg wait s, main dir (0 N,1 E,2 S,3 W), dir stops, dir passes, cycle s, fit %
+        ("Gran Via de les Corts Catalanes", 17, 21, 46, 1, 15, 17, 90, 78),
+        ("Passeig de la Zona Franca", 12, 19, 38, 2, 10, 14, None, None),
+        ("Carrer de Tarragona", 8, 20, 29, 2, 6, 13, None, None),
+        ("Carrer de la Foneria", 5, 18, 22, 3, 4, 11, None, None),
+    ],
+    wave=[  # junction, dir, correct, predicted, unsure, soon ±s, soon n, cycle
+        ("Gran Via de les Corts Catalanes", 1, 3, 4, 1, 6, 5, 90),
+    ],
+    routes=[  # name, variants (count, median min, red lights, km); 🏆 = fastest median
+        ("Sants → Zona Franca", [(9, 17, 4, 6.8), (4, 21, 9, 6.1)]),
+        ("Zona Franca → Sants", [(8, 18, 5, 6.9), (2, 19, 7, 7.4)]),
+        ("Sants → Eixample", [(6, 16, 8, 4.2), (3, 14, 5, 4.9)]),
+    ],
+)
+
+# Clips found for the headline trip (TripVideoActivity). Names follow the phone camera's pattern.
+CLIPS = [
+    ("08:13:05", 75, "VID_20261006_081305.mp4"),
+    ("08:19:42", 45, "VID_20261006_081942.mp4"),
+    ("08:24:10", 37, "VID_20261006_082410.mp4"),
+]
+
+# Petrol stations around the example spot (FuelActivity). Brands and avenues are public; prices and
+# distances are made up. Hours in the Ministry's own format.
+FUEL = dict(radius_km=5, source_time="18:30", stations=[
+    # brand, address, town, hours, price €/L, distance m
+    ("PETROPRIX", "AVINGUDA DEL PARAL·LEL", "BARCELONA", "L-D: 24H", 1.429, 2140),
+    ("BALLENOIL", "CARRER DE LA FONERIA", "BARCELONA", "L-D: 24H", 1.439, 4380),
+    ("REPSOL", "GRAN VIA DE LES CORTS CATALANES", "BARCELONA", "L-D: 06:00-23:00", 1.519, 1260),
+    ("GALP", "CARRER D'ARAGÓ", "BARCELONA", "L-D: 24H", 1.529, 980),
+    ("CEPSA", "RONDA DE SANT PAU", "BARCELONA", "L-S: 07:00-22:00", 1.549, 1650),
+    ("BP", "CARRER DE BALMES", "BARCELONA", "L-D: 24H", 1.569, 740),
+    ("SHELL", "AVINGUDA DIAGONAL", "BARCELONA", "L-D: 24H", 1.579, 2870),
+    ("PETRONOR", "CARRER DE MUNTANER", "BARCELONA", "L-V: 07:00-21:00", 1.589, 1930),
+    ("REPSOL", "PASSEIG DE SANT JOAN", "BARCELONA", "L-D: 24H", 1.599, 1720),
+])
