@@ -207,3 +207,18 @@ CLIPS = [
     ("08:19:42", 45, "VID_20261006_081942.mp4"),
     ("08:24:10", 37, "VID_20261006_082410.mp4"),
 ]
+
+# Petrol stations around the example spot (FuelActivity). Brands and avenues are public; prices and
+# distances are made up. Hours in the Ministry's own format.
+FUEL = dict(radius_km=5, source_time="18:30", stations=[
+    # brand, address, town, hours, price €/L, distance m
+    ("PETROPRIX", "AVINGUDA DEL PARAL·LEL", "BARCELONA", "L-D: 24H", 1.429, 2140),
+    ("BALLENOIL", "CARRER DE LA FONERIA", "BARCELONA", "L-D: 24H", 1.439, 4380),
+    ("REPSOL", "GRAN VIA DE LES CORTS CATALANES", "BARCELONA", "L-D: 06:00-23:00", 1.519, 1260),
+    ("GALP", "CARRER D'ARAGÓ", "BARCELONA", "L-D: 24H", 1.529, 980),
+    ("CEPSA", "RONDA DE SANT PAU", "BARCELONA", "L-S: 07:00-22:00", 1.549, 1650),
+    ("BP", "CARRER DE BALMES", "BARCELONA", "L-D: 24H", 1.569, 740),
+    ("SHELL", "AVINGUDA DIAGONAL", "BARCELONA", "L-D: 24H", 1.579, 2870),
+    ("PETRONOR", "CARRER DE MUNTANER", "BARCELONA", "L-V: 07:00-21:00", 1.589, 1930),
+    ("REPSOL", "PASSEIG DE SANT JOAN", "BARCELONA", "L-D: 24H", 1.599, 1720),
+])

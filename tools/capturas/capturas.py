@@ -82,6 +82,9 @@ SCREENS = {
                lambda l: [(DOCS_M + "29_widget.png", PHONE_DOCS)] if l == "es" else []),
     "guide_download": (lambda l: phone.guide_download(l), "phone",
                        lambda l: [(WEB_GUIDE[l] + "g1_descarga.png", GUIDE)]),
+    "fuel": (lambda l: stats.fuel(l), "phone",
+             lambda l: ([(DOCS_M + "12_gasolineras.png", PHONE_DOCS)] if l == "es" else [])
+             + [(WEB_IMG[l] + "gasolineras.webp", PHONE_WEB)]),
     # 2.3 screens 16–23 (screens/stats.py)
     "heat": (lambda l: stats.heat_map(l), "phone",
              lambda l: [(DOCS_M + "16_mapa_de_calor.png", PHONE_DOCS)] if l == "es" else []),

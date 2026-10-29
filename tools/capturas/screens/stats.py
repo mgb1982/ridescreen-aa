@@ -419,3 +419,42 @@ def year(lang):
             f'<div class="bg">{D.num(lang, km, 0)}</div><div class="lb">{esc(s("yir_km").upper())}</div>'
             f'<div class="sb">{esc(comp)}</div></div></div>')
     return phone_page(body, extra_css=COMMON + css, bg="#18211B")
+
+
+# ---------------------------------------------------------------- 12 · petrol stations nearby (FuelActivity)
+
+def fuel(lang):
+    s = Strings(lang)
+    f = D.FUEL
+    cheapest = min(st[4] for st in f["stations"])
+
+    def dist(m):
+        return f"{(m // 10) * 10} m" if m < 1000 else f"{D.num(lang, m / 1000)} km"
+    cards = ""
+    for brand, addr, town, hours, price, m in f["stations"]:
+        on = price == cheapest
+        name = f"{brand}  · {s('fuel_cheapest')}" if on else brand
+        cards += (f'<div class="fc{" on" if on else ""}"><div class="col"><div class="fb">{esc(name)}</div>'
+                  f'<div class="fa">{esc(addr + " · " + town)}</div><div class="fh">{esc(hours)}</div></div>'
+                  f'<div class="rt"><div class="fp">{D.num(lang, price, 3)} €</div><div class="fd">{dist(m)}</div></div></div>')
+    css = f"""
+.fu{{padding:12px 20px 24px}}
+.sub{{font-size:13px;color:var(--text2);padding:4px 0 10px}}
+.bar{{display:flex;gap:6px}}
+.pl{{flex:1;min-height:44px;border-radius:999px;background:var(--surface-high);display:flex;align-items:center;
+  justify-content:center;font-size:14px;font-weight:500}}
+.fc{{display:flex;align-items:center;margin-top:10px;background:var(--surface);border-radius:18px;padding:12px 14px}}
+.fc.on{{border:1px solid var(--gold);padding:11px 13px}}
+.col{{flex:1}}
+.fb{{{ROBOTO_BOLD};font-size:16px}}
+.fa{{font-size:13px;color:var(--text2)}}
+.fh{{font-size:12px;color:var(--text2)}}
+.rt{{text-align:right;padding-left:10px}}
+.fp{{font-family:'ArchivoBlack';font-size:20px;color:var(--gold);white-space:nowrap}}
+.fd{{font-size:13px;color:var(--text2)}}
+"""
+    body = (f'<div class="fu"><div class="h24">{esc(s("fuel_title"))}</div>'
+            f'<div class="sub">{esc(s("fuel_subtitle", f["radius_km"], f["source_time"]))}</div>'
+            f'<div class="bar"><span class="pl">{esc(s("fuel_sort_price"))}</span>'
+            f'<span class="pl" style="opacity:.55">{esc(s("fuel_sort_distance"))}</span></div>{cards}</div>')
+    return _scrolled(body, 0, css)
