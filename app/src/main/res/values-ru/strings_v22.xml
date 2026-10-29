@@ -190,4 +190,10 @@
     <string name="tv_clips_none">Отметь хотя бы один клип</string>
     <string name="tv_look_drag">Перетащи карту, скорость или заголовок на предпросмотре туда, где они должны быть. Видео будет создано именно так.</string>
     <string name="tv_look_reset">↺ Позиции по умолчанию</string>
+    <string-array name="tl_dirs">
+        <item>Север</item>
+        <item>Восток</item>
+        <item>Юг</item>
+        <item>Запад</item>
+    </string-array>
 </resources>
