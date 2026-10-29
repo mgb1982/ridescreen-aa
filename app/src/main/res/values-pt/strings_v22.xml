@@ -188,4 +188,10 @@
     <string name="tv_clips_none">Assinala pelo menos um clip</string>
     <string name="tv_look_drag">Arrasta o mapa, a velocidade ou o título na pré-visualização para a posição pretendida; o vídeo será criado exatamente assim.</string>
     <string name="tv_look_reset">↺ Posições predefinidas</string>
+    <string-array name="tl_dirs">
+        <item>Norte</item>
+        <item>Este</item>
+        <item>Sul</item>
+        <item>Oeste</item>
+    </string-array>
 </resources>
