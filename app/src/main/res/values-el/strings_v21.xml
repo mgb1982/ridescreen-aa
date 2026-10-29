@@ -48,7 +48,7 @@
     <string name="fit_status_live">● Ζωντανά: κοίτα το ταμπλό της μοτοσικλέτας</string>
     <string name="fit_status_offline">Δεν είσαι συνδεδεμένος: μπορείς να κάνεις προσαρμογές, αλλά για να τις δεις ζωντανά πρέπει να συνδεθείς με τη μοτοσικλέτα.</string>
     <string name="fit_how">Το ταμπλό δείχνει ένα κίτρινο πλαίσιο: εκεί σχεδιάζεται το Android Auto. Μετακίνησε κάθε άκρη με τα βέλη μέχρι η κίτρινη γραμμή να συμπίπτει με το ορατό άκρο της οθόνης και στις τέσσερις πλευρές. Κράτησε πατημένο ένα βέλος για ταχύτερη μετακίνηση.</string>
-    <string name="fit_margins_now">Πάνω %1$d · κάτω %2$d · αριστερά %3$d · δεξιά %4$d px | Περιοχή Android Auto: %5$d × %6$d</string>
+    <string name="fit_margins_now">Πάνω %1$d · κάτω %2$d · αριστερά %3$d · δεξιά %4$d px\nΠεριοχή Android Auto: %5$d × %6$d</string>
     <string name="fit_step_fine">Ακριβείας (2 px)</string>
     <string name="fit_step_coarse">Γρήγορα (10 px)</string>
     <string name="fit_mode_title">Πώς να γεμίσει το πλαίσιο</string>
