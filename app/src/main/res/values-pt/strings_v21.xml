@@ -48,7 +48,7 @@
     <string name="fit_status_live">● Em direto: olha para o painel da mota</string>
     <string name="fit_status_offline">Sem ligação: podes ajustar, mas tens de ligar à mota para ver o resultado em direto.</string>
     <string name="fit_how">O painel mostra uma moldura amarela: é nessa área que o Android Auto é desenhado. Move cada margem com as setas até a linha amarela coincidir com o limite visível do ecrã nos quatro lados. Mantém uma seta premida para mover mais depressa.</string>
-    <string name="fit_margins_now">Topo %1$d · fundo %2$d · esquerda %3$d · direita %4$d px | Área do Android Auto: %5$d × %6$d</string>
+    <string name="fit_margins_now">Topo %1$d · fundo %2$d · esquerda %3$d · direita %4$d px\nÁrea do Android Auto: %5$d × %6$d</string>
     <string name="fit_step_fine">Preciso (2 px)</string>
     <string name="fit_step_coarse">Rápido (10 px)</string>
     <string name="fit_mode_title">Como preencher a moldura</string>
