@@ -272,7 +272,7 @@
     <string name="setup_record_each_ride_s_route_and_stats_from_gps_whil">Enregistrer l’itinéraire et les statistiques de chaque trajet à partir du GPS pendant la projection. Les consulter dans Voyage ▸ Trajets enregistrés.</string>
     <string name="setup_seamless_auto_resume">Reprise automatique transparente</string>
     <string name="setup_let_the_app_re_project_on_its_own_when_the_bike_">Laisse l’application relancer la projection dès que la moto revient à portée, même si l’écran est éteint ou le téléphone dans un sac. Nécessite l’autorisation « Afficher sur d’autres applications » ; sinon, tu recevras une notification sur laquelle appuyer pour reprendre.</string>
-    <string name="setup_enable_seamless_resume">Activer un CV transparent</string>
+    <string name="setup_enable_seamless_resume">Activer la reprise automatique</string>
     <string name="setup_wi_fi_logs">Wi-Fi et journaux</string>
     <string name="setup_wi_fi_transport">Transport Wi-Fi</string>
     <string name="setup_auto_ap_when_the_qr_advertises_it_else_wi_fi_dir">Auto – AP lorsque le QR l\'annonce, sinon Wi‑Fi Direct</string>
