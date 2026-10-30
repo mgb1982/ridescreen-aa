@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="brand_wordmark" translatable="false">RideScreen AA</string>
+    <string name="main_settings_desc">Paramètres</string>
+    <string name="stat_km_today">km aujourd’hui</string>
+    <string name="stat_max_today">km/h max.</string>
+    <string name="stat_clock">horloge du tableau de bord</string>
+    <string name="stat_clock_ok">horloge du tableau de bord ✓</string>
+    <string name="stat_clock_adjusting">réglage en cours…</string>
+    <string name="main_trips_pill">Trajets</string>
+    <string name="main_more">Plus</string>
+</resources>
