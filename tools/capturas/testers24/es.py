@@ -36,18 +36,19 @@ PILLS = [
          sub="El McuID es la clave de tu moto. Está dentro de un QR que enseña el propio cuadro. La app lo lee sola: "
              "no tienes que escribir nada.",
          steps=[
-             "Pon el contacto y abre en el cuadro la pantalla de **Información**: la que enseña un QR junto a "
-             "**PKE, ECU, ABS** y «**Próxima revisión**».",
+             "Pon el contacto. En el cuadro, desde la interfaz 1, 2 o 3: pulsa **SET** → pulsa **MOD** hasta que "
+             "salga **Información** → pulsa **SET** → pulsa **MOD** hasta que salga el **QR**.",
              "En el móvil pulsa [[help_pill]] → [[pke_unlock_entry]].",
              "Sale la ventana [[pke_unlock_mcu_title]]. No escribas nada: pulsa [[pke_unlock_scan]].",
              "Si te pide la cámara, permítelo. Apunta al QR del cuadro, recto y a un palmo, hasta que lo lea "
              "(sin reflejos: tápalo con la mano si da el sol).",
              "La app enseña la clave recortada (4 caracteres … 4 caracteres) y pregunta si la guarda: pulsa [[dest_save]]. "
              "Verás «**[[pke_unlock_scan_saved]]**».",
+             "En el cuadro, **mantén pulsado SET** para volver a la interfaz de antes.",
              "Vuelve a entrar en [[pke_unlock_entry]]: ya te salen los mandos.",
          ],
          note="Si sale «No se encontró la clave…», has leído otro QR. El de la **interfaz 3** (el de conectar) "
-              "no sirve aquí: tiene que ser el de la pantalla de Información.",
+              "no sirve aquí: tiene que ser el de **Información** (paso 1).",
          foot="No mandes a nadie la foto de ese QR ni la clave, tampoco al grupo: es la llave de tu moto"),
 
     dict(slug="04-mandos", icon="🔓", tag="Usarlo",
