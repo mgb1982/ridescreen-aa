@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_settings_desc">Ρυθμίσεις</string>
+    <string name="stat_km_today">km σήμερα</string>
+    <string name="stat_max_today">μέγ. km/h</string>
+    <string name="stat_clock">Ρολόι ταμπλό</string>
+    <string name="stat_clock_ok">Ρολόι ταμπλό ✓</string>
+    <string name="stat_clock_adjusting">ρύθμιση…</string>
+    <string name="main_trips_pill">Διαδρομές</string>
+    <string name="main_more">Περισσότερα</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: welcome / goodbye cards on the dash -->
+    <string name="dc_good_morning">Good morning</string>
+    <string name="dc_good_afternoon">Good afternoon</string>
+    <string name="dc_good_evening">Good evening</string>
+    <string name="dc_streak_days">days in a row</string>
+    <string name="dc_rain_soon">Rain likely: %1$d%% in the next hours</string>
+    <string name="dc_wx_clear">clear</string>
+    <string name="dc_wx_cloudy">cloudy</string>
+    <string name="dc_wx_fog">fog</string>
+    <string name="dc_wx_rain">rain</string>
+    <string name="dc_wx_snow">snow</string>
+    <string name="dc_wx_storm">storm</string>
+    <string name="dc_bye_title">See you · today\'s summary</string>
+    <string name="dc_km_today">km today</string>
+    <string name="dc_min">min</string>
+    <string name="dc_kmh_avg">km/h avg</string>
+    <string name="dc_kmh_max">km/h max</string>
+    <string name="dc_parked_photo">Parked · photo saved</string>
+    <string name="dc_parked">Parked</string>
+    <string name="dc_rain_tomorrow">Tomorrow 8:00: %1$d%% chance of rain · bring the rain gear</string>
+</resources>

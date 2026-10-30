@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_clock_resync">Επανασυγχρονισμός ρολογιού ταμπλό (Zontes)</string>
+    <string name="setup_clock_resync_desc">Η σύνδεση διακόπτεται για λίγα δευτερόλεπτα και επανέρχεται ώστε το ταμπλό να ζητήσει ξανά την ώρα. Έξυπνο: μόνο όταν το ταμπλό ζήτησε την ώρα καθυστερημένα (ένδειξη αποτυχημένου συγχρονισμού), έως 3 φορές. Πάντα μία φορά: στην πρώτη σύνδεση κάθε φορά που ενεργοποιείται το ταμπλό. Λειτουργεί μόνο με ταμπλό Zontes.</string>
+    <string name="setup_clock_resync_smart">Έξυπνο</string>
+    <string name="setup_clock_resync_once">Πάντα μία φορά</string>
+    <string name="clock_resyncing">⏱ Ρύθμιση ρολογιού ταμπλό…</string>
+</resources>

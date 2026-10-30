@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RideScreen AA</string>
+    <string name="status_no_phone">Нет данных с телефона</string>
+    <string name="status_streaming">● Подключено к дисплею мотоцикла</string>
+    <string name="status_reconnecting">● Повторное подключение…</string>
+    <string name="status_idle">Не в поездке</string>
+    <string name="unit_kmh">км/ч</string>
+    <string name="label_dist">км</string>
+    <string name="label_time">в движении</string>
+    <string name="label_max">макс. км/ч</string>
+    <string name="label_avg">ср. км/ч</string>
+    <string name="hint_logging_off">Запись поездок на телефоне отключена</string>
+    <string name="btn_ok">ОК</string>
+    <string name="channel_ride">Поездка продолжается</string>
+    <string name="ride_active">Поездка продолжается · нажми для данных</string>
+    <string name="label_total">Время в пути</string>
+    <string name="label_alt">высота, м</string>
+    <string name="label_heading">направление</string>
+    <string name="label_gps">GPS ±м</string>
+    <string name="label_battery">телефон</string>
+    <string name="label_volume">громкость</string>
+    <string name="status_clock_resync">⏱ Настройка часов дисплея…</string>
+    <string name="trips_title">Поездки</string>
+    <string name="trips_loading">Загрузка поездок…</string>
+    <string name="trips_none">Сохранённых поездок пока нет</string>
+    <string name="trips_no_phone">Телефон не отвечает</string>
+    <string name="trip_line">%1$s · ср. %2$d · макс. %3$d</string>
+    <string name="map_loading">Отрисовка карты…</string>
+    <string name="map_no_phone">Карты пока нет — телефон рядом?</string>
+    <string name="map_desc">Карта поездки</string>
+    <string name="pill_max">макс. %d</string>
+    <string name="pill_avg">ср. %d</string>
+    <string name="parked_line">🅿️ Мотоцикл припаркован %1$s · найти</string>
+    <string name="parked_no_maps">На часах нет приложения карт</string>
+    <string name="tile_label">Поездка</string>
+    <string name="tile_riding">ЕДЕШЬ</string>
+    <string name="tile_parked">🅿️ ПРИПАРКОВАН</string>
+    <string name="tile_tap_directions">Нажми: открыть, затем 🅿️ для маршрута</string>
+    <string name="tile_last_ride">ПОСЛЕДНЯЯ ПОЕЗДКА</string>
+    <string name="tile_no_data">Поездок пока нет</string>
+    <string name="complication_label">RideScreen · км</string>
+    <string name="complication_desc">км поездки</string>
+</resources>

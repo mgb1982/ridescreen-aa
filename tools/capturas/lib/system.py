@@ -1,5 +1,4 @@
-"""Texts that Android (or another system app) shows, not RideScreen: they follow the phone's language even when
-the app itself has no translation and falls back to English. Keep them to the platform's own wording."""
+"""Texts that Android (or another system app) shows, not RideScreen: they follow the phone's language, not the app's. Keep them to the platform's own wording."""
 
 SYS = {
     # android.R.string.cancel (AlertDialog negative button)

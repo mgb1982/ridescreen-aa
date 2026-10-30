@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="speed_volume_title">Громкость в зависимости от скорости</string>
+    <string name="speed_volume_desc">Повышает громкость мультимедиа телефона (голос навигации и музыка) при увеличении скорости, чтобы перекрыть шум ветра. Твоя обычная громкость служит базой: меняй её в любое время, усиление подстроится. Приостанавливается, пока кнопки на руле управляют Android Auto.</string>
+    <string name="speed_volume_off">Выкл.</string>
+    <string name="speed_volume_low">Низкая</string>
+    <string name="speed_volume_medium">Средняя</string>
+    <string name="speed_volume_high">Высокая</string>
+    <string name="speed_volume_status_off">Выкл.</string>
+    <string name="speed_volume_status_waiting">Ожидание подключения мотоцикла…</string>
+    <string name="speed_volume_status_paused">Приостановлено: кнопки на руле фиксируют громкость</string>
+    <string name="speed_volume_status_no_gps">Активно: ожидание скорости GPS…</string>
+    <string name="speed_volume_status_live">Активно: %1$d км/ч · усиление +%2$d</string>
+    <string name="speed_volume_advanced_show">Дополнительно ▾</string>
+    <string name="speed_volume_advanced_hide">Дополнительно ▴</string>
+    <string name="speed_volume_custom">Своя кривая (заменяет кривую выбранного уровня)</string>
+    <string name="speed_volume_start_label">Начинать усиление при: %1$d км/ч</string>
+    <string name="speed_volume_step_label">Ещё один шаг каждые: %1$d км/ч</string>
+    <string name="speed_volume_max_label">Максимальное усиление: +%1$d шагов</string>
+    <string name="speed_volume_custom_hint">Шаги используют 15-ступенчатую шкалу громкости. Для работы своей кривой должен быть выбран любой уровень, кроме «Выкл.».</string>
+</resources>

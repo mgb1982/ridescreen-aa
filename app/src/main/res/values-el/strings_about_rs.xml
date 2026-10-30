@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rs_about_tagline">Ασύρματο Android Auto στο ταμπλό της μοτοσικλέτας (πίνακες Carbit/EasyConnect), με διορθώσεις και πρόσθετες λειτουργίες για τη Zontes 125X / ZT125T-X. Βασίζεται στο OpenCfMoto.</string>
+    <string name="rs_about_community">Έχεις ερωτήσεις, αρχεία καταγραφής ή νέα μοτοσικλέτα; Άνοιξε issue στο GitHub ή ρώτησε στην ομάδα. Οι δωρεές βοηθούν στην κάλυψη των εξόδων.</string>
+    <string name="rs_about_issues">GitHub</string>
+    <string name="rs_about_copyright">© 2026 Alexandru (zanderp), OpenCfMoto | © 2026 Manel (mgb1982), RideScreen AA</string>
+    <string name="rs_about_copyright_body">Το RideScreen AA συντηρείται από τον Manel (mgb1982). Είναι παράγωγο του OpenCfMoto, © 2026 Alexandru (zanderp), και όπως εκείνο είναι ελεύθερο λογισμικό βάσει της GNU AGPL v3 ή νεότερης έκδοσης: δες τα LICENSE και NOTICE στο αποθετήριο.</string>
+    <string name="rs_about_original">Αρχικό έργο: OpenCfMoto (zanderp)</string>
+    <string name="rs_about_source">Πηγαίος κώδικας RideScreen AA</string>
+    <string name="rs_about_credits">• Alexandru (zanderp) — δημιουργός του OpenCfMoto, στο οποίο βασίζεται το RideScreen AA. Ευχαριστούμε!\n• Manel (mgb1982) — RideScreen AA: διόρθωση ρολογιού ταμπλό, εφαρμογή Wear OS, νέος σχεδιασμός και πρόσθετες λειτουργίες οδήγησης\n\nΤο OpenCfMoto βασίζεται επίσης στην κοινότητα open-cfmoto:\n• dcoletto / coletz — αρχική εργασία QR και EasyConn\n• BojanJ — ενσωμάτωση δέκτη Android Auto\n• richardbizik — υποστήριξη 1000 MT‑X\n• ionutradu252 / open-cflink — χειριστήρια τιμονιού, περιθώρια, επανασύνδεση &amp; βελτιώσεις\n• eugen0309 — σύνδεση Wi-Fi Direct / CL-C450\n• Martin Escudero (martinescudero) — διαδρομή διακομιστή head unit για Android Auto 17.4+\n• Glifaus — διατήρηση σύνδεσης Wi-Fi Direct\n• sashop2001 — AA DPI, ενεργοποίηση μέσω Bluetooth, βουλγαρικά\n• Authoritt — σημειώσεις πεδίων τηλεμετρίας οχήματος\n• headunit-revived — στοίβα προβολής Android Auto (AGPL)\n\nΚαι όσοι δοκίμασαν μοτοσικλέτες, μοιράστηκαν αρχεία καταγραφής και ανέφεραν προβλήματα.\n\nΥποστηρικτές στο Ko-fi — ευχαριστούμε!\n• Francisco Javier S.\n• José Antonio R.\n• Raul\n• Τρεις ανώνυμοι υποστηρικτές</string>
+    <string name="rs_thanks_title">Ευχαριστούμε, Alexandru</string>
+    <string name="rs_thanks_body">Το RideScreen AA υπάρχει χάρη στο OpenCfMoto, που δημιούργησε ο Alexandru (zanderp). Η σύνδεση με το ταμπλό, το ασύρματο Android Auto, οι χάρτες, τα χειριστήρια και σχεδόν όλα όσα κάνει αυτή η εφαρμογή είναι δικό του έργο και της κοινότητας open-cfmoto που συγκέντρωσε. Το RideScreen AA προσθέτει μόνο λίγες λειτουργίες. Αν σου είναι χρήσιμη η εφαρμογή, στήριξέ τον κι εσύ.</string>
+    <string name="rs_thanks_kofi">❤ Υποστήριξε τον Alexandru (Ko-fi)</string>
+    <string name="rs_thanks_github">OpenCfMoto στο GitHub</string>
+    <string name="rs_thanks_discord">OpenCfMoto στο Discord</string>
+    <string name="rs_bikes_tested_title">Δοκιμασμένο με το RideScreen AA</string>
+    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: όλα λειτουργούν, μαζί με το ρολόι ταμπλό που δείχνει πάντα σωστή ώρα, την εφαρμογή Wear OS και τα πρόσθετα οδήγησης. Ίδιο ταμπλό, διαφορετικό φέρινγκ.\nZontes 368 G / 368 K / 368 E: επιβεβαιωμένη λειτουργία· η εικόνα ταιριάζει στη μεγάλη οθόνη από την πρώτη σύνδεση.\nΥπό δοκιμή: Zontes 125M (συνδέεται μέσω hotspot τηλεφώνου) και Zontes 350D (QR Wi-Fi Direct). Έχεις μία; Το αρχείο καταγραφής σου βοηθά.</string>
+</resources>

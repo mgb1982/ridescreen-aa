@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="speed_volume_title">Volume dependente da velocidade</string>
+    <string name="speed_volume_desc">Aumenta o volume multimédia do telemóvel (voz da navegação e música) à medida que conduzes mais depressa, para compensar o ruído do vento. O teu volume é a base: podes alterá-lo a qualquer momento e o reforço acompanha-o. Fica em pausa enquanto os botões do guiador controlam o Android Auto.</string>
+    <string name="speed_volume_off">Desligado</string>
+    <string name="speed_volume_low">Baixo</string>
+    <string name="speed_volume_medium">Médio</string>
+    <string name="speed_volume_high">Alto</string>
+    <string name="speed_volume_status_off">Desligado</string>
+    <string name="speed_volume_status_waiting">À espera da ligação à mota…</string>
+    <string name="speed_volume_status_paused">Em pausa: os botões do guiador estão a fixar o volume</string>
+    <string name="speed_volume_status_no_gps">Ativo: à espera da velocidade GPS…</string>
+    <string name="speed_volume_status_live">Ativo: %1$d km/h · reforço +%2$d</string>
+    <string name="speed_volume_advanced_show">Avançado ▾</string>
+    <string name="speed_volume_advanced_hide">Avançado ▴</string>
+    <string name="speed_volume_custom">Curva personalizada (substitui a curva do nível)</string>
+    <string name="speed_volume_start_label">Começar o reforço a: %1$d km/h</string>
+    <string name="speed_volume_step_label">Mais um nível a cada: %1$d km/h</string>
+    <string name="speed_volume_max_label">Reforço máximo: +%1$d níveis</string>
+    <string name="speed_volume_custom_hint">Os passos usam uma escala de volume de 15 níveis. Para a curva personalizada funcionar, tem de estar selecionado um nível diferente de Desligado.</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_settings_desc">Einstellungen</string>
+    <string name="stat_km_today">km heute</string>
+    <string name="stat_max_today">max. km/h</string>
+    <string name="stat_clock">Uhr des Motorrad-Displays</string>
+    <string name="stat_clock_ok">Uhr des Motorrad-Displays ✓</string>
+    <string name="stat_clock_adjusting">wird angepasst…</string>
+    <string name="main_trips_pill">Fahrten</string>
+    <string name="main_more">Mehr</string>
+</resources>

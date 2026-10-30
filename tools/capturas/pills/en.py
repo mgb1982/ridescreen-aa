@@ -31,7 +31,7 @@ PILLS = [
          note="If it ever doesn't start by itself, you'll get a «**[[bt_trigger_title(ZT…)]] · "
               "[[bt_trigger_text]]**» notification. One tap and you're done. On Xiaomi, Redmi and POCO also turn on "
               "**Autostart** (the app tells you).",
-         foot="Works with the bike saved in the Garage"),
+         foot="Works with the bike saved in the [[garage_garage]]"),
 
     dict(icon="⚠️", tag="If something gets stuck",
          title="Android Auto won't start on the dash",
@@ -60,7 +60,7 @@ PILLS = [
              "Map looks cropped or squashed? Tap [[fit_shape_from_frame]] so Android Auto draws at exactly that size.",
          ],
          note="If something ends up wrong, [[fit_undo]] or [[fit_reset]] put it back.",
-         foot="Each bike in the Garage keeps its own setting"),
+         foot="Each bike in the [[garage_garage]] keeps its own setting"),
 
     dict(icon="🎙️", tag="Voice",
          title="«Ok Google» and the voice button",
@@ -251,7 +251,7 @@ PILLS = [
              "[[bike_picker_menu]].",
          ],
          note="Got another bike and it works? Share the logs in the group so it can be added to the list.",
-         foot="Saved for each bike in the Garage"),
+         foot="Saved for each bike in the [[garage_garage]]"),
 
     dict(icon="🏠", tag="On the road",
          title="Home, Work and your appointments",

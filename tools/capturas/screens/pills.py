@@ -3,8 +3,7 @@
 Texts live in tools/capturas/pills/<lang>.py, one list per language in the same order. Markup inside a text:
 
     **bold**                 bold (an app label inside it is bold text, not a button)
-    [[key]]                  a button/label of the app, taken from strings.xml in that language (falls back
-                             to English like the app does, so Greek and Russian show what the phone shows)
+    [[key]]                  a button/label of the app, taken from strings.xml in that language
     [[key|🚦]]               same, with an emoji in front (when the string itself has none)
     [[key(3)]]               a string with arguments: %1$s/%1$d get 3
     [[=text]]                a label that is not ours (Android, Android Auto, ⋮): literal text

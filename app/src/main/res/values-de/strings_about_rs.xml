@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rs_about_tagline">Drahtloses Android Auto auf dem Motorrad-Display (Carbit/EasyConnect-Displays) mit Fehlerbehebungen und Extras für die Zontes 125X / ZT125T-X. Basiert auf OpenCfMoto.</string>
+    <string name="rs_about_community">Fragen, Protokolle oder ein neues Motorrad? Erstelle ein Issue auf GitHub oder frag in der Gruppe. Spenden helfen, die Kosten zu decken.</string>
+    <string name="rs_about_issues">GitHub</string>
+    <string name="rs_about_copyright">© 2026 Alexandru (zanderp), OpenCfMoto | © 2026 Manel (mgb1982), RideScreen AA</string>
+    <string name="rs_about_copyright_body">RideScreen AA wird von Manel (mgb1982) gepflegt. Es ist eine Ableitung von OpenCfMoto, © 2026 Alexandru (zanderp), und wie dieses freie Software unter der GNU AGPL v3 oder neuer: siehe LICENSE und NOTICE im Repository.</string>
+    <string name="rs_about_original">Originalprojekt: OpenCfMoto (zanderp)</string>
+    <string name="rs_about_source">Quellcode von RideScreen AA</string>
+    <string name="rs_about_credits">• Alexandru (zanderp) — Ersteller von OpenCfMoto, der Grundlage von RideScreen AA. Vielen Dank!\n• Manel (mgb1982) — RideScreen AA: Reparatur der Display-Uhr, Wear-OS-App, neues Design und Fahr-Extras\n\nOpenCfMoto baut seinerseits auf der open-cfmoto-Community auf:\n• dcoletto / coletz — ursprüngliche QR- und EasyConn-Arbeit\n• BojanJ — Integration des Android-Auto-Empfängers\n• richardbizik — Unterstützung für 1000 MT‑X\n• ionutradu252 / open-cflink — Lenkersteuerung, Ränder, Wiederverbindung &amp; Feinschliff\n• eugen0309 — Wi-Fi-Direct-/CL-C450-Verbindung\n• Martin Escudero (martinescudero) — Headunit-Server für Android Auto 17.4+\n• Glifaus — Wi-Fi-Direct-Keep-alive\n• sashop2001 — AA-DPI, Bluetooth-Auslöser, Bulgarisch\n• Authoritt — Notizen zu Fahrzeug-Telemetrie\n• headunit-revived — Android-Auto-Projektionsstack (AGPL)\n\nUnd alle, die Motorräder getestet, Protokolle geteilt und Fehler gemeldet haben.\n\nUnterstützer auf Ko-fi: Vielen Dank!\n• Francisco Javier S.\n• José Antonio R.\n• Raul\n• Drei anonyme Unterstützer</string>
+    <string name="rs_thanks_title">Danke, Alexandru</string>
+    <string name="rs_thanks_body">RideScreen AA gibt es dank OpenCfMoto, erstellt von Alexandru (zanderp). Die Verbindung zum Display, drahtloses Android Auto, Karten, Steuerung und fast alles, was diese App kann, stammen von ihm und der open-cfmoto-Community, die er zusammengebracht hat. RideScreen AA ergänzt nur ein paar Dinge. Wenn dir die App hilft, unterstütze bitte auch ihn.</string>
+    <string name="rs_thanks_kofi">❤ Alexandru unterstützen (Ko-fi)</string>
+    <string name="rs_thanks_github">OpenCfMoto auf GitHub</string>
+    <string name="rs_thanks_discord">OpenCfMoto auf Discord</string>
+    <string name="rs_bikes_tested_title">Mit RideScreen AA getestet</string>
+    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: alles funktioniert, auch die stets richtige Display-Uhr, die Wear-OS-App und die Fahr-Extras. Gleiches Display, andere Verkleidung.\nZontes 368 G / 368 K / 368 E: funktioniert nachweislich; das Bild passt schon bei der ersten Verbindung auf den großen Bildschirm.\nIn Testphase: Zontes 125M (Verbindung über den Telefon-Hotspot) und Zontes 350D (Wi-Fi-Direct-QR). Hast du eines davon? Dein Protokoll hilft.</string>
+</resources>

@@ -643,4 +643,7 @@
     <string name="widget_connect_no_bike">No saved bike yet — connect once from the app first</string>
     <string name="widget_connect_already">Already connected</string>
     <string name="widget_connect_cancelled">Connection cancelled</string>
+    <string name="rain_parked_title">Rain expected where you parked</string>
+    <string name="rain_parked_soon">Rain is expected within the hour — cover the bike.</string>
+    <string name="rain_parked_in_hours">Rain is expected in about %1$d h — cover the bike.</string>
 </resources>

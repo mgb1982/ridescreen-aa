@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: bienvenida y despedida en el cuadro -->
+    <string name="dc_good_morning">Buenos días</string>
+    <string name="dc_good_afternoon">Buenas tardes</string>
+    <string name="dc_good_evening">Buenas noches</string>
+    <string name="dc_streak_days">días seguidos</string>
+    <string name="dc_rain_soon">Probable lluvia: %1$d %% en las próximas horas</string>
+    <string name="dc_wx_clear">despejado</string>
+    <string name="dc_wx_cloudy">nublado</string>
+    <string name="dc_wx_fog">niebla</string>
+    <string name="dc_wx_rain">lluvia</string>
+    <string name="dc_wx_snow">nieve</string>
+    <string name="dc_wx_storm">tormenta</string>
+    <string name="dc_bye_title">Hasta luego · resumen de hoy</string>
+    <string name="dc_km_today">km hoy</string>
+    <string name="dc_min">min</string>
+    <string name="dc_kmh_avg">km/h media</string>
+    <string name="dc_kmh_max">km/h máx</string>
+    <string name="dc_parked_photo">Aparcada · foto guardada</string>
+    <string name="dc_parked">Aparcada</string>
+    <string name="dc_rain_tomorrow">Mañana a las 8:00: %1$d %% de lluvia · lleva el chubasquero</string>
+</resources>

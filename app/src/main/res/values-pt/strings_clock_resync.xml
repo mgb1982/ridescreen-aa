@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_clock_resync">Voltar a sincronizar o relógio do painel (Zontes)</string>
+    <string name="setup_clock_resync_desc">A ligação é interrompida durante alguns segundos e restabelecida para o painel voltar a pedir a hora. Inteligente: só quando o painel pediu a hora com atraso (sinal de uma sincronização falhada), até 3 vezes. Sempre uma vez: na primeira ligação de cada arranque do painel. Só funciona com painéis Zontes.</string>
+    <string name="setup_clock_resync_smart">Inteligente</string>
+    <string name="setup_clock_resync_once">Sempre uma vez</string>
+    <string name="clock_resyncing">⏱ A acertar o relógio do painel…</string>
+</resources>

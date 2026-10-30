@@ -231,10 +231,10 @@ def _has(name):
 
 # ---------------------------------------------------------------- trip map
 
-# The app has no strings for these yet (TripMapActivity hard-codes "avg/max", see README). Greek and Russian
-# keep the English words because there is no translation to show.
+# The app has no strings for these yet (TripMapActivity hard-codes "avg/max", see README). The captures use the
+# app's own short forms from share_avg/share_max in each language.
 AVG_MAX = {"es": ("media", "máx"), "ca": ("mitjana", "màx"), "en": ("avg", "max"), "it": ("media", "max"),
-           "el": ("avg", "max"), "ru": ("avg", "max")}
+           "el": ("μ.ό.", "μέγ."), "ru": ("ср.", "макс.")}
 
 
 def trip_map(lang):

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dc_good_morning">Доброе утро</string>
+    <string name="dc_good_afternoon">Добрый день</string>
+    <string name="dc_good_evening">Добрый вечер</string>
+    <string name="dc_streak_days">дней подряд</string>
+    <string name="dc_rain_soon">Вероятен дождь: %1$d%% в ближайшие часы</string>
+    <string name="dc_wx_clear">ясно</string>
+    <string name="dc_wx_cloudy">облачно</string>
+    <string name="dc_wx_fog">туман</string>
+    <string name="dc_wx_rain">дождь</string>
+    <string name="dc_wx_snow">снег</string>
+    <string name="dc_wx_storm">гроза</string>
+    <string name="dc_bye_title">До встречи · итоги за сегодня</string>
+    <string name="dc_km_today">км сегодня</string>
+    <string name="dc_min">мин</string>
+    <string name="dc_kmh_avg">средняя скорость, км/ч</string>
+    <string name="dc_kmh_max">максимальная скорость, км/ч</string>
+    <string name="dc_parked_photo">Припаркован · фото сохранено</string>
+    <string name="dc_parked">Припаркован</string>
+    <string name="dc_rain_tomorrow">Завтра в 8:00: вероятность дождя %1$d%% · возьми дождевую экипировку</string>
+</resources>

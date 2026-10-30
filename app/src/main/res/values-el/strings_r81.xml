@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bike_gone_channel">Δεν βρέθηκε μοτοσικλέτα</string>
+    <string name="bike_gone_title">Τερματίστηκε η αναμονή για τη μοτοσικλέτα</string>
+    <string name="bike_gone_text">Η μοτοσικλέτα ήταν σβηστή για 20 λεπτά, οπότε η εφαρμογή σταμάτησε να την αναζητά για εξοικονόμηση μπαταρίας. Πάτησε Σύνδεση όταν επιστρέψεις στη μοτοσικλέτα.</string>
+    <string name="tr_channel">Τρόπαια</string>
+    <string name="tr_unlocked_title">🏆 Ξεκλειδώθηκε τρόπαιο!</string>
+    <string name="tr_screen_title">Τρόπαια</string>
+    <string name="tr_header">Ξεκλείδωσες %1$d από %2$d</string>
+    <string name="tr_next">Ακολουθεί</string>
+    <string name="tr_earned_on">Κερδήθηκε στις %1$s</string>
+    <string name="tr_card_line">🏆 Τρόπαια: %1$d από %2$d · δες όλα ›</string>
+    <string name="tr_distance">Χιλιόμετρα</string>
+    <string name="tr_distance_d">Οδήγησε συνολικά %1$s km</string>
+    <string name="tr_longest">Μεγάλη διαδρομή</string>
+    <string name="tr_longest_d">Μία διαδρομή τουλάχιστον %1$s km</string>
+    <string name="tr_speed">Μέγιστη ταχύτητα</string>
+    <string name="tr_speed_d">Φτάσε τα %1$s km/h (GPS)</string>
+    <string name="tr_streak">Σερί</string>
+    <string name="tr_streak_d">Οδήγησε %1$s ημέρες στη σειρά</string>
+    <string name="tr_rides">Σταθερός οδηγός</string>
+    <string name="tr_rides_d">Αποθήκευσε %1$s διαδρομές</string>
+    <string name="tr_hours">Ώρες στη σέλα</string>
+    <string name="tr_hours_d">%1$s ώρες οδήγησης</string>
+    <string name="tr_months">Όλο τον χρόνο</string>
+    <string name="tr_months_d">Οδήγησε σε %1$s διαφορετικούς μήνες</string>
+    <string name="tr_early">Πρωινός τύπος</string>
+    <string name="tr_early_d">Ξεκίνα διαδρομή πριν από τις 7:00</string>
+    <string name="tr_night">Νυχτερινός οδηγός</string>
+    <string name="tr_night_d">Τελείωσε διαδρομή μετά τις 23:00</string>
+    <string name="tr_weekend">Οδηγός Σαββατοκύριακου</string>
+    <string name="tr_weekend_d">Οδήγησε το Σάββατο και την Κυριακή του ίδιου Σαββατοκύριακου</string>
+</resources>

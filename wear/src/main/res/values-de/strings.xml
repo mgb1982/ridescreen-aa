@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RideScreen AA</string>
+    <string name="status_no_phone">Keine Daten vom Telefon</string>
+    <string name="status_streaming">● Mit dem Motorrad-Display verbunden</string>
+    <string name="status_reconnecting">● Verbindung wird wiederhergestellt …</string>
+    <string name="status_idle">Keine Fahrt</string>
+    <string name="unit_kmh">km/h</string>
+    <string name="label_dist">km</string>
+    <string name="label_time">in Bewegung</string>
+    <string name="label_max">max. km/h</string>
+    <string name="label_avg">Ø km/h</string>
+    <string name="hint_logging_off">Fahrtenaufzeichnung auf dem Telefon ist aus</string>
+    <string name="btn_ok">OK</string>
+    <string name="channel_ride">Fahrt läuft</string>
+    <string name="ride_active">Fahrt läuft · tippen für Fahrtdaten</string>
+    <string name="label_total">Fahrzeit</string>
+    <string name="label_alt">Höhe m</string>
+    <string name="label_heading">Richtung</string>
+    <string name="label_gps">GPS ±m</string>
+    <string name="label_battery">Telefon</string>
+    <string name="label_volume">Lautstärke</string>
+    <string name="status_clock_resync">⏱ Uhr des Motorrad-Displays wird angepasst …</string>
+    <string name="trips_title">Fahrten</string>
+    <string name="trips_loading">Fahrten werden geladen …</string>
+    <string name="trips_none">Noch keine gespeicherten Fahrten</string>
+    <string name="trips_no_phone">Keine Antwort vom Telefon</string>
+    <string name="trip_line">%1$s · Ø %2$d · max. %3$d</string>
+    <string name="map_loading">Karte wird gezeichnet …</string>
+    <string name="map_no_phone">Noch keine Karte · ist das Telefon in der Nähe?</string>
+    <string name="map_desc">Fahrtenkarte</string>
+    <string name="pill_max">max. %d</string>
+    <string name="pill_avg">Ø %d</string>
+    <string name="parked_line">🅿️ Motorrad geparkt %1$s · finden</string>
+    <string name="parked_no_maps">Keine Karten-App auf der Uhr</string>
+    <string name="tile_label">Fahrt</string>
+    <string name="tile_riding">FAHRT LÄUFT</string>
+    <string name="tile_parked">🅿️ GEPARKT</string>
+    <string name="tile_tap_directions">Tippen: öffnen, dann 🅿️ für Navigation</string>
+    <string name="tile_last_ride">LETZTE FAHRT</string>
+    <string name="tile_no_data">Noch keine Fahrten</string>
+    <string name="complication_label">RideScreen · km</string>
+    <string name="complication_desc">gefahrene km</string>
+</resources>

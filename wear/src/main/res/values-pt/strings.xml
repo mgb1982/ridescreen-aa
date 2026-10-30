@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RideScreen AA</string>
+    <string name="status_no_phone">Sem dados do telemóvel</string>
+    <string name="status_streaming">● Ligado ao painel da mota</string>
+    <string name="status_reconnecting">● A restabelecer ligação…</string>
+    <string name="status_idle">Sem percurso em curso</string>
+    <string name="unit_kmh">km/h</string>
+    <string name="label_dist">km</string>
+    <string name="label_time">em movimento</string>
+    <string name="label_max">máx. km/h</string>
+    <string name="label_avg">média km/h</string>
+    <string name="hint_logging_off">A gravação de percursos está desligada no telemóvel</string>
+    <string name="btn_ok">OK</string>
+    <string name="channel_ride">Percurso em curso</string>
+    <string name="ride_active">Percurso em curso · toca para ver os dados</string>
+    <string name="label_total">Tempo de condução</string>
+    <string name="label_alt">altitude m</string>
+    <string name="label_heading">direção</string>
+    <string name="label_gps">GPS ±m</string>
+    <string name="label_battery">telemóvel</string>
+    <string name="label_volume">volume</string>
+    <string name="status_clock_resync">⏱ A acertar o relógio do painel…</string>
+    <string name="trips_title">Percursos</string>
+    <string name="trips_loading">A carregar percursos…</string>
+    <string name="trips_none">Ainda não há percursos guardados</string>
+    <string name="trips_no_phone">O telemóvel não respondeu</string>
+    <string name="trip_line">%1$s · média %2$d · máx. %3$d</string>
+    <string name="map_loading">A desenhar o mapa…</string>
+    <string name="map_no_phone">Ainda não há mapa — o telemóvel está por perto?</string>
+    <string name="map_desc">Mapa do percurso</string>
+    <string name="pill_max">máx. %d</string>
+    <string name="pill_avg">média %d</string>
+    <string name="parked_line">🅿️ Mota estacionada %1$s · encontrar</string>
+    <string name="parked_no_maps">Não há aplicação de mapas no relógio</string>
+    <string name="tile_label">Percurso</string>
+    <string name="tile_riding">A CONDUZIR</string>
+    <string name="tile_parked">🅿️ ESTACIONADA</string>
+    <string name="tile_tap_directions">Toca: abrir e depois 🅿️ para obter direções</string>
+    <string name="tile_last_ride">ÚLTIMO PERCURSO</string>
+    <string name="tile_no_data">Ainda não há percursos</string>
+    <string name="complication_label">RideScreen · km</string>
+    <string name="complication_desc">km percorridos</string>
+</resources>

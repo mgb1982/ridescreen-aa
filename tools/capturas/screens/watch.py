@@ -15,7 +15,7 @@ COND = "display:inline-block;transform:scaleX(.86);transform-origin:center"   # 
 CSS = f"""
 .photo{{position:absolute;inset:0;background:#000 url({PHOTO}) 58% 40%/auto 125% no-repeat;opacity:.62}}
 .lay{{position:relative;display:flex;flex-direction:column;align-items:center;z-index:2}}
-.st{{font-size:12px}}
+.st{{font-size:12px;max-width:165px;white-space:nowrap;overflow:hidden}}   /* page_trip.xml: maxLines=1, 30dp padding each side */
 .big{{font-size:60px;font-weight:500;line-height:1;margin-top:-2px}}
 .unit{{font-size:11px;color:{GREY};margin-top:1px}}
 .prow{{display:flex;gap:6px;margin-top:6px}}

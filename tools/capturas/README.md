@@ -10,7 +10,7 @@ Toman de la app todo lo que pueden:
 
 Lo demás sale de un único fichero de datos de ejemplo.
 
-**Idiomas sin traducción en la app:** cada texto que falta sale en inglés, como hace Android. En la 2.3, griego y ruso no tienen traducción (el móvil sale en inglés con números y fechas en su idioma), y el reloj solo existe en ES/CA/EN. Cuando entren las traducciones, basta con regenerar.
+**Textos de la app:** los `strings*.xml` son los de la build 376 (`prerelease/v24-pke-live`, 1cc0102): app y reloj traducidos en ES, CA, IT, EL y RU (el reloj aún no tiene italiano: sale en inglés, como en el reloj de verdad). Si a un idioma le falta un texto, sale en inglés, como hace Android. Cuando cambien las traducciones, trae los `strings*.xml` nuevos y regenera.
 
 ## Uso
 
@@ -80,7 +80,7 @@ Los HTML intermedios y los másters quedan en `tools/capturas/out/`, que git ign
 
 ## Píldoras
 - Textos en `pills/<idioma>.py`, una lista por idioma en el mismo orden; el número N/total sale solo.
-- Los botones de la app se escriben `[[clave]]` y salen de `strings.xml` en cada idioma (en griego y ruso, en inglés, como en el móvil). `[[w:clave]]` es un texto del reloj y `[[=texto]]` uno que no es nuestro (Android, Android Auto, ⋮). Detalle en `screens/pills.py`.
+- Los botones de la app se escriben `[[clave]]` y salen de `strings.xml` en cada idioma. `[[w:clave]]` es un texto del reloj y `[[=texto]]` uno que no es nuestro (Android, Android Auto, ⋮). Detalle en `screens/pills.py`.
 - 1–16 conservan su número; 17–21 son de la 2.3. Se publican en `docs/pildoras/<idioma>/`.
 - Textos de Android: los de AOSP (ver abajo). Los de Android Auto en IT/EL/RU, **sin verificar**; en EL/RU el menú de desarrollador lleva también el nombre en inglés.
 

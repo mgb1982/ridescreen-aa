@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crash_title">Ты попал в аварию?</string>
+    <string name="crash_im_ok">Я В ПОРЯДКЕ</string>
+    <string name="crash_sent">Оповещение отправлено твоим контактам</string>
+    <string name="crash_close">Закрыть</string>
+    <string name="wupd_title">Обновить RideScreen AA</string>
+    <string name="wupd_ready">Новая версия получена с телефона · нажми для установки</string>
+    <string name="wupd_install">Установить</string>
+    <string name="wupd_versions">Установлено: %1$s\nНовая: %2$s</string>
+    <string name="wupd_nothing">Обновление не ожидается. Отправь его с телефона: ❓ Помощь → ⌚ Обновить приложение для часов</string>
+    <string name="wupd_installing">Установка… подтверди, если часы спросят</string>
+    <string name="wupd_allow_unknown">Разреши RideScreen AA устанавливать приложения и вернись сюда</string>
+    <string name="wupd_no_unknown_setting">Эти часы не разрешают приложениям устанавливать обновления. Установи его с компьютера, как в первый раз.</string>
+    <string name="wupd_failed_signature">Эта версия подписана иначе, чем установленная. Удали приложение с часов и установи его заново с компьютера.</string>
+    <string name="wupd_cancelled">Установка отменена</string>
+    <string name="wupd_failed">Не удалось установить (%1$s)</string>
+    <string name="wupd_receiving">Получение обновления с телефона…</string>
+</resources>

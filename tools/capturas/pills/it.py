@@ -32,7 +32,7 @@ PILLS = [
          note="Se qualche volta non parte da sola, vedrai una notifica «**[[bt_trigger_title(ZT…)]] · "
               "[[bt_trigger_text]]**». Un tocco e via. Su Xiaomi, Redmi e POCO attiva anche l'**Avvio automatico** "
               "(l'app te lo segnala).",
-         foot="Funziona con la moto salvata nel Garage"),
+         foot="Funziona con la moto salvata nel [[garage_garage]]"),
 
     dict(icon="⚠️", tag="Se qualcosa si blocca",
          title="Android Auto non parte sul cruscotto",
@@ -63,7 +63,7 @@ PILLS = [
              "disegnato esattamente a quella misura.",
          ],
          note="Se qualcosa non va, [[fit_undo]] o [[fit_reset]] riportano tutto com'era.",
-         foot="Ogni moto del Garage salva la sua regolazione"),
+         foot="Ogni moto del [[garage_garage]] salva la sua regolazione"),
 
     dict(icon="🎙️", tag="Voce",
          title="«Ok Google» e il tasto della voce",
@@ -258,7 +258,7 @@ PILLS = [
              "[[bike_picker_menu]].",
          ],
          note="Hai un'altra moto e funziona? Condividi i registri nel gruppo: così si può aggiungere all'elenco.",
-         foot="Si salva per ogni moto del Garage"),
+         foot="Si salva per ogni moto del [[garage_garage]]"),
 
     dict(icon="🏠", tag="In viaggio",
          title="Casa, Lavoro e i tuoi appuntamenti",

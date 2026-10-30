@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="find_title">🅿️ A TUA MOTA</string>
+    <string name="find_waiting_gps">À procura de GPS…</string>
+    <string name="find_maps">Direções</string>
+    <string name="find_none">Ainda não há local de estacionamento guardado</string>
+    <string name="find_parked_ago">Estacionada %1$s</string>
+    <string name="find_here">Estás mesmo aí! 🏍️</string>
+    <string name="status_hus_off">⚠️ Iniciar o servidor head unit do Android Auto</string>
+    <string name="tile_tap_compass">Toca para encontrar</string>
+    <string name="park_page_find">🧭 Encontrar</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_clock_resync">Uhr des Motorrad-Displays neu synchronisieren (Zontes)</string>
+    <string name="setup_clock_resync_desc">Die Verbindung wird für einige Sekunden getrennt und wiederhergestellt, damit das Display die Uhrzeit erneut abruft. Intelligent: nur, wenn das Display verspätet nach der Uhrzeit gefragt hat (Hinweis auf eine fehlgeschlagene Synchronisierung), höchstens 3-mal. Immer einmal: bei der ersten Verbindung nach jedem Einschalten des Displays. Funktioniert nur mit Zontes-Displays.</string>
+    <string name="setup_clock_resync_smart">Intelligent</string>
+    <string name="setup_clock_resync_once">Immer einmal</string>
+    <string name="clock_resyncing">⏱ Uhr des Displays wird angepasst …</string>
+</resources>
