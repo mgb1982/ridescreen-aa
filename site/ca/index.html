@@ -70,10 +70,10 @@ h3 { font-size: 19px; font-weight: 700; }
 .muted { color: var(--muted); }
 
 /* top bar */
-.top { display: flex; align-items: center; gap: 14px; padding-block: 16px; }
-.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg); font-weight: 700; font-size: 18px; }
+.top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding-block: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg); font-weight: 700; font-size: 18px; white-space: nowrap; flex-shrink: 0; }
 .brand img { width: 34px; height: 34px; border-radius: 50%; }
-.top nav { margin-left: auto; display: flex; gap: 18px; flex-wrap: wrap; }
+.top nav { margin-left: auto; display: flex; gap: 8px 18px; flex-wrap: wrap; justify-content: flex-end; }
 .top nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 15px; }
 .top nav a:hover { color: var(--fg); }
 
@@ -152,9 +152,9 @@ footer a { color: var(--fg); }
       <a href="https://github.com/mgb1982/ridescreen-aa" class="opt">GitHub</a>
       <a href="../" lang="es" hreflang="es" title="Español" data-lang="es">ES</a>
       <a href="../en/" lang="en" hreflang="en" title="English" data-lang="en">EN</a>
+      <a href="../it/" lang="it" hreflang="it" title="Italiano" data-lang="it">IT</a>
       <a href="../el/" lang="el" hreflang="el" title="Ελληνικά" data-lang="el">EL</a>
       <a href="../ru/" lang="ru" hreflang="ru" title="Русский" data-lang="ru">RU</a>
-      <a href="../it/" lang="it" hreflang="it" title="Italiano" data-lang="it">IT</a>
     </nav>
   </header>
 
