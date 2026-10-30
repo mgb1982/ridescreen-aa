@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dc_good_morning">Bonjour</string>
+    <string name="dc_good_afternoon">Bon après-midi</string>
+    <string name="dc_good_evening">Bonsoir</string>
+    <string name="dc_streak_days">jours d’affilée</string>
+    <string name="dc_rain_soon">Pluie probable : %1$d%% dans les prochaines heures</string>
+    <string name="dc_wx_clear">ciel dégagé</string>
+    <string name="dc_wx_cloudy">nuageux</string>
+    <string name="dc_wx_fog">brouillard</string>
+    <string name="dc_wx_rain">pluie</string>
+    <string name="dc_wx_snow">neige</string>
+    <string name="dc_wx_storm">orage</string>
+    <string name="dc_bye_title">À bientôt · résumé de ta journée</string>
+    <string name="dc_km_today">km aujourd’hui</string>
+    <string name="dc_min">min</string>
+    <string name="dc_kmh_avg">km/h en moyenne</string>
+    <string name="dc_kmh_max">km/h max.</string>
+    <string name="dc_parked_photo">Moto garée · photo enregistrée</string>
+    <string name="dc_parked">Moto garée</string>
+    <string name="dc_rain_tomorrow">Demain à 8 h : %1$d%% de risque de pluie · pense à prendre ton équipement de pluie</string>
+</resources>
