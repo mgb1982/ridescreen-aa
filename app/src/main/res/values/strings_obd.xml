@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4 test: OBD reader (ELM327) -->
+    <string name="obd_entry">🔌 OBD reader (test)</string>
+    <string name="obd_title">OBD reader (test)</string>
+    <string name="obd_no_adapter">No paired OBD adapter found.\n\nPair the ELM327 first in Android → Bluetooth (PIN is usually 1234 or 0000) and close any other OBD app (Torque). Paired now: %1$s</string>
+    <string name="obd_pick_other">Choose from the paired list</string>
+    <string name="obd_pick_title">Which one is the OBD adapter?</string>
+    <string name="obd_intro">Reads the engine control unit through %1$s: what data it offers, its current values, stored fault codes and 20 s of live RPM, speed, temperature and throttle.\n\nRead only: it never clears codes or sends anything to the bike. Contact on (engine running is better) and Torque closed.</string>
+    <string name="obd_start">Start</string>
+    <string name="obd_connecting">Connecting to the adapter…</string>
+    <string name="obd_fail_link">Couldn\'t connect to the adapter. Is it paired, powered (contact on) and not in use by another app?</string>
+    <string name="obd_fail_ecu">The adapter answered but the engine control unit didn\'t. Turn the contact on (or start the engine) and try again.</string>
+    <string name="obd_share_hint">Everything is in the log too: ❓ Help → Share logs.</string>
+</resources>

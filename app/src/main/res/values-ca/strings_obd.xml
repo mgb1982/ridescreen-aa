@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4 test: OBD reader (ELM327) -->
+    <string name="obd_entry">🔌 Lector OBD (prova)</string>
+    <string name="obd_title">Lector OBD (prova)</string>
+    <string name="obd_no_adapter">No hi ha cap adaptador OBD aparellat.\n\nAparella abans l’ELM327 a Android → Bluetooth (el PIN sol ser 1234 o 0000) i tanca qualsevol altra app d’OBD (Torque). Aparellats ara: %1$s</string>
+    <string name="obd_pick_other">Triar de la llista d’aparellats</string>
+    <string name="obd_pick_title">Quin és l’adaptador OBD?</string>
+    <string name="obd_intro">Llegeix la centraleta a través de %1$s: quines dades ofereix, els valors actuals, els codis d’avaria desats i 20 s de RPM, velocitat, temperatura i accelerador en directe.\n\nNomés lectura: no esborra codis ni envia res a la moto. Amb el contacte posat (millor amb el motor en marxa) i Torque tancat.</string>
+    <string name="obd_start">Començar</string>
+    <string name="obd_connecting">Connectant amb l’adaptador…</string>
+    <string name="obd_fail_link">No s’ha pogut connectar amb l’adaptador. Està aparellat, amb corrent (contacte posat) i sense cap altra app fent-lo servir?</string>
+    <string name="obd_fail_ecu">L’adaptador respon però la centraleta no. Posa el contacte (o engega el motor) i torna-ho a provar.</string>
+    <string name="obd_share_hint">Tot queda també al registre: ❓ Ajuda → Compartir registres.</string>
+</resources>
