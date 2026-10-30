@@ -150,7 +150,7 @@
     <string name="gpx_download_roadside_poi">Télécharger les POI en bord de route</string>
     <string name="gpx_export_map_data">Exporter les données cartographiques…</string>
     <string name="gpx_import_map_data">Importer des données cartographiques…</string>
-    <string name="gpx_map_gpx_uses_maplibre_vector_tiles_online_and_op">Map / GPX utilise des tuiles vectorielles MapLibre (en ligne) et des packs de régions hors ligne en option. La recherche/OSRM/limites nécessitent une connexion Internet par téléphone avant le Wi-Fi de la moto. Dash : Fin / Stationnement / Recalcul, LIMITE, Cap / Nord, zoom, pitch 3D.</string>
+    <string name="gpx_map_gpx_uses_maplibre_vector_tiles_online_and_op">Map / GPX utilise des tuiles vectorielles MapLibre (en ligne) et des packs de régions hors ligne en option. La recherche/OSRM/limites nécessitent une connexion Internet par téléphone avant le Wi-Fi de la moto. Tableau de bord : Fin / Stationnement / Recalcul, LIMITE, Cap / Nord, zoom et inclinaison 3D.</string>
     <string name="hud_start_android_auto_and_connect_to_your_bike_to_s">Démarre Android Auto et connecte-toi à ta moto pour afficher le tableau de bord ici.\n\nTu peux aussi appuyer sur Carte pour afficher un aperçu sur le téléphone sans la moto.</string>
     <string name="hud_str">✕</string>
     <string name="hud_dash_view">Vue du tableau de bord</string>
