@@ -88,8 +88,8 @@ Los HTML intermedios y los másters quedan en `tools/capturas/out/`, que git ign
 - **Cabecera del mapa del viaje:** la app muestra `6.80 km · 00:18:40 · avg 22 · max 71 km/h` en todos los idiomas (`TripMapActivity` y `TripModel.distanceText` usan `Locale.US` y «avg/max» fijos). Las capturas muestran la versión localizada. Hay que arreglarlo en la app.
 - **Fuente del reloj:** Roboto, estrechada en las cifras grandes para imitar la condensada de Wear OS.
 - **`GarageActivity`:** el menú de una moto («Use this bike», «Rename», «Change photo»…) está en inglés fijo en todos los idiomas (solo «Modelo de moto…» se traduce). Hay que arreglarlo en la app.
-- **Unidades fijas en el código:** «km» (`Maintenance.fmtKm`, `Records.km`, `wear/Trips.kmText`, `RideGlance`) y «min» del reloj salen en letras latinas en todos los idiomas, también en griego y ruso. La brújula del reloj usa letras en castellano (N, NE, E, SE, S, SO, O, NO). Las capturas lo muestran tal cual.
-- **Reloj en italiano:** `wear/` no tiene `values-it` (a 1cc0102), así que el reloj sale en inglés en IT.
+- **Unidades y brújula:** salen de los recursos de la app desde la 378: `km`/`min` como `Units.kt` (ru км/мин, el λεπ.) y la brújula de `R.array.compass_points` (`arrays_compass.xml`).
+- **Reloj en italiano:** `wear/values-it` existe desde la 378.
 - **Semáforos y gasolineras:** nombres de avenidas públicas y precios inventados; la app los saca de OpenStreetMap y del Ministerio.
 - **Foto de la cabecera (`assets/hero.png`):** está sacada de la captura anterior, con el texto borrado, porque el original no está en el repo. Si se pone la foto original del Garaje con el mismo nombre, todo mejora de nitidez al regenerar.
 

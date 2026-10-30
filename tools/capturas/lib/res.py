@@ -46,7 +46,8 @@ class Strings:
         self.lang = lang
         self.s, self.p, self.a = {}, {}, {}
         for folder in ["values", "values" + LANG_DIR[lang]] if LANG_DIR[lang] else ["values"]:
-            for f in sorted(glob.glob(os.path.join(res, folder, "strings*.xml"))):
+            for f in sorted(glob.glob(os.path.join(res, folder, "strings*.xml"))
+                            + glob.glob(os.path.join(res, folder, "arrays*.xml"))):
                 root = ET.parse(f).getroot()
                 for el in root.iter("string"):
                     self.s[el.get("name")] = _text(el)

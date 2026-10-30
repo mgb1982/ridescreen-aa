@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- Resynchronisation de l’horloge du tableau de bord Zontes. -->
+    <string name="setup_clock_resync">Resynchroniser l’horloge du tableau de bord (Zontes)</string>
+    <string name="setup_clock_resync_desc">Coupe la connexion pendant quelques secondes, puis se reconnecte pour que le tableau de bord récupère l’heure. Mode intelligent : uniquement lorsque le tableau de bord a demandé l’heure trop tard (signe d’un échec de synchronisation), jusqu’à 3 fois. Une fois systématiquement : à la première connexion de chaque démarrage du tableau de bord. Fonctionne uniquement avec les tableaux de bord Zontes.</string>
+    <string name="setup_clock_resync_smart">Intelligent</string>
+    <string name="setup_clock_resync_once">Une fois à chaque démarrage</string>
+    <string name="clock_resyncing">⏱ Réglage de l’horloge du tableau de bord…</string>
+</resources>

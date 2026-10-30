@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="find_title">🅿️ TA MOTO</string>
+    <string name="find_waiting_gps">Recherche du GPS…</string>
+    <string name="find_maps">Itinéraire</string>
+    <string name="find_none">Aucun emplacement de stationnement enregistré pour le moment</string>
+    <string name="find_parked_ago">Garée depuis %1$s</string>
+    <string name="find_here">Tu es juste là ! 🏍️</string>
+    <string name="status_hus_off">⚠️ Démarrer le serveur d’unité principale Android Auto</string>
+    <string name="tile_tap_compass">Toucher pour la retrouver</string>
+    <string name="park_page_find">🧭 Retrouver la moto</string>
+</resources>

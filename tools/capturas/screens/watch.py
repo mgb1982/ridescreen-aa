@@ -115,7 +115,7 @@ def tile(lang):
     s, L = Strings(lang, WEAR_RES), D.LIVE
     body = (f'<div style="color:{GOLD};font-size:13px">{esc(s("tile_riding"))}</div>'
             f'<div style="font-size:30px;font-weight:700;color:#F1F4EC">{D.km(lang, L["km"])}</div>'
-            f'<div style="color:{GREY};font-size:13px">{L["mins"]} min · {esc(s("pill_avg", L["avg"]))}</div>')
+            f'<div style="color:{GREY};font-size:13px">{esc(D.mins(lang, L["mins"]))} · {esc(s("pill_avg", L["avg"]))}</div>')
     return watch_page(body, extra_css=CSS)
 
 
@@ -160,7 +160,7 @@ def info(lang):
         return (f'<div style="width:80px;margin:2px 0;white-space:nowrap"><div style="color:{GOLD};font-size:16px;font-weight:500">'
                 f'<span style="{COND}">{v}</span></div><div style="color:{GREY};font-size:9px">{esc(label)}</div></div>')
     grid = (cell(D.dur(L["secs"]), s("label_total")) + cell(L["alt"], s("label_alt")) +
-            cell(L["heading"], s("label_heading")) + cell(L["gps"], s("label_gps")) +
+            cell(s.a["compass_points"][L["heading"]], s("label_heading")) + cell(L["gps"], s("label_gps")) +
             cell(f'{L["phone_batt"]}% · {L["temp"]}°', s("label_battery")) + cell("12/15 +3", s("label_volume")))
     body = (f'<div style="font-size:40px;font-weight:500;line-height:1"><span style="{COND}">18:42</span></div>'
             f'<div style="display:flex;flex-wrap:wrap;width:164px;justify-content:center;margin-top:6px">{grid}</div>'

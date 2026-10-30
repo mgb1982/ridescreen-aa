@@ -35,7 +35,7 @@ MAINT = dict(task_key="maint_oil", left_km=420)   # task name is the app's own d
 
 # Ride in progress (watch, live screens): consistent across turn alert, tile and ride page.
 LIVE = dict(speed=47, km=4.2, mins=12, secs=12 * 60 + 40, avg=23, max=64, clock="18:32",
-            next_turn_m=120, alt=48, gps=4, heading="NE", phone_batt=64, temp=38)
+            next_turn_m=120, alt=48, gps=4, heading=1, phone_batt=64, temp=38)
 
 # Older rides in the watch list.
 WATCH_TRIPS = [
@@ -59,8 +59,16 @@ def num(lang, x, decimals=1):
     return s.replace(",", "§").replace(".", DEC[lang]).replace("§", THOUS[lang])
 
 
+KM_UNIT = {"ru": "км"}                       # Units.kt: km(lang)
+MIN_UNIT = {"ru": "мин", "el": "λεπ."}       # Units.kt: min(lang)
+
+
 def km(lang, x, decimals=1):
-    return f"{num(lang, x, decimals)} km"
+    return f"{num(lang, x, decimals)} {KM_UNIT.get(lang, 'km')}"
+
+
+def mins(lang, n):
+    return f"{n} {MIN_UNIT.get(lang, 'min')}"
 
 
 def dur(secs, hours=False):

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- Volume multimédia compensé selon la vitesse. -->
+    <string name="speed_volume_title">Volume adapté à la vitesse</string>
+    <string name="speed_volume_desc">Augmente le volume multimédia du téléphone (voix de navigation et musique) lorsque tu accélères, pour couvrir le bruit du vent. Le volume que tu règles reste la base : modifie-le à tout moment et l’amplification s’adapte. Fonction en pause lorsque les commandes au guidon pilotent Android Auto.</string>
+    <string name="speed_volume_off">Désactivé</string>
+    <string name="speed_volume_low">Faible</string>
+    <string name="speed_volume_medium">Moyen</string>
+    <string name="speed_volume_high">Élevé</string>
+    <string name="speed_volume_status_off">Désactivé</string>
+    <string name="speed_volume_status_waiting">En attente de la connexion à la moto…</string>
+    <string name="speed_volume_status_paused">En pause : les commandes au guidon maintiennent le volume.</string>
+    <string name="speed_volume_status_no_gps">Actif : en attente de la vitesse GPS…</string>
+    <string name="speed_volume_status_live">Actif : %1$d km/h · amplification +%2$d</string>
+    <string name="speed_volume_advanced_show">Avancé ▾</string>
+    <string name="speed_volume_advanced_hide">Avancé ▴</string>
+    <string name="speed_volume_custom">Courbe personnalisée (remplace celle du niveau choisi)</string>
+    <string name="speed_volume_start_label">Commencer l’amplification à : %1$d km/h</string>
+    <string name="speed_volume_step_label">Un niveau supplémentaire tous les : %1$d km/h</string>
+    <string name="speed_volume_max_label">Amplification maximale : +%1$d niveaux</string>
+    <string name="speed_volume_custom_hint">Les niveaux utilisent une échelle de volume à 15 crans. Un niveau autre que Désactivé doit rester sélectionné pour que la courbe personnalisée fonctionne.</string>
+</resources>
