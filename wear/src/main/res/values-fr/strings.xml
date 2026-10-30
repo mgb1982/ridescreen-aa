@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RideScreen AA</string>
+    <string name="status_no_phone">Aucune donnée du téléphone</string>
+    <string name="status_streaming">● Connecté au tableau de bord</string>
+    <string name="status_reconnecting">● Reconnexion…</string>
+    <string name="status_idle">À l’arrêt</string>
+    <string name="unit_kmh">km/h</string>
+    <string name="label_dist">km</string>
+    <string name="label_time">en mouvement</string>
+    <string name="label_max">km/h max.</string>
+    <string name="label_avg">km/h moy.</string>
+    <string name="hint_logging_off">L’enregistrement des trajets est désactivé sur le téléphone.</string>
+    <string name="btn_ok">OK</string>
+    <string name="channel_ride">Trajet en cours</string>
+    <string name="ride_active">Trajet en cours — toucher pour afficher les données</string>
+    <string name="label_total">durée du trajet</string>
+    <string name="label_alt">altitude m</string>
+    <string name="label_heading">cap</string>
+    <string name="label_gps">GPS ±m</string>
+    <string name="label_battery">téléphone</string>
+    <string name="label_volume">volume</string>
+    <string name="status_clock_resync">⏱ Réglage de l’horloge du tableau de bord…</string>
+    <string name="trips_title">Trajets</string>
+    <string name="trips_loading">Chargement des trajets…</string>
+    <string name="trips_none">Aucun trajet enregistré pour le moment</string>
+    <string name="trips_no_phone">Aucune réponse du téléphone</string>
+    <string name="trip_line">%1$s · moy. %2$d · max. %3$d</string>
+    <string name="map_loading">Tracé de la carte…</string>
+    <string name="map_no_phone">Pas encore de carte : le téléphone est-il à proximité ?</string>
+    <string name="map_desc">Carte du trajet</string>
+    <string name="pill_max">max. %d</string>
+    <string name="pill_avg">moy. %d</string>
+    <string name="parked_line">🅿️ Moto garée depuis %1$s · la retrouver</string>
+    <string name="parked_no_maps">Aucune application de cartes sur la montre</string>
+    <string name="tile_label">Trajet</string>
+    <string name="tile_riding">EN ROUTE</string>
+    <string name="tile_parked">🅿️ GARÉE</string>
+    <string name="tile_tap_directions">Toucher pour ouvrir, puis 🅿️ pour lancer l’itinéraire</string>
+    <string name="tile_last_ride">DERNIER TRAJET</string>
+    <string name="tile_no_data">Aucun trajet pour le moment</string>
+    <string name="complication_label">RideScreen · km</string>
+    <string name="complication_desc">km parcourus</string>
+</resources>
