@@ -56,11 +56,6 @@ def main(langs):
         print(collage([os.path.join(OUT, "dry", rel(p)) for p in ps], os.path.join(d, "collage.jpg")), "collage")
 
 
-if __name__ == "__main__":
-    main(sys.argv[1:] or ["es"])
-    for lang in sys.argv[1:] or ["es"]:
-        compact(lang)
-
 
 COMPACT = """
 body{background:var(--bg)}
@@ -108,3 +103,9 @@ def compact(lang):
 
 
 HEAD = {"es": "versión de pruebas · novedades frente a la 2.3 y cómo poner el keyless"}
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:] or ["es"])
+    for lang in sys.argv[1:] or ["es"]:
+        compact(lang)
