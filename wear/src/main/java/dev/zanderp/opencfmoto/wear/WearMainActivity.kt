@@ -371,7 +371,7 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
     }
 
     private fun compass(deg: Double): String {
-        val names = arrayOf("N", "NE", "E", "SE", "S", "SO", "O", "NO")
+        val names = resources.getStringArray(R.array.compass_points)
         val i = (((deg % 360 + 360) % 360 + 22.5) / 45.0).toInt() % 8
         return names[i]
     }

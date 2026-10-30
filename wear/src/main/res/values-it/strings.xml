@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="status_no_phone">Nessun dato dal telefono</string>
+    <string name="status_streaming">● Collegato al cruscotto</string>
+    <string name="status_reconnecting">● Ricollegamento…</string>
+    <string name="status_idle">Non in viaggio</string>
+    <string name="label_dist">km</string>
+    <string name="label_time">in movimento</string>
+    <string name="label_max">km/h max</string>
+    <string name="label_avg">km/h media</string>
+    <string name="hint_logging_off">La registrazione dei viaggi è disattivata sul telefono</string>
+    <string name="channel_ride">Viaggio in corso</string>
+    <string name="ride_active">Viaggio in corso — tocca per i dati</string>
+    <string name="label_total">tempo di viaggio</string>
+    <string name="label_alt">altitudine m</string>
+    <string name="label_heading">direzione</string>
+    <string name="label_gps">GPS ±m</string>
+    <string name="label_battery">telefono</string>
+    <string name="label_volume">volume</string>
+    <string name="status_clock_resync">⏱ Regolazione dell\'orologio del cruscotto…</string>
+    <string name="trips_title">Viaggi</string>
+    <string name="trips_loading">Caricamento dei viaggi…</string>
+    <string name="trips_none">Nessun viaggio salvato</string>
+    <string name="trips_no_phone">Il telefono non risponde</string>
+    <string name="trip_line">%1$s · media %2$d · max %3$d</string>
+    <string name="map_loading">Disegno la mappa…</string>
+    <string name="map_no_phone">Ancora nessuna mappa — il telefono è vicino?</string>
+    <string name="map_desc">Mappa del viaggio</string>
+    <string name="pill_max">max %d</string>
+    <string name="pill_avg">media %d</string>
+    <string name="parked_line">🅿️ Moto parcheggiata %1$s · trovala</string>
+    <string name="parked_no_maps">Nessuna app di mappe sull\'orologio</string>
+    <string name="tile_label">Viaggio</string>
+    <string name="tile_riding">IN VIAGGIO</string>
+    <string name="tile_parked">🅿️ PARCHEGGIATA</string>
+    <string name="tile_tap_directions">Tocca: apri, poi 🅿️ per le indicazioni</string>
+    <string name="tile_last_ride">ULTIMO VIAGGIO</string>
+    <string name="tile_no_data">Ancora nessun viaggio</string>
+    <string name="complication_label">RideScreen · km</string>
+    <string name="complication_desc">km del viaggio</string>
+</resources>

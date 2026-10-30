@@ -99,7 +99,7 @@ object Records {
     fun badge(ctx: Context, trip: Trip): String? =
         ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString("badge_${trip.id}", null)
 
-    fun km(v: Double): String = String.format(Locale.getDefault(), "%.1f km", v)
+    fun km(v: Double): String = String.format(Locale.getDefault(), "%.1f %s", v, Units.km())
 
     private fun notify(ctx: Context, lines: List<String>) {
         val nm = ctx.getSystemService(NotificationManager::class.java) ?: return

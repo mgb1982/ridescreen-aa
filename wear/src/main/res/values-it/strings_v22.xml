@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crash_title">Sei caduto?</string>
+    <string name="crash_im_ok">STO BENE</string>
+    <string name="crash_sent">Avviso inviato ai tuoi contatti</string>
+    <string name="crash_close">Chiudi</string>
+    <string name="wupd_title">Aggiorna RideScreen AA</string>
+    <string name="wupd_ready">Nuova versione ricevuta dal telefono · tocca per installarla</string>
+    <string name="wupd_install">Installa</string>
+    <string name="wupd_versions">Installata: %1$s
+Nuova: %2$s</string>
+    <string name="wupd_nothing">Nessun aggiornamento in attesa. Invialo dal telefono: ❓ Aiuto → ⌚ Aggiorna l\'app dell\'orologio</string>
+    <string name="wupd_installing">Installazione… conferma se l\'orologio lo chiede</string>
+    <string name="wupd_allow_unknown">Consenti a RideScreen AA di installare app, poi torna qui</string>
+    <string name="wupd_no_unknown_setting">Questo orologio non permette alle app di installare aggiornamenti. Installala da un computer, come la prima volta</string>
+    <string name="wupd_failed_signature">Questa versione ha una firma diversa da quella installata. Disinstalla l\'app dell\'orologio e reinstallala da un computer</string>
+    <string name="wupd_cancelled">Installazione annullata</string>
+    <string name="wupd_failed">Impossibile installarla (%1$s)</string>
+    <string name="wupd_receiving">Ricezione dell\'aggiornamento dal telefono…</string>
+</resources>

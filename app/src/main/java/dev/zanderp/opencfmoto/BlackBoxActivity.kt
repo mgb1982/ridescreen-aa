@@ -141,7 +141,7 @@ class BlackBoxActivity : AppCompatActivity() {
         "moving" -> R.string.bb_outcome_moving; "test" -> R.string.bb_outcome_test; else -> R.string.bb_outcome_other
     })
     private fun compass(b: Float): String {
-        val dirs = arrayOf("N", "NE", "E", "SE", "S", "SO", "O", "NO")
+        val dirs = resources.getStringArray(R.array.compass_points)
         return "${dirs[((b + 22.5f) / 45f).toInt().mod(8)]} (${b.toInt()}°)"
     }
 

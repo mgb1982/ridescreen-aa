@@ -107,7 +107,7 @@ object RideGlance {
     fun duration(ms: Long): String {
         val s = ms / 1000
         return if (s >= 3600) String.format(Locale.ROOT, "%d:%02d h", s / 3600, (s % 3600) / 60)
-        else String.format(Locale.ROOT, "%d min", s / 60)
+        else String.format(Locale.ROOT, "%d %s", s / 60, Units.min())
     }
 
     fun openApp(ctx: Context): PendingIntent = PendingIntent.getActivity(
@@ -234,7 +234,7 @@ class RideComplicationService : ComplicationDataSourceService() {
             PlainComplicationText.Builder(value).build(),
             PlainComplicationText.Builder(getString(R.string.complication_desc)).build(),
         )
-            .setTitle(PlainComplicationText.Builder("km").build())
+            .setTitle(PlainComplicationText.Builder(Units.km()).build())
             .setTapAction(RideGlance.openApp(this))
             .build()
     }

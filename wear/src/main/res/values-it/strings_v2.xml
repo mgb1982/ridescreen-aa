@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="find_title">🅿️ LA TUA MOTO</string>
+    <string name="find_waiting_gps">Ricerca GPS…</string>
+    <string name="find_maps">Indicazioni</string>
+    <string name="find_none">Nessun parcheggio salvato</string>
+    <string name="find_parked_ago">Parcheggiata %1$s</string>
+    <string name="find_here">Ci sei! 🏍️</string>
+    <string name="status_hus_off">⚠️ Avvia il server di AA</string>
+    <string name="tile_tap_compass">Tocca per trovarla</string>
+    <string name="park_page_find">🧭 Trovala</string>
+</resources>

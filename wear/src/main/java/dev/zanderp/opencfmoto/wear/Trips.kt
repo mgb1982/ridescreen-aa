@@ -29,7 +29,7 @@ data class TripSummary(
         val f = SimpleDateFormat("HH:mm", Locale.getDefault())
         return "${f.format(Date(start))}–${f.format(Date(end))}"
     }
-    fun kmText(): String = String.format(Locale.getDefault(), "%.2f km", distanceM / 1000.0)
+    fun kmText(): String = String.format(Locale.getDefault(), "%.2f %s", distanceM / 1000.0, Units.km())
     fun movingText(): String {
         val s = movingMs / 1000
         return if (s >= 3600) String.format(Locale.ROOT, "%d:%02d:%02d", s / 3600, (s % 3600) / 60, s % 60)

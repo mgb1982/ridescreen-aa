@@ -323,7 +323,7 @@ object Maintenance {
         return Triple(liters / km * 100.0, euros?.let { it / km }, fills.size)
     }
 
-    fun fmtKm(v: Double): String = String.format(Locale.getDefault(), "%,.0f km", v)
+    fun fmtKm(v: Double): String = String.format(Locale.getDefault(), "%,.0f %s", v, Units.km())
 
     /** On connecting to the bike: one heads-up per item that is due or close (not repeated daily). */
     fun checkDue(ctx: Context) {
