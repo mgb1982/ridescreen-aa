@@ -474,7 +474,7 @@ class EasyConnProber(
                     "off or allow LAN — not treating as hard VPN error (bind still works).")
             } else {
                 log(
-                    "!! SoftAP is up but EasyConn never answered (NSD empty, :$BIKE_PROBE_PORT " +
+                    "!! bike link is up (Wi‑Fi or Wi‑Fi Direct) but EasyConn never answered (NSD empty, :$BIKE_PROBE_PORT " +
                         "refused, nearby ports quiet) and Yunmo :${YunmoFrame.DEFAULT_PORT} also failed. " +
                         "Keep Nav QR open on the dash. If this is Kove/Thinkerride, check " +
                         "[DISC] thinkerride-scan in Share Logs.",

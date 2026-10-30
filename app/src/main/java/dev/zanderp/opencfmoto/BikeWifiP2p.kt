@@ -35,10 +35,10 @@ import kotlin.math.abs
  *     group the way there is for a specifier join). Instead the caller binds its sockets to the
  *     phone's P2P interface IP, which we hand back via [onConnected]. The 192.168.49.0/24 subnet
  *     is on-link, so binding the source IP is enough to route over the P2P interface. A bonus is
- *     that Android Auto / GMS keep using cellular for map tiles â€” no VPN, no route capture.
+ *     that Android Auto / GMS keep using cellular for map tiles — no VPN, no route capture.
  *
  * âš ï¸ This helper logs verbosely (raw peers, group info, addresses) so a single
- * bike session reveals what actually happens and what â€” if anything â€” needs correcting. Follow
+ * bike session reveals what actually happens and what — if anything — needs correcting. Follow
  * the project's "implement â†’ one logged bike session â†’ adjust" loop (see docs/00 and docs/01 Â§7).
  */
 object BikeWifiP2p {
@@ -481,7 +481,7 @@ object BikeWifiP2p {
     ) {
         if (info.isGroupOwner) {
             // We should be the client, not the GO. If we became GO the bike won't connect back.
-            log("$TAG !! WE became the Group Owner â€” the bike is expected to be the GO. " +
+            log("$TAG !! WE became the Group Owner — the bike is expected to be the GO. " +
                 "This usually means the join fell back to creating a new group. Share this log.")
         }
         val gateway = info.groupOwnerAddress as? Inet4Address
@@ -502,7 +502,7 @@ object BikeWifiP2p {
                 if (!active || connected) return@thread
                 connected = true
                 cancelTimeout()
-                log("$TAG *** connected: phone=${bindIp.hostAddress} bike(GO)=${gateway.hostAddress} â€” starting PXC ***")
+                log("$TAG *** connected: phone=${bindIp.hostAddress} bike(GO)=${gateway.hostAddress} — starting PXC ***")
                 onConnected(bindIp, gateway)
             }
         }

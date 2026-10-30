@@ -1033,6 +1033,8 @@ class MainActivity : AppCompatActivity() {
         statsHandler.removeCallbacks(husTicker)
         statsHandler.removeCallbacks(pkeTicker)
         resumedNow = false
+        PkeBattery.onEngineChanged = null
+        LogBus.log("[UI] paused (live voltage stops)")
         CrashGuard.persistSession(this)
         super.onPause()
     }
@@ -1080,9 +1082,11 @@ class MainActivity : AppCompatActivity() {
         statsHandler.removeCallbacks(pkeTicker)
         statsHandler.post(pkeTicker)
         resumedNow = true
+        LogBus.log("[UI] resumed")
+        PkeBattery.onEngineChanged = { runOnUiThread { renderStatus(ConnectionState.phase, ConnectionState.detail); renderPkeCard() } }
         maybeStartLive()
         // Engine state straight away from the last reading (if fresh), not after the next read.
-        if (engineRunning == null) PkeBattery.last(this)?.takeIf { System.currentTimeMillis() - it.atMs <= 3 * 60_000L }?.volts?.let { updateEngine(it) }
+        if (PkeBattery.engineRunning == null) PkeBattery.last(this)?.takeIf { System.currentTimeMillis() - it.voltsAtMs <= 3 * 60_000L }?.volts?.let { PkeBattery.noteVolts(it) }
         renderStatus(ConnectionState.phase, ConnectionState.detail)
         if (WifiGate.isWifiEnabled(this)) WifiGate.cancelNotification(this)
         // Retry auto-connect on resume: after finishing first-run setup, or once the bike's Wi-Fi
@@ -1594,31 +1598,8 @@ class MainActivity : AppCompatActivity() {
     // starts). The charging system lifts the battery above ~13.2 V; once the engine stops it falls back
     // below ~12.8 V. Two readings in a row, hysteresis in between. Thresholds are a first guess: every
     // transition is logged with its voltage ([PKE] engine ON/OFF) so they can be tuned from real rides.
-    private var engineRunning: Boolean? = null
-    private var engineHi = 0
-    private var engineLo = 0
-
-    private fun updateEngine(v: Float) {
-        if (v >= ENGINE_ON_V) { engineHi++; engineLo = 0 }
-        else if (v <= ENGINE_OFF_V) { engineLo++; engineHi = 0 }
-        else { engineHi = 0; engineLo = 0 }
-        val before = engineRunning
-        // Manel (22 Oct): the voltage showed the start at once but "motor en marcha" lagged a read (15 s).
-        // A charging voltage can't come from a parked bike: one reading turns it ON. Going OFF still
-        // takes two in a row (a load dip mustn't flicker it) — one is enough while it's still unknown.
-        if (engineHi >= 1) engineRunning = true
-        if (engineLo >= 2 || (engineLo >= 1 && engineRunning == null)) engineRunning = false
-        if (engineRunning != before) {
-            LogBus.log("[PKE] engine ${if (engineRunning == true) "ON" else "OFF"} at ${"%.1f".format(v)} V")
-            renderStatus(ConnectionState.phase, ConnectionState.detail)
-        }
-    }
-
-    /** True / false once known from a reading under 3 min old, else null. */
-    private fun engineState(): Boolean? {
-        val r = PkeBattery.last(this) ?: return null
-        return if (System.currentTimeMillis() - r.atMs <= 3 * 60_000L) engineRunning else null
-    }
+    /** True / false once known from a voltage read under 3 min ago, else null. State lives in [PkeBattery]. */
+    private fun engineState(): Boolean? = PkeBattery.engineState(this)
 
     private fun pkeRefresh() {
         if (PkeBattery.code(this).length < 8) { renderPkeCard(); return }
@@ -1631,7 +1612,6 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread {
                 pkeBusy = false
                 if (res?.reading != null) pkeFails = 0 else pkeFails++
-                res?.reading?.volts?.let { updateEngine(it) }
                 renderPkeCard()
             }
         }, "pke-card").start()
@@ -1679,7 +1659,7 @@ class MainActivity : AppCompatActivity() {
                         val took = android.os.SystemClock.elapsedRealtime() - t
                         if (v != null) {
                             miss = 0; n++; sumMs += took; if (took > maxMs) maxMs = took
-                            runOnUiThread { pkeFails = 0; updateEngine(v); renderPkeCard() }
+                            runOnUiThread { pkeFails = 0; renderPkeCard() }
                         } else miss++
                         if (++tick % 5 == 0 && live.alive && !PkeUnlock.holdingBox) {
                             val before = PkeBattery.last(app)?.locked
@@ -2989,8 +2969,6 @@ class MainActivity : AppCompatActivity() {
         const val EXTRA_START_GPX = "start_gpx"
         const val EXTRA_BT_TRIGGER = "bt_trigger"
         const val EXTRA_WIDGET_CONNECT = "widget_connect"
-        private const val ENGINE_ON_V = 13.2f
-        private const val ENGINE_OFF_V = 12.8f
         private const val CANCEL_LOCK_MS = 3_000L
         @Volatile private var connectStartedAt = 0L
         /** From "Fit to dash": restart Android Auto so a new panel shape takes effect. */
