@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crash_title">Tu as eu un accident ?</string>
+    <string name="crash_im_ok">JE VAIS BIEN</string>
+    <string name="crash_sent">Alerte envoyée à tes contacts</string>
+    <string name="crash_close">Fermer</string>
+    <string name="wupd_title">Mettre à jour RideScreen AA</string>
+    <string name="wupd_ready">Nouvelle version reçue du téléphone · toucher pour installer</string>
+    <string name="wupd_install">Installer</string>
+    <string name="wupd_versions">Installée : %1$s
+Nouvelle : %2$s</string>
+    <string name="wupd_nothing">Aucune mise à jour en attente. Envoie-la depuis le téléphone : ❓ Aide → ⌚ Mettre à jour l’application de la montre</string>
+    <string name="wupd_installing">Installation… confirme si la montre te le demande.</string>
+    <string name="wupd_allow_unknown">Autorise RideScreen AA à installer des applications, puis reviens ici.</string>
+    <string name="wupd_no_unknown_setting">Cette montre ne permet pas aux applications d’installer des mises à jour. Installe-la depuis un ordinateur, comme la première fois.</string>
+    <string name="wupd_failed_signature">Cette version est signée différemment de celle qui est installée. Désinstalle l’application de la montre, puis réinstalle-la depuis un ordinateur.</string>
+    <string name="wupd_cancelled">Installation annulée</string>
+    <string name="wupd_failed">Impossible de l’installer (%1$s)</string>
+    <string name="wupd_receiving">Réception de la mise à jour depuis le téléphone…</string>
+</resources>
