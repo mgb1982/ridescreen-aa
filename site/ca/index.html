@@ -139,6 +139,9 @@ footer a { color: var(--fg); }
   .top nav { gap: 12px; }
   .top nav .opt { display: none; }
 }
+.top nav a:has(.flag) { display: inline-flex; align-items: center; }
+.flag { width: 24px; height: 16px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.18); display: block; }
+.top nav a:has(.flag):hover .flag { box-shadow: 0 0 0 2px var(--accent); }
 </style>
 </head>
 <body>
@@ -150,11 +153,11 @@ footer a { color: var(--fg); }
       <a href="guia/">Guia</a>
       <a href="rellotge/" class="opt">Rellotge</a>
       <a href="https://github.com/mgb1982/ridescreen-aa" class="opt">GitHub</a>
-      <a href="../" lang="es" hreflang="es" title="Español" data-lang="es">ES</a>
-      <a href="../en/" lang="en" hreflang="en" title="English" data-lang="en">EN</a>
-      <a href="../it/" lang="it" hreflang="it" title="Italiano" data-lang="it">IT</a>
-      <a href="../el/" lang="el" hreflang="el" title="Ελληνικά" data-lang="el">EL</a>
-      <a href="../ru/" lang="ru" hreflang="ru" title="Русский" data-lang="ru">RU</a>
+      <a href="../" lang="es" hreflang="es" title="Español" data-lang="es"><img class="flag" src="../img/flags/es.svg" alt="Español" width="24" height="16"></a>
+      <a href="../en/" lang="en" hreflang="en" title="English" data-lang="en"><img class="flag" src="../img/flags/en.svg" alt="English" width="24" height="16"></a>
+      <a href="../it/" lang="it" hreflang="it" title="Italiano" data-lang="it"><img class="flag" src="../img/flags/it.svg" alt="Italiano" width="24" height="16"></a>
+      <a href="../el/" lang="el" hreflang="el" title="Ελληνικά" data-lang="el"><img class="flag" src="../img/flags/el.svg" alt="Ελληνικά" width="24" height="16"></a>
+      <a href="../ru/" lang="ru" hreflang="ru" title="Русский" data-lang="ru"><img class="flag" src="../img/flags/ru.svg" alt="Русский" width="24" height="16"></a>
     </nav>
   </header>
 
