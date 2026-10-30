@@ -506,7 +506,7 @@
     <string name="main_report_hint_problem">Que s’est-il passé ?</string>
     <string name="main_report_hint_bike_model">Modèle de moto (par ex. 800NK Advanced)</string>
     <string name="main_report_hint_year">Année (facultatif)</string>
-    <string name="main_mirror_leave_shared_app">Laisse l’application partagée à l’écran (RideScreen AA reste dans la notification)</string>
+    <string name="main_mirror_leave_shared_app">Laisse l’application en cours de partage à l’écran (RideScreen AA reste dans la notification)</string>
     <string name="main_share_problem_report">Partager le rapport de problème</string>
     <string name="margins_summary_none">Aucune : Android Auto utilise tout l’écran de la moto</string>
     <string name="margins_summary_profile_default">Haut %1$d · bas %2$d · gauche %3$d · droite %4$d px (valeurs par défaut du profil)</string>
