@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- Moto éteinte depuis longtemps : arrêter l’attente pour économiser la batterie. -->
+    <string name="bike_gone_channel">Moto introuvable</string>
+    <string name="bike_gone_title">Arrêt de la recherche de la moto</string>
+    <string name="bike_gone_text">La moto est restée éteinte pendant 20 minutes : l’application a arrêté de la rechercher pour économiser la batterie. Touche Connecter lorsque tu remontes sur la moto.</string>
+    <!-- Trophées -->
+    <string name="tr_channel">Trophées</string>
+    <string name="tr_unlocked_title">🏆 Trophée débloqué !</string>
+    <string name="tr_screen_title">Trophées</string>
+    <string name="tr_header">%1$d sur %2$d débloqués</string>
+    <string name="tr_next">À venir</string>
+    <string name="tr_earned_on">Obtenu le %1$s</string>
+    <string name="tr_card_line">🏆 Trophées : %1$d sur %2$d · tout voir ›</string>
+    <string name="tr_distance">Kilomètres</string>
+    <string name="tr_distance_d">Parcourir %1$s km au total</string>
+    <string name="tr_longest">Long trajet</string>
+    <string name="tr_longest_d">Un trajet de %1$s km ou plus</string>
+    <string name="tr_speed">Vitesse maximale</string>
+    <string name="tr_speed_d">Atteindre %1$s km/h (GPS)</string>
+    <string name="tr_streak">Sur une lancée</string>
+    <string name="tr_streak_d">Rouler %1$s jours d’affilée</string>
+    <string name="tr_rides">Régulier</string>
+    <string name="tr_rides_d">Enregistrer %1$s trajets</string>
+    <string name="tr_hours">Heures en selle</string>
+    <string name="tr_hours_d">%1$s heures de roulage</string>
+    <string name="tr_months">Toute l’année</string>
+    <string name="tr_months_d">Rouler pendant %1$s mois différents</string>
+    <string name="tr_early">Lève-tôt</string>
+    <string name="tr_early_d">Commencer un trajet avant 7 h</string>
+    <string name="tr_night">Oiseau de nuit</string>
+    <string name="tr_night_d">Terminer un trajet après 23 h</string>
+    <string name="tr_weekend">Motard du week-end</string>
+    <string name="tr_weekend_d">Rouler le samedi et le dimanche du même week-end</string>
+</resources>
