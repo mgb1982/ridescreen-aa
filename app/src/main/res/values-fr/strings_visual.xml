@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="brand_wordmark" translatable="false">RideScreen AA</string>
     <string name="main_settings_desc">Paramètres</string>
     <string name="stat_km_today">km aujourd’hui</string>
     <string name="stat_max_today">km/h max.</string>
