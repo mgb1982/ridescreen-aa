@@ -230,6 +230,7 @@ object PkeUnlockUi {
                 PkeUnlock.Failure.BAD_MCU_ID -> R.string.pke_unlock_fail_bad_mcu
                 PkeUnlock.Failure.DERIVE_FAILED -> R.string.pke_unlock_fail_derive
                 PkeUnlock.Failure.NO_ANSWER -> R.string.pke_fail_no_answer
+                PkeUnlock.Failure.MOVING -> R.string.pke_fail_moving
                 null -> R.string.pke_fail_no_answer
             },
         )

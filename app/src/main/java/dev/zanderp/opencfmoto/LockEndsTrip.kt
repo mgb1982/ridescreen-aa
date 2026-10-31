@@ -19,6 +19,11 @@ import android.os.SystemClock
 object LockEndsTrip {
     const val MAX_SPEED_KMH = 5.0
 
+    /** Above this the lock command is refused. OBD speed is exact; the phone's GPS speed has noise at a standstill, hence the larger margin. */
+    const val LOCK_MAX_OBD_KMH = 1.0
+    const val LOCK_MAX_GPS_KMH = 3.0
+    private const val LOCK_GPS_MAX_AGE_MS = 10_000L
+
     enum class Decision { END, SKIP_NOT_LOCKED, SKIP_MOVING, SKIP_ENGINE, SKIP_OFF }
 
     /** Pure: what to do after a PKE command. */
@@ -31,6 +36,19 @@ object LockEndsTrip {
         speedKmh != null && speedKmh > MAX_SPEED_KMH -> Decision.SKIP_MOVING
         engineRunning == true -> Decision.SKIP_ENGINE
         else -> Decision.END
+    }
+
+    /** Pure: true when the bike is known to be moving. OBD speed wins over GPS; no data never blocks a lock. */
+    internal fun tooFastToLock(obdKmh: Double?, gpsKmh: Double?): Boolean =
+        if (obdKmh != null) obdKmh > LOCK_MAX_OBD_KMH else gpsKmh != null && gpsKmh > LOCK_MAX_GPS_KMH
+
+    /** True if the lock command must be refused now (fresh OBD speed, else a GPS fix under 10 s old). */
+    fun refusesLock(ctx: Context): Boolean {
+        val app = ctx.applicationContext
+        val obd = ObdLive.latest?.takeIf { SystemClock.elapsedRealtime() - it.atMs <= 5_000 }?.speed
+        val gps = if (obd != null) null else runCatching { RideExtras.lastLocation(app, LOCK_GPS_MAX_AGE_MS) }.getOrNull()
+            ?.let { if (it.hasSpeed()) it.speed * 3.6 else null }
+        return tooFastToLock(obd, gps)
     }
 
     private val main = Handler(Looper.getMainLooper())

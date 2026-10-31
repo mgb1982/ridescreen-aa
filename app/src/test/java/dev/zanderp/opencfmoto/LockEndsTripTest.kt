@@ -52,4 +52,26 @@ class LockEndsTripTest {
         assertFalse(ObdLive.engineFromRpm(250.0))
         assertTrue(ObdLive.engineFromRpm(1700.0))
     }
+
+    @Test
+    fun lockRefusedWhileMoving() {
+        assertTrue(LockEndsTrip.tooFastToLock(obdKmh = 2.0, gpsKmh = null))
+        assertTrue(LockEndsTrip.tooFastToLock(obdKmh = 40.0, gpsKmh = 0.0))   // OBD wins over GPS
+        assertFalse(LockEndsTrip.tooFastToLock(obdKmh = 0.0, gpsKmh = 30.0))  // OBD says stopped
+        assertFalse(LockEndsTrip.tooFastToLock(obdKmh = 1.0, gpsKmh = null))  // 1 km/h is still allowed
+        assertTrue(LockEndsTrip.tooFastToLock(obdKmh = null, gpsKmh = 12.0))
+        assertFalse(LockEndsTrip.tooFastToLock(obdKmh = null, gpsKmh = 2.0))  // GPS noise at a standstill
+    }
+
+    @Test
+    fun lockNeverBlockedWithoutSpeedData() {
+        assertFalse(LockEndsTrip.tooFastToLock(obdKmh = null, gpsKmh = null))
+    }
+
+    @Test
+    fun engineRunningDoesNotBlockTheLock() {
+        // Only speed refuses a lock; the engine state only decides whether the ride ends afterwards.
+        assertFalse(LockEndsTrip.tooFastToLock(obdKmh = 0.0, gpsKmh = null))
+        assertEquals(Decision.SKIP_ENGINE, LockEndsTrip.decide(true, lock, ok = true, mismatch = false, speedKmh = 0.0, engineRunning = true))
+    }
 }

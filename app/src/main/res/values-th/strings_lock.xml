@@ -3,4 +3,5 @@
     <!-- v2.4: a PKE lock ends the ride (task 20) -->
     <string name="lock_ends_trip">การล็อกรถจะสิ้นสุดทริป</string>
     <string name="lock_ends_trip_desc">เมื่อล็อกรถจากแอป ระบบจะบันทึกตำแหน่งที่จอดและหยุดการฉายภาพ ห้ามทำขณะรถกำลังเคลื่อนที่ (เกิน 5 km/h) หรือเมื่อเครื่องยนต์กำลังทำงาน</string>
+    <string name="pke_fail_moving">ไม่ได้ล็อก: รถกำลังเคลื่อนที่</string>
 </resources>

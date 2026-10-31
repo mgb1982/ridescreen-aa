@@ -3,4 +3,5 @@
     <!-- v2.4: a PKE lock ends the ride (task 20) -->
     <string name="lock_ends_trip">Trancar termina a viagem</string>
     <string name="lock_ends_trip_desc">Ao trancar a mota pela app, guarda onde estacionaste e deixa de projetar. Nunca em andamento (mais de 5 km/h) nem com o motor ligado.</string>
+    <string name="pke_fail_moving">Não bloqueada: a moto está em movimento.</string>
 </resources>

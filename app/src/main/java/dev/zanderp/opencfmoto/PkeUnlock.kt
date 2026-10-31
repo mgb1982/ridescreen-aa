@@ -86,7 +86,7 @@ object PkeUnlock {
         CUSHION("6", "cushion"),
     }
 
-    enum class Failure { NO_CODE, NO_MCU_ID, NO_PERMISSION, BLUETOOTH_OFF, NOT_FOUND, NO_LINK, NO_CHALLENGE, BAD_CHALLENGE, BAD_MCU_ID, DERIVE_FAILED, NO_ANSWER }
+    enum class Failure { NO_CODE, NO_MCU_ID, NO_PERMISSION, BLUETOOTH_OFF, NOT_FOUND, NO_LINK, NO_CHALLENGE, BAD_CHALLENGE, BAD_MCU_ID, DERIVE_FAILED, NO_ANSWER, MOVING }
 
     /**
      * [lockedAfter] is the lock state read back ~1.5 s after a lock/unlock (null: not read or no answer).
@@ -239,6 +239,11 @@ object PkeUnlock {
     // ── the send (blocking: call it off the main thread, same contract as PkeBattery.read)
 
     fun send(ctx: Context, action: Action): Result {
+        // The bike must never be locked while it moves: refused before anything is sent to the box.
+        if (action == Action.LOCK && LockEndsTrip.refusesLock(ctx)) {
+            log("lock refused: the bike is moving")
+            return Result(false, Failure.MOVING, action)
+        }
         val res = sendRaw(ctx, action)
         try { LockEndsTrip.after(ctx, action, res) } catch (e: Exception) { log("after-lock step failed: $e") }
         return res

@@ -3,4 +3,5 @@
     <!-- v2.4: a PKE lock ends the ride (task 20) -->
     <string name="lock_ends_trip">Abschließen beendet die Fahrt</string>
     <string name="lock_ends_trip_desc">Wenn du das Motorrad in der App abschließt, wird dein Parkplatz gespeichert und die Projektion beendet. Nie während der Fahrt (über 5 km/h) oder bei laufendem Motor.</string>
+    <string name="pke_fail_moving">Nicht verriegelt: Das Motorrad fährt.</string>
 </resources>
