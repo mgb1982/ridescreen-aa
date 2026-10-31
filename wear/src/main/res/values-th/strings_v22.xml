@@ -7,8 +7,7 @@
     <string name="wupd_title">อัปเดต RideScreen AA</string>
     <string name="wupd_ready">ได้รับเวอร์ชันใหม่จากโทรศัพท์แล้ว · แตะเพื่อติดตั้ง</string>
     <string name="wupd_install">ติดตั้ง</string>
-    <string name="wupd_versions">ติดตั้งแล้ว: %1$s
-ใหม่: %2$s</string>
+    <string name="wupd_versions">ติดตั้งแล้ว: %1$s\nใหม่: %2$s</string>
     <string name="wupd_nothing">ไม่มีอัปเดตรออยู่ ส่งจากโทรศัพท์: ❓ ช่วยเหลือ → ⌚ อัปเดตแอปนาฬิกา</string>
     <string name="wupd_installing">กำลังติดตั้ง… ยืนยันหากนาฬิกาถาม</string>
     <string name="wupd_allow_unknown">อนุญาตให้ RideScreen AA ติดตั้งแอป แล้วกลับมาที่นี่</string>

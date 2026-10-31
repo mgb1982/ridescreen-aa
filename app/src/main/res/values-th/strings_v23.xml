@@ -11,8 +11,7 @@
     <string name="cmp_why_pace_more">ความเร็วขณะเคลื่อนที่เร็วขึ้น</string>
     <string name="cmp_why_route">เส้นทางยาวขึ้น</string>
     <string name="cmp_why_route_less">เส้นทางสั้นลง</string>
-    <string name="cmp_detail_head">จุดเริ่มต้นและปลายทางเดียวกับอีก %1$d ทริป
-วันนี้: %2$d นาทีจากต้นทางถึงปลายทาง · ปกติ: %3$d นาที</string>
+    <string name="cmp_detail_head">จุดเริ่มต้นและปลายทางเดียวกับอีก %1$d ทริป\nวันนี้: %2$d นาทีจากต้นทางถึงปลายทาง · ปกติ: %3$d นาที</string>
     <string name="cmp_detail_still">หยุดรถ: %1$d นาที จากการหยุด %2$d ครั้ง (ปกติ %3$d นาที, %4$d ครั้ง)</string>
     <string name="cmp_detail_pace">ความเร็วเฉลี่ยขณะเคลื่อนที่: %1$d km/h (ปกติ %2$d)</string>
     <string name="cmp_detail_km">ระยะทาง: %1$s km (ปกติ %2$s)</string>
@@ -74,9 +73,7 @@
     <string name="pax_disconnect">ยกเลิกการเชื่อมต่อ</string>
     <string name="pax_perms_needed">โหมดผู้โดยสารต้องใช้สิทธิ์อุปกรณ์ใกล้เคียง (Bluetooth) และตำแหน่ง เพื่อค้นหาโทรศัพท์อีกเครื่อง</string>
     <string name="pax_code_title">จับคู่กับ %1$s หรือไม่?</string>
-    <string name="pax_code_msg">ตรวจสอบว่าโทรศัพท์อีกเครื่องแสดงรหัสเดียวกัน:
-
-%1$s</string>
+    <string name="pax_code_msg">ตรวจสอบว่าโทรศัพท์อีกเครื่องแสดงรหัสเดียวกัน:\n\n%1$s</string>
     <string name="pax_code_yes">รหัสตรงกัน</string>
     <string name="pax_code_no">ไม่ตรงกัน</string>
     <string name="pax_rider_toast">👥 %1$s เชื่อมต่อเป็นผู้โดยสารของคุณแล้ว</string>
@@ -153,9 +150,7 @@
     <string name="tv_music_dropped">ไม่สามารถผสมเพลงได้ จึงสร้างวิดีโอโดยไม่มีเพลง โปรดส่งบันทึกให้ฉัน</string>
     <string name="bb_outcome_test">การจำลอง (ทดสอบ)</string>
     <string name="telemetry_notice_title">รายงานแบบไม่ระบุตัวตน</string>
-    <string name="telemetry_notice_body">เพื่อแก้ไขข้อผิดพลาด แอปจะส่งรายงานข้อผิดพลาดแบบไม่ระบุตัวตน ได้แก่ ID แบบสุ่ม เวอร์ชันแอป และข้อความข้อผิดพลาด ไม่มีบัญชี ไม่มีเส้นทาง ไม่มีรหัสผ่าน Wi‑Fi และไม่มีข้อมูลที่ระบุตัวคุณหรือรถได้
-
-คุณสามารถปิดได้ตอนนี้หรือเมื่อใดก็ได้ที่ การตั้งค่า → ความเป็นส่วนตัว</string>
+    <string name="telemetry_notice_body">เพื่อแก้ไขข้อผิดพลาด แอปจะส่งรายงานข้อผิดพลาดแบบไม่ระบุตัวตน ได้แก่ ID แบบสุ่ม เวอร์ชันแอป และข้อความข้อผิดพลาด ไม่มีบัญชี ไม่มีเส้นทาง ไม่มีรหัสผ่าน Wi‑Fi และไม่มีข้อมูลที่ระบุตัวคุณหรือรถได้\n\nคุณสามารถปิดได้ตอนนี้หรือเมื่อใดก็ได้ที่ การตั้งค่า → ความเป็นส่วนตัว</string>
     <string name="telemetry_notice_ok">ตกลง</string>
     <string name="telemetry_notice_off">ปิด</string>
     <string name="telemetry_notice_off_done">ปิดรายงานแบบไม่ระบุตัวตนแล้ว</string>
@@ -178,11 +173,7 @@
     <string name="remote_dedicated_service_explain">เพื่อให้รีโมตทำงานได้ขณะล็อกโทรศัพท์ ให้เปิด «RideScreen AA · รีโมตบนแฮนด์» ในการช่วยเหลือพิเศษ ระบบจะอ่านเฉพาะปุ่มของรีโมตนั้นขณะ Android Auto แสดงบนหน้าปัด</string>
     <string name="help_interfaces">💡 หน้าปัดเดิมขณะเชื่อมต่อ</string>
     <string name="help_interfaces_title">💡 หน้าปัดเดิมขณะเชื่อมต่อ</string>
-    <string name="help_interfaces_body">เชื่อมต่อบนอินเทอร์เฟซฉายหน้าจอของหน้าปัดตามปกติ (บน 125X คือหน้าจอ 3) เมื่อ Android Auto แสดงบนหน้าปัดแล้ว คุณสามารถสลับไปยังอินเทอร์เฟซอื่นเพื่อดูหน้าปัดเดิมของรถได้ แอปยังคงเชื่อมต่อและบันทึกทริปต่อไป และ Android Auto ยังคงทำงานอยู่เบื้องหลัง
-
-กลับไปยังอินเทอร์เฟซฉายหน้าจอ แล้ว Android Auto จะปรากฏทันที
-
-หน้าปัดจะเปิด Wi‑Fi เฉพาะในอินเทอร์เฟซนั้น ดังนั้นการเชื่อมต่อครั้งแรกต้องทำจากอินเทอร์เฟซนั้นเสมอ</string>
+    <string name="help_interfaces_body">เชื่อมต่อบนอินเทอร์เฟซฉายหน้าจอของหน้าปัดตามปกติ (บน 125X คือหน้าจอ 3) เมื่อ Android Auto แสดงบนหน้าปัดแล้ว คุณสามารถสลับไปยังอินเทอร์เฟซอื่นเพื่อดูหน้าปัดเดิมของรถได้ แอปยังคงเชื่อมต่อและบันทึกทริปต่อไป และ Android Auto ยังคงทำงานอยู่เบื้องหลัง\n\nกลับไปยังอินเทอร์เฟซฉายหน้าจอ แล้ว Android Auto จะปรากฏทันที\n\nหน้าปัดจะเปิด Wi‑Fi เฉพาะในอินเทอร์เฟซนั้น ดังนั้นการเชื่อมต่อครั้งแรกต้องทำจากอินเทอร์เฟซนั้นเสมอ</string>
     <string name="nearby_upfront_title">กำลังเชื่อมต่อกับรถ</string>
     <string name="nearby_upfront_body">เพื่อเข้าถึงหน้าปัด (Wi‑Fi และ Bluetooth) Android จะขอสิทธิ์ «อุปกรณ์ใกล้เคียง» แอปไม่ได้ใช้สิทธิ์นี้เพื่อวัตถุประสงค์อื่น</string>
     <string name="nearby_upfront_ok">ดำเนินการต่อ</string>
@@ -195,9 +186,7 @@
     <string name="ext_control_copy">คัดลอกชื่อการทำงาน</string>
     <string name="ext_control_copied">คัดลอกแล้ว</string>
     <string name="xiaomi_autostart_title">เชื่อมต่อเองบน Xiaomi</string>
-    <string name="xiaomi_autostart_body">บนโทรศัพท์ Xiaomi, Redmi และ POCO RideScreen AA จะเริ่มทำงานเองเมื่อ Bluetooth ของรถเชื่อมต่อได้ก็ต่อเมื่อเปิด «Autostart»
-
-เปิดใช้งานสำหรับ RideScreen AA ในหน้าจอถัดไป ขณะอยู่ที่นั่น ให้ตั้งค่าประหยัดแบตเตอรี่เป็น «ไม่มีข้อจำกัด»</string>
+    <string name="xiaomi_autostart_body">บนโทรศัพท์ Xiaomi, Redmi และ POCO RideScreen AA จะเริ่มทำงานเองเมื่อ Bluetooth ของรถเชื่อมต่อได้ก็ต่อเมื่อเปิด «Autostart»\n\nเปิดใช้งานสำหรับ RideScreen AA ในหน้าจอถัดไป ขณะอยู่ที่นั่น ให้ตั้งค่าประหยัดแบตเตอรี่เป็น «ไม่มีข้อจำกัด»</string>
     <string name="xiaomi_autostart_open">เปิดการตั้งค่า</string>
     <string name="stat_clock_fix">ตรวจสอบ ⚠ แตะ</string>
     <string name="clock_fix_title">ตั้งนาฬิกาหน้าปัด</string>
@@ -215,9 +204,7 @@
     <string name="pke_reading">กำลังอ่านกล่อง keyless ผ่าน Bluetooth… รถต้องอยู่ใกล้ ๆ</string>
     <string name="pke_volts">🔋 %1$s V</string>
     <string name="pke_no_volts">ไม่มีรายงานค่าแรงดันแบตเตอรี่</string>
-    <string name="pke_result">%1$s
-
-อ่านเมื่อ %2$s</string>
+    <string name="pke_result">%1$s\n\nอ่านเมื่อ %2$s</string>
     <string name="pke_locked">ล็อกรถแล้ว</string>
     <string name="pke_unlocked">ปลดล็อกรถแล้ว</string>
     <string name="pke_low">⚠️ ต่ำ หากจอดรถไว้นาน อาจต้องขับขี่สักระยะหรือชาร์จแบตเตอรี่</string>
@@ -227,10 +214,8 @@
     <string name="pke_fail_not_found">ไม่พบกล่อง keyless เข้าใกล้รถ ตรวจสอบว่าแอปทางการไม่ได้เชื่อมต่ออยู่ แล้วลองอีกครั้ง</string>
     <string name="pke_fail_no_answer">กล่องตอบกลับแต่ไม่ได้รายงานแรงดันไฟฟ้า โปรดส่งบันทึกให้ฉัน</string>
     <string name="pke_card_title">แบตเตอรี่รถ</string>
-    <string name="pke_card_locked">🔒
-ล็อกแล้ว</string>
-    <string name="pke_card_unlocked">🔓
-ปลดล็อกแล้ว</string>
+    <string name="pke_card_locked">🔒\nล็อกแล้ว</string>
+    <string name="pke_card_unlocked">🔓\nปลดล็อกแล้ว</string>
     <string name="pke_card_just_now">เมื่อสักครู่</string>
     <string name="pke_card_read">อ่าน %1$s</string>
     <string name="pke_unlock_entry">🔒 ล็อก / ปลดล็อก (กล่อง keyless)</string>
@@ -272,11 +257,7 @@
     <string name="widget_state_unlocked">ปลดล็อกแล้ว</string>
     <string name="widget_state_none">ยังไม่มีข้อมูลการอ่าน</string>
     <string name="pke_unlock_scan">สแกน QR</string>
-    <string name="pke_unlock_scan_confirm">พบคีย์อุปกรณ์นี้ใน QR:
-
-%1$s
-
-บันทึกหรือไม่?</string>
+    <string name="pke_unlock_scan_confirm">พบคีย์อุปกรณ์นี้ใน QR:\n\n%1$s\n\nบันทึกหรือไม่?</string>
     <string name="pke_unlock_scan_saved">บันทึกคีย์อุปกรณ์แล้ว</string>
     <string name="pke_unlock_scan_not_found">ไม่พบคีย์อุปกรณ์ (McuID) ใน QR นี้ สแกน QR ข้อมูลรถ หรือกรอกด้วยตนเอง</string>
     <string name="engine_running">เครื่องยนต์ทำงาน</string>

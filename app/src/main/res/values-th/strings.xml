@@ -4,36 +4,15 @@
     <string name="about_copyright">© 2026 Alexandru</string>
     <string name="about_copyright_body">ดูแลโดย Alexandru (zanderp) ซอฟต์แวร์เสรีภายใต้ GNU AGPL v3 หรือใหม่กว่า ดูข้อความลิขสิทธิ์และการระบุที่มาอย่างครบถ้วนได้ใน LICENSE และ NOTICE ใน repository</string>
     <string name="about_license_body">คุณสามารถใช้ ศึกษา แชร์ และแก้ไขแอปนี้ภายใต้ AGPL หากแจกจ่ายเวอร์ชันที่แก้ไข (รวมถึงในรูปแบบบริการเครือข่าย) คุณต้องเผยแพร่ซอร์สโค้ดที่เกี่ยวข้องทั้งหมดภายใต้สัญญาอนุญาตเดียวกัน</string>
-    <string name="about_credits">พัฒนาต่อยอดจากชุมชน open-cfmoto:
-
-• dcoletto / coletz งาน QR และ EasyConn ดั้งเดิม
-• BojanJ การผสานตัวรับ Android Auto
-• richardbizik การรองรับ 1000 MT‑X
-• ionutradu252 / open-cflink การควบคุมบนแฮนด์ ระยะขอบ การเชื่อมต่อใหม่ และการปรับแต่ง
-• eugen0309 เส้นทาง Wi‑Fi Direct / CL‑C450
-• Martin Escudero (martinescudero) เส้นทางเซิร์ฟเวอร์หน่วยหลัก Android Auto 17.4+
-• Glifaus การคงการเชื่อมต่อ Wi‑Fi Direct
-• sashop2001 AA DPI, Bluetooth trigger และภาษาบัลแกเรีย
-• Authoritt บันทึกข้อมูลเทเลเมทรีของรถ
-• headunit-revived ชุดระบบฉายภาพ Android Auto (AGPL)
-
-และทุกคนที่ทดสอบรถ แชร์บันทึก และแจ้งปัญหา</string>
+    <string name="about_credits">พัฒนาต่อยอดจากชุมชน open-cfmoto:\n\n• dcoletto / coletz งาน QR และ EasyConn ดั้งเดิม\n• BojanJ การผสานตัวรับ Android Auto\n• richardbizik การรองรับ 1000 MT‑X\n• ionutradu252 / open-cflink การควบคุมบนแฮนด์ ระยะขอบ การเชื่อมต่อใหม่ และการปรับแต่ง\n• eugen0309 เส้นทาง Wi‑Fi Direct / CL‑C450\n• Martin Escudero (martinescudero) เส้นทางเซิร์ฟเวอร์หน่วยหลัก Android Auto 17.4+\n• Glifaus การคงการเชื่อมต่อ Wi‑Fi Direct\n• sashop2001 AA DPI, Bluetooth trigger และภาษาบัลแกเรีย\n• Authoritt บันทึกข้อมูลเทเลเมทรีของรถ\n• headunit-revived ชุดระบบฉายภาพ Android Auto (AGPL)\n\nและทุกคนที่ทดสอบรถ แชร์บันทึก และแจ้งปัญหา</string>
     <string name="about_disclaimer">RideScreen AA เป็นโครงการชุมชนอิสระ ไม่ได้มีความเกี่ยวข้อง ได้รับการรับรอง หรือได้รับการสนับสนุนจาก CFMOTO, Carbit, Google, Android Auto หรือแบรนด์อื่นที่ใช้สิทธิ์ในหน้าปัดแบบ EasyConnect (รวมถึง Voge, Zontes, Moto Morini, Benelli, Rieju, QJ Motor, Morbidelli, Longjia และ Kove) CFMOTO, MotoPlay, EasyConn, Carbit, Android, Android Auto และเครื่องหมายที่เกี่ยวข้องเป็นเครื่องหมายการค้าของเจ้าของแต่ละราย ใช้งานโดยยอมรับความเสี่ยงเอง ตั้งค่าเส้นทางก่อนเริ่มขับขี่</string>
     <string name="supported_bikes_intro">ใช้งานได้กับหน้าปัด CFMoto MotoPlay / EasyConnect และหน้าปัดอื่นที่ใช้ Carbit framework ซึ่งแสดง QR สำหรับจับคู่ ไม่จำเป็นต้องใช้ T‑BOX ทั้งในสหรัฐฯ และประเทศอื่น หากเห็น QR ให้ลองแตะเชื่อมต่อ</string>
     <string name="supported_bikes_confirmed_title">ยืนยันโดยชุมชน OpenCfMoto แล้ว</string>
-    <string name="supported_bikes_confirmed">CFMoto: 800MT (MT‑X / Explore / Explore GT / Ibex 800) · 1000 MT‑X · 800NK (US CRCP) · 800NK Advanced · 675NK · 675SR‑R · 700MT Adventure · 450MT · 450SR (+ SR‑S / TC) · 450CL‑C / CL‑C450 · 450NK · สกู๊ตเตอร์ 150SC · CFORCE 850 / 1000 · GOES Terrox 1000 / Gladiator G3 1000
-อื่น ๆ: Voge DS800 Rally / DS900X · Moto Morini X-Cape 649 / 700 / Seiemmezzo · Benelli TRK 702 / 702X · Rieju 307 · Morbidelli T1002VX / T352X · QJ Motor SRK800RR / SRK450RR / SRK250RD / SRT 600 / SRV600</string>
+    <string name="supported_bikes_confirmed">CFMoto: 800MT (MT‑X / Explore / Explore GT / Ibex 800) · 1000 MT‑X · 800NK (US CRCP) · 800NK Advanced · 675NK · 675SR‑R · 700MT Adventure · 450MT · 450SR (+ SR‑S / TC) · 450CL‑C / CL‑C450 · 450NK · สกู๊ตเตอร์ 150SC · CFORCE 850 / 1000 · GOES Terrox 1000 / Gladiator G3 1000\nอื่น ๆ: Voge DS800 Rally / DS900X · Moto Morini X-Cape 649 / 700 / Seiemmezzo · Benelli TRK 702 / 702X · Rieju 307 · Morbidelli T1002VX / T352X · QJ Motor SRK800RR / SRK450RR / SRK250RD / SRT 600 / SRV600</string>
     <string name="supported_bikes_other_title">แบรนด์อื่น (Carbit / EasyConnect)</string>
-    <string name="supported_bikes_other">ใช้เส้นทาง QR ของ Carbit แบบเดียวกัน หากหน้าปัดแสดง QR สำหรับจับคู่ ให้ลองแตะเชื่อมต่อและรายงานผลใน Discord
-Voge (ยืนยัน DS800 Rally / DS900X) · Moto Morini (ยืนยัน X-Cape 649 / 700 / Seiemmezzo; 1200 SoftAP อยู่ระหว่างทดลอง; MotoFun) · Zontes (ยืนยัน 125X / 125V / 368 G·K·E; 125M, 350D อยู่ระหว่างทดสอบ) · Benelli (เช่น TRK 702 / 702X) · Rieju (ยืนยัน 307) · QJ Motor (ยืนยัน SRK800RR / SRK250RD / SRK450RR / SRT/SRV 600; กำลังทดสอบ 600SX / 550SX; Fort 4.0) · Morbidelli / MBP (ยืนยัน T1002VX / T352X) · Longjia (เช่น V-Bob 650; MotoFUN / Carbit Ride ยังไม่ยืนยัน) · Kove (Thinkerride SoftAP อยู่ระหว่างทดลอง ยังไม่มีวิดีโอจากหน้าปัด)</string>
+    <string name="supported_bikes_other">ใช้เส้นทาง QR ของ Carbit แบบเดียวกัน หากหน้าปัดแสดง QR สำหรับจับคู่ ให้ลองแตะเชื่อมต่อและรายงานผลใน Discord\nVoge (ยืนยัน DS800 Rally / DS900X) · Moto Morini (ยืนยัน X-Cape 649 / 700 / Seiemmezzo; 1200 SoftAP อยู่ระหว่างทดลอง; MotoFun) · Zontes (ยืนยัน 125X / 125V / 368 G·K·E; 125M, 350D อยู่ระหว่างทดสอบ) · Benelli (เช่น TRK 702 / 702X) · Rieju (ยืนยัน 307) · QJ Motor (ยืนยัน SRK800RR / SRK250RD / SRK450RR / SRT/SRV 600; กำลังทดสอบ 600SX / 550SX; Fort 4.0) · Morbidelli / MBP (ยืนยัน T1002VX / T352X) · Longjia (เช่น V-Bob 650; MotoFUN / Carbit Ride ยังไม่ยืนยัน) · Kove (Thinkerride SoftAP อยู่ระหว่างทดลอง ยังไม่มีวิดีโอจากหน้าปัด)</string>
     <string name="supported_bikes_full_title">รายการทั้งหมดของหน้าปัด CFMoto EasyConnect / MotoPlay ที่รู้จัก</string>
-    <string name="supported_bikes_full">Naked: 125NK · 450NK · 675NK · 800NK · 800NK Advanced · 800NK Sport · 800NK (US CRCP)
-Sport: 300SR · 450SR · 450SR‑S · 450SR TC · 500SR VOOM · 675SR · 675SR‑R
-Touring / Adv: 450MT · 700MT · 700MT Adventure · 800MT‑X · 800MT Explore · 800MT Explore GT · 1000 MT‑X
-Cruiser: 450CL‑C · CL‑C450
-Scooter: 150SC
-ATV / SSV (TFT): CFORCE 800 · CFORCE 850 Touring · CFORCE 1000 · CFORCE 1000 Touring · GOES Terrox 1000 / Gladiator G3 1000
-อื่น ๆ: U10 Pro (เมื่อหน้าปัดมี QR ให้ใช้)</string>
+    <string name="supported_bikes_full">Naked: 125NK · 450NK · 675NK · 800NK · 800NK Advanced · 800NK Sport · 800NK (US CRCP)\nSport: 300SR · 450SR · 450SR‑S · 450SR TC · 500SR VOOM · 675SR · 675SR‑R\nTouring / Adv: 450MT · 700MT · 700MT Adventure · 800MT‑X · 800MT Explore · 800MT Explore GT · 1000 MT‑X\nCruiser: 450CL‑C · CL‑C450\nScooter: 150SC\nATV / SSV (TFT): CFORCE 800 · CFORCE 850 Touring · CFORCE 1000 · CFORCE 1000 Touring · GOES Terrox 1000 / Gladiator G3 1000\nอื่น ๆ: U10 Pro (เมื่อหน้าปัดมี QR ให้ใช้)</string>
     <string name="supported_bikes_unlikely_title">โดยปกติไม่มี QR สำหรับฉายภาพ</string>
     <string name="supported_bikes_unlikely">800MT Sport · 800MT Touring · 450SR World Champion Edition · 700CL‑X (Adventure / Heritage / Sport) · PAPIO ยกเว้นอุปกรณ์ของคุณจะแสดง QR</string>
     <string name="supported_bikes_footer">รายการ OpenCfMoto ต้นฉบับ: github.com/zanderp/open-cfmoto → docs/SUPPORTED-BIKES.md รายงาน RideScreen AA และรถรุ่นใหม่: github.com/mgb1982/ridescreen-aa/issues</string>
@@ -71,12 +50,7 @@ ATV / SSV (TFT): CFORCE 800 · CFORCE 850 Touring · CFORCE 1000 · CFORCE 1000 
     <string name="setup_bt_trigger_none">ปิด</string>
     <string name="setup_bt_trigger_set">ตัวกระตุ้น: %1$s</string>
     <string name="buttons_teach_title">เรียนรู้ปุ่มบนแฮนด์</string>
-    <string name="buttons_teach_message">รถคันนี้ส่งปุ่มใดมาจริงบ้าง?
-
-• ปุ่มปรับเสียง ▲/▼ หากรถไม่เคยเปลี่ยนระดับเสียงโทรศัพท์เมื่อกด ให้ทำเครื่องหมายว่าไม่มี เพื่อไม่ให้ระบบตรึงระดับเสียง
-• ปุ่มเลือกเพลง ◀/▶ ให้ทำเครื่องหมายว่าไม่มีหากไม่มีสัญญาณส่งมา
-
-คุณสามารถปล่อยเป็นไม่ทราบได้เช่นกัน หลังสตรีมประมาณ 90 วินาทีโดยไม่มี ▲/▼ ระบบจะทำเครื่องหมายว่าปุ่มปรับเสียงไม่มีโดยอัตโนมัติ</string>
+    <string name="buttons_teach_message">รถคันนี้ส่งปุ่มใดมาจริงบ้าง?\n\n• ปุ่มปรับเสียง ▲/▼ หากรถไม่เคยเปลี่ยนระดับเสียงโทรศัพท์เมื่อกด ให้ทำเครื่องหมายว่าไม่มี เพื่อไม่ให้ระบบตรึงระดับเสียง\n• ปุ่มเลือกเพลง ◀/▶ ให้ทำเครื่องหมายว่าไม่มีหากไม่มีสัญญาณส่งมา\n\nคุณสามารถปล่อยเป็นไม่ทราบได้เช่นกัน หลังสตรีมประมาณ 90 วินาทีโดยไม่มี ▲/▼ ระบบจะทำเครื่องหมายว่าปุ่มปรับเสียงไม่มีโดยอัตโนมัติ</string>
     <string name="buttons_teach_volume_present">▲/▼ ใช้งานได้</string>
     <string name="buttons_teach_volume_absent">ไม่มี ▲/▼</string>
     <string name="buttons_teach_reset">รีเซ็ตเป็นยังไม่ทดสอบ</string>
@@ -122,9 +96,7 @@ ATV / SSV (TFT): CFORCE 800 · CFORCE 850 Touring · CFORCE 1000 · CFORCE 1000 
     <string name="controls_handlebar_buttons">ปุ่มบนแฮนด์</string>
     <string name="controls_your_dash_is_a_touchscreen_just_tap_the_screen_t">หน้าปัดของคุณเป็นหน้าจอสัมผัส แตะหน้าจอเพื่อใช้งานการนำทางได้เลย การควบคุมด้วยปุ่มบนแฮนด์ออกแบบมาสำหรับหน้าปัดที่ไม่รองรับการสัมผัส (เช่น 450SR) สำหรับรถคันนี้ ปุ่มดังกล่าวไม่สามารถเลื่อนเมนูได้และจะหยุดเพลงชั่วคราวเท่านั้น</string>
     <string name="controls_handlebar_buttons_drive_android_auto">ปุ่มบนแฮนด์ควบคุม Android Auto</string>
-    <string name="controls_requires_the_phone_paired_to_the_bike_over_bluet">ต้องจับคู่โทรศัพท์กับรถผ่าน Bluetooth
-
-เมื่อเปิดใช้งาน ปุ่มบนแฮนด์จะควบคุมหน้าจอ Android Auto (ไม่ใช่การข้ามเพลง) เพลงยังเล่นต่อได้ เริ่ม/หยุด/ข้ามเพลงโดยเลื่อน UI ด้วยปุ่มบนแฮนด์หรือแป้นควบคุมบนหน้าจอ ปิดตัวเลือกนี้เฉพาะเมื่อต้องการให้ปุ่มจริงบนแฮนด์กลับไปควบคุมสื่อ</string>
+    <string name="controls_requires_the_phone_paired_to_the_bike_over_bluet">ต้องจับคู่โทรศัพท์กับรถผ่าน Bluetooth\n\nเมื่อเปิดใช้งาน ปุ่มบนแฮนด์จะควบคุมหน้าจอ Android Auto (ไม่ใช่การข้ามเพลง) เพลงยังเล่นต่อได้ เริ่ม/หยุด/ข้ามเพลงโดยเลื่อน UI ด้วยปุ่มบนแฮนด์หรือแป้นควบคุมบนหน้าจอ ปิดตัวเลือกนี้เฉพาะเมื่อต้องการให้ปุ่มจริงบนแฮนด์กลับไปควบคุมสื่อ</string>
     <string name="controls_customize_buttons">ปรับแต่งปุ่ม</string>
     <string name="res_match_panel_aspect">ปรับอัตราส่วนให้ตรงกับแผงหน้าจอ</string>
     <string name="res_makes_android_auto_render_at_your_dash_s_real_as">ทำให้ Android Auto แสดงผลตามอัตราส่วนจริงของหน้าปัด (ระยะขอบ AAP + การครอบตัด) เพื่อให้แผนที่เต็มหน้าจอโดยไม่ครอบตัดหรือยืดภาพ โหมดอัตโนมัติใช้ขนาดที่รถรายงาน (หรือจากโปรไฟล์) แผงหน้าจอที่มีรูปทรงแปลก เช่น เกือบเป็นสี่เหลี่ยมจัตุรัสหรือแนวตั้งสูง จะได้ประโยชน์ ส่วนหน้าปัดแนวนอนทั่วไปจะไม่มีระยะขอบและคงเดิม</string>
@@ -141,8 +113,7 @@ ATV / SSV (TFT): CFORCE 800 · CFORCE 850 Touring · CFORCE 1000 · CFORCE 1000 
     <string name="res_aa_coded_margins">AA ตั้งค่า %1$d×%2$d → ระยะขอบ %3$d×%4$d เนื้อหา %5$d×%6$d (อัตราส่วน %7$s) เติมเต็มแผงหน้าจอ การตั้งค่าพอดีหน้าจอจะไม่มีผลขณะใช้ระยะขอบ</string>
     <string name="garage_garage">โรงรถ</string>
     <string name="garage_each_bike_keeps_its_own_name_photo_screen_fit_re">รถแต่ละคันจะเก็บชื่อ รูปภาพ การปรับหน้าจอ ความละเอียด โหมดพลังงาน และการกำหนดปุ่มของตนเอง แตะรถเพื่อเลือกเป็นรถที่ใช้งานหรือแก้ไข</string>
-    <string name="garage_no_bikes_yet_scan_your_dash_qr_or_enter_wi_fi_na">ยังไม่มีรถ
-สแกน QR บนหน้าปัด หรือกรอกชื่อเครือข่าย Wi‑Fi และรหัสผ่าน (TRK)</string>
+    <string name="garage_no_bikes_yet_scan_your_dash_qr_or_enter_wi_fi_na">ยังไม่มีรถ\nสแกน QR บนหน้าปัด หรือกรอกชื่อเครือข่าย Wi‑Fi และรหัสผ่าน (TRK)</string>
     <string name="garage_scan_new_bike">สแกนรถคันใหม่</string>
     <string name="garage_enter_wi_fi_manually">กรอก Wi‑Fi ด้วยตนเอง</string>
     <string name="gpx_map">แผนที่</string>
@@ -240,16 +211,16 @@ ATV / SSV (TFT): CFORCE 800 · CFORCE 850 Touring · CFORCE 1000 · CFORCE 1000 
     <string name="gpx_offline_area_detail_vector_raster">รายละเอียด %1$s · เวกเตอร์ %2$d MB · แรสเตอร์บนรถ</string>
     <string name="gpx_offline_area_detail_raster">รายละเอียด %1$s · แรสเตอร์บนรถ</string>
     <string name="gpx_delete">ลบ</string>
-    <string name="gpx_offline_area_deleted">ลบพื้นที่ออฟไลน์ "%1$s" แล้ว</string>
+    <string name="gpx_offline_area_deleted">ลบพื้นที่ออฟไลน์ \"%1$s\" แล้ว</string>
     <string name="gpx_offline_area_partial_delete">ลบบันทึกพื้นที่แล้ว แต่อาจยังมีข้อมูลออฟไลน์บางส่วนเหลืออยู่</string>
     <string name="gpx_cached_bike_tiles_cleared">ล้างแผนที่รถที่เก็บไว้ในแคชแล้ว</string>
     <string name="gpx_need_gps_pick_area">ต้องรับสัญญาณ GPS ก่อนจึงจะเลือกพื้นที่ได้</string>
     <string name="gpx_near_me_area_name">ใกล้ฉัน · %1$dkm</string>
-    <string name="gpx_downloading_offline_map">กำลังดาวน์โหลดแผนที่ออฟไลน์สำหรับ "%1$s"…</string>
+    <string name="gpx_downloading_offline_map">กำลังดาวน์โหลดแผนที่ออฟไลน์สำหรับ \"%1$s\"…</string>
     <string name="gpx_offline_map_progress">แผนที่ออฟไลน์: %1$d%%  (%2$d MB)</string>
     <string name="gpx_offline_map_building_routing">แผนที่พร้อมแล้ว กำลังสร้างเส้นทางออฟไลน์…</string>
-    <string name="gpx_offline_map_routing_ready">แผนที่ออฟไลน์และเส้นทางพร้อมแล้วสำหรับ "%1$s"</string>
-    <string name="gpx_offline_map_routing_unavailable">แผนที่ออฟไลน์พร้อมแล้วสำหรับ "%1$s" (ไม่สามารถคำนวณเส้นทางได้ ลองอีกครั้งเมื่อมีสัญญาณ)</string>
+    <string name="gpx_offline_map_routing_ready">แผนที่ออฟไลน์และเส้นทางพร้อมแล้วสำหรับ \"%1$s\"</string>
+    <string name="gpx_offline_map_routing_unavailable">แผนที่ออฟไลน์พร้อมแล้วสำหรับ \"%1$s\" (ไม่สามารถคำนวณเส้นทางได้ ลองอีกครั้งเมื่อมีสัญญาณ)</string>
     <string name="gpx_type_place_name">พิมพ์ชื่อสถานที่</string>
     <string name="gpx_searching">กำลังค้นหา…</string>
     <string name="gpx_need_gps_nearby_poi">ต้องรับสัญญาณ GPS เพื่อค้นหา POI ใกล้เคียง</string>
@@ -263,9 +234,7 @@ ATV / SSV (TFT): CFORCE 800 · CFORCE 850 Touring · CFORCE 1000 · CFORCE 1000 
     <string name="gpx_marker_saved">บันทึกหมุดแล้ว</string>
     <string name="gpx_deleted">ลบแล้ว</string>
     <string name="gpx_map_gpx_uses_maplibre_vector_tiles_online_and_op">แผนที่ / GPX ใช้แผนที่เวกเตอร์ MapLibre แบบออนไลน์ และสามารถดาวน์โหลดชุดพื้นที่ออฟไลน์ได้ การค้นหา / OSRM / ข้อจำกัดต้องใช้อินเทอร์เน็ตบนโทรศัพท์ก่อนเชื่อมต่อ Wi‑Fi ของรถ บนหน้าปัด: สิ้นสุด / จอด / คำนวณใหม่, LIMIT, ทิศทาง / เหนือ, ซูม และมุมมอง 3D</string>
-    <string name="hud_start_android_auto_and_connect_to_your_bike_to_s">เริ่ม Android Auto และเชื่อมต่อกับรถเพื่อดูหน้าปัดที่นี่
-
-หรือแตะแผนที่เพื่อดูตัวอย่างบนโทรศัพท์โดยไม่ต้องเชื่อมต่อรถ</string>
+    <string name="hud_start_android_auto_and_connect_to_your_bike_to_s">เริ่ม Android Auto และเชื่อมต่อกับรถเพื่อดูหน้าปัดที่นี่\n\nหรือแตะแผนที่เพื่อดูตัวอย่างบนโทรศัพท์โดยไม่ต้องเชื่อมต่อรถ</string>
     <string name="hud_str">✕</string>
     <string name="hud_dash_view">มุมมองหน้าปัด</string>
     <string name="hud_hub">ศูนย์ควบคุม</string>
@@ -287,10 +256,7 @@ ATV / SSV (TFT): CFORCE 800 · CFORCE 850 Touring · CFORCE 1000 · CFORCE 1000 
     <string name="main_search_a_place_or_address">ค้นหาสถานที่หรือที่อยู่…</string>
     <string name="main_go">ไป</string>
     <string name="main_rider_tips">คำแนะนำผู้ขับขี่</string>
-    <string name="main_connect_start_android_auto_on_the_dash_becomes_s">• เชื่อมต่อ: เริ่ม Android Auto บนหน้าปัด (เปลี่ยนเป็นหยุดเมื่อเชื่อมต่อแล้ว)
-• แผนที่: แผนที่ / GPX ของ RideScreen AA (ไม่ใช่ Google Maps) ฉายหน้าจอ: ส่งภาพหน้าจอโทรศัพท์ไปยังหน้าปัด
-• ขณะเชื่อมต่อ แผนที่ / ฉายหน้าจอจะสลับสิ่งที่แสดงบนหน้าปัด
-• มุมมองหน้าปัดและการควบคุม: HUD บนโทรศัพท์และ D-pad / แฮนด์</string>
+    <string name="main_connect_start_android_auto_on_the_dash_becomes_s">• เชื่อมต่อ: เริ่ม Android Auto บนหน้าปัด (เปลี่ยนเป็นหยุดเมื่อเชื่อมต่อแล้ว)\n• แผนที่: แผนที่ / GPX ของ RideScreen AA (ไม่ใช่ Google Maps) ฉายหน้าจอ: ส่งภาพหน้าจอโทรศัพท์ไปยังหน้าปัด\n• ขณะเชื่อมต่อ แผนที่ / ฉายหน้าจอจะสลับสิ่งที่แสดงบนหน้าปัด\n• มุมมองหน้าปัดและการควบคุม: HUD บนโทรศัพท์และ D-pad / แฮนด์</string>
     <string name="main_about_credits">เกี่ยวกับและเครดิต</string>
     <string name="main_check_for_update">ตรวจสอบการอัปเดต</string>
     <string name="main_report_a_problem">รายงานปัญหา</string>
@@ -303,9 +269,7 @@ ATV / SSV (TFT): CFORCE 800 · CFORCE 850 Touring · CFORCE 1000 · CFORCE 1000 
     <string name="main_diagnostics">การวินิจฉัย</string>
     <string name="main_share">แชร์</string>
     <string name="main_clear">ล้าง</string>
-    <string name="qr_point_the_camera_at_the_bike_s_motoplay_qr_if_it">หันกล้องไปที่ QR ของ MotoPlay บนรถ
-
-หากสแกนไม่ได้ ให้ลองใช้ QR ของ iOS / CarPlay หรือกรอก Wi‑Fi ด้วยตนเอง (TRK)</string>
+    <string name="qr_point_the_camera_at_the_bike_s_motoplay_qr_if_it">หันกล้องไปที่ QR ของ MotoPlay บนรถ\n\nหากสแกนไม่ได้ ให้ลองใช้ QR ของ iOS / CarPlay หรือกรอก Wi‑Fi ด้วยตนเอง (TRK)</string>
     <string name="qr_1x">1x</string>
     <string name="qr_2x">2x</string>
     <string name="qr_3x">3x</string>
@@ -500,10 +464,8 @@ ATV / SSV (TFT): CFORCE 800 · CFORCE 850 Touring · CFORCE 1000 · CFORCE 1000 
     <string name="trips_str_2">›</string>
     <string name="trips_today">วันนี้</string>
     <string name="trips_no_rides_this_day">ไม่มีทริปในวันนี้</string>
-    <string name="trips_no_trips_yet">ยังไม่มีทริป
-ระบบจะบันทึกการขับขี่โดยอัตโนมัติขณะฉาย Android Auto หรือใช้แผนที่ในตัว หรือเริ่มบันทึกจากหน้าทริปก็ได้</string>
-    <string name="trips_no_rides_browse_days">ไม่มีทริปในวันนี้
-ใช้ ‹ › เพื่อดูวันอื่น</string>
+    <string name="trips_no_trips_yet">ยังไม่มีทริป\nระบบจะบันทึกการขับขี่โดยอัตโนมัติขณะฉาย Android Auto หรือใช้แผนที่ในตัว หรือเริ่มบันทึกจากหน้าทริปก็ได้</string>
+    <string name="trips_no_rides_browse_days">ไม่มีทริปในวันนี้\nใช้ ‹ › เพื่อดูวันอื่น</string>
     <string name="trips_no_rides_summary">ไม่มีทริป</string>
     <plurals name="trips_day_summary">
         <item quantity="other">%1$d ทริป · %2$.1f km</item>
@@ -580,12 +542,8 @@ ATV / SSV (TFT): CFORCE 800 · CFORCE 850 Touring · CFORCE 1000 · CFORCE 1000 
     <string name="conn_detail_aa_not_started">Android Auto ไม่ได้เชื่อมต่อ ใน Android Auto 17.4 ขึ้นไป Google บล็อกการเริ่มต้นอัตโนมัติ: เปิด Android Auto แตะเวอร์ชัน 10 ครั้ง จากนั้นแตะ ⋮ → เริ่มเซิร์ฟเวอร์หน่วยหลัก แล้วลองเชื่อมต่ออีกครั้ง SoftAP / ฉายหน้าจอยังใช้ยืนยันลิงก์ Wi‑Fi ของรถได้</string>
     <string name="conn_detail_aa_dropped">Android Auto เชื่อมต่อแล้วแต่หลุด Wi‑Fi ของรถยังทำงานอยู่ แตะเชื่อมต่ออีกครั้งและคงแถบแจ้งเตือนการเชื่อมต่อ Android Auto ไว้ SoftAP / ฉายหน้าจอยังใช้ยืนยันลิงก์กับรถได้</string>
     <string name="main_aa_need_nearby_title">ต้องอนุญาตอุปกรณ์ใกล้เคียง</string>
-    <string name="main_aa_need_nearby_message">การเชื่อมต่อ Android Auto ต้องใช้สิทธิ์อุปกรณ์ใกล้เคียง (Bluetooth) เพื่อให้โทรศัพท์เริ่มฉายภาพแบบไร้สาย อนุญาตสิทธิ์อุปกรณ์ใกล้เคียง เปิด Bluetooth แล้วแตะเชื่อมต่ออีกครั้ง
-
-ฉายหน้าจอและแผนที่ไม่ต้องใช้สิทธิ์นี้</string>
-    <string name="main_aa_need_bt_on_message">เปิด Bluetooth แล้วแตะเชื่อมต่ออีกครั้ง การเชื่อมต่อ Android Auto ใช้ Bluetooth เพื่อเริ่มฉายภาพแบบไร้สายใน Android Auto รุ่นใหม่
-
-ฉายหน้าจอและแผนที่ไม่ต้องใช้สิทธิ์นี้</string>
+    <string name="main_aa_need_nearby_message">การเชื่อมต่อ Android Auto ต้องใช้สิทธิ์อุปกรณ์ใกล้เคียง (Bluetooth) เพื่อให้โทรศัพท์เริ่มฉายภาพแบบไร้สาย อนุญาตสิทธิ์อุปกรณ์ใกล้เคียง เปิด Bluetooth แล้วแตะเชื่อมต่ออีกครั้ง\n\nฉายหน้าจอและแผนที่ไม่ต้องใช้สิทธิ์นี้</string>
+    <string name="main_aa_need_bt_on_message">เปิด Bluetooth แล้วแตะเชื่อมต่ออีกครั้ง การเชื่อมต่อ Android Auto ใช้ Bluetooth เพื่อเริ่มฉายภาพแบบไร้สายใน Android Auto รุ่นใหม่\n\nฉายหน้าจอและแผนที่ไม่ต้องใช้สิทธิ์นี้</string>
     <string name="main_aa_need_nearby_settings">เปิดการตั้งค่า</string>
     <string name="conn_detail_wifi_picker">อนุมัติหน้าต่างเลือก Wi‑Fi / อุปกรณ์ของโทรศัพท์ (อย่าปล่อยหน้าต่างนี้ค้างไว้) แล้วแตะเชื่อมต่ออีกครั้ง</string>
     <string name="conn_detail_easyconn_offline">Wi‑Fi ของรถทำงานอยู่ แต่ EasyConn ออฟไลน์ เปิด QR สำหรับจับคู่ค้างไว้บนหน้าปัด</string>
@@ -601,26 +559,22 @@ ATV / SSV (TFT): CFORCE 800 · CFORCE 850 Touring · CFORCE 1000 · CFORCE 1000 
     <string name="main_phone_hotspot_no_iface">ไม่พบฮอตสปอตของโทรศัพท์ เปิดฮอตสปอต Android ด้วย SSID/รหัสผ่านบนหน้าปัด แล้วแตะเชื่อมต่ออีกครั้ง</string>
     <string name="main_phone_hotspot_no_peer">ฮอตสปอตทำงานแล้วแต่ไม่พบหน้าปัด เปิดหน้าจอจับคู่ค้างไว้แล้วลองอีกครั้ง</string>
     <string name="main_phone_hotspot_dialog_title">ตั้งค่าฮอตสปอตของโทรศัพท์</string>
-    <string name="main_phone_hotspot_dialog_message">รถคันนี้เชื่อมต่อกับฮอตสปอตของโทรศัพท์ (Android ไม่สามารถสร้างฮอตสปอตนั้นให้คุณได้)
-
-1. พิมพ์ SSID และรหัสผ่านที่แสดงบนหน้าปัด (ใช้เป็นข้อมูลอ้างอิงเท่านั้น)
-2. เปิดการตั้งค่าฮอตสปอตและกำหนดค่าให้ตรงกันทุกประการ
-3. เปิดหน้าจอจับคู่บนหน้าปัดค้างไว้ เราจะรอรถประมาณ 45 วินาที</string>
+    <string name="main_phone_hotspot_dialog_message">รถคันนี้เชื่อมต่อกับฮอตสปอตของโทรศัพท์ (Android ไม่สามารถสร้างฮอตสปอตนั้นให้คุณได้)\n\n1. พิมพ์ SSID และรหัสผ่านที่แสดงบนหน้าปัด (ใช้เป็นข้อมูลอ้างอิงเท่านั้น)\n2. เปิดการตั้งค่าฮอตสปอตและกำหนดค่าให้ตรงกันทุกประการ\n3. เปิดหน้าจอจับคู่บนหน้าปัดค้างไว้ เราจะรอรถประมาณ 45 วินาที</string>
     <string name="main_phone_hotspot_ssid_hint">SSID ฮอตสปอตของหน้าปัด</string>
     <string name="main_phone_hotspot_pwd_hint">รหัสผ่านฮอตสปอตของหน้าปัด</string>
     <string name="main_phone_hotspot_open_settings">เปิดการตั้งค่าฮอตสปอต</string>
     <string name="main_phone_hotspot_ready">เปิดฮอตสปอตแล้ว สแกนได้เลย</string>
     <string name="main_phone_hotspot_settings_failed">เปิดการตั้งค่าฮอตสปอตไม่ได้ โปรดเปิดด้วยตนเอง</string>
     <string name="main_phone_hotspot_cancelled">ยกเลิกการตั้งค่าฮอตสปอตของโทรศัพท์แล้ว</string>
-    <string name="main_phone_hotspot_waiting_named">กำลังรอฮอตสปอต "%1$s" รถควรเชื่อมต่อกับโทรศัพท์ของคุณ</string>
+    <string name="main_phone_hotspot_waiting_named">กำลังรอฮอตสปอต \"%1$s\" รถควรเชื่อมต่อกับโทรศัพท์ของคุณ</string>
     <string name="main_donate_failed">เปิดลิงก์บริจาคไม่ได้</string>
     <string name="main_settings_failed">เปิดการตั้งค่าแอปไม่ได้</string>
     <string name="main_download_failed">เปิดลิงก์ดาวน์โหลดไม่ได้</string>
     <string name="main_share_report_failed">แชร์รายงานไม่ได้: %1$s</string>
     <string name="main_vpn_hint">เปิดการตั้งค่า ▸ เครือข่าย ▸ VPN</string>
     <string name="main_type_place">พิมพ์ชื่อสถานที่เพื่อค้นหาบนแผนที่</string>
-    <string name="main_searching_dash">กำลังค้นหา "%1$s" บนหน้าปัด</string>
-    <string name="main_sent_aa">ส่ง "%1$s" ไปยัง Android Auto แล้ว</string>
+    <string name="main_searching_dash">กำลังค้นหา \"%1$s\" บนหน้าปัด</string>
+    <string name="main_sent_aa">ส่ง \"%1$s\" ไปยัง Android Auto แล้ว</string>
     <string name="main_checking_update">กำลังตรวจสอบการอัปเดต…</string>
     <string name="main_up_to_date">เป็นเวอร์ชันล่าสุดแล้ว (หรือออฟไลน์)</string>
     <string name="main_crash_title">กู้คืนหลังแอปขัดข้องแล้ว</string>
