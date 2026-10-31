@@ -1308,6 +1308,23 @@
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
 
+                <!-- v2.4: a PKE lock ends the ride. -->
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switch_lock_ends_trip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/lock_ends_trip"
+                    android:textColor="@color/text_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/lock_ends_trip_desc"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp" />
+
                 <!-- v2.3: chime on connect / link lost. -->
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/switch_connect_sound"

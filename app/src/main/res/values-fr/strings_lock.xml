@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: a PKE lock ends the ride (task 20) -->
+    <string name="lock_ends_trip">Verrouiller termine le trajet</string>
+    <string name="lock_ends_trip_desc">Quand tu verrouilles la moto depuis l\'app, elle enregistre où tu t\'es garé et arrête la projection. Jamais en roulant (plus de 5 km/h) ni moteur allumé.</string>
+</resources>

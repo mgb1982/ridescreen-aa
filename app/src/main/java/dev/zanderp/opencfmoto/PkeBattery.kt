@@ -322,8 +322,10 @@ object PkeBattery {
         }
     }
 
-    /** True / false once known from a voltage read under 3 min ago, else null. */
+    /** True / false from a live OBD RPM if there is one, else from a voltage read under 3 min ago, else null. */
     fun engineState(ctx: Context): Boolean? {
+        // A live OBD reading (real RPM) beats guessing from the battery voltage.
+        ObdLive.engineRunning()?.let { return it }
         val r = last(ctx) ?: return null
         return if (System.currentTimeMillis() - r.voltsAtMs <= 3 * 60_000L) engine.running else null
     }

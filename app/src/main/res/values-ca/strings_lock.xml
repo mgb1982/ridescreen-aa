@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: a PKE lock ends the ride (task 20) -->
+    <string name="lock_ends_trip">Bloquejar acaba el viatge</string>
+    <string name="lock_ends_trip_desc">En bloquejar la moto des de l\'app es desa on has aparcat i es deixa de projectar. Mai en marxa (més de 5 km/h) ni amb el motor encès.</string>
+</resources>

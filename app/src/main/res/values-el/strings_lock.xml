@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: a PKE lock ends the ride (task 20) -->
+    <string name="lock_ends_trip">Το κλείδωμα τερματίζει τη διαδρομή</string>
+    <string name="lock_ends_trip_desc">Όταν κλειδώνεις τη μηχανή από την εφαρμογή, αποθηκεύεται το σημείο στάθμευσης και σταματά η προβολή. Ποτέ εν κινήσει (πάνω από 5 km/h) ή με αναμμένο κινητήρα.</string>
+</resources>

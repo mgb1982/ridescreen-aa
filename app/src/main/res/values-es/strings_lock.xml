@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: a PKE lock ends the ride (task 20) -->
+    <string name="lock_ends_trip">Bloquear termina el viaje</string>
+    <string name="lock_ends_trip_desc">Al bloquear la moto desde la app se guarda dónde has aparcado y se deja de proyectar. Nunca en marcha (más de 5 km/h) ni con el motor encendido.</string>
+</resources>

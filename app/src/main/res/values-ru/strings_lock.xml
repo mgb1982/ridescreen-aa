@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: a PKE lock ends the ride (task 20) -->
+    <string name="lock_ends_trip">Блокировка завершает поездку</string>
+    <string name="lock_ends_trip_desc">Когда вы блокируете мотоцикл из приложения, сохраняется место парковки и останавливается проекция. Никогда во время движения (быстрее 5 км/ч) или при работающем двигателе.</string>
+</resources>

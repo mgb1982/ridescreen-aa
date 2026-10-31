@@ -82,6 +82,7 @@ class AndroidAutoService : Service() {
                 ensureMediaButtons()
                 startWatchdog()
                 isRunning = true
+                ObdLive.start(this)
                 applyGpxScreenWake(true)
                 reacquireLocks()
                 AppHttp.ensureCellularUplink()
@@ -109,6 +110,7 @@ class AndroidAutoService : Service() {
         startReceiver()
         startWatchdog()
         isRunning = true
+        ObdLive.start(this)   // no-op unless the rider turned on continuous OBD reading
         return START_STICKY
     }
 
@@ -706,6 +708,7 @@ class AndroidAutoService : Service() {
     }
 
     override fun onDestroy() {
+        try { ObdLive.stop() } catch (_: Exception) {}
         isRunning = false
         aaParked = false
         if (active === this) active = null

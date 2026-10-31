@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: a PKE lock ends the ride (task 20) -->
+    <string name="lock_ends_trip">Trancar termina a viagem</string>
+    <string name="lock_ends_trip_desc">Ao trancar a mota pela app, guarda onde estacionaste e deixa de projetar. Nunca em andamento (mais de 5 km/h) nem com o motor ligado.</string>
+</resources>

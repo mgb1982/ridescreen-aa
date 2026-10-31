@@ -46,6 +46,10 @@ object AppSettings {
         prefs(ctx).edit().putBoolean(KEY_AUTO_CONNECT, on).apply()
 
     /** v2.2: after 20 min without the bike, keep waiting for its Wi-Fi in low-power mode. */
+    /** v2.4: a confirmed PKE lock saves the parking spot and ends the ride (see [LockEndsTrip]). On by default. */
+    fun lockEndsTrip(ctx: Context): Boolean = prefs(ctx).getBoolean("lock_ends_trip", true)
+    fun setLockEndsTrip(ctx: Context, on: Boolean) = prefs(ctx).edit().putBoolean("lock_ends_trip", on).apply()
+
     fun waitForBike(ctx: Context): Boolean = prefs(ctx).getBoolean("wait_for_bike", true)
     fun setWaitForBike(ctx: Context, on: Boolean) = prefs(ctx).edit().putBoolean("wait_for_bike", on).apply()
 
@@ -183,6 +187,14 @@ object AppSettings {
             .putString(KEY_BT_TRIGGER_MAC, mac?.ifBlank { null })
             .putString(KEY_BT_TRIGGER_NAME, name?.ifBlank { null })
             .apply()
+    }
+
+    /** Name of the paired ELM327 read continuously while projecting (see [ObdLive]); null = off. Device-specific, not backed up. */
+    fun obdLiveAdapter(ctx: Context): String? =
+        prefs(ctx).getString("obd_live_adapter", null)?.takeIf { it.isNotBlank() }
+
+    fun setObdLiveAdapter(ctx: Context, name: String?) {
+        prefs(ctx).edit().putString("obd_live_adapter", name?.ifBlank { null }).apply()
     }
 
     fun applyToHolder(ctx: Context) {

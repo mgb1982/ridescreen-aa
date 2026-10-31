@@ -54,9 +54,10 @@ object AnonymousTelemetry {
     }
 
     /** Queue a non-fatal connection/UI error (rate-limited). No-op when telemetry is off. */
-    fun reportError(ctx: Context, detail: String) {
+    fun reportError(ctx: Context, detail: String, oncePerDay: Boolean = false) {
         if (!AppSettings.anonymousTelemetry(ctx)) return
         val now = System.currentTimeMillis()
+        if (oncePerDay && !firstToday(ctx, detail, now)) return
         if (now - lastErrorEnqueueMs < ERROR_COOLDOWN_MS) return
         lastErrorEnqueueMs = now
         io.execute {
@@ -66,6 +67,22 @@ object AnonymousTelemetry {
             } catch (_: Exception) {
             }
         }
+    }
+
+    /**
+     * v2.4 · Status hints shown to the rider ("phone Wi‑Fi is off", "allow Nearby devices") were ~half
+     * of all error reports (Cloudflare, 31 Oct 2026). They are guidance, not bugs: one per message per
+     * install per day is enough to see how often riders hit them.
+     */
+    private fun firstToday(ctx: Context, detail: String, now: Long): Boolean {
+        val p = ctx.getSharedPreferences("telemetry_hints", Context.MODE_PRIVATE)
+        val day = now / 86_400_000L
+        val key = "h" + detail.take(120).hashCode()
+        if (p.getLong(key, -1L) == day) return false
+        val e = p.edit()
+        if (p.all.size > 200) e.clear()
+        e.putLong(key, day).apply()
+        return true
     }
 
     fun flushSoon(ctx: Context) {

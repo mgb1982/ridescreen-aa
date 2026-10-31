@@ -239,6 +239,12 @@ object PkeUnlock {
     // ── the send (blocking: call it off the main thread, same contract as PkeBattery.read)
 
     fun send(ctx: Context, action: Action): Result {
+        val res = sendRaw(ctx, action)
+        try { LockEndsTrip.after(ctx, action, res) } catch (e: Exception) { log("after-lock step failed: $e") }
+        return res
+    }
+
+    private fun sendRaw(ctx: Context, action: Action): Result {
         val pke = PkeBattery.code(ctx)
         if (pke.length < 8) return Result(false, Failure.NO_CODE)
         val mcu = mcuId(ctx)

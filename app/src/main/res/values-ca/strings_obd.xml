@@ -12,4 +12,8 @@
     <string name="obd_fail_link">No s’ha pogut connectar amb l’adaptador. Està aparellat, amb corrent (contacte posat) i sense cap altra app fent-lo servir?</string>
     <string name="obd_fail_ecu">L’adaptador respon però la centraleta no. Posa el contacte (o engega el motor) i torna-ho a provar.</string>
     <string name="obd_share_hint">Tot queda també al registre: ❓ Ajuda → Compartir registres.</string>
+    <string name="obd_live_on">Usar aquest adaptador en projectar</string>
+    <string name="obd_live_off">Deixar d\'usar-lo en projectar</string>
+    <string name="obd_live_enabled">Llegint %1$s mentre projectes: «motor en marxa» ara surt de les RPM reals.</string>
+    <string name="obd_live_disabled">Lectura contínua desactivada.</string>
 </resources>

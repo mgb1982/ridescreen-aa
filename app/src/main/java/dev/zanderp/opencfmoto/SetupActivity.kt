@@ -133,6 +133,10 @@ class SetupActivity : AppCompatActivity() {
                 if (!on) BikeWatchService.stop(this@SetupActivity)
             }
         }
+        findViewById<com.google.android.material.materialswitch.MaterialSwitch>(R.id.switch_lock_ends_trip).apply {
+            isChecked = AppSettings.lockEndsTrip(this@SetupActivity)
+            setOnCheckedChangeListener { _, on -> AppSettings.setLockEndsTrip(this@SetupActivity, on) }
+        }
         findViewById<com.google.android.material.materialswitch.MaterialSwitch>(R.id.switch_connect_sound).apply {
             isChecked = ConnectSound.enabled(this@SetupActivity)
             setOnCheckedChangeListener { _, on ->

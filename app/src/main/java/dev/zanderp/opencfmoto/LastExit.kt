@@ -29,16 +29,41 @@ object LastExit {
             val line = "[EXIT] previous process ended: $reason (${ago}s ago, status=${info.status}, " +
                 "importance=${info.importance}, pss=${info.pss / 1024} MB) ${info.description.orEmpty().take(200)}"
             LogBus.log(line)
-            val bad = info.reason in setOf(
-                ApplicationExitInfo.REASON_CRASH_NATIVE, ApplicationExitInfo.REASON_ANR,
-                ApplicationExitInfo.REASON_LOW_MEMORY, ApplicationExitInfo.REASON_SIGNALED,
-                ApplicationExitInfo.REASON_EXCESSIVE_RESOURCE_USAGE, ApplicationExitInfo.REASON_INITIALIZATION_FAILURE,
-            )
-            if (bad) AnonymousTelemetry.reportError(ctx, "Previous process ended: $reason · ${info.description.orEmpty().take(300)}")
+            if (worthReporting(info.reason, info.importance)) {
+                AnonymousTelemetry.reportError(ctx, "Previous process ended: $reason (${importanceName(info.importance)}) · ${info.description.orEmpty().take(300)}")
+            }
         } catch (e: Exception) {
             LogBus.log("[EXIT] could not read the last exit reason: ${e.message}")
         }
     }
+
+    /**
+     * v2.4 · Cloudflare, 31 Oct 2026: 4,889 "LOW MEMORY" reports from 628 installs, mostly the system
+     * reclaiming the app while it sat cached in the background — normal, not a bug. Memory / signal
+     * kills only count when the app was in use (foreground, projection service, visible or
+     * perceptible: importance ≤ 230); crashes, ANRs and the rest always do.
+     */
+    internal fun worthReporting(reason: Int, importance: Int): Boolean = when (reason) {
+        REASON_CRASH_NATIVE, REASON_ANR, REASON_EXCESSIVE_RESOURCE_USAGE, REASON_INITIALIZATION_FAILURE -> true
+        REASON_LOW_MEMORY, REASON_SIGNALED -> importance in 1..IN_USE_MAX
+        else -> false
+    }
+
+    private fun importanceName(i: Int): String = when {
+        i <= 100 -> "in front"
+        i <= 125 -> "projecting / foreground service"
+        i <= IN_USE_MAX -> "visible"
+        else -> "background"
+    }
+
+    // ApplicationExitInfo / RunningAppProcessInfo constants, inlined so the pure check is unit-testable.
+    private const val REASON_SIGNALED = 2
+    private const val REASON_LOW_MEMORY = 3
+    private const val REASON_CRASH_NATIVE = 5
+    private const val REASON_ANR = 6
+    private const val REASON_INITIALIZATION_FAILURE = 7
+    private const val REASON_EXCESSIVE_RESOURCE_USAGE = 9
+    private const val IN_USE_MAX = 230   // IMPORTANCE_PERCEPTIBLE
 
     @androidx.annotation.RequiresApi(30)
     private fun reasonName(r: Int): String = when (r) {

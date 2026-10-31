@@ -36,7 +36,11 @@ object ObdDecode {
     fun bytesOf(reply: String): IntArray? {
         val up = reply.uppercase()
         if (ERRORS.any { up.contains(it) }) return null
-        val hex = up.lines()
+        val lines = up.lines().map { it.trim() }
+        // A multi-frame CAN reply starts with a bare length line ("00A") before "0:", "1:" … : not data.
+        val framed = lines.any { it.contains(':') }
+        val hex = lines
+            .filter { !framed || it.contains(':') }
             .map { it.substringAfter(':').trim() }
             .filter { it.isNotEmpty() && !it.startsWith("SEARCHING") && !it.startsWith("BUS INIT") }
             .joinToString("")
@@ -59,6 +63,26 @@ object ObdDecode {
         val d = mode01Data(reply, pid) ?: return null
         if (d.size < p.bytes) return null
         return p.calc(d)
+    }
+
+    /**
+     * Reply to one request that asked for several PIDs at once ("01 0C 0D 05 11"): "41 0C xx xx 0D yy …"
+     * in the order asked. Null unless every requested PID is there, so a bike whose ECU answers only the
+     * first one is detected and the caller falls back to one PID per request.
+     */
+    fun multi(reply: String, pids: List<Int>): Map<Int, Double>? {
+        val b = bytesOf(reply) ?: return null
+        var i = b.indexOf(0x41)
+        if (i < 0) return null
+        i++
+        val out = LinkedHashMap<Int, Double>()
+        for (pid in pids) {
+            val p = pid(pid) ?: return null
+            if (i + 1 + p.bytes > b.size || b[i] != pid) return null
+            out[pid] = p.calc(b.copyOfRange(i + 1, i + 1 + p.bytes))
+            i += 1 + p.bytes
+        }
+        return out
     }
 
     /** PIDs flagged in a "supported PIDs" reply (01 00 / 01 20 / 01 40 / 01 60): base+1 … base+32. */

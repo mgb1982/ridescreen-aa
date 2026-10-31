@@ -1882,7 +1882,7 @@ class MainActivity : AppCompatActivity() {
         bikeView.text = if (detail.isNotBlank()) detail else bikeLabelText()
         if (phase == Phase.ERROR && detail.isNotBlank() && !isHusConnectNoise(detail)) {
             try {
-                AnonymousTelemetry.reportError(this, detail)
+                AnonymousTelemetry.reportError(this, detail, oncePerDay = true)
             } catch (_: Exception) {
             }
         }

@@ -91,10 +91,14 @@ object ObdProbeUi {
             .setView(ScrollView(activity).apply { addView(text) })
             .setCancelable(false)
             .setPositiveButton(R.string.whats_new_ok, null)
+            .setNeutralButton(" ", null)
             .show()
         dialog.getButton(android.content.DialogInterface.BUTTON_POSITIVE)?.isEnabled = false
+        dialog.getButton(android.content.DialogInterface.BUTTON_NEUTRAL)?.visibility = android.view.View.GONE
         val app = activity.applicationContext
+        val name = runCatching { device.name }.getOrNull()
         io.execute {
+            ObdLive.stop(wait = true)   // one client at a time on the adapter
             val res = try { ObdProbe.run(app, device) { line -> main.post { text.text = line } } }
                 catch (e: Exception) { LogBus.log("[OBD] probe crashed: $e"); ObdProbe.Result(ObdProbe.Failure.NO_LINK, emptyList()) }
             main.post {
@@ -108,7 +112,26 @@ object ObdProbeUi {
                     .joinToString("\n\n")
                 dialog.setCancelable(true)
                 dialog.getButton(android.content.DialogInterface.BUTTON_POSITIVE)?.isEnabled = true
+                if (res.failure == null && name != null) offerLive(activity, dialog, name)
+                else io.execute { ObdLive.start(app) }
             }
         }
+    }
+
+    /** After a good test: keep reading this adapter while projecting (or stop doing so). */
+    private fun offerLive(activity: Activity, dialog: androidx.appcompat.app.AlertDialog, name: String) {
+        val app = activity.applicationContext
+        val btn = dialog.getButton(android.content.DialogInterface.BUTTON_NEUTRAL) ?: return
+        fun label() { btn.setText(if (AppSettings.obdLiveAdapter(app) == name) R.string.obd_live_off else R.string.obd_live_on) }
+        label()
+        btn.visibility = android.view.View.VISIBLE
+        btn.setOnClickListener {
+            val on = AppSettings.obdLiveAdapter(app) != name
+            AppSettings.setObdLiveAdapter(app, if (on) name else null)
+            LogBus.log("[OBD] continuous reading ${if (on) "on for '$name'" else "off"}")
+            Toast.makeText(activity, activity.getString(if (on) R.string.obd_live_enabled else R.string.obd_live_disabled, name), Toast.LENGTH_LONG).show()
+            label()
+        }
+        dialog.setOnDismissListener { io.execute { ObdLive.start(app) } }
     }
 }
