@@ -12,4 +12,8 @@
     <string name="obd_fail_link">Couldn\'t connect to the adapter. Is it paired, powered (contact on) and not in use by another app?</string>
     <string name="obd_fail_ecu">The adapter answered but the engine control unit didn\'t. Turn the contact on (or start the engine) and try again.</string>
     <string name="obd_share_hint">Everything is in the log too: ❓ Help → Share logs.</string>
+    <string name="obd_live_on">Use this adapter while projecting</string>
+    <string name="obd_live_off">Stop using it while projecting</string>
+    <string name="obd_live_enabled">Reading %1$s while projecting: engine on/off now comes from the real RPM.</string>
+    <string name="obd_live_disabled">Continuous reading off.</string>
 </resources>

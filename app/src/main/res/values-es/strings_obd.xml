@@ -12,4 +12,8 @@
     <string name="obd_fail_link">No se ha podido conectar con el adaptador. ¿Está emparejado, con corriente (contacto puesto) y sin otra app usándolo?</string>
     <string name="obd_fail_ecu">El adaptador responde pero la centralita no. Pon el contacto (o arranca el motor) y vuelve a probar.</string>
     <string name="obd_share_hint">Todo queda también en el registro: ❓ Ayuda → Compartir registros.</string>
+    <string name="obd_live_on">Usar este adaptador al proyectar</string>
+    <string name="obd_live_off">Dejar de usarlo al proyectar</string>
+    <string name="obd_live_enabled">Leyendo %1$s mientras proyectas: «motor en marcha» ahora sale de las RPM reales.</string>
+    <string name="obd_live_disabled">Lectura continua desactivada.</string>
 </resources>

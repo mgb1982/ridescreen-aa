@@ -7,7 +7,7 @@ package dev.zanderp.opencfmoto
 /**
  * Strips secrets out of log lines when written (so Share Logs / problem reports are safe by default).
  *
- * Masks Wi‑Fi / EasyConn / OTA passwords and shortens vehicle serials. SSID and model id are kept.
+ * Masks Wi‑Fi / EasyConn / OTA passwords, shortens vehicle serials and hides all but the last two bytes of any Bluetooth / Wi‑Fi hardware address. SSID and model id are kept.
  * Bypass via [AppSettings.includeSecretsInLogs] for local debugging only.
  */
 object LogRedactor {
@@ -31,8 +31,11 @@ object LogRedactor {
         RegexOption.IGNORE_CASE,
     )
 
+    /** Bluetooth / Wi-Fi hardware address: six hex pairs. Names stay; only the last two bytes are kept. */
+    private val MAC = Regex("""\b(?:[0-9A-Fa-f]{2}[:-]){4}([0-9A-Fa-f]{2}[:-][0-9A-Fa-f]{2})\b""")
+
     fun redact(line: String): String {
-        var s = line
+        var s = MAC.replace(line) { m -> "**:**:**:**:" + m.groupValues[1].replace('-', ':') }
         s = JSON_SECRET.replace(s) { m -> m.groupValues[1] + "\"$MASK\"" }
         s = URL_SECRET.replace(s) { m -> m.groupValues[1] + "=" + MASK }
         s = JSON_SERIAL.replace(s) { m -> m.groupValues[1] + "\"" + maskTail(m.groupValues[2]) + "\"" }

@@ -26,7 +26,8 @@ import java.util.UUID
 object ObdProbe {
     private val SPP: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
     private val NAME_HINTS = listOf("OBD", "ELM", "V-LINK", "VLINK", "VGATE", "KONNWEI", "ICAR", "VEEPEAK", "SCAN")
-    private val SAFE = Regex("^(AT[A-Z0-9 ]*|01[0-9A-F]{2}|03)$")
+    // 01 + 1..6 PIDs (+ optional "responses expected" digit, an ELM327 speed-up) | AT setup | 03 (stored codes).
+    internal val SAFE = Regex("^(AT[A-Z0-9 ]*|01([0-9A-F]{2}){1,6}[1-9]?|03)$")
     private val LIVE = listOf(0x0C, 0x0D, 0x05, 0x11)
     private const val LIVE_SECONDS = 20
 
@@ -130,7 +131,7 @@ object ObdProbe {
         }
     }
 
-    private fun connect(device: BluetoothDevice): BluetoothSocket? {
+    internal fun connect(device: BluetoothDevice): BluetoothSocket? {
         val attempts: List<Pair<String, () -> BluetoothSocket>> = listOf(
             "secure" to { device.createRfcommSocketToServiceRecord(SPP) },
             "insecure" to { device.createInsecureRfcommSocketToServiceRecord(SPP) },
@@ -147,7 +148,10 @@ object ObdProbe {
     }
 
     /** ELM327 request/response: one command, read until the ">" prompt. */
-    private class Elm(private val inp: InputStream, private val outp: OutputStream) {
+    internal class Elm(private val inp: InputStream, private val outp: OutputStream) {
+        /** Off for the continuous reader, which would otherwise log 10+ lines a second. */
+        @Volatile var verbose = true
+
         fun cmd(c: String, timeoutMs: Long = 2_500): String {
             require(SAFE.matches(c)) { "not a read-only command: $c" }
             while (inp.available() > 0) inp.read()
@@ -163,7 +167,7 @@ object ObdProbe {
                 } else Thread.sleep(10)
             }
             val reply = sb.toString().replace('\r', '\n').lines().map { it.trim() }.filter { it.isNotEmpty() && it != c }.joinToString("\n")
-            LogBus.log("[OBD] → $c  ← ${reply.replace('\n', ' ').ifEmpty { "(nothing)" }}")
+            if (verbose) LogBus.log("[OBD] → $c  ← ${reply.replace('\n', ' ').ifEmpty { "(nothing)" }}")
             return reply
         }
     }

@@ -185,6 +185,14 @@ object AppSettings {
             .apply()
     }
 
+    /** Name of the paired ELM327 read continuously while projecting (see [ObdLive]); null = off. Device-specific, not backed up. */
+    fun obdLiveAdapter(ctx: Context): String? =
+        prefs(ctx).getString("obd_live_adapter", null)?.takeIf { it.isNotBlank() }
+
+    fun setObdLiveAdapter(ctx: Context, name: String?) {
+        prefs(ctx).edit().putString("obd_live_adapter", name?.ifBlank { null }).apply()
+    }
+
     fun applyToHolder(ctx: Context) {
         BikeProfileHolder.forceNonTouch = forceNonTouch(ctx)
         BikeProfileHolder.forceTouch = forceTouch(ctx)
