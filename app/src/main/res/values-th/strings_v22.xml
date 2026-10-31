@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crash_entry">🆘 ตรวจจับอุบัติเหตุ</string>
+    <string name="crash_channel">สัญญาณเตือนอุบัติเหตุ</string>
+    <string name="crash_alert_title">คุณประสบอุบัติเหตุหรือไม่?</string>
+    <string name="crash_alert_title_test">คุณประสบอุบัติเหตุหรือไม่? (จำลอง)</string>
+    <string name="crash_alert_text">ระบบจะแจ้งผู้ติดต่อของคุณในอีก %1$d วินาที หากคุณไม่แตะ “ฉันปลอดภัย”</string>
+    <string name="crash_im_ok">ฉันปลอดภัย</string>
+    <string name="crash_send_now">ส่งการแจ้งเตือนตอนนี้</string>
+    <string name="crash_alert_info">หากคุณไม่ตอบกลับ ระบบจะส่ง SMS พร้อมตำแหน่งของคุณไปยังผู้ติดต่อ %1$d คน</string>
+    <string name="crash_sent_title">ส่งการแจ้งเตือนอุบัติเหตุแล้ว</string>
+    <string name="crash_sent_none">ส่ง SMS ไม่ได้ (ไม่มีผู้ติดต่อหรือไม่ได้รับอนุญาต) โทรขอความช่วยเหลือหากจำเป็น</string>
+    <string name="crash_sent_to">ส่ง SMS ไปยัง: %1$s</string>
+    <string name="crash_sim_done">การจำลอง: ข้อความนี้จะถูกส่งไปยังผู้ติดต่อ %1$d คน ไม่มีการส่งข้อความใด ๆ</string>
+    <string name="crash_close">ปิด</string>
+    <string name="crash_sms_someone">ผู้ขับขี่</string>
+    <string name="crash_sms_no_location">ไม่ทราบตำแหน่ง</string>
+    <string name="crash_sms_body">🆘 RideScreen AA: %1$s อาจประสบอุบัติเหตุรถจักรยานยนต์และไม่ตอบกลับเป็นเวลา %2$d วินาที ตำแหน่ง: %3$s (%4$s) ข้อความอัตโนมัติ</string>
+    <string name="crash_sms_followup">🆘 RideScreen AA, อัปเดต: %1$s ยังไม่ตอบกลับ (การแจ้งเตือนครั้งแรกหลัง %2$d วินาที) ตำแหน่งปัจจุบัน: %3$s (%4$s) ข้อความอัตโนมัติ</string>
+    <string name="crash_sms_test_prefix">[ทดสอบ, ไม่ต้องสนใจ]</string>
+    <string name="crash_title">ตรวจจับอุบัติเหตุ (ทดลอง)</string>
+    <string name="crash_how">ขณะขับขี่ โทรศัพท์จะตรวจจับแรงกระแทกรุนแรง ตามด้วยการหยุดนิ่งของรถและโทรศัพท์ จากนั้นจะส่งเสียงเตือนเป็นเวลา 60 วินาทีทั้งบนโทรศัพท์และนาฬิกา หากไม่มีใครแตะ “ฉันปลอดภัย” ระบบจะส่ง SMS พร้อมลิงก์แผนที่ตำแหน่งของคุณไปยังผู้ติดต่อสูงสุด 3 คน และส่งอีกครั้งหลัง 5 นาที ระบบจะไม่โทรหาหน่วยฉุกเฉินด้วยตนเอง</string>
+    <string name="crash_enable">เปิดการตรวจจับอุบัติเหตุ</string>
+    <string name="crash_name_title">ชื่อของคุณ (สำหรับข้อความ)</string>
+    <string name="crash_name_hint">เช่น Manel</string>
+    <string name="crash_contacts_title">ผู้ติดต่อฉุกเฉิน (สูงสุด %1$d คน)</string>
+    <string name="crash_add_contact">＋ เพิ่มผู้ติดต่อ</string>
+    <string name="crash_contacts_full">สูงสุด %1$d คน</string>
+    <string name="crash_no_contacts">ยังไม่มีผู้ติดต่อ</string>
+    <string name="crash_test_title">ทดลองใช้</string>
+    <string name="crash_simulate">จำลองอุบัติเหตุ</string>
+    <string name="crash_simulate_confirm">เสียงเตือนจะดังขึ้นและเริ่มนับถอยหลัง รวมถึงบนนาฬิกาด้วย จะไม่มีการส่งข้อความใด ๆ เมื่อสิ้นสุด คุณจะเห็นข้อความที่ระบบจะส่ง</string>
+    <string name="crash_test_sms">ส่ง SMS ทดสอบ</string>
+    <string name="crash_test_sms_confirm">จะส่ง SMS จริงที่ระบุว่าเป็นข้อความทดสอบไปยัง: %1$s</string>
+    <string name="crash_disclaimer">นี่ไม่ใช่อุปกรณ์ความปลอดภัยที่ผ่านการรับรอง ระบบอาจไม่ตรวจพบอุบัติเหตุหรือแจ้งเตือนผิดพลาด แจ้งผู้ติดต่อให้ทราบล่วงหน้าเพื่อไม่ให้ข้อความทำให้ตกใจ ค่า SMS เป็นไปตามแพ็กเกจของคุณ</string>
+    <string name="crash_disclaimer_play">ในเวอร์ชันนี้ (Google Play) แอปไม่สามารถส่ง SMS ได้ มีเพียงเสียงเตือนเท่านั้น นี่ไม่ใช่อุปกรณ์ความปลอดภัยที่ผ่านการรับรอง</string>
+    <string name="crash_warn_contacts">เพิ่มผู้ติดต่ออย่างน้อยหนึ่งคน</string>
+    <string name="crash_warn_sms">อนุญาต SMS (แตะที่นี่)</string>
+    <string name="crash_warn_notif">อนุญาตการแจ้งเตือน (แตะที่นี่)</string>
+    <string name="crash_warn_fullscreen">อนุญาตการแจ้งเตือนเต็มหน้าจอเพื่อให้สัญญาณเตือนแสดงทับหน้าจอล็อก (แตะที่นี่)</string>
+    <string name="crash_status_off">ปิด</string>
+    <string name="crash_status_ready">✅ พร้อม: ทำงานทุกครั้งที่คุณเชื่อมต่อกับรถ</string>
+    <string name="tl_entry">🚦 สัญญาณไฟแดงและเส้นทางของคุณ</string>
+    <string name="tl_title">สัญญาณไฟแดงของคุณ</string>
+    <string name="tl_progress_trips">กำลังอ่านทริปของคุณ…</string>
+    <string name="tl_progress_signals">กำลังดาวน์โหลดสัญญาณไฟจราจรจาก OpenStreetMap (%1$d/%2$d)…</string>
+    <string name="tl_progress_analysing">กำลังค้นหาจุดที่คุณหยุด…</string>
+    <string name="tl_failed">วิเคราะห์ทริปไม่ได้ โปรดลองอีกครั้งเมื่อมีการเชื่อมต่อ</string>
+    <string name="tl_no_trips">ยังไม่มีทริปที่บันทึกไว้ เปิดการบันทึกทริปแล้วขับขี่ก่อนกลับมาที่นี่</string>
+    <string name="tl_summary">%1$d ทริป · สัญญาณไฟจราจร %2$d จุดที่คุณผ่าน</string>
+    <string name="tl_partial">ดาวน์โหลดบางพื้นที่ไม่ได้ (ไม่มีการเชื่อมต่อ) เปิดหน้านี้อีกครั้งภายหลังเพื่อดาวน์โหลดให้ครบ</string>
+    <string name="tl_tap_hint">สีแดง = คุณหยุดบ่อยที่สุด สีเหลือง = บางครั้ง สีเขียว = นาน ๆ ครั้ง วงกลมใหญ่ขึ้น = คุณผ่านบ่อยขึ้น แตะเพื่อดูรายละเอียด</string>
+    <string name="tl_worst_title">จุดที่คุณหยุดบ่อยที่สุด</string>
+    <string name="tl_routes_title">ทริปเดียวกัน เส้นทางต่างกัน</string>
+    <string name="tl_line">คุณหยุด %1$d จาก %2$d ครั้ง (%3$d%%) · เวลารอเฉลี่ย %4$d วินาที</string>
+    <string name="tl_main_dir">ส่วนใหญ่มุ่งหน้า %1$s: หยุด %2$d จาก %3$d ครั้ง</string>
+    <string name="tl_cycle">ทดลอง: รอบสัญญาณ ≈ %1$d วินาที (ความแม่นยำ %2$d%%)</string>
+    <string name="tl_no_stops">ยังไม่พบการหยุดที่สัญญาณไฟแดง</string>
+    <string name="tl_no_routes">เมื่อคุณขับทริปเดียวกัน (A → B) ผ่านถนนต่างกัน ระบบจะเปรียบเทียบไว้ที่นี่</string>
+    <string name="tl_variant">เส้นทาง %1$d (%2$d×): %3$d นาที · ไฟแดง %4$d จุด · %5$s km</string>
+    <string name="tl_variant_hint">ใช้ค่ามัธยฐาน 🏆 = มักเร็วที่สุด แตะเพื่อดูบนแผนที่</string>
+    <string name="tl_footer">คำนวณบนโทรศัพท์จากทริปที่บันทึกไว้ สัญญาณไฟจราจรจาก OpenStreetMap การหยุดรถติดใกล้สัญญาณไฟจะถูกนับด้วย</string>
+    <string-array name="tl_dirs">
+        <item>เหนือ</item>
+        <item>ตะวันออก</item>
+        <item>ใต้</item>
+        <item>ตะวันตก</item>
+    </string-array>
+    <string name="tv_button">🎬 Video</string>
+    <string name="tv_title">วิดีโอทริป</string>
+    <string name="tv_how">รวมคลิปที่คุณถ่ายระหว่างทริปนี้ (Ray-Ban Meta กล้องแอ็กชัน โทรศัพท์…) ตามลำดับ พร้อมซ้อนเส้นทาง ตำแหน่ง ความเร็ว และเวลา คลิปต้องอยู่ในแกลเลอรีของโทรศัพท์ สำหรับแว่น ให้ import คลิปในแอป Meta AI ก่อน</string>
+    <string name="tv_searching">กำลังค้นหาคลิปที่ถ่ายระหว่างทริป…</string>
+    <string name="tv_none">ไม่พบคลิปในช่วงเวลาของทริปนี้ โปรดนำเข้าคลิปไปยังแกลเลอรีก่อน (แอป Meta AI → สื่อของคุณ → บันทึก/นำเข้า) แล้วกลับมาที่นี่</string>
+    <string name="tv_no_permission">อนุญาตให้เข้าถึงวิดีโอเพื่อให้แอปค้นหาคลิปได้</string>
+    <string name="tv_found">%1$d คลิป · %2$d นาที %3$d วินาที</string>
+    <string name="tv_speed_normal">ความเร็วปกติ</string>
+    <string name="tv_speed_fast">เร็ว ×4 (ไม่มีเสียง)</string>
+    <string name="tv_make">สร้างวิดีโอ</string>
+    <string name="tv_making">กำลังสร้างวิดีโอ… คุณออกจากหน้านี้ได้ การแจ้งเตือนจะแจ้งเมื่อพร้อม</string>
+    <string name="tv_done">เสร็จแล้ว: บันทึกไว้ใน Movies/RideScreen AA</string>
+    <string name="tv_save_failed">สร้างวิดีโอแล้ว แต่บันทึกลงแกลเลอรีไม่ได้</string>
+    <string name="tv_failed">สร้างวิดีโอไม่ได้ (%1$s)</string>
+    <string name="tv_open">ดู</string>
+    <string name="tv_meta_tip">เคล็ดลับ: หากใช้แว่น คลิปสั้น ๆ ในช่วงเวลาที่ดีที่สุดจะดูดีกว่าการบันทึกยาวครั้งเดียว การบันทึกขณะอยู่บนถนนเป็นความรับผิดชอบของคุณ โปรดมองถนนอยู่เสมอ</string>
+    <string name="watch_channel">กำลังรอรถ</string>
+    <string name="watch_title">กำลังรอ %1$s</string>
+    <string name="watch_text">โหมดประหยัดพลังงาน: จะเชื่อมต่อเมื่อคุณเปิดรถ</string>
+    <string name="watch_stop">หยุดรอ</string>
+    <string name="watch_setting">รอรถต่อไปในโหมดประหยัดพลังงาน</string>
+    <string name="watch_setting_desc">หลังไม่มีรถเป็นเวลา 20 นาที แทนที่จะหยุดรอ แอปจะตรวจสอบเป็นครั้งคราวว่า Wi‑Fi ของรถเปิดอยู่หรือไม่ (มีเฉพาะเมื่อเปิดสวิตช์กุญแจ) แล้วเชื่อมต่อเอง ไม่ใช้ wake lock การเชื่อมต่อจะเร็วที่สุดเมื่อคุณเปิดดูโทรศัพท์</string>
+    <string name="crash_restricted_title">Android บล็อกการส่ง SMS สำหรับแอปที่ติดตั้งจาก APK</string>
+    <string name="crash_restricted_steps">นี่คือการป้องกันของ Android (“การตั้งค่าที่ถูกจำกัด”) สำหรับแอปที่ไม่ได้มาจากร้านค้า ต้องปลดล็อกเพียงครั้งเดียว:
+
+1. แตะ “เปิดการตั้งค่าแอป”
+2. แตะ ⋮ (มุมขวาบน) → “อนุญาตการตั้งค่าที่ถูกจำกัด” แล้วทำการยืนยัน
+3. ไปที่ สิทธิ์ → SMS → อนุญาต
+4. กลับมาที่นี่
+
+หากไม่เห็น “อนุญาตการตั้งค่าที่ถูกจำกัด” ให้ลองเปิด SMS ในหน้าสิทธิ์ก่อนหนึ่งครั้ง แล้วตัวเลือกดังกล่าวจะปรากฏ</string>
+    <string name="crash_restricted_open">เปิดการตั้งค่าแอป</string>
+    <string name="tv_button_clips">🎬 วิดีโอ · %1$d คลิป</string>
+    <string name="park_cam_hint">ถ่ายรูปตำแหน่งที่คุณจอดรถ (พื้น หมายเลขช่องจอด…)</string>
+    <string name="park_photo_failed">ถ่ายรูปไม่ได้ โปรดลองอีกครั้ง</string>
+    <string name="tv_sync">เลื่อนเวลา: %1$s วินาที</string>
+    <string name="qr_camera_failed">กล้องไม่สามารถเริ่มทำงานบนโทรศัพท์เครื่องนี้ได้ ใช้ “นำเข้า QR จากรูปภาพ” โดยเลือกภาพหน้าจอหรือรูป QR บนหน้าปัดแทน</string>
+    <string name="crash_simulate_delayed">ในอีก %1$d วินาที (เพื่อล็อกโทรศัพท์)</string>
+    <string name="crash_simulate_delayed_toast">ล็อกโทรศัพท์ตอนนี้: สัญญาณเตือนจำลองจะดังในอีก %1$d วินาที</string>
+    <!-- v2.2 home (proposal A) -->
+    <string name="home_tile_trips">ทริป</string>
+    <string name="home_tile_fuel">น้ำมัน</string>
+    <string name="home_tile_fuel_sub">SP95 ใกล้เคียง</string>
+    <string name="home_tile_maint">การบำรุงรักษา</string>
+    <string name="home_tile_tl">สัญญาณไฟจราจร</string>
+    <string name="home_tile_live">เส้นทางเรียลไทม์</string>
+    <string name="home_tile_live_on">กำลังแชร์ · แตะเพื่อหยุด</string>
+    <string name="home_tile_help">ช่วยเหลือ</string>
+    <string name="home_tile_help_sub">และบันทึก</string>
+    <string name="home_big_park">จอดรถพร้อมรูปภาพ</string>
+    <string name="home_big_park_sub">และยกเลิกการเชื่อมต่อ</string>
+    <string name="home_big_controls_sub">D-pad / แฮนด์</string>
+    <string name="home_big_hud_sub">สิ่งที่หน้าปัดรถแสดง</string>
+    <string name="home_big_trip">ทริปนี้</string>
+    <string name="home_big_trip_sub">สถิติเรียลไทม์</string>
+    <string name="home_view_photo">ดูรูปภาพ</string>
+    <string name="home_settings_short">การตั้งค่า</string>
+    <string name="home_parked_title">🅿️ รถของคุณ</string>
+    <string name="home_parked_title_dist">🅿️ รถของคุณ · %1$s</string>
+    <string name="home_parked_sub">จอดไว้ %1$s</string>
+    <string name="help_view_logs">📜 ดูบันทึก</string>
+    <string name="help_about">ℹ️ เกี่ยวกับและเครดิต</string>
+    <string name="help_check_update">🔄 ตรวจสอบการอัปเดต</string>
+    <string name="help_support">☕ สนับสนุนโครงการ</string>
+    <plurals name="home_tile_trips_today">
+        <item quantity="other">%1$d วันนี้</item>
+    </plurals>
+    <string name="bt_trigger_wifi_off_title">เปิด %1$s แล้ว แต่ Wi‑Fi ของโทรศัพท์ปิดอยู่</string>
+    <string name="bt_trigger_wifi_off_text">แตะเพื่อเปิด Wi‑Fi: RideScreen AA จะเชื่อมต่อเอง</string>
+    <string name="help_update_watch">⌚ อัปเดตแอปนาฬิกา</string>
+    <string name="wear_update_title">อัปเดตแอปนาฬิกา</string>
+    <string name="wear_update_body">โทรศัพท์ส่งแอปนาฬิการุ่นใหม่ผ่าน Bluetooth และคุณยืนยันการติดตั้งบนนาฬิกา นาฬิกาต้องเชื่อมต่ออยู่และใช้ RideScreen AA 2.2 หรือใหม่กว่า (เวอร์ชันเก่ากว่ายังต้องติดตั้งด้วยตนเองหนึ่งครั้ง)</string>
+    <string name="wear_update_latest">เวอร์ชันล่าสุด</string>
+    <string name="wear_update_pick">เลือก APK…</string>
+    <string name="wear_update_downloading">กำลังดาวน์โหลดแอปนาฬิกา…</string>
+    <string name="wear_update_sending">กำลังส่งไปยัง %1$s… ใช้เวลาสองสามนาที ให้วางนาฬิกาไว้ใกล้ ๆ</string>
+    <string name="wear_update_sent">ส่งไปยัง %1$s แล้ว: ยืนยันการติดตั้งบนนาฬิกา</string>
+    <string name="wear_update_send_failed">ส่งไปยังนาฬิกาไม่ได้ เชื่อมต่ออยู่หรือไม่? ลองอีกครั้ง</string>
+    <string name="wear_update_no_watch">ไม่มีนาฬิกาเชื่อมต่อ เปิดแอป Galaxy Wearable / Wear OS และตรวจสอบว่านาฬิกาเชื่อมต่ออยู่</string>
+    <string name="wear_update_old_watch_app">แอปนาฬิกาเก่าเกินไปที่จะอัปเดตตัวเอง: ติดตั้งเวอร์ชันนี้ด้วยตนเองหนึ่งครั้ง (ดูคู่มือ) หลังจากนั้นจะอัปเดตจากโทรศัพท์ได้</string>
+    <string name="wear_update_no_asset">เวอร์ชันล่าสุดไม่มีแอปนาฬิกา</string>
+    <string name="wear_update_download_failed">ดาวน์โหลดแอปนาฬิกาไม่ได้ ตรวจสอบการเชื่อมต่ออินเทอร์เน็ต</string>
+    <string name="wear_update_not_apk">ไฟล์นี้ไม่ใช่แอป (APK)</string>
+    <string name="wear_update_progress_title">กำลังส่งการอัปเดตไปยัง %1$s</string>
+    <string name="wear_update_progress_body">%1$d%% · ใช้เวลาสองสามนาที ให้วางนาฬิกาไว้ใกล้ ๆ</string>
+    <string name="help_watch_guide">⌚ คู่มือนาฬิกา</string>
+    <string name="dest_home">บ้าน</string>
+    <string name="dest_work">ที่ทำงาน</string>
+    <string name="dest_calendar">ปฏิทิน</string>
+    <string name="dest_address_hint">ที่อยู่หรือสถานที่ (เหมือนที่คุณพิมพ์ใน Maps)</string>
+    <string name="dest_set_title">ตั้งค่า %1$s</string>
+    <string name="dest_save">บันทึก</string>
+    <string name="dest_clear">นำออก</string>
+    <string name="nav_app_title">นำทางด้วย</string>
+    <string name="nav_app_remember">จดจำตัวเลือกของฉัน</string>
+    <string name="crash_sms_speed">แรงกระแทกที่ความเร็วประมาณ %1$d km/h</string>
+    <string name="bb_title">🎥 กล่องดำ</string>
+    <string name="bb_settings_hint">เมื่อเปิดตัวตรวจจับ โทรศัพท์จะเก็บข้อมูลการขับขี่หนึ่งนาทีล่าสุดไว้ในหน่วยความจำ (ความเร็ว การเบรก การเอียง ตำแหน่ง) จะบันทึกเฉพาะเมื่อระบบตรวจพบแรงกระแทก โดยจะเก็บหนึ่งนาทีก่อนหน้าและอีก 30 วินาทีหลังจากนั้น ข้อมูลจะไม่ออกจากโทรศัพท์เว้นแต่คุณจะแชร์</string>
+    <string name="bb_open">เปิดกล่องดำ (%1$d)</string>
+    <string name="bb_intro">เหตุการณ์แรงกระแทกที่ตัวตรวจจับบันทึกไว้ เรียงจากใหม่ไปเก่า (เก็บ 10 รายการล่าสุด)</string>
+    <string name="bb_empty">ไม่มีการบันทึกแรงกระแทก หวังว่าจะเป็นเช่นนี้ต่อไป</string>
+    <string name="bb_event">แรงกระแทก</string>
+    <string name="bb_chart_legend">เส้นสีทอง: ความเร็ว GPS แถบสีเทา: แรง g เส้นสีแดง: แรงกระแทก ตั้งแต่ −60 ถึง +30 วินาที</string>
+    <string name="bb_figures">สิ่งที่เกิดขึ้น</string>
+    <string name="bb_speed_impact">ความเร็วขณะเกิดแรงกระแทก</string>
+    <string name="bb_speed_5s">ความเร็ว 5 วินาทีก่อนหน้า</string>
+    <string name="bb_braking">การเบรกที่รุนแรงที่สุด</string>
+    <string name="bb_peak_g">แรงสูงสุด</string>
+    <string name="bb_tilt_impact">มุมเอียงขณะเกิดแรงกระแทก</string>
+    <string name="bb_tilt_after">มุมเอียงหลัง 15 วินาที</string>
+    <string name="bb_heading">ทิศทาง</string>
+    <string name="bb_place">สถานที่</string>
+    <string name="bb_disclaimer">ทดลอง: ค่าจาก GPS และเซ็นเซอร์ของโทรศัพท์ เป็นค่าโดยประมาณและไม่ได้รับการรับรอง</string>
+    <string name="bb_share">แชร์รายงาน</string>
+    <string name="bb_map">ดูบนแผนที่</string>
+    <string name="bb_delete">ลบ</string>
+    <string name="bb_delete_confirm">ลบบันทึกนี้หรือไม่?</string>
+    <string name="bb_outcome_alarm">ส่งเสียงเตือนแล้ว</string>
+    <string name="bb_outcome_upright">รถตั้งตรงหลังเกิดเหตุ</string>
+    <string name="bb_outcome_moving">ผู้ขับขี่เคลื่อนที่ต่อ</string>
+    <string name="bb_outcome_other">ไม่มีข้อสรุป</string>
+    <string name="gw_title">🌊 คลื่นไฟเขียว · การสังเกต</string>
+    <string name="gw_intro">ใช้เพื่อเรียนรู้เท่านั้น ขณะนี้ยังไม่มีการแสดงผลบนหน้าปัด สำหรับสัญญาณไฟแต่ละจุด ระบบจะคาดการณ์จากทริปก่อนหน้าของคุณเท่านั้น แล้วตรวจสอบกับสิ่งที่เกิดขึ้นจริง: คุณต้องหยุดหรือไม่ และเริ่มเคลื่อนที่เมื่อใด ระบบจะเปิดคำแนะนำบนหน้าปัดเฉพาะสัญญาณไฟที่ผ่านการทดสอบ</string>
+    <string name="gw_empty">ข้อมูลยังไม่เพียงพอ: การเข้าใกล้สัญญาณไฟต้องมีการหยุดอย่างน้อย 6 ครั้งที่สัญญาณเดียวกัน (จุดที่คุณหยุดบ่อยที่สุดมี %1$d ครั้ง) ขับขี่ต่อไปโดยเปิดการบันทึกทริป</string>
+    <string name="gw_hits">ผ่านไฟเขียว: ถูกต้อง %1$d จาก %2$d ครั้ง (%3$d %%) · %4$d ครั้งยังสรุปไม่ได้</string>
+    <string name="gw_no_arrivals">ผ่านไฟเขียว: ยังไม่มีการคาดการณ์</string>
+    <string name="gw_soon">ไฟเขียวในไม่ช้า: โดยทั่วไปคลาดเคลื่อน ±%1$d วินาที (%2$d ครั้งที่หยุด)</string>
+    <string name="gw_cycle">รอบสัญญาณโดยประมาณ: %1$d วินาที</string>
+    <string name="gw_ready">✅ แม่นยำเพียงพอสำหรับคำแนะนำบนหน้าปัด</string>
+    <string name="gw_learning">กำลังเรียนรู้: ต้องมีการคาดการณ์ %1$d ครั้ง และความถูกต้อง %2$d %%</string>
+    <string name="tv_clips_pick">เลือกคลิปที่ต้องการในวิดีโอ</string>
+    <string name="tv_clips_overlap">⚠️ คลิปที่เลือกบางรายการมีช่วงเวลาซ้อนกัน เลือกไว้เพียงคลิปเดียวในแต่ละช่วงเวลา</string>
+    <string name="tv_clips_none">เลือกอย่างน้อยหนึ่งคลิป</string>
+    <string name="tv_look_drag">ลากแผนที่ ความเร็ว หรือชื่อเรื่องบนภาพตัวอย่างไปยังตำแหน่งที่ต้องการ วิดีโอจะถูกสร้างตามตำแหน่งนี้</string>
+    <string name="tv_look_reset">↺ ตำแหน่งเริ่มต้น</string>
+</resources>

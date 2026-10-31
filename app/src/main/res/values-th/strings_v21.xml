@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="trips_logging_off">ปิดการบันทึกทริปอยู่: ทริปใหม่จะไม่ถูกบันทึก (และไม่นับรวมในสถิติ ถ้วยรางวัล หรือการบำรุงรักษา)</string>
+    <string name="trips_logging_enable">เปิด</string>
+    <string name="trips_logging_enabled">เปิดการบันทึกทริปแล้ว ทริปถัดไปของคุณจะถูกบันทึก</string>
+    <string name="conn_detail_need_nearby">อนุญาตอุปกรณ์ใกล้เคียง Android Auto ต้องใช้สิทธิ์นี้เพื่อเริ่มบนหน้าปัด</string>
+    <string name="conn_detail_need_bt_on">เปิด Bluetooth Android Auto ต้องใช้สิ่งนี้เพื่อเริ่มบนหน้าปัด</string>
+    <string name="conn_detail_wifi_off">ปิด Wi‑Fi ของโทรศัพท์อยู่ เปิดเพื่อเชื่อมต่อ</string>
+    <string name="conn_detail_bike_wifi_not_found">ไม่พบ Wi‑Fi ของรถ: เปิดรถและตั้งหน้าปัดไว้ที่อินเทอร์เฟซฉายหน้าจอ (หน้าจอ 3 บน 125X) จากนั้นแตะเชื่อมต่อ</string>
+    <string name="wifi_picker_hint">หาก Android ขอให้เชื่อมต่อกับ %1$s ให้แตะเชื่อมต่อ นี่คือ Wi‑Fi ของรถคุณ</string>
+    <string name="wifi_off_title">เปิด Wi‑Fi</string>
+    <string name="wifi_off_message">RideScreen AA เชื่อมต่อกับรถผ่าน Wi‑Fi แต่ Wi‑Fi ของโทรศัพท์ปิดอยู่ เปิดใช้งาน (ไม่จำเป็นต้องเชื่อมต่อกับเครือข่ายใด) แล้วการเชื่อมต่อจะดำเนินต่อโดยอัตโนมัติ</string>
+    <string name="wifi_off_turn_on">เปิด Wi‑Fi</string>
+    <string name="fuel_title">ปั๊มน้ำมันใกล้เคียง</string>
+    <string name="fuel_pill">⛽ ปั๊มน้ำมันใกล้เคียง (ราคาเบนซิน 95)</string>
+    <string name="fuel_sort_price">ราคาถูกที่สุด</string>
+    <string name="fuel_sort_distance">ใกล้ที่สุด</string>
+    <string name="fuel_locating">กำลังค้นหาตำแหน่งของคุณ…</string>
+    <string name="fuel_loading">กำลังโหลดราคา…</string>
+    <string name="fuel_no_location">ยังไม่มีตำแหน่ง อนุญาตการเข้าถึงตำแหน่งให้ RideScreen AA และเปิด GPS</string>
+    <string name="fuel_offline">ดึงราคาไม่ได้ ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง</string>
+    <string name="fuel_only_spain">ขณะนี้มีราคาน้ำมันเฉพาะในสเปนเท่านั้น</string>
+    <string name="fuel_none">ไม่มีสถานีบริการน้ำมันเบนซิน 95 ภายในระยะ %1$d km</string>
+    <string name="fuel_subtitle">เบนซิน 95 · ภายใน %1$d km · ราคาจากกระทรวง ณ %2$s · แตะเพื่อนำทาง</string>
+    <string name="fuel_cheapest">ถูกที่สุด</string>
+    <string name="help_pill">❓ ช่วยเหลือ</string>
+    <string name="help_title">ช่วยเหลือ</string>
+    <string name="help_guide">📖 คู่มือการติดตั้ง</string>
+    <string name="help_share_logs">📤 แชร์บันทึก</string>
+    <string name="help_whats_new">✨ มีอะไรใหม่</string>
+    <string name="help_report">🐞 รายงานปัญหา</string>
+    <string name="park_photo_button">📸 จอดรถพร้อมถ่ายรูป</string>
+    <string name="park_photo_no_camera">ไม่มีแอปกล้อง</string>
+    <string name="park_photo_saved">บันทึกตำแหน่งที่จอดพร้อมรูปภาพแล้ว</string>
+    <string name="parked_options_title">รถของคุณ</string>
+    <string name="parked_walk">🚶 เดินไปที่รถ</string>
+    <string name="parked_view_photo">📷 ดูรูปภาพ</string>
+    <string name="parked_add_photo">📸 เพิ่มรูปภาพ</string>
+    <string name="parked_retake_photo">📸 ถ่ายรูปใหม่</string>
+    <string name="parked_delete">🗑️ ลืมตำแหน่งนี้</string>
+    <string name="whats_new_title">มีอะไรใหม่ใน v2.3</string>
+    <string name="whats_new_ok">เข้าใจแล้ว</string>
+    <string name="whats_new_body">📲 วิดเจ็ต «เชื่อมต่อ» ขนาด 1×1 พร้อมรูปภาพรถและวงแหวนแสดงสถานะ (แนวคิดโดย Luis Gil) แตะครั้งเดียวเพื่อเชื่อมต่อ
+
+🛡️ ปุ่มเชื่อมต่อ/หยุดจะล็อกเป็นเวลา 3 วินาทีเมื่อเริ่มทำงานและค่อย ๆ จางลง เพื่อป้องกันการยกเลิกโดยไม่ตั้งใจ
+
+🔋 การ์ด «แบตเตอรี่รถ»: แสดงแรงดันไฟฟ้าและสถานะล็อก/ปลดล็อก แบบอ่านอย่างเดียว เปิดใช้ด้วยรหัส PKE ใน ช่วยเหลือ → แบตเตอรี่ สถานะ «เครื่องยนต์ทำงาน» หรือ «เครื่องยนต์ดับ» จะคำนวณจากแรงดันไฟฟ้า
+
+👥 โหมดผู้โดยสาร: ผู้ซ้อนท้ายควบคุม Android Auto เลือกปลายทาง และเปลี่ยนเพลงจากโทรศัพท์ของตนเอง
+
+🏠 เข้าถึงบ้าน ที่ทำงาน และนัดหมายปฏิทินครั้งถัดไปได้ในแตะเดียวขณะเชื่อมต่อ ข้อความ «ฉันจะถึงใน X นาที» จะส่งเวลาที่คุณจะไปถึง
+
+🧭 เลือก Waze หรือ Google Maps และใช้ «➤ ไป» กับผลการค้นหาและสถานที่ที่บันทึกไว้ทุกรายการ
+
+🏍️ «รถคันนี้รุ่นอะไร?» เลือก Zontes ของคุณ (125X, 125V, 368 G/K/E) แล้วแอปจะใช้การตั้งค่าหน้าจอที่ทราบว่าใช้งานได้ ขณะนี้รองรับ 368 ทุกรุ่นแล้ว
+
+⚡ แสดงความเร็วแบบเรียลไทม์บนหน้าจอหลักขณะขับขี่ และมีเสียงแจ้งเมื่อเชื่อมต่อหรือขาดการเชื่อมต่อกับรถ
+
+🎮 รีโมตบนแฮนด์สำหรับ Android Auto โดยเฉพาะ ขณะที่อินเตอร์คอมยังควบคุมเพลงตามปกติ (การควบคุม)
+
+🎬 วิดีโอทริป: ส่งออกในเบื้องหลัง «ไฮไลต์การขับขี่» ในแนวตั้ง พร้อมเพลง และเร่ง ×4 โดยซิงค์ภาพและข้อมูล
+
+📊 สรุปวันอาทิตย์ สถิติการขับขี่ต่อเนื่อง และเปรียบเทียบเส้นทาง เช่น «ช้ากว่าปกติ 4 นาที»
+
+📦 กล่องดำ (ทดลอง) พร้อมตัวตรวจจับอุบัติเหตุ และการสำรองข้อมูลโดยไม่มีรหัสผ่านหรือรายชื่อผู้ติดต่อ
+
+❤️ ขอบคุณผู้สนับสนุน Ko-fi กลุ่มแรก: Francisco Javier S., José Antonio R., Raul และผู้สนับสนุนไม่ประสงค์ออกนามอีก 3 คน คุณช่วยให้โครงการนี้เกิดขึ้นได้</string>
+    <string name="park_photo_need_camera">อนุญาตให้ใช้กล้องเพื่อถ่ายรูปตำแหน่งที่จอดรถ</string>
+    <string name="fit_open">🎯 ปรับภาพให้พอดีกับหน้าปัด (เรียลไทม์)</string>
+    <string name="fit_open_hint">ใช้ลูกศรบนโทรศัพท์และดูผลแบบเรียลไทม์บนรถ เชื่อมต่อก่อนเพื่อดูผลบนหน้าปัด</string>
+    <string name="fit_title">ปรับภาพให้พอดีกับหน้าปัด</string>
+    <string name="fit_status_live">● เรียลไทม์: ดูหน้าปัดรถ</string>
+    <string name="fit_status_offline">ยังไม่ได้เชื่อมต่อ: คุณปรับค่าได้ แต่ต้องเชื่อมต่อกับรถเพื่อดูผลแบบเรียลไทม์</string>
+    <string name="fit_how">หน้าปัดจะแสดงกรอบสีเหลือง ซึ่งเป็นพื้นที่ที่ Android Auto ใช้แสดงภาพ เลื่อนขอบแต่ละด้านด้วยลูกศรจนเส้นสีเหลืองตรงกับขอบหน้าจอที่มองเห็นทั้ง 4 ด้าน กดลูกศรค้างไว้เพื่อเลื่อนเร็วขึ้น</string>
+    <string name="fit_margins_now">บน %1$d · ล่าง %2$d · ซ้าย %3$d · ขวา %4$d px
+พื้นที่ Android Auto: %5$d × %6$d</string>
+    <string name="fit_step_fine">ละเอียด (2 px)</string>
+    <string name="fit_step_coarse">เร็ว (10 px)</string>
+    <string name="fit_mode_title">วิธีเติมภาพในกรอบ</string>
+    <string name="fit_mode_fill">เติมเต็ม</string>
+    <string name="fit_mode_fit">ภาพเต็ม</string>
+    <string name="fit_mode_stretch">ยืดภาพ</string>
+    <string name="fit_mode_hint">เติมเต็ม: ไม่มีแถบดำ แต่อาจครอบตัดเล็กน้อย ภาพเต็ม: ไม่ครอบตัด แต่มีแถบดำ ยืดภาพ: เติมเต็มทุกพื้นที่ แต่ภาพบิดเบี้ยวเล็กน้อย การเปลี่ยนแปลงมีผลแบบเรียลไทม์</string>
+    <string name="fit_shape_title">รูปทรงแผงหน้าจอสำหรับ Android Auto</string>
+    <string name="fit_shape_manual">กำหนดเอง: %1$d × %2$d Android Auto จะจัดวางหน้าจอตามรูปทรงนี้</string>
+    <string name="fit_shape_off">ปิด: Android Auto ใช้รูปทรงมาตรฐาน</string>
+    <string name="fit_shape_auto_is">อัตโนมัติ: %1$d × %2$d (จากรถของคุณ)</string>
+    <string name="fit_shape_auto_unknown">อัตโนมัติ: ยังไม่ทราบ (เชื่อมต่อหนึ่งครั้ง)</string>
+    <string name="fit_shape_from_frame">= กรอบสีเหลือง</string>
+    <string name="fit_shape_save">บันทึกขนาด</string>
+    <string name="fit_shape_auto">อัตโนมัติ</string>
+    <string name="fit_shape_hint">หากแผนที่ถูกครอบตัดหรือบีบหลังปรับกรอบ ให้แตะ “= กรอบสีเหลือง” เพื่อให้ Android Auto แสดงผลตามขนาดนั้นพอดี ใช้ได้กับแผงแนวตั้งด้วย ตัวเลือกนี้ต้องรีสตาร์ต Android Auto</string>
+    <string name="fit_shape_invalid">กรอกความกว้างและความสูง (อย่างน้อย 16)</string>
+    <string name="fit_shape_reconnect">รูปทรงใหม่จะมีผลเมื่อรีสตาร์ต Android Auto รีสตาร์ตตอนนี้หรือไม่? หน้าปัดจะดับเป็นสีดำสองสามวินาที</string>
+    <string name="fit_shape_reconnect_now">รีสตาร์ตตอนนี้</string>
+    <string name="fit_shape_reconnect_later">ภายหลัง</string>
+    <string name="fit_shape_saved_next">บันทึกแล้ว: จะใช้ในการเชื่อมต่อครั้งถัดไป</string>
+    <string name="fit_undo">เลิกทำ</string>
+    <string name="fit_reset">ค่าเริ่มต้นของรถ</string>
+    <string name="fit_done">เสร็จสิ้น</string>
+    <string name="fit_more_options">ความละเอียด แนวหน้าจอ และหน้าระยะขอบแบบเดิม กลับไปอยู่ที่ การตั้งค่า → หน้าจอและการแสดงผล ←</string>
+    <string name="bt_trigger_channel">ตรวจพบรถ</string>
+    <string name="bt_trigger_title">เปิด %1$s แล้ว</string>
+    <string name="bt_trigger_text">แตะเพื่อเชื่อมต่อกับหน้าปัด</string>
+    <string name="mic_perm_title">ไมโครโฟนสำหรับคำสั่งเสียง</string>
+    <string name="mic_perm_message">เพื่อใช้ “Ok Google” ปุ่มสั่งงานด้วยเสียงของอินเตอร์คอม หรือนาฬิกาขณะเชื่อมต่อ RideScreen AA ต้องใช้ไมโครโฟน
+
+เลือก “ขณะใช้แอป” หากเลือก “เฉพาะครั้งนี้” หรือ “ถามทุกครั้ง” เสียงอาจหยุดทำงานระหว่างทริป</string>
+    <string name="mic_perm_allow">อนุญาต</string>
+    <string name="mic_perm_settings">เปิดการตั้งค่า</string>
+    <string name="mic_perm_not_now">ไม่ใช่ตอนนี้</string>
+</resources>

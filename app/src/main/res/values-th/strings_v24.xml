@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: welcome / goodbye cards on the dash -->
+    <string name="dc_good_morning">อรุณสวัสดิ์</string>
+    <string name="dc_good_afternoon">สวัสดีตอนบ่าย</string>
+    <string name="dc_good_evening">สวัสดีตอนเย็น</string>
+    <string name="dc_streak_days">วันติดต่อกัน</string>
+    <string name="dc_rain_soon">มีโอกาสฝนตก: %1$d%% ในอีกไม่กี่ชั่วโมง</string>
+    <string name="dc_wx_clear">ท้องฟ้าแจ่มใส</string>
+    <string name="dc_wx_cloudy">มีเมฆมาก</string>
+    <string name="dc_wx_fog">หมอก</string>
+    <string name="dc_wx_rain">ฝน</string>
+    <string name="dc_wx_snow">หิมะ</string>
+    <string name="dc_wx_storm">พายุ</string>
+    <string name="dc_bye_title">แล้วพบกันใหม่ · สรุปวันนี้</string>
+    <string name="dc_km_today">km วันนี้</string>
+    <string name="dc_min">นาที</string>
+    <string name="dc_kmh_avg">km/h เฉลี่ย</string>
+    <string name="dc_kmh_max">km/h สูงสุด</string>
+    <string name="dc_parked_photo">จอดแล้ว · บันทึกรูปภาพแล้ว</string>
+    <string name="dc_parked">จอดแล้ว</string>
+    <string name="dc_rain_tomorrow">พรุ่งนี้ 8:00: โอกาสฝนตก %1$d%% · เตรียมอุปกรณ์กันฝน</string>
+</resources>

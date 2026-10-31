@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crash_title">เกิดอุบัติเหตุหรือไม่?</string>
+    <string name="crash_im_ok">ฉันปลอดภัย</string>
+    <string name="crash_sent">ส่งการแจ้งเตือนไปยังผู้ติดต่อแล้ว</string>
+    <string name="crash_close">ปิด</string>
+    <string name="wupd_title">อัปเดต RideScreen AA</string>
+    <string name="wupd_ready">ได้รับเวอร์ชันใหม่จากโทรศัพท์แล้ว · แตะเพื่อติดตั้ง</string>
+    <string name="wupd_install">ติดตั้ง</string>
+    <string name="wupd_versions">ติดตั้งแล้ว: %1$s
+ใหม่: %2$s</string>
+    <string name="wupd_nothing">ไม่มีอัปเดตรออยู่ ส่งจากโทรศัพท์: ❓ ช่วยเหลือ → ⌚ อัปเดตแอปนาฬิกา</string>
+    <string name="wupd_installing">กำลังติดตั้ง… ยืนยันหากนาฬิกาถาม</string>
+    <string name="wupd_allow_unknown">อนุญาตให้ RideScreen AA ติดตั้งแอป แล้วกลับมาที่นี่</string>
+    <string name="wupd_no_unknown_setting">นาฬิกานี้ไม่อนุญาตให้แอปติดตั้งอัปเดต ติดตั้งจากคอมพิวเตอร์เหมือนครั้งแรก</string>
+    <string name="wupd_failed_signature">เวอร์ชันนี้ใช้ลายเซ็นต่างจากเวอร์ชันที่ติดตั้งไว้ ถอนการติดตั้งแอปนาฬิกาแล้วติดตั้งใหม่จากคอมพิวเตอร์</string>
+    <string name="wupd_cancelled">ยกเลิกการติดตั้งแล้ว</string>
+    <string name="wupd_failed">ติดตั้งไม่สำเร็จ (%1$s)</string>
+    <string name="wupd_receiving">กำลังรับการอัปเดตจากโทรศัพท์…</string>
+</resources>
