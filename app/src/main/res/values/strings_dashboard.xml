@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: custom dashboard on the dash -->
+    <string name="dash_coolant">Coolant</string>
+    <string name="dash_throttle">Throttle</string>
+    <string name="dash_battery">Battery</string>
+    <string name="dash_no_obd">No OBD data</string>
+    <string name="dash_need_stream">Connect the bike first: Android Auto isn\'t on the dash yet</string>
+    <string name="dash_shortcut">Dashboard</string>
+    <string name="controls_dash_title">Dashboard</string>
+    <string name="controls_dash_desc">Shows RPM, speed, coolant, throttle and battery from your OBD adapter on the dash instead of Android Auto. With no OBD data the speed comes from the phone\'s GPS.</string>
+    <string name="controls_dash_show">Show the dashboard on the dash</string>
+    <string name="controls_dash_hide">Back to Android Auto</string>
+    <string name="controls_dash_start">Start in the dashboard when the bike connects</string>
+</resources>

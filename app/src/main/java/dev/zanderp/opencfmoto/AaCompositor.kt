@@ -119,6 +119,43 @@ class AaCompositor(private val log: (String) -> Unit) {
             position(0)
         }
 
+    // v2.4 · live layer (custom dashboard): like a card that never ends and is rebuilt every
+    // [LIVE_TICK_MS]. While it is set the Android Auto frames are still decoded (so audio / guidance keep
+    // flowing and going back is instant) but they are not drawn: the encoder only sees the dashboard.
+    @Volatile private var liveBuild: ((Int, Int) -> Bitmap?)? = null
+    private var cardKeep = false          // true: [cardPending] belongs to the caller (reused), don't recycle it
+    private val LIVE_TICK_MS = 125L       // 8 fps: gauges don't need more, and a static scene is cheap to encode
+
+    /** Turn the live layer on ([build] runs on the GL thread each tick) or off (null: back to Android Auto). */
+    fun setLiveLayer(build: ((Int, Int) -> Bitmap?)?) {
+        handler.post {
+            handler.removeCallbacks(liveTick)
+            liveBuild = build
+            if (build != null) {
+                log("[DASHBOARD] live layer on (${1000 / LIVE_TICK_MS} fps)")
+                liveTick.run()
+            } else {
+                log("[DASHBOARD] live layer off — back to Android Auto")
+                cardKeep = false
+                if (windowSurface != EGL14.EGL_NO_SURFACE) drawFrame()
+            }
+        }
+    }
+
+    private val liveTick = object : Runnable {
+        override fun run() {
+            val build = liveBuild ?: return
+            if (canvasW > 0 && canvasH > 0 && windowSurface != EGL14.EGL_NO_SURFACE &&
+                cardUntil <= android.os.SystemClock.uptimeMillis()) {
+                val w = if (areaWpx > 0) areaWpx else canvasW
+                val h = if (areaHpx > 0) areaHpx else canvasH
+                val bmp = try { build(w, h) } catch (e: Exception) { log("[DASHBOARD] draw failed: $e"); null }
+                if (bmp != null) { cardPending = bmp; cardKeep = true; drawFrame() }
+            }
+            handler.postDelayed(this, LIVE_TICK_MS)
+        }
+    }
+
     /** Show a card on the dash for [ms]. [build] gets the usable area size and runs on the GL thread. */
     fun showCard(ms: Long, build: (Int, Int) -> Bitmap?) {
         handler.post {
@@ -129,6 +166,7 @@ class AaCompositor(private val log: (String) -> Unit) {
             val h = if (areaHpx > 0) areaHpx else canvasH
             val bmp = try { build(w, h) } catch (e: Exception) { log("[CARD] build failed: $e"); null } ?: return@post
             cardPending = bmp
+            cardKeep = false
             val until = android.os.SystemClock.uptimeMillis() + ms
             cardUntil = until
             log("[CARD] showing ${w}x$h card for ${ms} ms")
@@ -159,7 +197,7 @@ class AaCompositor(private val log: (String) -> Unit) {
             GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE)
             GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE)
             GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, b, 0)
-            b.recycle()
+            if (!cardKeep) b.recycle()
         }
         val w = if (areaWpx > 0) areaWpx else canvasW
         val h = if (areaHpx > 0) areaHpx else canvasH
@@ -506,6 +544,8 @@ class AaCompositor(private val log: (String) -> Unit) {
             return
         }
         hasContent = true
+        // Custom dashboard on the dash: the frame stays latched (decoder keeps flowing) but isn't drawn.
+        if (liveBuild != null && cardUntil <= android.os.SystemClock.uptimeMillis()) return
         // Throttle live frames to the power-mode cap. A too-soon frame is kept (texture already
         // latched above) and drawn by the keep-alive tick, so we cap the rate without losing motion.
         val idleMs = android.os.SystemClock.uptimeMillis() - lastDrawMs
@@ -561,7 +601,7 @@ class AaCompositor(private val log: (String) -> Unit) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
 
         // Welcome / goodbye card: replaces the AA frame on the bike output while it lasts.
-        if (target === windowSurface && cardUntil > android.os.SystemClock.uptimeMillis()) {
+        if (target === windowSurface && (cardUntil > android.os.SystemClock.uptimeMillis() || liveBuild != null)) {
             drawCard()
             EGLExt.eglPresentationTimeANDROID(eglDisplay, target, System.nanoTime())
             EGL14.eglSwapBuffers(eglDisplay, target)

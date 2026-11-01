@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: custom dashboard on the dash -->
+    <string name="dash_coolant">Kühlmittel</string>
+    <string name="dash_throttle">Drosselklappe</string>
+    <string name="dash_battery">Batterie</string>
+    <string name="dash_no_obd">Keine OBD-Daten</string>
+    <string name="dash_need_stream">Zuerst das Motorrad verbinden: Android Auto ist noch nicht auf dem Display</string>
+    <string name="dash_shortcut">Dashboard</string>
+    <string name="controls_dash_title">Dashboard</string>
+    <string name="controls_dash_desc">Zeigt Drehzahl, Geschwindigkeit, Kühlmittel, Drosselklappe und Batterie deines OBD-Adapters statt Android Auto auf dem Display. Ohne OBD-Daten kommt die Geschwindigkeit vom GPS des Handys.</string>
+    <string name="controls_dash_show">Dashboard auf dem Display zeigen</string>
+    <string name="controls_dash_hide">Zurück zu Android Auto</string>
+    <string name="controls_dash_start">Beim Verbinden des Motorrads mit dem Dashboard starten</string>
+</resources>

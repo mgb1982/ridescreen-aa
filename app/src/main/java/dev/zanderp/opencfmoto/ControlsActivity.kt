@@ -148,12 +148,14 @@ class ControlsActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.theme_night).setOnClickListener { setMapTheme(MapTheme.NIGHT) }
         highlightTheme(NightPrefs.theme(this))
 
+        setupDashboard()
         setupSpeedVolume()
     }
 
     override fun onResume() {
         super.onResume()
         syncVolumeUi()
+        syncDashboardUi()
         statusHandler.post(statusTick)
     }
 
@@ -347,6 +349,50 @@ class ControlsActivity : AppCompatActivity() {
             volumeValue?.text = now.toString()
         } finally {
             syncingVolumeUi = false
+        }
+    }
+
+    // ── custom dashboard (v2.4)
+
+    private fun setupDashboard() {
+        findViewById<MaterialButton>(R.id.btn_dash_toggle).setOnClickListener {
+            if (DashboardMode.toggle(this) == null) {
+                Toast.makeText(this, R.string.dash_need_stream, Toast.LENGTH_SHORT).show()
+            }
+            syncDashboardUi()
+        }
+        val ids = listOf(
+            R.id.dash_theme_auto to DashboardMode.Theme.AUTO,
+            R.id.dash_theme_day to DashboardMode.Theme.LIGHT,
+            R.id.dash_theme_night to DashboardMode.Theme.DARK,
+        )
+        for ((id, t) in ids) findViewById<MaterialButton>(id).setOnClickListener {
+            DashboardMode.setTheme(this, t)   // the live layer reads it on its next tick
+            syncDashboardUi()
+        }
+        val sw = findViewById<MaterialSwitch>(R.id.switch_dash_start)
+        sw.isChecked = DashboardMode.startInDashboard(this)
+        sw.setOnCheckedChangeListener { _, on -> DashboardMode.setStartInDashboard(this, on) }
+        syncDashboardUi()
+    }
+
+    private fun syncDashboardUi() {
+        findViewById<MaterialButton>(R.id.btn_dash_toggle)
+            .setText(if (DashboardMode.wanted) R.string.controls_dash_hide else R.string.controls_dash_show)
+        val onColor = ContextCompat.getColor(this, R.color.brand_orange)
+        val onText = ContextCompat.getColor(this, R.color.on_brand)
+        val offColor = ContextCompat.getColor(this, R.color.surface_high)
+        val offText = ContextCompat.getColor(this, R.color.text_primary)
+        val current = DashboardMode.theme(this)
+        for ((id, t) in listOf(
+            R.id.dash_theme_auto to DashboardMode.Theme.AUTO,
+            R.id.dash_theme_day to DashboardMode.Theme.LIGHT,
+            R.id.dash_theme_night to DashboardMode.Theme.DARK,
+        )) {
+            val btn = findViewById<MaterialButton>(id)
+            val on = t == current
+            btn.backgroundTintList = android.content.res.ColorStateList.valueOf(if (on) onColor else offColor)
+            btn.setTextColor(if (on) onText else offText)
         }
     }
 

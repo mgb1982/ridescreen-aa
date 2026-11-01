@@ -775,6 +775,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppSettings.applyToHolder(this)
+        DashboardMode.publishShortcut(this)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -2650,6 +2651,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun stopEverything() {
+        DashboardMode.reset()
         log("→ stopping everything (Android Auto + bike)")
         try { AaVideoBridge.onSteadyVideo = null } catch (_: Exception) {}
         try { AndroidAutoService.stop(this) } catch (e: Exception) { log("AA stop: $e") }

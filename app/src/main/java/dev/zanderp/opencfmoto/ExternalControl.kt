@@ -37,6 +37,9 @@ object ExternalControl {
         "NAV3" to ButtonAction.NAV_3,
     )
 
+    /** v2.4: custom dashboard switches (`…action.DASH` toggles, `DASH_ON` / `DASH_OFF` set it). */
+    internal val DASH_ACTIONS = listOf("DASH", "DASH_ON", "DASH_OFF")
+
     @Volatile private var receiver: BroadcastReceiver? = null
 
     /** Called when the projection service starts; no-op when the rider hasn't turned it on. */
@@ -44,9 +47,15 @@ object ExternalControl {
     fun start(ctx: Context) {
         if (receiver != null || !AppSettings.externalControl(ctx)) return
         val r = object : BroadcastReceiver() {
-            override fun onReceive(c: Context, intent: Intent) = handle(intent.action)
+            override fun onReceive(c: Context, intent: Intent) {
+                if (handleDashboard(c, intent.action)) return
+                handle(intent.action)
+            }
         }
-        val filter = IntentFilter().apply { ACTIONS.keys.forEach { addAction(PREFIX + it) } }
+        val filter = IntentFilter().apply {
+            ACTIONS.keys.forEach { addAction(PREFIX + it) }
+            DASH_ACTIONS.forEach { addAction(PREFIX + it) }
+        }
         // Dynamic + exported: implicit broadcasts from Key Mapper/Tasker reach it (a manifest
         // receiver wouldn't get implicit broadcasts on Android 8+).
         ContextCompat.registerReceiver(ctx.applicationContext, r, filter, ContextCompat.RECEIVER_EXPORTED)
@@ -63,6 +72,19 @@ object ExternalControl {
 
     internal fun actionFor(intentAction: String?): ButtonAction? =
         intentAction?.takeIf { it.startsWith(PREFIX) }?.let { ACTIONS[it.removePrefix(PREFIX)] }
+
+    /** True if [intentAction] was one of the dashboard switches (handled here, whether or not it could be done). */
+    private fun handleDashboard(ctx: Context, intentAction: String?): Boolean {
+        val name = intentAction?.takeIf { it.startsWith(PREFIX) }?.removePrefix(PREFIX) ?: return false
+        if (name !in DASH_ACTIONS) return false
+        val ok = when (name) {
+            "DASH_ON" -> DashboardMode.set(ctx, true)
+            "DASH_OFF" -> DashboardMode.set(ctx, false)
+            else -> DashboardMode.toggle(ctx) != null
+        }
+        LogBus.log("[EXT] $name ${if (ok) "done" else "ignored — Android Auto isn't on the dash"}")
+        return true
+    }
 
     private fun handle(intentAction: String?) {
         val action = actionFor(intentAction) ?: return

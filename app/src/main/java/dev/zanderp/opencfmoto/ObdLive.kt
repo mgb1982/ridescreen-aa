@@ -25,9 +25,9 @@ import androidx.core.content.ContextCompat
  */
 @SuppressLint("MissingPermission")
 object ObdLive {
-    class Snapshot(val rpm: Double?, val speed: Double?, val coolant: Double?, val throttle: Double?, val atMs: Long)
+    class Snapshot(val rpm: Double?, val speed: Double?, val coolant: Double?, val throttle: Double?, val atMs: Long, val volt: Double? = null)
 
-    private val WANT = listOf(0x0C, 0x0D, 0x11, 0x05)   // rpm, speed, throttle, coolant
+    private val WANT = listOf(0x0C, 0x0D, 0x11, 0x05, 0x42)   // rpm, speed, throttle, coolant, module voltage
     private const val FRESH_MS = 5_000L
     private const val ENGINE_ON_RPM = 400.0
     private const val RETRY_MIN_MS = 5_000L
@@ -155,7 +155,14 @@ object ObdLive {
                 elm.verbose = true
                 log("live reader: the ECU answers now")
             }
-            val supported = ObdDecode.supported(first, 0x00).toSet()
+            // Module voltage (0x42) sits in the third block: walk the support bitmaps 00 → 20 → 40.
+            val base = ObdDecode.supported(first, 0x00)
+            val supported = HashSet<Int>(base)
+            if (0x20 in base) {
+                val s20 = ObdDecode.supported(elm.cmd("0120", 4_000), 0x20)
+                supported += s20
+                if (0x40 in s20) supported += ObdDecode.supported(elm.cmd("0140", 4_000), 0x40)
+            }
             val pids = WANT.filter { it in supported }
             if (0x0C !in pids) { log("live reader: the ECU doesn't offer RPM"); return false }
             val mode = pickMode(elm, pids)
@@ -175,7 +182,7 @@ object ObdLive {
                     val prev = latest
                     latest = Snapshot(
                         got[0x0C], got[0x0D] ?: prev?.speed, got[0x05] ?: prev?.coolant,
-                        got[0x11] ?: prev?.throttle, now,
+                        got[0x11] ?: prev?.throttle, now, got[0x42] ?: prev?.volt,
                     )
                     val rpm = got[0x0C]
                     if (rpm != null) {
@@ -196,9 +203,10 @@ object ObdLive {
     private fun describe(s: Snapshot?): String = if (s == null) "-" else listOfNotNull(
         s.rpm?.let { "rpm ${"%.0f".format(it)}" }, s.speed?.let { "speed ${"%.0f".format(it)}" },
         s.coolant?.let { "coolant ${"%.0f".format(it)}" }, s.throttle?.let { "throttle ${"%.1f".format(it)}" },
+        s.volt?.let { "volt ${"%.1f".format(it)}" },
     ).joinToString(" · ")
 
-    /** One round of reads; coolant, which barely moves, only every 10th round in the one-PID modes. */
+    /** One round of reads; coolant and module voltage, which barely move, only every 10th round in the one-PID modes. */
     private fun readRound(elm: ObdProbe.Elm, mode: Mode, pids: List<Int>, round: Int): Map<Int, Double> {
         if (mode == Mode.MULTI) {
             val cmd = "01" + pids.joinToString("") { "%02X".format(it) }
@@ -206,7 +214,7 @@ object ObdLive {
         }
         val out = HashMap<Int, Double>()
         for (pid in pids) {
-            if (pid == 0x05 && round % 10 != 0) continue
+            if ((pid == 0x05 || pid == 0x42) && round % 10 != 0) continue
             val cmd = "01%02X".format(pid) + if (mode == Mode.SINGLE_COUNT) "1" else ""
             ObdDecode.value(elm.cmd(cmd, 2_000), pid)?.let { out[pid] = it }
         }

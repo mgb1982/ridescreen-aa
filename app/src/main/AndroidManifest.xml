@@ -105,6 +105,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".DashboardToggleActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.NoDisplay" />
+        <activity
             android:name=".QrScanActivity"
             android:exported="false" />
         <activity

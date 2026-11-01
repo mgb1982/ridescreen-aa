@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: custom dashboard on the dash -->
+    <string name="dash_coolant">Ψυκτικό</string>
+    <string name="dash_throttle">Γκάζι</string>
+    <string name="dash_battery">Μπαταρία</string>
+    <string name="dash_no_obd">Χωρίς δεδομένα OBD</string>
+    <string name="dash_need_stream">Συνδέστε πρώτα τη μοτοσυκλέτα: το Android Auto δεν βρίσκεται ακόμη στην οθόνη</string>
+    <string name="dash_shortcut">Dashboard</string>
+    <string name="controls_dash_title">Dashboard</string>
+    <string name="controls_dash_desc">Εμφανίζει στην οθόνη στροφές, ταχύτητα, ψυκτικό, γκάζι και μπαταρία από τον προσαρμογέα OBD αντί για το Android Auto. Χωρίς δεδομένα OBD, η ταχύτητα προέρχεται από το GPS του κινητού.</string>
+    <string name="controls_dash_show">Εμφάνιση του dashboard στην οθόνη</string>
+    <string name="controls_dash_hide">Επιστροφή στο Android Auto</string>
+    <string name="controls_dash_start">Έναρξη στο dashboard όταν συνδέεται η μοτοσυκλέτα</string>
+</resources>
