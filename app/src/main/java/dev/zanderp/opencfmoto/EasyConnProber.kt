@@ -334,6 +334,8 @@ class EasyConnProber(
 
     fun stop() {
         running = false
+        offered = null
+        P2pClientDiscovery.stop("PXC flow stopped")
         probed = false
         everConnected = false
         reprobing = false
@@ -421,7 +423,16 @@ class EasyConnProber(
     private fun discoverAndProbe(bikeIp: Inet4Address, myIp: Inet4Address, network: Network?) {
         BikeWifi.rebindProcessToBike(context)
 
-        val nsd = EasyConnDiscovery.discoverNsd(context, log)
+        // Wi‑Fi Direct client (350E): the early discovery already runs mDNS IPv4 + :10930 in parallel, like the
+        // official app. Use what it found first; the system NSD never heard the dash on a Wi‑Fi Direct group.
+        val early = P2pClientDiscovery.isActive
+        offered?.let { probeOffered(it) }
+        if (probed || !running) return
+
+        val nsd = if (early) {
+            log("[DISC] system NSD skipped — early mDNS IPv4 discovery is running on this group")
+            null
+        } else EasyConnDiscovery.discoverNsd(context, log)
         if (!running) return
         if (nsd != null) {
             probeTarget(nsd.host, nsd.port, myIp, network, attempts = 3)
@@ -528,6 +539,7 @@ class EasyConnProber(
         myIp: Inet4Address,
         network: Network?,
         attempts: Int,
+        packageName: String? = null,
     ) {
         var attempt = 0
         while (running && attempt < attempts && !probed) {
@@ -541,8 +553,9 @@ class EasyConnProber(
                 sock.connect(InetSocketAddress(host, port), 3000)
                 sock.soTimeout = 5000
 
-                val json = JSONProbe()
-                log("[PROBE] -> MDNS_RESPOND (0x70000010) $json")
+                val json = JSONProbe(packageName)
+                log("[PROBE] -> MDNS_RESPOND (0x70000010) $json" +
+                    if (packageName != null) " (package announced by the dash)" else "")
                 PxcFrame(PxcFrame.CMD_MDNS_RESPOND, json.toByteArray(Charsets.UTF_8))
                     .write(sock.getOutputStream())
 
@@ -627,8 +640,43 @@ class EasyConnProber(
         return s
     }
 
-    private fun JSONProbe(): String =
-        "{\"phoneType\":\"Android\",\"packageName\":\"$SPOOFED_PACKAGE\"}"
+    private fun JSONProbe(packageName: String? = null): String =
+        "{\"phoneType\":\"Android\",\"packageName\":\"${packageName ?: SPOOFED_PACKAGE}\"}"
+
+    // ── v2.4 test · early discovery on a Wi‑Fi Direct group (350E, QR action=8): see P2pClientDiscovery
+
+    @Volatile private var offered: P2pClientDiscovery.Endpoint? = null
+    private val offerLock = Any()
+
+    /**
+     * An endpoint the early discovery found (mDNS IPv4 answer, or :10930 open). Probed at once when the
+     * listening ports are up, otherwise held until [discoverAndProbe] starts. The dash's `packagename`
+     * goes into the greeting; if the dash refuses it, the default package is tried once.
+     */
+    fun clearOffered() { offered = null }
+
+    fun offerEndpoint(ep: P2pClientDiscovery.Endpoint) {
+        offered = ep
+        if (!running || probed) {
+            log("[DISC] early result ${ep.host.hostAddress}:${ep.port} (${ep.source}) held for the PXC flow")
+            return
+        }
+        thread(name = "ec-offer", isDaemon = true) { probeOffered(ep) }
+    }
+
+    private fun probeOffered(ep: P2pClientDiscovery.Endpoint) {
+        synchronized(offerLock) {
+            val my = myIp ?: return
+            if (!running || probed) return
+            log("[DISC] probing ${ep.host.hostAddress}:${ep.port} (${ep.source}) " +
+                "packagename=${ep.packageName ?: "-"} → greeting with ${ep.packageName ?: SPOOFED_PACKAGE}")
+            probeTarget(ep.host, ep.port, my, network, attempts = 2, packageName = ep.packageName)
+            if (!probed && running && ep.packageName != null && ep.packageName != SPOOFED_PACKAGE) {
+                log("[DISC] dash refused its own package name — trying the default ($SPOOFED_PACKAGE) once")
+                probeTarget(ep.host, ep.port, my, network, attempts = 1)
+            }
+        }
+    }
 
     private fun spawnAccept(port: Int, server: ServerSocket) =
         thread(name = "ec-accept-$port", isDaemon = true) {
@@ -637,6 +685,7 @@ class EasyConnProber(
                     if (running) log("[:$port] accept ended: ${e.message}"); break
                 }
                 log("[:$port] <<< bike connected from ${client.remoteSocketAddress}")
+                P2pClientDiscovery.stop("the dash connected back")
                 everConnected = true
                 if (port != PORT_PXC_CTRL) { mediaSeen = true; controlOnlySessions = 0 }
                 reconnectAttempts = 0            // a fresh connection resets the retry budget

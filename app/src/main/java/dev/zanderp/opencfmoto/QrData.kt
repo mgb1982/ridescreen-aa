@@ -34,6 +34,8 @@ data class QrData(
     val modelId: String?,
     val sn: String?,
     val channel: String?,
+    /** `ip=` from the QR (some dashes print the address of their group owner). Null when absent. */
+    val ip: String? = null,
 ) {
     val supportsAp: Boolean get() = (action and 1) != 0 || (action and 2) != 0
     val supportsP2p: Boolean get() = (action and 8) != 0
@@ -70,7 +72,7 @@ data class QrData(
                 val name = q["name"]?.takeIf { it.isNotBlank() } ?: "ZT_${mac!!.replace(":", "")}"
                 return QrData(
                     ssid = name, pwd = "", auth = q["auth"], mac = mac, name = name, action = action,
-                    modelId = q["modelid"], sn = q["sn"], channel = q["channel"],
+                    modelId = q["modelid"], sn = q["sn"], channel = q["channel"], ip = q["ip"]?.trim()?.ifBlank { null },
                 )
             }
             if (ssid.isEmpty() && !phoneHotspot) return null
@@ -88,6 +90,7 @@ data class QrData(
                 modelId = q["modelid"],
                 sn = q["sn"],
                 channel = q["channel"],
+                ip = q["ip"]?.trim()?.ifBlank { null },
             )
         }
 
