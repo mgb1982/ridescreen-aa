@@ -81,6 +81,11 @@ object EasyConnDiscovery {
                         }
                         override fun onServiceResolved(resolved: NsdServiceInfo) {
                             val ep = endpointFrom(resolved) ?: return
+                            // Never probe ourselves (our own advert comes back through NSD): same address as one of ours.
+                            if (ep.host.hostAddress in P2pClientDiscovery.ownAddresses()) {
+                                log("[DISC] ignored own advert ${ep.host.hostAddress}:${ep.port}")
+                                return
+                            }
                             if (found.compareAndSet(null, ep)) {
                                 log(
                                     "[DISC] NSD → ${ep.host.hostAddress}:${ep.port}" +

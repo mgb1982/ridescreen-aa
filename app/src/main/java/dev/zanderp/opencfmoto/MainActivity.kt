@@ -2416,6 +2416,18 @@ class MainActivity : AppCompatActivity() {
                 WifiGate.cancelNotification(applicationContext)
                 // P2P actually formed a group for this bike → remember it (some DIRECT-* bikes need P2P).
                 BikeMemory.setWinningTransport(applicationContext, qr.ssid, "P2P")
+                // v2.4 test · Zontes 350E (QR action=8, phone is a client of the dash's group): look for the dash's
+                // EasyConn endpoint the way the official app does, from now on — not after Android Auto's video.
+                if (qr.action == 8 && BikeWifiP2p.clientOfGroup) {
+                    (BikeLink.prober ?: prober).clearOffered()
+                    P2pClientDiscovery.start(
+                        context = applicationContext,
+                        bindIp = bindIp,
+                        goIp = gatewayIp,
+                        qrIp = qr.ip,
+                        onEndpoint = { ep -> (BikeLink.prober ?: prober).offerEndpoint(ep) },
+                    )
+                }
                 if (gateOnAaSteady) {
                     LogBus.log("→ P2P bound (waiting for AA video); bike=${gatewayIp.hostAddress}")
                     BikeLink.markP2pReady(bindIp, gatewayIp)

@@ -85,6 +85,10 @@ object BikeWifiP2p {
     private fun listedAs(mac: String): String? =
         listedPeers.firstOrNull { it.equals(mac, ignoreCase = true) } ?: listedPeers.firstOrNull { macMatches(mac, it) }
 
+    /** True when the formed group has the dash as owner and this phone as a plain client (set before onConnected). */
+    @Volatile var clientOfGroup = false
+        private set
+
     /** True only while Android reports an active Wi-Fi Direct group. */
     val isConnected: Boolean get() = active && connected
 
@@ -479,6 +483,7 @@ object BikeWifiP2p {
         onFailed: (String) -> Unit,
         log: (String) -> Unit,
     ) {
+        clientOfGroup = !info.isGroupOwner
         if (info.isGroupOwner) {
             // We should be the client, not the GO. If we became GO the bike won't connect back.
             log("$TAG !! WE became the Group Owner — the bike is expected to be the GO. " +
