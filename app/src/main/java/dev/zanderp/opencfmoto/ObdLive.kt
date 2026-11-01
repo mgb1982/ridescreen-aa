@@ -18,6 +18,10 @@ import androidx.core.content.ContextCompat
  * Same rules as [ObdProbe]: only AT setup, mode 01 and 03 ever leave the phone ([ObdProbe.SAFE] is
  * checked before every send), nothing is cleared or written, and no VIN or adapter address is logged.
  * One reader at a time: the Help test stops it first and starts it again afterwards.
+ *
+ * Shares the phone's Bluetooth radio with the PKE keyless box (BLE): while [PkeUnlock.holdingBox] the
+ * reader closes its link and waits, so lock / unlock / seat / fuel cap commands find the box (1 Nov 2026,
+ * actions failed with the reader on). With the contact off it keeps one idle link instead of reconnecting.
  */
 @SuppressLint("MissingPermission")
 object ObdLive {
@@ -28,6 +32,8 @@ object ObdLive {
     private const val ENGINE_ON_RPM = 400.0
     private const val RETRY_MIN_MS = 5_000L
     private const val RETRY_MAX_MS = 30_000L
+    /** With the contact off the link stays open and the ECU is asked again this often (no reconnects). */
+    private const val CONTACT_POLL_MS = 10_000L
 
     /** How one round of [WANT] is asked; chosen by timing at the start of each connection. */
     internal enum class Mode(val label: String) { SINGLE("one PID per request"), SINGLE_COUNT("one PID, response count"), MULTI("all PIDs in one request") }
@@ -37,6 +43,7 @@ object ObdLive {
     @Volatile private var worker: Thread? = null
     @Volatile private var stopFlag = false
     @Volatile private var engine: Boolean? = null
+    @Volatile private var yieldedToPke = false
 
     private fun log(s: String) = LogBus.log("[OBD] $s")
 
@@ -88,14 +95,40 @@ object ObdLive {
         var wait = RETRY_MIN_MS
         log("live reader on for '$adapterName' (read only)")
         while (!stopFlag) {
+            if (pkeBusy()) { waitForPke(); continue }
+            yieldedToPke = false
             val ok = try { session(ctx, adapterName) } catch (e: InterruptedException) { break } catch (e: Exception) { log("live reader error: $e"); false }
             if (stopFlag) break
             latest = null
             setEngine(null)
+            if (yieldedToPke) continue
             wait = if (ok) RETRY_MIN_MS else (wait * 2).coerceAtMost(RETRY_MAX_MS)
             try { Thread.sleep(wait) } catch (_: InterruptedException) { break }
         }
         log("live reader off")
+    }
+
+    private fun pkeBusy(): Boolean = runCatching { PkeUnlock.holdingBox }.getOrDefault(false)
+
+    /** Waits (radio free) until the keyless box is released, plus a short grace so the box isn't raced. */
+    private fun waitForPke() {
+        log("live reader: paused while the keyless box is in use")
+        while (!stopFlag && pkeBusy()) {
+            try { Thread.sleep(250) } catch (_: InterruptedException) { return }
+        }
+        try { Thread.sleep(1_000) } catch (_: InterruptedException) { return }
+        if (!stopFlag) log("live reader: resuming")
+    }
+
+    /** Sleeps [ms] in small steps; false if the reader is stopping or the keyless box needs the radio. */
+    private fun idle(ms: Long): Boolean {
+        val end = SystemClock.elapsedRealtime() + ms
+        while (SystemClock.elapsedRealtime() < end) {
+            if (stopFlag) return false
+            if (pkeBusy()) { yieldedToPke = true; return false }
+            try { Thread.sleep(250) } catch (_: InterruptedException) { return false }
+        }
+        return true
     }
 
     /** One connection: true if it ran and was lost after reading, false if it never got going. */
@@ -111,8 +144,17 @@ object ObdLive {
             elm.cmd("ATZ", 3_000)
             for (c in listOf("ATE0", "ATL0", "ATS0", "ATH0", "ATSP0")) elm.cmd(c)
             // The first request makes the adapter search for the protocol; the ECU answers only with contact on.
-            val first = elm.cmd("0100", 12_000)
-            if (ObdDecode.supported(first, 0x00).isEmpty()) { log("live reader: the ECU didn't answer (contact off?)"); return false }
+            var first = elm.cmd("0100", 12_000)
+            if (ObdDecode.supported(first, 0x00).isEmpty()) {
+                log("live reader: the ECU didn't answer (contact off?) · asking again every ${CONTACT_POLL_MS / 1000} s on the same link")
+                elm.verbose = false
+                while (ObdDecode.supported(first, 0x00).isEmpty()) {
+                    if (!idle(CONTACT_POLL_MS)) return true
+                    first = elm.cmd("0100", 8_000)
+                }
+                elm.verbose = true
+                log("live reader: the ECU answers now")
+            }
             val supported = ObdDecode.supported(first, 0x00).toSet()
             val pids = WANT.filter { it in supported }
             if (0x0C !in pids) { log("live reader: the ECU doesn't offer RPM"); return false }
@@ -122,6 +164,7 @@ object ObdLive {
             var round = 0
             var failed = 0
             while (!stopFlag) {
+                if (pkeBusy()) { yieldedToPke = true; return true }
                 val t0 = SystemClock.elapsedRealtime()
                 val got = readRound(elm, mode, pids, round)
                 val now = SystemClock.elapsedRealtime()
