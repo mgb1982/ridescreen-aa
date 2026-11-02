@@ -536,9 +536,9 @@
     <string name="conn_reconnecting">Link dropped — reconnecting…</string>
     <string name="conn_waiting_for_bike">Bike out of range — waiting…</string>
     <string name="conn_stopped">Stopped</string>
-    <string name="conn_error">Error — see logs</string>
-    <string name="conn_detail_connect_failed">Connect failed — see Logs / Share Logs</string>
-    <string name="conn_detail_auto_connect_failed">Auto-connect failed — see Logs</string>
+    <string name="conn_error">Couldn\'t connect</string>
+    <string name="conn_detail_connect_failed">Couldn\'t connect. Turn the ignition off and on, open MotoPlay, then tap Connect.</string>
+    <string name="conn_detail_auto_connect_failed">Auto-connect failed. Turn the ignition off and on, then tap Connect.</string>
     <string name="conn_detail_need_bluetooth">Grant Nearby devices / Bluetooth, then tap Connect again</string>
     <string name="conn_detail_aa_not_started">Android Auto didn\'t attach. On Android Auto 17.4+ Google blocked the automatic start: open Android Auto, tap Version 10 times, then ⋮ → Start head unit server, and retry Connect. SoftAP/Mirror still prove the bike Wi‑Fi link.</string>
     <string name="conn_detail_aa_dropped">Android Auto attached then dropped. Bike Wi-Fi is up — tap Connect again and leave the Android Auto connect banner. SoftAP/Mirror still prove the bike link.</string>

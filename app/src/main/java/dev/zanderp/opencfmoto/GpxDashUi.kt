@@ -96,7 +96,7 @@ class GpxDashUi(
         var buildings3d = MapPrefs.buildings3d(context)
         var destArrivedSpoken = false
         var liveMode = mode
-        var liveNav = track?.let { GpxNav(it) }
+        var liveNav = track?.let { GpxNav(it, strings = context) }
         var liveDest = GpxSession.destination
         /** Distance to dest when nav first got a GPS fix — blocks fake "Arrived" on reopen. */
         var navStartDistM: Double? = null
@@ -227,7 +227,7 @@ class GpxDashUi(
         applyMapTheme()
 
         fun applyRoadRoute(route: OsrmRouter.Route, name: String) {
-            liveNav = GpxNav(OsrmRouter.toTrack(name, route), route.steps)
+            liveNav = GpxNav(OsrmRouter.toTrack(name, route), route.steps, context)
             val pts = route.points.map { it.lat to it.lon }
             dashLocal.clearPreviewRoute()
             dashLocal.setRouteRemain(pts)
@@ -2177,7 +2177,7 @@ class GpxDashUi(
                         val dir = GpxNav.dirToFace(bestBearing(), toSnap)
                         cueIcon.setImageResource(GpxNav.iconResFor(dir))
                         cueDist.text = GpxNav.formatDistance(prog.offTrackM, units)
-                        cueView.text = GpxNav.joinRouteWord(dir)
+                        cueView.text = GpxNav.joinRouteWord(context, dir)
                         laneView.visibility = View.GONE
                         if (voiceOn) voiceLocal.onJoinRoute(dir, prog.offTrackM, units)
                     }
@@ -2233,7 +2233,7 @@ class GpxDashUi(
                 cueDist.text = GpxNav.formatDistance(dM, units)
                 cueView.text = when (dir) {
                     GpxNav.TurnDir.STRAIGHT, GpxNav.TurnDir.CONTINUE -> "Go ahead"
-                    else -> GpxNav.joinRouteWord(dir)
+                    else -> GpxNav.joinRouteWord(context, dir)
                 }
                 laneView.visibility = View.GONE
                 nextView.visibility = View.GONE
@@ -2310,7 +2310,7 @@ class GpxDashUi(
                     val (oriented, flipped) = track!!.orientedForRider(loc.latitude, loc.longitude, heading)
                     if (flipped) {
                         track = oriented
-                        liveNav = GpxNav(oriented)
+                        liveNav = GpxNav(oriented, strings = context)
                         log("[GPX] reversed track to match rider heading")
                         if (voiceOn) voiceLocal.speak("Following the track the other way")
                         refreshTitle()
@@ -2438,14 +2438,14 @@ class GpxDashUi(
                         .maxByOrNull { it.time }
                         ?.let { listener.onLocationChanged(it) }
                 } else {
-                    statusView.text = "no GPS"
+                    statusView.text = context.getString(R.string.nav_no_gps)
                 }
             } else {
-                statusView.text = "location off"
+                statusView.text = context.getString(R.string.nav_location_off)
             }
         } catch (e: Exception) {
             log("[GPX] location failed: $e")
-            statusView.text = "GPS error"
+            statusView.text = context.getString(R.string.nav_gps_error)
         }
         // Same auto-log path as AA projection — rides on the built-in map land in Saved trips.
         TripAutoLog.setMapUiLive(context, true)
@@ -2453,19 +2453,19 @@ class GpxDashUi(
     }
 
     private fun maneuverWord(dir: GpxNav.TurnDir): String = when (dir) {
-        GpxNav.TurnDir.LEFT -> "Turn left"
-        GpxNav.TurnDir.RIGHT -> "Turn right"
-        GpxNav.TurnDir.SHARP_LEFT -> "Sharp left"
-        GpxNav.TurnDir.SHARP_RIGHT -> "Sharp right"
-        GpxNav.TurnDir.SLIGHT_LEFT -> "Slight left"
-        GpxNav.TurnDir.SLIGHT_RIGHT -> "Slight right"
-        GpxNav.TurnDir.UTURN -> "U-turn"
-        GpxNav.TurnDir.ROUNDABOUT -> "Roundabout"
-        GpxNav.TurnDir.MERGE_LEFT, GpxNav.TurnDir.MERGE_RIGHT -> "Merge"
-        GpxNav.TurnDir.FORK_LEFT -> "Keep left"
-        GpxNav.TurnDir.FORK_RIGHT -> "Keep right"
-        GpxNav.TurnDir.STRAIGHT, GpxNav.TurnDir.CONTINUE -> "Continue"
-        GpxNav.TurnDir.ARRIVE -> "Arrive"
+        GpxNav.TurnDir.LEFT -> context.getString(R.string.nav_turn_left)
+        GpxNav.TurnDir.RIGHT -> context.getString(R.string.nav_turn_right)
+        GpxNav.TurnDir.SHARP_LEFT -> context.getString(R.string.nav_sharp_left)
+        GpxNav.TurnDir.SHARP_RIGHT -> context.getString(R.string.nav_sharp_right)
+        GpxNav.TurnDir.SLIGHT_LEFT -> context.getString(R.string.nav_slight_left)
+        GpxNav.TurnDir.SLIGHT_RIGHT -> context.getString(R.string.nav_slight_right)
+        GpxNav.TurnDir.UTURN -> context.getString(R.string.nav_uturn)
+        GpxNav.TurnDir.ROUNDABOUT -> context.getString(R.string.nav_roundabout)
+        GpxNav.TurnDir.MERGE_LEFT, GpxNav.TurnDir.MERGE_RIGHT -> context.getString(R.string.nav_merge)
+        GpxNav.TurnDir.FORK_LEFT -> context.getString(R.string.nav_keep_left)
+        GpxNav.TurnDir.FORK_RIGHT -> context.getString(R.string.nav_keep_right)
+        GpxNav.TurnDir.STRAIGHT, GpxNav.TurnDir.CONTINUE -> context.getString(R.string.nav_continue)
+        GpxNav.TurnDir.ARRIVE -> context.getString(R.string.nav_arrive)
     }
 
     fun applyTheme() {

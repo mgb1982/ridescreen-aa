@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lang_title">Language</string>
+    <string name="lang_system">Follow the phone language</string>
+    <string name="lang_thai">ไทย</string>
+    <string name="lang_english">English</string>
+    <string name="lang_chip_system">SYS</string>
+    <string name="lang_picker_desc">Choose language</string>
+
+    <string name="step_wifi">Wi-Fi joined</string>
+    <string name="step_dash">Dashboard found</string>
+    <string name="step_link">Linking</string>
+    <string name="step_stream">Streaming</string>
+
+    <string name="hint_idle">Tap Connect. On a Zontes 368G, open MotoPlay on the dash and leave that screen up.</string>
+    <string name="hint_starting_aa">Starting Android Auto on the phone. Stay next to the bike.</string>
+    <string name="hint_wifi">Joining the bike Wi-Fi. Stay close and leave MotoPlay open.</string>
+    <string name="hint_dash">Wi-Fi is up. Looking for the dashboard…</string>
+    <string name="hint_link">Dashboard found. Linking Android Auto — this takes a few seconds.</string>
+    <string name="hint_stream">Streaming to the dash. You can pocket the phone.</string>
+    <string name="hint_mirror">Mirroring the phone screen onto the dash.</string>
+    <string name="hint_reconnect">The link dropped. Leave MotoPlay open — trying again.</string>
+    <string name="hint_waiting">The bike is out of range. Turn the ignition on and stay nearby.</string>
+    <string name="hint_stopped">Stopped. Tap Connect when you are ready to ride.</string>
+    <string name="hint_error_ignition">Couldn\'t finish linking. Turn the ignition off, wait 5 seconds, turn it on, open MotoPlay, then tap Connect.</string>
+    <string name="hint_error_wifi">The phone is not on the bike Wi-Fi. Turn Wi-Fi on, wake the dash, and tap Connect again.</string>
+    <string name="hint_error_dash">Bike Wi-Fi joined, but the dashboard did not answer. Open MotoPlay, or turn the ignition off and on, then retry.</string>
+    <string name="hint_error_aa">Android Auto did not start. In the Android Auto app, open the menu and start the head unit server, then tap Connect.</string>
+    <string name="hint_error_vpn">A VPN is blocking the bike network. Turn the VPN off for this ride, then tap Connect.</string>
+    <string name="hint_error_hotspot">This dash joins your phone hotspot. Turn the hotspot on with the name and password shown on the dash, then retry.</string>
+    <string name="hint_error_permission">A permission is still missing. Allow Nearby devices, turn Bluetooth on, then tap Connect again.</string>
+    <string name="hint_error_generic">Something blocked the link. Restart the ignition, keep MotoPlay open, and tap Connect. If it keeps failing, open Help and share the logs.</string>
+    <string name="hint_samsung">On a Samsung phone (such as the Galaxy S23 Ultra), also turn off battery limits for this app and leave Wi-Fi on.</string>
+    <string name="conn_error_friendly">Couldn\'t connect</string>
+
+    <string name="dlg_rival_message">The official CFMoto or EasyConnect app is holding the bike\'s link, so the dash stays blank. Close it, then connect again.\n\nClose &amp; retry tries to stop it. If the dash is still blank, open App settings and tap Force stop.</string>
+    <string name="dlg_rival_message_other">Something else is holding the bike\'s link. Close any other CFMoto or EasyConnect app, then tap Connect.</string>
+    <string name="dlg_close_retry">Close &amp; retry</string>
+    <string name="dlg_app_settings">App settings</string>
+    <string name="dlg_dismiss">Dismiss</string>
+    <string name="dlg_vpn_title">VPN is blocking the bike</string>
+    <string name="dlg_vpn_message">Android Auto reached the phone, but a VPN is blocking the bike Wi-Fi.\n\nTry one of these, then tap Connect again:\n• Turn the VPN off for this ride\n• Turn off Always-on VPN and \"Block connections without VPN\"\n• Allow the local network in the VPN app</string>
+    <string name="dlg_vpn_settings">VPN settings</string>
+    <string name="dlg_crash_message">The app closed unexpectedly last time. The log was saved — open Logs and tap Share logs so the problem can be seen.</string>
+    <string name="dlg_share_logs">Share logs</string>
+    <string name="dlg_keep_logs">Keep logs</string>
+    <string name="dlg_mirror_message">Entire screen works best while riding. Screen fit and mirror orientation are in Setup.\n\nA single app must stay in front; Android sends no frames when it is in the background.\n\nBike touch does not control mirrored apps. Continue connects and sends this app to the background.</string>
+    <string name="dlg_continue">Continue</string>
+    <string name="dlg_update_title">Update %1$s</string>
+    <string name="dlg_download">Download</string>
+    <string name="dlg_skip">Skip</string>
+    <string name="dlg_later">Later</string>
+
+    <string name="toast_on">on</string>
+    <string name="toast_off">off</string>
+    <string name="toast_auto_connect">Auto-connect %1$s</string>
+    <string name="toast_auto_recovery">Auto-recovery %1$s</string>
+    <string name="toast_bt_clock">Bluetooth clock %1$s</string>
+    <string name="toast_keep_wifi">Keep bike Wi-Fi %1$s</string>
+    <string name="toast_trip_logging">Trip logging %1$s</string>
+    <string name="toast_hold_on">Hold detection on</string>
+    <string name="toast_hold_off">Hold detection off — a long press counts as a tap</string>
+    <string name="toast_clock_lab">Clock lab: %1$s</string>
+    <string name="toast_query_time">QUERY_TIME: %1$s</string>
+    <string name="toast_time_sync">TIME_SYNC: %1$s</string>
+    <string name="toast_clock_resync">Clock resync: %1$s</string>
+    <string name="toast_applies_next">%1$s (applies on the next connect)</string>
+    <string name="toast_force_nontouch">Disable touchscreen: %1$s</string>
+    <string name="toast_force_touch">Force touchscreen: %1$s</string>
+    <string name="toast_profile">Bike profile: %1$s</string>
+    <string name="toast_secrets_on">Shared logs will include secrets — turn this off before posting them</string>
+    <string name="toast_secrets_off">Log redaction on</string>
+    <string name="toast_share_failed">Couldn\'t share: %1$s</string>
+    <string name="toast_empty_file">That file is empty</string>
+    <string name="toast_import_failed">Import failed: %1$s</string>
+    <string name="dlg_import_title">Import settings?</string>
+    <string name="dlg_import_message">Replace bike tuning for %1$s — profile, resolution, fit, power, margins, handlebar buttons, and Wi-Fi transport?\n\nPersonal preferences are left alone. Wi-Fi passwords are never imported.</string>
+    <string name="dlg_import">Import</string>
+    <string name="import_bad_json">Not valid JSON: %1$s</string>
+    <string name="import_bad_format">Not a settings file (format=%1$s)</string>
+    <string name="import_bad_version">Unsupported settings version %1$d (this app reads 1…%2$d)</string>
+    <string name="import_missing">Missing settings</string>
+    <string name="import_failed_detail">Import failed: %1$s</string>
+    <string name="import_ok_profile">Imported bike tuning (%1$s) onto %2$s</string>
+    <string name="import_ok">Bike tuning imported onto %1$s</string>
+    <string name="import_selected_bike">the selected bike</string>
+    <string name="share_settings_chooser">Share settings</string>
+    <string name="share_settings_subject">RideScreen AA bike tuning (no passwords)</string>
+</resources>

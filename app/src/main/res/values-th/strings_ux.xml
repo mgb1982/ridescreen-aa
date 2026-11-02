@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lang_title">ภาษา</string>
+    <string name="lang_system">ตามภาษามือถือ</string>
+    <string name="lang_thai">ไทย</string>
+    <string name="lang_english">English</string>
+    <string name="lang_chip_system">ระบบ</string>
+    <string name="lang_picker_desc">เลือกภาษา</string>
+
+    <string name="step_wifi">ต่อ Wi-Fi แล้ว</string>
+    <string name="step_dash">เจอหน้าปัด</string>
+    <string name="step_link">กำลังจับคู่</string>
+    <string name="step_stream">กำลังส่งภาพ</string>
+
+    <string name="hint_idle">กดเชื่อมต่อ บน Zontes 368G ให้เปิดหน้า MotoPlay บนหน้าปัดค้างไว้</string>
+    <string name="hint_starting_aa">กำลังเปิด Android Auto บนมือถือ ยืนใกล้รถไว้</string>
+    <string name="hint_wifi">กำลังเข้า Wi-Fi ของรถ ยืนใกล้ไว้และอย่าปิดหน้า MotoPlay</string>
+    <string name="hint_dash">ต่อ Wi-Fi แล้ว กำลังมองหาหน้าปัด…</string>
+    <string name="hint_link">เจอหน้าปัดแล้ว กำลังจับคู่ Android Auto รอสักครู่</string>
+    <string name="hint_stream">กำลังส่งภาพไปหน้าปัด เก็บมือถือได้เลย</string>
+    <string name="hint_mirror">กำลังฉายหน้าจอมือถือไปที่หน้าปัด</string>
+    <string name="hint_reconnect">สัญญาณหลุด เปิดหน้า MotoPlay ค้างไว้ แอปกำลังลองใหม่</string>
+    <string name="hint_waiting">รถอยู่นอกระยะ เปิดสวิตช์กุญแจแล้วยืนใกล้ไว้</string>
+    <string name="hint_stopped">หยุดแล้ว กดเชื่อมต่อเมื่อพร้อมออกเดินทาง</string>
+    <string name="hint_error_ignition">จับคู่ไม่สำเร็จ ดับสวิตช์ รอ 5 วินาที แล้วเปิดใหม่ เปิดหน้า MotoPlay แล้วกดเชื่อมต่ออีกครั้ง</string>
+    <string name="hint_error_wifi">มือถือยังไม่เข้า Wi-Fi ของรถ เปิด Wi-Fi ให้หน้าปัดตื่น แล้วกดเชื่อมต่ออีกครั้ง</string>
+    <string name="hint_error_dash">เข้า Wi-Fi ของรถแล้ว แต่หน้าปัดไม่ตอบ เปิดหน้า MotoPlay หรือดับแล้วติดเครื่องใหม่ แล้วลองอีกครั้ง</string>
+    <string name="hint_error_aa">Android Auto ยังไม่เริ่ม ในแอป Android Auto กดเมนูแล้วเริ่ม head unit server จากนั้นกดเชื่อมต่อ</string>
+    <string name="hint_error_vpn">VPN บล็อกเครือข่ายรถ ปิด VPN ระหว่างขี่ แล้วกดเชื่อมต่ออีกครั้ง</string>
+    <string name="hint_error_hotspot">หน้าปัดนี้จะเข้าฮอตสปอตของมือถือ เปิดฮอตสปอตให้ตรงชื่อและรหัสบนหน้าปัด แล้วลองใหม่</string>
+    <string name="hint_error_permission">ยังไม่ได้ให้สิทธิ์ อนุญาตอุปกรณ์ใกล้เคียง เปิดบลูทูธ แล้วกดเชื่อมต่ออีกครั้ง</string>
+    <string name="hint_error_generic">ยังเชื่อมไม่สำเร็จ ดับแล้วติดเครื่องใหม่ เปิด MotoPlay ค้างไว้ แล้วกดเชื่อมต่อ ถ้ายังไม่ได้ ให้เปิดความช่วยเหลือแล้วแชร์บันทึก</string>
+    <string name="hint_samsung">ถ้าใช้ Samsung (เช่น Galaxy S23 Ultra) ให้ปิดการจำกัดแบตเตอรี่ของแอปนี้ และเปิด Wi-Fi ค้างไว้</string>
+    <string name="conn_error_friendly">เชื่อมต่อไม่สำเร็จ</string>
+
+    <string name="dlg_rival_message">แอป CFMoto หรือ EasyConnect ทางการกำลังจับช่องสัญญาณของรถไว้ หน้าปัดเลยว่าง ปิดแอปนั้นแล้วเชื่อมใหม่\n\nปุ่มปิดแล้วลองใหม่จะพยายามหยุดแอปให้ ถ้าหน้าปัดยังว่าง ให้เปิดการตั้งค่าแอปแล้วกดบังคับหยุด</string>
+    <string name="dlg_rival_message_other">มีแอปอื่นจับช่องสัญญาณของรถไว้ ปิดแอป CFMoto หรือ EasyConnect อื่น แล้วกดเชื่อมต่อ</string>
+    <string name="dlg_close_retry">ปิดแล้วลองใหม่</string>
+    <string name="dlg_app_settings">ตั้งค่าแอป</string>
+    <string name="dlg_dismiss">ปิด</string>
+    <string name="dlg_vpn_title">VPN บล็อกรถอยู่</string>
+    <string name="dlg_vpn_message">Android Auto ถึงมือถือแล้ว แต่ VPN บล็อก Wi-Fi ของรถ\n\nลองอย่างใดอย่างหนึ่ง แล้วกดเชื่อมต่ออีกครั้ง:\n• ปิด VPN ระหว่างขี่\n• ปิด Always-on VPN และ \"บล็อกการเชื่อมต่อเมื่อไม่มี VPN\"\n• อนุญาตเครือข่ายท้องถิ่นในแอป VPN</string>
+    <string name="dlg_vpn_settings">ตั้งค่า VPN</string>
+    <string name="dlg_crash_message">แอปปิดเองในครั้งก่อน บันทึกถูกเก็บไว้แล้ว เปิดบันทึกแล้วกดแชร์บันทึก เพื่อให้ดูได้ว่าเกิดอะไรขึ้น</string>
+    <string name="dlg_share_logs">แชร์บันทึก</string>
+    <string name="dlg_keep_logs">เก็บบันทึกไว้</string>
+    <string name="dlg_mirror_message">ฉายทั้งหน้าจอเหมาะกับตอนขี่ที่สุด ปรับให้พอดีจอและแนวภาพได้ในการตั้งค่า\n\nถ้าเลือกแอปเดียว แอปนั้นต้องอยู่หน้าสุด เพราะ Android ไม่ส่งภาพเมื่อแอปอยู่เบื้องหลัง\n\nการแตะบนรถไม่ควบคุมแอปที่ฉายอยู่ กดดำเนินการต่อเพื่อเชื่อม แล้วแอปนี้จะไปอยู่เบื้องหลัง</string>
+    <string name="dlg_continue">ดำเนินการต่อ</string>
+    <string name="dlg_update_title">อัปเดต %1$s</string>
+    <string name="dlg_download">ดาวน์โหลด</string>
+    <string name="dlg_skip">ข้าม</string>
+    <string name="dlg_later">ไว้ทีหลัง</string>
+
+    <string name="toast_on">เปิด</string>
+    <string name="toast_off">ปิด</string>
+    <string name="toast_auto_connect">เชื่อมอัตโนมัติ %1$s</string>
+    <string name="toast_auto_recovery">กู้การเชื่อม %1$s</string>
+    <string name="toast_bt_clock">นาฬิกาผ่านบลูทูธ %1$s</string>
+    <string name="toast_keep_wifi">คง Wi-Fi ของรถ %1$s</string>
+    <string name="toast_trip_logging">บันทึกทริป %1$s</string>
+    <string name="toast_hold_on">เปิดการตรวจจับการกดค้าง</string>
+    <string name="toast_hold_off">ปิดการตรวจจับการกดค้าง — กดค้างจะนับเป็นการแตะ</string>
+    <string name="toast_clock_lab">ห้องทดลองนาฬิกา: %1$s</string>
+    <string name="toast_query_time">QUERY_TIME: %1$s</string>
+    <string name="toast_time_sync">TIME_SYNC: %1$s</string>
+    <string name="toast_clock_resync">ซิงก์นาฬิกาใหม่: %1$s</string>
+    <string name="toast_applies_next">%1$s (มีผลในการเชื่อมครั้งถัดไป)</string>
+    <string name="toast_force_nontouch">ปิดหน้าจอสัมผัส: %1$s</string>
+    <string name="toast_force_touch">บังคับหน้าจอสัมผัส: %1$s</string>
+    <string name="toast_profile">โปรไฟล์รถ: %1$s</string>
+    <string name="toast_secrets_on">บันทึกที่แชร์จะมีข้อมูลลับ — ปิดก่อนโพสต์สาธารณะ</string>
+    <string name="toast_secrets_off">เปิดการปกปิดข้อมูลในบันทึก</string>
+    <string name="toast_share_failed">แชร์ไม่ได้: %1$s</string>
+    <string name="toast_empty_file">ไฟล์นี้ว่าง</string>
+    <string name="toast_import_failed">นำเข้าไม่สำเร็จ: %1$s</string>
+    <string name="dlg_import_title">นำเข้าการตั้งค่า?</string>
+    <string name="dlg_import_message">แทนที่การจูนของ %1$s — โปรไฟล์ ความละเอียด การพอดีภาพ พลังงาน ขอบ ปุ่มแฮนด์ และวิธีต่อ Wi-Fi?\n\nค่าส่วนตัวจะไม่ถูกแตะ และจะไม่นำเข้ารหัส Wi-Fi</string>
+    <string name="dlg_import">นำเข้า</string>
+    <string name="import_bad_json">ไม่ใช่ JSON ที่ใช้ได้: %1$s</string>
+    <string name="import_bad_format">ไม่ใช่ไฟล์การตั้งค่า (รูปแบบ=%1$s)</string>
+    <string name="import_bad_version">เวอร์ชันการตั้งค่า %1$d ไม่รองรับ (แอปนี้อ่านได้ 1…%2$d)</string>
+    <string name="import_missing">ไม่พบการตั้งค่า</string>
+    <string name="import_failed_detail">นำเข้าไม่สำเร็จ: %1$s</string>
+    <string name="import_ok_profile">นำเข้าการจูน (%1$s) ไปยัง %2$s แล้ว</string>
+    <string name="import_ok">นำเข้าการจูนไปยัง %1$s แล้ว</string>
+    <string name="import_selected_bike">รถที่เลือก</string>
+    <string name="share_settings_chooser">แชร์การตั้งค่า</string>
+    <string name="share_settings_subject">การจูน RideScreen AA (ไม่มีรหัสผ่าน)</string>
+</resources>

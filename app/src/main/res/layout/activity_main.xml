@@ -97,10 +97,19 @@
                             tools:text="v2.0.18" />
                     </LinearLayout>
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_language"
+                        style="@style/Widget.OpenCfMoto.Button.Lang"
+                        android:layout_width="wrap_content"
+                        android:layout_height="56dp"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="@string/lang_picker_desc"
+                        android:text="@string/lang_chip_system" />
+
                     <ImageButton
                         android:id="@+id/btn_hero_menu"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bg_round_glass"
                         android:contentDescription="@string/main_settings_desc"
                         android:padding="12dp"
@@ -197,6 +206,137 @@
                         android:text="@string/main_no_bike_paired_yet"
                         android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:id="@+id/conn_steps"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="2dp">
+
+                            <ImageView
+                                android:id="@+id/step_wifi_dot"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/bg_step_dot" />
+
+                            <TextView
+                                android:id="@+id/step_wifi_label"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:gravity="center"
+                                android:lineSpacingMultiplier="1.1"
+                                android:maxLines="2"
+                                android:text="@string/step_wifi"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="2dp">
+
+                            <ImageView
+                                android:id="@+id/step_dash_dot"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/bg_step_dot" />
+
+                            <TextView
+                                android:id="@+id/step_dash_label"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:gravity="center"
+                                android:lineSpacingMultiplier="1.1"
+                                android:maxLines="2"
+                                android:text="@string/step_dash"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="2dp">
+
+                            <ImageView
+                                android:id="@+id/step_link_dot"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/bg_step_dot" />
+
+                            <TextView
+                                android:id="@+id/step_link_label"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:gravity="center"
+                                android:lineSpacingMultiplier="1.1"
+                                android:maxLines="2"
+                                android:text="@string/step_link"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="2dp">
+
+                            <ImageView
+                                android:id="@+id/step_stream_dot"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/bg_step_dot" />
+
+                            <TextView
+                                android:id="@+id/step_stream_label"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:gravity="center"
+                                android:lineSpacingMultiplier="1.1"
+                                android:maxLines="2"
+                                android:text="@string/step_stream"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/status_hint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:lineSpacingMultiplier="1.15"
+                        android:text="@string/hint_idle"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="15sp" />
 
                     <View
                         android:layout_width="match_parent"

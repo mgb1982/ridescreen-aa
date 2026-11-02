@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var statusView: TextView
     private lateinit var statusIcon: android.widget.ImageView
     private lateinit var statusProgress: View
+    private lateinit var statusHint: TextView
     private lateinit var bikeView: TextView
     private lateinit var connectBtn: Button
     private lateinit var toggleLogBtn: Button
@@ -704,13 +705,10 @@ class MainActivity : AppCompatActivity() {
         try {
             androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle(R.string.main_crash_title)
-                .setMessage(
-                    "OpenCfMoto closed unexpectedly last time. The log and crash report were saved — " +
-                        "open Logs and tap Share Logs so we can see what happened.",
-                )
-                .setPositiveButton("Share Logs") { _, _ -> shareLog() }
-                .setNegativeButton("Keep logs") { _, _ -> }
-                .setNeutralButton("Dismiss") { _, _ -> CrashGuard.clearCrash(this) }
+                .setMessage(R.string.dlg_crash_message)
+                .setPositiveButton(R.string.dlg_share_logs) { _, _ -> shareLog() }
+                .setNegativeButton(R.string.dlg_keep_logs) { _, _ -> }
+                .setNeutralButton(R.string.dlg_dismiss) { _, _ -> CrashGuard.clearCrash(this) }
                 .show()
         } catch (e: Exception) {
             log("crash recovery UI failed: $e")
@@ -743,16 +741,8 @@ class MainActivity : AppCompatActivity() {
                         log("screen-capture armed (FGS up after ${tries * 100}ms) — pick Entire screen or a single app (Android 14+)")
                         androidx.appcompat.app.AlertDialog.Builder(this@MainActivity)
                             .setTitle(R.string.main_mirror_ready_title)
-                            .setMessage(
-                                "Entire screen — best for riding. " +
-                                    "Uses Setup ▸ Screen fit and Setup ▸ Mirror orientation " +
-                                    "(Match dash rotates the phone so the TFT fills).\n\n" +
-                                    "Single app — that app must stay on screen; Android sends no frames " +
-                                    "in the background. Prefer GPX / Tracks or Android Auto for pocket use.\n\n" +
-                                    "Bike touch does not drive mirrored apps. Continue connects and " +
-                                    "sends OpenCfMoto to the background.",
-                            )
-                            .setPositiveButton("Continue") { _, _ -> startMirrorLink() }
+                            .setMessage(R.string.dlg_mirror_message)
+                            .setPositiveButton(R.string.dlg_continue) { _, _ -> startMirrorLink() }
                             .setCancelable(false)
                             .show()
                     } catch (e: Exception) {
@@ -790,7 +780,9 @@ class MainActivity : AppCompatActivity() {
         statusView = findViewById(R.id.status_view)
         statusIcon = findViewById(R.id.status_icon)
         statusProgress = findViewById(R.id.status_progress)
+        statusHint = findViewById(R.id.status_hint)
         bikeView = findViewById(R.id.bike_view)
+        LanguagePicker.bind(this, findViewById(R.id.btn_language))
         connectBtn = findViewById(R.id.btn_connect)
         toggleLogBtn = findViewById(R.id.btn_toggle_log)
         logView.movementMethod = ScrollingMovementMethod()
@@ -1768,14 +1760,58 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /** Four-step connection status. Colours only; the link itself is unchanged. */
+    private fun renderConnectionGuide(phase: Phase, detail: String) {
+        val model = ConnectionGuide.model(phase, detail)
+        val dots = intArrayOf(R.id.step_wifi_dot, R.id.step_dash_dot, R.id.step_link_dot, R.id.step_stream_dot)
+        val labels = intArrayOf(R.id.step_wifi_label, R.id.step_dash_label, R.id.step_link_label, R.id.step_stream_label)
+        model.steps.forEachIndexed { i, mark ->
+            val colorRes = when (mark) {
+                ConnectionGuide.Mark.DONE -> R.color.status_live
+                ConnectionGuide.Mark.CURRENT -> R.color.brand_gold
+                ConnectionGuide.Mark.FAILED -> R.color.status_error
+                ConnectionGuide.Mark.TODO -> R.color.status_idle
+            }
+            val color = ContextCompat.getColor(this, colorRes)
+            findViewById<android.widget.ImageView>(dots[i]).setColorFilter(color)
+            findViewById<TextView>(labels[i]).apply {
+                setTextColor(
+                    if (mark == ConnectionGuide.Mark.TODO) {
+                        ContextCompat.getColor(this@MainActivity, R.color.text_secondary)
+                    } else {
+                        color
+                    },
+                )
+                setTypeface(
+                    typeface,
+                    if (mark == ConnectionGuide.Mark.CURRENT || mark == ConnectionGuide.Mark.FAILED) {
+                        android.graphics.Typeface.BOLD
+                    } else {
+                        android.graphics.Typeface.NORMAL
+                    },
+                )
+            }
+        }
+        val hint = getString(model.hintRes)
+        val samsung = model.showSamsungNote &&
+            android.os.Build.MANUFACTURER.equals("samsung", ignoreCase = true)
+        statusHint.text = if (samsung) hint + "\n" + getString(R.string.hint_samsung) else hint
+        statusHint.setTextColor(
+            ContextCompat.getColor(this, if (phase == Phase.ERROR) R.color.status_error else R.color.text_secondary),
+        )
+    }
+
     /** Update the big status header + Connect button label from a [ConnectionState] transition. */
     private fun renderStatus(phase: Phase, detail: String) {
-        statusView.text = getString(phase.labelRes) +
+        val title = if (phase == Phase.ERROR) getString(R.string.conn_error_friendly) else getString(phase.labelRes)
+        statusView.text = title +
             (if (ClockLab.resyncInProgress() && phase != Phase.STOPPED && phase != Phase.IDLE)
                 " · " + getString(R.string.clock_resyncing) else "") +
             (if ((phase == Phase.STREAMING || phase == Phase.MIRRORING) && engineState() == true)
                 " · " + getString(R.string.engine_running) else "")
-        bikeView.text = if (detail.isNotBlank()) detail else bikeLabelText()
+        // Errors explain the next step in the hint. The bike name stays on the second line.
+        bikeView.text = if (phase == Phase.ERROR || detail.isBlank()) bikeLabelText() else detail
+        renderConnectionGuide(phase, detail)
         if (phase == Phase.ERROR && detail.isNotBlank() && !isHusConnectNoise(detail)) {
             try {
                 AnonymousTelemetry.reportError(this, detail)
@@ -1893,26 +1929,21 @@ class MainActivity : AppCompatActivity() {
         val installed = RivalClient.isInstalled(this)
         com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
             .setTitle(R.string.main_rival_title)
-            .setMessage(
-                "The official CFMoto/EasyConnect app is running and holding the bike's link ports, so " +
-                    "the dash stays blank. Close it, then reconnect.\n\n" +
-                    "\"Close & retry\" tries to stop it for you; if the dash is still blank, use " +
-                    "\"App settings\" and tap Force stop."
-            )
-            .setPositiveButton("Close & retry") { _, _ ->
+            .setMessage(R.string.dlg_rival_message)
+            .setPositiveButton(R.string.dlg_close_retry) { _, _ ->
                 val killed = RivalClient.closeBestEffort(this)
                 log(if (killed) "→ asked Android to close the official CFMoto app; retrying…"
                     else "→ couldn't auto-close the official CFMoto app — open its settings to Force stop.")
                 connectBtn.postDelayed({ reconnectSavedBike() }, 1500)
             }
-            .setNeutralButton("App settings") { _, _ ->
+            .setNeutralButton(R.string.dlg_app_settings) { _, _ ->
                 if (!RivalClient.openAppInfo(this)) {
                     Toast.makeText(this, R.string.main_settings_failed, Toast.LENGTH_SHORT).show()
                 }
             }
-            .setNegativeButton("Dismiss", null)
+            .setNegativeButton(R.string.dlg_dismiss, null)
             .setCancelable(true)
-            .apply { if (!installed) setMessage("Something is holding the bike's link ports (10920-10922). Close any other CFMoto/EasyConnect app and reconnect.") }
+            .apply { if (!installed) setMessage(R.string.dlg_rival_message_other) }
             .show()
     }
 
@@ -1922,28 +1953,20 @@ class MainActivity : AppCompatActivity() {
      */
     private fun promptVpnKillSwitch() {
         com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
-            .setTitle("VPN is blocking the bike")
-            .setMessage(
-                "Android Auto reached the phone, but a VPN kill-switch is blocking the bike Wi‑Fi " +
-                    "(Network.bindSocket → EPERM).\n\n" +
-                    "Fix (any one):\n" +
-                    "• Turn the VPN off for this ride\n" +
-                    "• Disable Always-on VPN → \"Block connections without VPN\"\n" +
-                    "• Allow LAN / local network in the VPN app (PCAPdroid, AdGuard, etc.)\n\n" +
-                    "Then tap Connect again."
-            )
-            .setPositiveButton("VPN settings") { _, _ ->
+            .setTitle(R.string.dlg_vpn_title)
+            .setMessage(R.string.dlg_vpn_message)
+            .setPositiveButton(R.string.dlg_vpn_settings) { _, _ ->
                 try {
                     startActivity(Intent("android.net.vpn.SETTINGS"))
                 } catch (_: Exception) {
                     try {
                         startActivity(Intent(android.provider.Settings.ACTION_SETTINGS))
                     } catch (_: Exception) {
-                        Toast.makeText(this, "Open Settings ▸ Network ▸ VPN", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, R.string.main_vpn_hint, Toast.LENGTH_LONG).show()
                     }
                 }
             }
-            .setNegativeButton("Dismiss", null)
+            .setNegativeButton(R.string.dlg_dismiss, null)
             .setCancelable(true)
             .show()
     }
@@ -2666,17 +2689,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun showUpdateDialog(release: UpdateChecker.Release) {
         val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle("Update ${release.version}")
+            .setTitle(getString(R.string.dlg_update_title, release.version))
             .setMessage(ReleaseNotes.toSpanned(release.notes))
-            .setPositiveButton("Download") { _, _ ->
+            .setPositiveButton(R.string.dlg_download) { _, _ ->
                 try {
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(release.downloadUrl)))
                 } catch (_: Exception) {
                     Toast.makeText(this, R.string.main_download_failed, Toast.LENGTH_SHORT).show()
                 }
             }
-            .setNegativeButton("Skip") { _, _ -> UpdateChecker.skip(this, release.version) }
-            .setNeutralButton("Later", null)
+            .setNegativeButton(R.string.dlg_skip) { _, _ -> UpdateChecker.skip(this, release.version) }
+            .setNeutralButton(R.string.dlg_later, null)
             .show()
         // Headings/bullets/bold come from [ReleaseNotes]; make markdown links tappable too.
         dialog.findViewById<TextView>(android.R.id.message)?.movementMethod =
