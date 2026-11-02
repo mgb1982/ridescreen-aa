@@ -25,9 +25,9 @@ import androidx.core.content.ContextCompat
  */
 @SuppressLint("MissingPermission")
 object ObdLive {
-    class Snapshot(val rpm: Double?, val speed: Double?, val coolant: Double?, val throttle: Double?, val atMs: Long, val volt: Double? = null)
+    class Snapshot(val rpm: Double?, val speed: Double?, val coolant: Double?, val throttle: Double?, val atMs: Long, val volt: Double? = null, val load: Double? = null, val intake: Double? = null, val baro: Double? = null, val absoluteLoad: Double? = null, val relativeThrottle: Double? = null)
 
-    private val WANT = listOf(0x0C, 0x0D, 0x11, 0x05, 0x42)   // rpm, speed, throttle, coolant, module voltage
+    private val WANT = listOf(0x0C, 0x0D, 0x11, 0x05, 0x42, 0x04, 0x0F, 0x33, 0x43, 0x45)   // rpm, speed, throttle, coolant, module voltage
     private const val FRESH_MS = 5_000L
     private const val ENGINE_ON_RPM = 400.0
     private const val RETRY_MIN_MS = 5_000L
@@ -183,6 +183,8 @@ object ObdLive {
                     latest = Snapshot(
                         got[0x0C], got[0x0D] ?: prev?.speed, got[0x05] ?: prev?.coolant,
                         got[0x11] ?: prev?.throttle, now, got[0x42] ?: prev?.volt,
+                        got[0x04] ?: prev?.load, got[0x0F] ?: prev?.intake, got[0x33] ?: prev?.baro,
+                        got[0x43] ?: prev?.absoluteLoad, got[0x45] ?: prev?.relativeThrottle,
                     )
                     val rpm = got[0x0C]
                     if (rpm != null) {
@@ -214,7 +216,7 @@ object ObdLive {
         }
         val out = HashMap<Int, Double>()
         for (pid in pids) {
-            if ((pid == 0x05 || pid == 0x42) && round % 10 != 0) continue
+            if ((pid == 0x05 || pid == 0x42 || pid == 0x0F || pid == 0x33 || pid == 0x43) && round % 10 != 0) continue
             val cmd = "01%02X".format(pid) + if (mode == Mode.SINGLE_COUNT) "1" else ""
             ObdDecode.value(elm.cmd(cmd, 2_000), pid)?.let { out[pid] = it }
         }
