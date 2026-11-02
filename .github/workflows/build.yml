@@ -75,7 +75,12 @@ jobs:
           TELEMETRY_URL: ${{ vars.TELEMETRY_URL }}
         run: |
           set +e
-          ./gradlew assembleGithubRelease bundlePlayRelease -PappVersion="$APP_VERSION" -PversionSuffix="$VERSION_SUFFIX" > release-build.log 2>&1
+          # Keep prerelease builds unminified and arm64-only for Android 16 device compatibility.
+          if [[ "$GITHUB_REF" == refs/heads/prerelease/* ]]; then
+            ./gradlew assembleGithubRelease bundlePlayRelease -PslimApk=false -Pabi=arm64-v8a -PappVersion="$APP_VERSION" -PversionSuffix="$VERSION_SUFFIX" > release-build.log 2>&1
+          else
+            ./gradlew assembleGithubRelease bundlePlayRelease -PappVersion="$APP_VERSION" -PversionSuffix="$VERSION_SUFFIX" > release-build.log 2>&1
+          fi
           rc=$?
           if [ $rc -ne 0 ]; then
             # Annotations are readable through the API even when raw logs are not.
