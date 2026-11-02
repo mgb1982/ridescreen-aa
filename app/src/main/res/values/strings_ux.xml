@@ -6,6 +6,10 @@
     <string name="lang_english">English</string>
     <string name="lang_chip_system">SYS</string>
     <string name="lang_picker_desc">Choose language</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_trips">Trips</string>
+    <string name="nav_garage">Garage</string>
+    <string name="nav_settings">Settings</string>
 
     <string name="step_wifi">Wi-Fi joined</string>
     <string name="step_dash">Dashboard found</string>

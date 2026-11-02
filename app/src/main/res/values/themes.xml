@@ -113,7 +113,7 @@
         <item name="android:letterSpacing">0.01</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
-        <item name="cornerRadius">32dp</item>
+        <item name="cornerRadius">36dp</item>
         <item name="android:minHeight">@dimen/btn_connect_min_height</item>
         <item name="android:letterSpacing">0</item>
         <item name="android:textAllCaps">false</item>
@@ -215,7 +215,7 @@
     </style>
 
     <style name="Card.OpenCfMoto" parent="Widget.Material3.CardView.Elevated">
-        <item name="cardCornerRadius">22dp</item>
+        <item name="cardCornerRadius">28dp</item>
         <item name="cardBackgroundColor">@color/surface</item>
         <item name="cardElevation">0dp</item>
         <item name="strokeColor">@color/outline</item>

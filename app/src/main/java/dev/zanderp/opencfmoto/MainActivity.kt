@@ -784,6 +784,22 @@ class MainActivity : AppCompatActivity() {
         bikeView = findViewById(R.id.bike_view)
         LanguagePicker.bind(this, findViewById(R.id.btn_language))
         connectBtn = findViewById(R.id.btn_connect)
+        findViewById<android.widget.ImageButton>(R.id.nav_center).setColorFilter(
+            ContextCompat.getColor(this, R.color.on_brand),
+        )
+        findViewById<View>(R.id.nav_home).setOnClickListener {
+            findViewById<androidx.core.widget.NestedScrollView>(R.id.main_scroll).smoothScrollTo(0, 0)
+        }
+        findViewById<View>(R.id.nav_trips).setOnClickListener {
+            findViewById<View>(R.id.btn_trips_list).performClick()
+        }
+        findViewById<View>(R.id.nav_center).setOnClickListener { connectBtn.performClick() }
+        findViewById<View>(R.id.nav_garage).setOnClickListener {
+            findViewById<View>(R.id.btn_devices).performClick()
+        }
+        findViewById<View>(R.id.nav_settings).setOnClickListener {
+            findViewById<View>(R.id.btn_setup).performClick()
+        }
         toggleLogBtn = findViewById(R.id.btn_toggle_log)
         logView.movementMethod = ScrollingMovementMethod()
 
@@ -1433,7 +1449,8 @@ class MainActivity : AppCompatActivity() {
             gravity = android.view.Gravity.CENTER
             background = android.graphics.drawable.GradientDrawable().apply {
                 shape = android.graphics.drawable.GradientDrawable.OVAL
-                setColor((color and 0x00FFFFFF) or 0x33000000)
+                setColor(0x333DFF9A)
+                setStroke((1.5f * dp).toInt(), 0xFF3DFF9A.toInt())
             }
         }
         val size = ((if (big) 42 else 46) * dp).toInt()
@@ -1468,7 +1485,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupHomeTiles() {
-        buildTile(R.id.btn_trips_list, "🏍️", 0xFF5B8DEF.toInt(), getString(R.string.home_tile_trips))
+        findViewById<View>(R.id.btn_trips_list)?.setBackgroundResource(R.drawable.bg_quick_mint)
+        buildTile(R.id.btn_trips_list, "🏍️", 0xFF3DFF9A.toInt(), getString(R.string.home_tile_trips))
         buildTile(R.id.btn_fuel, "⛽", 0xFFE5774E.toInt(), getString(R.string.home_tile_fuel), getString(R.string.home_tile_fuel_sub))
         buildTile(R.id.btn_maint, "🔧", 0xFF4FB6A6.toInt(), getString(R.string.home_tile_maint))
         buildTile(R.id.btn_traffic_lights, "🚦", 0xFFE05A5A.toInt(), getString(R.string.home_tile_tl))
@@ -1514,7 +1532,7 @@ class MainActivity : AppCompatActivity() {
         val live = sessionAlive(phase)
         findViewById<View?>(R.id.live_section)?.visibility = if (live) View.VISIBLE else View.GONE
         findViewById<View?>(R.id.hero_card)?.let { hero ->
-            val h = ((if (live) 190 else 280) * resources.displayMetrics.density).toInt()
+            val h = ((if (live) 150 else 200) * resources.displayMetrics.density).toInt()
             if (hero.layoutParams.height != h) { hero.layoutParams.height = h; hero.requestLayout() }
         }
         findViewById<TextView?>(R.id.hero_name)?.textSize = if (live) 34f else 46f
@@ -1765,6 +1783,7 @@ class MainActivity : AppCompatActivity() {
         val model = ConnectionGuide.model(phase, detail)
         val dots = intArrayOf(R.id.step_wifi_dot, R.id.step_dash_dot, R.id.step_link_dot, R.id.step_stream_dot)
         val labels = intArrayOf(R.id.step_wifi_label, R.id.step_dash_label, R.id.step_link_label, R.id.step_stream_label)
+        findViewById<ConnectionRingView>(R.id.conn_ring).setMarks(model.steps)
         model.steps.forEachIndexed { i, mark ->
             val colorRes = when (mark) {
                 ConnectionGuide.Mark.DONE -> R.color.status_live

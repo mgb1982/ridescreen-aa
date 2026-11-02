@@ -6,6 +6,10 @@
     <string name="lang_english">English</string>
     <string name="lang_chip_system">ระบบ</string>
     <string name="lang_picker_desc">เลือกภาษา</string>
+    <string name="nav_home">หน้าแรก</string>
+    <string name="nav_trips">ทริป</string>
+    <string name="nav_garage">โรงรถ</string>
+    <string name="nav_settings">ตั้งค่า</string>
 
     <string name="step_wifi">ต่อ Wi-Fi แล้ว</string>
     <string name="step_dash">เจอหน้าปัด</string>
