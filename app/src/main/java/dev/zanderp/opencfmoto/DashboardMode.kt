@@ -141,7 +141,7 @@ object DashboardMode {
     private fun liveBuilder(app: Context): (Int, Int) -> android.graphics.Bitmap = { w, h -> render(app, w, h) }
 
     private fun render(ctx: Context, w: Int, h: Int): android.graphics.Bitmap =
-        DashboardRenderer.render(ctx, w, h, collect(ctx), isLight(ctx))
+        DashboardRenderer.render(ctx, w, h, collect(ctx), isLight(ctx), design(ctx), visibleFields(ctx))
 
     // ── data
 
