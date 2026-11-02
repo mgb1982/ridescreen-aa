@@ -646,4 +646,19 @@
     <string name="rain_parked_title">Αναμένεται βροχή εκεί όπου στάθμευσες</string>
     <string name="rain_parked_soon">Αναμένεται βροχή μέσα στην επόμενη ώρα — κάλυψε τη μοτοσικλέτα.</string>
     <string name="rain_parked_in_hours">Αναμένεται βροχή σε περίπου %1$d ώρες — κάλυψε τη μοτοσικλέτα.</string>
+    <string name="trip_obd_summary">OBD (%1$d μετρήσεις) · μέγ. στροφές %2$s · μέγ. ψυκτικό %3$s °C · μέσο γκάζι %4$s%% · μέση τάση %5$s V</string>
+    <string name="trip_replay_play">Αναπαραγωγή διαδρομής</string>
+    <string name="trip_replay_pause">Παύση</string>
+    <string name="trip_replay_seek">Θέση αναπαραγωγής διαδρομής</string>
+    <string name="trip_replay_marker">Τρέχουσα θέση</string>
+    <string name="trip_replay_status">%1$s · GPS %2$d km/h · στροφές %3$s · ψυκτικό %4$s °C · γκάζι %5$s%%</string>
+    <string name="trips_merge_select">Επιλογή διαδρομών για ένωση</string>
+    <string name="trips_merge_action">Ένωση %1$d διαδρομών</string>
+    <string name="trips_merge_cancel">Ακύρωση επιλογής</string>
+    <string name="trips_merge_title">Ένωση διαδρομών;</string>
+    <string name="trips_merge_confirm">Οι %1$d διαδρομές (%2$s km) θα ενωθούν σε μία. Οι αρχικές παραμένουν αποθηκευμένες και μπορούν να επαναφερθούν.</string>
+    <string name="trips_merge_restore">Επαναφορά αρχικών διαδρομών</string>
+    <string name="trips_merge_restore_confirm">Επαναφορά αρχικών τμημάτων;</string>
+    <string name="trips_merge_failed">Δεν ήταν δυνατή η ένωση αυτών των διαδρομών.</string>
+    <string name="trips_merge_done">Οι διαδρομές ενώθηκαν. Τα αρχικά τμήματα αποθηκεύτηκαν.</string>
 </resources>

@@ -639,4 +639,19 @@
     <string name="rain_parked_title">Regen am Parkplatz erwartet</string>
     <string name="rain_parked_soon">Innerhalb der nächsten Stunde wird Regen erwartet. Decke das Motorrad ab.</string>
     <string name="rain_parked_in_hours">In etwa %1$d Stunden wird Regen erwartet. Decke das Motorrad ab.</string>
+    <string name="trip_obd_summary">OBD (%1$d Messungen) · max. Drehzahl %2$s · max. Kühlmittel %3$s °C · mittlere Drosselklappe %4$s%% · mittlere Spannung %5$s V</string>
+    <string name="trip_replay_play">Route abspielen</string>
+    <string name="trip_replay_pause">Pause</string>
+    <string name="trip_replay_seek">Wiedergabeposition der Route</string>
+    <string name="trip_replay_marker">Aktuelle Position</string>
+    <string name="trip_replay_status">%1$s · GPS %2$d km/h · Drehzahl %3$s · Kühlmittel %4$s °C · Gas %5$s%%</string>
+    <string name="trips_merge_select">Fahrten zum Zusammenführen auswählen</string>
+    <string name="trips_merge_action">%1$d Fahrten zusammenführen</string>
+    <string name="trips_merge_cancel">Auswahl abbrechen</string>
+    <string name="trips_merge_title">Fahrten zusammenführen?</string>
+    <string name="trips_merge_confirm">%1$d Fahrten (%2$s km) werden zu einer Route verbunden. Die Originalfahrten bleiben gespeichert und können wiederhergestellt werden.</string>
+    <string name="trips_merge_restore">Originalfahrten wiederherstellen</string>
+    <string name="trips_merge_restore_confirm">Originalsegmente wiederherstellen?</string>
+    <string name="trips_merge_failed">Diese Fahrten konnten nicht zusammengeführt werden.</string>
+    <string name="trips_merge_done">Fahrten zusammengeführt. Originalsegmente sind gespeichert.</string>
 </resources>

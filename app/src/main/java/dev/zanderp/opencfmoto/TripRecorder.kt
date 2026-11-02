@@ -43,10 +43,12 @@ class TripRecorder(private val appContext: Context) : LocationListener {
     private val lm = appContext.getSystemService(Context.LOCATION_SERVICE) as? LocationManager
 
     private val points = ArrayList<TrackPoint>()
+    private val obdSamples = ArrayList<ObdTripSample>()
+    private val obdLock = Any()
     private var distanceMeters = 0.0
     private var movingTimeMs = 0L
     private var maxSpeedMs = 0f
-    private var startTime = 0L
+    @Volatile private var startTime = 0L
     private var lastFix: Location? = null
     private var lastFixAt = 0L
     private var lastMovingAt = 0L
@@ -107,6 +109,18 @@ class TripRecorder(private val appContext: Context) : LocationListener {
         hasFix = hasFix,
         accuracyM = lastAccuracy,
     )
+
+    /** Called from the OBD reader thread. Its wall-clock timestamp matches GPS points and video clips. */
+    fun recordObdSample(sample: ObdTripSample) {
+        if (!recording || sample.timeMs < startTime) return
+        synchronized(obdLock) {
+            if (!recording || sample.timeMs < startTime) return
+            val previous = obdSamples.lastOrNull()
+            if (previous == null || sample.timeMs - previous.timeMs >= 250L) obdSamples.add(sample)
+        }
+    }
+
+    private fun obdSnapshot(): List<ObdTripSample> = synchronized(obdLock) { obdSamples.toList() }
 
     override fun onLocationChanged(location: Location) {
         if (!recording) { if (plausible(location)) lastSeen = location; return }
@@ -173,6 +187,7 @@ class TripRecorder(private val appContext: Context) : LocationListener {
             id = startTime.toString(), start = startTime, end = System.currentTimeMillis(),
             distanceMeters = distanceMeters, movingTimeMs = movingTimeMs, maxSpeedMs = maxSpeedMs,
             points = ArrayList(points),
+            obdSamples = obdSnapshot(),
         )
         checkpointIo.execute { TripStore.writeCheckpoint(appContext, trip) }
     }
@@ -185,6 +200,7 @@ class TripRecorder(private val appContext: Context) : LocationListener {
     private fun resetLeg() {
         lastCheckpointAt = 0L
         points.clear()
+        synchronized(obdLock) { obdSamples.clear() }
         distanceMeters = 0.0
         movingTimeMs = 0L
         maxSpeedMs = 0f
@@ -207,6 +223,7 @@ class TripRecorder(private val appContext: Context) : LocationListener {
             movingTimeMs = movingTimeMs,
             maxSpeedMs = maxSpeedMs,
             points = ArrayList(points),
+            obdSamples = obdSnapshot(),
         )
         // Writing an hour of track is ~180 KB of JSON: do it off the main thread (points already copied).
         val cb = onTripSaved

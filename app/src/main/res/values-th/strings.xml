@@ -645,4 +645,19 @@
     <string name="rain_parked_title">คาดว่าฝนจะตกบริเวณที่คุณจอดรถ</string>
     <string name="rain_parked_soon">คาดว่าฝนจะตกภายในหนึ่งชั่วโมง คลุมรถไว้</string>
     <string name="rain_parked_in_hours">คาดว่าฝนจะตกในอีกประมาณ %1$d ชั่วโมง คลุมรถไว้</string>
+    <string name="trip_obd_summary">OBD (%1$d ตัวอย่าง) · รอบสูงสุด %2$s · อุณหภูมิน้ำหล่อเย็นสูงสุด %3$s °C · คันเร่งเฉลี่ย %4$s%% · แรงดันไฟเฉลี่ย %5$s V</string>
+    <string name="trip_replay_play">เล่นเส้นทาง</string>
+    <string name="trip_replay_pause">หยุดชั่วคราว</string>
+    <string name="trip_replay_seek">ตำแหน่งเล่นเส้นทาง</string>
+    <string name="trip_replay_marker">ตำแหน่งปัจจุบัน</string>
+    <string name="trip_replay_status">%1$s · GPS %2$d กม./ชม. · รอบเครื่อง %3$s · น้ำหล่อเย็น %4$s °C · คันเร่ง %5$s%%</string>
+    <string name="trips_merge_select">เลือกทริปเพื่อรวม</string>
+    <string name="trips_merge_action">รวม %1$d ทริป</string>
+    <string name="trips_merge_cancel">ยกเลิกการเลือก</string>
+    <string name="trips_merge_title">รวมทริปหรือไม่</string>
+    <string name="trips_merge_confirm">จะรวม %1$d ทริป (%2$s กม.) เป็นเส้นทางเดียว โดยยังเก็บทริปเดิมและกู้คืนได้</string>
+    <string name="trips_merge_restore">กู้คืนทริปเดิม</string>
+    <string name="trips_merge_restore_confirm">กู้คืนช่วงเส้นทางเดิมหรือไม่</string>
+    <string name="trips_merge_failed">รวมทริปเหล่านี้ไม่ได้</string>
+    <string name="trips_merge_done">รวมทริปแล้ว และเก็บช่วงเดิมไว้</string>
 </resources>

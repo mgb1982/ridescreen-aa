@@ -71,6 +71,14 @@
         android:layout_marginBottom="8dp"
         android:text="@string/trips_import" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/trips_merge"
+        style="@style/Widget.OpenCfMoto.Button.Pill"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/trips_merge_select" />
+
     <!-- Trip logging is off: say so where people look for their rides, with a one-tap fix. -->
     <LinearLayout
         android:id="@+id/trips_logging_off"

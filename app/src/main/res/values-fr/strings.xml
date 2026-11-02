@@ -639,4 +639,19 @@
     <string name="rain_parked_title">Pluie prévue à l’endroit où tu t’es garé</string>
     <string name="rain_parked_soon">De la pluie est prévue dans l’heure : couvre la moto.</string>
     <string name="rain_parked_in_hours">De la pluie est prévue dans environ %1$d h : couvre la moto.</string>
+    <string name="trip_obd_summary">OBD (%1$d mesures) · régime max %2$s tr/min · liquide max %3$s °C · accélérateur moyen %4$s%% · tension moyenne %5$s V</string>
+    <string name="trip_replay_play">Lire le trajet</string>
+    <string name="trip_replay_pause">Pause</string>
+    <string name="trip_replay_seek">Position de lecture du trajet</string>
+    <string name="trip_replay_marker">Position actuelle</string>
+    <string name="trip_replay_status">%1$s · GPS %2$d km/h · régime %3$s · liquide %4$s °C · accélérateur %5$s%%</string>
+    <string name="trips_merge_select">Sélectionner les trajets à fusionner</string>
+    <string name="trips_merge_action">Fusionner %1$d trajets</string>
+    <string name="trips_merge_cancel">Annuler la sélection</string>
+    <string name="trips_merge_title">Fusionner les trajets ?</string>
+    <string name="trips_merge_confirm">Les %1$d trajets (%2$s km) seront réunis en un parcours. Les trajets d’origine restent enregistrés et peuvent être restaurés.</string>
+    <string name="trips_merge_restore">Restaurer les trajets d’origine</string>
+    <string name="trips_merge_restore_confirm">Restaurer les segments d’origine ?</string>
+    <string name="trips_merge_failed">Impossible de fusionner ces trajets.</string>
+    <string name="trips_merge_done">Trajets fusionnés. Les segments d’origine sont enregistrés.</string>
 </resources>

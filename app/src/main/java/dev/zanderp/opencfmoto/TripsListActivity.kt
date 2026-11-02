@@ -48,6 +48,8 @@ class TripsListActivity : AppCompatActivity() {
     private var dayStartMs: Long = 0L
     private var allTrips: List<Trip> = emptyList()
     private var didInitialDayPick = false
+    private var mergeSelectionMode = false
+    private val selectedForMerge = linkedSetOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +68,18 @@ class TripsListActivity : AppCompatActivity() {
 
         findViewById<MaterialButton>(R.id.trips_day_prev).setOnClickListener {
             shiftDay(-1)
+        }
+        findViewById<MaterialButton>(R.id.trips_merge).setOnClickListener {
+            if (!mergeSelectionMode) {
+                mergeSelectionMode = true
+                selectedForMerge.clear()
+                renderDay()
+            } else if (selectedForMerge.size >= 2) confirmMerge()
+            else {
+                mergeSelectionMode = false
+                selectedForMerge.clear()
+                renderDay()
+            }
         }
         findViewById<MaterialButton>(R.id.trips_day_next).setOnClickListener {
             shiftDay(1)
@@ -130,6 +144,14 @@ class TripsListActivity : AppCompatActivity() {
         val dayTrips = allTrips.filter { it.start in dayStartMs until dayEnd }
             .sortedByDescending { it.start }
             .map { TripStore.get(this, it.id) ?: it }
+        findViewById<MaterialButton>(R.id.trips_merge).apply {
+            visibility = if (allTrips.size >= 2 || mergeSelectionMode) View.VISIBLE else View.GONE
+            text = when {
+                !mergeSelectionMode -> getString(R.string.trips_merge_select)
+                selectedForMerge.size >= 2 -> getString(R.string.trips_merge_action, selectedForMerge.size)
+                else -> getString(R.string.trips_merge_cancel)
+            }
+        }
 
         dayLabel.text = DAY_FMT.format(Date(dayStartMs))
         val today = startOfDay(System.currentTimeMillis())
@@ -191,10 +213,21 @@ class TripsListActivity : AppCompatActivity() {
             ).apply { topMargin = dp(10) }
             radius = dp(18).toFloat()
             setCardBackgroundColor(ContextCompat.getColor(this@TripsListActivity, R.color.surface))
+            if (trip.id in selectedForMerge) {
+                strokeWidth = dp(2)
+                strokeColor = ContextCompat.getColor(this@TripsListActivity, R.color.brand_orange)
+            }
             setContentPadding(dp(16), dp(14), dp(16), dp(14))
             isClickable = true
-            setOnClickListener { TripMapActivity.start(this@TripsListActivity, trip.id) }
-            setOnLongClickListener { confirmDelete(trip); true }
+            setOnClickListener {
+                if (mergeSelectionMode) {
+                    if (!trip.archivedByMerge && trip.mergedFromIds.isEmpty()) {
+                        if (!selectedForMerge.add(trip.id)) selectedForMerge.remove(trip.id)
+                        renderDay()
+                    }
+                } else TripMapActivity.start(this@TripsListActivity, trip.id)
+            }
+            setOnLongClickListener { if (!mergeSelectionMode) confirmDelete(trip); true }
         }
 
         val col = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
@@ -340,6 +373,13 @@ class TripsListActivity : AppCompatActivity() {
         col.addView(actions)
         col.addView(videoBtn)
 
+        if (trip.mergedFromIds.isNotEmpty()) {
+            col.addView(MaterialButton(this, null, com.google.android.material.R.attr.materialButtonOutlinedStyle).apply {
+                text = getString(R.string.trips_merge_restore)
+                setOnClickListener { confirmUnmerge(trip) }
+            })
+        }
+
         card.addView(col)
         return card
     }
@@ -431,6 +471,53 @@ class TripsListActivity : AppCompatActivity() {
                 TripStore.delete(this, trip.id)
                 allTrips = TripStore.summaries(this)
                 renderDay()
+            }
+            .setNegativeButton(R.string.dash_cancel, null)
+            .show()
+    }
+
+    private fun confirmMerge() {
+        val chosen = allTrips.filter { it.id in selectedForMerge }.sortedBy { it.start }
+        if (chosen.size < 2) return
+        val km = chosen.sumOf { it.distanceKm }
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.trips_merge_title)
+            .setMessage(getString(R.string.trips_merge_confirm, chosen.size, String.format(Locale.getDefault(), "%.2f", km)))
+            .setPositiveButton(getString(R.string.trips_merge_action, chosen.size), null)
+            .setNegativeButton(R.string.dash_cancel, null)
+            .create().also { dialog ->
+                dialog.setOnShowListener {
+                    dialog.getButton(-1).setOnClickListener {
+                        Thread {
+                            val merged = TripStore.merge(applicationContext, chosen.map { it.id })
+                            runOnUiThread {
+                                if (merged == null) Toast.makeText(this, R.string.trips_merge_failed, Toast.LENGTH_LONG).show()
+                                else {
+                                    mergeSelectionMode = false
+                                    selectedForMerge.clear()
+                                    allTrips = TripStore.summaries(this)
+                                    dayStartMs = startOfDay(merged.start)
+                                    renderDay()
+                                    Toast.makeText(this, R.string.trips_merge_done, Toast.LENGTH_LONG).show()
+                                }
+                                dialog.dismiss()
+                            }
+                        }.start()
+                    }
+                }
+                dialog.show()
+            }
+    }
+
+    private fun confirmUnmerge(trip: Trip) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.trips_merge_restore)
+            .setMessage(R.string.trips_merge_restore_confirm)
+            .setPositiveButton(R.string.trips_merge_restore) { _, _ ->
+                Thread {
+                    TripStore.unmerge(applicationContext, trip.id)
+                    runOnUiThread { allTrips = TripStore.summaries(this); renderDay() }
+                }.start()
             }
             .setNegativeButton(R.string.dash_cancel, null)
             .show()

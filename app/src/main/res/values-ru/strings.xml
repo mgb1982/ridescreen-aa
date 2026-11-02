@@ -648,4 +648,19 @@
     <string name="rain_parked_title">В месте парковки ожидается дождь</string>
     <string name="rain_parked_soon">В течение часа ожидается дождь — накрой мотоцикл.</string>
     <string name="rain_parked_in_hours">Дождь ожидается примерно через %1$d ч — накрой мотоцикл.</string>
+    <string name="trip_obd_summary">OBD (%1$d измерений) · макс. об/мин %2$s · макс. охлаждающая жидкость %3$s °C · среднее положение газа %4$s%% · среднее напряжение %5$s В</string>
+    <string name="trip_replay_play">Воспроизвести маршрут</string>
+    <string name="trip_replay_pause">Пауза</string>
+    <string name="trip_replay_seek">Позиция воспроизведения маршрута</string>
+    <string name="trip_replay_marker">Текущая позиция</string>
+    <string name="trip_replay_status">%1$s · GPS %2$d км/ч · об/мин %3$s · охлаждающая жидкость %4$s °C · газ %5$s%%</string>
+    <string name="trips_merge_select">Выбрать поездки для объединения</string>
+    <string name="trips_merge_action">Объединить: %1$d</string>
+    <string name="trips_merge_cancel">Отменить выбор</string>
+    <string name="trips_merge_title">Объединить поездки?</string>
+    <string name="trips_merge_confirm">%1$d поездок (%2$s км) будут объединены в один маршрут. Исходные поездки сохранятся и их можно восстановить.</string>
+    <string name="trips_merge_restore">Восстановить исходные поездки</string>
+    <string name="trips_merge_restore_confirm">Восстановить исходные сегменты?</string>
+    <string name="trips_merge_failed">Не удалось объединить эти поездки.</string>
+    <string name="trips_merge_done">Поездки объединены. Исходные сегменты сохранены.</string>
 </resources>

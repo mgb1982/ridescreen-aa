@@ -646,4 +646,19 @@
     <string name="rain_parked_soon">S’espera pluja en la propera hora: cobreix la moto.</string>
     <string name="rain_parked_in_hours">S’espera pluja d’aquí a unes %1$d h: cobreix la moto.</string>
     <string name="setup_toast_mirror_orient">Orientació de la duplicació: %1$s</string>
+    <string name="trip_obd_summary">OBD (%1$d mostres) · RPM màx. %2$s · refrigerant màx. %3$s °C · accelerador mitjà %4$s%% · voltatge mitjà %5$s V</string>
+    <string name="trip_replay_play">Reprodueix la ruta</string>
+    <string name="trip_replay_pause">Pausa</string>
+    <string name="trip_replay_seek">Posició de reproducció de la ruta</string>
+    <string name="trip_replay_marker">Posició actual</string>
+    <string name="trip_replay_status">%1$s · GPS %2$d km/h · RPM %3$s · refrigerant %4$s °C · accelerador %5$s%%</string>
+    <string name="trips_merge_select">Selecciona viatges per unir</string>
+    <string name="trips_merge_action">Uneix %1$d viatges</string>
+    <string name="trips_merge_cancel">Cancel·la la selecció</string>
+    <string name="trips_merge_title">Uneix els viatges</string>
+    <string name="trips_merge_confirm">Es combinaran %1$d viatges (%2$s km) en una ruta. Els originals es conserven i es poden restaurar.</string>
+    <string name="trips_merge_restore">Restaura els viatges originals</string>
+    <string name="trips_merge_restore_confirm">Vols restaurar els trams originals?</string>
+    <string name="trips_merge_failed">No s’han pogut unir els viatges.</string>
+    <string name="trips_merge_done">Viatges units. Els trams originals estan desats.</string>
 </resources>

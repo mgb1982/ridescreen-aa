@@ -641,4 +641,19 @@
     <string name="rain_parked_soon">Está prevista chuva na próxima hora; cobre a mota.</string>
     <string name="rain_parked_in_hours">Está prevista chuva dentro de cerca de %1$d h; cobre a mota.</string>
 
+    <string name="trip_obd_summary">OBD (%1$d leituras) · RPM máx. %2$s · líquido máx. %3$s °C · acelerador médio %4$s%% · tensão média %5$s V</string>
+    <string name="trip_replay_play">Reproduzir percurso</string>
+    <string name="trip_replay_pause">Pausar</string>
+    <string name="trip_replay_seek">Posição da reprodução do percurso</string>
+    <string name="trip_replay_marker">Posição atual</string>
+    <string name="trip_replay_status">%1$s · GPS %2$d km/h · RPM %3$s · líquido %4$s °C · acelerador %5$s%%</string>
+    <string name="trips_merge_select">Selecionar viagens para unir</string>
+    <string name="trips_merge_action">Unir %1$d viagens</string>
+    <string name="trips_merge_cancel">Cancelar seleção</string>
+    <string name="trips_merge_title">Unir viagens?</string>
+    <string name="trips_merge_confirm">%1$d viagens (%2$s km) serão combinadas numa rota. As originais ficam guardadas e podem ser restauradas.</string>
+    <string name="trips_merge_restore">Restaurar viagens originais</string>
+    <string name="trips_merge_restore_confirm">Restaurar os segmentos originais?</string>
+    <string name="trips_merge_failed">Não foi possível unir estas viagens.</string>
+    <string name="trips_merge_done">Viagens unidas. Os segmentos originais estão guardados.</string>
 </resources>

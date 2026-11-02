@@ -12,9 +12,13 @@ import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
 import android.graphics.Point
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.SeekBar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -30,6 +34,7 @@ import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Overlay
 import org.osmdroid.views.overlay.Polyline
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 import kotlin.math.roundToInt
 import kotlin.math.abs
@@ -51,6 +56,31 @@ class TripMapActivity : AppCompatActivity() {
     private var framed = false
     private var renderGen = 0
     private var shownTrip: Trip? = null
+    private var playbackMarker: Marker? = null
+    private var playbackPlaying = false
+    private var playbackStartTripMs = 0L
+    private var playbackStartedElapsedMs = 0L
+    private var playbackTimeMs = 0L
+    private lateinit var playbackButton: MaterialButton
+    private lateinit var playbackSeek: SeekBar
+    private lateinit var playbackStatus: TextView
+    private val playbackHandler = Handler(Looper.getMainLooper())
+    private val playbackTick = object : Runnable {
+        override fun run() {
+            val trip = shownTrip ?: return
+            if (!playbackPlaying) return
+            val elapsed = SystemClock.elapsedRealtime() - playbackStartedElapsedMs
+            val t = playbackStartTripMs + elapsed * PLAYBACK_RATE
+            if (t >= trip.end) {
+                updatePlayback(trip, trip.end)
+                playbackPlaying = false
+                playbackButton.setText(R.string.trip_replay_play)
+            } else {
+                updatePlayback(trip, t)
+                playbackHandler.postDelayed(this, 100L)
+            }
+        }
+    }
 
     enum class Period { MONTH, YEAR, ALL }
 
@@ -84,19 +114,109 @@ class TripMapActivity : AppCompatActivity() {
             return
         }
         shownTrip = trip
+        playbackButton = findViewById(R.id.map_playback_button)
+        playbackSeek = findViewById(R.id.map_playback_seek)
+        playbackStatus = findViewById(R.id.map_playback_status)
 
         findViewById<TextView>(R.id.map_title).text = TripNames.title(this, trip)
-        findViewById<TextView>(R.id.map_stats).text =
-            "${trip.distanceText()} · ${trip.durationText()} · avg ${trip.avgKmh} · max ${trip.maxKmh} km/h\n" +
-            getString(R.string.map_speed_legend)
+        findViewById<TextView>(R.id.map_stats).text = buildString {
+            append("${trip.distanceText()} · ${trip.durationText()} · avg ${trip.avgKmh} · max ${trip.maxKmh} km/h\n")
+            append(getString(R.string.map_speed_legend))
+            trip.obdSummary()?.let { s ->
+                append('\n')
+                append(getString(
+                    R.string.trip_obd_summary,
+                    s.sampleCount,
+                    s.maxRpm?.roundToInt()?.toString() ?: "—",
+                    s.maxCoolantC?.roundToInt()?.toString() ?: "—",
+                    s.avgThrottlePct?.let { String.format(Locale.getDefault(), "%.1f", it) } ?: "—",
+                    s.avgVoltage?.let { String.format(Locale.getDefault(), "%.1f", it) } ?: "—",
+                ))
+            }
+        }
 
         renderRoute(trip)
+        setupPlayback(trip)
         compareWithUsual(trip)
         findViewById<View>(R.id.map_share).setOnClickListener { RideShare.shareTrip(this, trip) }
         findViewById<View>(R.id.map_video).apply {
             visibility = View.VISIBLE
             setOnClickListener { TripVideoActivity.start(this@TripMapActivity, trip.id) }
         }
+    }
+
+    private fun setupPlayback(trip: Trip) {
+        if (trip.points.size < 2 || trip.end <= trip.start) return
+        findViewById<View>(R.id.map_playback).visibility = View.VISIBLE
+        playbackButton.setOnClickListener { togglePlayback(trip) }
+        playbackSeek.max = 1000
+        playbackSeek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    playbackPlaying = false
+                    playbackHandler.removeCallbacks(playbackTick)
+                    playbackButton.setText(R.string.trip_replay_play)
+                    val t = trip.start + (trip.end - trip.start) * progress / 1000L
+                    updatePlayback(trip, t)
+                }
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar) { pausePlayback() }
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        })
+        updatePlayback(trip, trip.start)
+    }
+
+    private fun togglePlayback(trip: Trip) {
+        if (playbackPlaying) {
+            pausePlayback()
+            return
+        }
+        if (playbackTimeMs >= trip.end) updatePlayback(trip, trip.start)
+        playbackPlaying = true
+        playbackStartTripMs = playbackTimeMs
+        playbackStartedElapsedMs = SystemClock.elapsedRealtime()
+        playbackButton.setText(R.string.trip_replay_pause)
+        playbackHandler.post(playbackTick)
+    }
+
+    private fun pausePlayback() {
+        playbackPlaying = false
+        playbackHandler.removeCallbacks(playbackTick)
+        if (this::playbackButton.isInitialized) playbackButton.setText(R.string.trip_replay_play)
+    }
+
+    private fun updatePlayback(trip: Trip, timeMs: Long) {
+        playbackTimeMs = timeMs.coerceIn(trip.start, trip.end)
+        val points = trip.points
+        var i = points.binarySearchBy(playbackTimeMs) { it.time }
+        if (i < 0) i = (-i - 1).coerceIn(1, points.lastIndex)
+        val a = points[(i - 1).coerceAtLeast(0)]
+        val b = points[i]
+        val span = (b.time - a.time).coerceAtLeast(1L)
+        val f = ((playbackTimeMs - a.time).toDouble() / span).coerceIn(0.0, 1.0)
+        val here = GeoPoint(a.lat + (b.lat - a.lat) * f, a.lon + (b.lon - a.lon) * f)
+        val marker = playbackMarker ?: Marker(map).also {
+            it.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            it.title = getString(R.string.trip_replay_marker)
+            it.icon?.setTint(ContextCompat.getColor(this, R.color.brand_gold))
+            playbackMarker = it
+            map.overlays.add(it)
+        }
+        marker.position = here
+        marker.title = getString(R.string.trip_replay_marker)
+        val speed = (a.speedMs + (b.speedMs - a.speedMs) * f.toFloat()) * 3.6f
+        val obd = trip.obdAt(playbackTimeMs)
+        playbackStatus.text = getString(
+            R.string.trip_replay_status,
+            java.text.SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date(playbackTimeMs)),
+            speed.roundToInt(),
+            obd?.rpm?.roundToInt()?.toString() ?: "—",
+            obd?.coolantC?.roundToInt()?.toString() ?: "—",
+            obd?.throttlePct?.roundToInt()?.toString() ?: "—",
+        )
+        playbackSeek.progress = (((playbackTimeMs - trip.start).toDouble() / (trip.end - trip.start)) * playbackSeek.max)
+            .roundToInt().coerceIn(0, playbackSeek.max)
+        map.invalidate()
     }
 
     /** "🎬 Vídeo · 2 creado(s)" once this trip has videos made (refreshed when coming back). */
@@ -388,6 +508,7 @@ class TripMapActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+        pausePlayback()
         if (this::map.isInitialized) map.onPause()
     }
 
@@ -395,6 +516,7 @@ class TripMapActivity : AppCompatActivity() {
         private const val EXTRA_ID = "trip_id"
         private const val EXTRA_ALL = "all_trips"
         private const val LINE_DP = 4f
+        private const val PLAYBACK_RATE = 20L
 
         fun start(ctx: Context, id: String) {
             ctx.startActivity(Intent(ctx, TripMapActivity::class.java).putExtra(EXTRA_ID, id))

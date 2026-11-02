@@ -115,6 +115,45 @@
             android:text="@string/map_period_all" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/map_playback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingHorizontal="12dp"
+        android:paddingBottom="4dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/map_playback_button"
+                style="@style/Widget.OpenCfMoto.Button.Pill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="88dp"
+                android:text="@string/trip_replay_play" />
+            <SeekBar
+                android:id="@+id/map_playback_seek"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="1000"
+                android:contentDescription="@string/trip_replay_seek" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/map_playback_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+    </LinearLayout>
+
     <org.osmdroid.views.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"

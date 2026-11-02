@@ -25,7 +25,17 @@ import androidx.core.content.ContextCompat
  */
 @SuppressLint("MissingPermission")
 object ObdLive {
-    class Snapshot(val rpm: Double?, val speed: Double?, val coolant: Double?, val throttle: Double?, val atMs: Long, val volt: Double? = null, val load: Double? = null, val intake: Double? = null, val baro: Double? = null, val absoluteLoad: Double? = null, val relativeThrottle: Double? = null)
+    class Snapshot(
+        val rpm: Double?, val speed: Double?, val coolant: Double?, val throttle: Double?, val atMs: Long,
+        val volt: Double? = null, val load: Double? = null, val intake: Double? = null, val baro: Double? = null,
+        val absoluteLoad: Double? = null, val relativeThrottle: Double? = null,
+        /** Epoch clock for matching the GPS route and camera clips; atMs stays monotonic for freshness. */
+        val wallTimeMs: Long = System.currentTimeMillis(),
+    ) {
+        fun asTripSample() = ObdTripSample(
+            wallTimeMs, rpm, speed, coolant, throttle, volt, load, intake, baro, absoluteLoad, relativeThrottle,
+        )
+    }
 
     private val WANT = listOf(0x0C, 0x0D, 0x11, 0x05, 0x42, 0x04, 0x0F, 0x33, 0x43, 0x45)   // rpm, speed, throttle, coolant, module voltage
     private const val FRESH_MS = 5_000L
@@ -180,12 +190,14 @@ object ObdLive {
                 } else {
                     failed = 0
                     val prev = latest
-                    latest = Snapshot(
+                    val snapshot = Snapshot(
                         got[0x0C], got[0x0D] ?: prev?.speed, got[0x05] ?: prev?.coolant,
                         got[0x11] ?: prev?.throttle, now, got[0x42] ?: prev?.volt,
                         got[0x04] ?: prev?.load, got[0x0F] ?: prev?.intake, got[0x33] ?: prev?.baro,
                         got[0x43] ?: prev?.absoluteLoad, got[0x45] ?: prev?.relativeThrottle,
                     )
+                    latest = snapshot
+                    TripLogger.current?.recordObdSample(snapshot.asTripSample())
                     val rpm = got[0x0C]
                     if (rpm != null) {
                         val e = engineFromRpm(rpm)

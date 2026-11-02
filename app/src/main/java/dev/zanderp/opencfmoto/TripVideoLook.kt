@@ -516,7 +516,11 @@ class TripLook(
                 }
                 // Glass panel
                 val panel = RectF(3 * u, h - 22 * u, w - 3 * u, h - 3 * u)
-                part(c, OverlayPart.SPEED, w, h, panel) { telemetryPanel(c, panel, u, kmh, kmDone, idx) }
+                part(c, OverlayPart.SPEED, w, h, panel) { telemetryPanel(c, panel, u, kmh, kmDone, idx, trip.obdAt(tMs)) }
+                trip.obdAt(tMs)?.let { sample ->
+                    val box = RectF(3.5f * u, 14f * u, w - 31f * u, 25f * u)
+                    part(c, OverlayPart.EXTRA, w, h, box) { obdChip(c, box, u, sample) }
+                }
                 // Mini-map, glass square
                 val s = 24 * u
                 val box = RectF(w - s - 3 * u, 3 * u, w - 3 * u, 3 * u + s)
@@ -529,7 +533,7 @@ class TripLook(
     }
 
     /** Telemetry's bottom glass panel: speed, distance and the speed graph up to now. */
-    private fun telemetryPanel(c: Canvas, panel: RectF, u: Float, kmh: Int, kmDone: Double, idx: Int) {
+    private fun telemetryPanel(c: Canvas, panel: RectF, u: Float, kmh: Int, kmDone: Double, idx: Int, obd: ObdTripSample?) {
         c.drawRoundRect(panel, 2.5f * u, 2.5f * u, fill(Color.argb(175, 12, 16, 20)))
         stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeWidth = 0.15f * u
         stroke.color = Color.argb(60, 255, 255, 255); c.drawRoundRect(panel, 2.5f * u, 2.5f * u, stroke)
@@ -540,9 +544,16 @@ class TripLook(
         text(c, km(kmDone), panel.right - 3 * u, panel.top + 12 * u, 6.5f * u, tfArchivoBlack, align = Paint.Align.RIGHT, shadow = false)
         text(c, ctx.getString(R.string.tvl_of_km, km(totalKm)), panel.right - 3 * u, panel.top + 16.5f * u, 2.2f * u, tfArchivo,
             Color.argb(210, 220, 230, 240), Paint.Align.RIGHT, false)
+        // If OBD samples exist, reserve two compact readouts above the graph.
+        if (obd != null) {
+            val line1 = "RPM ${obd.rpm?.roundToInt() ?: "—"}   COOLANT ${obd.coolantC?.roundToInt()?.let { "$it°C" } ?: "—"}"
+            val line2 = "THROTTLE ${obd.throttlePct?.roundToInt()?.let { "$it%" } ?: "—"}   VOLT ${obd.voltage?.let { String.format(Locale.US, "%.1fV", it) } ?: "—"}"
+            text(c, line1, panel.left + 22 * u, panel.top + 5.5f * u, 2.1f * u, tfArchivo, Color.WHITE, shadow = false)
+            text(c, line2, panel.left + 22 * u, panel.top + 8.5f * u, 2.1f * u, tfArchivo, Color.WHITE, shadow = false)
+        }
         // Speed over the whole trip, filled up to now
         val gx0 = panel.left + 22 * u; val gx1 = panel.right - 21 * u
-        val gy0 = panel.top + 3 * u; val gy1 = panel.bottom - 3 * u
+        val gy0 = panel.top + (if (obd != null) 10f else 3f) * u; val gy1 = panel.bottom - 3 * u
         val n = speedSeries.size
         val frac = (idx.toFloat() / pts.lastIndex).coerceIn(0f, 1f)
         val cur = (frac * (n - 1)).roundToInt()
@@ -556,6 +567,14 @@ class TripLook(
         stroke.strokeWidth = 0.5f * u; stroke.color = sky; c.drawPath(done, stroke)
         stroke.strokeWidth = 0.15f * u; stroke.color = Color.argb(140, 255, 255, 255); c.drawLine(gx(cur), gy0, gx(cur), gy1, stroke)
         c.drawCircle(gx(cur), gy(speedSeries[cur]), 0.9f * u, fill(Color.WHITE))
+    }
+
+    private fun obdChip(c: Canvas, box: RectF, u: Float, sample: ObdTripSample) {
+        c.drawRoundRect(box, 1.2f * u, 1.2f * u, fill(Color.argb(175, 12, 16, 20)))
+        val rpm = sample.rpm?.roundToInt()?.toString() ?: "—"
+        val coolant = sample.coolantC?.roundToInt()?.let { "$it°C" } ?: "—"
+        text(c, "OBD  $rpm rpm  ·  $coolant", box.left + 1.2f * u, box.centerY() + 0.7f * u,
+            2.2f * u, tfArchivo, Color.WHITE, shadow = false)
     }
 
     // ── v2.3: movable pieces

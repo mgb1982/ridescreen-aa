@@ -61,25 +61,33 @@ object DashboardMode {
 
     private fun prefs(ctx: Context) = ctx.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
 
-    fun theme(ctx: Context): Theme = Theme.byId(prefs(ctx).getString("theme", null))
-    fun setTheme(ctx: Context, t: Theme) = prefs(ctx).edit().putString("theme", t.id).apply()
+    fun theme(ctx: Context): Theme = Theme.byId(BikeScope.getString(prefs(ctx), ctx, "theme", null))
+    fun setTheme(ctx: Context, t: Theme) = BikeScope.putString(prefs(ctx), ctx, "theme", t.id)
 
     enum class Design(val id: String) { BARS("bars"), GAUGES("gauges");
         companion object { fun byId(id: String?): Design = entries.firstOrNull { it.id == id } ?: BARS }
     }
-    fun design(ctx: Context): Design = Design.byId(prefs(ctx).getString("design", null))
-    fun setDesign(ctx: Context, value: Design) = prefs(ctx).edit().putString("design", value.id).apply()
+    fun design(ctx: Context): Design = Design.byId(BikeScope.getString(prefs(ctx), ctx, "design", null))
+    fun setDesign(ctx: Context, value: Design) = BikeScope.putString(prefs(ctx), ctx, "design", value.id)
     private val fieldIds = listOf("rpm", "speed", "coolant", "throttle", "volt", "load", "intake", "baro", "absolute", "relative")
     fun visibleFields(ctx: Context): Set<String> {
-        val saved = prefs(ctx).getStringSet("fields", null)
+        val p = prefs(ctx)
+        val saved = BikeScope.suffix(ctx)?.let { suffix ->
+            val key = "fields#$suffix"
+            if (p.contains(key)) p.getStringSet(key, null)?.toSet() else p.getStringSet("fields", null)?.toSet()
+        } ?: p.getStringSet("fields", null)?.toSet()
         return saved?.toSet() ?: fieldIds.toSet()
     }
-    fun setVisibleFields(ctx: Context, fields: Set<String>) = prefs(ctx).edit().putStringSet("fields", fields.toSet()).apply()
+    fun setVisibleFields(ctx: Context, fields: Set<String>) {
+        val suffix = BikeScope.suffix(ctx)
+        val key = suffix?.let { "fields#$it" } ?: "fields"
+        prefs(ctx).edit().putStringSet(key, fields.toSet()).apply()
+    }
     fun fieldIds(): List<String> = fieldIds
 
     /** Open straight into the dashboard when the dash connects, instead of Android Auto. */
-    fun startInDashboard(ctx: Context) = prefs(ctx).getBoolean("start", false)
-    fun setStartInDashboard(ctx: Context, on: Boolean) = prefs(ctx).edit().putBoolean("start", on).apply()
+    fun startInDashboard(ctx: Context) = BikeScope.getBoolean(prefs(ctx), ctx, "start", false)
+    fun setStartInDashboard(ctx: Context, on: Boolean) = BikeScope.putBoolean(prefs(ctx), ctx, "start", on)
 
     /** Light palette: forced, or (Auto) whenever the map would be in its day theme. */
     fun isLight(ctx: Context): Boolean = when (theme(ctx)) {
