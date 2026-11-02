@@ -34,6 +34,7 @@ object DashboardMode {
         val coolant: Double?,
         val throttle: Double?,
         val volt: Double?,
+        val load: Double?, val intake: Double?, val baro: Double?, val absoluteLoad: Double?, val relativeThrottle: Double?,
         /** A fresh OBD reading exists (false: contact off, adapter away, or the radio lent to the keyless box). */
         val obdLive: Boolean,
     )
@@ -62,6 +63,19 @@ object DashboardMode {
 
     fun theme(ctx: Context): Theme = Theme.byId(prefs(ctx).getString("theme", null))
     fun setTheme(ctx: Context, t: Theme) = prefs(ctx).edit().putString("theme", t.id).apply()
+
+    enum class Design(val id: String) { BARS("bars"), GAUGES("gauges");
+        companion object { fun byId(id: String?): Design = entries.firstOrNull { it.id == id } ?: BARS }
+    }
+    fun design(ctx: Context): Design = Design.byId(prefs(ctx).getString("design", null))
+    fun setDesign(ctx: Context, value: Design) = prefs(ctx).edit().putString("design", value.id).apply()
+    private val fieldIds = listOf("rpm", "speed", "coolant", "throttle", "volt", "load", "intake", "baro", "absolute", "relative")
+    fun visibleFields(ctx: Context): Set<String> {
+        val saved = prefs(ctx).getStringSet("fields", null)
+        return saved?.toSet() ?: fieldIds.toSet()
+    }
+    fun setVisibleFields(ctx: Context, fields: Set<String>) = prefs(ctx).edit().putStringSet("fields", fields.toSet()).apply()
+    fun fieldIds(): List<String> = fieldIds
 
     /** Open straight into the dashboard when the dash connects, instead of Android Auto. */
     fun startInDashboard(ctx: Context) = prefs(ctx).getBoolean("start", false)
@@ -138,7 +152,9 @@ object DashboardMode {
         val speed = pickSpeed(obdSpeed, gps)
         return Data(
             rpm = snap?.rpm, speedKmh = speed?.first, speedFromGps = speed?.second == true,
-            coolant = snap?.coolant, throttle = snap?.throttle, volt = snap?.volt, obdLive = snap != null,
+            coolant = snap?.coolant, throttle = snap?.throttle, volt = snap?.volt,
+            load = snap?.load, intake = snap?.intake, baro = snap?.baro, absoluteLoad = snap?.absoluteLoad,
+            relativeThrottle = snap?.relativeThrottle, obdLive = snap != null,
         )
     }
 
