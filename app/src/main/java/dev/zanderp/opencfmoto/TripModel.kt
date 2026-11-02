@@ -34,7 +34,7 @@ data class TripObdSummary(
 fun Trip.obdAt(timeMs: Long, maxAgeMs: Long = 5_000L): ObdTripSample? {
     if (obdSamples.isEmpty()) return null
     val i = obdSamples.binarySearchBy(timeMs) { it.timeMs }
-    val nearest = if (i >= 0) obdSamples[i] else {
+    val nearest = if (i >= 0) i else {
         val after = (-i - 1).coerceIn(0, obdSamples.lastIndex)
         val before = (after - 1).coerceAtLeast(0)
         if (abs(obdSamples[before].timeMs - timeMs) <= abs(obdSamples[after].timeMs - timeMs)) before else after
