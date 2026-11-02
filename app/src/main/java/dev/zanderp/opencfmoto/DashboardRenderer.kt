@@ -48,7 +48,7 @@ internal object DashboardRenderer {
     private fun drawBars(ctx:Context,c:Canvas,d:DashboardMode.Data,p:Palette,visible:Set<String>){
         val all=metrics(d).filter{it.id in visible}
         val rpm=all.firstOrNull{it.id=="rpm"}
-        if(rpm!=null){fill.color=p.track;rect.set(22f,18f,778f,49f);c.drawRoundRect(rect,5f,5f,fill)
+        if(rpm!=null){label(c,fmt(rpm)+" rpm",35f,83f,22f,p.fg,bold);fill.color=p.track;rect.set(22f,18f,778f,49f);c.drawRoundRect(rect,5f,5f,fill)
             fill.color=p.accent;rect.set(22f,18f,22f+756f*((rpm.value?:0.0)/10000).toFloat().coerceIn(0f,1f),49f);c.drawRoundRect(rect,5f,5f,fill)}
         val speed=all.firstOrNull{it.id=="speed"}
         if(speed!=null){label(c,fmt(speed),34f,270f,150f,p.fg,bold);label(c,"km/h"+if(d.speedFromGps)" · GPS" else "",40f,315f,24f,p.muted,plain)}
@@ -69,10 +69,10 @@ internal object DashboardRenderer {
         val rpm=all.firstOrNull{it.id=="rpm"}
         rpm?.let{gauge(c,it,160f,220f,153f,p,true)}
         val others=all.filter{it.id!="rpm"}
-        val positions= arrayOf(Pair(402f,78f),Pair(545f,78f),Pair(688f,78f),Pair(402f,208f),Pair(545f,208f),Pair(688f,208f),Pair(402f,338f),Pair(545f,338f))
+        val positions= arrayOf(Pair(402f,78f),Pair(545f,78f),Pair(688f,78f),Pair(402f,208f),Pair(545f,208f),Pair(688f,208f),Pair(402f,338f),Pair(545f,338f),Pair(688f,338f))
         // On an 800×416 panel, use three columns by two rows plus a narrow overflow column;
         // compact circles keep units and readings legible while preserving the analog instrument feel.
-        others.take(8).forEachIndexed{i,m->val (x,y)=positions[i];gauge(c,m,x,y,54f,p,false)}
+        others.take(9).forEachIndexed{i,m->val (x,y)=positions[i];gauge(c,m,x,y,54f,p,false)}
         
         if(!d.obdLive)label(c,ctx.getString(R.string.dash_no_obd),34f,402f,16f,p.muted,plain)
     }
