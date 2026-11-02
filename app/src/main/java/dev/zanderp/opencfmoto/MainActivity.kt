@@ -784,6 +784,7 @@ class MainActivity : AppCompatActivity() {
         bikeView = findViewById(R.id.bike_view)
         LanguagePicker.bind(this, findViewById(R.id.btn_language))
         connectBtn = findViewById(R.id.btn_connect)
+        applyConnectGradient()
         findViewById<android.widget.ImageButton>(R.id.nav_center).setColorFilter(
             ContextCompat.getColor(this, R.color.on_brand),
         )
@@ -1487,6 +1488,12 @@ class MainActivity : AppCompatActivity() {
     private fun setupHomeTiles() {
         findViewById<View>(R.id.btn_trips_list)?.setBackgroundResource(R.drawable.bg_quick_mint)
         buildTile(R.id.btn_trips_list, "🏍️", 0xFF3DFF9A.toInt(), getString(R.string.home_tile_trips))
+        findViewById<android.widget.LinearLayout>(R.id.btn_trips_list)?.let { tile ->
+            val ink = ContextCompat.getColor(this, R.color.on_brand)
+            for (i in 0 until tile.childCount) {
+                (tile.getChildAt(i) as? TextView)?.setTextColor(ink)
+            }
+        }
         buildTile(R.id.btn_fuel, "⛽", 0xFFE5774E.toInt(), getString(R.string.home_tile_fuel), getString(R.string.home_tile_fuel_sub))
         buildTile(R.id.btn_maint, "🔧", 0xFF4FB6A6.toInt(), getString(R.string.home_tile_maint))
         buildTile(R.id.btn_traffic_lights, "🚦", 0xFFE05A5A.toInt(), getString(R.string.home_tile_tl))
@@ -1778,6 +1785,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /** Mint-to-emerald fill. Material's tint would flatten this back to a solid color. */
+    private fun applyConnectGradient() {
+        val btn = connectBtn as? com.google.android.material.button.MaterialButton ?: return
+        btn.backgroundTintList = null
+        btn.background = ContextCompat.getDrawable(this, R.drawable.bg_pill_gradient)
+        btn.setTextColor(ContextCompat.getColor(this, R.color.on_brand))
+        btn.iconTint = android.content.res.ColorStateList.valueOf(ContextCompat.getColor(this, R.color.on_brand))
+        btn.elevation = 18f * resources.displayMetrics.density
+        if (android.os.Build.VERSION.SDK_INT >= 28) {
+            val glow = 0xFF3DFF9A.toInt()
+            btn.outlineAmbientShadowColor = glow
+            btn.outlineSpotShadowColor = glow
+        }
+    }
+
     /** Four-step connection status. Colours only; the link itself is unchanged. */
     private fun renderConnectionGuide(phase: Phase, detail: String) {
         val model = ConnectionGuide.model(phase, detail)
@@ -1878,6 +1900,7 @@ class MainActivity : AppCompatActivity() {
                 R.drawable.ic_power
             },
         )
+        applyConnectGradient()
         updateButtonStates(phase)
     }
 

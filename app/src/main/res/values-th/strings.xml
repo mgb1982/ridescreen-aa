@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">RideScreen AA</string>
+    <string name="app_name">MTL</string>
     <string name="about_copyright">© 2026 อเล็กซานดรู</string>
     <string name="about_copyright_body">ดูแลโดย Alexandru (zanderp) ซอฟต์แวร์ฟรีภายใต้ GNU AGPL v3 หรือใหม่กว่า — ดูใบอนุญาตและประกาศในพื้นที่เก็บข้อมูลสำหรับข้อความลิขสิทธิ์และการแสดงที่มาแบบเต็ม</string>
     <string name="about_license_body">คุณสามารถใช้ ศึกษา แบ่งปัน และแก้ไขแอปนี้ภายใต้ AGPL หากคุณแจกจ่ายเวอร์ชันที่แก้ไขแล้ว (รวมถึงบริการเครือข่าย) คุณต้องเสนอแหล่งที่มาที่เกี่ยวข้องโดยสมบูรณ์ภายใต้ใบอนุญาตเดียวกัน</string>

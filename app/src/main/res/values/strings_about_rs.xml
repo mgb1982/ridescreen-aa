@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="rs_about_tagline">Wireless Android Auto on your bike\'s dash (Carbit/EasyConnect dashes), with fixes and extras for the Zontes 125X / ZT125T-X. Based on OpenCfMoto.</string>
+    <string name="rs_about_tagline">MTL – MotoLink puts Android Auto on your motorcycle dash over Wi-Fi. Tuned for the Zontes 368G. Built on RideScreen AA and OpenCfMoto.</string>
     <string name="rs_about_community">Questions, logs or a new bike? Open an issue on GitHub or ask in the group. Donations help cover the costs.</string>
     <string name="rs_about_issues">GitHub</string>
     <string name="rs_about_copyright">© 2026 Alexandru (zanderp), OpenCfMoto\n© 2026 Manel (mgb1982), RideScreen AA</string>

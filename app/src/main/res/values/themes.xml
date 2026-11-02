@@ -9,6 +9,9 @@
         <item name="colorOnPrimaryContainer">@color/on_brand</item>
 
         <item name="android:colorBackground">@color/bg</item>
+        <item name="android:windowBackground">@drawable/bg_screen</item>
+        <item name="android:windowSplashScreenBackground">@color/bg</item>
+        <item name="android:progressBarStyleHorizontal">@style/Widget.OpenCfMoto.Progress</item>
         <item name="colorSurface">@color/surface</item>
         <item name="colorSurfaceVariant">@color/surface_high</item>
         <item name="colorOnSurface">@color/text_primary</item>
@@ -307,6 +310,12 @@
         <item name="android:textColor">@color/text_primary</item>
         <item name="cornerRadius">28dp</item>
         <item name="backgroundTint">#CC243028</item>
+    </style>
+
+    <style name="Widget.OpenCfMoto.Progress" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_mint</item>
+        <item name="android:minHeight">8dp</item>
+        <item name="android:maxHeight">8dp</item>
     </style>
 
     <style name="Widget.OpenCfMoto.Button.LangOption" parent="Widget.OpenCfMoto.Button.Tonal">

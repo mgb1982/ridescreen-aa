@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="rs_about_tagline">ไร้สาย Android Auto บนหน้าปัดของมอเตอร์ไซค์ของคุณ (Carbit/EasyConnect หน้าปัด) พร้อมการแก้ไขและคุณสมบัติพิเศษสำหรับ Zontes 125X / ZT125T-X อ้างอิงจาก OpenCfMoto</string>
+    <string name="rs_about_tagline">MTL – MotoLink ส่ง Android Auto ไปที่หน้าปัดรถมอเตอร์ไซค์ผ่าน Wi-Fi ปรับให้ใช้กับ Zontes 368G สร้างต่อจาก RideScreen AA และ OpenCfMoto</string>
     <string name="rs_about_community">คำถาม บันทึก หรือมอเตอร์ไซค์คันใหม่? เปิดประเด็นบน GitHub หรือสอบถามในกลุ่ม การบริจาคช่วยครอบคลุมค่าใช้จ่าย</string>
     <string name="rs_about_issues">GitHub</string>
     <string name="rs_about_copyright">© 2026 Alexandru (zanderp), OpenCfMoto\n© 2026 Manel (mgb1982), RideScreen AA</string>

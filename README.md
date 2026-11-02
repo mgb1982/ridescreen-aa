@@ -1,6 +1,6 @@
-# RideScreen AA
+# MTL – MotoLink
 
-แอปสำหรับส่งหน้าจอแบบ Android Auto ไปที่หน้าปัดรถมอเตอร์ไซค์ผ่าน Wi-Fi ไม่ต้องรูทเครื่อง ทดลองใช้กับ **Zontes 368G V2** และมือถือ **Samsung Galaxy S23 Ultra**
+**MTL – MotoLink** ส่งหน้าจอแบบ Android Auto ไปที่หน้าปัดรถมอเตอร์ไซค์ผ่าน Wi-Fi ไม่ต้องรูทเครื่อง ชื่อบนหน้าจอเครื่องคือ **MTL** ทดลองใช้กับ **Zontes 368G V2** และมือถือ **Samsung Galaxy S23 Ultra**
 
 โปรเจกต์นี้เป็นฟอร์กของ [mgb1982/ridescreen-aa](https://github.com/mgb1982/ridescreen-aa) ซึ่งต่อจาก [OpenCfMoto](https://github.com/zanderp/open-cfmoto) ของ Alexandru (zanderp) **ไม่ใช่แอปทางการของ Zontes, CFMoto หรือ Google**
 
@@ -75,7 +75,7 @@ APK อยู่ที่ `app/build/outputs/apk/github/debug/app-github-debug.a
 
 ## English
 
-**RideScreen AA** mirrors an Android Auto-style screen from an Android phone onto a motorcycle dash over Wi-Fi. This fork is aimed at a **Zontes 368G V2** with a **Samsung Galaxy S23 Ultra**. It is a fork of [mgb1982/ridescreen-aa](https://github.com/mgb1982/ridescreen-aa), itself built on [OpenCfMoto](https://github.com/zanderp/open-cfmoto) by Alexandru (zanderp). It is not an official Zontes, CFMoto, or Google app.
+**MTL – MotoLink** (launcher name **MTL**) mirrors an Android Auto-style screen from an Android phone onto a motorcycle dash over Wi-Fi. This fork is aimed at a **Zontes 368G V2** with a **Samsung Galaxy S23 Ultra**. It is a fork of [mgb1982/ridescreen-aa](https://github.com/mgb1982/ridescreen-aa), itself built on [OpenCfMoto](https://github.com/zanderp/open-cfmoto) by Alexandru (zanderp). It is not an official Zontes, CFMoto, or Google app.
 
 The phone language is used by default. An in-app picker can force **ไทย**, **English**, or follow the system. Thai text uses Noto Sans Thai.
 

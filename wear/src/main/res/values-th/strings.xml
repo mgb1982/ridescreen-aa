@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">RideScreen AA</string>
+    <string name="app_name">MTL</string>
     <string name="status_no_phone">ไม่มีข้อมูลจากโทรศัพท์</string>
     <string name="status_streaming">● เชื่อมต่อกับหน้าปัดแล้ว</string>
     <string name="status_reconnecting">● กำลังเชื่อมต่อใหม่...</string>

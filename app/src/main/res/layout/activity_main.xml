@@ -8,7 +8,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg"
+    android:background="@drawable/bg_screen"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -31,7 +31,7 @@
                 android:id="@+id/hero_card"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:background="@color/surface_high">
+                android:background="@drawable/bg_hero_card">
 
                 <ImageView
                     android:id="@+id/hero_placeholder"
@@ -934,14 +934,29 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_connect"
-        style="@style/Widget.OpenCfMoto.Button.Connect"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/main_connect" />
+        android:layout_marginTop="4dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="6dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="8dp"
+            android:alpha="0.85"
+            android:background="@drawable/bg_pill_glow" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_connect"
+            style="@style/Widget.OpenCfMoto.Button.Connect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/main_connect" />
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
