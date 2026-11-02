@@ -75,7 +75,13 @@ jobs:
           TELEMETRY_URL: ${{ vars.TELEMETRY_URL }}
         run: |
           set +e
-          ./gradlew assembleGithubRelease bundlePlayRelease -PappVersion="$APP_VERSION" -PversionSuffix="$VERSION_SUFFIX" > release-build.log 2>&1
+          # Android 16 on the Galaxy S23 rejects the minified APK's malformed DEX string table (build 401).
+          # Keep this prerelease arm64-only but unminified; other branches retain the normal slim build.
+          if [ "$GITHUB_REF" = "refs/heads/prerelease/v24-dashboard" ]; then
+            ./gradlew assembleGithubRelease bundlePlayRelease -PslimApk=false -Pabi=arm64-v8a -PappVersion="$APP_VERSION" -PversionSuffix="$VERSION_SUFFIX" > release-build.log 2>&1
+          else
+            ./gradlew assembleGithubRelease bundlePlayRelease -PappVersion="$APP_VERSION" -PversionSuffix="$VERSION_SUFFIX" > release-build.log 2>&1
+          fi
           rc=$?
           if [ $rc -ne 0 ]; then
             # Annotations are readable through the API even when raw logs are not.
