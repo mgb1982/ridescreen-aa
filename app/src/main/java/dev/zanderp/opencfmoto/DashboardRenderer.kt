@@ -69,11 +69,11 @@ internal object DashboardRenderer {
         val rpm=all.firstOrNull{it.id=="rpm"}
         rpm?.let{gauge(c,it,160f,220f,153f,p,true)}
         val others=all.filter{it.id!="rpm"}
-        val positions= arrayOf( Pair(425f,120f),Pair(425f,310f),Pair(570f,120f),Pair(570f,310f),Pair(715f,120f),Pair(715f,310f),Pair(785f,120f),Pair(785f,310f) )
+        val positions= arrayOf(Pair(402f,78f),Pair(545f,78f),Pair(688f,78f),Pair(402f,208f),Pair(545f,208f),Pair(688f,208f),Pair(402f,338f),Pair(545f,338f))
         // On an 800×416 panel, use three columns by two rows plus a narrow overflow column;
         // compact circles keep units and readings legible while preserving the analog instrument feel.
-        others.take(8).forEachIndexed{i,m->val (x,y)=positions[i];gauge(c,m,x,y,if(i<6)67f else 49f,p,false)}
-        if(others.size>8)others.drop(8).forEachIndexed{i,m->val y=175f+i*65f;gauge(c,m,782f,y,42f,p,false)}
+        others.take(8).forEachIndexed{i,m->val (x,y)=positions[i];gauge(c,m,x,y,54f,p,false)}
+        
         if(!d.obdLive)label(c,ctx.getString(R.string.dash_no_obd),34f,402f,16f,p.muted,plain)
     }
 
