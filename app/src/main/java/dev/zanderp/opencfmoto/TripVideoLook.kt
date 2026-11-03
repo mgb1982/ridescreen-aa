@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 12447)
-Total output lines: 817
-
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Part of RideScreen AA (fork of OpenCfMoto). Free software under the GNU AGPL v3 or later.
 package dev.zanderp.opencfmoto
@@ -433,7 +430,30 @@ class TripLook(
                     stroke.strokeCap = Paint.Cap.ROUND
                     val arc = RectF(cx - r, cy - r, cx + r, cy + r)
                     stroke.color = Color.argb(70, 255, 255, 255); c.drawArc(arc, 135f, 270f, false, stroke)
-                    stroke.color = amber; c.drawArc(arc, 135f, 270f * (km…447 tokens truncated…{title.uppercase()}"
+                    stroke.color = amber; c.drawArc(arc, 135f, 270f * (kmh / 120f).coerceIn(0f, 1f), false, stroke)
+                    text(c, "$kmh", cx, cy + 3 * u, 11 * u, tfCondItalic, align = Paint.Align.CENTER)
+                    text(c, "KM/H", cx, cy + 8.5f * u, 3 * u, tfCond, amber, Paint.Align.CENTER)
+                }
+                // Distance bar
+                val bx0 = 38 * u; val bx1 = w - 4 * u; val by = h - 7 * u
+                val bar = RectF(bx0 - 1.5f * u, by - 6 * u, bx1 + 1.5f * u, by + 3.5f * u)
+                part(c, OverlayPart.EXTRA, w, h, bar) {
+                    c.drawRoundRect(bar, 2 * u, 2 * u, fill(Color.argb(130, 0, 0, 0)))
+                    text(c, "${km(kmDone)} KM", bx0, by - 1.8f * u, 3 * u, tfCond, shadow = false)
+                    text(c, "${km(totalKm)} KM", bx1, by - 1.8f * u, 3 * u, tfCond, Color.argb(190, 255, 255, 255), Paint.Align.RIGHT, false)
+                    c.drawRoundRect(RectF(bx0, by + 0.4f * u, bx1, by + 1.5f * u), u, u, fill(Color.argb(70, 255, 255, 255)))
+                    c.drawRoundRect(RectF(bx0, by + 0.4f * u, bx0 + (bx1 - bx0) * (kmDone / totalKm).toFloat().coerceIn(0f, 1f), by + 1.5f * u), u, u, fill(amber))
+                }
+                // Round mini-map with north
+                val ms = 26 * u
+                val box = RectF(w - ms - 3 * u, 3 * u, w - 3 * u, 3 * u + ms)
+                part(c, OverlayPart.MAP, w, h, box) {
+                    minimap(c, box, true, Color.argb(190, 15, 18, 20), amber, Color.argb(130, 255, 255, 255), amber, idx, u)
+                    if (map != VideoMap.STREETS || streets == null) text(c, "N", box.centerX(), box.top + 3.4f * u, 2.6f * u, tfCond, amber, Paint.Align.CENTER, false)
+                }
+            }
+            VideoStyle.MINIMAL -> {
+                val line = "$clock   ·   ${title.uppercase()}"
                 val ls = fitSize(line, tfMedium, w - 8 * u, 2.6f * u)
                 part(c, OverlayPart.TITLE, w, h, RectF(3 * u, 3 * u, 5 * u + measure(line, tfMedium, ls), 8 * u)) {
                     text(c, line, 4 * u, 6.5f * u, ls, tfMedium)
