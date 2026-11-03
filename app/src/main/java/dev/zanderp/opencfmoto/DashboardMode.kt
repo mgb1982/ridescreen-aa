@@ -71,6 +71,17 @@ object DashboardMode {
     fun design(ctx: Context): Design = Design.byId(BikeScope.getString(prefs(ctx), ctx, "design", null))
     fun setDesign(ctx: Context, value: Design) = BikeScope.putString(prefs(ctx), ctx, "design", value.id)
 
+    /** Sample snapshot for the style picker; copied because the renderer reuses its live bitmap. */
+    fun preview(ctx: Context, design: Design, width: Int, height: Int): android.graphics.Bitmap {
+        val sample = Data(
+            rpm = 1832.0, speedKmh = 0.0, speedFromGps = false, coolant = 94.0,
+            throttle = 10.0, volt = 14.1, load = 44.0, intake = 42.0,
+            baro = 100.0, absoluteLoad = 32.0, relativeThrottle = 10.0, obdLive = true,
+        )
+        return DashboardRenderer.render(ctx, width, height, sample, isLight(ctx), design, fieldIds.toSet())
+            .copy(android.graphics.Bitmap.Config.ARGB_8888, false)
+    }
+
     private val fieldIds = listOf("rpm", "speed", "coolant", "volt", "load", "intake", "baro", "absolute", "throttle")
     fun visibleFields(ctx: Context): Set<String> {
         val p = prefs(ctx)

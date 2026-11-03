@@ -356,13 +356,67 @@ class ControlsActivity : AppCompatActivity() {
 
     private fun setupDashboard() {
         findViewById<MaterialButton>(R.id.btn_dash_design).setOnClickListener {
-            val labels = arrayOf(getString(R.string.dash_design_sport), getString(R.string.dash_design_racing), getString(R.string.dash_design_touring))
-            androidx.appcompat.app.AlertDialog.Builder(this)
+            val density = resources.displayMetrics.density
+            fun dp(value: Int) = (value * density).toInt()
+            val themeAttrs = obtainStyledAttributes(intArrayOf(
+                com.google.android.material.R.attr.colorSurface,
+                com.google.android.material.R.attr.colorPrimary,
+                com.google.android.material.R.attr.colorOnSurface,
+            ))
+            val surface = themeAttrs.getColor(0, android.graphics.Color.DKGRAY)
+            val accent = themeAttrs.getColor(1, android.graphics.Color.CYAN)
+            val foreground = themeAttrs.getColor(2, android.graphics.Color.WHITE)
+            themeAttrs.recycle()
+            val list = android.widget.LinearLayout(this).apply {
+                orientation = android.widget.LinearLayout.VERTICAL
+                setPadding(dp(12), dp(4), dp(12), dp(4))
+            }
+            val scroll = android.widget.ScrollView(this).apply { addView(list) }
+            lateinit var picker: androidx.appcompat.app.AlertDialog
+            for (design in DashboardMode.Design.entries) {
+                val selected = design == DashboardMode.design(this)
+                val title = when (design) {
+                    DashboardMode.Design.SPORT -> R.string.dash_design_sport
+                    DashboardMode.Design.RACING -> R.string.dash_design_racing
+                    DashboardMode.Design.TOURING -> R.string.dash_design_touring
+                }
+                val card = android.widget.LinearLayout(this).apply {
+                    orientation = android.widget.LinearLayout.VERTICAL
+                    setPadding(dp(12), dp(10), dp(12), dp(10))
+                    background = android.graphics.drawable.GradientDrawable().apply {
+                        cornerRadius = dp(12).toFloat()
+                        setColor(surface)
+                        setStroke(dp(if (selected) 2 else 1), if (selected) accent else foreground and 0x33FFFFFF)
+                    }
+                    isClickable = true
+                    isFocusable = true
+                }
+                val heading = TextView(this).apply {
+                    text = (if (selected) "✓  " else "") + getString(title)
+                    textSize = 16f
+                    setTextColor(foreground)
+                    setTypeface(typeface, android.graphics.Typeface.BOLD)
+                }
+                val image = android.widget.ImageView(this).apply {
+                    scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+                    adjustViewBounds = true
+                    setImageBitmap(DashboardMode.preview(this@ControlsActivity, design, 600, 312))
+                    contentDescription = getString(title)
+                }
+                card.addView(heading)
+                card.addView(image, android.widget.LinearLayout.LayoutParams(-1, dp(150)).apply { topMargin = dp(6) })
+                card.setOnClickListener {
+                    DashboardMode.setDesign(this, design)
+                    picker.dismiss()
+                }
+                list.addView(card, android.widget.LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(10) })
+            }
+            picker = androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle(R.string.controls_dash_design)
-                .setSingleChoiceItems(labels, DashboardMode.design(this).ordinal) { dialog, which ->
-                    DashboardMode.setDesign(this, DashboardMode.Design.entries[which])
-                    dialog.dismiss()
-                }.setNegativeButton(android.R.string.cancel, null).show()
+                .setView(scroll)
+                .setNegativeButton(android.R.string.cancel, null)
+                .create()
+            picker.show()
         }
         findViewById<MaterialButton>(R.id.btn_dash_fields).setOnClickListener {
             val keys = DashboardMode.fieldIds()
