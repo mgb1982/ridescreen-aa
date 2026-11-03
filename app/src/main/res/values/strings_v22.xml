@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="help_heart_rate">❤️ Heart rate (watch)</string>
+    <string name="heart_rate_live">Live reading from your watch</string>
+    <string name="heart_rate_waiting">Waiting for a reading… Open RideScreen on your watch and allow Body Sensors.</string>
     <string name="crash_entry">🆘 Crash detection</string>
     <string name="crash_channel">Crash alarm</string>
     <string name="crash_alert_title">Did you crash?</string>

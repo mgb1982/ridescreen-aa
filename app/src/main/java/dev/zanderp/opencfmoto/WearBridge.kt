@@ -117,6 +117,7 @@ object WearBridge {
             return
         }
         when (event.path) {
+            "/ocm/heart" -> HeartRateStore.receive(ctx.applicationContext, text)
             // Watch in ambient mode: one snapshot, no 1 Hz stream.
             PATH_SUB -> if (text == "once") main.post { subscriber = event.sourceNodeId; sendStats(ctx.applicationContext) } else main.post {
                 val first = subscriber == null || SystemClock.elapsedRealtime() > leaseUntil

@@ -29,6 +29,7 @@ object PhoneLink {
     const val PATH_PARKED = "/ocm/parked"
     const val PATH_TILE = "/ocm/tile"
     const val PATH_BIKEPHOTO = "/ocm/bikephoto"
+    const val PATH_HEART = "/ocm/heart"
 
     fun bikePhotoFile(ctx: Context) = java.io.File(ctx.filesDir, "bike_photo.jpg")
 

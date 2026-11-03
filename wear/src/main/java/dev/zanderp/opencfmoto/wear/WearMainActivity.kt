@@ -6,6 +6,10 @@ package dev.zanderp.opencfmoto.wear
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -33,9 +37,11 @@ import java.util.Locale
  * phone battery and media volume. Page 3: recent trips (tap one for its map). The bezel/crown
  * drives the Android Auto knob, except on the trips page where it scrolls the list.
  */
-class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedListener {
+class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedListener, SensorEventListener {
 
     private val handler = Handler(Looper.getMainLooper())
+    private val sensorManager by lazy { getSystemService(SENSOR_SERVICE) as SensorManager }
+    private var lastHeartSent = 0L
     private lateinit var pager: ViewPager2
     private lateinit var root: View
     private lateinit var dots: TextView
@@ -133,15 +139,38 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
         super.onResume()
         photoShown = null // the photo may have arrived while we were away
         Wearable.getMessageClient(this).addListener(this)
+        if (checkSelfPermission(Manifest.permission.BODY_SENSORS) == PackageManager.PERMISSION_GRANTED) {
+            sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE)?.let { sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL) }
+        } else requestPermissions(arrayOf(Manifest.permission.BODY_SENSORS), 73)
         handler.removeCallbacks(subscribeTick)
         if (!ambient) handler.post(subscribeTick)
         root.requestFocus()
     }
 
     override fun onPause() {
+        sensorManager.unregisterListener(this)
         handler.removeCallbacks(subscribeTick)
         Wearable.getMessageClient(this).removeListener(this)
         super.onPause()
+    }
+
+    override fun onSensorChanged(event: SensorEvent) {
+        if (event.sensor.type != Sensor.TYPE_HEART_RATE || event.values.isEmpty()) return
+        val bpm = event.values[0].toInt()
+        val now = SystemClock.elapsedRealtime()
+        if (bpm in 30..240 && now - lastHeartSent >= 5_000L) {
+            lastHeartSent = now
+            PhoneLink.send(this, PhoneLink.PATH_HEART, "$bpm;${System.currentTimeMillis()}")
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) = Unit
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 73 && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
+            sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE)?.let { sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL) }
+        }
     }
 
     override fun onMessageReceived(event: MessageEvent) {
