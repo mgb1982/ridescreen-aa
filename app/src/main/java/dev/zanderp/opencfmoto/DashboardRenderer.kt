@@ -1,141 +1,528 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Part of RideScreen AA (fork of OpenCfMoto). Free software under the GNU AGPL v3 or later.
 package dev.zanderp.opencfmoto
+
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Path
 import android.graphics.RectF
 import android.graphics.Typeface
 import java.util.Locale
-/** Three selectable OBD dashboards rendered on the dash's 800×416 canvas. */
+import kotlin.math.cos
+import kotlin.math.sin
+
+/**
+ * The six dashboard faces from the approved reference sheet, drawn at a fixed 800×416
+ * design size and scaled into the motorcycle's usable screen area.
+ */
 internal object DashboardRenderer {
- private const val W=800f; private const val H=416f
- private class Palette(val bg:Int,val fg:Int,val muted:Int,val track:Int,val tile:Int,val accent:Int,val red:Int)
- private val sd=Palette(0xFF101713.toInt(),0xFFF4F5F0.toInt(),0xFF9AA69D.toInt(),0xFF28342D.toInt(),0xFF1B2720.toInt(),0xFFD5AA48.toInt(),0xFFE44840.toInt())
- private val sl=Palette(0xFFEAE9E1.toInt(),0xFF15191A.toInt(),0xFF58625D.toInt(),0xFFC7C9C1.toInt(),0xFFD9DCD4.toInt(),0xFF987021.toInt(),0xFFC93630.toInt())
- private val rd=Palette(0xFF090B0F.toInt(),0xFFF8F8FA.toInt(),0xFF9EA4AE.toInt(),0xFF30343D.toInt(),0xFF171A20.toInt(),0xFFFF2638.toInt(),0xFFFF2638.toInt())
- private val rl=Palette(0xFFF0F1F4.toInt(),0xFF11141A.toInt(),0xFF555B66.toInt(),0xFFC8CBD2.toInt(),0xFFFFFFFF.toInt(),0xFFD7192D.toInt(),0xFFD7192D.toInt())
- private val td=Palette(0xFF080F12.toInt(),0xFFEAFBF8.toInt(),0xFF8DA9A4.toInt(),0xFF203A38.toInt(),0xFF102321.toInt(),0xFF38D6B2.toInt(),0xFFFF625A.toInt())
- private val tl=Palette(0xFFEAF3EF.toInt(),0xFF102622.toInt(),0xFF58736D.toInt(),0xFFC1D4CE.toInt(),0xFFF8FCF9.toInt(),0xFF138D75.toInt(),0xFFD43B36.toInt())
- private var bmp:Bitmap?=null; private var canvas:Canvas?=null
- private val fill=Paint(Paint.ANTI_ALIAS_FLAG); private val stroke=Paint(Paint.ANTI_ALIAS_FLAG).apply{style=Paint.Style.STROKE;strokeCap=Paint.Cap.ROUND}
- private val text=Paint(Paint.ANTI_ALIAS_FLAG); private val rect=RectF()
- private val bold=Typeface.create("sans-serif-condensed",Typeface.BOLD); private val plain=Typeface.create("sans-serif",Typeface.NORMAL)
- private data class M(val id:String,val name:String,val v:Double?,val unit:String,val max:Double=100.0)
- private fun metrics(d:DashboardMode.Data)=listOf(M("speed","SPEED",d.speedKmh,"km/h",240.0),M("rpm","RPM",d.rpm,"rpm",10000.0),M("throttle","THROTTLE",d.relativeThrottle,"%",100.0),M("coolant","COOLANT",d.coolant,"°C",130.0),M("volt","VOLTAGE",d.volt,"V",16.0),M("load","ENGINE LOAD",d.load,"%",100.0),M("intake","INTAKE AIR",d.intake,"°C",80.0),M("baro","MANIFOLD",d.baro,"kPa",120.0),M("absolute","ABS LOAD",d.absoluteLoad,"%",260.0))
- private fun fmt(m:M?)=m?.v?.let{if(m.unit=="V")String.format(Locale.US,"%.1f",it) else String.format(Locale.US,"%.0f",it)}?:"—"
- fun render(ctx:Context,w:Int,h:Int,d:DashboardMode.Data,light:Boolean,design:DashboardMode.Design,visible:Set<String>):Bitmap {
-  var b=bmp;if(b==null||b.width!=w||b.height!=h){b?.recycle();b=Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888);bmp=b;canvas=Canvas(b)}
-  val c=canvas!!;val p=when(design){DashboardMode.Design.SPORT->if(light)sl else sd;DashboardMode.Design.RACING->if(light)rl else rd;DashboardMode.Design.TOURING->if(light)tl else td};c.drawColor(p.bg)
-  val s=minOf(w/W,h/H);c.save();c.translate((w-W*s)/2f,(h-H*s)/2f);c.scale(s,s)
-  val all=metrics(d).filter{it.id in visible}.associateBy{it.id}
-  when(design){DashboardMode.Design.SPORT->sport(c,d,p,all);DashboardMode.Design.RACING->racing(c,d,p,all);DashboardMode.Design.TOURING->tour(c,d,p,all)}
-  if(!d.obdLive)label(c,ctx.getString(R.string.dash_no_obd),12f,408f,12f,p.muted,plain)
-  c.restore();return b
- }
- private fun leds(c:Canvas,rpm:Double?,p:Palette,y:Float=12f){val n=10;val lw=38f;val gap=8f;val x=(W-(n*lw+(n-1)*gap))/2f;for(i in 0 until n){fill.color=if(rpm!=null&&rpm>=(i+1)*1000.0){if(i>7)p.red else p.accent}else p.track;rect.set(x+i*(lw+gap),y,x+i*(lw+gap)+lw,y+9);c.drawRoundRect(rect,5f,5f,fill)}}
- private fun sport(c:Canvas,d:DashboardMode.Data,p:Palette,a:Map<String,M>){
-  leds(c,d.rpm,p);dial(c,a["speed"],178f,206f,148f,p,if(d.speedFromGps)"GPS" else null,true)
-  dial(c,a["rpm"],505f,103f,57f,p,null,false);dial(c,a["throttle"],670f,103f,57f,p,null,false)
-  cards(c,listOf("coolant","volt","load","intake","baro","absolute").mapNotNull{a[it]},365f,173f,2,197f,62f,p)
- }
- private fun racing(c:Canvas,d:DashboardMode.Data,p:Palette,a:Map<String,M>){
-  leds(c,d.rpm,p,8f)
-  label(c,"RPM",38f,54f,15f,p.fg,bold)
-  val bx=38f;val by=67f;val bw=724f;val count=14;val gap=4f;val seg=(bw-gap*(count-1))/count
-  for(i in 0 until count){
-   val left=bx+i*(seg+gap);val threshold=(i+1)*10000.0/count
-   fill.color=if(d.rpm!=null&&d.rpm>=threshold){if(i>=11)p.red else p.accent}else p.track
-   rect.set(left,by,left+seg,by+34f);c.drawRoundRect(rect,3f,3f,fill)
-  }
-  center(c,fmt(a["rpm"]),400f,96f,27f,p.fg,bold)
-  for(i in 0..7)center(c,(i*2).toString(),bx+bw*i/7f,119f,10f,p.muted,plain)
-  // Motorsport speed plate with clipped corners, red keyline and segmented accents.
-  val px=34f;val py=152f;val pw=365f;val ph=132f
-  val shape=android.graphics.Path().apply{moveTo(px+16f,py);lineTo(px+pw-14f,py);lineTo(px+pw,py+15f);lineTo(px+pw-12f,py+ph);lineTo(px,py+ph);lineTo(px+12f,py+ph-14f);close()}
-  fill.color=p.tile;c.drawPath(shape,fill);stroke.color=p.accent;stroke.strokeWidth=2f;c.drawPath(shape,stroke)
-  label(c,fmt(a["speed"]),60f,239f,80f,p.fg,bold)
-  label(c,"km/h"+if(d.speedFromGps)" · GPS" else "",67f,268f,17f,p.muted,plain)
-  for(i in 0..4){val sx=320f+i*13f;stroke.color=p.accent;stroke.strokeWidth=3f;c.drawLine(sx,266f,sx+10f,253f,stroke)}
-  dial(c,a["throttle"],625f,218f,79f,p,null,false)
-  cards(c,listOf("coolant","volt","load","intake","baro").mapNotNull{a[it]},40f,304f,3,238f,45f,p)
- }
- private fun tour(c:Canvas,d:DashboardMode.Data,p:Palette,a:Map<String,M>){
-  leds(c,d.rpm,p)
-  val cx=180f;val cy=179f;val r=134f
-  rect.set(cx-r,cy-r,cx+r,cy+r);stroke.color=p.track;stroke.strokeWidth=16f;c.drawArc(rect,135f,270f,false,stroke)
-  val f=((a["speed"]?.v?:0.0)/(a["speed"]?.max?:240.0)).toFloat().coerceIn(0f,1f);stroke.color=p.accent;c.drawArc(rect,135f,270f*f,false,stroke)
-  for(i in 0..24){
-   val angle=Math.toRadians(135.0+270.0*i/24);val major=i%4==0
-   val r1=r-if(major)22f else 13f;val r2=r-2f
-   stroke.color=if(major)p.fg else p.muted;stroke.strokeWidth=if(major)2f else 1f
-   c.drawLine(cx+Math.cos(angle).toFloat()*r1,cy+Math.sin(angle).toFloat()*r1,cx+Math.cos(angle).toFloat()*r2,cy+Math.sin(angle).toFloat()*r2,stroke)
-   if(major)center(c,(i*10).toString(),cx+Math.cos(angle).toFloat()*(r-36f),cy+Math.sin(angle).toFloat()*(r-36f)+4f,9f,p.muted,plain)
-  }
-  center(c,fmt(a["speed"]),cx,cy+15f,58f,p.fg,bold)
-  center(c,"km/h"+if(d.speedFromGps)" · GPS" else "",cx,cy+43f,13f,p.muted,plain)
-  label(c,"RPM",376f,61f,14f,p.muted,bold)
-  val bx=390f;val by=72f;val bw=34f;val bh=202f;val n=12
-  for(i in 0 until n){val top=by+bh-(i+1)*(bh/n);val threshold=(i+1)*10000.0/n
-   fill.color=if(d.rpm!=null&&d.rpm>=threshold){if(i>=10)p.red else p.accent}else p.track
-   rect.set(bx,top+2f,bx+bw,top+bh/n-2f);c.drawRoundRect(rect,4f,4f,fill)
-  }
-  for(i in 0..5)label(c,(i*2).toString(),434f,by+bh-i*(bh/5f)+4f,9f,p.muted,plain)
-  center(c,fmt(a["rpm"]),489f,193f,22f,p.fg,bold)
-  dial(c,a["throttle"],670f,132f,69f,p,null,false)
-  cards(c,listOf("coolant","volt","load","intake","baro","absolute").mapNotNull{a[it]},35f,320f,3,240f,39f,p)
- }
- private fun dial(c:Canvas,m:M?,x:Float,y:Float,r:Float,p:Palette,hint:String?,large:Boolean){
-  if(m==null)return
-  fill.color=p.tile;c.drawCircle(x,y,r,fill)
-  stroke.strokeWidth=if(large)2.5f else 1.8f;stroke.color=p.track;c.drawCircle(x,y,r-1f,stroke)
-  rect.set(x-r+7,y-r+7,x+r-7,y+r-7)
-  stroke.strokeWidth=if(large)8f else 5f;stroke.color=p.track;c.drawArc(rect,135f,270f,false,stroke)
-  val f=((m.v?:0.0)/m.max).toFloat().coerceIn(0f,1f)
-  stroke.color=if(m.id=="rpm"&&f>.88f)p.red else p.accent;c.drawArc(rect,135f,270f*f,false,stroke)
-  val ticks=if(large)24 else 16
-  for(i in 0..ticks){
-   val angle=Math.toRadians(135.0+270.0*i/ticks)
-   val major=if(large)i%4==0 else i%4==0
-   val r1=r-if(major) (if(large)24f else 15f) else (if(large)16f else 11f)
-   val r2=r-if(large)6f else 5f
-   stroke.color=if(major)p.fg else p.muted;stroke.strokeWidth=if(major)2f else 1f
-   c.drawLine(x+Math.cos(angle).toFloat()*r1,y+Math.sin(angle).toFloat()*r1,x+Math.cos(angle).toFloat()*r2,y+Math.sin(angle).toFloat()*r2,stroke)
-   if(large&&major){
-    val v=m.max*i/ticks
-    val tx=x+Math.cos(angle).toFloat()*(r-36f);val ty=y+Math.sin(angle).toFloat()*(r-36f)+4f
-    center(c,String.format(Locale.US,"%.0f",v),tx,ty,10f,p.muted,plain)
-   }
-  }
-  val needle=Math.toRadians(135.0+270.0*f)
-  stroke.color=p.red;stroke.strokeWidth=if(large)3f else 2f
-  c.drawLine(x,y,x+Math.cos(needle).toFloat()*(r*.62f),y+Math.sin(needle).toFloat()*(r*.62f),stroke)
-  fill.color=p.fg;c.drawCircle(x,y,if(large)5f else 3.5f,fill)
-  center(c,m.name,x,y-r*.23f,if(large)16f else 9f,p.muted,bold)
-  center(c,fmt(m),x,y+if(large)13f else 8f,if(large)45f else 22f,p.fg,bold)
-  val unit=if(hint!=null)hint+" · "+m.unit else m.unit
-  center(c,unit,x,y+r*.46f,if(large)13f else 9f,p.muted,plain)
- }
- private fun cards(c:Canvas,list:List<M>,x:Float,y:Float,cols:Int,w:Float,h:Float,p:Palette){
-  val gap=7f
-  list.forEachIndexed{i,m->
-   val xx=x+(i%cols)*(w+gap);val yy=y+(i/cols)*(h+7f)
-   fill.color=p.tile;rect.set(xx,yy,xx+w,yy+h);c.drawRoundRect(rect,8f,8f,fill)
-   stroke.color=p.track;stroke.strokeWidth=1.2f;c.drawRoundRect(rect,8f,8f,stroke)
-   fill.color=p.accent;c.drawCircle(xx+15f,yy+15f,8f,fill)
-   center(c,m.name.take(1),xx+15f,yy+18f,9f,p.bg,bold)
-   label(c,m.name,xx+29f,yy+18f,9f,p.muted,bold)
-   val unitW=text.apply{typeface=plain;textSize=9f}.measureText(m.unit)
-   label(c,fmt(m),xx+11f,yy+h-8f,if(h<45f)16f else 21f,p.fg,bold)
-   if(h>=45f)label(c,m.unit,xx+w-unitW-9f,yy+h-8f,9f,p.muted,plain)
-   if(m.id=="coolant"||m.id=="load"){
-    val py=yy+h-3f;fill.color=p.track;rect.set(xx+9f,py,xx+w-9f,py+2f);c.drawRoundRect(rect,1f,1f,fill)
-    m.v?.let{fill.color=if(m.id=="coolant"&&it>=DashboardMode.COOLANT_AMBER)p.red else p.accent;rect.set(xx+9f,py,xx+9f+(w-18f)*(it/m.max).toFloat().coerceIn(0f,1f),py+2f);c.drawRoundRect(rect,1f,1f,fill)}
-   }
-  }
- }
- private fun footer(c:Canvas,p:Palette){stroke.strokeWidth=2f;stroke.color=p.accent;c.drawLine(16f,390f,784f,390f,stroke);label(c,"FUEL     ▮ ▮ ▮ ▮ ▮             COOLANT                 SPEED",25f,410f,13f,p.muted,plain)}
- private fun label(c:Canvas,s:String,x:Float,y:Float,z:Float,color:Int,font:Typeface){text.typeface=font;text.textSize=z;text.color=color;c.drawText(s,x,y,text)}
- private fun center(c:Canvas,s:String,x:Float,y:Float,z:Float,color:Int,font:Typeface){text.typeface=font;text.textSize=z;text.color=color;c.drawText(s,x-text.measureText(s)/2,y,text)}
+    private const val W = 800f
+    private const val H = 416f
+
+    private data class Palette(
+        val bg: Int, val fg: Int, val muted: Int, val track: Int,
+        val tile: Int, val edge: Int, val accent: Int, val accent2: Int, val red: Int,
+    )
+
+    private val sportNight = Palette(
+        0xFF17231B.toInt(), 0xFFF5F6F0.toInt(), 0xFFAAB4AA.toInt(),
+        0xFF344237.toInt(), 0xFF202D24.toInt(), 0xFF526257.toInt(),
+        0xFFE2B344.toInt(), 0xFFFFD66F.toInt(), 0xFFE9473C.toInt(),
+    )
+    private val sportDay = Palette(
+        0xFFF4F4EE.toInt(), 0xFF171A19.toInt(), 0xFF59635D.toInt(),
+        0xFFC8CDC4.toInt(), 0xFFFBFCF8.toInt(), 0xFFAEB5AA.toInt(),
+        0xFFD59C24.toInt(), 0xFFF4C44E.toInt(), 0xFFC9332D.toInt(),
+    )
+    private val racingNight = Palette(
+        0xFF090B0F.toInt(), 0xFFF7F8FA.toInt(), 0xFFA7ADB6.toInt(),
+        0xFF30343D.toInt(), 0xFF15191F.toInt(), 0xFF50545D.toInt(),
+        0xFFF2263B.toInt(), 0xFFFF5360.toInt(), 0xFFFF2638.toInt(),
+    )
+    private val racingDay = Palette(
+        0xFFF1F2F5.toInt(), 0xFF15171C.toInt(), 0xFF5D626B.toInt(),
+        0xFFC9CDD4.toInt(), 0xFFFFFFFF.toInt(), 0xFFAEB3BC.toInt(),
+        0xFFD7192D.toInt(), 0xFFFA4050.toInt(), 0xFFC8202D.toInt(),
+    )
+    private val touringNight = Palette(
+        0xFF0A1917.toInt(), 0xFFF0FBF7.toInt(), 0xFF9BB5AC.toInt(),
+        0xFF29433C.toInt(), 0xFF122824.toInt(), 0xFF45665D.toInt(),
+        0xFF32D0A8.toInt(), 0xFF7CE8C9.toInt(), 0xFFE9473C.toInt(),
+    )
+    private val touringDay = Palette(
+        0xFFF0F7F3.toInt(), 0xFF132722.toInt(), 0xFF58746B.toInt(),
+        0xFFC5D8D0.toInt(), 0xFFFCFFFD.toInt(), 0xFFA9C0B6.toInt(),
+        0xFF159A7A.toInt(), 0xFF50C7A8.toInt(), 0xFFC93630.toInt(),
+    )
+
+    private var bitmap: Bitmap? = null
+    private var canvas: Canvas? = null
+    private val fill = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val stroke = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeCap = Paint.Cap.ROUND
+        strokeJoin = Paint.Join.ROUND
+    }
+    private val text = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val box = RectF()
+    private val bold = Typeface.create("sans-serif-condensed", Typeface.BOLD)
+    private val medium = Typeface.create("sans-serif", Typeface.BOLD)
+    private val plain = Typeface.create("sans-serif", Typeface.NORMAL)
+
+    private data class Metric(
+        val id: String, val title: String, val value: Double?, val unit: String,
+        val max: Double = 100.0,
+    )
+
+    private fun metrics(d: DashboardMode.Data) = listOf(
+        Metric("speed", "SPEED", d.speedKmh, "km/h", 240.0),
+        Metric("rpm", "RPM", d.rpm, "rpm", 10_000.0),
+        Metric("throttle", "THROTTLE", d.relativeThrottle, "%", 100.0),
+        Metric("coolant", "COOLANT", d.coolant, "°C", 130.0),
+        Metric("volt", "VOLTAGE", d.volt, "V", 16.0),
+        Metric("load", "ENGINE LOAD", d.load, "%", 100.0),
+        Metric("intake", "INTAKE", d.intake, "°C", 80.0),
+        Metric("baro", "MANIFOLD", d.baro, "kPa", 120.0),
+        Metric("absolute", "ABS LOAD", d.absoluteLoad, "%", 260.0),
+    )
+
+    private fun value(m: Metric?): String = m?.value?.let {
+        if (m.unit == "V") String.format(Locale.US, "%.1f", it)
+        else String.format(Locale.US, "%.0f", it)
+    } ?: "—"
+
+    fun render(
+        ctx: Context, w: Int, h: Int, d: DashboardMode.Data, light: Boolean,
+        design: DashboardMode.Design, visible: Set<String>,
+    ): Bitmap {
+        var target = bitmap
+        if (target == null || target.width != w || target.height != h) {
+            target?.recycle()
+            target = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+            bitmap = target
+            canvas = Canvas(target)
+        }
+        val c = canvas!!
+        val p = when (design) {
+            DashboardMode.Design.SPORT -> if (light) sportDay else sportNight
+            DashboardMode.Design.RACING -> if (light) racingDay else racingNight
+            DashboardMode.Design.TOURING -> if (light) touringDay else touringNight
+        }
+        c.drawColor(p.bg)
+        val scale = minOf(w / W, h / H)
+        c.save()
+        c.translate((w - W * scale) / 2f, (h - H * scale) / 2f)
+        c.scale(scale, scale)
+        drawSurface(c, p, design)
+        val all = metrics(d).filter { it.id in visible }.associateBy { it.id }
+        when (design) {
+            DashboardMode.Design.SPORT -> drawSport(c, d, p, all)
+            DashboardMode.Design.RACING -> drawRacing(ctx, c, d, p, all)
+            DashboardMode.Design.TOURING -> drawTouring(ctx, c, d, p, all)
+        }
+        if (!d.obdLive) label(c, ctx.getString(R.string.dash_no_obd), 18f, 405f, 13f, p.muted, plain)
+        c.restore()
+        return target
+    }
+
+    /** Low contrast texture and the fine edge treatment from the approved screen designs. */
+    private fun drawSurface(c: Canvas, p: Palette, design: DashboardMode.Design) {
+        fill.color = p.bg
+        c.drawRect(0f, 0f, W, H, fill)
+        stroke.color = p.edge and 0x28FFFFFF
+        stroke.strokeWidth = 1f
+        val startY = if (design == DashboardMode.Design.RACING) 0f else 286f
+        var y = startY
+        while (y < H) {
+            var x = -24f
+            while (x < W + 20f) {
+                val path = Path().apply {
+                    moveTo(x + 7f, y)
+                    lineTo(x + 14f, y + 5f)
+                    lineTo(x + 14f, y + 13f)
+                    lineTo(x + 7f, y + 18f)
+                    lineTo(x, y + 13f)
+                    lineTo(x, y + 5f)
+                    close()
+                }
+                c.drawPath(path, stroke)
+                x += 18f
+            }
+            y += 16f
+        }
+        fill.color = p.accent
+        c.drawRect(0f, H - 3f, W, H, fill)
+        fill.color = p.bg
+        c.drawRect(0f, H - 2f, W, H, fill)
+    }
+
+    private fun drawShiftLeds(c: Canvas, rpm: Double?, p: Palette, y: Float = 8f) {
+        val count = 10
+        val width = 35f
+        val gap = 7f
+        val x0 = (W - (count * width + (count - 1) * gap)) / 2f
+        for (i in 0 until count) {
+            val threshold = (i + 1) * DashboardMode.RPM_MAX / count
+            val active = rpm != null && rpm >= threshold
+            val color = when {
+                !active -> p.track
+                i >= 8 -> p.red
+                i >= 5 -> p.accent2
+                else -> p.accent
+            }
+            fill.color = color
+            box.set(x0 + i * (width + gap), y, x0 + i * (width + gap) + width, y + 8f)
+            c.drawRoundRect(box, 4f, 4f, fill)
+        }
+    }
+
+    /** SPORT: one large speed dial, two smaller instruments and a two-column data stack. */
+    private fun drawSport(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>) {
+        drawShiftLeds(c, d.rpm, p, 7f)
+        drawDial(c, a["speed"], 168f, 212f, 148f, p, if (d.speedFromGps) "GPS" else null, true)
+        drawDial(c, a["rpm"], 501f, 107f, 59f, p, null, false)
+        drawDial(c, a["throttle"], 671f, 107f, 59f, p, null, false)
+        drawMetricGrid(
+            c, listOf("coolant", "volt", "load", "intake", "baro", "absolute").mapNotNull(a::get),
+            360f, 174f, 2, 200f, 60f, 7f, p, CardStyle.SPORT,
+        )
+    }
+
+    /** RACING: red segmented tach bar, angular speed plate, throttle gauge and five telemetry cards. */
+    private fun drawRacing(ctx: Context, c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>) {
+        label(c, "RPM", 38f, 29f, 12f, p.fg, medium)
+        drawRacingTach(c, a["rpm"], p, 38f, 38f, 724f, 55f)
+        val speed = a["speed"]
+        val x = 36f; val y = 112f; val w = 366f; val h = 143f
+        val plate = Path().apply {
+            moveTo(x + 17f, y)
+            lineTo(x + w - 18f, y)
+            lineTo(x + w, y + 17f)
+            lineTo(x + w - 13f, y + h)
+            lineTo(x, y + h)
+            lineTo(x + 12f, y + h - 17f)
+            close()
+        }
+        fill.color = p.tile
+        c.drawPath(plate, fill)
+        stroke.color = p.accent
+        stroke.strokeWidth = 2f
+        c.drawPath(plate, stroke)
+        stroke.color = p.edge
+        stroke.strokeWidth = 1f
+        val inner = Path().apply {
+            moveTo(x + 25f, y + 8f); lineTo(x + w - 26f, y + 8f)
+            lineTo(x + w - 8f, y + 24f); lineTo(x + w - 20f, y + h - 9f)
+            lineTo(x + 10f, y + h - 9f); lineTo(x + 20f, y + h - 24f); close()
+        }
+        c.drawPath(inner, stroke)
+        label(c, value(speed), 62f, 211f, 74f, p.fg, bold)
+        label(c, "km/h" + if (d.speedFromGps) " · GPS" else "", 67f, 238f, 16f, p.muted, plain)
+        drawCheckers(c, 326f, 215f, p)
+        drawRacingThrottle(c, a["throttle"], 632f, 184f, 73f, p)
+        label(c, "COOLANT", 421f, 121f, 11f, p.muted, medium)
+        drawMetricGrid(
+            c, listOf("coolant", "volt", "load", "intake", "baro").mapNotNull(a::get),
+            35f, 270f, 3, 238f, 59f, 7f, p, CardStyle.RACING,
+        )
+    }
+
+    /** TOURING: arced speedometer, central vertical tach and six long range readouts. */
+    private fun drawTouring(ctx: Context, c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>) {
+        drawShiftLeds(c, d.rpm, p, 7f)
+        drawTouringSpeed(c, a["speed"], 183f, 177f, 139f, p, if (d.speedFromGps) "GPS" else null)
+        drawTouringRpm(c, a["rpm"], p, 375f, 63f, 52f, 209f)
+        drawDial(c, a["throttle"], 684f, 128f, 68f, p, null, false)
+        drawMetricGrid(
+            c, listOf("coolant", "volt", "load", "intake", "baro", "absolute").mapNotNull(a::get),
+            34f, 294f, 3, 239f, 49f, 6f, p, CardStyle.TOURING,
+        )
+    }
+
+    private fun drawDial(
+        c: Canvas, m: Metric?, cx: Float, cy: Float, radius: Float, p: Palette,
+        hint: String?, large: Boolean,
+    ) {
+        if (m == null) return
+        fill.color = p.tile
+        c.drawCircle(cx, cy, radius, fill)
+        stroke.color = p.edge
+        stroke.strokeWidth = if (large) 3f else 2f
+        c.drawCircle(cx, cy, radius - 1.5f, stroke)
+        c.drawCircle(cx, cy, radius - 7f, stroke)
+        box.set(cx - radius + 9f, cy - radius + 9f, cx + radius - 9f, cy + radius - 9f)
+        stroke.color = p.track
+        stroke.strokeWidth = if (large) 8f else 5f
+        c.drawArc(box, 135f, 270f, false, stroke)
+        val fraction = ((m.value ?: 0.0) / m.max).toFloat().coerceIn(0f, 1f)
+        stroke.color = if (m.id == "rpm" && fraction >= .88f) p.red else p.accent
+        c.drawArc(box, 135f, 270f * fraction, false, stroke)
+        val divisions = if (large) 48 else 20
+        for (i in 0..divisions) {
+            val angle = Math.toRadians(135.0 + 270.0 * i / divisions)
+            val major = if (large) i % 4 == 0 else i % 4 == 0
+            val inner = radius - if (major) (if (large) 27f else 16f) else (if (large) 17f else 10f)
+            val outer = radius - 5f
+            stroke.color = if (major) p.fg else p.muted
+            stroke.strokeWidth = if (major) 1.7f else 1f
+            c.drawLine(
+                cx + cos(angle).toFloat() * inner, cy + sin(angle).toFloat() * inner,
+                cx + cos(angle).toFloat() * outer, cy + sin(angle).toFloat() * outer, stroke,
+            )
+            if (large && major) {
+                val tickValue = m.max * i / divisions
+                val tx = cx + cos(angle).toFloat() * (radius - 40f)
+                val ty = cy + sin(angle).toFloat() * (radius - 40f) + 4f
+                center(c, String.format(Locale.US, "%.0f", tickValue), tx, ty, 9f, p.muted, plain)
+            }
+        }
+        val angle = Math.toRadians(135.0 + 270.0 * fraction)
+        stroke.color = p.red
+        stroke.strokeWidth = if (large) 3f else 2f
+        c.drawLine(cx, cy, cx + cos(angle).toFloat() * radius * .6f, cy + sin(angle).toFloat() * radius * .6f, stroke)
+        fill.color = p.accent2
+        c.drawCircle(cx, cy, if (large) 5f else 3.5f, fill)
+        val labelSize = if (large) 13f else 8f
+        val titleY = cy - radius * .28f
+        center(c, m.title, cx, titleY, labelSize, p.muted, medium)
+        center(c, value(m), cx, cy + if (large) 15f else 8f, if (large) 43f else 21f, p.fg, bold)
+        val unit = (hint?.let { "$it · " } ?: "") + m.unit
+        center(c, unit, cx, cy + radius * .47f, if (large) 12f else 8f, p.muted, plain)
+    }
+
+    private fun drawRacingTach(c: Canvas, m: Metric?, p: Palette, x: Float, y: Float, w: Float, h: Float) {
+        fill.color = p.tile
+        box.set(x, y, x + w, y + h)
+        c.drawRoundRect(box, 9f, 9f, fill)
+        stroke.color = p.accent
+        stroke.strokeWidth = 1.5f
+        c.drawRoundRect(box, 9f, 9f, stroke)
+        val count = 14
+        val gap = 3f
+        val segmentWidth = (w - gap * (count - 1) - 20f) / count
+        val start = x + 10f
+        val top = y + 10f
+        val bottom = y + h - 9f
+        val fraction = ((m?.value ?: 0.0) / (m?.max ?: DashboardMode.RPM_MAX)).toFloat().coerceIn(0f, 1f)
+        for (i in 0 until count) {
+            val sx = start + i * (segmentWidth + gap)
+            val path = Path().apply {
+                moveTo(sx + 7f, top); lineTo(sx + segmentWidth, top)
+                lineTo(sx + segmentWidth - 7f, bottom); lineTo(sx, bottom); close()
+            }
+            fill.color = if ((i + 1f) / count <= fraction) {
+                if (i >= count - 3) p.red else if (i >= count - 6) p.accent2 else p.fg
+            } else p.track
+            c.drawPath(path, fill)
+            stroke.color = p.edge
+            stroke.strokeWidth = .7f
+            c.drawPath(path, stroke)
+        }
+        center(c, value(m), x + w / 2f, y + h - 12f, 23f, p.fg, bold)
+        for (i in 0..7) {
+            val vx = start + (w - 20f) * i / 7f
+            center(c, (i * 2).toString(), vx, y + h + 13f, 9f, p.muted, plain)
+        }
+    }
+
+    private fun drawCheckers(c: Canvas, x: Float, y: Float, p: Palette) {
+        val size = 9f
+        for (row in 0..3) for (col in 0..5) {
+            if ((row + col) % 2 == 0) {
+                fill.color = p.accent and 0xBBFFFFFF.toInt()
+                c.drawRect(x + col * size, y + row * size, x + (col + 1) * size, y + (row + 1) * size, fill)
+            }
+        }
+    }
+
+    private fun drawRacingThrottle(c: Canvas, m: Metric?, cx: Float, cy: Float, r: Float, p: Palette) {
+        if (m == null) return
+        fill.color = p.tile
+        c.drawCircle(cx, cy, r, fill)
+        stroke.color = p.accent
+        stroke.strokeWidth = 3f
+        c.drawCircle(cx, cy, r - 2f, stroke)
+        val fraction = ((m.value ?: 0.0) / m.max).toFloat().coerceIn(0f, 1f)
+        box.set(cx - r + 7f, cy - r + 7f, cx + r - 7f, cy + r - 7f)
+        stroke.color = p.track
+        stroke.strokeWidth = 7f
+        c.drawArc(box, 135f, 270f, false, stroke)
+        stroke.color = p.accent
+        c.drawArc(box, 135f, 270f * fraction, false, stroke)
+        center(c, "THROTTLE", cx, cy - 14f, 10f, p.muted, medium)
+        center(c, value(m), cx, cy + 12f, 28f, p.fg, bold)
+        center(c, "%", cx, cy + 29f, 10f, p.muted, plain)
+    }
+
+    private fun drawTouringSpeed(c: Canvas, m: Metric?, cx: Float, cy: Float, radius: Float, p: Palette, hint: String?) {
+        if (m == null) return
+        fill.color = p.tile
+        c.drawCircle(cx, cy, radius - 6f, fill)
+        box.set(cx - radius, cy - radius, cx + radius, cy + radius)
+        stroke.color = p.track
+        stroke.strokeWidth = 13f
+        c.drawArc(box, 135f, 270f, false, stroke)
+        val fraction = ((m.value ?: 0.0) / m.max).toFloat().coerceIn(0f, 1f)
+        stroke.color = p.accent
+        c.drawArc(box, 135f, 270f * fraction, false, stroke)
+        for (i in 0..36) {
+            val angle = Math.toRadians(135.0 + 270.0 * i / 36)
+            val major = i % 3 == 0
+            val inner = radius - if (major) 27f else 20f
+            val outer = radius - 7f
+            stroke.color = if (major) p.fg else p.muted
+            stroke.strokeWidth = if (major) 1.8f else 1f
+            c.drawLine(
+                cx + cos(angle).toFloat() * inner, cy + sin(angle).toFloat() * inner,
+                cx + cos(angle).toFloat() * outer, cy + sin(angle).toFloat() * outer, stroke,
+            )
+            if (major) {
+                center(c, (m.max * i / 36f).toInt().toString(), cx + cos(angle).toFloat() * (radius - 43f),
+                    cy + sin(angle).toFloat() * (radius - 43f) + 3f, 8f, p.muted, plain)
+            }
+        }
+        drawMountains(c, cx, cy + 8f, p)
+        center(c, value(m), cx, cy + 14f, 52f, p.fg, bold)
+        center(c, "km/h" + if (hint != null) " · $hint" else "", cx, cy + 41f, 11f, p.muted, plain)
+    }
+
+    private fun drawMountains(c: Canvas, cx: Float, cy: Float, p: Palette) {
+        val path = Path().apply {
+            moveTo(cx - 94f, cy + 67f)
+            lineTo(cx - 56f, cy + 22f)
+            lineTo(cx - 30f, cy + 47f)
+            lineTo(cx + 8f, cy + 6f)
+            lineTo(cx + 38f, cy + 38f)
+            lineTo(cx + 63f, cy + 18f)
+            lineTo(cx + 96f, cy + 67f)
+            close()
+        }
+        fill.color = p.accent and 0x2424FFFF
+        c.drawPath(path, fill)
+    }
+
+    private enum class CardStyle { SPORT, RACING, TOURING }
+
+    private fun drawMetricGrid(
+        c: Canvas, list: List<Metric>, x: Float, y: Float, columns: Int,
+        width: Float, height: Float, gap: Float, p: Palette, style: CardStyle,
+    ) {
+        list.forEachIndexed { index, m ->
+            val col = index % columns
+            val row = index / columns
+            drawMetricCard(c, m, x + col * (width + gap), y + row * (height + gap), width, height, p, style)
+        }
+    }
+
+    private fun drawMetricCard(
+        c: Canvas, m: Metric, x: Float, y: Float, w: Float, h: Float, p: Palette, style: CardStyle,
+    ) {
+        box.set(x, y, x + w, y + h)
+        fill.color = p.tile
+        c.drawRoundRect(box, 9f, 9f, fill)
+        stroke.color = p.edge
+        stroke.strokeWidth = 1.2f
+        c.drawRoundRect(box, 9f, 9f, stroke)
+        stroke.color = p.accent2 and 0x88FFFFFF.toInt()
+        stroke.strokeWidth = 1f
+        box.set(x + 1f, y + 1f, x + w - 1f, y + h - 1f)
+        c.drawRoundRect(box, 8f, 8f, stroke)
+        when (style) {
+            CardStyle.SPORT -> {
+                drawMetricIcon(c, m.id, x + 20f, y + h / 2f, 10f, p.accent)
+                label(c, m.title, x + 38f, y + 19f, 9f, p.muted, medium)
+                label(c, value(m), x + 38f, y + h - 12f, 21f, p.fg, bold)
+                rightLabel(c, m.unit, x + w - 10f, y + h - 12f, 9f, p.muted, plain)
+            }
+            CardStyle.RACING -> {
+                drawMetricIcon(c, m.id, x + 17f, y + h / 2f, 8f, p.accent)
+                label(c, m.title, x + 31f, y + 16f, 8f, p.muted, medium)
+                label(c, value(m), x + 31f, y + h - 8f, 17f, p.fg, bold)
+                rightLabel(c, m.unit, x + w - 9f, y + h - 8f, 8f, p.muted, plain)
+                drawProgress(c, m, x + w - 55f, y + h - 5f, 42f, p)
+            }
+            CardStyle.TOURING -> {
+                drawMetricIcon(c, m.id, x + 16f, y + h / 2f, 8f, p.accent)
+                label(c, m.title, x + 29f, y + 15f, 8f, p.muted, medium)
+                label(c, value(m), x + 29f, y + h - 8f, 17f, p.fg, bold)
+                rightLabel(c, m.unit, x + w - 8f, y + h - 8f, 8f, p.muted, plain)
+                drawProgress(c, m, x + w - 50f, y + h - 5f, 38f, p)
+            }
+        }
+    }
+
+    private fun drawProgress(c: Canvas, m: Metric, x: Float, y: Float, width: Float, p: Palette) {
+        fill.color = p.track
+        box.set(x, y, x + width, y + 2f)
+        c.drawRoundRect(box, 1f, 1f, fill)
+        m.value?.let {
+            fill.color = if (m.id == "coolant" && it >= DashboardMode.COOLANT_AMBER) p.red else p.accent
+            box.set(x, y, x + width * (it / m.max).toFloat().coerceIn(0f, 1f), y + 2f)
+            c.drawRoundRect(box, 1f, 1f, fill)
+        }
+    }
+
+    private fun drawMetricIcon(c: Canvas, id: String, cx: Float, cy: Float, r: Float, color: Int) {
+        stroke.color = color
+        stroke.strokeWidth = 1.7f
+        fill.color = color
+        when (id) {
+            "coolant" -> {
+                c.drawLine(cx - 2f, cy - r, cx - 2f, cy + 3f, stroke)
+                c.drawLine(cx + 2f, cy - r, cx + 2f, cy + 3f, stroke)
+                c.drawArc(cx - 6f, cy - 1f, cx + 6f, cy + 10f, 0f, 180f, false, stroke)
+                c.drawCircle(cx, cy + 5f, 2.5f, fill)
+            }
+            "volt" -> {
+                box.set(cx - r, cy - r * .65f, cx + r, cy + r * .65f)
+                c.drawRoundRect(box, 2f, 2f, stroke)
+                c.drawRect(cx + r, cy - 2f, cx + r + 3f, cy + 2f, fill)
+                c.drawLine(cx - 3f, cy, cx + 3f, cy, stroke)
+            }
+            "load" -> {
+                box.set(cx - r, cy - r * .62f, cx + r, cy + r * .62f)
+                c.drawRoundRect(box, 2f, 2f, stroke)
+                c.drawLine(cx - r - 2f, cy - 2f, cx - r - 2f, cy + 3f, stroke)
+                c.drawLine(cx + r + 2f, cy - 2f, cx + r + 2f, cy + 3f, stroke)
+                c.drawCircle(cx, cy, 2.5f, stroke)
+            }
+            "intake" -> for (i in -1..1) {
+                val yy = cy + i * 4f
+                c.drawLine(cx - r, yy + 1f, cx - 2f, yy - 1f, stroke)
+                c.drawLine(cx - 2f, yy - 1f, cx + 2f, yy + 1f, stroke)
+                c.drawLine(cx + 2f, yy + 1f, cx + r, yy - 1f, stroke)
+            }
+            else -> {
+                for (i in -1..1) {
+                    val xx = cx + i * 5f
+                    c.drawLine(xx, cy - r, xx, cy + r, stroke)
+                }
+                c.drawLine(cx - r, cy + r, cx + r, cy + r, stroke)
+                c.drawLine(cx - r, cy - r, cx + r, cy - r, stroke)
+            }
+        }
+    }
+
+    private fun label(c: Canvas, s: String, x: Float, y: Float, size: Float, color: Int, face: Typeface) {
+        text.typeface = face
+        text.textSize = size
+        text.color = color
+        c.drawText(s, x, y, text)
+    }
+
+    private fun rightLabel(c: Canvas, s: String, right: Float, y: Float, size: Float, color: Int, face: Typeface) {
+        text.typeface = face
+        text.textSize = size
+        text.color = color
+        c.drawText(s, right - text.measureText(s), y, text)
+    }
+
+    private fun center(c: Canvas, s: String, x: Float, y: Float, size: Float, color: Int, face: Typeface) {
+        text.typeface = face
+        text.textSize = size
+        text.color = color
+        c.drawText(s, x - text.measureText(s) / 2f, y, text)
+    }
 }
