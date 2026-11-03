@@ -233,15 +233,6 @@
                         android:layout_weight="1"
                         android:text="@string/controls_night" />
                 </LinearLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_dash_design"
-                    style="@style/Widget.OpenCfMoto.Segment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/controls_dash_design" />
-
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_dash_fields"
                     style="@style/Widget.OpenCfMoto.Segment"

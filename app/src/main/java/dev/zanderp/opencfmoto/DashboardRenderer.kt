@@ -26,12 +26,12 @@ internal object DashboardRenderer {
     private val bold=Typeface.create("sans-serif-condensed",Typeface.BOLD)
     private val plain=Typeface.create("sans-serif",Typeface.NORMAL)
 
-    fun render(ctx:Context,w:Int,h:Int,d:DashboardMode.Data,light:Boolean,design:DashboardMode.Design,visible:Set<String>):Bitmap {
+    fun render(ctx:Context,w:Int,h:Int,d:DashboardMode.Data,light:Boolean,visible:Set<String>):Bitmap {
         var b=bmp
         if(b==null||b.width!=w||b.height!=h){b?.recycle();b=Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888);bmp=b;canvas=Canvas(b)}
         val c=canvas!!;val p=if(light)LIGHT else DARK;c.drawColor(p.bg)
         val s=minOf(w/DW,h/DH);c.save();c.translate((w-DW*s)/2f,(h-DH*s)/2f);c.scale(s,s)
-        if(design==DashboardMode.Design.GAUGES) drawGauges(ctx,c,d,p,visible) else drawBars(ctx,c,d,p,visible)
+        drawRacing(ctx,c,d,p,visible)
         drawShiftLeds(c, d.rpm, p)
         c.restore();return b
     }
@@ -60,57 +60,63 @@ internal object DashboardRenderer {
     private data class Metric(val id:String,val label:String,val value:Double?,val unit:String,val max:Double=100.0)
     private fun metrics(d:DashboardMode.Data)=listOf(
         Metric("rpm","RPM",d.rpm,"rpm",10000.0), Metric("speed","SPEED",d.speedKmh,"km/h",180.0),
-        Metric("coolant","COOLANT",d.coolant,"°C",130.0), Metric("throttle","THROTTLE",d.throttle,"%",100.0),
+        Metric("throttle","THROTTLE",d.relativeThrottle,"%",100.0),
+        Metric("coolant","COOLANT",d.coolant,"°C",130.0),
         Metric("volt","VOLTAGE",d.volt,"V",16.0), Metric("load","ENGINE LOAD",d.load,"%",100.0),
         Metric("intake","INTAKE AIR",d.intake,"°C",80.0), Metric("baro","BARO",d.baro,"kPa",120.0),
-        Metric("absolute","ABS LOAD",d.absoluteLoad,"% ",260.0), Metric("relative","REL THROTTLE",d.relativeThrottle,"%",100.0)
+        Metric("absolute","ABS LOAD",d.absoluteLoad,"%",260.0)
     )
     private fun fmt(m:Metric):String=m.value?.let{if(m.unit=="V")String.format(Locale.US,"%.1f",it) else String.format(Locale.US,"%.0f",it)}?:"—"
 
-    private fun drawBars(ctx:Context,c:Canvas,d:DashboardMode.Data,p:Palette,visible:Set<String>){
+    private fun drawRacing(ctx:Context,c:Canvas,d:DashboardMode.Data,p:Palette,visible:Set<String>){
+        drawShiftLeds(c,d.rpm,p)
         val all=metrics(d).filter{it.id in visible}
-        val rpm=all.firstOrNull{it.id=="rpm"}
-        if(rpm!=null){label(c,fmt(rpm)+" rpm",35f,83f,22f,p.fg,bold);fill.color=p.track;rect.set(22f,18f,778f,49f);c.drawRoundRect(rect,5f,5f,fill)
-            fill.color=p.accent;rect.set(22f,18f,22f+756f*((rpm.value?:0.0)/10000).toFloat().coerceIn(0f,1f),49f);c.drawRoundRect(rect,5f,5f,fill)}
-        val speed=all.firstOrNull{it.id=="speed"}
-        if(speed!=null){label(c,fmt(speed),34f,270f,150f,p.fg,bold);label(c,"km/h"+if(d.speedFromGps)" · GPS" else "",40f,315f,24f,p.muted,plain)}
-        val rest=all.filter{it.id!="rpm"&&it.id!="speed"}
-        rest.forEachIndexed{i,m->
-            val col=i%2;val row=i/2;val x=400f+col*188f;val y=64f+row*82f
-            fill.color=p.tile;rect.set(x,y,x+176f,y+72f);c.drawRoundRect(rect,10f,10f,fill)
-            label(c,m.label,x+12f,y+23f,14f,p.muted,plain);label(c,fmt(m)+" "+m.unit,x+12f,y+57f,29f,p.fg,bold)
-            fill.color=p.track;rect.set(x+12f,y+64f,x+164f,y+69f);c.drawRoundRect(rect,3f,3f,fill)
-            m.value?.let{fill.color=if(m.id=="coolant"&&it>=105)p.red else p.accent;rect.set(x+12f,y+64f,x+12f+152f*(it/m.max).toFloat().coerceIn(0f,1f),y+69f);c.drawRoundRect(rect,3f,3f,fill)}
+        val byId=all.associateBy{it.id}
+        drawDial(c,byId["speed"],150f,112f,66f,p,if(d.speedFromGps)"GPS" else null)
+        drawDial(c,byId["rpm"],400f,112f,66f,p,null)
+        drawDial(c,byId["throttle"],650f,112f,66f,p,null)
+
+        val cards=all.filter{it.id !in setOf("speed","rpm","throttle")}
+        val cols=3
+        val gapX=10f
+        val gapY=8f
+        val cardW=(DW-2f*42f-gapX*(cols-1))/cols
+        val cardH=if(cards.size<=cols) 96f else 94f
+        cards.forEachIndexed{i,m->
+            val col=i%cols;val row=i/cols
+            val x=42f+col*(cardW+gapX);val y=195f+row*(cardH+gapY)
+            drawCard(c,m,x,y,cardW,cardH,p)
         }
-        if(!d.obdLive)label(c,ctx.getString(R.string.dash_no_obd),35f,385f,19f,p.muted,plain)
+        if(!d.obdLive)label(c,ctx.getString(R.string.dash_no_obd),42f,407f,14f,p.muted,plain)
     }
 
-    private fun drawGauges(ctx:Context,c:Canvas,d:DashboardMode.Data,p:Palette,visible:Set<String>){
-        val all=metrics(d).filter{it.id in visible}
-        // Large tachometer; remaining readings use compact motorcycle-style dials.
-        val rpm=all.firstOrNull{it.id=="rpm"}
-        rpm?.let{gauge(c,it,160f,220f,153f,p,true)}
-        val others=all.filter{it.id!="rpm"}
-        val positions= arrayOf(Pair(402f,78f),Pair(545f,78f),Pair(688f,78f),Pair(402f,208f),Pair(545f,208f),Pair(688f,208f),Pair(402f,338f),Pair(545f,338f),Pair(688f,338f))
-        // On an 800×416 panel, use three columns by two rows plus a narrow overflow column;
-        // compact circles keep units and readings legible while preserving the analog instrument feel.
-        others.take(9).forEachIndexed{i,m->val (x,y)=positions[i];gauge(c,m,x,y,54f,p,false)}
-        
-        if(!d.obdLive)label(c,ctx.getString(R.string.dash_no_obd),34f,402f,16f,p.muted,plain)
+    private fun drawDial(c:Canvas,m:Metric?,cx:Float,cy:Float,r:Float,p:Palette,hint:String?){
+        if(m==null)return
+        fill.color=0xFF111719.toInt();c.drawCircle(cx,cy,r,fill)
+        stroke.strokeWidth=2f;stroke.color=0xFF414B4D.toInt();c.drawCircle(cx,cy,r-1f,stroke)
+        rect.set(cx-r+7f,cy-r+7f,cx+r-7f,cy+r-7f)
+        stroke.strokeWidth=5f;stroke.color=p.track;c.drawArc(rect,135f,270f,false,stroke)
+        val fraction=((m.value?:0.0)/m.max).toFloat().coerceIn(0f,1f)
+        stroke.strokeWidth=5f;stroke.color=if(m.id=="rpm"&&fraction>=.88f)p.red else p.accent
+        c.drawArc(rect,135f,270f*fraction,false,stroke)
+        centered(c,m.label,cx,cy-18f,10f,p.muted,plain)
+        centered(c,fmt(m),cx,cy+10f,25f,p.fg,bold)
+        centered(c,hint?.let{"$it · ${m.unit}"}?:m.unit,cx,cy+29f,10f,p.muted,plain)
     }
 
-    private fun gauge(c:Canvas,m:Metric,cx:Float,cy:Float,r:Float,p:Palette,major:Boolean){
-        fill.color=0xFF090D0F.toInt();c.drawCircle(cx,cy,r,fill)
-        stroke.strokeWidth=if(major)8f else 5f;stroke.color=0xFFBFC5C6.toInt();c.drawCircle(cx,cy,r-2f,stroke)
-        stroke.strokeWidth=if(major)4f else 2.5f;stroke.color=p.accent;rect.set(cx-r+9,cy-r+9,cx+r-9,cy+r-9);c.drawArc(rect,135f,270f,false,stroke)
-        val frac=((m.value?:0.0)/m.max).toFloat().coerceIn(0f,1f)
-        stroke.strokeWidth=if(major)4f else 2.5f;stroke.color=if(m.id=="coolant"&&frac>.8f)p.red else p.fg;c.drawArc(rect,135f,270f*frac,false,stroke)
-        val titleSize=if(major)18f else if(r>55)11f else 8f
-        val valueSize=if(major)43f else if(r>55)20f else 15f
-        centered(c,m.label,cx,cy-r*.38f,titleSize,p.muted,plain)
-        centered(c,fmt(m),cx,cy+valueSize*.18f,valueSize,p.fg,bold)
-        centered(c,m.unit.trim(),cx,cy+r*.47f,if(major)15f else 10f,p.muted,plain)
-        if(m.value!=null){val angle=Math.toRadians(135.0+270.0*frac);stroke.strokeWidth=2f;stroke.color=p.red;c.drawLine(cx,cy,cx+(r*.60f*kotlin.math.cos(angle)).toFloat(),cy+(r*.60f*kotlin.math.sin(angle)).toFloat(),stroke)}
+    private fun drawCard(c:Canvas,m:Metric,x:Float,y:Float,w:Float,h:Float,p:Palette){
+        fill.color=p.tile;rect.set(x,y,x+w,y+h);c.drawRoundRect(rect,9f,9f,fill)
+        label(c,m.label,x+12f,y+21f,10f,p.muted,plain)
+        label(c,fmt(m),x+12f,y+h-19f,25f,p.fg,bold)
+        label(c,m.unit,x+18f+text.measureText(fmt(m)),y+h-19f,12f,p.muted,plain)
+        m.value?.let{
+            fill.color=if(m.id=="coolant"&&it>=DashboardMode.COOLANT_AMBER)p.red else p.accent
+            val ratio=(it/m.max).toFloat().coerceIn(0f,1f)
+            val barY=y+h-7f
+            fill.color=p.track;rect.set(x+11f,barY,x+w-11f,barY+3f);c.drawRoundRect(rect,2f,2f,fill)
+            fill.color=if(m.id=="coolant"&&it>=DashboardMode.COOLANT_AMBER)p.red else p.accent
+            rect.set(x+11f,barY,x+11f+(w-22f)*ratio,barY+3f);c.drawRoundRect(rect,2f,2f,fill)
+        }
     }
     private fun label(c:Canvas,s:String,x:Float,y:Float,size:Float,color:Int,face:Typeface){text.typeface=face;text.textSize=size;text.color=color;c.drawText(s,x,y,text)}
     private fun centered(c:Canvas,s:String,x:Float,y:Float,size:Float,color:Int,face:Typeface){text.typeface=face;text.textSize=size;text.color=color;c.drawText(s,x-text.measureText(s)/2f,y,text)}

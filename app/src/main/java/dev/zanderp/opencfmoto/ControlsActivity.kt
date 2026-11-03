@@ -355,16 +355,6 @@ class ControlsActivity : AppCompatActivity() {
     // ── custom dashboard (v2.4)
 
     private fun setupDashboard() {
-        findViewById<MaterialButton>(R.id.btn_dash_design).setOnClickListener {
-            val designs = arrayOf(getString(R.string.dash_design_bars), getString(R.string.dash_design_gauges))
-            val checked = if (DashboardMode.design(this) == DashboardMode.Design.GAUGES) 1 else 0
-            androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle(R.string.controls_dash_design)
-                .setSingleChoiceItems(designs, checked) { dialog, which ->
-                    DashboardMode.setDesign(this, if (which == 1) DashboardMode.Design.GAUGES else DashboardMode.Design.BARS)
-                    dialog.dismiss()
-                }.setNegativeButton(android.R.string.cancel, null).show()
-        }
         findViewById<MaterialButton>(R.id.btn_dash_fields).setOnClickListener {
             val keys = DashboardMode.fieldIds()
             val labels = resources.getStringArray(R.array.dash_obd_field_names)

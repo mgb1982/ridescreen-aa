@@ -64,24 +64,30 @@ object DashboardMode {
     fun theme(ctx: Context): Theme = Theme.byId(BikeScope.getString(prefs(ctx), ctx, "theme", null))
     fun setTheme(ctx: Context, t: Theme) = BikeScope.putString(prefs(ctx), ctx, "theme", t.id)
 
-    enum class Design(val id: String) { BARS("bars"), GAUGES("gauges");
-        companion object { fun byId(id: String?): Design = entries.firstOrNull { it.id == id } ?: BARS }
-    }
-    fun design(ctx: Context): Design = Design.byId(BikeScope.getString(prefs(ctx), ctx, "design", null))
-    fun setDesign(ctx: Context, value: Design) = BikeScope.putString(prefs(ctx), ctx, "design", value.id)
-    private val fieldIds = listOf("rpm", "speed", "coolant", "throttle", "volt", "load", "intake", "baro", "absolute", "relative")
+    private val fieldIds = listOf("rpm", "speed", "coolant", "volt", "load", "intake", "baro", "absolute", "throttle")
     fun visibleFields(ctx: Context): Set<String> {
         val p = prefs(ctx)
-        val saved = BikeScope.suffix(ctx)?.let { suffix ->
-            val key = "fields#$suffix"
-            if (p.contains(key)) p.getStringSet(key, null)?.toSet() else p.getStringSet("fields", null)?.toSet()
-        } ?: p.getStringSet("fields", null)?.toSet()
-        return saved?.toSet() ?: fieldIds.toSet()
+        val suffix = BikeScope.suffix(ctx)
+        val scopedKey = suffix?.let { "fields#$it" }
+        val key = if (scopedKey != null && p.contains(scopedKey)) scopedKey else "fields"
+        val saved = p.getStringSet(key, null)?.toSet() ?: return fieldIds.toSet()
+        val migrationKey = "fields_throttle_migrated#$key"
+        if (!p.getBoolean(migrationKey, false)) {
+            // "throttle" used to mean PID 0x11 and "relative" meant PID 0x45.
+            val migrated = (saved - "throttle" - "relative").toMutableSet()
+            if ("relative" in saved) migrated.add("throttle")
+            p.edit().putStringSet(key, migrated).putBoolean(migrationKey, true).apply()
+            return migrated
+        }
+        return saved.intersect(fieldIds.toSet())
     }
     fun setVisibleFields(ctx: Context, fields: Set<String>) {
         val suffix = BikeScope.suffix(ctx)
         val key = suffix?.let { "fields#$it" } ?: "fields"
-        prefs(ctx).edit().putStringSet(key, fields.toSet()).apply()
+        prefs(ctx).edit()
+            .putStringSet(key, fields.toSet())
+            .putBoolean("fields_throttle_migrated#$key", true)
+            .apply()
     }
     fun fieldIds(): List<String> = fieldIds
 
@@ -149,7 +155,7 @@ object DashboardMode {
     private fun liveBuilder(app: Context): (Int, Int) -> android.graphics.Bitmap = { w, h -> render(app, w, h) }
 
     private fun render(ctx: Context, w: Int, h: Int): android.graphics.Bitmap =
-        DashboardRenderer.render(ctx, w, h, collect(ctx), isLight(ctx), design(ctx), visibleFields(ctx))
+        DashboardRenderer.render(ctx, w, h, collect(ctx), isLight(ctx), visibleFields(ctx))
 
     // ── data
 

@@ -12,12 +12,9 @@
     <string name="controls_dash_show">Mostrar el dashboard en el cuadro</string>
     <string name="controls_dash_hide">Volver a Android Auto</string>
     <string name="controls_dash_start">Empezar en el dashboard al conectar la moto</string>
-    <string name="controls_dash_design">Diseño del cuadro</string>
     <string name="controls_dash_fields">Campos visibles</string>
-    <string name="dash_design_bars">Barras y cifras</string>
-    <string name="dash_design_gauges">Esferas analógicas</string>
-    <string-array name="dash_obd_field_names">
-        <item>RPM</item><item>Velocidad</item><item>Refrigerante</item><item>Acelerador</item><item>Voltaje</item>
-        <item>Carga calculada</item><item>Temperatura de admisión</item><item>Presión barométrica</item><item>Carga absoluta</item><item>Acelerador relativo</item>
+<string-array name="dash_obd_field_names">
+        <item>RPM</item><item>Velocidad</item><item>Refrigerante</item><item>Voltaje</item>
+        <item>Carga calculada</item><item>Temperatura de admisión</item><item>Presión barométrica</item><item>Carga absoluta</item><item>Throttle</item>
     </string-array>
 </resources>

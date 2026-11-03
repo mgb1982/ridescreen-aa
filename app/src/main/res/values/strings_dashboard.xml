@@ -12,12 +12,9 @@
     <string name="controls_dash_show">Show the dashboard on the dash</string>
     <string name="controls_dash_hide">Back to Android Auto</string>
     <string name="controls_dash_start">Start in the dashboard when the bike connects</string>
-    <string name="controls_dash_design">Dashboard layout</string>
     <string name="controls_dash_fields">Visible fields</string>
-    <string name="dash_design_bars">Bars and readouts</string>
-    <string name="dash_design_gauges">Analog gauges</string>
-    <string-array name="dash_obd_field_names">
-        <item>RPM</item><item>Speed</item><item>Coolant</item><item>Throttle</item><item>Voltage</item>
-        <item>Calculated load</item><item>Intake temperature</item><item>Barometric pressure</item><item>Absolute load</item><item>Relative throttle</item>
+<string-array name="dash_obd_field_names">
+        <item>RPM</item><item>Speed</item><item>Coolant</item><item>Voltage</item>
+        <item>Calculated load</item><item>Intake temperature</item><item>Barometric pressure</item><item>Absolute load</item><item>Throttle</item>
     </string-array>
 </resources>
