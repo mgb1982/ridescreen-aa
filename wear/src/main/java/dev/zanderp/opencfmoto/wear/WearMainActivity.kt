@@ -74,9 +74,23 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
     private var ambient = false
     private var photoShown: Boolean? = null
     private var rotaryAcc = 0f
+    private var notificationPermissionRequested = false
     private fun registerHeartRateSensor() {
         sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE)?.let {
             sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+    }
+
+    private fun heartRatePermission(): String = if (Build.VERSION.SDK_INT >= 36) {
+        "android.permission.health.READ_HEART_RATE"
+    } else Manifest.permission.BODY_SENSORS
+
+    private fun requestNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= 33 && !notificationPermissionRequested &&
+            checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+        ) {
+            notificationPermissionRequested = true
+            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
         }
     }
 
@@ -133,20 +147,17 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
             }
         })
 
-        if (Build.VERSION.SDK_INT >= 33 &&
-            checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
-        }
     }
 
     override fun onResume() {
         super.onResume()
         photoShown = null // the photo may have arrived while we were away
         Wearable.getMessageClient(this).addListener(this)
-        if (checkSelfPermission(Manifest.permission.BODY_SENSORS) == PackageManager.PERMISSION_GRANTED) {
+        val permission = heartRatePermission()
+        if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
             registerHeartRateSensor()
-        } else requestPermissions(arrayOf(Manifest.permission.BODY_SENSORS), 73)
+            requestNotificationPermissionIfNeeded()
+        } else requestPermissions(arrayOf(permission), 73)
         handler.removeCallbacks(subscribeTick)
         if (!ambient) handler.post(subscribeTick)
         root.requestFocus()
@@ -173,8 +184,9 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 73 && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
-            registerHeartRateSensor()
+        if (requestCode == 73) {
+            if (grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) registerHeartRateSensor()
+            requestNotificationPermissionIfNeeded()
         }
     }
 
