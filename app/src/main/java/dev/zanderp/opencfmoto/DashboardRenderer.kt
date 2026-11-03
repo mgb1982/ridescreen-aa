@@ -78,7 +78,7 @@ internal object DashboardRenderer {
 
     private fun metrics(d: DashboardMode.Data) = listOf(
         Metric("speed", "SPEED", d.speedKmh, "km/h", 240.0),
-        Metric("rpm", "RPM", d.rpm, "rpm", 10_000.0),
+        Metric("rpm", "RPM", d.rpm, "rpm", 14_000.0),
         Metric("throttle", "THROTTLE", d.relativeThrottle, "%", 100.0),
         Metric("coolant", "COOLANT", d.coolant, "°C", 130.0),
         Metric("volt", "VOLTAGE", d.volt, "V", 16.0),
@@ -222,7 +222,6 @@ internal object DashboardRenderer {
         label(c, "km/h" + if (d.speedFromGps) " · GPS" else "", 67f, 238f, 16f, p.muted, plain)
         drawCheckers(c, 326f, 215f, p)
         drawRacingThrottle(c, a["throttle"], 632f, 184f, 73f, p)
-        label(c, "COOLANT", 421f, 121f, 11f, p.muted, medium)
         drawMetricGrid(
             c, listOf("coolant", "volt", "load", "intake", "baro").mapNotNull(a::get),
             35f, 270f, 3, 238f, 59f, 7f, p, CardStyle.RACING,
@@ -278,6 +277,16 @@ internal object DashboardRenderer {
                 center(c, String.format(Locale.US, "%.0f", tickValue), tx, ty, 9f, p.muted, plain)
             }
         }
+
+        if (!large && m.id == "rpm") {
+            for (i in 0..7) {
+                val angle = Math.toRadians(135.0 + 270.0 * i / 7.0)
+                center(c, (i * 2).toString(),
+                    cx + cos(angle).toFloat() * (radius - 18f),
+                    cy + sin(angle).toFloat() * (radius - 18f) + 3f,
+                    7f, p.muted, plain)
+            }
+        }
         val angle = Math.toRadians(135.0 + 270.0 * fraction)
         stroke.color = p.red
         stroke.strokeWidth = if (large) 3f else 2f
@@ -286,7 +295,7 @@ internal object DashboardRenderer {
         c.drawCircle(cx, cy, if (large) 5f else 3.5f, fill)
         val labelSize = if (large) 13f else 8f
         val titleY = cy - radius * .28f
-        center(c, m.title, cx, titleY, labelSize, p.muted, medium)
+        if (!(large && m.id == "speed")) center(c, m.title, cx, titleY, labelSize, p.muted, medium)
         center(c, value(m), cx, cy + if (large) 15f else 8f, if (large) 43f else 21f, p.fg, bold)
         val unit = (hint?.let { "$it · " } ?: "") + m.unit
         center(c, unit, cx, cy + radius * .47f, if (large) 12f else 8f, p.muted, plain)
@@ -388,6 +397,31 @@ internal object DashboardRenderer {
         center(c, "km/h" + if (hint != null) " · $hint" else "", cx, cy + 41f, 11f, p.muted, plain)
     }
 
+
+    /** Fourteen calibrated segments with the same 0–14 ×1000 scale as the Touring reference. */
+    private fun drawTouringRpm(c: Canvas, m: Metric?, p: Palette, x: Float, y: Float, width: Float, height: Float) {
+        label(c, "RPM", x, y - 23f, 11f, p.muted, medium)
+        center(c, value(m), x + width / 2f, y - 4f, 19f, p.fg, bold)
+        val count = 14
+        val gap = 3f
+        val segmentHeight = (height - gap * (count - 1)) / count
+        val fraction = ((m?.value ?: 0.0) / (m?.max ?: 14_000.0)).toFloat().coerceIn(0f, 1f)
+        for (i in 0 until count) {
+            val bottom = y + height - i * (segmentHeight + gap)
+            val top = bottom - segmentHeight
+            fill.color = if ((i + 1f) / count <= fraction) {
+                if (i >= 11) p.red else p.accent
+            } else p.track
+            box.set(x, top, x + width, bottom)
+            c.drawRoundRect(box, 4f, 4f, fill)
+        }
+        for (i in 0..7) {
+            val scaleValue = i * 2
+            val yy = y + height - height * (scaleValue / 14f)
+            rightLabel(c, scaleValue.toString(), x + width + 21f, yy + 3f, 8f, p.muted, plain)
+        }
+    }
+
     private fun drawMountains(c: Canvas, cx: Float, cy: Float, p: Palette) {
         val path = Path().apply {
             moveTo(cx - 94f, cy + 67f)
@@ -399,7 +433,7 @@ internal object DashboardRenderer {
             lineTo(cx + 96f, cy + 67f)
             close()
         }
-        fill.color = p.accent and 0x2424FFFF
+        fill.color = (p.accent and 0x00FFFFFF) or 0x28000000
         c.drawPath(path, fill)
     }
 
