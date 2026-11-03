@@ -360,7 +360,7 @@ class ControlsActivity : AppCompatActivity() {
             fun dp(value: Int) = (value * density).toInt()
             val themeAttrs = obtainStyledAttributes(intArrayOf(
                 com.google.android.material.R.attr.colorSurface,
-                com.google.android.material.R.attr.colorPrimary,
+                android.R.attr.colorAccent,
                 com.google.android.material.R.attr.colorOnSurface,
             ))
             val surface = themeAttrs.getColor(0, android.graphics.Color.DKGRAY)
