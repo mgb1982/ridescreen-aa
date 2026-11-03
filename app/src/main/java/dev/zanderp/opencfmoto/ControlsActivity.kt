@@ -355,6 +355,15 @@ class ControlsActivity : AppCompatActivity() {
     // ── custom dashboard (v2.4)
 
     private fun setupDashboard() {
+        findViewById<MaterialButton>(R.id.btn_dash_design).setOnClickListener {
+            val labels = arrayOf(getString(R.string.dash_design_sport), getString(R.string.dash_design_racing), getString(R.string.dash_design_touring))
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle(R.string.controls_dash_design)
+                .setSingleChoiceItems(labels, DashboardMode.design(this).ordinal) { dialog, which ->
+                    DashboardMode.setDesign(this, DashboardMode.Design.entries[which])
+                    dialog.dismiss()
+                }.setNegativeButton(android.R.string.cancel, null).show()
+        }
         findViewById<MaterialButton>(R.id.btn_dash_fields).setOnClickListener {
             val keys = DashboardMode.fieldIds()
             val labels = resources.getStringArray(R.array.dash_obd_field_names)

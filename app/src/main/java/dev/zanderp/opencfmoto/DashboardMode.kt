@@ -64,6 +64,13 @@ object DashboardMode {
     fun theme(ctx: Context): Theme = Theme.byId(BikeScope.getString(prefs(ctx), ctx, "theme", null))
     fun setTheme(ctx: Context, t: Theme) = BikeScope.putString(prefs(ctx), ctx, "theme", t.id)
 
+    enum class Design(val id: String) {
+        SPORT("sport"), RACING("racing"), TOURING("touring");
+        companion object { fun byId(id: String?): Design = entries.firstOrNull { it.id == id } ?: SPORT }
+    }
+    fun design(ctx: Context): Design = Design.byId(BikeScope.getString(prefs(ctx), ctx, "design", null))
+    fun setDesign(ctx: Context, value: Design) = BikeScope.putString(prefs(ctx), ctx, "design", value.id)
+
     private val fieldIds = listOf("rpm", "speed", "coolant", "volt", "load", "intake", "baro", "absolute", "throttle")
     fun visibleFields(ctx: Context): Set<String> {
         val p = prefs(ctx)
@@ -155,7 +162,7 @@ object DashboardMode {
     private fun liveBuilder(app: Context): (Int, Int) -> android.graphics.Bitmap = { w, h -> render(app, w, h) }
 
     private fun render(ctx: Context, w: Int, h: Int): android.graphics.Bitmap =
-        DashboardRenderer.render(ctx, w, h, collect(ctx), isLight(ctx), visibleFields(ctx))
+        DashboardRenderer.render(ctx, w, h, collect(ctx), isLight(ctx), design(ctx), visibleFields(ctx))
 
     // ── data
 

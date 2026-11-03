@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Part of RideScreen AA (fork of OpenCfMoto). Free software under the GNU AGPL v3 or later.
 package dev.zanderp.opencfmoto
-
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -9,115 +8,68 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Typeface
 import java.util.Locale
-
-/** Two configurable OBD layouts rendered on the dash's 800×416 canvas. */
+/** Three selectable OBD dashboards rendered on the dash's 800×416 canvas. */
 internal object DashboardRenderer {
-    private const val DW = 800f
-    private const val DH = 416f
-    private class Palette(val bg:Int,val fg:Int,val muted:Int,val track:Int,val tile:Int,val accent:Int,val red:Int)
-    private val DARK=Palette(0xFF101713.toInt(),0xFFF4F5F0.toInt(),0xFF9AA69D.toInt(),0xFF28342D.toInt(),0xFF1B2720.toInt(),0xFFD5AA48.toInt(),0xFFE44840.toInt())
-    private val LIGHT=Palette(0xFFEAE9E1.toInt(),0xFF15191A.toInt(),0xFF58625D.toInt(),0xFFC7C9C1.toInt(),0xFFD9DCD4.toInt(),0xFF987021.toInt(),0xFFC93630.toInt())
-    private var bmp:Bitmap?=null
-    private var canvas:Canvas?=null
-    private val fill=Paint(Paint.ANTI_ALIAS_FLAG)
-    private val stroke=Paint(Paint.ANTI_ALIAS_FLAG).apply{style=Paint.Style.STROKE;strokeCap=Paint.Cap.ROUND}
-    private val text=Paint(Paint.ANTI_ALIAS_FLAG)
-    private val rect=RectF()
-    private val bold=Typeface.create("sans-serif-condensed",Typeface.BOLD)
-    private val plain=Typeface.create("sans-serif",Typeface.NORMAL)
-
-    fun render(ctx:Context,w:Int,h:Int,d:DashboardMode.Data,light:Boolean,visible:Set<String>):Bitmap {
-        var b=bmp
-        if(b==null||b.width!=w||b.height!=h){b?.recycle();b=Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888);bmp=b;canvas=Canvas(b)}
-        val c=canvas!!;val p=if(light)LIGHT else DARK;c.drawColor(p.bg)
-        val s=minOf(w/DW,h/DH);c.save();c.translate((w-DW*s)/2f,(h-DH*s)/2f);c.scale(s,s)
-        drawRacing(ctx,c,d,p,visible)
-        drawShiftLeds(c, d.rpm, p)
-        c.restore();return b
-    }
-
-    /** Ten independent shift lamps. The transition LEDs are deliberately placed exactly at 6,000 and 8,500 rpm. */
-    private fun drawShiftLeds(c: Canvas, rpm: Double?, p: Palette) {
-        val thresholds = doubleArrayOf(600.0, 1_600.0, 2_600.0, 3_600.0, 4_600.0, 5_600.0, 6_000.0, 7_250.0, 8_500.0, 10_000.0)
-        val lampW = 34f
-        val lampH = 10f
-        val gap = 10f
-        val totalW = thresholds.size * lampW + (thresholds.size - 1) * gap
-        val left = (DW - totalW) / 2f
-        val top = 8f
-        thresholds.forEachIndexed { index, threshold ->
-            val color = when {
-                index >= 8 -> android.graphics.Color.rgb(232, 55, 48)
-                index >= 6 -> android.graphics.Color.rgb(239, 198, 47)
-                else -> android.graphics.Color.rgb(41, 205, 91)
-            }
-            fill.color = if (rpm != null && rpm >= threshold) color else p.track
-            rect.set(left + index * (lampW + gap), top, left + index * (lampW + gap) + lampW, top + lampH)
-            c.drawRoundRect(rect, lampH / 2f, lampH / 2f, fill)
-        }
-    }
-
-    private data class Metric(val id:String,val label:String,val value:Double?,val unit:String,val max:Double=100.0)
-    private fun metrics(d:DashboardMode.Data)=listOf(
-        Metric("rpm","RPM",d.rpm,"rpm",10000.0), Metric("speed","SPEED",d.speedKmh,"km/h",180.0),
-        Metric("throttle","THROTTLE",d.relativeThrottle,"%",100.0),
-        Metric("coolant","COOLANT",d.coolant,"°C",130.0),
-        Metric("volt","VOLTAGE",d.volt,"V",16.0), Metric("load","ENGINE LOAD",d.load,"%",100.0),
-        Metric("intake","INTAKE AIR",d.intake,"°C",80.0), Metric("baro","BARO",d.baro,"kPa",120.0),
-        Metric("absolute","ABS LOAD",d.absoluteLoad,"%",260.0)
-    )
-    private fun fmt(m:Metric):String=m.value?.let{if(m.unit=="V")String.format(Locale.US,"%.1f",it) else String.format(Locale.US,"%.0f",it)}?:"—"
-
-    private fun drawRacing(ctx:Context,c:Canvas,d:DashboardMode.Data,p:Palette,visible:Set<String>){
-        drawShiftLeds(c,d.rpm,p)
-        val all=metrics(d).filter{it.id in visible}
-        val byId=all.associateBy{it.id}
-        drawDial(c,byId["speed"],150f,112f,66f,p,if(d.speedFromGps)"GPS" else null)
-        drawDial(c,byId["rpm"],400f,112f,66f,p,null)
-        drawDial(c,byId["throttle"],650f,112f,66f,p,null)
-
-        val cards=all.filter{it.id !in setOf("speed","rpm","throttle")}
-        val cols=3
-        val gapX=10f
-        val gapY=8f
-        val cardW=(DW-2f*42f-gapX*(cols-1))/cols
-        val cardH=if(cards.size<=cols) 96f else 94f
-        cards.forEachIndexed{i,m->
-            val col=i%cols;val row=i/cols
-            val x=42f+col*(cardW+gapX);val y=195f+row*(cardH+gapY)
-            drawCard(c,m,x,y,cardW,cardH,p)
-        }
-        if(!d.obdLive)label(c,ctx.getString(R.string.dash_no_obd),42f,407f,14f,p.muted,plain)
-    }
-
-    private fun drawDial(c:Canvas,m:Metric?,cx:Float,cy:Float,r:Float,p:Palette,hint:String?){
-        if(m==null)return
-        fill.color=0xFF111719.toInt();c.drawCircle(cx,cy,r,fill)
-        stroke.strokeWidth=2f;stroke.color=0xFF414B4D.toInt();c.drawCircle(cx,cy,r-1f,stroke)
-        rect.set(cx-r+7f,cy-r+7f,cx+r-7f,cy+r-7f)
-        stroke.strokeWidth=5f;stroke.color=p.track;c.drawArc(rect,135f,270f,false,stroke)
-        val fraction=((m.value?:0.0)/m.max).toFloat().coerceIn(0f,1f)
-        stroke.strokeWidth=5f;stroke.color=if(m.id=="rpm"&&fraction>=.88f)p.red else p.accent
-        c.drawArc(rect,135f,270f*fraction,false,stroke)
-        centered(c,m.label,cx,cy-18f,10f,p.muted,plain)
-        centered(c,fmt(m),cx,cy+10f,25f,p.fg,bold)
-        centered(c,hint?.let{"$it · ${m.unit}"}?:m.unit,cx,cy+29f,10f,p.muted,plain)
-    }
-
-    private fun drawCard(c:Canvas,m:Metric,x:Float,y:Float,w:Float,h:Float,p:Palette){
-        fill.color=p.tile;rect.set(x,y,x+w,y+h);c.drawRoundRect(rect,9f,9f,fill)
-        label(c,m.label,x+12f,y+21f,10f,p.muted,plain)
-        label(c,fmt(m),x+12f,y+h-19f,25f,p.fg,bold)
-        label(c,m.unit,x+18f+text.measureText(fmt(m)),y+h-19f,12f,p.muted,plain)
-        m.value?.let{
-            fill.color=if(m.id=="coolant"&&it>=DashboardMode.COOLANT_AMBER)p.red else p.accent
-            val ratio=(it/m.max).toFloat().coerceIn(0f,1f)
-            val barY=y+h-7f
-            fill.color=p.track;rect.set(x+11f,barY,x+w-11f,barY+3f);c.drawRoundRect(rect,2f,2f,fill)
-            fill.color=if(m.id=="coolant"&&it>=DashboardMode.COOLANT_AMBER)p.red else p.accent
-            rect.set(x+11f,barY,x+11f+(w-22f)*ratio,barY+3f);c.drawRoundRect(rect,2f,2f,fill)
-        }
-    }
-    private fun label(c:Canvas,s:String,x:Float,y:Float,size:Float,color:Int,face:Typeface){text.typeface=face;text.textSize=size;text.color=color;c.drawText(s,x,y,text)}
-    private fun centered(c:Canvas,s:String,x:Float,y:Float,size:Float,color:Int,face:Typeface){text.typeface=face;text.textSize=size;text.color=color;c.drawText(s,x-text.measureText(s)/2f,y,text)}
+ private const val W=800f; private const val H=416f
+ private class Palette(val bg:Int,val fg:Int,val muted:Int,val track:Int,val tile:Int,val accent:Int,val red:Int)
+ private val sd=Palette(0xFF101713.toInt(),0xFFF4F5F0.toInt(),0xFF9AA69D.toInt(),0xFF28342D.toInt(),0xFF1B2720.toInt(),0xFFD5AA48.toInt(),0xFFE44840.toInt())
+ private val sl=Palette(0xFFEAE9E1.toInt(),0xFF15191A.toInt(),0xFF58625D.toInt(),0xFFC7C9C1.toInt(),0xFFD9DCD4.toInt(),0xFF987021.toInt(),0xFFC93630.toInt())
+ private val rd=Palette(0xFF090B0F.toInt(),0xFFF8F8FA.toInt(),0xFF9EA4AE.toInt(),0xFF30343D.toInt(),0xFF171A20.toInt(),0xFFFF2638.toInt(),0xFFFF2638.toInt())
+ private val rl=Palette(0xFFF0F1F4.toInt(),0xFF11141A.toInt(),0xFF555B66.toInt(),0xFFC8CBD2.toInt(),0xFFFFFFFF.toInt(),0xFFD7192D.toInt(),0xFFD7192D.toInt())
+ private val td=Palette(0xFF080F12.toInt(),0xFFEAFBF8.toInt(),0xFF8DA9A4.toInt(),0xFF203A38.toInt(),0xFF102321.toInt(),0xFF38D6B2.toInt(),0xFFFF625A.toInt())
+ private val tl=Palette(0xFFEAF3EF.toInt(),0xFF102622.toInt(),0xFF58736D.toInt(),0xFFC1D4CE.toInt(),0xFFF8FCF9.toInt(),0xFF138D75.toInt(),0xFFD43B36.toInt())
+ private var bmp:Bitmap?=null; private var canvas:Canvas?=null
+ private val fill=Paint(Paint.ANTI_ALIAS_FLAG); private val stroke=Paint(Paint.ANTI_ALIAS_FLAG).apply{style=Paint.Style.STROKE;strokeCap=Paint.Cap.ROUND}
+ private val text=Paint(Paint.ANTI_ALIAS_FLAG); private val rect=RectF()
+ private val bold=Typeface.create("sans-serif-condensed",Typeface.BOLD); private val plain=Typeface.create("sans-serif",Typeface.NORMAL)
+ private data class M(val id:String,val name:String,val v:Double?,val unit:String,val max:Double=100.0)
+ private fun metrics(d:DashboardMode.Data)=listOf(M("speed","SPEED",d.speedKmh,"km/h",180.0),M("rpm","RPM",d.rpm,"rpm",10000.0),M("throttle","THROTTLE",d.relativeThrottle,"%",100.0),M("coolant","COOLANT",d.coolant,"°C",130.0),M("volt","VOLTAGE",d.volt,"V",16.0),M("load","ENGINE LOAD",d.load,"%",100.0),M("intake","INTAKE AIR",d.intake,"°C",80.0),M("baro","MANIFOLD",d.baro,"kPa",120.0),M("absolute","ABS LOAD",d.absoluteLoad,"%",260.0))
+ private fun fmt(m:M?)=m?.v?.let{if(m.unit=="V")String.format(Locale.US,"%.1f",it) else String.format(Locale.US,"%.0f",it)}?:"—"
+ fun render(ctx:Context,w:Int,h:Int,d:DashboardMode.Data,light:Boolean,design:DashboardMode.Design,visible:Set<String>):Bitmap {
+  var b=bmp;if(b==null||b.width!=w||b.height!=h){b?.recycle();b=Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888);bmp=b;canvas=Canvas(b)}
+  val c=canvas!!;val p=when(design){DashboardMode.Design.SPORT->if(light)sl else sd;DashboardMode.Design.RACING->if(light)rl else rd;DashboardMode.Design.TOURING->if(light)tl else td};c.drawColor(p.bg)
+  val s=minOf(w/W,h/H);c.save();c.translate((w-W*s)/2f,(h-H*s)/2f);c.scale(s,s)
+  val all=metrics(d).filter{it.id in visible}.associateBy{it.id}
+  when(design){DashboardMode.Design.SPORT->sport(c,d,p,all);DashboardMode.Design.RACING->racing(c,d,p,all);DashboardMode.Design.TOURING->tour(c,d,p,all)}
+  if(!d.obdLive)label(c,ctx.getString(R.string.dash_no_obd),12f,408f,12f,p.muted,plain)
+  c.restore();return b
+ }
+ private fun leds(c:Canvas,rpm:Double?,p:Palette,y:Float=12f){val n=10;val lw=38f;val gap=8f;val x=(W-(n*lw+(n-1)*gap))/2f;for(i in 0 until n){fill.color=if(rpm!=null&&rpm>=(i+1)*1000.0){if(i>7)p.red else p.accent}else p.track;rect.set(x+i*(lw+gap),y,x+i*(lw+gap)+lw,y+9);c.drawRoundRect(rect,5f,5f,fill)}}
+ private fun sport(c:Canvas,d:DashboardMode.Data,p:Palette,a:Map<String,M>){
+  leds(c,d.rpm,p);dial(c,a["speed"],178f,206f,148f,p,if(d.speedFromGps)"GPS" else null,true)
+  dial(c,a["rpm"],505f,103f,57f,p,null,false);dial(c,a["throttle"],670f,103f,57f,p,null,false)
+  cards(c,listOf("coolant","volt","load","intake","baro","absolute").mapNotNull{a[it]},365f,173f,2,197f,62f,p)
+  footer(c,p)
+ }
+ private fun racing(c:Canvas,d:DashboardMode.Data,p:Palette,a:Map<String,M>){
+  leds(c,d.rpm,p,8f);label(c,"RPM",38f,54f,15f,p.fg,bold);fill.color=p.track;rect.set(38f,67f,762f,113f);c.drawRoundRect(rect,10f,10f,fill)
+  val f=((a["rpm"]?.v?:0.0)/10000).toFloat().coerceIn(0f,1f);fill.color=p.accent;rect.set(42f,71f,42f+752f*f,109f);c.drawRoundRect(rect,6f,6f,fill);center(c,fmt(a["rpm"]),400f,101f,30f,p.fg,bold)
+  label(c,fmt(a["speed"]),48f,245f,100f,p.fg,bold);label(c,"km/h"+if(d.speedFromGps)" · GPS" else "",55f,274f,19f,p.muted,plain)
+  dial(c,a["throttle"],625f,220f,86f,p,null,true)
+  cards(c,listOf("coolant","volt","load","intake","baro").mapNotNull{a[it]},40f,308f,3,238f,45f,p);footer(c,p)
+ }
+ private fun tour(c:Canvas,d:DashboardMode.Data,p:Palette,a:Map<String,M>){
+  leds(c,d.rpm,p);rect.set(45f,42f,315f,316f);stroke.color=p.track;stroke.strokeWidth=17f;c.drawArc(rect,135f,270f,false,stroke)
+  val f=((a["speed"]?.v?:0.0)/180).toFloat().coerceIn(0f,1f);stroke.color=p.accent;c.drawArc(rect,135f,270f*f,false,stroke)
+  center(c,fmt(a["speed"]),180f,190f,62f,p.fg,bold);center(c,"km/h"+if(d.speedFromGps)" · GPS" else "",180f,222f,15f,p.muted,plain)
+  label(c,"RPM",380f,61f,14f,p.muted,bold);fill.color=p.track;rect.set(390f,72f,424f,274f);c.drawRoundRect(rect,12f,12f,fill)
+  val r=((a["rpm"]?.v?:0.0)/10000).toFloat().coerceIn(0f,1f);fill.color=p.accent;rect.set(390f,274f-202f*r,424f,274f);c.drawRoundRect(rect,12f,12f,fill);label(c,fmt(a["rpm"]),438f,185f,24f,p.fg,bold)
+  dial(c,a["throttle"],670f,132f,69f,p,null,false)
+  cards(c,listOf("coolant","volt","load","intake","baro","absolute").mapNotNull{a[it]},35f,320f,3,240f,39f,p);footer(c,p)
+ }
+ private fun dial(c:Canvas,m:M?,x:Float,y:Float,r:Float,p:Palette,hint:String?,large:Boolean){
+  if(m==null)return;fill.color=p.tile;c.drawCircle(x,y,r,fill);stroke.strokeWidth=if(large)4f else 2.5f;stroke.color=p.track;c.drawCircle(x,y,r-1,stroke)
+  rect.set(x-r+7,y-r+7,x+r-7,y+r-7);stroke.strokeWidth=if(large)8f else 5f;stroke.color=p.track;c.drawArc(rect,135f,270f,false,stroke)
+  val f=((m.v?:0.0)/m.max).toFloat().coerceIn(0f,1f);stroke.color=if(m.id=="rpm"&&f>.88f)p.red else p.accent;c.drawArc(rect,135f,270f*f,false,stroke)
+  center(c,m.name,x,y-r*.28f,if(large)17f else 10f,p.muted,plain);center(c,fmt(m),x,y+if(large)12f else 8f,if(large)48f else 24f,p.fg,bold);center(c,hint?.let{"$it · undefined"}?:m.unit,x,y+r*.45f,if(large)14f else 9f,p.muted,plain)
+ }
+ private fun cards(c:Canvas,list:List<M>,x:Float,y:Float,cols:Int,w:Float,h:Float,p:Palette){
+  val gap=7f;list.forEachIndexed{i,m->val xx=x+(i%cols)*(w+gap);val yy=y+(i/cols)*(h+7f);fill.color=p.tile;rect.set(xx,yy,xx+w,yy+h);c.drawRoundRect(rect,8f,8f,fill)
+   label(c,m.name,xx+9,yy+14,9f,p.muted,plain);label(c,fmt(m),xx+9,yy+h-7,if(h<50)16f else 21f,p.fg,bold)
+   if(h>=50)label(c,m.unit,xx+15+text.measureText(fmt(m)),yy+h-7,9f,p.muted,plain)
+  }
+ }
+ private fun footer(c:Canvas,p:Palette){stroke.strokeWidth=2f;stroke.color=p.accent;c.drawLine(16f,390f,784f,390f,stroke);label(c,"FUEL     ▮ ▮ ▮ ▮ ▮             COOLANT                 SPEED",25f,410f,13f,p.muted,plain)}
+ private fun label(c:Canvas,s:String,x:Float,y:Float,z:Float,color:Int,font:Typeface){text.typeface=font;text.textSize=z;text.color=color;c.drawText(s,x,y,text)}
+ private fun center(c:Canvas,s:String,x:Float,y:Float,z:Float,color:Int,font:Typeface){text.typeface=font;text.textSize=z;text.color=color;c.drawText(s,x-text.measureText(s)/2,y,text)}
 }

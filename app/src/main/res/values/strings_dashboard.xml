@@ -13,6 +13,10 @@
     <string name="controls_dash_hide">Back to Android Auto</string>
     <string name="controls_dash_start">Start in the dashboard when the bike connects</string>
     <string name="controls_dash_fields">Visible fields</string>
+    <string name="controls_dash_design">Dashboard style</string>
+    <string name="dash_design_sport">Sport</string>
+    <string name="dash_design_racing">Racing</string>
+    <string name="dash_design_touring">Touring</string>
 <string-array name="dash_obd_field_names">
         <item>RPM</item><item>Speed</item><item>Coolant</item><item>Voltage</item>
         <item>Calculated load</item><item>Intake temperature</item><item>Barometric pressure</item><item>Absolute load</item><item>Throttle</item>
