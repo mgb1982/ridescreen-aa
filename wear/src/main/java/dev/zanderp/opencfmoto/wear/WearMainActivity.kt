@@ -23,6 +23,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.wear.ambient.AmbientLifecycleObserver
@@ -74,6 +75,15 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
     private var ambient = false
     private var photoShown: Boolean? = null
     private var rotaryAcc = 0f
+    private val heartRatePermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        if (granted) registerHeartRateSensor()
+    }
+
+    private fun registerHeartRateSensor() {
+        sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE)?.let {
+            sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+    }
 
     private val ambientObserver = AmbientLifecycleObserver(
         this,
@@ -140,8 +150,8 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
         photoShown = null // the photo may have arrived while we were away
         Wearable.getMessageClient(this).addListener(this)
         if (checkSelfPermission(Manifest.permission.BODY_SENSORS) == PackageManager.PERMISSION_GRANTED) {
-            sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE)?.let { sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL) }
-        } else requestPermissions(arrayOf(Manifest.permission.BODY_SENSORS), 73)
+            registerHeartRateSensor()
+        } else heartRatePermission.launch(Manifest.permission.BODY_SENSORS)
         handler.removeCallbacks(subscribeTick)
         if (!ambient) handler.post(subscribeTick)
         root.requestFocus()
@@ -165,13 +175,6 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) = Unit
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 73 && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
-            sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE)?.let { sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL) }
-        }
-    }
 
     override fun onMessageReceived(event: MessageEvent) {
         if (event.path == PhoneLink.PATH_TRIPS) {
@@ -564,3 +567,4 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
         private val COLOR_ACCENT = Color.parseColor("#D1A955")
     }
 }
+
