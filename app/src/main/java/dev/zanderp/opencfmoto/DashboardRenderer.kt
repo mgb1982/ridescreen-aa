@@ -58,15 +58,52 @@ internal object DashboardRenderer {
   cards(c,listOf("coolant","volt","load","intake","baro","absolute").mapNotNull{a[it]},35f,320f,3,240f,39f,p);footer(c,p)
  }
  private fun dial(c:Canvas,m:M?,x:Float,y:Float,r:Float,p:Palette,hint:String?,large:Boolean){
-  if(m==null)return;fill.color=p.tile;c.drawCircle(x,y,r,fill);stroke.strokeWidth=if(large)4f else 2.5f;stroke.color=p.track;c.drawCircle(x,y,r-1,stroke)
-  rect.set(x-r+7,y-r+7,x+r-7,y+r-7);stroke.strokeWidth=if(large)8f else 5f;stroke.color=p.track;c.drawArc(rect,135f,270f,false,stroke)
-  val f=((m.v?:0.0)/m.max).toFloat().coerceIn(0f,1f);stroke.color=if(m.id=="rpm"&&f>.88f)p.red else p.accent;c.drawArc(rect,135f,270f*f,false,stroke)
-  center(c,m.name,x,y-r*.28f,if(large)17f else 10f,p.muted,plain);center(c,fmt(m),x,y+if(large)12f else 8f,if(large)48f else 24f,p.fg,bold);center(c,hint?.let{"$it · undefined"}?:m.unit,x,y+r*.45f,if(large)14f else 9f,p.muted,plain)
+  if(m==null)return
+  fill.color=p.tile;c.drawCircle(x,y,r,fill)
+  stroke.strokeWidth=if(large)2.5f else 1.8f;stroke.color=p.line;c.drawCircle(x,y,r-1f,stroke)
+  rect.set(x-r+7,y-r+7,x+r-7,y+r-7)
+  stroke.strokeWidth=if(large)8f else 5f;stroke.color=p.track;c.drawArc(rect,135f,270f,false,stroke)
+  val f=((m.v?:0.0)/m.max).toFloat().coerceIn(0f,1f)
+  stroke.color=if(m.id=="rpm"&&f>.88f)p.red else p.accent;c.drawArc(rect,135f,270f*f,false,stroke)
+  val ticks=if(large)24 else 16
+  for(i in 0..ticks){
+   val angle=Math.toRadians(135.0+270.0*i/ticks)
+   val major=if(large)i%4==0 else i%4==0
+   val r1=r-if(major) (if(large)24f else 15f) else (if(large)16f else 11f)
+   val r2=r-if(large)6f else 5f
+   stroke.color=if(major)p.fg else p.muted;stroke.strokeWidth=if(major)2f else 1f
+   c.drawLine(x+Math.cos(angle).toFloat()*r1,y+Math.sin(angle).toFloat()*r1,x+Math.cos(angle).toFloat()*r2,y+Math.sin(angle).toFloat()*r2,stroke)
+   if(large&&major){
+    val v=m.max*i/ticks
+    val tx=x+Math.cos(angle).toFloat()*(r-36f);val ty=y+Math.sin(angle).toFloat()*(r-36f)+4f
+    center(c,String.format(Locale.US,"%.0f",v),tx,ty,10f,p.muted,plain)
+   }
+  }
+  val needle=Math.toRadians(135.0+270.0*f)
+  stroke.color=p.red;stroke.strokeWidth=if(large)3f else 2f
+  c.drawLine(x,y,x+Math.cos(needle).toFloat()*(r*.62f),y+Math.sin(needle).toFloat()*(r*.62f),stroke)
+  fill.color=p.fg;c.drawCircle(x,y,if(large)5f else 3.5f,fill)
+  center(c,m.name,x,y-r*.23f,if(large)16f else 9f,p.muted,bold)
+  center(c,fmt(m),x,y+if(large)13f else 8f,if(large)45f else 22f,p.fg,bold)
+  val unit=if(hint!=null)hint+" · "+m.unit else m.unit
+  center(c,unit,x,y+r*.46f,if(large)13f else 9f,p.muted,plain)
  }
  private fun cards(c:Canvas,list:List<M>,x:Float,y:Float,cols:Int,w:Float,h:Float,p:Palette){
-  val gap=7f;list.forEachIndexed{i,m->val xx=x+(i%cols)*(w+gap);val yy=y+(i/cols)*(h+7f);fill.color=p.tile;rect.set(xx,yy,xx+w,yy+h);c.drawRoundRect(rect,8f,8f,fill)
-   label(c,m.name,xx+9,yy+14,9f,p.muted,plain);label(c,fmt(m),xx+9,yy+h-7,if(h<50)16f else 21f,p.fg,bold)
-   if(h>=50)label(c,m.unit,xx+15+text.measureText(fmt(m)),yy+h-7,9f,p.muted,plain)
+  val gap=7f
+  list.forEachIndexed{i,m->
+   val xx=x+(i%cols)*(w+gap);val yy=y+(i/cols)*(h+7f)
+   fill.color=p.tile;rect.set(xx,yy,xx+w,yy+h);c.drawRoundRect(rect,8f,8f,fill)
+   stroke.color=p.line;stroke.strokeWidth=1.2f;c.drawRoundRect(rect,8f,8f,stroke)
+   fill.color=p.accent;c.drawCircle(xx+15f,yy+15f,8f,fill)
+   center(c,m.name.take(1),xx+15f,yy+18f,9f,p.bg,bold)
+   label(c,m.name,xx+29f,yy+18f,9f,p.muted,bold)
+   val unitW=text.apply{typeface=plain;textSize=9f}.measureText(m.unit)
+   label(c,fmt(m),xx+11f,yy+h-8f,if(h<45f)16f else 21f,p.fg,bold)
+   if(h>=45f)label(c,m.unit,xx+w-unitW-9f,yy+h-8f,9f,p.muted,plain)
+   if(m.id=="coolant"||m.id=="load"){
+    val py=yy+h-3f;fill.color=p.track;rect.set(xx+9f,py,xx+w-9f,py+2f);c.drawRoundRect(rect,1f,1f,fill)
+    m.v?.let{fill.color=if(m.id=="coolant"&&it>=DashboardMode.COOLANT_AMBER)p.red else p.accent;rect.set(xx+9f,py,xx+9f+(w-18f)*(it/m.max).toFloat().coerceIn(0f,1f),py+2f);c.drawRoundRect(rect,1f,1f,fill)}
+   }
   }
  }
  private fun footer(c:Canvas,p:Palette){stroke.strokeWidth=2f;stroke.color=p.accent;c.drawLine(16f,390f,784f,390f,stroke);label(c,"FUEL     ▮ ▮ ▮ ▮ ▮             COOLANT                 SPEED",25f,410f,13f,p.muted,plain)}
