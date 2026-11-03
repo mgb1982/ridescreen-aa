@@ -400,11 +400,11 @@ class ControlsActivity : AppCompatActivity() {
                 val image = android.widget.ImageView(this).apply {
                     scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
                     adjustViewBounds = true
-                    setImageBitmap(DashboardMode.preview(this@ControlsActivity, design, 600, 312))
+                    setImageBitmap(DashboardPreview.bitmap(this@ControlsActivity, design, DashboardMode.isLight(this@ControlsActivity)))
                     contentDescription = getString(title)
                 }
                 card.addView(heading)
-                card.addView(image, android.widget.LinearLayout.LayoutParams(-1, dp(150)).apply { topMargin = dp(6) })
+                card.addView(image, android.widget.LinearLayout.LayoutParams(-1, dp(210)).apply { topMargin = dp(6) })
                 card.setOnClickListener {
                     DashboardMode.setDesign(this, design)
                     picker.dismiss()
