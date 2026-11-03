@@ -89,7 +89,7 @@ internal object DashboardRenderer {
  private fun dial(c:Canvas,m:M?,x:Float,y:Float,r:Float,p:Palette,hint:String?,large:Boolean){
   if(m==null)return
   fill.color=p.tile;c.drawCircle(x,y,r,fill)
-  stroke.strokeWidth=if(large)2.5f else 1.8f;stroke.color=p.line;c.drawCircle(x,y,r-1f,stroke)
+  stroke.strokeWidth=if(large)2.5f else 1.8f;stroke.color=p.track;c.drawCircle(x,y,r-1f,stroke)
   rect.set(x-r+7,y-r+7,x+r-7,y+r-7)
   stroke.strokeWidth=if(large)8f else 5f;stroke.color=p.track;c.drawArc(rect,135f,270f,false,stroke)
   val f=((m.v?:0.0)/m.max).toFloat().coerceIn(0f,1f)
@@ -122,7 +122,7 @@ internal object DashboardRenderer {
   list.forEachIndexed{i,m->
    val xx=x+(i%cols)*(w+gap);val yy=y+(i/cols)*(h+7f)
    fill.color=p.tile;rect.set(xx,yy,xx+w,yy+h);c.drawRoundRect(rect,8f,8f,fill)
-   stroke.color=p.line;stroke.strokeWidth=1.2f;c.drawRoundRect(rect,8f,8f,stroke)
+   stroke.color=p.track;stroke.strokeWidth=1.2f;c.drawRoundRect(rect,8f,8f,stroke)
    fill.color=p.accent;c.drawCircle(xx+15f,yy+15f,8f,fill)
    center(c,m.name.take(1),xx+15f,yy+18f,9f,p.bg,bold)
    label(c,m.name,xx+29f,yy+18f,9f,p.muted,bold)
