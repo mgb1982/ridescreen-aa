@@ -32,7 +32,29 @@ internal object DashboardRenderer {
         val c=canvas!!;val p=if(light)LIGHT else DARK;c.drawColor(p.bg)
         val s=minOf(w/DW,h/DH);c.save();c.translate((w-DW*s)/2f,(h-DH*s)/2f);c.scale(s,s)
         if(design==DashboardMode.Design.GAUGES) drawGauges(ctx,c,d,p,visible) else drawBars(ctx,c,d,p,visible)
+        drawShiftLeds(c, d.rpm, p)
         c.restore();return b
+    }
+
+    /** Ten independent shift lamps. The transition LEDs are deliberately placed exactly at 6,000 and 8,500 rpm. */
+    private fun drawShiftLeds(c: Canvas, rpm: Double?, p: Palette) {
+        val thresholds = doubleArrayOf(600.0, 1_600.0, 2_600.0, 3_600.0, 4_600.0, 5_600.0, 6_000.0, 7_250.0, 8_500.0, 10_000.0)
+        val lampW = 34f
+        val lampH = 10f
+        val gap = 10f
+        val totalW = thresholds.size * lampW + (thresholds.size - 1) * gap
+        val left = (DW - totalW) / 2f
+        val top = 8f
+        thresholds.forEachIndexed { index, threshold ->
+            val color = when {
+                index >= 8 -> android.graphics.Color.rgb(232, 55, 48)
+                index >= 6 -> android.graphics.Color.rgb(239, 198, 47)
+                else -> android.graphics.Color.rgb(41, 205, 91)
+            }
+            fill.color = if (rpm != null && rpm >= threshold) color else p.track
+            rect.set(left + index * (lampW + gap), top, left + index * (lampW + gap) + lampW, top + lampH)
+            c.drawRoundRect(rect, lampH / 2f, lampH / 2f, fill)
+        }
     }
 
     private data class Metric(val id:String,val label:String,val value:Double?,val unit:String,val max:Double=100.0)
