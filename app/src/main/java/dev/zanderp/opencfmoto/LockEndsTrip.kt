@@ -51,7 +51,8 @@ object LockEndsTrip {
         return tooFastToLock(obd, gps)
     }
 
-    private val main = Handler(Looper.getMainLooper())
+    // Lazy so the pure decide() logic can be unit-tested on the JVM without an Android main looper.
+    private val main by lazy { Handler(Looper.getMainLooper()) }
 
     /** Called by [PkeUnlock.send] with every result; does nothing unless it was a confirmed lock. */
     fun after(ctx: Context, action: PkeUnlock.Action, res: PkeUnlock.Result) {
