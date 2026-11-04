@@ -470,9 +470,11 @@ internal object DashboardRenderer {
         fx.maskFilter = BlurMaskFilter(4f, BlurMaskFilter.Blur.NORMAL)
         c.save(); c.translate(2f, 3f); c.drawPath(needle, fx); c.restore()
         if (night) glowPath(c, needle, color, 6f, 0xA0)
+        fill.color = BLACK // opaque: a shader keeps the paint alpha
         fill.shader = LinearGradient(cx + ux * from, cy + uy * from, cx + ux * to, cy + uy * to,
             darken(color, .1f), lighten(color, .35f), Shader.TileMode.CLAMP)
         c.drawPath(needle, fill)
+        fill.color = BLACK // opaque: a shader keeps the paint alpha
         fill.shader = RadialGradient(cx + ux * from - 2f, cy + uy * from - 2f, 8f,
             lighten(color, .5f), darken(color, .3f), Shader.TileMode.CLAMP)
         c.drawCircle(cx + ux * from, cy + uy * from, 6f, fill)
@@ -566,6 +568,7 @@ internal object DashboardRenderer {
         }
         still {
             glowPath(c, frame, p.accent, 10f, if (night) 0x70 else 0x30)
+            fill.color = BLACK // opaque: a shader keeps the paint alpha
             fill.shader = LinearGradient(0f, y, 0f, y + h, lighten(p.tile, if (night) .08f else 0f),
                 darken(p.tile, if (night) .4f else .05f), Shader.TileMode.CLAMP)
             c.drawPath(frame, fill)
@@ -575,6 +578,7 @@ internal object DashboardRenderer {
             stroke.strokeWidth = 2.2f
             c.drawPath(frame, stroke)
             for (i in 0 until count) {
+                fill.color = BLACK // opaque: a shader keeps the paint alpha
                 fill.shader = LinearGradient(0f, top, 0f, bottom, lighten(p.track, .08f), darken(p.track, .15f), Shader.TileMode.CLAMP)
                 c.drawPath(seg(i), fill)
             }
@@ -594,6 +598,7 @@ internal object DashboardRenderer {
                 else blend(start, p.accent2, (from / DashboardMode.RPM_RED).toFloat())
                 val s = seg(i)
                 if (night && from >= DashboardMode.RPM_RED - 2_000.0) glowPath(c, s, color, 6f, 0xB0)
+                fill.color = BLACK // opaque: a shader keeps the paint alpha
                 fill.shader = LinearGradient(0f, top, 0f, bottom, lighten(color, .25f), darken(color, .12f), Shader.TileMode.CLAMP)
                 c.drawPath(s, fill)
             }
@@ -612,6 +617,7 @@ internal object DashboardRenderer {
         }
         still {
             glowPath(c, plate, p.accent, 12f, if (night) 0x80 else 0x30)
+            fill.color = BLACK // opaque: a shader keeps the paint alpha
             fill.shader = LinearGradient(x, y, x + w * .4f, y + h, lighten(p.tile, if (night) .1f else 0f),
                 darken(p.tile, if (night) .45f else .06f), Shader.TileMode.CLAMP)
             c.drawPath(plate, fill)
@@ -769,6 +775,7 @@ internal object DashboardRenderer {
         still {
             centerText(c, "RPM", x + width / 2f, y - 30f, 14f, p.muted, fLabel)
             for (i in 0 until count) {
+                fill.color = BLACK // opaque: a shader keeps the paint alpha
                 fill.shader = LinearGradient(x, 0f, x + width, 0f, darken(p.track, .1f), lighten(p.track, .1f), Shader.TileMode.CLAMP)
                 c.drawRoundRect(seg(i), 2f, 2f, fill)
             }
@@ -791,6 +798,7 @@ internal object DashboardRenderer {
                     fx.maskFilter = BlurMaskFilter(5f, BlurMaskFilter.Blur.NORMAL)
                     c.drawRoundRect(r, 2f, 2f, fx)
                 }
+                fill.color = BLACK // opaque: a shader keeps the paint alpha
                 fill.shader = LinearGradient(x, 0f, x + width, 0f, darken(color, .1f), lighten(color, .3f), Shader.TileMode.CLAMP)
                 c.drawRoundRect(r, 2f, 2f, fill)
             }
@@ -846,6 +854,7 @@ internal object DashboardRenderer {
                 fx.maskFilter = BlurMaskFilter(6f, BlurMaskFilter.Blur.NORMAL)
                 c.drawRoundRect(r, radius, radius, fx)
             }
+            fill.color = BLACK // opaque: a shader keeps the paint alpha
             fill.shader = LinearGradient(0f, y, 0f, y + h, lighten(p.tile, if (night) .09f else 0f),
                 darken(p.tile, if (night) .35f else .05f), Shader.TileMode.CLAMP)
             c.drawRoundRect(r, radius, radius, fill)
