@@ -1,0 +1,27 @@
+name: Dashboard snapshots
+on:
+  workflow_dispatch:
+  push:
+    branches: ['test/dashboard-snapshots']
+permissions:
+  contents: read
+jobs:
+  snapshots:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - run: chmod +x gradlew
+      - name: Render the six dashboards
+        run: ./gradlew testGithubDebugUnitTest --tests 'dev.zanderp.opencfmoto.DashboardSnapshotTest'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dashboard-snapshots
+          path: |
+            app/build/dashboard-snapshots/
+            app/build/reports/tests/
+          retention-days: 14
