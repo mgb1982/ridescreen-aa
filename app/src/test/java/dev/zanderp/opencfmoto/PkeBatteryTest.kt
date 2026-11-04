@@ -8,22 +8,22 @@ import org.junit.Test
 
 class PkeBatteryTest {
     @Test fun cleanCodeKeepsDigits() {
-        assertEquals("050223176394404", PkeBattery.cleanCode(" 0502 2317-6394404 "))
+        assertEquals("123456789012345", PkeBattery.cleanCode(" 1234 5678-9012345 "))
         assertEquals("", PkeBattery.cleanCode(null))
     }
 
     @Test fun onlyBuildsTheTwoReadQueries() {
-        assertEquals("*BT,0502,10,008#", String(PkeBattery.frame("0502", PkeBattery.Query.HANDSHAKE)))
-        assertEquals("*BT,0502,10,001,7#", String(PkeBattery.frame("0502", PkeBattery.Query.STATUS)))
+        assertEquals("*BT,1234,10,008#", String(PkeBattery.frame("1234", PkeBattery.Query.HANDSHAKE)))
+        assertEquals("*BT,1234,10,001,7#", String(PkeBattery.frame("1234", PkeBattery.Query.STATUS)))
         // The query set is exactly these two; no lock/unlock/etc. exists.
         assertEquals(setOf("008", "001,7"), PkeBattery.Query.values().map { it.cmd }.toSet())
     }
 
     @Test fun parsesVoltage() {
-        assertEquals(12.9f, PkeBattery.voltsFrom("*AT,0502,10,008,A1B2C3D4,129#")!!, 0.01f)
+        assertEquals(12.9f, PkeBattery.voltsFrom("*AT,1234,10,008,A1B2C3D4,129#")!!, 0.01f)
         assertEquals(13.4f, PkeBattery.voltsFrom("*AT,x,y,008,CHAL,134")!!, 0.01f)
         assertNull(PkeBattery.voltsFrom("*AT,x,y,008,CHAL,999#")) // out of range
-        assertNull(PkeBattery.voltsFrom("*BT,0502,10,008#"))      // our own request, not a reply
+        assertNull(PkeBattery.voltsFrom("*BT,1234,10,008#"))      // our own request, not a reply
         assertNull(PkeBattery.voltsFrom("garbage"))
     }
 
@@ -35,19 +35,19 @@ class PkeBatteryTest {
     }
 
     @Test fun matchesBoxByCodeOrName() {
-        val pke = "050223176394404"
+        val pke = "123456789012345"
         val adv = ("prefix" + pke + "tail").toByteArray()
         assertTrue(PkeBattery.matches(adv, null, pke))
-        assertTrue(PkeBattery.matches(null, "PKE-4404", pke))
+        assertTrue(PkeBattery.matches(null, "PKE-2345", pke))
         assertFalse(PkeBattery.matches(null, "SomeEarbuds", pke))
-        assertFalse(PkeBattery.matches(null, null, "0502")) // too short to match on
+        assertFalse(PkeBattery.matches(null, null, "1234")) // too short to match on
     }
 
     @Test fun masksCodeAndChallenge() {
-        val m = PkeBattery.masked("*AT,050223176394404,10,008,SECRETCHAL,129#", "050223176394404")
-        assertFalse(m.contains("050223176394404"))
+        val m = PkeBattery.masked("*AT,123456789012345,10,008,SECRETCHAL,129#", "123456789012345")
+        assertFalse(m.contains("123456789012345"))
         assertFalse(m.contains("SECRETCHAL"))
-        assertTrue(m.contains("4404"))
+        assertTrue(m.contains("2345"))
         assertTrue(m.contains("129"))
     }
 }
