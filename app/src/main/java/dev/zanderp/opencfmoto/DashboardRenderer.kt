@@ -334,7 +334,8 @@ internal object DashboardRenderer {
             fill.color = when {
                 rpm <= from -> p.track
                 from >= DashboardMode.RPM_RED -> p.red
-                else -> blend(p.fg, p.accent2, (from / DashboardMode.RPM_RED).toFloat())
+                // Night: white → pink → red; day: light grey → red (as in the reference).
+                else -> blend(if (p == racingDay) 0xFFC4C7CD.toInt() else p.fg, p.accent2, (from / DashboardMode.RPM_RED).toFloat())
             }
             c.drawPath(seg, fill)
         }
