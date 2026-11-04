@@ -1,0 +1,3 @@
+# Keep text files with LF in the repository on every OS (Windows checkouts included).
+* text=auto eol=lf
+*.bat text eol=crlf
