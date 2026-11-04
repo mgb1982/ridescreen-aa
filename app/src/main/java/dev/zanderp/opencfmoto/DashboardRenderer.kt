@@ -256,7 +256,7 @@ internal object DashboardRenderer {
         stroke.strokeWidth = if (large) 8f else 5f
         c.drawArc(box, 135f, 270f, false, stroke)
         val fraction = ((m.value ?: 0.0) / m.max).toFloat().coerceIn(0f, 1f)
-        stroke.color = if (m.id == "rpm" && fraction >= .88f) p.red else p.accent
+        stroke.color = if (m.id == "rpm" && (m.value ?: 0.0) >= DashboardMode.RPM_RED) p.red else p.accent
         c.drawArc(box, 135f, 270f * fraction, false, stroke)
         val divisions = if (large) 48 else 20
         for (i in 0..divisions) {
@@ -322,7 +322,8 @@ internal object DashboardRenderer {
                 lineTo(sx + segmentWidth - 7f, bottom); lineTo(sx, bottom); close()
             }
             fill.color = if ((i + 1f) / count <= fraction) {
-                if (i >= count - 3) p.red else if (i >= count - 6) p.accent2 else p.fg
+                val from = i * (m?.max ?: DashboardMode.RPM_MAX) / count
+                if (from >= DashboardMode.RPM_RED) p.red else if (from >= DashboardMode.RPM_RED - 3_000.0) p.accent2 else p.fg
             } else p.track
             c.drawPath(path, fill)
             stroke.color = p.edge
@@ -410,7 +411,7 @@ internal object DashboardRenderer {
             val bottom = y + height - i * (segmentHeight + gap)
             val top = bottom - segmentHeight
             fill.color = if ((i + 1f) / count <= fraction) {
-                if (i >= 11) p.red else p.accent
+                if (i * (m?.max ?: 14_000.0) / count >= DashboardMode.RPM_RED) p.red else p.accent
             } else p.track
             box.set(x, top, x + width, bottom)
             c.drawRoundRect(box, 4f, 4f, fill)

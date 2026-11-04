@@ -39,7 +39,8 @@ object DashboardMode {
         val obdLive: Boolean,
     )
 
-    // Provisional until checked on the bike (the 125X rev limit and the usual coolant range).
+    // Red zone from 9,000 rpm (confirmed by Manel for the 125X). Every RPM gauge colours red from RPM_RED.
+    // Coolant: amber from 105 °C (above the normal fan-controlled range), red from 115 °C.
     const val RPM_MAX = 10_000.0
     const val RPM_RED = 9_000.0
     const val COOLANT_AMBER = 105.0
