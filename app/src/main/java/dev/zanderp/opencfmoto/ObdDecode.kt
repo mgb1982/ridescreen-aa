@@ -18,13 +18,14 @@ object ObdDecode {
         Pid(0x0D, "speed", "km/h", 1) { it[0].toDouble() },
         Pid(0x0E, "timing advance", "°", 1) { it[0] / 2.0 - 64 },
         Pid(0x0F, "intake air", "°C", 1) { it[0] - 40.0 },
-        Pid(0x11, "throttle", "%", 1) { it[0] * 100.0 / 255 },
+        // Absolute throttle: decoded but never shown (Manel, 5 Nov 2026: the relative one is more precise).
+        Pid(0x11, "absolute throttle", "%", 1) { it[0] * 100.0 / 255 },
         Pid(0x1F, "run time", "s", 2) { (it[0] * 256 + it[1]).toDouble() },
         Pid(0x2F, "fuel level", "%", 1) { it[0] * 100.0 / 255 },
         Pid(0x33, "baro pressure", "kPa", 1) { it[0].toDouble() },
         Pid(0x42, "module voltage", "V", 2) { (it[0] * 256 + it[1]) / 1000.0 },
         Pid(0x43, "absolute load", "%", 2) { (it[0] * 256 + it[1]) * 100.0 / 255 },
-        Pid(0x45, "relative throttle", "%", 1) { it[0] * 100.0 / 255 },
+        Pid(0x45, "throttle", "%", 1)   // relative throttle, shown everywhere as "throttle" { it[0] * 100.0 / 255 },
         Pid(0x46, "ambient air", "°C", 1) { it[0] - 40.0 },
         Pid(0x5C, "oil temperature", "°C", 1) { it[0] - 40.0 },
     )

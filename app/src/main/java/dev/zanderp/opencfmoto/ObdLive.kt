@@ -37,7 +37,7 @@ object ObdLive {
         )
     }
 
-    private val WANT = listOf(0x0C, 0x0D, 0x11, 0x05, 0x42, 0x04, 0x0F, 0x33, 0x43, 0x45)   // rpm, speed, throttle, coolant, module voltage
+    private val WANT = listOf(0x0C, 0x0D, 0x05, 0x42, 0x04, 0x0F, 0x33, 0x43, 0x45)   // rpm, speed, coolant, voltage, load, intake, baro, abs load, (relative) throttle
     private const val FRESH_MS = 5_000L
     private const val ENGINE_ON_RPM = 400.0
     private const val RETRY_MIN_MS = 5_000L
@@ -216,7 +216,7 @@ object ObdLive {
 
     private fun describe(s: Snapshot?): String = if (s == null) "-" else listOfNotNull(
         s.rpm?.let { "rpm ${"%.0f".format(it)}" }, s.speed?.let { "speed ${"%.0f".format(it)}" },
-        s.coolant?.let { "coolant ${"%.0f".format(it)}" }, s.throttle?.let { "throttle ${"%.1f".format(it)}" },
+        s.coolant?.let { "coolant ${"%.0f".format(it)}" }, s.relativeThrottle?.let { "throttle ${"%.1f".format(it)}" },
         s.volt?.let { "volt ${"%.1f".format(it)}" },
     ).joinToString(" · ")
 

@@ -28,7 +28,7 @@ object ObdProbe {
     private val NAME_HINTS = listOf("OBD", "ELM", "V-LINK", "VLINK", "VGATE", "KONNWEI", "ICAR", "VEEPEAK", "SCAN")
     // 01 + 1..6 PIDs (+ optional "responses expected" digit, an ELM327 speed-up) | AT setup | 03 (stored codes).
     internal val SAFE = Regex("^(AT[A-Z0-9 ]*|01([0-9A-F]{2}){1,6}[1-9]?|03)$")
-    private val LIVE = listOf(0x0C, 0x0D, 0x05, 0x11)
+    private val LIVE = listOf(0x0C, 0x0D, 0x05, 0x45)
     private const val LIVE_SECONDS = 20
 
     private fun log(s: String) = LogBus.log("[OBD] $s")
@@ -90,7 +90,7 @@ object ObdProbe {
 
             progress("PIDs…")
             for (p in ObdDecode.PIDS) {
-                if (p.pid !in supported) continue
+                if (p.pid !in supported || p.pid == 0x11) continue   // absolute throttle is not shown
                 val v = ObdDecode.value(io.cmd("01%02X".format(p.pid)), p.pid)
                 if (v != null) out += "${p.name}: ${ObdDecode.format(v, p.unit)}"
             }
