@@ -24,9 +24,9 @@ import java.io.File
 @Config(sdk = [34], application = Application::class)
 class DashboardSnapshotTest {
     private val sample = DashboardMode.Data(
-        rpm = 6_250.0, speedKmh = 87.0, speedFromGps = false, coolant = 94.0,
-        throttle = 38.0, volt = 14.1, load = 44.0, intake = 42.0,
-        baro = 100.0, absoluteLoad = 32.0, relativeThrottle = 38.0, obdLive = true,
+        rpm = 1_832.0, speedKmh = 0.0, speedFromGps = false, coolant = 94.0,
+        throttle = 10.0, volt = 14.1, load = 44.0, intake = 42.0,
+        baro = 100.0, absoluteLoad = 32.0, relativeThrottle = 10.0, obdLive = true,
     )
     private val fields = setOf("rpm", "speed", "coolant", "volt", "load", "intake", "baro", "absolute", "throttle")
 
@@ -40,6 +40,23 @@ class DashboardSnapshotTest {
                     .copy(Bitmap.Config.ARGB_8888, false)
                 File(out, "${design.id}-${if (light) "day" else "night"}-${w}x$h.png").outputStream().use {
                     bmp.compress(Bitmap.CompressFormat.PNG, 100, it)
+                }
+                if (w == 800) {
+                    // Same frame with the part the 125X covers (its speed/fuel strip) shaded.
+                    val seen = bmp.copy(Bitmap.Config.ARGB_8888, true)
+                    val c = android.graphics.Canvas(seen)
+                    val shade = android.graphics.Paint().apply { color = 0xD0000000.toInt() }
+                    val path = android.graphics.Path().apply {
+                        moveTo(0f, DashboardRenderer.VIS_BOTTOM)
+                        lineTo(DashboardRenderer.VIS_RIGHT_STEP_X - 20f, DashboardRenderer.VIS_BOTTOM)
+                        lineTo(DashboardRenderer.VIS_RIGHT_STEP_X + 20f, DashboardRenderer.VIS_BOTTOM_RIGHT)
+                        lineTo(800f, DashboardRenderer.VIS_BOTTOM_RIGHT)
+                        lineTo(800f, 416f); lineTo(0f, 416f); close()
+                    }
+                    c.drawPath(path, shade)
+                    File(out, "${design.id}-${if (light) "day" else "night"}-seen.png").outputStream().use {
+                        seen.compress(Bitmap.CompressFormat.PNG, 100, it)
+                    }
                 }
             }
         }

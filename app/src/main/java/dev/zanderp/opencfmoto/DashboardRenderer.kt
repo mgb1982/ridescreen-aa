@@ -39,6 +39,16 @@ internal object DashboardRenderer {
     private const val W = 800f
     private const val H = 416f
 
+    /**
+     * What the Zontes 125X actually shows of the 800×416 frame (Manel's photos, 6 Nov 2026): the dash
+     * draws its own clock bar above the frame and lays its speed/fuel strip over the bottom of it,
+     * from y≈330 on the left and centre and from y≈288 right of x≈680, where the strip steps up for
+     * its speed readout. Everything readable stays inside; below is background only.
+     */
+    internal const val VIS_BOTTOM = 326f
+    internal const val VIS_BOTTOM_RIGHT = 284f
+    internal const val VIS_RIGHT_STEP_X = 676f
+
     private data class Palette(
         val bg: Int, val fg: Int, val muted: Int, val track: Int,
         val tile: Int, val edge: Int, val accent: Int, val accent2: Int, val red: Int,
@@ -200,7 +210,7 @@ internal object DashboardRenderer {
         design: DashboardMode.Design, all: Map<String, Metric>,
     ) {
         still { drawBackground(c, p, design) }
-        drawHeader(c, d, p)
+        // No header: the dash's own clock bar sits right above the frame.
         live { drawShiftLights(c, d.rpm, p, design) }
         when (design) {
             DashboardMode.Design.SPORT -> drawSport(c, d, p, all)
@@ -208,7 +218,7 @@ internal object DashboardRenderer {
             DashboardMode.Design.TOURING -> drawTouring(c, d, p, all)
         }
         live {
-            if (!d.obdLive) rightText(c, ctx.getString(R.string.dash_no_obd), W - 22f, 66f, 13f, p.muted, fLabel)
+            if (!d.obdLive) txt(c, ctx.getString(R.string.dash_no_obd), 24f, 22f, 13f, p.muted, fLabel)
         }
     }
 
@@ -386,7 +396,7 @@ internal object DashboardRenderer {
                 DashboardMode.Design.RACING -> if (i >= 8) p.red else p.fg
                 DashboardMode.Design.TOURING -> if (i >= 8) p.red else p.accent
             }
-            box.set(x0 + i * (width + gap), 43f, x0 + i * (width + gap) + width, 48f)
+            box.set(x0 + i * (width + gap), 5f, x0 + i * (width + gap) + width, 10f)
             if (active) {
                 resetFx()
                 fx.color = alpha(color, if (night) 0xC0 else 0x60)
@@ -402,11 +412,14 @@ internal object DashboardRenderer {
     // ── SPORT ─────────────────────────────────────────────────────────────────────────────
 
     private fun drawSport(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>) {
-        drawSportSpeed(c, a["speed"], 178f, 232f, 168f, p, d.speedFromGps)
-        drawSmallDial(c, a["rpm"], 446f, 122f, 64f, p, rpm = true)
-        drawSmallDial(c, a["throttle"], 610f, 122f, 64f, p, rpm = false)
+        drawSportSpeed(c, a["speed"], 178f, 172f, 152f, p, d.speedFromGps)
+        // Two columns of cards (360–785); the dials sit centred over them. The right column stops
+        // at row 2 because the dash strip steps up there.
+        val colW = 206f; val gapX = 13f; val left = 360f
+        drawSmallDial(c, a["rpm"], left + colW / 2f, 78f, 62f, p, rpm = true)
+        drawSmallDial(c, a["throttle"], left + colW + gapX + colW / 2f, 78f, 62f, p, rpm = false)
         cardIds.mapNotNull(a::get).forEachIndexed { i, m ->
-            drawCard(c, m, 366f + (i % 2) * 214f, 202f + (i / 2) * 68f, 206f, 60f, p, CardLook.SPORT)
+            drawCard(c, m, left + (i % 2) * (colW + gapX), 152f + (i / 2) * 58f, colW, 52f, p, CardLook.SPORT)
         }
     }
 
@@ -537,14 +550,15 @@ internal object DashboardRenderer {
     // ── RACING ────────────────────────────────────────────────────────────────────────────
 
     private fun drawRacing(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>) {
-        still { textWithGlow(c, "RPM", 40f, 70f, 17f, p.fg, fValue, null) }
-        drawRacingTach(c, a["rpm"], p, 40f, 76f, 720f, 46f)
-        drawSpeedPlate(c, a["speed"], d.speedFromGps, p, 40f, 158f, 320f, 118f)
-        drawRacingThrottle(c, a["throttle"], 535f, 272f, 96f, p)
-        still { drawCheckers(c, 680f, 180f, p) }
+        still { textWithGlow(c, "RPM", 30f, 30f, 16f, p.fg, fValue, null) }
+        drawRacingTach(c, a["rpm"], p, 30f, 34f, 742f, 44f)
+        drawSpeedPlate(c, a["speed"], d.speedFromGps, p, 30f, 104f, 352f, 102f)
+        drawRacingThrottle(c, a["throttle"], 528f, 204f, 98f, p)
+        still { drawCheckers(c, 652f, 124f, p) }
         cardIds.mapNotNull(a::get).forEachIndexed { i, m ->
-            if (i < 3) drawCard(c, m, 40f + i * 245f, 290f, 235f, 52f, p, CardLook.RACING)
-            else drawCard(c, m, 40f + (i - 3) * 367f, 350f, 353f, 52f, p, CardLook.RACING_WIDE)
+            if (i < 3) drawCard(c, m, 30f + i * 248f, 216f, 238f, 50f, p, CardLook.RACING)
+            // Second row ends before the strip's step (x≈676).
+            else drawCard(c, m, 30f + (i - 3) * 325f, 272f, 315f, 50f, p, CardLook.RACING_WIDE)
         }
     }
 
@@ -640,8 +654,8 @@ internal object DashboardRenderer {
             }
         }
         live {
-            textWithGlow(c, value(m), x + w * .42f, y + h * .66f, 78f, p.fg, fValue, if (night) p.accent else null, center = true)
-            centerText(c, "km/h" + if (gps) " · GPS" else "", x + w * .42f, y + h - 12f, 17f, p.muted, fLabel)
+            textWithGlow(c, value(m), x + w * .40f, y + h * .64f, 76f, p.fg, fValue, if (night) p.accent else null, center = true)
+            centerText(c, "km/h" + if (gps) " · GPS" else "", x + w * .40f, y + h - 10f, 17f, p.muted, fLabel)
         }
     }
 
@@ -678,11 +692,11 @@ internal object DashboardRenderer {
     }
 
     private fun drawCheckers(c: Canvas, x: Float, y: Float, p: Palette) {
-        val size = 9f
-        for (row in 0..3) for (col in 0..6) {
+        val size = 13f
+        for (row in 0..4) for (col in 0..8) {
             fill.shader = null
             fill.color = if ((row + col) % 2 == 0) p.accent else if (night) 0xFFE9E9EC.toInt() else WHITE
-            val off = sin(col * .7).toFloat() * 3f
+            val off = sin(col * .7).toFloat() * 5f
             c.drawRect(x + col * size, y + row * size + off, x + (col + 1) * size, y + (row + 1) * size + off, fill)
         }
     }
@@ -691,12 +705,13 @@ internal object DashboardRenderer {
 
     private fun drawTouring(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>) {
         still { drawLandscape(c, p) }
-        drawTouringSpeed(c, a["speed"], 200f, 240f, 168f, p, d.speedFromGps)
-        drawTouringRpm(c, a["rpm"], p, 440f, 100f, 50f, 172f)
-        drawTouringThrottle(c, a["throttle"], 636f, 168f, 76f, p)
+        drawTouringSpeed(c, a["speed"], 205f, 190f, 168f, p, d.speedFromGps)
+        drawTouringRpm(c, a["rpm"], p, 432f, 58f, 48f, 142f)
+        drawTouringThrottle(c, a["throttle"], 652f, 118f, 88f, p)
         cardIds.mapNotNull(a::get).forEachIndexed { i, m ->
-            if (i < 3) drawCard(c, m, 22f + i * 255f, 296f, 246f, 50f, p, CardLook.TOURING)
-            else drawCard(c, m, 22f + (i - 3) * 383f, 352f, 373f, 50f, p, CardLook.TOURING)
+            if (i < 3) drawCard(c, m, 22f + i * 255f, 214f, 246f, 50f, p, CardLook.TOURING)
+            // Second row ends before the strip's step (x≈676).
+            else drawCard(c, m, 22f + (i - 3) * 327f, 270f, 317f, 50f, p, CardLook.TOURING)
         }
     }
 
@@ -729,34 +744,36 @@ internal object DashboardRenderer {
                 stroke.color = blend(p.accent, p.accent2, i.toFloat() / segments)
                 tick(i)
             }
-            textWithGlow(c, value(m), cx, cy - 16f, 88f, p.fg, fValue, if (night) p.accent else null, center = true)
-            centerText(c, "km/h" + if (gps) " · GPS" else "", cx, cy + 12f, 19f, p.fg, fLabel)
+            textWithGlow(c, value(m), cx, cy - 34f, 86f, p.fg, fValue, if (night) p.accent else null, center = true)
+            centerText(c, "km/h" + if (gps) " · GPS" else "", cx, cy - 8f, 19f, p.fg, fLabel)
         }
     }
 
+    /** Hills and pines under the speed arc (baseline [G]), as in the reference. */
     private fun drawLandscape(c: Canvas, p: Palette) {
+        val g = 206f
         val far = Path().apply {
-            moveTo(30f, 282f); lineTo(90f, 214f); lineTo(140f, 240f); lineTo(210f, 196f)
-            lineTo(262f, 232f); lineTo(318f, 206f); lineTo(380f, 282f); close()
+            moveTo(30f, g); lineTo(90f, g - 68f); lineTo(140f, g - 42f); lineTo(210f, g - 86f)
+            lineTo(262f, g - 50f); lineTo(318f, g - 76f); lineTo(392f, g); close()
         }
         resetFx()
-        fx.shader = LinearGradient(0f, 196f, 0f, 282f, alpha(p.accent, if (night) 0x58 else 0x48),
+        fx.shader = LinearGradient(0f, g - 86f, 0f, g, alpha(p.accent, if (night) 0x58 else 0x48),
             alpha(p.accent, 0x08), Shader.TileMode.CLAMP)
         c.drawPath(far, fx)
         val near = Path().apply {
-            moveTo(30f, 282f); lineTo(70f, 250f); lineTo(120f, 266f); lineTo(176f, 238f)
-            lineTo(250f, 270f); lineTo(300f, 252f); lineTo(380f, 282f); close()
+            moveTo(30f, g); lineTo(70f, g - 32f); lineTo(120f, g - 16f); lineTo(176f, g - 44f)
+            lineTo(250f, g - 12f); lineTo(300f, g - 30f); lineTo(392f, g); close()
         }
-        fx.shader = LinearGradient(0f, 238f, 0f, 282f, alpha(p.accent, if (night) 0x70 else 0x60),
+        fx.shader = LinearGradient(0f, g - 44f, 0f, g, alpha(p.accent, if (night) 0x70 else 0x60),
             alpha(p.accent, 0x10), Shader.TileMode.CLAMP)
         c.drawPath(near, fx)
         fill.shader = null
         fill.color = alpha(p.accent, if (night) 0x90 else 0x80)
-        for ((tx, th) in listOf(330f to 34f, 348f to 46f, 366f to 30f, 384f to 40f)) {
+        for ((tx, th) in listOf(340f to 34f, 358f to 46f, 376f to 30f, 394f to 40f)) {
             val tree = Path().apply {
-                moveTo(tx, 282f - th); lineTo(tx + 7f, 282f - th * .55f); lineTo(tx + 4f, 282f - th * .55f)
-                lineTo(tx + 10f, 282f); lineTo(tx - 10f, 282f); lineTo(tx - 4f, 282f - th * .55f)
-                lineTo(tx - 7f, 282f - th * .55f); close()
+                moveTo(tx, g - th); lineTo(tx + 7f, g - th * .55f); lineTo(tx + 4f, g - th * .55f)
+                lineTo(tx + 10f, g); lineTo(tx - 10f, g); lineTo(tx - 4f, g - th * .55f)
+                lineTo(tx - 7f, g - th * .55f); close()
             }
             c.drawPath(tree, fill)
         }
@@ -773,7 +790,7 @@ internal object DashboardRenderer {
             return RectF(x, bottom - segH, x + width, bottom)
         }
         still {
-            centerText(c, "RPM", x + width / 2f, y - 30f, 14f, p.muted, fLabel)
+            centerText(c, "RPM", x + width / 2f, y - 32f, 13f, p.muted, fLabel)
             for (i in 0 until count) {
                 fill.color = BLACK // opaque: a shader keeps the paint alpha
                 fill.shader = LinearGradient(x, 0f, x + width, 0f, darken(p.track, .1f), lighten(p.track, .1f), Shader.TileMode.CLAMP)
