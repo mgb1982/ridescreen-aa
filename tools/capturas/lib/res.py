@@ -11,7 +11,7 @@ WEAR_RES = os.path.join(ROOT, "wear", "src", "main", "res")
 FONT_DIR = os.path.join(APP_RES, "font")
 
 # Language code → Android values folder suffix ("" = default, which is English).
-LANG_DIR = {"es": "-es", "ca": "-ca", "en": "", "it": "-it", "el": "-el", "ru": "-ru"}
+LANG_DIR = {"es": "-es", "ca": "-ca", "en": "", "it": "-it", "el": "-el", "ru": "-ru", "th": "-th", "fr": "-fr", "de": "-de", "pt": "-pt"}
 
 
 def colors():

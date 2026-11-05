@@ -234,7 +234,7 @@ def _has(name):
 # The app has no strings for these yet (TripMapActivity hard-codes "avg/max", see README). The captures use the
 # app's own short forms from share_avg/share_max in each language.
 AVG_MAX = {"es": ("media", "máx"), "ca": ("mitjana", "màx"), "en": ("avg", "max"), "it": ("media", "max"),
-           "el": ("μ.ό.", "μέγ."), "ru": ("ср.", "макс.")}
+           "el": ("μ.ό.", "μέγ."), "ru": ("ср.", "макс."), "th": ("เฉลี่ย", "สูงสุด")}
 
 
 def trip_map(lang):

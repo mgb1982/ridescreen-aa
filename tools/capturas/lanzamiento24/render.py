@@ -31,7 +31,9 @@ def thai_css():
     for w in (400, 700):
         src = "file://" + os.path.join(EXTRA_FONTS, f"noto-sans-thai-thai-{w}-normal.woff2")
         out.append(f"@font-face{{font-family:'NotoThai';font-weight:{w};src:url('{src}') format('woff2')}}")
-    return "".join(out) + ".lg{font-family:'Archivo','NotoThai',sans-serif}"
+    return "".join(out) + (".lg{font-family:'Archivo','NotoThai',sans-serif}"
+                           "html[lang=th] body{font-family:'Archivo','NotoThai',sans-serif}"
+                           "html[lang=th] h1,html[lang=th] .g{font-family:'ArchivoBlack','NotoThai',sans-serif;font-weight:700}")
 
 
 CSS = """
@@ -76,9 +78,9 @@ h1{font-family:'ArchivoBlack';font-weight:400;font-size:84px;line-height:1.02;ma
 .wid .row .btn.c{background:var(--gold);color:var(--on-brand)}
 .slim{margin-top:28px;border-radius:30px;padding:16px 24px;display:flex;justify-content:space-around}
 /* dashboard */
-.dash{margin-top:50px;border-radius:30px;overflow:hidden;border:2px solid var(--outline);position:relative}
+.dash{margin-top:36px;border-radius:30px;overflow:hidden;border:2px solid var(--outline);position:relative}
 .dash img{display:block;width:100%}
-.dash .lab{position:absolute;right:16px;bottom:14px;background:rgba(15,21,17,.85);color:var(--text2);
+.dash .lab{position:absolute;right:16px;top:14px;background:rgba(15,21,17,.85);color:var(--text2);
   font-size:19px;font-weight:600;padding:6px 14px;border-radius:10px}
 /* dash cards */
 .dc{margin-top:34px;display:flex;flex-direction:column;gap:16px}
@@ -134,7 +136,7 @@ def bullets(s, items):
 
 def slides(lang):
     s, t = Strings(lang), T[lang]
-    en = lang == "en"
+    en = lang in ("en", "th")
     gold = "var(--gold)"
     hero = _b64(os.path.join(ASSETS, "hero.png"), "image/png")
     ico = lambda n, c=gold, z=40: icon(n, c, z)  # noqa: E731
@@ -196,14 +198,19 @@ def slides(lang):
 
 
 def prep():
-    """Night row of the app's own style-picker preview (drawable-nodpi/dashboard_style_previews.jpg)."""
+    """Real dashboards: Robolectric renders of DashboardRenderer at 2cbc824 (assets/dash24, from the
+    'Dashboard snapshots' workflow on test/dashboard-snapshots-release). Sport big, Racing and Touring below."""
     d = os.path.join(OUT, "lanzamiento24")
     os.makedirs(d, exist_ok=True)
-    src = os.path.join(HERE, "..", "..", "..", "app", "src", "main", "res", "drawable-nodpi",
-                       "dashboard_style_previews.jpg")
-    im = Image.open(src).convert("RGB")
-    w, h = im.size
-    im.crop((0, int(h * .02), w, int(h * .465))).save(os.path.join(d, "dash_night.jpg"), quality=92)
+    src = lambda n: Image.open(os.path.join(ASSETS, "dash24", f"{n}-night-800x416.png")).convert("RGB")  # noqa: E731
+    gap = 20
+    big = src("sport").resize((1060, 551))
+    sw, sh = 520, 270
+    sheet = Image.new("RGB", (1060 + gap + sw, 551), (11, 15, 12))
+    sheet.paste(big, (0, 0))
+    sheet.paste(src("racing").resize((sw, sh)), (1060 + gap, 0))
+    sheet.paste(src("touring").resize((sw, sh)), (1060 + gap, 551 - sh))
+    sheet.save(os.path.join(d, "dash_night.jpg"), quality=92)
 
 
 def main(langs):
@@ -217,4 +224,4 @@ def main(langs):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:] or ["es", "ca", "en"])
+    main(sys.argv[1:] or ["es", "ca", "en", "it", "th"])
