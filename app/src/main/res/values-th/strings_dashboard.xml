@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: custom dashboard on the dash -->
+    <string name="dash_coolant">น้ำหล่อเย็น</string>
+    <string name="dash_throttle">คันเร่ง</string>
+    <string name="dash_battery">แบตเตอรี่</string>
+    <string name="dash_no_obd">ไม่มีข้อมูล OBD</string>
+    <string name="dash_need_stream">เชื่อมต่อรถก่อน: Android Auto ยังไม่อยู่บนหน้าจอ</string>
+    <string name="dash_shortcut">Dashboard</string>
+    <string name="controls_dash_title">Dashboard</string>
+    <string name="controls_dash_desc">แสดงรอบเครื่อง ความเร็ว น้ำหล่อเย็น คันเร่ง และแบตเตอรี่จากอะแดปเตอร์ OBD บนหน้าจอรถแทน Android Auto หากไม่มีข้อมูล OBD ความเร็วจะมาจาก GPS ของโทรศัพท์</string>
+    <string name="controls_dash_show">แสดง Dashboard บนหน้าจอรถ</string>
+    <string name="controls_dash_hide">กลับไปที่ Android Auto</string>
+    <string name="controls_dash_start">เริ่มที่ Dashboard เมื่อเชื่อมต่อรถ</string>
+</resources>

@@ -632,4 +632,19 @@
     <string name="setup_clock_lab_timesync">0x10600 / TIME_SYNC</string>
     <string name="setup_clock_lab_timesync_echo">Eco de la moto</string>
     <string name="setup_clock_lab_timesync_phone">Hora local del móvil</string>
+    <string name="trip_obd_summary">OBD (%1$d muestras) · RPM máx. %2$s · refrigerante máx. %3$s °C · acelerador medio %4$s%% · voltaje medio %5$s V</string>
+    <string name="trip_replay_play">Reproducir ruta</string>
+    <string name="trip_replay_pause">Pausar</string>
+    <string name="trip_replay_seek">Posición de reproducción de la ruta</string>
+    <string name="trip_replay_marker">Posición actual</string>
+    <string name="trip_replay_status">%1$s · GPS %2$d km/h · RPM %3$s · refrigerante %4$s °C · acelerador %5$s%%</string>
+    <string name="trips_merge_select">Seleccionar viajes para unir</string>
+    <string name="trips_merge_action">Unir %1$d viajes</string>
+    <string name="trips_merge_cancel">Cancelar selección</string>
+    <string name="trips_merge_title">Unir viajes</string>
+    <string name="trips_merge_confirm">Se combinarán %1$d viajes (%2$s km) en una ruta. Los originales se guardan y se pueden restaurar.</string>
+    <string name="trips_merge_restore">Restaurar viajes originales</string>
+    <string name="trips_merge_restore_confirm">¿Restaurar los tramos originales?</string>
+    <string name="trips_merge_failed">No se pudieron unir los viajes.</string>
+    <string name="trips_merge_done">Viajes unidos. Los tramos originales están guardados.</string>
 </resources>

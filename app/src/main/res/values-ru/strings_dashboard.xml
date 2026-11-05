@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: custom dashboard on the dash -->
+    <string name="dash_coolant">Охлаждение</string>
+    <string name="dash_throttle">Газ</string>
+    <string name="dash_battery">Аккумулятор</string>
+    <string name="dash_no_obd">Нет данных OBD</string>
+    <string name="dash_need_stream">Сначала подключите мотоцикл: Android Auto ещё не на экране</string>
+    <string name="dash_shortcut">Dashboard</string>
+    <string name="controls_dash_title">Dashboard</string>
+    <string name="controls_dash_desc">Показывает на экране обороты, скорость, охлаждающую жидкость, газ и аккумулятор с вашего OBD-адаптера вместо Android Auto. Без данных OBD скорость берётся из GPS телефона.</string>
+    <string name="controls_dash_show">Показать dashboard на экране</string>
+    <string name="controls_dash_hide">Вернуться к Android Auto</string>
+    <string name="controls_dash_start">Запускать с dashboard при подключении мотоцикла</string>
+</resources>

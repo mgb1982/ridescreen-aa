@@ -646,4 +646,19 @@
     <string name="rain_parked_title">Rain expected where you parked</string>
     <string name="rain_parked_soon">Rain is expected within the hour — cover the bike.</string>
     <string name="rain_parked_in_hours">Rain is expected in about %1$d h — cover the bike.</string>
+    <string name="trip_obd_summary">OBD (%1$d samples) · max RPM %2$s · max coolant %3$s°C · avg throttle %4$s%% · avg voltage %5$s V</string>
+    <string name="trip_replay_play">Play route</string>
+    <string name="trip_replay_pause">Pause</string>
+    <string name="trip_replay_seek">Route playback position</string>
+    <string name="trip_replay_marker">Current position</string>
+    <string name="trip_replay_status">%1$s · GPS %2$d km/h · RPM %3$s · coolant %4$s °C · throttle %5$s%%</string>
+    <string name="trips_merge_select">Select trips to merge</string>
+    <string name="trips_merge_action">Merge %1$d trips</string>
+    <string name="trips_merge_cancel">Cancel selection</string>
+    <string name="trips_merge_title">Merge trips?</string>
+    <string name="trips_merge_confirm">This will combine %1$d trips (%2$s km) into one route. The original trips stay saved and can be restored.</string>
+    <string name="trips_merge_restore">Restore original trips</string>
+    <string name="trips_merge_restore_confirm">Restore the original trip segments?</string>
+    <string name="trips_merge_failed">Could not merge these trips.</string>
+    <string name="trips_merge_done">Trips merged. Original segments are saved.</string>
 </resources>

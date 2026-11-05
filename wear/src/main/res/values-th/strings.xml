@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RideScreen AA</string>
+    <string name="status_no_phone">ไม่มีข้อมูลจากโทรศัพท์</string>
+    <string name="status_streaming">● เชื่อมต่อกับหน้าปัดแล้ว</string>
+    <string name="status_reconnecting">● กำลังเชื่อมต่อใหม่…</string>
+    <string name="status_idle">ไม่ได้ขับขี่</string>
+    <string name="unit_kmh">km/h</string>
+    <string name="label_dist">km</string>
+    <string name="label_time">เวลาขับขี่</string>
+    <string name="label_max">สูงสุด km/h</string>
+    <string name="label_avg">เฉลี่ย km/h</string>
+    <string name="hint_logging_off">ปิดการบันทึกทริปไว้ในโทรศัพท์</string>
+    <string name="btn_ok">ตกลง</string>
+    <string name="channel_ride">กำลังขับขี่</string>
+    <string name="ride_active">กำลังขับขี่ แตะเพื่อดูข้อมูลทริป</string>
+    <string name="label_total">เวลาขับขี่</string>
+    <string name="label_alt">ระดับความสูง m</string>
+    <string name="label_heading">ทิศทาง</string>
+    <string name="label_gps">GPS ±m</string>
+    <string name="label_battery">โทรศัพท์</string>
+    <string name="label_volume">ระดับเสียง</string>
+    <string name="status_clock_resync">⏱ กำลังปรับนาฬิกาหน้าปัด…</string>
+    <string name="trips_title">ทริป</string>
+    <string name="trips_loading">กำลังโหลดทริป…</string>
+    <string name="trips_none">ยังไม่มีทริปที่บันทึกไว้</string>
+    <string name="trips_no_phone">โทรศัพท์ไม่ตอบสนอง</string>
+    <string name="trip_line">%1$s · เฉลี่ย %2$d · สูงสุด %3$d</string>
+    <string name="map_loading">กำลังวาดแผนที่…</string>
+    <string name="map_no_phone">ยังไม่มีแผนที่ โทรศัพท์อยู่ใกล้หรือไม่?</string>
+    <string name="map_desc">แผนที่ทริป</string>
+    <string name="pill_max">สูงสุด %d</string>
+    <string name="pill_avg">เฉลี่ย %d</string>
+    <string name="parked_line">🅿️ จอดรถแล้ว %1$s · ค้นหารถ</string>
+    <string name="parked_no_maps">ไม่มีแอปแผนที่ในนาฬิกา</string>
+    <string name="tile_label">ขับขี่</string>
+    <string name="tile_riding">กำลังขับขี่</string>
+    <string name="tile_parked">🅿️ จอดแล้ว</string>
+    <string name="tile_tap_directions">แตะเพื่อเปิด แล้วแตะ 🅿️ เพื่อดูเส้นทาง</string>
+    <string name="tile_last_ride">ทริปล่าสุด</string>
+    <string name="tile_no_data">ยังไม่มีทริป</string>
+    <string name="complication_label">RideScreen · km</string>
+    <string name="complication_desc">ระยะทางขับขี่ km</string>
+</resources>

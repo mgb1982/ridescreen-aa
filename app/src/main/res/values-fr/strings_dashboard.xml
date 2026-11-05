@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: custom dashboard on the dash -->
+    <string name="dash_coolant">Refroidissement</string>
+    <string name="dash_throttle">Accélérateur</string>
+    <string name="dash_battery">Batterie</string>
+    <string name="dash_no_obd">Pas de données OBD</string>
+    <string name="dash_need_stream">Connecte d\'abord la moto : Android Auto n\'est pas encore sur l\'écran</string>
+    <string name="dash_shortcut">Dashboard</string>
+    <string name="controls_dash_title">Dashboard</string>
+    <string name="controls_dash_desc">Affiche sur l\'écran de la moto les tr/min, la vitesse, le refroidissement, l\'accélérateur et la batterie de ton adaptateur OBD à la place d\'Android Auto. Sans données OBD, la vitesse vient du GPS du téléphone.</string>
+    <string name="controls_dash_show">Afficher le dashboard sur l\'écran</string>
+    <string name="controls_dash_hide">Retour à Android Auto</string>
+    <string name="controls_dash_start">Démarrer sur le dashboard à la connexion de la moto</string>
+</resources>

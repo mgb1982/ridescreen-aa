@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="main_settings_desc">การตั้งค่า</string>
+    <string name="stat_km_today">km วันนี้</string>
+    <string name="stat_max_today">สูงสุด km/h วันนี้</string>
+    <string name="stat_clock">นาฬิกาหน้าปัด</string>
+    <string name="stat_clock_ok">นาฬิกาหน้าปัด ✓</string>
+    <string name="stat_clock_adjusting">กำลังปรับ…</string>
+    <string name="main_trips_pill">ทริป</string>
+    <string name="main_more">เพิ่มเติม</string>
+</resources>

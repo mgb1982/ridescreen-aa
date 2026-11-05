@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v2.4: custom dashboard on the dash -->
+    <string name="dash_coolant">Arrefecimento</string>
+    <string name="dash_throttle">Acelerador</string>
+    <string name="dash_battery">Bateria</string>
+    <string name="dash_no_obd">Sem dados OBD</string>
+    <string name="dash_need_stream">Liga primeiro a mota: o Android Auto ainda não está no painel</string>
+    <string name="dash_shortcut">Dashboard</string>
+    <string name="controls_dash_title">Dashboard</string>
+    <string name="controls_dash_desc">Mostra no painel as rpm, a velocidade, o arrefecimento, o acelerador e a bateria do teu adaptador OBD em vez do Android Auto. Sem dados OBD, a velocidade vem do GPS do telemóvel.</string>
+    <string name="controls_dash_show">Mostrar o dashboard no painel</string>
+    <string name="controls_dash_hide">Voltar ao Android Auto</string>
+    <string name="controls_dash_start">Começar no dashboard quando a mota ligar</string>
+</resources>

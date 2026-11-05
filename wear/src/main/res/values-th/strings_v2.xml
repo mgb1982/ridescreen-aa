@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="find_title">🅿️ รถของคุณ</string>
+    <string name="find_waiting_gps">กำลังค้นหา GPS…</string>
+    <string name="find_maps">เส้นทาง</string>
+    <string name="find_none">ยังไม่มีตำแหน่งที่จอดรถที่บันทึกไว้</string>
+    <string name="find_parked_ago">จอดไว้ %1$s</string>
+    <string name="find_here">คุณอยู่ตรงนั้นแล้ว! 🏍️</string>
+    <string name="status_hus_off">⚠️ เริ่มเซิร์ฟเวอร์หน่วยหลักของ AA</string>
+    <string name="tile_tap_compass">แตะเพื่อค้นหารถ</string>
+    <string name="park_page_find">🧭 ค้นหา</string>
+</resources>

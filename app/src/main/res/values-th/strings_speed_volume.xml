@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Speed-compensated volume (SpeedVolume.kt). Translated: en, es, ca; other locales fall back to English. -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="speed_volume_title">ปรับระดับเสียงตามความเร็ว</string>
+    <string name="speed_volume_desc">เพิ่มระดับเสียงสื่อของโทรศัพท์ (เสียงนำทางและเพลง) เมื่อขับขี่เร็วขึ้น เพื่อให้ได้ยินเหนือเสียงลม ระดับเสียงที่คุณตั้งเองเป็นค่าพื้นฐาน เปลี่ยนได้ทุกเมื่อและระดับเสียงเสริมจะปรับตาม หยุดชั่วคราวเมื่อปุ่มบนแฮนด์ควบคุม Android Auto</string>
+    <string name="speed_volume_off">ปิด</string>
+    <string name="speed_volume_low">ต่ำ</string>
+    <string name="speed_volume_medium">ปานกลาง</string>
+    <string name="speed_volume_high">สูง</string>
+    <string name="speed_volume_status_off">ปิด</string>
+    <string name="speed_volume_status_waiting">กำลังรอการเชื่อมต่อกับรถ…</string>
+    <string name="speed_volume_status_paused">หยุดชั่วคราว: ปุ่มบนแฮนด์กำลังควบคุมระดับเสียง</string>
+    <string name="speed_volume_status_no_gps">เปิดใช้งาน: กำลังรอความเร็วจาก GPS…</string>
+    <string name="speed_volume_status_live">เปิดใช้งาน: %1$d km/h · เพิ่ม +%2$d</string>
+    <string name="speed_volume_advanced_show">ขั้นสูง ▾</string>
+    <string name="speed_volume_advanced_hide">ขั้นสูง ▴</string>
+    <string name="speed_volume_custom">เส้นโค้งกำหนดเอง (แทนที่เส้นโค้งของระดับที่เลือก)</string>
+    <string name="speed_volume_start_label">เริ่มเพิ่มเสียงที่: %1$d km/h</string>
+    <string name="speed_volume_step_label">เพิ่มอีกหนึ่งระดับทุก: %1$d km/h</string>
+    <string name="speed_volume_max_label">เพิ่มเสียงสูงสุด: +%1$d ระดับ</string>
+    <string name="speed_volume_custom_hint">ระดับเสียงใช้สเกล 15 ระดับ ต้องเลือกระดับอื่นที่ไม่ใช่ปิดเพื่อให้เส้นโค้งกำหนดเองทำงาน</string>
+</resources>

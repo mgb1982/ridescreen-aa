@@ -636,4 +636,19 @@
     <string name="rain_parked_title">Pioggia prevista dove hai parcheggiato</string>
     <string name="rain_parked_soon">Pioggia prevista entro un\'ora — copri la moto.</string>
     <string name="rain_parked_in_hours">Pioggia prevista tra circa %1$d h — copri la moto.</string>
+    <string name="trip_obd_summary">OBD (%1$d campioni) · RPM max %2$s · refrigerante max %3$s °C · acceleratore medio %4$s%% · tensione media %5$s V</string>
+    <string name="trip_replay_play">Riproduci percorso</string>
+    <string name="trip_replay_pause">Pausa</string>
+    <string name="trip_replay_seek">Posizione di riproduzione del percorso</string>
+    <string name="trip_replay_marker">Posizione attuale</string>
+    <string name="trip_replay_status">%1$s · GPS %2$d km/h · RPM %3$s · refrigerante %4$s °C · acceleratore %5$s%%</string>
+    <string name="trips_merge_select">Seleziona viaggi da unire</string>
+    <string name="trips_merge_action">Unisci %1$d viaggi</string>
+    <string name="trips_merge_cancel">Annulla selezione</string>
+    <string name="trips_merge_title">Unire i viaggi?</string>
+    <string name="trips_merge_confirm">Unirai %1$d viaggi (%2$s km) in un unico percorso. Gli originali restano salvati e ripristinabili.</string>
+    <string name="trips_merge_restore">Ripristina i viaggi originali</string>
+    <string name="trips_merge_restore_confirm">Ripristinare i segmenti originali?</string>
+    <string name="trips_merge_failed">Impossibile unire questi viaggi.</string>
+    <string name="trips_merge_done">Viaggi uniti. I segmenti originali sono salvati.</string>
 </resources>
