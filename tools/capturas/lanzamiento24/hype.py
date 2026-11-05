@@ -9,7 +9,8 @@ from lib.render import Job, render  # noqa: E402
 from lib.res import Strings, esc, icon  # noqa: E402
 from lanzamiento24.render import ASSETS, CSS, _b64, page  # noqa: E402
 from lanzamiento24.textos import LANGS, T
-from screens.pills import markup  # noqa: E402
+from screens.pills import markup
+from lanzamiento24.widget import widget  # noqa: E402
 
 H = {
  "es": dict(a_k="Keyless · Widget · 10 idiomas", a_h="La 2.4 ya está aquí",
@@ -39,9 +40,10 @@ H = {
             lock_t="ล็อกรถแล้วจบการเดินทาง และบันทึกจุดจอด", dash_t="Dashboard บนหน้าปัด · ใช้กับอะแดปเตอร์ OBD"),
 }
 X = """
-.big{margin-top:34px;padding:30px 32px}
+.wcap{margin-top:18px;margin-bottom:10px;font-size:22px;font-weight:700;color:var(--text2);letter-spacing:.3px}
+.big{margin-top:28px;padding:24px 30px}
 .big .v b{font-size:76px}.big .v span{font-size:30px}
-.big .btns{gap:14px;margin-top:22px}.big .btn{font-size:25px;padding:24px 6px 20px}
+.big .btns{gap:14px;margin-top:22px}.big .btn{font-size:25px;padding:20px 6px 16px}
 .wrow{margin-top:20px;border-radius:30px;padding:20px 22px;display:flex;align-items:center;gap:22px}
 .wrow .nm{font-size:24px;font-weight:700;color:var(--text2);width:200px;line-height:1.2}
 .wrow .ic{flex:1;display:flex;justify-content:space-between}
@@ -53,7 +55,7 @@ X = """
 .tile .vis img{width:100%;height:100%;object-fit:cover;display:block}
 .tile .lb{padding:14px 20px 16px;font-size:22px;font-weight:700;line-height:1.25}
 .tile .lb small{display:block;font-size:18px;font-weight:600;color:var(--text2);margin-top:2px}
-.bot .tile{height:250px}
+.bot .tile{height:236px}
 .lchips{display:flex;flex-wrap:wrap;gap:7px;padding:18px 18px 0;font-family:'Archivo','NotoThai',sans-serif;align-content:flex-start}
 .lchips span{border:2px solid var(--outline);border-radius:999px;padding:4px 11px;font-size:18px;font-weight:600}
 .lchips span.nw{border-color:var(--gold);color:var(--gold)}
@@ -90,9 +92,8 @@ def collages(lang):
            f'<div class="v"><b>{volts}</b><span>{lab("pke_locked")}</span></div><div class="btns">'
            f'{btn("ic_line_unlock", "pke_short_unlock")}{btn("ic_line_lock", "pke_short_lock")}'
            f'{btn("ic_line_seat", "pke_short_seat")}{btn("ic_line_fuel", "pke_short_fuel")}</div></div>')
-    wico = (f'<i class="c">{icon("ic_line_power", "var(--on-brand)", 40)}</i>'
-            + "".join(f"<i>{icon(i, g, 40)}</i>" for i in ("ic_line_unlock", "ic_line_lock", "ic_line_seat", "ic_line_fuel")))
-    wid = f'<div class="card wrow"><div class="nm">{markup(s, t["wid_t"], chips=False)}</div><div class="ic">{wico}</div></div>'
+    wid = (f'<div class="wcap">{markup(s, t["wid_t"], chips=False)}</div>'
+           f'{widget(s, hero, lang, 330, 58, 920 / 330, compact=True)}')
     dash_l, dash_s = h["dash_t"].split(" · ")
     dash = (f'<div class="tile"><div class="vis"><img src="{d("sport", "night")}"></div>'
             f'<div class="lb">{esc(dash_l)}<small>{esc(dash_s)}</small></div></div>')

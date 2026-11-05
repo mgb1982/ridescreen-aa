@@ -157,16 +157,11 @@ def slides(lang):
                f'{btn("ic_line_seat", "pke_short_seat")}{btn("ic_line_fuel", "pke_short_fuel")}</div></div>'
                + bullets(s, t["pke_b"]))
 
-    row = (f'<div class="btn c">{ico("ic_line_power", "var(--on-brand)", 36)}{lab("main_connect")}</div>'
-           + "".join(f'<div class="btn">{ico(i, gold, 36)}{lab(k)}</div>' for i, k in
-                     (("ic_line_unlock", "pke_short_unlock"), ("ic_line_lock", "pke_short_lock"),
-                      ("ic_line_seat", "pke_short_seat"), ("ic_line_fuel", "pke_short_fuel"))))
-    slim = "".join(ico(i, gold, 46) for i in ("ic_line_power", "ic_line_unlock", "ic_line_lock", "ic_line_seat",
-                                               "ic_line_fuel"))
+    from lanzamiento24.widget import widget
     out.append(f'<div class="k">{esc(t["wid_k"])}</div><h1>{markup(s, t["wid_t"], chips=False)}</h1>'
                f'<div class="s">{markup(s, t["wid_s"])}</div>'
-               f'<div class="card wid"><div class="ph" style="background-image:url({hero})"><div class="nm">Zontes 125X</div>'
-               f'</div><div class="row">{row}</div></div><div class="card slim">{slim}</div>')
+               f'<div style="margin-top:36px">{widget(s, hero, lang, 330, 170, 920 / 330)}</div>'
+               f'<div style="margin-top:20px">{widget(s, hero, lang, 330, 54, 920 / 330, compact=True)}</div>')
 
     dprev = _b64(os.path.join(OUT, "lanzamiento24", "dash_night.jpg"), "image/jpeg")
     out.append(f'<div class="k">{esc(t["obd_k"])}</div><h1>{markup(s, t["obd_t"], chips=False)}</h1>'

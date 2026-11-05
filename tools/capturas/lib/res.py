@@ -113,7 +113,8 @@ def icon(name, color="currentColor", size=22, res=APP_RES):
                 fill = a(ch, "fillColor")
                 stroke = a(ch, "strokeColor")
                 sw = a(ch, "strokeWidth", "0")
-                f = color if fill else "none"
+                transparent = bool(fill) and fill.startswith("#") and len(fill) == 9 and fill[1:3] == "00"
+                f = color if fill and not transparent else "none"
                 s = f' stroke="{color}" stroke-width="{sw}" stroke-linecap="round" stroke-linejoin="round"' if stroke else ""
                 parts.append(f'<path d="{d}" fill="{f}"{s} fill-rule="{"evenodd" if a(ch, "fillType") == "evenOdd" else "nonzero"}"/>')
             elif ch.tag == "group":
