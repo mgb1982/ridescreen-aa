@@ -99,6 +99,13 @@ class VideoPipeline(
     private var lastBacklogLog = 0L
 
     private val frameQueue = LinkedBlockingDeque<ByteArray>(8)
+    // Encoder output counters for the [PULL] report (frames produced vs pulled by the dash).
+    @Volatile private var encodedFrames = 0L
+    @Volatile private var encodedKeyframes = 0L
+    // Frame rate last asked by the power mode / adaptive controller, before any cap.
+    @Volatile private var requestedFps = 24
+    // Cap matched to how fast the dash actually pulls (0 = none). Only set for slow-pulling dashes.
+    @Volatile private var pullCap = 0
     @Volatile private var codecConfig: ByteArray? = null   // SPS/PPS
     // When set, the drain loop discards encoder output until the next keyframe, so the first frame a
     // freshly-attached bike client receives is a full SPS+PPS+IDR. See onBikeDataStart().
@@ -300,6 +307,7 @@ class VideoPipeline(
             val margins = BikeProfileHolder.aaContentMargins
             val usableW = (src.width - margins.marginW).coerceIn(16, src.width)
             val usableH = (src.height - margins.marginH).coerceIn(16, src.height)
+            requestedFps = power.fps
             aaCompositor?.setFrameCap(profileCap(power.fps))
             aaCompositor?.setSourceCrop(usableW.toFloat() / src.width, usableH.toFloat() / src.height)
             aaCompositor?.setOutput(surf, w, h, usableW, usableH, fit)
@@ -571,6 +579,8 @@ class VideoPipeline(
                     log("[VIDEO] got codec config (SPS/PPS) ${bytes.size}b")
                 } else {
                     val isKey = info.flags and MediaCodec.BUFFER_FLAG_KEY_FRAME != 0
+                    encodedFrames++
+                    if (isKey) encodedKeyframes++
                     if (awaitKeyframe && !isKey) {
                         // A bike client just attached but this is a P-frame — it references frames the
                         // client never received, so serving it would leave the dash decoder uninitialised
@@ -658,8 +668,25 @@ class VideoPipeline(
      * the phone heats up. No-op outside compositor mode.
      */
     fun setFrameCap(fps: Int) {
+        requestedFps = fps
         aaCompositor?.setFrameCap(profileCap(fps))
     }
+
+    /**
+     * Feed the encoder at the rate the dash really pulls (REQ_RV_DATA_NEXT). 350D/350E logs (4 Nov
+     * 2026): AA decoded 30 fps, the dash pulled ~6, the 8-frame queue overflowed ~6 times every 5 s
+     * and each overflow forced a keyframe — about one frame in five was a 27 KB IDR, the picture
+     * jumped and the adaptive controller cut the bitrate to 1 Mbps for nothing. 0 removes the cap.
+     */
+    fun setPullCap(fps: Int) {
+        if (fps == pullCap) return
+        pullCap = fps
+        log("[PULL] encoder input capped to ${if (fps > 0) "$fps fps (dash pull rate)" else "the power mode only"}")
+        aaCompositor?.setFrameCap(profileCap(requestedFps))
+    }
+
+    /** (frames produced, keyframes produced, frames dropped, frames queued) for the [PULL] report. */
+    fun pullStats(): LongArray = longArrayOf(encodedFrames, encodedKeyframes, droppedFrames, frameQueue.size.toLong())
 
     /**
      * Never feed the encoder faster than a low-rate dash's own OEM rate (Carbit / Morini profile,
@@ -669,7 +696,9 @@ class VideoPipeline(
      */
     private fun profileCap(fps: Int): Int {
         val oem = BikeProfileHolder.active.videoFrameRate
-        return if (oem in 1 until 30) minOf(fps, oem) else fps
+        val byProfile = if (oem in 1 until 30) minOf(fps, oem) else fps
+        val pull = pullCap
+        return if (pull > 0) minOf(byProfile, pull) else byProfile
     }
 
     /** Compositor mode: the surface the AA decoder renders into (letterboxed before the encoder). */
