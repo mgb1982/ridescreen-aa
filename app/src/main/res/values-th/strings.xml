@@ -660,4 +660,7 @@
     <string name="trips_merge_restore_confirm">กู้คืนช่วงเส้นทางเดิมหรือไม่</string>
     <string name="trips_merge_failed">รวมทริปเหล่านี้ไม่ได้</string>
     <string name="trips_merge_done">รวมทริปแล้ว และเก็บช่วงเดิมไว้</string>
+    <string name="controls_dash_scale">สเกลหน้าปัด (ความเร็วและรอบสูงสุด)</string>
+    <string name="controls_dash_scale_speed">มาตรวัดความเร็วถึง</string>
+    <string name="controls_dash_scale_rpm">มาตรวัดรอบถึง</string>
 </resources>

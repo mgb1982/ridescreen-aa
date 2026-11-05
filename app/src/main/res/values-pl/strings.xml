@@ -448,4 +448,7 @@
     <string name="setup_anonymous_telemetry_on">Włączone — anonimowe pingi i awarie</string>
     <string name="setup_anonymous_telemetry_off">Wyłączone — nic nie jest wysyłane</string>
     <string name="setup_anonymous_id">Anonimowe id: %1$s</string>
+    <string name="controls_dash_scale">Skala zegarów (maks. prędkość i obroty)</string>
+    <string name="controls_dash_scale_speed">Prędkościomierz do</string>
+    <string name="controls_dash_scale_rpm">Obrotomierz do</string>
 </resources>

@@ -35,6 +35,7 @@ object AppSettings {
     private const val KEY_KEEP_WIFI = "keep_wifi_after_disconnect"
     private const val KEY_CLOCK_RESYNC = "clock_resync_once"          // legacy boolean (zontes-1)
     private const val KEY_CLOCK_RESYNC_MODE = "clock_resync_mode"
+    private const val KEY_SMART_THRESHOLD = "clock_smart_threshold_ms"
     private const val KEY_BT_TRIGGER_MAC = "bt_trigger_mac"
     private const val KEY_BT_TRIGGER_NAME = "bt_trigger_name"
 
@@ -156,6 +157,16 @@ object AppSettings {
         ClockLab.resyncMode = mode
     }
 
+    /** v2.4 test · SMART resync threshold ([ClockLab.smartThresholdMs]); only the lab's options are kept. */
+    fun smartThresholdMs(ctx: Context): Long =
+        prefs(ctx).getLong(KEY_SMART_THRESHOLD, ClockLab.DEFAULT_SMART_THRESHOLD_MS)
+            .takeIf { it in ClockLab.SMART_THRESHOLD_OPTIONS } ?: ClockLab.DEFAULT_SMART_THRESHOLD_MS
+    fun setSmartThresholdMs(ctx: Context, ms: Long) {
+        val v = ms.takeIf { it in ClockLab.SMART_THRESHOLD_OPTIONS } ?: ClockLab.DEFAULT_SMART_THRESHOLD_MS
+        prefs(ctx).edit().putLong(KEY_SMART_THRESHOLD, v).apply()
+        ClockLab.smartThresholdMs = v
+    }
+
     /** v2.3 · Obey app.ridescreen.action.* broadcasts (Key Mapper / Tasker) while projecting. */
     fun externalControl(ctx: Context): Boolean = prefs(ctx).getBoolean(KEY_EXTERNAL_CONTROL, false)
     fun setExternalControl(ctx: Context, on: Boolean) =
@@ -212,6 +223,7 @@ object AppSettings {
             keepWifiAfterDisconnect(ctx),
         )
         ClockLab.resyncMode = clockResyncMode(ctx)
+        ClockLab.smartThresholdMs = smartThresholdMs(ctx)
     }
 }
 

@@ -416,4 +416,7 @@
     <string name="setup_anonymous_telemetry_on">Aan — anonieme pings &amp; crashes</string>
     <string name="setup_anonymous_telemetry_off">Uit — niets wordt geüpload</string>
     <string name="setup_anonymous_id">Anoniem id: %1$s</string>
+    <string name="controls_dash_scale">Schaal van de meters (max. snelheid en toerental)</string>
+    <string name="controls_dash_scale_speed">Snelheidsmeter tot</string>
+    <string name="controls_dash_scale_rpm">Toerenteller tot</string>
 </resources>

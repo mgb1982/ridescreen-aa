@@ -651,4 +651,7 @@
     <string name="trips_merge_restore_confirm">Ripristinare i segmenti originali?</string>
     <string name="trips_merge_failed">Impossibile unire questi viaggi.</string>
     <string name="trips_merge_done">Viaggi uniti. I segmenti originali sono salvati.</string>
+    <string name="controls_dash_scale">Scala dei quadranti (velocità e giri massimi)</string>
+    <string name="controls_dash_scale_speed">Tachimetro fino a</string>
+    <string name="controls_dash_scale_rpm">Contagiri fino a</string>
 </resources>

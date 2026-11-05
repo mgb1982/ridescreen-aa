@@ -400,7 +400,8 @@ class ControlsActivity : AppCompatActivity() {
                 val image = android.widget.ImageView(this).apply {
                     scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
                     adjustViewBounds = true
-                    setImageBitmap(DashboardPreview.bitmap(this@ControlsActivity, design, DashboardMode.isLight(this@ControlsActivity)))
+                    // Drawn by the same renderer as the dash (sample data), so the preview is what the bike shows.
+                    setImageBitmap(DashboardMode.preview(this@ControlsActivity, design, 800, 416))
                     contentDescription = getString(title)
                 }
                 card.addView(heading)
@@ -418,6 +419,30 @@ class ControlsActivity : AppCompatActivity() {
                 .create()
             picker.show()
         }
+        // Gauge full scale for this bike: speed first, then RPM (two short single-choice lists).
+        findViewById<MaterialButton>(R.id.btn_dash_scale).setOnClickListener {
+            val speeds = DashboardMode.SPEED_MAX_OPTIONS
+            val rpms = DashboardMode.RPM_MAX_OPTIONS
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle(R.string.controls_dash_scale_speed)
+                .setSingleChoiceItems(speeds.map { "$it km/h" }.toTypedArray(), speeds.indexOf(DashboardMode.speedMax(this))) { d, i ->
+                    DashboardMode.setSpeedMax(this, speeds[i])
+                    d.dismiss()
+                    androidx.appcompat.app.AlertDialog.Builder(this)
+                        .setTitle(R.string.controls_dash_scale_rpm)
+                        .setSingleChoiceItems(rpms.map { String.format(java.util.Locale.US, "%,d rpm", it) }.toTypedArray(),
+                            rpms.indexOf(DashboardMode.rpmMax(this))) { d2, j ->
+                            DashboardMode.setRpmMax(this, rpms[j])
+                            LogBus.log("→ dashboard scale ${speeds[i]} km/h · ${rpms[j]} rpm")
+                            d2.dismiss()
+                        }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show()
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+        }
+
         findViewById<MaterialButton>(R.id.btn_dash_fields).setOnClickListener {
             val keys = DashboardMode.fieldIds()
             val labels = resources.getStringArray(R.array.dash_obd_field_names)

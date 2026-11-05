@@ -596,4 +596,7 @@
     <string name="setup_anonymous_telemetry_on">Вкл — анонимни пингове и отчети за сривове</string>
     <string name="setup_anonymous_telemetry_off">Изкл — нищо не се качва</string>
     <string name="setup_anonymous_id">Анонимно ID: %1$s</string>
+    <string name="controls_dash_scale">Скала на циферблатите (макс. скорост и обороти)</string>
+    <string name="controls_dash_scale_speed">Скоростомер до</string>
+    <string name="controls_dash_scale_rpm">Оборотомер до</string>
 </resources>

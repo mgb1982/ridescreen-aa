@@ -73,4 +73,31 @@ class ClockLabTest {
             ClockLab.banner("21340"),
         )
     }
+
+    @Test
+    fun smartThresholdDefaultsTo2200AndIsInTheLabOptions() {
+        assertEquals(2_200L, ClockLab.DEFAULT_SMART_THRESHOLD_MS)
+        assertEquals(listOf(1_950L, 2_100L, 2_200L, 2_450L), ClockLab.SMART_THRESHOLD_OPTIONS)
+        assert(ClockLab.DEFAULT_SMART_THRESHOLD_MS in ClockLab.SMART_THRESHOLD_OPTIONS)
+        // 2.3's constant stays as the documented old value.
+        assertEquals(1_950L, PxcHandshake.SLOW_QUERY_TIME_MS)
+    }
+
+    @Test
+    fun clockWrongLineCarriesDelayThresholdAndResyncs() {
+        val before = Triple(ClockLab.lastQueryTimeAfterMs, ClockLab.smartThresholdMs, ClockLab.resyncsThisBoot)
+        try {
+            ClockLab.lastQueryTimeAfterMs = 2_050L
+            ClockLab.smartThresholdMs = 2_200L
+            ClockLab.resyncsThisBoot = 1
+            assertEquals(
+                "[RESYNC] rider fixed clock by hand (button) — last QUERY_TIME after 2050ms, threshold 2200ms, resyncs this boot 1",
+                ClockLab.clockWrongLine("button"),
+            )
+        } finally {
+            ClockLab.lastQueryTimeAfterMs = before.first
+            ClockLab.smartThresholdMs = before.second
+            ClockLab.resyncsThisBoot = before.third
+        }
+    }
 }

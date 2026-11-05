@@ -416,4 +416,7 @@
     <string name="setup_anonymous_telemetry_on">Zapnuto — anonymní pingy a pády</string>
     <string name="setup_anonymous_telemetry_off">Vypnuto — nic se neodesílá</string>
     <string name="setup_anonymous_id">Anonymní id: %1$s</string>
+    <string name="controls_dash_scale">Stupnice budíků (max. rychlost a otáčky)</string>
+    <string name="controls_dash_scale_speed">Tachometr do</string>
+    <string name="controls_dash_scale_rpm">Otáčkoměr do</string>
 </resources>

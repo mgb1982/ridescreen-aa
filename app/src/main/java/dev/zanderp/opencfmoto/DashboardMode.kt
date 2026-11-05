@@ -69,6 +69,28 @@ object DashboardMode {
         SPORT("sport"), RACING("racing"), TOURING("touring");
         companion object { fun byId(id: String?): Design = entries.firstOrNull { it.id == id } ?: SPORT }
     }
+    /**
+     * Gauge full scale, per bike (Controls ▸ dashboard). Defaults follow the bike picked in the app:
+     * 140 km/h / 10,000 rpm for the 125 range, 240 km/h / 14,000 rpm otherwise.
+     */
+    val SPEED_MAX_OPTIONS = listOf(120, 140, 160, 200, 240)
+    val RPM_MAX_OPTIONS = listOf(10_000, 12_000, 14_000)
+    private fun small125(ctx: Context): Boolean = try {
+        BikePicker.selected(ctx)?.dashKey == "125x"
+    } catch (_: Exception) { false }
+    fun speedMax(ctx: Context): Int {
+        val v = prefs(ctx).getInt("speed_max" + (BikeScope.suffix(ctx)?.let { "#$it" } ?: ""), 0)
+        return v.takeIf { it in SPEED_MAX_OPTIONS } ?: if (small125(ctx)) 140 else 240
+    }
+    fun setSpeedMax(ctx: Context, v: Int) =
+        prefs(ctx).edit().putInt("speed_max" + (BikeScope.suffix(ctx)?.let { "#$it" } ?: ""), v).apply()
+    fun rpmMax(ctx: Context): Int {
+        val v = prefs(ctx).getInt("rpm_max" + (BikeScope.suffix(ctx)?.let { "#$it" } ?: ""), 0)
+        return v.takeIf { it in RPM_MAX_OPTIONS } ?: if (small125(ctx)) 10_000 else 14_000
+    }
+    fun setRpmMax(ctx: Context, v: Int) =
+        prefs(ctx).edit().putInt("rpm_max" + (BikeScope.suffix(ctx)?.let { "#$it" } ?: ""), v).apply()
+
     fun design(ctx: Context): Design = Design.byId(BikeScope.getString(prefs(ctx), ctx, "design", null))
     fun setDesign(ctx: Context, value: Design) = BikeScope.putString(prefs(ctx), ctx, "design", value.id)
 

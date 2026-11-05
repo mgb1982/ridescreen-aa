@@ -654,4 +654,7 @@
     <string name="trips_merge_restore_confirm">Originalsegmente wiederherstellen?</string>
     <string name="trips_merge_failed">Diese Fahrten konnten nicht zusammengeführt werden.</string>
     <string name="trips_merge_done">Fahrten zusammengeführt. Originalsegmente sind gespeichert.</string>
+    <string name="controls_dash_scale">Skala der Anzeigen (max. Tempo und Drehzahl)</string>
+    <string name="controls_dash_scale_speed">Tacho bis</string>
+    <string name="controls_dash_scale_rpm">Drehzahlmesser bis</string>
 </resources>

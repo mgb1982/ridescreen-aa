@@ -560,4 +560,7 @@
     <string name="setup_anonymous_telemetry_on">Bekapcsolva — névtelen pingek és összeomlás jelentések</string>
     <string name="setup_anonymous_telemetry_off">Kikapcsolva — semmi sem töltődik fel</string>
     <string name="setup_anonymous_id">Névtelen azonosító: %1$s</string>
+    <string name="controls_dash_scale">Műszerskála (max. sebesség és fordulat)</string>
+    <string name="controls_dash_scale_speed">Sebességmérő eddig</string>
+    <string name="controls_dash_scale_rpm">Fordulatszámmérő eddig</string>
 </resources>

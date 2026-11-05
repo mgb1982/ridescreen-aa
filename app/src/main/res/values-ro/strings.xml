@@ -417,4 +417,7 @@
     <string name="setup_anonymous_telemetry_on">Pornit — ping-uri &amp; crash-uri anonime</string>
     <string name="setup_anonymous_telemetry_off">Oprit — nu se încarcă nimic</string>
     <string name="setup_anonymous_id">Id anonim: %1$s</string>
+    <string name="controls_dash_scale">Scala cadranelor (viteză și turație maxime)</string>
+    <string name="controls_dash_scale_speed">Vitezometru până la</string>
+    <string name="controls_dash_scale_rpm">Turometru până la</string>
 </resources>

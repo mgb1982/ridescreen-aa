@@ -232,6 +232,13 @@ class SetupActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.clockresync_smart).setOnClickListener { setClockResync(ClockResyncMode.SMART) }
         findViewById<MaterialButton>(R.id.clockresync_once).setOnClickListener { setClockResync(ClockResyncMode.ONCE) }
         findViewById<MaterialButton>(R.id.clockresync_off).setOnClickListener { setClockResync(ClockResyncMode.OFF) }
+        for ((id, ms) in smartThresholdButtons) {
+            findViewById<MaterialButton>(id).setOnClickListener {
+                AppSettings.setSmartThresholdMs(this, ms)
+                refreshOptions()
+                LogBus.log("→ clock SMART threshold ${ms}ms")
+            }
+        }
         findViewById<MaterialButton>(R.id.logtrips_on).setOnClickListener { setLogTrips(true) }
         findViewById<MaterialButton>(R.id.logtrips_off).setOnClickListener { setLogTrips(false) }
         findViewById<MaterialButton>(R.id.nontouch_on).setOnClickListener { setForceNonTouch(true) }
@@ -461,6 +468,11 @@ class SetupActivity : AppCompatActivity() {
         Toast.makeText(this, "Keep bike Wi-Fi ${if (on) "on" else "off"}", Toast.LENGTH_SHORT).show()
     }
 
+    private val smartThresholdButtons = listOf(
+        R.id.clockthr_1950 to 1_950L, R.id.clockthr_2100 to 2_100L,
+        R.id.clockthr_2200 to 2_200L, R.id.clockthr_2450 to 2_450L,
+    )
+
     private fun setClockResync(mode: ClockResyncMode) {
         AppSettings.setClockResyncMode(this, mode)
         refreshOptions()
@@ -649,6 +661,7 @@ class SetupActivity : AppCompatActivity() {
             R.id.clockresync_smart to ClockResyncMode.SMART,
             R.id.clockresync_once to ClockResyncMode.ONCE,
             R.id.clockresync_off to ClockResyncMode.OFF)
+        highlight(AppSettings.smartThresholdMs(this), *smartThresholdButtons.map { it.first to it.second }.toTypedArray())
         highlight(AppSettings.logTrips(this),
             R.id.logtrips_on to true,
             R.id.logtrips_off to false)

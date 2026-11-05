@@ -1427,6 +1427,7 @@ class MainActivity : AppCompatActivity() {
                 .setTitle(R.string.clock_fix_title)
                 .setMessage(R.string.clock_fix_body)
                 .setPositiveButton(R.string.clock_fix_ok) { _, _ ->
+                    log(ClockLab.clockWrongLine("button"))
                     val ok = BikeLink.prober?.requestClockResync() == true
                     log(if (ok) "→ rider: set the dash clock (manual resync)" else "→ rider: set the dash clock — no live link")
                     if (!ok) Toast.makeText(this, R.string.clock_fix_not_connected, Toast.LENGTH_SHORT).show()

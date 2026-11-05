@@ -49,6 +49,25 @@ object ClockLab {
     /** Zontes (21340) clock resync policy — see [ClockResyncMode]. */
     @Volatile var resyncMode: ClockResyncMode = ClockResyncMode.SMART
 
+    /**
+     * v2.4 test · SMART resync threshold: a QUERY_TIME at least this long after CAR_CTRL drops the link.
+     * 2.3 used 1,950 ms (24 October sessions: failures asked ≥ ~2.0 s). Recent logs (n=28, median
+     * 1,902 ms, p90 2,180, max 2,340) cut 10 of 28 sessions at 1,950 and 2 at 2,200, ~6 s each, with
+     * no record of whether the clock ended right. Default 2,200 here while that is measured.
+     */
+    @Volatile var smartThresholdMs: Long = DEFAULT_SMART_THRESHOLD_MS
+    const val DEFAULT_SMART_THRESHOLD_MS = 2_200L
+    val SMART_THRESHOLD_OPTIONS = listOf(1_950L, 2_100L, 2_200L, 2_450L)
+
+    /** Last QUERY_TIME delay after CAR_CTRL (ms, -1 unknown) and resyncs this dash boot, for the log. */
+    @Volatile var lastQueryTimeAfterMs: Long = -1L
+    @Volatile var resyncsThisBoot: Int = 0
+
+    /** The line support looks for when the rider says the clock was wrong ([source]: button, notification). */
+    fun clockWrongLine(source: String): String =
+        "[RESYNC] rider fixed clock by hand ($source) — last QUERY_TIME after ${lastQueryTimeAfterMs}ms, " +
+            "threshold ${smartThresholdMs}ms, resyncs this boot $resyncsThisBoot"
+
     /** elapsedRealtime deadline while a dash-clock resync is pending or reconnecting (UI hint). */
     @Volatile var resyncBusyUntil: Long = 0L
     fun resyncInProgress(): Boolean = android.os.SystemClock.elapsedRealtime() < resyncBusyUntil
@@ -108,7 +127,7 @@ object ClockLab {
 
 /**
  * Zontes (channel 21340) clock resync: drop + re-probe the PXC link so the dash asks QUERY_TIME again.
- *  - [SMART]: only when the dash asked for the time late (≥ [PxcHandshake.SLOW_QUERY_TIME_MS] after
+ *  - [SMART]: only when the dash asked for the time late (≥ [ClockLab.smartThresholdMs] after
  *    picking CAR_CTRL) — in the field every failed sync was a late ask and every early one was fine —
  *    and retry up to [PxcHandshake.MAX_RESYNCS_PER_BOOT] times per dash boot.
  *  - [ONCE]: always once, on the first session of each dash boot.

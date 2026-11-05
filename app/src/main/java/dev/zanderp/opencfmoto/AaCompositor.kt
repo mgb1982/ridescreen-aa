@@ -123,7 +123,9 @@ class AaCompositor(private val log: (String) -> Unit) {
     // [LIVE_TICK_MS]. While it is set the Android Auto frames are still decoded (so audio / guidance keep
     // flowing and going back is instant) but they are not drawn: the encoder only sees the dashboard.
     @Volatile private var liveBuild: ((Int, Int) -> Bitmap?)? = null
-    private var cardKeep = false          // true: [cardPending] belongs to the caller (reused), don't recycle it
+    private var cardKeep = false
+    /** The pending/shown bitmap covers the whole canvas (live dashboard), not the margin area (cards). */
+    private var cardFullCanvas = false          // true: [cardPending] belongs to the caller (reused), don't recycle it
     private val LIVE_TICK_MS = 125L       // 8 fps: gauges don't need more, and a static scene is cheap to encode
 
     /** Turn the live layer on ([build] runs on the GL thread each tick) or off (null: back to Android Auto). */
@@ -147,10 +149,10 @@ class AaCompositor(private val log: (String) -> Unit) {
             val build = liveBuild ?: return
             if (canvasW > 0 && canvasH > 0 && windowSurface != EGL14.EGL_NO_SURFACE &&
                 cardUntil <= android.os.SystemClock.uptimeMillis()) {
-                val w = if (areaWpx > 0) areaWpx else canvasW
-                val h = if (areaHpx > 0) areaHpx else canvasH
-                val bmp = try { build(w, h) } catch (e: Exception) { log("[DASHBOARD] draw failed: $e"); null }
-                if (bmp != null) { cardPending = bmp; cardKeep = true; drawFrame() }
+                // The dashboard fills the whole bike canvas: rider margins are for Android Auto, and
+                // the area outside them would otherwise stay black (a bar on top on the 125X).
+                val bmp = try { build(canvasW, canvasH) } catch (e: Exception) { log("[DASHBOARD] draw failed: $e"); null }
+                if (bmp != null) { cardPending = bmp; cardKeep = true; cardFullCanvas = true; drawFrame() }
             }
             handler.postDelayed(this, LIVE_TICK_MS)
         }
@@ -167,6 +169,7 @@ class AaCompositor(private val log: (String) -> Unit) {
             val bmp = try { build(w, h) } catch (e: Exception) { log("[CARD] build failed: $e"); null } ?: return@post
             cardPending = bmp
             cardKeep = false
+            cardFullCanvas = false
             val until = android.os.SystemClock.uptimeMillis() + ms
             cardUntil = until
             log("[CARD] showing ${w}x$h card for ${ms} ms")
@@ -199,10 +202,11 @@ class AaCompositor(private val log: (String) -> Unit) {
             GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, b, 0)
             if (!cardKeep) b.recycle()
         }
-        val w = if (areaWpx > 0) areaWpx else canvasW
-        val h = if (areaHpx > 0) areaHpx else canvasH
-        val x = if (areaWpx > 0) areaX else 0
-        val y = if (areaWpx > 0) canvasH - areaY - areaHpx else 0
+        val inArea = areaWpx > 0 && !cardFullCanvas
+        val w = if (inArea) areaWpx else canvasW
+        val h = if (inArea) areaHpx else canvasH
+        val x = if (inArea) areaX else 0
+        val y = if (inArea) canvasH - areaY - areaHpx else 0
         GLES20.glViewport(x, y, w, h)
         GLES20.glUseProgram(cardProg)
         cardQuad.position(0)

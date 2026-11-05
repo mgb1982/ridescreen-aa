@@ -647,4 +647,10 @@
     <string name="trips_merge_restore_confirm">¿Restaurar los tramos originales?</string>
     <string name="trips_merge_failed">No se pudieron unir los viajes.</string>
     <string name="trips_merge_done">Viajes unidos. Los tramos originales están guardados.</string>
+    <string name="setup_clock_smart_threshold">Umbral SMART (prueba): resincronizar si el cuadro pide la hora así de tarde (ms)</string>
+    <string name="clock_wrong_action">Reloj mal</string>
+    <string name="clock_wrong_noted">Anotado: reloj del cuadro mal</string>
+    <string name="controls_dash_scale">Escala de las esferas (velocidad y RPM máximas)</string>
+    <string name="controls_dash_scale_speed">Velocímetro hasta</string>
+    <string name="controls_dash_scale_rpm">Cuentarrevoluciones hasta</string>
 </resources>

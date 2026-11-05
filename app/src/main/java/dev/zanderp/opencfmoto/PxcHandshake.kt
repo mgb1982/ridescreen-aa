@@ -252,7 +252,9 @@ class PxcHandshake(
         ClockLab.resyncGaveUp = false
         ConnectionState.refresh()
         val askedAfterMs = if (ctrlSelectedAt > 0) System.currentTimeMillis() - ctrlSelectedAt else -1L
-        val slow = askedAfterMs >= SLOW_QUERY_TIME_MS
+        val threshold = ClockLab.smartThresholdMs
+        val slow = askedAfterMs >= threshold
+        ClockLab.lastQueryTimeAfterMs = askedAfterMs
         val reason: String = when (mode) {
             ClockResyncMode.ONCE -> {
                 if (!checkSnThisSession) {
@@ -264,23 +266,24 @@ class PxcHandshake(
             }
             else -> {
                 if (!slow) {
-                    log("[RESYNC] smart: QUERY_TIME after ${askedAfterMs}ms (< ${SLOW_QUERY_TIME_MS}ms) — " +
+                    log("[RESYNC] smart: QUERY_TIME after ${askedAfterMs}ms (< ${threshold}ms) — " +
                         "looks good, no resync")
                     return
                 }
                 if (resyncsThisBoot >= MAX_RESYNCS_PER_BOOT) {
-                    log("[RESYNC] smart: QUERY_TIME after ${askedAfterMs}ms but already resynced " +
+                    log("[RESYNC] smart: QUERY_TIME after ${askedAfterMs}ms (≥ ${threshold}ms) but already resynced " +
                         "$resyncsThisBoot× this dash boot — giving up (the rider can tap the dash clock to retry)")
                     ClockLab.resyncGaveUp = true
                     ConnectionState.refresh()
                     return
                 }
-                "smart: QUERY_TIME after ${askedAfterMs}ms (≥ ${SLOW_QUERY_TIME_MS}ms) — " +
+                "smart: QUERY_TIME after ${askedAfterMs}ms (≥ ${threshold}ms) — " +
                     "resync ${resyncsThisBoot + 1}/$MAX_RESYNCS_PER_BOOT"
             }
         }
         if (mode == ClockResyncMode.ONCE && resyncsThisBoot >= 1) return
         resyncsThisBoot++
+        ClockLab.resyncsThisBoot = resyncsThisBoot
         // Show "adjusting dash clock…" (phone + watch) until the reconnect answers QUERY_TIME again,
         // so the rider doesn't Stop/Connect by hand while it happens.
         ClockLab.resyncBusyUntil = android.os.SystemClock.elapsedRealtime() + RESYNC_DELAY_MS + RESYNC_BUSY_GRACE_MS
@@ -401,7 +404,7 @@ class PxcHandshake(
         const val RESYNC_DELAY_MS = 3_000L
         /** How long after the drop the "adjusting clock" hint may stay up waiting for the reconnect. */
         const val RESYNC_BUSY_GRACE_MS = 12_000L
-        /** SMART resync: a QUERY_TIME this long after CAR_CTRL marks a session likely to have failed. */
+        /** 2.3's SMART threshold; the live value is [ClockLab.smartThresholdMs] (v2.4 test). */
         const val SLOW_QUERY_TIME_MS = 1_950L
         const val MAX_RESYNCS_PER_BOOT = 3
 
@@ -415,6 +418,7 @@ class PxcHandshake(
         /** The rider pressed Connect: give the clock fix its full budget again. */
         fun resetResyncBudget() {
             resyncsThisBoot = 0
+            ClockLab.resyncsThisBoot = 0
         }
     }
 
@@ -431,6 +435,7 @@ class PxcHandshake(
         val out = socket.getOutputStream()
         checkSnThisSession = true
         resyncsThisBoot = 0
+        ClockLab.resyncsThisBoot = 0
         val text = frame.payload.asText()
         log("[$tag] CHECK_SN from bike on ${chanOf(socket)} ${sockId(socket)}: $text")
         val sn = try { JSONObject(text).optString("sn") } catch (e: Exception) { "" }
