@@ -71,7 +71,7 @@ data class Trip(
         return TripObdSummary(
             maxRpm = obdSamples.mapNotNull { it.rpm }.maxOrNull(),
             maxCoolantC = obdSamples.mapNotNull { it.coolantC }.maxOrNull(),
-            avgThrottlePct = avg(obdSamples.map { it.throttlePct }),
+            avgThrottlePct = avg(obdSamples.map { it.relativeThrottlePct }), // relative throttle (PID 0x45): more precise on the Zontes
             avgVoltage = avg(obdSamples.map { it.voltage }),
             sampleCount = obdSamples.size,
         )

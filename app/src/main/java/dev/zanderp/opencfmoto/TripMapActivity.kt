@@ -212,7 +212,7 @@ class TripMapActivity : AppCompatActivity() {
             speed.roundToInt(),
             obd?.rpm?.roundToInt()?.toString() ?: "—",
             obd?.coolantC?.roundToInt()?.toString() ?: "—",
-            obd?.throttlePct?.roundToInt()?.toString() ?: "—",
+            obd?.relativeThrottlePct?.roundToInt()?.toString() ?: "—",
         )
         playbackSeek.progress = (((playbackTimeMs - trip.start).toDouble() / (trip.end - trip.start)) * playbackSeek.max)
             .roundToInt().coerceIn(0, playbackSeek.max)

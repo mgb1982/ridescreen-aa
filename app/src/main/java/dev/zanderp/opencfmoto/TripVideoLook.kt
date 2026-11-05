@@ -561,7 +561,7 @@ class TripLook(
         // If OBD samples exist, reserve two compact readouts above the graph.
         if (obd != null) {
             val line1 = "RPM ${obd.rpm?.roundToInt() ?: "—"}   COOLANT ${obd.coolantC?.roundToInt()?.let { "$it°C" } ?: "—"}"
-            val line2 = "THROTTLE ${obd.throttlePct?.roundToInt()?.let { "$it%" } ?: "—"}   VOLT ${obd.voltage?.let { String.format(Locale.US, "%.1fV", it) } ?: "—"}"
+            val line2 = "THROTTLE ${obd.relativeThrottlePct?.roundToInt()?.let { "$it%" } ?: "—"}   VOLT ${obd.voltage?.let { String.format(Locale.US, "%.1fV", it) } ?: "—"}"
             text(c, line1, panel.left + 22 * u, panel.top + 5.5f * u, 2.1f * u, tfArchivo, Color.WHITE, shadow = false)
             text(c, line2, panel.left + 22 * u, panel.top + 8.5f * u, 2.1f * u, tfArchivo, Color.WHITE, shadow = false)
         }
