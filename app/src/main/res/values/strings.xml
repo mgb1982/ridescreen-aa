@@ -662,8 +662,6 @@
     <string name="trips_merge_failed">Could not merge these trips.</string>
     <string name="trips_merge_done">Trips merged. Original segments are saved.</string>
     <string name="setup_clock_smart_threshold">SMART threshold (test): resync when the dash asks for the time this late (ms)</string>
-    <string name="clock_wrong_action">Clock wrong</string>
-    <string name="clock_wrong_noted">Noted: dash clock wrong</string>
     <string name="controls_dash_scale">Gauge scale (max speed and RPM)</string>
     <string name="controls_dash_scale_speed">Speedometer up to</string>
     <string name="controls_dash_scale_rpm">Rev counter up to</string>

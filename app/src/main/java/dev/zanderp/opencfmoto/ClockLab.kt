@@ -53,17 +53,18 @@ object ClockLab {
      * v2.4 test · SMART resync threshold: a QUERY_TIME at least this long after CAR_CTRL drops the link.
      * 2.3 used 1,950 ms (24 October sessions: failures asked ≥ ~2.0 s). Recent logs (n=28, median
      * 1,902 ms, p90 2,180, max 2,340) cut 10 of 28 sessions at 1,950 and 2 at 2,200, ~6 s each, with
-     * no record of whether the clock ended right. Default 2,200 here while that is measured.
+     * no record of whether the clock ended right. Default stays 1,950 (2.3) until the by-hand fixes
+     * logged below say a later threshold keeps the clock right; the lab lets a rider try the others.
      */
     @Volatile var smartThresholdMs: Long = DEFAULT_SMART_THRESHOLD_MS
-    const val DEFAULT_SMART_THRESHOLD_MS = 2_200L
+    const val DEFAULT_SMART_THRESHOLD_MS = 1_950L
     val SMART_THRESHOLD_OPTIONS = listOf(1_950L, 2_100L, 2_200L, 2_450L)
 
     /** Last QUERY_TIME delay after CAR_CTRL (ms, -1 unknown) and resyncs this dash boot, for the log. */
     @Volatile var lastQueryTimeAfterMs: Long = -1L
     @Volatile var resyncsThisBoot: Int = 0
 
-    /** The line support looks for when the rider says the clock was wrong ([source]: button, notification). */
+    /** The line support looks for when the rider fixes the dash clock by hand ([source]: e.g. "button"). */
     fun clockWrongLine(source: String): String =
         "[RESYNC] rider fixed clock by hand ($source) — last QUERY_TIME after ${lastQueryTimeAfterMs}ms, " +
             "threshold ${smartThresholdMs}ms, resyncs this boot $resyncsThisBoot"

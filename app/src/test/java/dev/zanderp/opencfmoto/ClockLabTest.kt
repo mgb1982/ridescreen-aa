@@ -75,12 +75,12 @@ class ClockLabTest {
     }
 
     @Test
-    fun smartThresholdDefaultsTo2200AndIsInTheLabOptions() {
-        assertEquals(2_200L, ClockLab.DEFAULT_SMART_THRESHOLD_MS)
+    fun smartThresholdDefaultsTo2_3ValueAndIsInTheLabOptions() {
+        assertEquals(1_950L, ClockLab.DEFAULT_SMART_THRESHOLD_MS)
         assertEquals(listOf(1_950L, 2_100L, 2_200L, 2_450L), ClockLab.SMART_THRESHOLD_OPTIONS)
         assert(ClockLab.DEFAULT_SMART_THRESHOLD_MS in ClockLab.SMART_THRESHOLD_OPTIONS)
-        // 2.3's constant stays as the documented old value.
-        assertEquals(1_950L, PxcHandshake.SLOW_QUERY_TIME_MS)
+        // Same default as 2.3's constant: no behaviour change unless the rider picks another in the lab.
+        assertEquals(PxcHandshake.SLOW_QUERY_TIME_MS, ClockLab.DEFAULT_SMART_THRESHOLD_MS)
     }
 
     @Test

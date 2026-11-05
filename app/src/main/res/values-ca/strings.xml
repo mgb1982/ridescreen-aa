@@ -662,8 +662,6 @@
     <string name="trips_merge_failed">No s’han pogut unir els viatges.</string>
     <string name="trips_merge_done">Viatges units. Els trams originals estan desats.</string>
     <string name="setup_clock_smart_threshold">Llindar SMART (prova): resincronitzar si el quadre demana l\'hora tan tard (ms)</string>
-    <string name="clock_wrong_action">Rellotge malament</string>
-    <string name="clock_wrong_noted">Anotat: rellotge del quadre malament</string>
     <string name="controls_dash_scale">Escala de les esferes (velocitat i RPM màximes)</string>
     <string name="controls_dash_scale_speed">Velocímetre fins a</string>
     <string name="controls_dash_scale_rpm">Comptarevolucions fins a</string>

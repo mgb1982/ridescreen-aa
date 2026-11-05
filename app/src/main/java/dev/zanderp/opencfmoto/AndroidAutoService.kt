@@ -75,14 +75,6 @@ class AndroidAutoService : Service() {
                 fullTeardown()
                 return START_NOT_STICKY
             }
-            // v2.4 test · "Clock wrong" on the notification: only a log line for the clock study.
-            ACTION_CLOCK_WRONG -> {
-                LogBus.log(ClockLab.clockWrongLine("notification"))
-                try {
-                    android.widget.Toast.makeText(this, R.string.clock_wrong_noted, android.widget.Toast.LENGTH_SHORT).show()
-                } catch (_: Exception) {}
-                return START_NOT_STICKY
-            }
             ACTION_GPX_WAKE -> {
                 // Map Presentation only — do NOT start the AA receiver here. Starting AA would
                 // publish AaVideoBridge.pipeline and steal the bike's next REQ_RV_DATA_START away
@@ -432,7 +424,7 @@ class AndroidAutoService : Service() {
         val pi = PendingIntent.getActivity(this, if (resume) 1 else 0, open, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         val stopIntent = Intent(this, AndroidAutoService::class.java).apply { action = ACTION_STOP }
         val stopPi = PendingIntent.getService(this, 2, stopIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-        val b = Notification.Builder(this, CHANNEL_ID)
+        return Notification.Builder(this, CHANNEL_ID)
             .setContentTitle(title)
             .setContentText(text)
             .setSmallIcon(android.R.drawable.ic_menu_compass)
@@ -443,20 +435,7 @@ class AndroidAutoService : Service() {
                     Icon.createWithResource(this, R.drawable.ic_stop), getString(R.string.main_stop), stopPi,
                 ).build(),
             )
-        // v2.4 test · Zontes 125X/125V clock study: one tap logs that the dash clock is wrong.
-        // Shown whenever SMART is on (test build); the line is only meaningful on channel 21340.
-        if (ClockLab.resyncMode == ClockResyncMode.SMART) {
-            val wrongPi = PendingIntent.getService(
-                this, 3, Intent(this, AndroidAutoService::class.java).apply { action = ACTION_CLOCK_WRONG },
-                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-            )
-            b.addAction(
-                Notification.Action.Builder(
-                    Icon.createWithResource(this, android.R.drawable.ic_lock_idle_alarm), getString(R.string.clock_wrong_action), wrongPi,
-                ).build(),
-            )
-        }
-        return b.build()
+            .build()
     }
 
     private fun updateNotification(title: String, text: String, resume: Boolean = false) {
@@ -859,7 +838,6 @@ class AndroidAutoService : Service() {
 
         const val ACTION_STOP = "dev.zanderp.opencfmoto.ACTION_STOP_AA"
         const val ACTION_GPX_WAKE = "dev.zanderp.opencfmoto.ACTION_GPX_WAKE"
-        const val ACTION_CLOCK_WRONG = "dev.zanderp.opencfmoto.ACTION_CLOCK_WRONG"
 
         /** A start request younger than this may not have reached startForeground() yet. */
         private const val START_GRACE_MS = 2_500L
