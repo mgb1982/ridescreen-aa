@@ -13,27 +13,27 @@ from screens.pills import markup
 from lanzamiento24.widget import widget  # noqa: E402
 
 H = {
- "es": dict(a_k="Keyless · Widget · 10 idiomas", a_h="La 2.4 está al caer",
+ "es": dict(lang_l="En 10 idiomas", a_k="Keyless · Widget · 10 idiomas", a_h="La 2.4 está al caer",
             a_s="Muy pronto, tu moto se abrirá desde el móvil. Gratis y sin anuncios.",
             b_k="Muy pronto · 2.4", b_t="Pensada para cada viaje",
             hello_t="Bienvenida y despedida en el cuadro", rain_t="Aviso de lluvia al aparcar",
             lock_t="Bloquear termina el viaje y guarda dónde aparcas", dash_t="Dashboard en el cuadro · con adaptador OBD"),
- "ca": dict(a_k="Keyless · Widget · 10 idiomes", a_h="La 2.4 arriba aviat",
+ "ca": dict(lang_l="En 10 idiomes", a_k="Keyless · Widget · 10 idiomes", a_h="La 2.4 arriba aviat",
             a_s="Molt aviat, la moto s’obrirà des del mòbil. Gratis i sense anuncis.",
             b_k="Molt aviat · 2.4", b_t="Pensada per a cada viatge",
             hello_t="Benvinguda i comiat al quadre", rain_t="Avís de pluja en aparcar",
             lock_t="Bloquejar acaba el viatge i desa on aparques", dash_t="Dashboard al quadre · amb adaptador OBD"),
- "en": dict(a_k="Keyless · Widget · 10 languages", a_h="2.4 is coming",
+ "en": dict(lang_l="In 10 languages", a_k="Keyless · Widget · 10 languages", a_h="2.4 is coming",
             a_s="Soon you’ll unlock your bike from your phone. Free, no ads.",
             b_k="Coming soon · 2.4", b_t="Made for every ride",
             hello_t="Hello and goodbye on the dash", rain_t="Rain alert when you park",
             lock_t="Locking ends the ride and saves where you parked", dash_t="Dash view · needs an OBD adapter"),
- "it": dict(a_k="Keyless · Widget · 10 lingue", a_h="La 2.4 sta arrivando",
+ "it": dict(lang_l="In 10 lingue", a_k="Keyless · Widget · 10 lingue", a_h="La 2.4 sta arrivando",
             a_s="Presto aprirai la moto dal telefono. Gratis e senza pubblicità.",
             b_k="Presto · 2.4", b_t="Pensata per ogni viaggio",
             hello_t="Benvenuto e saluto sul cruscotto", rain_t="Avviso pioggia al parcheggio",
             lock_t="Bloccare termina il viaggio e salva dove parcheggi", dash_t="Dashboard sul cruscotto · con adattatore OBD"),
- "th": dict(a_k="Keyless · Widget · 10 ภาษา", a_h="2.4 กำลังจะมา",
+ "th": dict(lang_l="รองรับ 10 ภาษา", a_k="Keyless · Widget · 10 ภาษา", a_h="2.4 กำลังจะมา",
             a_s="อีกไม่นาน ปลดล็อกรถได้จากมือถือ ฟรี ไม่มีโฆษณา",
             b_k="เร็วๆ นี้ · 2.4", b_t="ออกแบบมาเพื่อทุกการเดินทาง",
             hello_t="การ์ดต้อนรับและบอกลาบนหน้าปัด", rain_t="แจ้งเตือนฝนเมื่อจอดรถ",
@@ -99,7 +99,7 @@ def collages(lang):
             f'<div class="lb">{esc(dash_l)}<small>{esc(dash_s)}</small></div></div>')
     langs = (f'<div class="tile"><div class="vis lchips">'
              + "".join(f'<span class="{"nw" if new else ""}">{esc(n)}</span>' for n, new in LANGS)
-             + f'</div><div class="lb">{esc(t["lang_t"])}</div></div>')
+             + f'</div><div class="lb">{esc(h["lang_l"])}</div></div>')
     a = (f'<div class="k">{esc(h["a_k"])}</div><h1>{esc(h["a_h"])}</h1><div class="s">{esc(h["a_s"])}</div>'
          f'{pke}{wid}<div class="bot">{dash}{langs}</div>')
 
