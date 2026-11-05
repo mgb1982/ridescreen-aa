@@ -1,4 +1,4 @@
-"""Dos collages para los grupos (1080×1350): A = «la 2.4 ya está aquí», con el keyless
+"""Dos collages para los grupos (1080×1350): A = teaser «la 2.4 está al caer», con el keyless
 delante; B = «y además», el resto. El dashboard sale pequeño y siempre con «necesita OBD». Escribe en out/dry/lanzamiento24/<idioma>/hype-a.png y hype-b.png."""
 import os
 import sys
@@ -13,29 +13,29 @@ from screens.pills import markup
 from lanzamiento24.widget import widget  # noqa: E402
 
 H = {
- "es": dict(a_k="Keyless · Widget · 10 idiomas", a_h="La 2.4 ya está aquí",
-            a_s="Tu moto se abre desde el móvil. Gratis y sin anuncios.",
-            b_k="Y además", b_t="Pensada para cada viaje",
+ "es": dict(a_k="Keyless · Widget · 10 idiomas", a_h="La 2.4 está al caer",
+            a_s="Muy pronto, tu moto se abrirá desde el móvil. Gratis y sin anuncios.",
+            b_k="Muy pronto · 2.4", b_t="Pensada para cada viaje",
             hello_t="Bienvenida y despedida en el cuadro", rain_t="Aviso de lluvia al aparcar",
             lock_t="Bloquear termina el viaje y guarda dónde aparcas", dash_t="Dashboard en el cuadro · con adaptador OBD"),
- "ca": dict(a_k="Keyless · Widget · 10 idiomes", a_h="La 2.4 ja és aquí",
-            a_s="La moto s’obre des del mòbil. Gratis i sense anuncis.",
-            b_k="I a més", b_t="Pensada per a cada viatge",
+ "ca": dict(a_k="Keyless · Widget · 10 idiomes", a_h="La 2.4 arriba aviat",
+            a_s="Molt aviat, la moto s’obrirà des del mòbil. Gratis i sense anuncis.",
+            b_k="Molt aviat · 2.4", b_t="Pensada per a cada viatge",
             hello_t="Benvinguda i comiat al quadre", rain_t="Avís de pluja en aparcar",
             lock_t="Bloquejar acaba el viatge i desa on aparques", dash_t="Dashboard al quadre · amb adaptador OBD"),
- "en": dict(a_k="Keyless · Widget · 10 languages", a_h="2.4 is here",
-            a_s="Unlock your bike from your phone. Free, no ads.",
-            b_k="And there’s more", b_t="Made for every ride",
+ "en": dict(a_k="Keyless · Widget · 10 languages", a_h="2.4 is coming",
+            a_s="Soon you’ll unlock your bike from your phone. Free, no ads.",
+            b_k="Coming soon · 2.4", b_t="Made for every ride",
             hello_t="Hello and goodbye on the dash", rain_t="Rain alert when you park",
             lock_t="Locking ends the ride and saves where you parked", dash_t="Dash view · needs an OBD adapter"),
- "it": dict(a_k="Keyless · Widget · 10 lingue", a_h="La 2.4 è arrivata",
-            a_s="Apri la moto dal telefono. Gratis e senza pubblicità.",
-            b_k="E inoltre", b_t="Pensata per ogni viaggio",
+ "it": dict(a_k="Keyless · Widget · 10 lingue", a_h="La 2.4 sta arrivando",
+            a_s="Presto aprirai la moto dal telefono. Gratis e senza pubblicità.",
+            b_k="Presto · 2.4", b_t="Pensata per ogni viaggio",
             hello_t="Benvenuto e saluto sul cruscotto", rain_t="Avviso pioggia al parcheggio",
             lock_t="Bloccare termina il viaggio e salva dove parcheggi", dash_t="Dashboard sul cruscotto · con adattatore OBD"),
- "th": dict(a_k="Keyless · Widget · 10 ภาษา", a_h="2.4 มาแล้ว",
-            a_s="ปลดล็อกรถจากมือถือ ฟรี ไม่มีโฆษณา",
-            b_k="และยังมีอีก", b_t="ออกแบบมาเพื่อทุกการเดินทาง",
+ "th": dict(a_k="Keyless · Widget · 10 ภาษา", a_h="2.4 กำลังจะมา",
+            a_s="อีกไม่นาน ปลดล็อกรถได้จากมือถือ ฟรี ไม่มีโฆษณา",
+            b_k="เร็วๆ นี้ · 2.4", b_t="ออกแบบมาเพื่อทุกการเดินทาง",
             hello_t="การ์ดต้อนรับและบอกลาบนหน้าปัด", rain_t="แจ้งเตือนฝนเมื่อจอดรถ",
             lock_t="ล็อกรถแล้วจบการเดินทาง และบันทึกจุดจอด", dash_t="Dashboard บนหน้าปัด · ใช้กับอะแดปเตอร์ OBD"),
 }
