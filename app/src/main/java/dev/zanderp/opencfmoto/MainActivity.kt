@@ -156,6 +156,10 @@ class MainActivity : AppCompatActivity() {
      */
     private fun tearDownForModeSwitch(clearMap: Boolean, clearMirror: Boolean) {
         log("→ mode switch: stop previous projection (keep Wi‑Fi)")
+        // Why each attempt restarts (350D/350E support, 5 Nov 2026): every restart in those logs came
+        // from the rider tapping Connect/Mirror after an error, not from the watchdog.
+        log("[RESTART] new projection requested · state was '${ConnectionState.phase.logLabel}'" +
+            if (P2pClientDiscovery.isActive) " · Wi‑Fi Direct discovery had been waiting ${P2pClientDiscovery.elapsedText()} s" else "")
         try { AaVideoBridge.onSteadyVideo = null } catch (_: Exception) {}
         AaVideoBridge.pipeline = null
         AaVideoBridge.touchSink = null

@@ -613,6 +613,7 @@
     <string name="main_aa_need_nearby_settings">Abrir definições</string>
     <string name="conn_detail_wifi_picker">Aprova o seletor de Wi-Fi / dispositivos do telemóvel (não o deixes aberto) e toca novamente em Ligar.</string>
     <string name="conn_detail_easyconn_offline">O Wi-Fi da mota está ativo, mas o EasyConn está offline; mantém aberto o QR de emparelhamento no painel.</string>
+    <string name="conn_detail_waiting_dash">À espera que o painel abra a ligação: pode demorar até um minuto. Não toques novamente em Ligar.</string>
     <string name="main_phone_hotspot_hint">Ativa o ponto de acesso Android com o SSID e a palavra-passe apresentados no painel da mota e espera que a mota se ligue ao telemóvel.</string>
     <string name="main_phone_hotspot_status">À espera da mota no ponto de acesso do telemóvel…</string>
     <string name="main_phone_hotspot_no_iface">Não foi encontrado nenhum ponto de acesso do telemóvel; ativa o ponto de acesso Android com o SSID e a palavra-passe do painel e tenta novamente Ligar.</string>

@@ -454,6 +454,12 @@ class EasyConnProber(
         probeTarget(bikeIp, BIKE_PROBE_PORT, myIp, network, attempts = 5)
         if (probed || !running) return
 
+        // Wi‑Fi Direct client (350D/350E): the dash can take over 30 s to open EasyConn after the group
+        // forms. Keep the group and wait for the early discovery (mDNS + :10930 every second) instead of
+        // declaring "EasyConn offline", which made riders tap Connect and restart the whole wait.
+        if (early) waitForEarlyDiscovery()
+        if (probed || !running) return
+
         // Peer alive but :10930 closed (common on Morini SoftAP) — scan nearby ports.
         val open = EasyConnDiscovery.scanOpenPorts(
             bikeIp, network, myIp, ::openOnBikeNetwork, log,
@@ -498,6 +504,29 @@ class EasyConnProber(
                 )
             }
         }
+    }
+
+    /**
+     * Wait while [P2pClientDiscovery] is still looking; its finds reach [offerEndpoint], which probes
+     * them on its own thread. Shows "waiting for the dash" instead of an error meanwhile.
+     */
+    private fun waitForEarlyDiscovery() {
+        ConnectionState.set(Phase.PXC_CONNECTING, context.getString(R.string.conn_detail_waiting_dash))
+        log("[P2P-WAIT] :$BIKE_PROBE_PORT still closed ${P2pClientDiscovery.elapsedText()} s after the group formed — " +
+            "keeping the group and waiting up to ${P2pClientDiscovery.MDNS_WINDOW_MS / 1000} s")
+        var lastLog = System.currentTimeMillis()
+        while (running && !probed && P2pClientDiscovery.isActive) {
+            Thread.sleep(250)
+            val now = System.currentTimeMillis()
+            if (now - lastLog >= 10_000) {
+                lastLog = now
+                log("[P2P-WAIT] still waiting for the dash (${P2pClientDiscovery.elapsedText()} s since the group formed)")
+            }
+        }
+        // An endpoint found at the very end may still be being greeted on the offer thread.
+        if (!probed && running) synchronized(offerLock) {}
+        log(if (probed) "[P2P-WAIT] linked ${P2pClientDiscovery.elapsedText()} s after the group formed"
+            else "[P2P-WAIT] gave up after ${P2pClientDiscovery.elapsedText()} s — falling back to the port scan")
     }
 
     /** Try MOTOMORINI Yunmo TCP after EasyConn discovery fails. */

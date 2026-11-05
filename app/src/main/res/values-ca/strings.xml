@@ -548,6 +548,7 @@
     <string name="main_aa_need_nearby_settings">Obre la configuració</string>
     <string name="conn_detail_wifi_picker">Aprova el selector de Wi‑Fi / dispositiu del telèfon (no el deixis obert) i torna a prémer Connecta</string>
     <string name="conn_detail_easyconn_offline">La Wi‑Fi de la moto està activa, però EasyConn està fora de línia. Mantén el codi QR d\'aparellament obert al quadre de comandament</string>
+    <string name="conn_detail_waiting_dash">Esperant que el quadre obri l\'enllaç: pot trigar fins a un minut. No tornis a prémer Connecta.</string>
     
     <!-- MainActivity dynamic / dialogs -->
     <string name="main_hide_logs">Amaga registres</string>

@@ -548,6 +548,7 @@
     <string name="main_aa_need_nearby_settings">Open settings</string>
     <string name="conn_detail_wifi_picker">Approve the phone\'s Wi‑Fi / device picker (don\'t leave it open), then Connect again</string>
     <string name="conn_detail_easyconn_offline">Bike Wi‑Fi is up but EasyConn is offline — keep the pairing QR open on the dash</string>
+    <string name="conn_detail_waiting_dash">Waiting for the dash to open the link — it can take up to a minute. Don\'t tap Connect again.</string>
 
     <!-- MainActivity dynamic / dialogs -->
     <string name="main_hide_logs">Hide logs</string>

@@ -550,6 +550,7 @@
     <string name="main_aa_need_nearby_settings">Открыть настройки</string>
     <string name="conn_detail_wifi_picker">Подтверди системный выбор Wi‑Fi / устройства на телефоне (не оставляй его открытым), затем снова нажми «Подключить»</string>
     <string name="conn_detail_easyconn_offline">Wi‑Fi мотоцикла работает, но EasyConn не в сети — оставь QR-код сопряжения открытым на дисплее</string>
+    <string name="conn_detail_waiting_dash">Ждём, пока приборная панель откроет соединение — это может занять до минуты. Не нажимайте «Подключить» снова.</string>
 
     <!-- MainActivity dynamic / dialogs -->
     <string name="main_hide_logs">Скрыть журналы</string>
