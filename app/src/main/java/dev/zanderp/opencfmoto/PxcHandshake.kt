@@ -136,7 +136,7 @@ class PxcHandshake(
                 }
                 val channel = lastClientInfo?.optString("channel")?.trim().orEmpty()
                 if (!clockFixDash(channel, ClockLab.phoneHotspotDash)) {
-                    log("[APPSTATUS] not sending (channel=${channel.ifEmpty { "-" }}, only Zontes $ZONTES_CHANNEL, the 368, the 350E, the T350X and the 125M)")
+                    log("[APPSTATUS] not sending (channel=${channel.ifEmpty { "-" }}, only Zontes $ZONTES_CHANNEL, the 368, the 350D/350E, the T350X and the 125M)")
                     return@Thread
                 }
                 // The official app reports the phone's real portrait screen size here.
@@ -358,8 +358,10 @@ class PxcHandshake(
         const val ZONTES_368_CHANNEL = "21334"
 
         /**
-         * Zontes 350E (channel 21313), also a Zontes Smart dash: same session messages as the 368
-         * (APPSTATUS, CHECK_SN_RESULT on CAR_DATA) and the time answer. No automatic clock resync on it.
+         * Zontes 350D and 350E (channel 21313, QR modelId 21313, Wi‑Fi Direct): Zontes Smart dashes with
+         * the same session messages as the 368 (APPSTATUS, CHECK_SN_RESULT on CAR_DATA) and the time
+         * answer. Confirmed on a 350D (build 434) and a 350E (build 408), 4 Nov 2026. No automatic clock
+         * resync on it. The name keeps "350E" for history; it covers both models.
          */
         const val ZONTES_350E_CHANNEL = "21313"
 
