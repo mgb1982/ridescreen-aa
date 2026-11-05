@@ -657,4 +657,6 @@
     <string name="controls_dash_scale">Skala der Anzeigen (max. Tempo und Drehzahl)</string>
     <string name="controls_dash_scale_speed">Tacho bis</string>
     <string name="controls_dash_scale_rpm">Drehzahlmesser bis</string>
+    <string name="controls_volume_drives_aa">▲/▼ steuern auch Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Aus: Die Lautstärketasten ändern weiter die Handy-Lautstärke (auch die Gegensprechanlage), und die Lautstärke wird nie festgehalten. Android Auto bekommt dann nur die übrigen Lenkertasten.</string>
 </resources>

@@ -657,4 +657,6 @@
     <string name="controls_dash_scale">Échelle des cadrans (vitesse et régime max.)</string>
     <string name="controls_dash_scale_speed">Compteur jusqu\'à</string>
     <string name="controls_dash_scale_rpm">Compte-tours jusqu\'à</string>
+    <string name="controls_volume_drives_aa">▲/▼ pilotent aussi Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Désactivé : les boutons de volume continuent de régler le volume du téléphone (l\'intercom aussi), et le volume n\'est jamais bloqué. Android Auto ne reçoit alors que les autres boutons du guidon.</string>
 </resources>

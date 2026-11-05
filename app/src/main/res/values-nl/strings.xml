@@ -419,4 +419,6 @@
     <string name="controls_dash_scale">Schaal van de meters (max. snelheid en toerental)</string>
     <string name="controls_dash_scale_speed">Snelheidsmeter tot</string>
     <string name="controls_dash_scale_rpm">Toerenteller tot</string>
+    <string name="controls_volume_drives_aa">▲/▼ bedienen ook Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Uit: de volumeknoppen blijven het telefoonvolume regelen (ook de intercom), en het volume wordt nooit vastgezet. Android Auto krijgt dan alleen de andere stuurknoppen.</string>
 </resources>

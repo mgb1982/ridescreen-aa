@@ -659,4 +659,6 @@
     <string name="controls_dash_scale">Escala dos mostradores (velocidade e RPM máximas)</string>
     <string name="controls_dash_scale_speed">Velocímetro até</string>
     <string name="controls_dash_scale_rpm">Conta-rotações até</string>
+    <string name="controls_volume_drives_aa">▲/▼ também controlam o Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Desligado: os botões de volume continuam a mudar o volume do telemóvel (e também o intercomunicador), e o volume nunca fica fixo. O Android Auto recebe só os outros botões do guiador.</string>
 </resources>

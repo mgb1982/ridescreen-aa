@@ -665,4 +665,6 @@
     <string name="controls_dash_scale">Gauge scale (max speed and RPM)</string>
     <string name="controls_dash_scale_speed">Speedometer up to</string>
     <string name="controls_dash_scale_rpm">Rev counter up to</string>
+    <string name="controls_volume_drives_aa">▲/▼ also drive Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Off: the volume buttons keep changing the phone volume (and your intercom too), and the phone volume is never locked. Android Auto then only gets the other handlebar buttons.</string>
 </resources>

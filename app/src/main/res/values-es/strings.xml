@@ -651,4 +651,6 @@
     <string name="controls_dash_scale">Escala de las esferas (velocidad y RPM máximas)</string>
     <string name="controls_dash_scale_speed">Velocímetro hasta</string>
     <string name="controls_dash_scale_rpm">Cuentarrevoluciones hasta</string>
+    <string name="controls_volume_drives_aa">▲/▼ también controlan Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Desactivado: los botones de volumen siguen cambiando el volumen del móvil (y también el intercomunicador), y el volumen nunca queda fijo. Android Auto solo recibe los demás botones del manillar.</string>
 </resources>

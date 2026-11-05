@@ -666,4 +666,6 @@
     <string name="controls_dash_scale">Шкала приборов (макс. скорость и обороты)</string>
     <string name="controls_dash_scale_speed">Спидометр до</string>
     <string name="controls_dash_scale_rpm">Тахометр до</string>
+    <string name="controls_volume_drives_aa">▲/▼ тоже управляют Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Выкл.: кнопки громкости по-прежнему меняют громкость телефона (и гарнитура тоже), громкость никогда не фиксируется. Android Auto получает только остальные кнопки руля.</string>
 </resources>

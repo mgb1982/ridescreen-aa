@@ -654,4 +654,6 @@
     <string name="controls_dash_scale">Scala dei quadranti (velocità e giri massimi)</string>
     <string name="controls_dash_scale_speed">Tachimetro fino a</string>
     <string name="controls_dash_scale_rpm">Contagiri fino a</string>
+    <string name="controls_volume_drives_aa">▲/▼ controllano anche Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Disattivato: i tasti del volume continuano a cambiare il volume del telefono (anche l\'interfono), e il volume non viene mai bloccato. Android Auto riceve solo gli altri tasti del manubrio.</string>
 </resources>

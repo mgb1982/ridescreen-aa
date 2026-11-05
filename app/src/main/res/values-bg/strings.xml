@@ -599,4 +599,6 @@
     <string name="controls_dash_scale">Скала на циферблатите (макс. скорост и обороти)</string>
     <string name="controls_dash_scale_speed">Скоростомер до</string>
     <string name="controls_dash_scale_rpm">Оборотомер до</string>
+    <string name="controls_volume_drives_aa">▲/▼ управляват и Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Изключено: бутоните за сила на звука продължават да променят звука на телефона (и интеркомът също), а звукът никога не се заключва. Android Auto получава само останалите бутони на кормилото.</string>
 </resources>

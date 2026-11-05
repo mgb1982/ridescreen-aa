@@ -563,4 +563,6 @@
     <string name="controls_dash_scale">Műszerskála (max. sebesség és fordulat)</string>
     <string name="controls_dash_scale_speed">Sebességmérő eddig</string>
     <string name="controls_dash_scale_rpm">Fordulatszámmérő eddig</string>
+    <string name="controls_volume_drives_aa">A ▲/▼ az Android Autót is vezérli</string>
+    <string name="controls_volume_drives_aa_desc">Ki: a hangerőgombok továbbra is a telefon hangerejét állítják (a kommunikátor is), és a hangerő sosem rögzül. Az Android Auto csak a többi kormánygombot kapja.</string>
 </resources>

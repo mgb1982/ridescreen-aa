@@ -451,4 +451,6 @@
     <string name="controls_dash_scale">Skala zegarów (maks. prędkość i obroty)</string>
     <string name="controls_dash_scale_speed">Prędkościomierz do</string>
     <string name="controls_dash_scale_rpm">Obrotomierz do</string>
+    <string name="controls_volume_drives_aa">▲/▼ sterują też Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Wyłączone: przyciski głośności dalej zmieniają głośność telefonu (interkom też), a głośność nigdy nie jest blokowana. Android Auto dostaje wtedy tylko pozostałe przyciski kierownicy.</string>
 </resources>

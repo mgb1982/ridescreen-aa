@@ -663,4 +663,6 @@
     <string name="controls_dash_scale">สเกลหน้าปัด (ความเร็วและรอบสูงสุด)</string>
     <string name="controls_dash_scale_speed">มาตรวัดความเร็วถึง</string>
     <string name="controls_dash_scale_rpm">มาตรวัดรอบถึง</string>
+    <string name="controls_volume_drives_aa">▲/▼ ควบคุม Android Auto ด้วย</string>
+    <string name="controls_volume_drives_aa_desc">ปิด: ปุ่มเสียงยังปรับระดับเสียงของโทรศัพท์ได้ตามปกติ (อินเตอร์คอมก็เช่นกัน) และระดับเสียงจะไม่ถูกล็อก Android Auto จะได้รับเฉพาะปุ่มอื่นบนแฮนด์</string>
 </resources>

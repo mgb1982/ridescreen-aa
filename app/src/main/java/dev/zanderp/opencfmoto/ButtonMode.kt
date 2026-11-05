@@ -19,6 +19,7 @@ import android.content.Context
 object ButtonMode {
     private const val PREF = "button_mode"
     private const val KEY = "controlAa"
+    private const val KEY_VOLUME = "volumeToAa"
 
     private fun prefs(context: Context) =
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
@@ -28,5 +29,17 @@ object ButtonMode {
 
     fun set(context: Context, controlAa: Boolean) {
         BikeScope.putBoolean(prefs(context), context, KEY, controlAa)
+    }
+
+    /**
+     * v2.4 · Whether the bike's ▲/▼ (AVRCP absolute volume) also drive Android Auto while
+     * [isControlAa] is on. Off = the phone volume is never pinned, so the bars and an intercom keep
+     * changing the volume; Android Auto loses the ▲/▼ knob steps. Default on (the 2.3 behaviour).
+     */
+    fun isVolumeToAa(context: Context): Boolean =
+        BikeScope.getBoolean(prefs(context), context, KEY_VOLUME, true)
+
+    fun setVolumeToAa(context: Context, on: Boolean) {
+        BikeScope.putBoolean(prefs(context), context, KEY_VOLUME, on)
     }
 }

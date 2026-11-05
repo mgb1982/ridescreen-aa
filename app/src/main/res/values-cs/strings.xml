@@ -419,4 +419,6 @@
     <string name="controls_dash_scale">Stupnice budíků (max. rychlost a otáčky)</string>
     <string name="controls_dash_scale_speed">Tachometr do</string>
     <string name="controls_dash_scale_rpm">Otáčkoměr do</string>
+    <string name="controls_volume_drives_aa">▲/▼ ovládají i Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Vypnuto: tlačítka hlasitosti dál mění hlasitost telefonu (i interkomu) a hlasitost se nikdy nezamkne. Android Auto pak dostává jen ostatní tlačítka na řídítkách.</string>
 </resources>

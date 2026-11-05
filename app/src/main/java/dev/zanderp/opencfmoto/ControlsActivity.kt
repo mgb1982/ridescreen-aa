@@ -138,6 +138,29 @@ class ControlsActivity : AppCompatActivity() {
             if (checked) ensureMicPermission()
         }
 
+        // v2.4: ▲/▼ can stay on the phone volume (intercom users) while the other bars drive AA.
+        val swVol = findViewById<MaterialSwitch>(R.id.switch_volume_aa)
+        swVol.isChecked = ButtonMode.isVolumeToAa(this)
+        fun refreshVolumeSwitch(captureOn: Boolean) {
+            swVol.isEnabled = captureOn
+            swVol.alpha = if (captureOn) 1f else 0.5f
+            findViewById<View>(R.id.tv_volume_aa_desc).alpha = if (captureOn) 1f else 0.5f
+        }
+        refreshVolumeSwitch(sw.isChecked)
+        sw.setOnCheckedChangeListener(null)
+        sw.setOnCheckedChangeListener { _, checked ->
+            ButtonMode.set(this, checked)
+            MediaButtonBridge.instance?.setCaptureActive(checked)
+            LogBus.log("→ handlebar buttons ${if (checked) "control Android Auto" else "control media"}")
+            if (checked) ensureMicPermission()
+            refreshVolumeSwitch(checked)
+        }
+        swVol.setOnCheckedChangeListener { _, on ->
+            ButtonMode.setVolumeToAa(this, on)
+            MediaButtonBridge.instance?.setVolumeCaptureActive(on)
+            LogBus.log("→ handlebar ▲/▼ ${if (on) "drive Android Auto" else "control the phone volume"}")
+        }
+
         findViewById<MaterialButton>(R.id.btn_customize).setOnClickListener {
             startActivity(Intent(this, ButtonMappingActivity::class.java))
         }

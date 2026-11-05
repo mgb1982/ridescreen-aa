@@ -664,4 +664,6 @@
     <string name="controls_dash_scale">Κλίμακα οργάνων (μέγιστη ταχύτητα και στροφές)</string>
     <string name="controls_dash_scale_speed">Ταχύμετρο έως</string>
     <string name="controls_dash_scale_rpm">Στροφόμετρο έως</string>
+    <string name="controls_volume_drives_aa">Τα ▲/▼ ελέγχουν και το Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Απενεργοποιημένο: τα κουμπιά έντασης συνεχίζουν να αλλάζουν την ένταση του κινητού (και η ενδοεπικοινωνία), και η ένταση δεν κλειδώνει ποτέ. Το Android Auto λαμβάνει μόνο τα υπόλοιπα κουμπιά του τιμονιού.</string>
 </resources>
