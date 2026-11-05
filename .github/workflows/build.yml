@@ -76,7 +76,8 @@ jobs:
         run: |
           set +e
           # Keep prerelease builds unminified and arm64-only for Android 16 device compatibility.
-          if [[ "$GITHUB_REF" == refs/heads/prerelease/* ]]; then
+          # Branches ending in -slim build exactly like a public release (R8 + resource shrinking), to test it.
+          if [[ "$GITHUB_REF" == refs/heads/prerelease/* && "$GITHUB_REF" != *-slim ]]; then
             ./gradlew assembleGithubRelease bundlePlayRelease -PslimApk=false -Pabi=arm64-v8a -PappVersion="$APP_VERSION" -PversionSuffix="$VERSION_SUFFIX" > release-build.log 2>&1
           else
             ./gradlew assembleGithubRelease bundlePlayRelease -PappVersion="$APP_VERSION" -PversionSuffix="$VERSION_SUFFIX" > release-build.log 2>&1
