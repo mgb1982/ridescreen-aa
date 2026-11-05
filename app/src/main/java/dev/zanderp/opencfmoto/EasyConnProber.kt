@@ -116,6 +116,12 @@ class EasyConnProber(
     @Volatile private var negH = 384
     @Volatile private var framesSent = 0
     @Volatile private var lastFrameAt = 0L
+    // [PULL] report: dash requests and our answers per 5 s window, plus encoder counters.
+    private var pullWindowAt = 0L
+    private var pullRequests = 0
+    private var pullSent = 0
+    private var pullEmpty = 0
+    private var pullStats0: LongArray? = null
     /** SoftAP Yunmo path (MOTOMORINI / X-Cape 1200) when EasyConn never answers. */
     private var yunmo: YunmoLink? = null
 
@@ -943,11 +949,15 @@ class EasyConnProber(
                 // initial IDR is already gone from the queue, so without this the dash starts mid-GOP
                 // on a P-frame and stays black. See VideoPipeline.onBikeDataStart().
                 video?.onBikeDataStart()
+                pullWindowAt = 0L
                 log("[$tag] → RLY 113")
                 sendReqBase(out, 113, null)
             }
             114 -> { // REQ_RV_DATA_NEXT — bike pulling a frame (data socket); send one access unit raw
+                pullRequests++
                 val frame = video?.pollFrame(1500)
+                if (frame == null) pullEmpty++ else pullSent++
+                reportPull()
                 if (frame == null) {
                     log("[$tag] REQ_RV_DATA_NEXT(114): no frame ready")
                 } else {
@@ -965,6 +975,31 @@ class EasyConnProber(
                 log("[$tag] media cmdType=$cmdType len=${body.size} $preview")
             }
         }
+    }
+
+    /**
+     * Every 5 s: how many frames the dash asked for and got, what the encoder produced and dropped.
+     * On the Zontes 350D/350E (channel 21313) the encoder is then fed at the measured pull rate + 2.
+     */
+    private fun reportPull() {
+        val v = video ?: return
+        val now = System.currentTimeMillis()
+        if (pullWindowAt == 0L) { pullWindowAt = now; pullStats0 = v.pullStats(); return }
+        val span = now - pullWindowAt
+        if (span < 5_000) return
+        val s1 = v.pullStats()
+        val s0 = pullStats0 ?: s1
+        val secs = span / 1000.0
+        val pullFps = pullRequests / secs
+        val fmt = { x: Double -> String.format(java.util.Locale.US, "%.1f", x) }
+        log("[PULL] ${fmt(secs)} s: dash asked ${pullRequests} (${fmt(pullFps)}/s), sent $pullSent, empty $pullEmpty · " +
+            "encoder made ${s1[0] - s0[0]} (${s1[1] - s0[1]} keyframes), dropped ${s1[2] - s0[2]}, queued ${s1[3]}")
+        val channel = handshake.lastClientInfo?.optString("channel")?.trim().orEmpty()
+        if (channel == PxcHandshake.ZONTES_350E_CHANNEL && pullRequests > 0) {
+            v.setPullCap((Math.round(pullFps).toInt() + 2).coerceIn(5, 30))
+        }
+        pullWindowAt = now; pullStats0 = s1
+        pullRequests = 0; pullSent = 0; pullEmpty = 0
     }
 
     /**
