@@ -69,6 +69,9 @@ class AndroidAutoService : Service() {
             // Notification "Stop" — same full teardown as the main screen's Stop button.
             ACTION_STOP -> {
                 LogBus.log("[AA] Stop tapped from notification")
+                // If this start was a startForegroundService(), Android kills the app unless the
+                // service goes foreground first, even to stop (2.3 crash, 31 Oct). Harmless otherwise.
+                try { tryStartAsForeground(allowMicrophone = false) } catch (_: Exception) {}
                 fullTeardown()
                 return START_NOT_STICKY
             }

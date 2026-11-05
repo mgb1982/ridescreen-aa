@@ -24,9 +24,19 @@ class ProjectionService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        ensureForeground()
         if (intent?.action == ACTION_KEEP_SCREEN) {
+            // Only a live mirror may take the wake lock. If the mirror already stopped (the keep-screen
+            // intent raced the teardown), going foreground as mediaProjection without a projection
+            // throws SecurityException on Android 14+ (2.3: 5 crashes in a week). Just leave.
+            if (!isForeground) { stopSelf(startId); return START_NOT_STICKY }
             applyKeepScreen(intent.getBooleanExtra(EXTRA_KEEP, false))
+            return START_NOT_STICKY
+        }
+        try {
+            ensureForeground()
+        } catch (e: Exception) {   // SecurityException / ForegroundServiceStartNotAllowedException
+            LogBus.log("[MIRROR] could not go foreground (no screen-capture permission?): ${e.message}")
+            stopSelf()
         }
         return START_NOT_STICKY
     }

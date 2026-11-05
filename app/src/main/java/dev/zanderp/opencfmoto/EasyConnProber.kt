@@ -1196,12 +1196,16 @@ class EasyConnProber(
             while (running) {
                 try { Thread.sleep(5000) } catch (_: InterruptedException) { break }
                 i++
-                val yFrames = yunmo?.framesSent ?: 0
-                log(
-                    "hb#$i probed=$probed video=${video != null} framesSent=$framesSent" +
-                        (if (yFrames > 0 || yunmo != null) " yunmoFrames=$yFrames" else "") +
-                        " openServers=${servers.count { !it.isClosed }}",
-                )
+                // Another thread may be closing the servers list (2.3 crash: IndexOutOfBounds in ec-hb).
+                try {
+                    val yFrames = yunmo?.framesSent ?: 0
+                    val open = synchronized(servers) { servers.toList() }.count { !it.isClosed }
+                    log(
+                        "hb#$i probed=$probed video=${video != null} framesSent=$framesSent" +
+                            (if (yFrames > 0 || yunmo != null) " yunmoFrames=$yFrames" else "") +
+                            " openServers=$open",
+                    )
+                } catch (_: Exception) {}
             }
         }
     }

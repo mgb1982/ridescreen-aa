@@ -382,12 +382,14 @@ object CrashDetector : SensorEventListener {
         return if (test) ctx.getString(R.string.crash_sms_test_prefix) + " " + body else body + speed
     }
 
-    private fun currentLocation(): Location? = RideExtras.lastLocation(app, 10 * 60_000L)
+    // Takes a context: the "send a test SMS" button runs before start() has set [app] when the detector
+    // is off (2.3 crash: "lateinit property app has not been initialized").
+    private fun currentLocation(ctx: Context = app): Location? = RideExtras.lastLocation(ctx.applicationContext, 10 * 60_000L)
 
     /** @return names of the contacts the SMS went to (empty if none / not possible). */
     fun sendAlerts(ctx: Context, followUp: Boolean, test: Boolean, forceSend: Boolean = false): List<String> {
         val list = contacts(ctx)
-        val here = currentLocation()
+        val here = currentLocation(ctx)
         val text = messageText(ctx, here, followUp, test)
         if (test && !forceSend) {
             LogBus.log("[CRASH] simulation — would send to ${list.size} contact(s): $text")

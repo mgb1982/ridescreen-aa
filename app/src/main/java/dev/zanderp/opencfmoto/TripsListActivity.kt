@@ -428,12 +428,26 @@ class TripsListActivity : AppCompatActivity() {
         return box
     }
 
+    /** Size of a picked document in bytes, or 0 if the provider does not say. */
+    private fun fileSize(uri: android.net.Uri): Long = try {
+        contentResolver.query(uri, arrayOf(android.provider.OpenableColumns.SIZE), null, null, null)?.use { c ->
+            if (c.moveToFirst() && !c.isNull(0)) c.getLong(0) else 0L
+        } ?: 0L
+    } catch (_: Exception) { 0L }
+
     /** v2.3: 📥 import a ride from a GPX file (any app's export, or a ride rebuilt from Google Timeline). */
     private val importLauncher = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.OpenDocument()) { uri ->
         if (uri == null) return@registerForActivityResult
         val app = applicationContext
         Thread({
             val msg: String = try {
+                // A whole Google Timeline export can be hundreds of MB: reading it into one String ran
+                // the app out of memory (2.3: 5 crashes on 4 Nov with a 194 MB file). Refuse big files.
+                val size = fileSize(uri)
+                if (size > MAX_IMPORT_BYTES) {
+                    LogBus.log("[trip] GPX import refused: ${size / 1_048_576} MB")
+                    throw IllegalArgumentException("> ${MAX_IMPORT_BYTES / 1_048_576} MB")
+                }
                 val text = contentResolver.openInputStream(uri)?.use { it.readBytes().toString(Charsets.UTF_8) } ?: ""
                 val imp = TripGpx.fromXml(text)
                 when {
@@ -458,6 +472,9 @@ class TripsListActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 LogBus.log("[trip] GPX import failed: $e")
                 getString(R.string.trips_import_failed, e.message ?: e.toString())
+            } catch (e: OutOfMemoryError) {
+                LogBus.log("[trip] GPX import ran out of memory")
+                getString(R.string.trips_import_failed, "> ${MAX_IMPORT_BYTES / 1_048_576} MB")
             }
             runOnUiThread { Toast.makeText(this, msg, Toast.LENGTH_LONG).show() }
         }, "trip-import").start()
@@ -526,6 +543,8 @@ class TripsListActivity : AppCompatActivity() {
     private fun dp(v: Int): Int = (v * resources.displayMetrics.density).toInt()
 
     companion object {
+        /** Largest GPX we import in one piece (~30 MB ≈ a few hundred thousand points). */
+        private const val MAX_IMPORT_BYTES = 30L * 1_048_576
         private val DAY_FMT = SimpleDateFormat("EEE d MMM yyyy", Locale.getDefault())
 
         fun start(ctx: Context) {
