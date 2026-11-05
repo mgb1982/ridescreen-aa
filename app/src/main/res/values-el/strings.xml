@@ -548,6 +548,7 @@
     <string name="main_aa_need_nearby_settings">Άνοιγμα ρυθμίσεων</string>
     <string name="conn_detail_wifi_picker">Επιβεβαίωσε το παράθυρο επιλογής Wi‑Fi / συσκευής του τηλεφώνου (μην το αφήσεις ανοιχτό) και μετά πάτησε ξανά Σύνδεση</string>
     <string name="conn_detail_easyconn_offline">Το Wi‑Fi της μοτοσικλέτας λειτουργεί, αλλά το EasyConn είναι εκτός σύνδεσης — άφησε ανοιχτό το QR σύζευξης στο ταμπλό</string>
+    <string name="conn_detail_waiting_dash">Αναμονή για να ανοίξει τη σύνδεση ο πίνακας οργάνων — μπορεί να πάρει έως ένα λεπτό. Μην πατήσετε ξανά Σύνδεση.</string>
 
     <!-- MainActivity dynamic / dialogs -->
     <string name="main_hide_logs">Απόκρυψη αρχείων καταγραφής</string>

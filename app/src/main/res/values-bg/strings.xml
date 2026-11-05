@@ -512,6 +512,7 @@
     <string name="main_aa_need_nearby_settings">Отвори настройките</string>
     <string name="conn_detail_wifi_picker">Одобрете изскачащия прозорец за Wi‑Fi / избор на устройство на телефона (не го оставяйте отворен), след което се свържете отново</string>
     <string name="conn_detail_easyconn_offline">Wi‑Fi мрежата на мотора е активна, но EasyConn е офлайн — дръжте екрана за сдвояване с QR кода отворен на таблото</string>
+    <string name="conn_detail_waiting_dash">Изчакване таблото да отвори връзката — може да отнеме до минута. Не натискайте отново „Свързване“.</string>
 
     <!-- MainActivity dynamic / dialogs -->
     <string name="main_hide_logs">Скрий логовете</string>

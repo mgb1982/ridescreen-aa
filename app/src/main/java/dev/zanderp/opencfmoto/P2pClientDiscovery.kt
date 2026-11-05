@@ -37,7 +37,13 @@ object P2pClientDiscovery {
     private const val MDNS_GROUP = "224.0.0.251"
     private const val MDNS_PORT = 5353
     const val SERVICE = "_EasyConn._tcp.local"
-    private const val MDNS_WINDOW_MS = 60_000L
+    /**
+     * How long the early discovery keeps asking. 350D/350E logs (4 Nov 2026): the dash opened :10930
+     * 35.6 s after the group formed (Ricky, build 434) — the official app's 10 tries (~10 s) and our
+     * old 60 s window were not always enough, and the rider tapped Connect again, which tore the group
+     * down and restarted the wait. Two minutes, polling :10930 every second the whole time.
+     */
+    const val MDNS_WINDOW_MS = 120_000L
     private const val QUERY_EVERY_MS = 1_500L
     private const val PROBE_PORT = EasyConnProber.BIKE_PROBE_PORT
     private const val MAX_ANSWER_LOGS = 40
@@ -50,6 +56,13 @@ object P2pClientDiscovery {
     @Volatile private var current: Session? = null
     /** An advert or an open :10930 was found in the current session (stops the full scan). */
     @Volatile private var foundSomething = false
+
+    /** When the current session (= the Wi‑Fi Direct group) started, for the [P2P-WAIT] timings. */
+    @Volatile var startedAt = 0L
+        private set
+
+    /** Seconds since the current group formed, one decimal. */
+    fun elapsedText(): String = String.format(java.util.Locale.US, "%.1f", (System.currentTimeMillis() - startedAt) / 1000.0)
 
     /** True while a session is running for the current Wi‑Fi Direct group. */
     val isActive: Boolean get() = current?.stopped == false
@@ -76,6 +89,7 @@ object P2pClientDiscovery {
         stop("new group")
         val s = Session(ids.incrementAndGet())
         current = s
+        startedAt = System.currentTimeMillis()
         foundSomething = false
         val app = context.applicationContext
         val log = { m: String -> LogBus.log(m) }
@@ -93,12 +107,13 @@ object P2pClientDiscovery {
             val first = synchronized(offered) { offered.add(key) }
             if (first && !s.stopped) {
                 foundSomething = true
+                log("[P2P-WAIT] dash answered via ${ep.source} (${ep.host.hostAddress}:${ep.port}) ${elapsedText()} s after the Wi‑Fi Direct group formed")
                 try { onEndpoint(ep) } catch (e: Exception) { log("$TAG offer failed: $e") }
             }
         }
 
         log("$TAG early discovery on the Wi‑Fi Direct group: phone=${bindIp.hostAddress} dash=${goIp.hostAddress} " +
-            "(mDNS IPv4 for ${MDNS_WINDOW_MS / 1000}s, :$PROBE_PORT ×10) — not waiting for Android Auto")
+            "(mDNS IPv4 and :$PROBE_PORT every second for ${MDNS_WINDOW_MS / 1000}s) — not waiting for Android Auto")
 
         thread(name = "p2p-mdns4", isDaemon = true) {
             try { mdnsLoop(app, s, bindIp, own, offer, log) } catch (e: Exception) { log("[MDNS4] stopped: $e") }
@@ -187,19 +202,22 @@ object P2pClientDiscovery {
         }
     }
 
-    // ── :10930 on the dash, like the official app (400 ms, then every second, up to 10 times)
+    // ── :10930 on the dash (400 ms, then every second for the whole window; the official app stops at 10)
 
     private fun portLoop(
         s: Session, bindIp: Inet4Address, goIp: Inet4Address, target: Inet4Address,
         offer: (Endpoint) -> Unit, log: (String) -> Unit,
     ) {
         Thread.sleep(400)
-        for (n in 1..10) {
+        val end = startedAt + MDNS_WINDOW_MS
+        var n = 0
+        while (System.currentTimeMillis() < end) {
+            n++
             if (s.stopped) return
             // The QR address first; when it differs from the group owner, alternate so a wrong ip= cannot hide the dash.
             val host = if (target == goIp || n % 2 == 1) target else goIp
             val r = tryConnect(bindIp, host, PROBE_PORT, 800)
-            log("$TAG :$PROBE_PORT on ${host.hostAddress} #$n/10 → ${r.first}")
+            if (n <= 10 || n % 10 == 0 || r.first == "open") log("$TAG :$PROBE_PORT on ${host.hostAddress} #$n → ${r.first} (${elapsedText()} s)")
             if (r.first == "open") {
                 offer(Endpoint(host, PROBE_PORT, null, "tcp$PROBE_PORT"))
                 return

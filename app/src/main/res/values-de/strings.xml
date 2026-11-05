@@ -612,6 +612,7 @@
     <string name="main_aa_need_nearby_settings">Einstellungen öffnen</string>
     <string name="conn_detail_wifi_picker">Bestätige den WLAN- / Geräteauswahldialog des Telefons (lass ihn nicht geöffnet), und tippe erneut auf Connect.</string>
     <string name="conn_detail_easyconn_offline">Das Motorrad-WLAN ist aktiv, aber EasyConn ist offline. Lass den Kopplungs-QR-Code auf dem Motorraddisplay geöffnet.</string>
+    <string name="conn_detail_waiting_dash">Warte, bis das Cockpit die Verbindung öffnet – das kann bis zu einer Minute dauern. Nicht erneut auf Verbinden tippen.</string>
     <string name="main_phone_hotspot_hint">Aktiviere den Android-Hotspot mit der SSID und dem Passwort, die auf dem Motorraddisplay angezeigt werden, und warte, bis sich das Motorrad mit deinem Telefon verbindet.</string>
     <string name="main_phone_hotspot_status">Warte auf das Motorrad im Telefon-Hotspot…</string>
     <string name="main_phone_hotspot_no_iface">Kein Telefon-Hotspot gefunden. Aktiviere den Android-Hotspot mit der SSID und dem Passwort vom Motorraddisplay, und versuche es erneut mit Verbinden.</string>

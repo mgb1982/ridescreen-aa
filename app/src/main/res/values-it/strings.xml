@@ -546,6 +546,7 @@
     <string name="main_aa_need_nearby_settings">Apri le impostazioni</string>
     <string name="conn_detail_wifi_picker">Accetta il selettore Wi‑Fi / dispositivi del telefono (non lasciarlo aperto), poi tocca di nuovo Collega</string>
     <string name="conn_detail_easyconn_offline">Il Wi‑Fi della moto è attivo ma EasyConn non risponde — tieni aperto il QR di abbinamento sul cruscotto</string>
+    <string name="conn_detail_waiting_dash">In attesa che il cruscotto apra il collegamento: può volerci fino a un minuto. Non premere di nuovo Connetti.</string>
     <string name="main_hide_logs">Nascondi i log</string>
     <string name="main_connect_to">Collega a %1$s</string>
     <string name="main_no_bike_paired">Ancora nessuna moto abbinata — tocca Collega per scansionare il QR del cruscotto</string>

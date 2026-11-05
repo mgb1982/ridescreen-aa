@@ -547,6 +547,7 @@
     <string name="main_aa_need_nearby_settings">เปิดการตั้งค่า</string>
     <string name="conn_detail_wifi_picker">อนุมัติหน้าต่างเลือก Wi‑Fi / อุปกรณ์ของโทรศัพท์ (อย่าปล่อยหน้าต่างนี้ค้างไว้) แล้วแตะเชื่อมต่ออีกครั้ง</string>
     <string name="conn_detail_easyconn_offline">Wi‑Fi ของรถทำงานอยู่ แต่ EasyConn ออฟไลน์ เปิด QR สำหรับจับคู่ค้างไว้บนหน้าปัด</string>
+    <string name="conn_detail_waiting_dash">กำลังรอให้หน้าปัดเปิดการเชื่อมต่อ อาจใช้เวลาถึงหนึ่งนาที อย่าแตะเชื่อมต่ออีกครั้ง</string>
 
     <!-- MainActivity dynamic / dialogs -->
     <string name="main_hide_logs">ซ่อนบันทึก</string>

@@ -612,6 +612,7 @@
     <string name="main_aa_need_nearby_settings">Ouvrir les paramètres</string>
     <string name="conn_detail_wifi_picker">Valide le sélecteur Wi‑Fi / appareils du téléphone (ne le laisse pas ouvert), puis appuie de nouveau sur Connect</string>
     <string name="conn_detail_easyconn_offline">Le Wi‑Fi de la moto fonctionne, mais EasyConn est hors ligne : laisse le QR d’association affiché sur l’écran de la moto</string>
+    <string name="conn_detail_waiting_dash">En attente de l\'ouverture de la liaison par le tableau de bord : cela peut prendre jusqu\'à une minute. N\'appuie pas de nouveau sur Connecter.</string>
     <string name="main_phone_hotspot_hint">Active le point d’accès Android avec le SSID et le mot de passe affichés sur l’écran de la moto, puis attends que la moto se connecte au téléphone</string>
     <string name="main_phone_hotspot_status">En attente de la moto sur le point d’accès du téléphone…</string>
     <string name="main_phone_hotspot_no_iface">Aucun point d’accès du téléphone détecté : active le point d’accès Android avec le SSID / mot de passe de l’écran de la moto, puis réessaie Connect</string>

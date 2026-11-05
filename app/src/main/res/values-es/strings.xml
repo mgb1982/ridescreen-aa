@@ -507,6 +507,7 @@
     <string name="main_aa_need_nearby_settings">Abrir ajustes</string>
     <string name="conn_detail_wifi_picker">Acepta el selector de Wi-Fi o de dispositivos del teléfono (no lo dejes abierto) y vuelve a Conectar</string>
     <string name="conn_detail_easyconn_offline">El Wi-Fi de la moto está activo pero EasyConn está desconectado: mantén abierto el QR de emparejamiento en el tablero</string>
+    <string name="conn_detail_waiting_dash">Esperando a que el cuadro abra el enlace: puede tardar hasta un minuto. No vuelvas a pulsar Conectar.</string>
     <string name="main_hide_logs">Ocultar registros</string>
     <string name="main_connect_to">Conectar con %1$s</string>
     <string name="main_no_bike_paired">Aún no hay ninguna moto emparejada: toca Conectar para escanear el QR del tablero</string>
