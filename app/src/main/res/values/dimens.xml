@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="btn_connect_min_height">56dp</dimen>
-    <dimen name="btn_tonal_min_height">48dp</dimen>
-    <dimen name="btn_tile_min_height">56dp</dimen>
-    <dimen name="btn_segment_min_height">44dp</dimen>
-    <dimen name="btn_connect_text">16sp</dimen>
+    <!-- Glove-friendly: primary actions stay at least 64dp, the connect pill taller. -->
+    <dimen name="btn_connect_min_height">72dp</dimen>
+    <dimen name="btn_tonal_min_height">56dp</dimen>
+    <dimen name="btn_tile_min_height">64dp</dimen>
+    <dimen name="btn_segment_min_height">56dp</dimen>
+    <dimen name="btn_connect_text">18sp</dimen>
     <dimen name="btn_tonal_text">13sp</dimen>
     <dimen name="btn_segment_text">12sp</dimen>
     <dimen name="btn_tile_text">12sp</dimen>

@@ -88,6 +88,10 @@ class SetupActivity : AppCompatActivity() {
         btStatus = findViewById(R.id.bt_status)
         resumeBtn = findViewById(R.id.resume_perm_btn)
 
+        LanguagePicker.bind(this, findViewById(R.id.btn_language))
+        findViewById<MaterialButton>(R.id.btn_language).text =
+            getString(R.string.lang_title) + " · " + AppLocale.chipLabel(this)
+
         step1Btn.setOnClickListener { openAndroidAuto() }
         step2Btn.setOnClickListener { requestMissingPermissions() }
         findViewById<MaterialButton>(R.id.step2_settings_btn).setOnClickListener { openAppSettings() }
@@ -286,9 +290,9 @@ class SetupActivity : AppCompatActivity() {
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 clipData = android.content.ClipData.newUri(contentResolver, file.name, uri)
             }
-            startActivity(Intent.createChooser(send, "Share settings JSON"))
+            startActivity(Intent.createChooser(send, getString(R.string.share_settings_chooser)))
         } catch (e: Exception) {
-            Toast.makeText(this, "Share failed: $e", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.toast_share_failed, e.message ?: ""), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -296,27 +300,22 @@ class SetupActivity : AppCompatActivity() {
         try {
             val text = contentResolver.openInputStream(uri)?.use { it.readBytes().toString(Charsets.UTF_8) }
             if (text.isNullOrBlank()) {
-                Toast.makeText(this, "Empty file", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.toast_empty_file, Toast.LENGTH_SHORT).show()
                 return
             }
-            val onto = BikeMemory.lastBikeName(this) ?: "the selected bike"
+            val onto = BikeMemory.lastBikeName(this) ?: getString(R.string.import_selected_bike)
             AlertDialog.Builder(this)
-                .setTitle("Import settings?")
-                .setMessage(
-                    "Replace bike tuning for $onto — profile, resolution, fit, power, margins, " +
-                        "handlebar buttons, Control AA, non-touch, Wi‑Fi transport?\n\n" +
-                        "Personal prefs (map theme, saved places, auto-connect, …) are left alone. " +
-                        "Wi‑Fi passwords are never imported."
-                )
+                .setTitle(R.string.dlg_import_title)
+                .setMessage(getString(R.string.dlg_import_message, onto))
                 .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton("Import") { _, _ ->
+                .setPositiveButton(R.string.dlg_import) { _, _ ->
                     val result = SettingsBackup.importJson(this, text)
                     refreshOptions()
                     Toast.makeText(this, result.message, Toast.LENGTH_LONG).show()
                 }
                 .show()
         } catch (e: Exception) {
-            Toast.makeText(this, "Import failed: $e", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.toast_import_failed, e.message ?: ""), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -409,8 +408,7 @@ class SetupActivity : AppCompatActivity() {
         refreshOptions()
         Toast.makeText(
             this,
-            if (on) "Hold detection on"
-            else "Hold detection off — long presses count as taps / ×2",
+            if (on) R.string.toast_hold_on else R.string.toast_hold_off,
             Toast.LENGTH_SHORT,
         ).show()
     }
@@ -418,74 +416,74 @@ class SetupActivity : AppCompatActivity() {
     private fun setAutoConnect(on: Boolean) {
         AppSettings.setAutoConnect(this, on)
         refreshOptions()
-        Toast.makeText(this, "Auto-connect ${if (on) "on" else "off"}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.toast_auto_connect, onOff(on)), Toast.LENGTH_SHORT).show()
     }
 
     private fun setAutoRecovery(on: Boolean) {
         AppSettings.setAutoRecovery(this, on)
         refreshOptions()
-        Toast.makeText(this, "Auto-recovery ${if (on) "on" else "off"}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.toast_auto_recovery, onOff(on)), Toast.LENGTH_SHORT).show()
     }
 
     private fun setBtClock(on: Boolean) {
         AppSettings.setBluetoothClockSync(this, on)
         refreshOptions()
-        Toast.makeText(this, "Bluetooth clock ${if (on) "on" else "off"}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.toast_bt_clock, onOff(on)), Toast.LENGTH_SHORT).show()
     }
 
     private fun setClockLabPreset(preset: ClockLabPreset) {
         AppSettings.applyClockLabPreset(this, preset)
         refreshOptions()
-        Toast.makeText(this, "Clock lab: ${preset.name}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.toast_clock_lab, preset.name), Toast.LENGTH_SHORT).show()
     }
 
     private fun setClockLabQuery(mode: ClockQueryMode) {
         AppSettings.setClockLabQuery(this, mode)
         refreshOptions()
-        Toast.makeText(this, "QUERY_TIME: ${mode.id}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.toast_query_time, mode.id), Toast.LENGTH_SHORT).show()
     }
 
     private fun setClockLabTimeSync(mode: ClockTimeSyncMode) {
         AppSettings.setClockLabTimeSync(this, mode)
         refreshOptions()
-        Toast.makeText(this, "TIME_SYNC: ${mode.id}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.toast_time_sync, mode.id), Toast.LENGTH_SHORT).show()
     }
 
     private fun setKeepWifi(on: Boolean) {
         AppSettings.setKeepWifiAfterDisconnect(this, on)
         refreshOptions()
-        Toast.makeText(this, "Keep bike Wi-Fi ${if (on) "on" else "off"}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.toast_keep_wifi, onOff(on)), Toast.LENGTH_SHORT).show()
     }
 
     private fun setClockResync(mode: ClockResyncMode) {
         AppSettings.setClockResyncMode(this, mode)
         refreshOptions()
         LogBus.log("→ clock resync ${mode.id}")
-        Toast.makeText(this, "Clock resync: ${mode.id}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.toast_clock_resync, mode.id), Toast.LENGTH_SHORT).show()
     }
 
     private fun setLogTrips(on: Boolean) {
         AppSettings.setLogTrips(this, on)
         refreshOptions()
-        Toast.makeText(this, "Trip logging ${if (on) "on" else "off"}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.toast_trip_logging, onOff(on)), Toast.LENGTH_SHORT).show()
     }
 
     private fun setForceNonTouch(on: Boolean) {
         AppSettings.setForceNonTouch(this, on)
         refreshOptions()
-        toast("Disable touchscreen: ${if (on) "on" else "off"}")
+        toast(getString(R.string.toast_force_nontouch, onOff(on)))
     }
 
     private fun setForceTouch(on: Boolean) {
         AppSettings.setForceTouch(this, on)
         refreshOptions()
-        toast("Force touchscreen: ${if (on) "on" else "off"}")
+        toast(getString(R.string.toast_force_touch, onOff(on)))
     }
 
     private fun setProfileOverride(ov: ProfileOverride) {
         ProfilePrefs.set(this, ov)
         refreshOptions()
-        toast("Bike profile: ${ov.shortLabel}")
+        toast(getString(R.string.toast_profile, ov.shortLabel))
     }
 
     private fun setTransport(t: WifiTransport) {
@@ -499,8 +497,8 @@ class SetupActivity : AppCompatActivity() {
         refreshOptions()
         Toast.makeText(
             this,
-            if (on) "Shared logs will include secrets — turn off before posting publicly"
-            else "Log redaction on",
+            if (on) getString(R.string.toast_secrets_on)
+            else getString(R.string.toast_secrets_off),
             Toast.LENGTH_SHORT,
         ).show()
     }
@@ -517,8 +515,10 @@ class SetupActivity : AppCompatActivity() {
         ).show()
     }
 
+    private fun onOff(on: Boolean) = getString(if (on) R.string.toast_on else R.string.toast_off)
+
     private fun toast(msg: String) =
-        Toast.makeText(this, "$msg (applies next connect)", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.toast_applies_next, msg), Toast.LENGTH_SHORT).show()
 
     /** Update every selector's description + highlight the active segment. */
     private fun refreshOptions() {

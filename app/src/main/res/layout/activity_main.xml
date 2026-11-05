@@ -8,7 +8,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg"
+    android:background="@drawable/bg_screen"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -30,8 +30,8 @@
             <FrameLayout
                 android:id="@+id/hero_card"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:background="@color/surface_high">
+                android:layout_height="200dp"
+                android:background="@drawable/bg_hero_card">
 
                 <ImageView
                     android:id="@+id/hero_placeholder"
@@ -97,10 +97,19 @@
                             tools:text="v2.0.18" />
                     </LinearLayout>
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_language"
+                        style="@style/Widget.OpenCfMoto.Button.Lang"
+                        android:layout_width="wrap_content"
+                        android:layout_height="56dp"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="@string/lang_picker_desc"
+                        android:text="@string/lang_chip_system" />
+
                     <ImageButton
                         android:id="@+id/btn_hero_menu"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bg_round_glass"
                         android:contentDescription="@string/main_settings_desc"
                         android:padding="12dp"
@@ -197,6 +206,145 @@
                         android:text="@string/main_no_bike_paired_yet"
                         android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
+
+                    <dev.zanderp.opencfmoto.ConnectionRingView
+                        android:id="@+id/conn_ring"
+                        android:layout_width="220dp"
+                        android:layout_height="220dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:contentDescription="@string/main_connection_status" />
+
+                    <LinearLayout
+                        android:id="@+id/conn_steps"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="2dp">
+
+                            <ImageView
+                                android:id="@+id/step_wifi_dot"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/bg_step_dot" />
+
+                            <TextView
+                                android:id="@+id/step_wifi_label"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:gravity="center"
+                                android:lineSpacingMultiplier="1.1"
+                                android:maxLines="2"
+                                android:text="@string/step_wifi"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="2dp">
+
+                            <ImageView
+                                android:id="@+id/step_dash_dot"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/bg_step_dot" />
+
+                            <TextView
+                                android:id="@+id/step_dash_label"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:gravity="center"
+                                android:lineSpacingMultiplier="1.1"
+                                android:maxLines="2"
+                                android:text="@string/step_dash"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="2dp">
+
+                            <ImageView
+                                android:id="@+id/step_link_dot"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/bg_step_dot" />
+
+                            <TextView
+                                android:id="@+id/step_link_label"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:gravity="center"
+                                android:lineSpacingMultiplier="1.1"
+                                android:maxLines="2"
+                                android:text="@string/step_link"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="2dp">
+
+                            <ImageView
+                                android:id="@+id/step_stream_dot"
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/bg_step_dot" />
+
+                            <TextView
+                                android:id="@+id/step_stream_label"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:gravity="center"
+                                android:lineSpacingMultiplier="1.1"
+                                android:maxLines="2"
+                                android:text="@string/step_stream"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/status_hint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:lineSpacingMultiplier="1.15"
+                        android:text="@string/hint_idle"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="15sp" />
 
                     <View
                         android:layout_width="match_parent"
@@ -786,14 +934,101 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Connect becomes Disconnect while linking or projecting. Pinned like a thumb button. -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_connect"
-        style="@style/Widget.OpenCfMoto.Button.Connect"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="14dp"
-        android:text="@string/main_connect" />
+        android:layout_marginTop="4dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="6dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="8dp"
+            android:alpha="0.85"
+            android:background="@drawable/bg_pill_glow" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_connect"
+            style="@style/Widget.OpenCfMoto.Button.Connect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/main_connect" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/bg_bottom_nav"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp">
+
+            <TextView
+                android:id="@+id/nav_home"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/nav_home"
+                android:textColor="@color/brand_orange"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/nav_trips"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/nav_trips"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="72dp"
+                android:layout_height="1dp" />
+
+            <TextView
+                android:id="@+id/nav_garage"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/nav_garage"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/nav_settings"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/nav_settings"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/nav_center"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="top|center_horizontal"
+            android:background="@drawable/bg_fab_mint"
+            android:contentDescription="@string/main_connect"
+            android:padding="18dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_power" />
+    </FrameLayout>
 </LinearLayout>

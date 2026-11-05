@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="12dp">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/lang_system"
+        style="@style/Widget.OpenCfMoto.Button.LangOption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lang_system" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/lang_th"
+        style="@style/Widget.OpenCfMoto.Button.LangOption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/lang_thai" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/lang_en"
+        style="@style/Widget.OpenCfMoto.Button.LangOption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/lang_english" />
+</LinearLayout>
