@@ -596,4 +596,6 @@
     <string name="setup_anonymous_telemetry_on">Вкл — анонимни пингове и отчети за сривове</string>
     <string name="setup_anonymous_telemetry_off">Изкл — нищо не се качва</string>
     <string name="setup_anonymous_id">Анонимно ID: %1$s</string>
+    <string name="controls_volume_drives_aa">▲/▼ управляват и Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Изключено: бутоните за сила на звука продължават да променят звука на телефона (и интеркомът също), а звукът никога не се заключва. Android Auto получава само останалите бутони на кормилото.</string>
 </resources>

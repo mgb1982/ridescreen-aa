@@ -416,4 +416,6 @@
     <string name="setup_anonymous_telemetry_on">Aan — anonieme pings &amp; crashes</string>
     <string name="setup_anonymous_telemetry_off">Uit — niets wordt geüpload</string>
     <string name="setup_anonymous_id">Anoniem id: %1$s</string>
+    <string name="controls_volume_drives_aa">▲/▼ bedienen ook Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Uit: de volumeknoppen blijven het telefoonvolume regelen (ook de intercom), en het volume wordt nooit vastgezet. Android Auto krijgt dan alleen de andere stuurknoppen.</string>
 </resources>

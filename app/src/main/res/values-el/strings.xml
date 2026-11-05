@@ -661,4 +661,6 @@
     <string name="trips_merge_restore_confirm">Επαναφορά αρχικών τμημάτων;</string>
     <string name="trips_merge_failed">Δεν ήταν δυνατή η ένωση αυτών των διαδρομών.</string>
     <string name="trips_merge_done">Οι διαδρομές ενώθηκαν. Τα αρχικά τμήματα αποθηκεύτηκαν.</string>
+    <string name="controls_volume_drives_aa">Τα ▲/▼ ελέγχουν και το Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Απενεργοποιημένο: τα κουμπιά έντασης συνεχίζουν να αλλάζουν την ένταση του κινητού (και η ενδοεπικοινωνία), και η ένταση δεν κλειδώνει ποτέ. Το Android Auto λαμβάνει μόνο τα υπόλοιπα κουμπιά του τιμονιού.</string>
 </resources>

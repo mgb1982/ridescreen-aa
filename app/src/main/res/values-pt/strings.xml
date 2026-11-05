@@ -656,4 +656,6 @@
     <string name="trips_merge_restore_confirm">Restaurar os segmentos originais?</string>
     <string name="trips_merge_failed">Não foi possível unir estas viagens.</string>
     <string name="trips_merge_done">Viagens unidas. Os segmentos originais estão guardados.</string>
+    <string name="controls_volume_drives_aa">▲/▼ também controlam o Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Desligado: os botões de volume continuam a mudar o volume do telemóvel (e também o intercomunicador), e o volume nunca fica fixo. O Android Auto recebe só os outros botões do guiador.</string>
 </resources>

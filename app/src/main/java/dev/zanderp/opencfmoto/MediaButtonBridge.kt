@@ -10,6 +10,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.database.ContentObserver
+import android.media.AudioDeviceInfo
 import android.media.AudioFocusRequest
 import android.media.AudioFormat
 import android.media.AudioManager
@@ -17,6 +18,7 @@ import android.media.AudioTrack
 import android.media.MediaMetadata
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
@@ -79,6 +81,8 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
      */
     @Volatile private var ignoreVolumeChanges = false
     private var focusRequest: AudioFocusRequest? = null
+    /** Last STREAM_MUSIC level the observer saw (to log real changes only). */
+    private var lastSeenVolume = -1
     private var silence: AudioTrack? = null
     /** True while a reclaim is queued after another app stole audio/media-button focus. */
     private var reclaimPending = false
@@ -126,8 +130,9 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
                 if (on) maybePinVolume("start")
                 startVolumeObserver()
                 startAbsentVolumeProbe()
-                log("[BTN] bridge ready — mode=${if (on) "control dash (media focus + volume hijacked)" else "control media"} " +
-                    "presence=${ButtonPresencePrefs.summarize(context)}")
+                val vol = ButtonMode.isVolumeToAa(context)
+                log("[BTN] bridge ready — mode=${if (on) "control dash (media focus${if (vol) " + volume hijacked" else ", ▲/▼ left to phone volume"})" else "control media"} " +
+                    "presence=${ButtonPresencePrefs.summarize(context)} · ${mediaOutputs()}")
                 scheduleReassertWhenBikeUp()
             } catch (e: Exception) {
                 log("[BTN] media session failed: $e")
@@ -468,6 +473,11 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
      * never sends ▲/▼ must not hold STREAM_MUSIC hostage.
      */
     private fun maybePinVolume(reason: String) {
+        if (!ButtonMode.isVolumeToAa(context)) {
+            if (pinnedVolume >= 0) unpinVolume()
+            log("[BTN] skip pin ($reason) — ▲/▼ left to the phone volume (Controls setting)")
+            return
+        }
         if (!ButtonPresencePrefs.shouldPinVolume(context)) {
             if (pinnedVolume >= 0) {
                 log("[BTN] skip pin ($reason) — volume rocker ABSENT; unpinning")
@@ -514,7 +524,7 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
 
     private fun startAbsentVolumeProbe() {
         cancelAbsentVolumeProbe()
-        if (!ButtonMode.isControlAa(context)) return
+        if (!ButtonMode.isControlAa(context) || !ButtonMode.isVolumeToAa(context)) return
         if (ButtonPresencePrefs.volumeRocker(context) != ButtonPresence.UNKNOWN) return
         val r = object : Runnable {
             override fun run() {
@@ -537,6 +547,50 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
     private fun cancelAbsentVolumeProbe() {
         absentVolumeProbe?.let { handler.removeCallbacks(it) }
         absentVolumeProbe = null
+    }
+
+    /** Live toggle for [ButtonMode.isVolumeToAa]: pin (▲/▼ drive AA) or give the volume back. */
+    fun setVolumeCaptureActive(on: Boolean) {
+        handler.post {
+            if (on && ButtonMode.isControlAa(context)) {
+                maybePinVolume("volume-setting")
+                startAbsentVolumeProbe()
+            } else {
+                cancelAbsentVolumeProbe()
+                unpinVolume()
+            }
+            log("[BTN] ▲/▼ ${if (on) "drive Android Auto" else "control the phone volume"} · ${mediaOutputs()}")
+        }
+    }
+
+    /**
+     * Where media audio is going right now, for the log: the active route on Android 13+, otherwise
+     * the connected Bluetooth/USB outputs. Names only, never addresses.
+     */
+    private fun mediaOutputs(): String = try {
+        fun label(d: AudioDeviceInfo): String {
+            val type = when (d.type) {
+                AudioDeviceInfo.TYPE_BLUETOOTH_A2DP -> "a2dp"
+                AudioDeviceInfo.TYPE_BLUETOOTH_SCO -> "sco"
+                AudioDeviceInfo.TYPE_BLE_HEADSET, AudioDeviceInfo.TYPE_BLE_SPEAKER -> "le-audio"
+                AudioDeviceInfo.TYPE_BUILTIN_SPEAKER -> "speaker"
+                AudioDeviceInfo.TYPE_WIRED_HEADPHONES, AudioDeviceInfo.TYPE_WIRED_HEADSET -> "wired"
+                AudioDeviceInfo.TYPE_USB_HEADSET, AudioDeviceInfo.TYPE_USB_DEVICE -> "usb"
+                else -> "type${d.type}"
+            }
+            val name = d.productName?.toString()?.takeIf { it.isNotBlank() && it != Build.MODEL }
+            return if (name != null) "$type \"$name\"" else type
+        }
+        val connected = audio.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
+            .filter { it.type == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP || it.type == AudioDeviceInfo.TYPE_BLE_HEADSET ||
+                it.type == AudioDeviceInfo.TYPE_BLE_SPEAKER || it.type == AudioDeviceInfo.TYPE_BLUETOOTH_SCO }
+            .map(::label).distinct()
+        val active = if (Build.VERSION.SDK_INT >= 33) {
+            audio.getAudioDevicesForAttributes(mediaAttrs).joinToString(", ") { label(it) }.ifEmpty { "?" }
+        } else "? (Android <13)"
+        "media→$active · bt=[${connected.joinToString(", ")}]"
+    } catch (e: Exception) {
+        "outputs unknown ($e)"
     }
 
     /** Re-arm the absent probe after Teach resets presence to UNKNOWN, or capture toggles on. */
@@ -609,7 +663,14 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
             override fun onChange(selfChange: Boolean) {
                 if (ignoreVolumeChanges) return
                 val now = try { audio.getStreamVolume(AudioManager.STREAM_MUSIC) } catch (e: Exception) { return }
-                if (!ButtonMode.isControlAa(context) || pinnedVolume < 0) return
+                val previous = lastSeenVolume
+                lastSeenVolume = now
+                if (!ButtonMode.isControlAa(context)) return
+                if (pinnedVolume < 0) {
+                    // Not hijacking: just record who changed the volume (bike ▲/▼ or intercom).
+                    if (previous >= 0 && now != previous) log("[BTN] volume $previous→$now (phone volume, not AA) · ${mediaOutputs()}")
+                    return
+                }
                 if (now == pinnedVolume) return   // our own re-pin, or nothing to do
 
                 val jump = now - pinnedVolume            // signed, in Android volume steps
@@ -635,7 +696,7 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
                 // the 800MT's ◀/▶ track keys, so both layouts drive the same gestures.
                 val single = if (up) ButtonGesture.NAV_BACK else ButtonGesture.NAV_FWD
                 val double = if (up) ButtonGesture.NAV_BACK_DOUBLE else ButtonGesture.NAV_FWD_DOUBLE
-                log("[BTN] volume $dir ($pinnedVolume→$now, jump=$jump)${if (forceDouble) " ×2" else ""}")
+                log("[BTN] volume $dir ($pinnedVolume→$now, jump=$jump)${if (forceDouble) " ×2" else ""} · ${mediaOutputs()}")
                 detectDoubleTap(single, double, forceDouble)
             }
         }
@@ -812,7 +873,7 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
             val ke = mediaButtonIntent.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT) ?: return true
             val devName = MediaKeyRouting.deviceName(ke)
             if (ke.action == KeyEvent.ACTION_DOWN && ke.repeatCount == 0) {
-                log("[BTN] media key ${KeyEvent.keyCodeToString(ke.keyCode)} from ${MediaKeyRouting.describe(ke)}")
+                log("[BTN] media key ${KeyEvent.keyCodeToString(ke.keyCode)} from ${MediaKeyRouting.describe(ke)} · ${mediaOutputs()}")
             }
             // Teach mode (Controls ▸ Customise buttons ▸ Assign a remote button…): capture this key.
             mediaTeachListener?.let { l ->

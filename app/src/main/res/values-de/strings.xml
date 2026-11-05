@@ -654,4 +654,6 @@
     <string name="trips_merge_restore_confirm">Originalsegmente wiederherstellen?</string>
     <string name="trips_merge_failed">Diese Fahrten konnten nicht zusammengeführt werden.</string>
     <string name="trips_merge_done">Fahrten zusammengeführt. Originalsegmente sind gespeichert.</string>
+    <string name="controls_volume_drives_aa">▲/▼ steuern auch Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Aus: Die Lautstärketasten ändern weiter die Handy-Lautstärke (auch die Gegensprechanlage), und die Lautstärke wird nie festgehalten. Android Auto bekommt dann nur die übrigen Lenkertasten.</string>
 </resources>

@@ -663,4 +663,6 @@
     <string name="trips_merge_restore_confirm">Восстановить исходные сегменты?</string>
     <string name="trips_merge_failed">Не удалось объединить эти поездки.</string>
     <string name="trips_merge_done">Поездки объединены. Исходные сегменты сохранены.</string>
+    <string name="controls_volume_drives_aa">▲/▼ тоже управляют Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Выкл.: кнопки громкости по-прежнему меняют громкость телефона (и гарнитура тоже), громкость никогда не фиксируется. Android Auto получает только остальные кнопки руля.</string>
 </resources>
