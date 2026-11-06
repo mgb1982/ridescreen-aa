@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="วิธีติดตั้ง RideScreen AA บนมือถือ ตั้งค่า Android Auto และเชื่อมต่อกับ Zontes ของคุณ">
+<title>คู่มือ RideScreen AA</title>
+<link rel="canonical" href="https://ridescreen.app/th/guide/">
+<link rel="alternate" hreflang="es" href="https://ridescreen.app/guia/">
+<link rel="alternate" hreflang="ca" href="https://ridescreen.app/ca/guia/">
+<link rel="alternate" hreflang="en" href="https://ridescreen.app/en/guide/">
+<link rel="alternate" hreflang="it" href="https://ridescreen.app/it/guide/">
+<link rel="alternate" hreflang="el" href="https://ridescreen.app/el/guide/">
+<link rel="alternate" hreflang="ru" href="https://ridescreen.app/ru/guide/">
+<link rel="alternate" hreflang="de" href="https://ridescreen.app/de/guide/">
+<link rel="alternate" hreflang="fr" href="https://ridescreen.app/fr/guide/">
+<link rel="alternate" hreflang="pt" href="https://ridescreen.app/pt/guide/">
+<link rel="alternate" hreflang="th" href="https://ridescreen.app/th/guide/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap">
+<style>
+/* Layout: one reading column; each step is text + phone screenshot side by side, stacked on phones.
+   Palette from the app itself: forest green surfaces, brass/gold accent. Dark-first. */
+:root {
+  --bg: #161D18;
+  --surface: #212B24;
+  --surface-2: #2A362E;
+  --fg: #EEF2EA;
+  --muted: #A9B5A6;
+  --accent: #D1A955;
+  --accent-ink: #18211A;
+  --line: #34423A;
+  --warn: #E9C46A;
+  --display: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --body: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+    --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; --warn: #8A5A00; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+  --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; --warn: #8A5A00; color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 880px; margin: 0 auto; padding-inline: 18px; padding-block: 28px 56px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 6vw, 46px); line-height: 1.05; }
+h1 span { color: var(--accent); }
+.lede { color: var(--muted); max-width: 62ch; margin: 12px 0 0; font-size: 17px; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+h2 { font-family: var(--display); font-weight: 400; font-size: 24px; margin-top: 44px; }
+section > .eyebrow { margin-top: 44px; display: block; }
+section > .eyebrow + h2 { margin-top: 4px; }
+
+.check { margin-top: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; }
+.check ul { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.check li { display: grid; grid-template-columns: 26px 1fr; gap: 6px; min-width: 0; }
+.check li::before { content: "✓"; color: var(--accent); font-weight: 700; }
+
+.steps { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 18px; counter-reset: s; }
+.step { counter-increment: s; display: grid; grid-template-columns: 1fr 230px; gap: 22px; align-items: start;
+        background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+.step .txt { min-width: 0; }
+.step h3 { font-size: 19px; font-weight: 700; display: flex; gap: 12px; align-items: baseline; }
+.step h3::before { content: counter(s); font-family: var(--display); font-weight: 400; color: var(--accent-ink); background: var(--accent);
+                   min-width: 30px; height: 30px; border-radius: 15px; display: inline-grid; place-items: center; font-size: 15px; flex: none; transform: translateY(4px); }
+.step p { margin: 10px 0 0; }
+.step img { width: 100%; max-width: 230px; border-radius: 22px; border: 1px solid var(--line); display: block; justify-self: center; }
+.note { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); font-size: 14.5px; }
+.note.warn { border-left: 3px solid var(--warn); }
+kbd { font-family: var(--body); font-weight: 700; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; }
+a { color: var(--accent); }
+.cta { display: inline-block; margin-top: 12px; background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 700;
+       padding: 10px 16px; border-radius: 22px; }
+.cta:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+.faq { margin-top: 16px; display: grid; gap: 10px; }
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 18px; }
+.faq summary { cursor: pointer; font-weight: 700; }
+.faq summary small { display: block; font-weight: 400; color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+.faq details p, .faq details ul { margin: 10px 0 0; }
+.faq ul { padding-left: 20px; }
+.foot { margin-top: 40px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+@media (max-width: 640px) {
+  .step { grid-template-columns: 1fr; }
+  .step img { max-width: 260px; }
+}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <div class="eyebrow">RideScreen AA · แอปมือถือ · <a href="../../guia/" lang="es" data-lang="es">Español</a> · <a href="../../ca/guia/" lang="ca" data-lang="ca">Català</a> · <a href="../../en/guide/" lang="en" data-lang="en">English</a> · <a href="../../it/guide/" lang="it" data-lang="it">Italiano</a> · <a href="../../el/guide/" lang="el" data-lang="el">Ελληνικά</a> · <a href="../../ru/guide/" lang="ru" data-lang="ru">Русский</a> · <a href="../../de/guide/" lang="de" data-lang="de">Deutsch</a> · <a href="../../fr/guide/" lang="fr" data-lang="fr">Français</a> · <a href="../../pt/guide/" lang="pt" data-lang="pt">Português</a></div>
+  <h1>ติดตั้งและเชื่อมต่อ <span>ใน 10 นาที</span></h1>
+  <p class="lede">Android Auto บนหน้าปัด Zontes ของคุณ ทีละขั้นตอน ครั้งแรกใช้เวลาไม่กี่นาที หลังจากนั้นแตะครั้งเดียว หรือไม่ต้องแตะเลย</p>
+  <p class="lede" style="font-size:15px;margin-top:6px">มีนาฬิกา Wear OS ไหม ทำต่อด้วย<a href="../watch/">คู่มือนาฬิกา</a>หลังจากนี้</p>
+
+  <div class="check">
+    <strong>ก่อนเริ่ม</strong>
+    <ul>
+      <li>มือถือ Android 10 ขึ้นไป แบบ 64 บิต (เกือบทุกรุ่นใน 5 ปีหลัง)</li>
+      <li>ติดตั้ง Android Auto และอัปเดตจาก Play Store แล้ว เปิดหนึ่งครั้งและยอมรับข้อกำหนด</li>
+      <li>เปิด Wi‑Fi ของมือถือไว้ ไม่ต้องเชื่อมต่อเครือข่ายใด</li>
+      <li><span>ถ้ามีแอปทางการของรถ (Zontes / EasyConnection / Carbit) ให้ปิด: การตั้งค่า → แอป → แอปนั้น → <kbd>บังคับหยุด</kbd></span></li>
+      <li>รถเปิดอยู่และจอดนิ่ง สำหรับการจับคู่ครั้งแรก</li>
+    </ul>
+  </div>
+
+  <section>
+    <span class="eyebrow">ส่วนที่ 1</span>
+    <h2>ติดตั้งแอป</h2>
+    <ol class="steps">
+      <li class="step">
+        <div class="txt">
+          <h3>ดาวน์โหลด APK สำหรับมือถือ</h3>
+          <p>แตะปุ่ม: เวอร์ชันล่าสุดจะดาวน์โหลดทันที (<strong>RideScreen-AA-v2.4.apk</strong> หรือเวอร์ชันปัจจุบัน)</p>
+          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4/RideScreen-AA-v2.4.apk" data-apk="phone">ดาวน์โหลด APK<span class="apk-meta"></span></a>
+          <p>ชอบ GitHub มากกว่า ที่<a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">หน้าเวอร์ชันล่าสุด</a> ใต้ <strong>Assets</strong> แตะ APK ที่ขึ้นต้นด้วย <strong>RideScreen-AA-v</strong></p>
+          <div class="note warn">อย่าดาวน์โหลดไฟล์ที่มีคำว่า <strong>WearOS-reloj</strong> ไฟล์นั้นสำหรับนาฬิกา และบนมือถือจะขึ้นว่าแพ็กเกจไม่ถูกต้อง</div>
+        </div>
+        <img src="g1_descarga.png" alt="หน้าดาวน์โหลดของ GitHub ที่ไฮไลต์ APK สำหรับมือถือ" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>อนุญาตการติดตั้งจากเบราว์เซอร์</h3>
+          <p>เปิดไฟล์ที่ดาวน์โหลด ถ้า Android แจ้งว่าติดตั้งแอปจากแหล่งนี้ไม่ได้ ให้แตะ <strong>การตั้งค่า</strong> เปิด <strong>อนุญาตการติดตั้งจากแหล่งที่มานี้</strong> แล้วย้อนกลับ</p>
+          <p>จากนั้นแตะ <strong>ติดตั้ง</strong></p>
+        </div>
+        <img src="g2_fuentes.png" alt="คำเตือนของ Android และสวิตช์อนุญาตการติดตั้งจากแหล่งที่มานี้" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>ถ้า Play Protect ขึ้นมา ให้ติดตั้งต่อไป</h3>
+          <p>ข้อความนี้ขึ้นเพราะแอปยังไม่อยู่ใน Play Store แตะ <strong>รายละเอียดเพิ่มเติม</strong> แล้วแตะ <strong>ติดตั้งต่อไป</strong></p>
+          <div class="note">ถ้าแตะ <em>ตกลง</em> การติดตั้งจะถูกยกเลิก ทำซ้ำได้โดยเปิดไฟล์ APK อีกครั้ง</div>
+        </div>
+        <img src="g3_playprotect.png" alt="คำเตือน Play Protect ที่ไฮไลต์ติดตั้งต่อไป" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>เปิด RideScreen และอนุญาตสิทธิ์</h3>
+          <p>ครั้งแรกจะเปิดหน้าการตั้งค่า อนุญาตทุกสิทธิ์ที่ขอ หรือแตะ <strong>อนุญาตทั้งหมดแล้ว</strong> เพื่อตรวจทั้งหมดในครั้งเดียว</p>
+          <p>Android ต้องใช้ตำแหน่งเพื่อเชื่อมต่อ Wi‑Fi ของรถและบันทึกการเดินทาง แอปไม่ได้ติดตามคุณ</p>
+        </div>
+        <img src="g4_permisos.png" alt="หน้าจอสิทธิ์ของ RideScreen พร้อมปุ่มอนุญาตทั้งหมดแล้ว" loading="lazy">
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">ส่วนที่ 2</span>
+    <h2>ตั้งค่า Android Auto</h2>
+    <ol class="steps" style="counter-reset: s 4">
+      <li class="step">
+        <div class="txt">
+          <h3>เปิดโหมดนักพัฒนาแอป</h3>
+          <p>เปิดการตั้งค่า Android Auto (การตั้งค่ามือถือ → Android Auto หรือจาก RideScreen) เลื่อนลงไปล่างสุดแล้วแตะ <strong>เวอร์ชัน</strong> 10 ครั้งติดกัน ยอมรับคำเตือน</p>
+          <p>ทำแค่ครั้งเดียว</p>
+        </div>
+        <img src="g5_aa_version.png" alt="การตั้งค่า Android Auto ที่ไฮไลต์เวอร์ชัน และบอกให้แตะ 10 ครั้ง" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>เริ่มเซิร์ฟเวอร์ชุดเครื่องเสียง</h3>
+          <p>ในหน้าจอเดียวกัน แตะ <strong>⋮</strong> (มุมขวาบน) → <strong>เริ่มเซิร์ฟเวอร์ชุดเครื่องเสียง</strong> (Start head unit server)</p>
+          <div class="note warn">ขั้นตอนนี้คนลืมบ่อยที่สุด มันจะปิดเองทุกครั้งที่รีสตาร์ทมือถือหรือ Android Auto อัปเดต ถ้าวันไหนเชื่อมต่อไม่ได้ ให้ทำขั้นตอนนี้ซ้ำ</div>
+        </div>
+        <img src="g6_aa_servidor.png" alt="เมนู Android Auto ที่ไฮไลต์เริ่มเซิร์ฟเวอร์ชุดเครื่องเสียง" loading="lazy">
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">ส่วนที่ 3</span>
+    <h2>จับคู่กับรถ</h2>
+    <ol class="steps" style="counter-reset: s 6">
+      <li class="step">
+        <div class="txt">
+          <h3>สแกน QR บนหน้าปัด</h3>
+          <p>ที่หน้าปัด เปลี่ยนไปที่<strong>หน้าจอฉายภาพมือถือ</strong> (หน้าจอ 3 ใน 125X) ที่แสดงรหัส QR ใน RideScreen แตะ <strong>สแกน</strong> (ด้านล่าง ใน <strong>เพิ่มเติม</strong>) แล้วเล็งกล้อง</p>
+          <div class="note warn">QR ในเมนู <strong>Information</strong> ไม่ใช่อันที่ถูกต้อง ให้สแกน QR ของหน้าจอฉายภาพ และค้างหน้าปัดไว้ที่หน้าจอนั้นระหว่างเชื่อมต่อ</div>
+        </div>
+        <img src="g7_qr.png" alt="กล้องมือถือเล็งไปที่รหัส QR บนหน้าปัด" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>ยอมรับ Wi‑Fi ของรถ</h3>
+          <p>แตะ <strong>เชื่อมต่อ</strong> ใน RideScreen Android จะถามว่าอนุญาตให้แอปเชื่อมต่อ Wi‑Fi ของรถไหม (ชื่อตามรถของคุณ เช่น ZT…) แตะ <strong>เชื่อมต่อ</strong></p>
+          <div class="note warn">ต้องรีบ คำขอจะหมดเวลาในหนึ่งนาทีครึ่ง ถ้าพลาด ให้แตะเชื่อมต่อในแอปอีกครั้ง</div>
+        </div>
+        <img src="g8_wifi.png" alt="หน้าต่าง Android สำหรับเชื่อมต่อ Wi‑Fi ของรถ ไฮไลต์เชื่อมต่อ" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>เสร็จแล้ว: Android Auto บนหน้าปัด</h3>
+          <p>ไม่กี่วินาทีต่อมา Android Auto จะขึ้นบนหน้าจอรถ เก็บมือถือใส่กระเป๋าได้เลย</p>
+          <p>ครั้งต่อไป แค่แตะ <strong>เชื่อมต่อ</strong> ถ้าอยากให้เชื่อมต่อเองเมื่อสตาร์ทรถ: <strong>⚙️ การตั้งค่า</strong> → <strong>เชื่อมต่อเมื่ออุปกรณ์ Bluetooth เชื่อมต่อเข้ามา</strong> → เลือก Bluetooth ของหน้าปัด (ขึ้นต้นด้วย "ZT") และอนุญาต <strong>แสดงทับบนแอปอื่นๆ</strong></p>
+          <p><strong>เคล็ดลับ:</strong> เมื่อเชื่อมต่อแล้ว คุณเปลี่ยนหน้าปัดไป<strong>หน้าจออื่น</strong>เพื่อดูหน้าปัดเดิมได้ แอปยังเชื่อมต่ออยู่และบันทึกการเดินทางต่อ และเมื่อกลับมาหน้าจอฉายภาพ Android Auto จะอยู่ตรงนั้นทันที</p>
+          <p>ครั้งแรกที่เชื่อมต่อ แอปจะขอสิทธิ์<strong>ไมโครโฟน</strong>: เลือก <strong>ขณะใช้แอป</strong> เพื่อใช้ "Ok Google" และปุ่มสั่งงานด้วยเสียงของอินเตอร์คอม</p>
+        </div>
+        <img src="g9_listo.png" alt="RideScreen เชื่อมต่อแล้ว และ Android Auto อยู่บนหน้าปัด" loading="lazy">
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">ถ้ามีปัญหา</span>
+    <h2>แอปแจ้งอะไร และต้องทำอย่างไร</h2>
+    <div class="faq">
+      <details>
+        <summary>"ไม่ได้ติดตั้งแอป" / "แพ็กเกจดูเหมือนจะไม่ถูกต้อง"<small>ตอนติดตั้ง APK</small></summary>
+        <ul>
+          <li>ตรวจว่าคุณดาวน์โหลด <strong>RideScreen-AA-v….apk</strong> ไม่ใช่ไฟล์ของนาฬิกา (WearOS-reloj)</li>
+          <li>ถ้าดาวน์โหลดไม่ครบ ไฟล์จะเสีย: ลบแล้วดาวน์โหลดใหม่ด้วยการเชื่อมต่อที่ดี</li>
+          <li>ถ้าขึ้นว่า "ใช้ร่วมกันไม่ได้" มือถือของคุณเป็น 32 บิต หรือใช้ Android 9 หรือเก่ากว่า แจ้งรุ่นมือถือให้เราทราบ</li>
+          <li>ถ้าเคยมี OpenCfMoto <em>ทางการ</em> ของ Alexandru ให้ถอนการติดตั้งก่อน: เซ็นด้วยคีย์ต่างกัน</li>
+        </ul>
+      </details>
+      <details>
+        <summary>"อนุมัติหน้าต่างเลือก Wi‑Fi / อุปกรณ์ของโทรศัพท์…"<small>ตอนเชื่อมต่อ</small></summary>
+        <ul>
+          <li>หน้าต่าง Wi‑Fi ของรถขึ้นมาแล้วแต่ไม่ได้ยอมรับทันเวลา แตะเชื่อมต่ออีกครั้งแล้วยอมรับทันที</li>
+          <li>ถ้าหน้าต่างไม่ขึ้นเลย: รถต้องเปิดอยู่และอยู่ใกล้ โดยหน้าปัดอยู่ที่หน้าจอฉายภาพมือถือ</li>
+          <li>ถ้าขึ้นแต่ไม่เชื่อมต่อ ตรวจว่าคุณสแกน QR ของหน้าจอฉายภาพ ไม่ใช่ของหน้าข้อมูล ถ้าไม่แน่ใจ สแกนใหม่</li>
+        </ul>
+      </details>
+      <details>
+        <summary>"อนุญาตอุปกรณ์ใกล้เคียง / Bluetooth…"<small>ตอนเชื่อมต่อ</small></summary>
+        <ul>
+          <li>ขาดสิทธิ์ <strong>อุปกรณ์ที่อยู่ใกล้เคียง</strong> ซึ่ง Android ต้องใช้เพื่อเชื่อมต่อ Wi‑Fi และ Bluetooth ของรถ</li>
+          <li>การตั้งค่ามือถือ → แอป → RideScreen AA → สิทธิ์ → <strong>อุปกรณ์ที่อยู่ใกล้เคียง</strong> → อนุญาต แล้วแตะเชื่อมต่อ</li>
+        </ul>
+      </details>
+      <details>
+        <summary>"ปิด Wi‑Fi ของโทรศัพท์อยู่"<small>ตอนเชื่อมต่อ</small></summary>
+        <p>เปิด Wi‑Fi ของมือถือ ไม่ต้องเชื่อมต่อเครือข่ายใด แอปจะเชื่อมต่อ Wi‑Fi ของรถเอง</p>
+      </details>
+      <details>
+        <summary>"ปิดแอปทางการแล้วเชื่อมต่อใหม่"<small>ตอนเชื่อมต่อ</small></summary>
+        <p>แอปทางการของรถ (Zontes / EasyConnection / Carbit) กำลังยึดการเชื่อมต่อกับหน้าปัด การตั้งค่า → แอป → แอปนั้น → <kbd>บังคับหยุด</kbd> แล้วเชื่อมต่อใหม่ ถ้าไม่ได้ใช้ ถอนการติดตั้งไปเลยง่ายที่สุด</p>
+      </details>
+      <details>
+        <summary>"Android Auto ไม่ได้เชื่อมต่อ" / เชื่อมต่อแล้วหลุด<small>เชื่อมต่อ Wi‑Fi ของรถแล้ว แต่ไม่มี Android Auto</small></summary>
+        <ul>
+          <li>เกือบทุกครั้งเป็นที่เซิร์ฟเวอร์ชุดเครื่องเสียง (ขั้นตอนที่ 6): แอปจะแสดงประกาศพร้อมปุ่ม <strong>เปิด Android Auto</strong> ที่นั่น ⋮ → หยุดเซิร์ฟเวอร์แล้วเริ่มใหม่ (แม้จะดูเหมือนเริ่มแล้ว: บางครั้งค้าง)</li>
+          <li>หลังรีสตาร์ทมือถือ ต้องเริ่มใหม่ทุกครั้ง</li>
+          <li>อย่าถอนการติดตั้งอัปเดตของ Android Auto: ไม่จำเป็นและทำให้แย่ลง</li>
+        </ul>
+      </details>
+      <details>
+        <summary>เชื่อมต่อได้ครั้งแรก แต่ไม่ได้หลังรีสตาร์ทรถ<small>หลังปิดแล้วเปิดใหม่</small></summary>
+        <ul>
+          <li>เมื่อเปิดรถ ให้หน้าปัดอยู่ที่<strong>หน้าจอฉายภาพมือถือ</strong> แล้วรอประมาณ 20–30 วินาที: แอปจะหารถเอง</li>
+          <li>ถ้ายังไม่มีภาพ แตะ <strong>หยุด</strong> แล้วแตะ <strong>เชื่อมต่อ</strong> ใน RideScreen</li>
+          <li>ถ้ารีสตาร์ทมือถือไปแล้วระหว่างนั้น ให้เริ่มเซิร์ฟเวอร์ชุดเครื่องเสียงก่อน (ขั้นตอนที่ 6)</li>
+        </ul>
+      </details>
+      <details>
+        <summary>อยากดูหน้าปัดเดิมโดยไม่ตัดการเชื่อมต่อ<small>หน้าจออื่นๆ</small></summary>
+        <ul>
+          <li>เชื่อมต่อที่<strong>หน้าจอฉายภาพมือถือ</strong>เสมอ (หน้าจอ 3 ใน 125X): เป็นหน้าจอเดียวที่หน้าปัดเปิด Wi‑Fi ถ้าลองจากหน้าจออื่น แอปจะแจ้งว่าหา Wi‑Fi ของรถไม่เจอ</li>
+          <li>เมื่อ Android Auto แสดงแล้ว เปลี่ยนไป<strong>หน้าจออื่น</strong>ได้ตามต้องการ: แอปยังเชื่อมต่ออยู่ บันทึกการเดินทาง และ Android Auto ทำงานต่อเบื้องหลัง</li>
+          <li>กลับมาหน้าจอฉายภาพ Android Auto จะอยู่ตรงนั้นทันที ไม่ต้องเชื่อมต่อใหม่</li>
+        </ul>
+      </details>
+      <details>
+        <summary>ไม่ใช่ทั้งหมดข้างต้น<small>วิธีขอความช่วยเหลือ</small></summary>
+        <p>ใน RideScreen แตะ <strong>❓ ช่วยเหลือ → แชร์บันทึก</strong> ทันทีหลังเกิดปัญหา แล้วส่งเข้ากลุ่มพร้อมบอกรุ่นรถและมือถือ บันทึกไม่มีรหัสผ่านหรือหมายเลขซีเรียล</p>
+      </details>
+    </div>
+  </section>
+
+  <p class="foot">RideScreen AA ฟรีและเป็นโอเพนซอร์ส พัฒนาต่อจาก OpenCfMoto ของ Alexandru (zanderp) ไม่ใช่แอปทางการของ Zontes ภาพหน้าจอเป็นเพียงตัวอย่าง ข้อความจริงบนมือถือของคุณอาจต่างไปเล็กน้อย</p>
+</div>
+
+<script>
+/* Direct APK download: point [data-apk] links at the latest release's APK (phone or watch) and show version + size.
+   Without JS, or if the GitHub API fails, they keep pointing at the release page. */
+(function(){var els=document.querySelectorAll("[data-apk]");if(!els.length||!window.fetch)return;
+fetch("https://api.github.com/repos/mgb1982/ridescreen-aa/releases/latest").then(function(r){return r.ok?r.json():null}).then(function(j){if(!j)return;
+var ph=null,w=null;(j.assets||[]).forEach(function(a){if(!/\.apk$/i.test(a.name))return;if(/wear/i.test(a.name)){w=w||a}else{ph=ph||a}});
+var v=(j.tag_name||"").replace(/^v/,"");
+els.forEach(function(e){var a=e.getAttribute("data-apk")==="watch"?w:ph;if(!a)return;e.href=a.browser_download_url;e.setAttribute("download","");
+var m=e.querySelector(".apk-meta");if(m)m.textContent=" · v"+v+" · "+Math.round(a.size/1048576)+" MB";});}).catch(function(){});})();
+</script>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Como instalar o RideScreen AA no telemóvel, preparar o Android Auto e ligar à tua Zontes.">
+<title>Guia do RideScreen AA</title>
+<link rel="canonical" href="https://ridescreen.app/pt/guide/">
+<link rel="alternate" hreflang="es" href="https://ridescreen.app/guia/">
+<link rel="alternate" hreflang="ca" href="https://ridescreen.app/ca/guia/">
+<link rel="alternate" hreflang="en" href="https://ridescreen.app/en/guide/">
+<link rel="alternate" hreflang="it" href="https://ridescreen.app/it/guide/">
+<link rel="alternate" hreflang="el" href="https://ridescreen.app/el/guide/">
+<link rel="alternate" hreflang="ru" href="https://ridescreen.app/ru/guide/">
+<link rel="alternate" hreflang="de" href="https://ridescreen.app/de/guide/">
+<link rel="alternate" hreflang="fr" href="https://ridescreen.app/fr/guide/">
+<link rel="alternate" hreflang="pt" href="https://ridescreen.app/pt/guide/">
+<link rel="alternate" hreflang="th" href="https://ridescreen.app/th/guide/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap">
+<style>
+/* Layout: one reading column; each step is text + phone screenshot side by side, stacked on phones.
+   Palette from the app itself: forest green surfaces, brass/gold accent. Dark-first. */
+:root {
+  --bg: #161D18;
+  --surface: #212B24;
+  --surface-2: #2A362E;
+  --fg: #EEF2EA;
+  --muted: #A9B5A6;
+  --accent: #D1A955;
+  --accent-ink: #18211A;
+  --line: #34423A;
+  --warn: #E9C46A;
+  --display: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --body: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+    --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; --warn: #8A5A00; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+  --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; --warn: #8A5A00; color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 880px; margin: 0 auto; padding-inline: 18px; padding-block: 28px 56px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 6vw, 46px); line-height: 1.05; }
+h1 span { color: var(--accent); }
+.lede { color: var(--muted); max-width: 62ch; margin: 12px 0 0; font-size: 17px; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+h2 { font-family: var(--display); font-weight: 400; font-size: 24px; margin-top: 44px; }
+section > .eyebrow { margin-top: 44px; display: block; }
+section > .eyebrow + h2 { margin-top: 4px; }
+
+.check { margin-top: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; }
+.check ul { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.check li { display: grid; grid-template-columns: 26px 1fr; gap: 6px; min-width: 0; }
+.check li::before { content: "✓"; color: var(--accent); font-weight: 700; }
+
+.steps { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 18px; counter-reset: s; }
+.step { counter-increment: s; display: grid; grid-template-columns: 1fr 230px; gap: 22px; align-items: start;
+        background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+.step .txt { min-width: 0; }
+.step h3 { font-size: 19px; font-weight: 700; display: flex; gap: 12px; align-items: baseline; }
+.step h3::before { content: counter(s); font-family: var(--display); font-weight: 400; color: var(--accent-ink); background: var(--accent);
+                   min-width: 30px; height: 30px; border-radius: 15px; display: inline-grid; place-items: center; font-size: 15px; flex: none; transform: translateY(4px); }
+.step p { margin: 10px 0 0; }
+.step img { width: 100%; max-width: 230px; border-radius: 22px; border: 1px solid var(--line); display: block; justify-self: center; }
+.note { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); font-size: 14.5px; }
+.note.warn { border-left: 3px solid var(--warn); }
+kbd { font-family: var(--body); font-weight: 700; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; }
+a { color: var(--accent); }
+.cta { display: inline-block; margin-top: 12px; background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 700;
+       padding: 10px 16px; border-radius: 22px; }
+.cta:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+.faq { margin-top: 16px; display: grid; gap: 10px; }
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 18px; }
+.faq summary { cursor: pointer; font-weight: 700; }
+.faq summary small { display: block; font-weight: 400; color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+.faq details p, .faq details ul { margin: 10px 0 0; }
+.faq ul { padding-left: 20px; }
+.foot { margin-top: 40px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+@media (max-width: 640px) {
+  .step { grid-template-columns: 1fr; }
+  .step img { max-width: 260px; }
+}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <div class="eyebrow">RideScreen AA · app do telemóvel · <a href="../../guia/" lang="es" data-lang="es">Español</a> · <a href="../../ca/guia/" lang="ca" data-lang="ca">Català</a> · <a href="../../en/guide/" lang="en" data-lang="en">English</a> · <a href="../../it/guide/" lang="it" data-lang="it">Italiano</a> · <a href="../../el/guide/" lang="el" data-lang="el">Ελληνικά</a> · <a href="../../ru/guide/" lang="ru" data-lang="ru">Русский</a> · <a href="../../de/guide/" lang="de" data-lang="de">Deutsch</a> · <a href="../../fr/guide/" lang="fr" data-lang="fr">Français</a> · <a href="../../th/guide/" lang="th" data-lang="th">ไทย</a></div>
+  <h1>Instalar e ligar <span>em 10 minutos</span></h1>
+  <p class="lede">Android Auto no painel da tua Zontes, passo a passo. Da primeira vez demora uns minutos; depois é um toque, ou nem isso.</p>
+  <p class="lede" style="font-size:15px;margin-top:6px">Tens um relógio Wear OS? Continua depois com o <a href="../watch/">guia do relógio</a>.</p>
+
+  <div class="check">
+    <strong>Antes de começar</strong>
+    <ul>
+      <li>Um telemóvel com Android 10 ou superior, de 64 bits (quase todos dos últimos 5 anos).</li>
+      <li>Android Auto instalado e atualizado a partir da Play Store. Abre-o uma vez e aceita os termos.</li>
+      <li>Wi‑Fi do telemóvel ativado. Não precisas de estar ligado a nenhuma rede.</li>
+      <li><span>Se tens a app oficial da mota (Zontes / EasyConnection / Carbit), fecha-a: Definições → Apps → essa app → <kbd>Forçar paragem</kbd>.</span></li>
+      <li>A mota ligada e parada, para o primeiro emparelhamento.</li>
+    </ul>
+  </div>
+
+  <section>
+    <span class="eyebrow">Parte 1</span>
+    <h2>Instalar a app</h2>
+    <ol class="steps">
+      <li class="step">
+        <div class="txt">
+          <h3>Descarrega o APK do telemóvel</h3>
+          <p>Toca no botão: a última versão é descarregada diretamente (<strong>RideScreen-AA-v2.4.apk</strong> ou a que estiver em vigor).</p>
+          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4/RideScreen-AA-v2.4.apk" data-apk="phone">Descarregar o APK<span class="apk-meta"></span></a>
+          <p>Preferes o GitHub? Na <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">página da última versão</a>, em <strong>Assets</strong>, toca no APK que começa por <strong>RideScreen-AA-v</strong>.</p>
+          <div class="note warn">Não descarregues o que diz <strong>WearOS-reloj</strong>: é para o relógio e, no telemóvel, aparece que o pacote é inválido.</div>
+        </div>
+        <img src="g1_descarga.png" alt="Página de transferência do GitHub com o APK do telemóvel em destaque" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Permite instalações a partir do navegador</h3>
+          <p>Abre o ficheiro descarregado. Se o Android disser que não pode instalar apps desta fonte, toca em <strong>Definições</strong>, ativa <strong>Permitir desta fonte</strong> e volta atrás.</p>
+          <p>Depois toca em <strong>Instalar</strong>.</p>
+        </div>
+        <img src="g2_fuentes.png" alt="Aviso do Android e o interruptor Permitir desta fonte" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Se aparecer o Play Protect, instala mesmo assim</h3>
+          <p>Aparece porque a app ainda não está na Play Store. Toca em <strong>Mais detalhes</strong> e depois em <strong>Instalar mesmo assim</strong>.</p>
+          <div class="note">Se tocares em <em>OK</em>, a instalação é cancelada. Podes repetir abrindo o APK outra vez.</div>
+        </div>
+        <img src="g3_playprotect.png" alt="Aviso do Play Protect com Instalar mesmo assim em destaque" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Abre o RideScreen e aceita as autorizações</h3>
+          <p>Da primeira vez abrem-se as Definições. Aceita todas as autorizações que pedir, ou toca em <strong>Todas as permissões concedidas</strong> para as verificar todas de uma vez.</p>
+          <p>O Android exige a localização para ligar ao Wi‑Fi da mota e guardar as tuas viagens. A app não te segue.</p>
+        </div>
+        <img src="g4_permisos.png" alt="Ecrã de autorizações do RideScreen com o botão Todas as permissões concedidas" loading="lazy">
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">Parte 2</span>
+    <h2>Preparar o Android Auto</h2>
+    <ol class="steps" style="counter-reset: s 4">
+      <li class="step">
+        <div class="txt">
+          <h3>Ativa o modo de programador</h3>
+          <p>Abre as definições do Android Auto (Definições do telemóvel → Android Auto, ou a partir do RideScreen). Desce até ao fim e toca 10 vezes seguidas em <strong>Versão</strong>. Aceita o aviso.</p>
+          <p>Só precisas de fazer isto uma vez.</p>
+        </div>
+        <img src="g5_aa_version.png" alt="Definições do Android Auto com Versão em destaque e a indicação de tocar 10 vezes" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Inicia o servidor da unidade principal</h3>
+          <p>No mesmo ecrã, toca em <strong>⋮</strong> (em cima à direita) → <strong>Iniciar servidor da unidade principal</strong> (Start head unit server).</p>
+          <div class="note warn">É o passo que mais se esquece. Desativa-se sempre que reinicias o telemóvel ou o Android Auto se atualiza. Se um dia não ligar, repete só este passo.</div>
+        </div>
+        <img src="g6_aa_servidor.png" alt="Menu do Android Auto com Iniciar servidor da unidade principal em destaque" loading="lazy">
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">Parte 3</span>
+    <h2>Emparelhar com a mota</h2>
+    <ol class="steps" style="counter-reset: s 6">
+      <li class="step">
+        <div class="txt">
+          <h3>Lê o QR do painel</h3>
+          <p>No painel, muda para a <strong>interface de espelhamento de ecrã</strong> (a 3 na 125X): a da projeção do telemóvel, que mostra um código QR. No RideScreen toca em <strong>Ler QR</strong> (em baixo, em <strong>Mais</strong>) e aponta para ele.</p>
+          <div class="note warn">O QR em <strong>Informação</strong> não é o certo: lê o da interface de espelhamento. Deixa o painel nesse ecrã enquanto liga.</div>
+        </div>
+        <img src="g7_qr.png" alt="Câmara do telemóvel a apontar para o código QR do painel" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Aceita o Wi‑Fi da mota</h3>
+          <p>Toca em <strong>Ligar</strong> no RideScreen. O Android pergunta se a app se pode ligar ao Wi‑Fi da mota (tem o nome da tua mota, p. ex. ZT…). Toca em <strong>Ligar</strong>.</p>
+          <div class="note warn">Sê rápido: o pedido expira ao fim de minuto e meio. Se o perderes, toca outra vez em Ligar na app.</div>
+        </div>
+        <img src="g8_wifi.png" alt="Pedido do Android para ligar ao Wi‑Fi da mota, com Ligar em destaque" loading="lazy">
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Feito: Android Auto no painel</h3>
+          <p>Uns segundos depois, o Android Auto aparece no ecrã da mota. Podes guardar o telemóvel no bolso.</p>
+          <p>Da próxima vez, basta tocar em <strong>Ligar</strong>. Para que se ligue sozinha quando arrancas a mota: <strong>⚙️ Definições</strong> → <strong>Ligar quando um dispositivo Bluetooth se ligar</strong> → escolhe o Bluetooth do painel (começa por «ZT») e permite <strong>Sobrepor a outras apps</strong>.</p>
+          <p><strong>Dica:</strong> depois de ligada, podes mudar o painel para <strong>outra interface</strong> para ver o painel original. A app continua ligada e a registar a viagem, e quando voltas à de espelhamento o Android Auto está lá logo.</p>
+          <p>Da primeira vez que te ligas, a app pede o <strong>microfone</strong>: escolhe <strong>Enquanto uso a app</strong> para poderes usar o «Ok Google» e o botão de voz do intercomunicador.</p>
+        </div>
+        <img src="g9_listo.png" alt="RideScreen ligado, com o Android Auto no painel" loading="lazy">
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">Se algo correr mal</span>
+    <h2>O que a app diz e o que fazer</h2>
+    <div class="faq">
+      <details>
+        <summary>«App não instalada» / «O pacote parece ser inválido»<small>Ao instalar o APK</small></summary>
+        <ul>
+          <li>Confirma que descarregaste o <strong>RideScreen-AA-v….apk</strong> e não o do relógio (WearOS-reloj).</li>
+          <li>Se a transferência foi interrompida, o ficheiro está danificado: apaga-o e volta a descarregá-lo com boa ligação.</li>
+          <li>Se disser «não compatível», o teu telemóvel é de 32 bits ou tem Android 9 ou anterior. Diz-nos o modelo.</li>
+          <li>Se tinhas o OpenCfMoto <em>oficial</em> de Alexandru, desinstala-o primeiro: estão assinados com chaves diferentes.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>«Aprova o seletor de Wi‑Fi / dispositivos do telemóvel…»<small>Ao ligar</small></summary>
+        <ul>
+          <li>O pedido de Wi‑Fi da mota apareceu e não foi aceite a tempo. Toca outra vez em Ligar e aceita logo.</li>
+          <li>Se o pedido nunca aparecer: a mota tem de estar ligada e perto, com o painel na interface de espelhamento de ecrã.</li>
+          <li>Se aparece mas nunca liga, confirma que leste o QR da interface de espelhamento e não o de Informação. Na dúvida, volta a lê-lo.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>«Concede a permissão Dispositivos próximos / Bluetooth…»<small>Ao ligar</small></summary>
+        <ul>
+          <li>Falta a autorização <strong>Dispositivos próximos</strong>; o Android exige-a para ligar ao Wi‑Fi e ao Bluetooth da mota.</li>
+          <li>Definições do telemóvel → Apps → RideScreen AA → Autorizações → <strong>Dispositivos próximos</strong> → Permitir. Depois toca em Ligar.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>«O Wi‑Fi do telemóvel está desligado»<small>Ao ligar</small></summary>
+        <p>Ativa o Wi‑Fi do telemóvel. Não precisas de te ligar a nenhuma rede: a app liga-se sozinha à da mota.</p>
+      </details>
+      <details>
+        <summary>«Fecha a app oficial e volta a ligar»<small>Ao ligar</small></summary>
+        <p>A app oficial da mota (Zontes / EasyConnection / Carbit) está a ocupar a ligação ao painel. Definições → Apps → essa app → <kbd>Forçar paragem</kbd> e volta a ligar. Se não a usas, o mais simples é desinstalá-la.</p>
+      </details>
+      <details>
+        <summary>«O Android Auto não estabeleceu a ligação» / liga e desliga<small>Wi‑Fi da mota ligado, mas sem Android Auto</small></summary>
+        <ul>
+          <li>É quase sempre o servidor da unidade principal (passo 6): a app mostra um aviso com o botão <strong>Abrir Android Auto</strong>. Aí, ⋮ → parar o servidor e voltar a iniciá-lo (mesmo que parecesse iniciado: às vezes fica bloqueado).</li>
+          <li>Depois de reiniciar o telemóvel, tens sempre de o voltar a iniciar.</li>
+          <li>Não desinstales as atualizações do Android Auto: não é preciso e piora as coisas.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Liga da primeira vez, mas não depois de reiniciar a mota<small>Depois de desligar e voltar a ligar</small></summary>
+        <ul>
+          <li>Ao ligar, põe o painel na <strong>interface de espelhamento de ecrã</strong> e espera uns 20–30 segundos: a app encontra a mota sozinha.</li>
+          <li>Se continuar sem imagem, toca em <strong>Parar</strong> e depois em <strong>Ligar</strong> no RideScreen.</li>
+          <li>Se entretanto reiniciaste o telemóvel, inicia primeiro o servidor da unidade principal (passo 6).</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Quero ver o painel original sem desligar<small>Outras interfaces</small></summary>
+        <ul>
+          <li>Liga-te sempre na <strong>interface de espelhamento de ecrã</strong> (a 3 na 125X): é a única em que o painel liga o Wi‑Fi. Se tentares a partir de outra, a app diz que não encontra o Wi‑Fi da mota.</li>
+          <li>Quando o Android Auto já estiver a aparecer, muda para <strong>outra interface</strong> quando quiseres: a app continua ligada, regista a viagem e o Android Auto continua em segundo plano.</li>
+          <li>Volta à interface de espelhamento e o Android Auto está lá logo, sem voltar a ligar.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Nada disto<small>Como obter ajuda</small></summary>
+        <p>No RideScreen toca em <strong>❓ Ajuda → Partilhar registos</strong> logo a seguir à falha e envia-o para o grupo, a dizer que mota e telemóvel tens. Os registos não incluem palavras-passe nem números de série.</p>
+      </details>
+    </div>
+  </section>
+
+  <p class="foot">O RideScreen AA é grátis e de código aberto, baseado no OpenCfMoto de Alexandru (zanderp). Não é uma app oficial da Zontes. As capturas são ilustrativas: os textos exatos podem variar no teu telemóvel.</p>
+</div>
+
+<script>
+/* Direct APK download: point [data-apk] links at the latest release's APK (phone or watch) and show version + size.
+   Without JS, or if the GitHub API fails, they keep pointing at the release page. */
+(function(){var els=document.querySelectorAll("[data-apk]");if(!els.length||!window.fetch)return;
+fetch("https://api.github.com/repos/mgb1982/ridescreen-aa/releases/latest").then(function(r){return r.ok?r.json():null}).then(function(j){if(!j)return;
+var ph=null,w=null;(j.assets||[]).forEach(function(a){if(!/\.apk$/i.test(a.name))return;if(/wear/i.test(a.name)){w=w||a}else{ph=ph||a}});
+var v=(j.tag_name||"").replace(/^v/,"");
+els.forEach(function(e){var a=e.getAttribute("data-apk")==="watch"?w:ph;if(!a)return;e.href=a.browser_download_url;e.setAttribute("download","");
+var m=e.querySelector(".apk-meta");if(m)m.textContent=" · v"+v+" · "+Math.round(a.size/1048576)+" MB";});}).catch(function(){});})();
+</script>
+</body>
+</html>

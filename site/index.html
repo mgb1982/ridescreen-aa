@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <script>
-/* Spanish/Galician/Basque browsers stay on the Spanish page; Catalan, Greek, Russian and Italian
+/* Spanish/Galician/Basque browsers stay on the Spanish page; Catalan, Italian, Greek, Russian, German, French, Portuguese and Thai
    browsers go to their matching language page; other languages go to English. A saved language
    choice wins. Crawlers and link previews stay on this entry page. */
 (function(){try{
   var t=null, pick=localStorage.getItem("rs_lang");
-  if (pick) { if (pick==="en") t="en/"; else if (pick==="ca") t="ca/"; else if (pick==="el") t="el/"; else if (pick==="ru") t="ru/"; else if (pick==="it") t="it/"; else return; }
+  if (pick) { if (pick==="ca") t="ca/"; else if (pick==="en") t="en/"; else if (pick==="it") t="it/"; else if (pick==="el") t="el/"; else if (pick==="ru") t="ru/"; else if (pick==="de") t="de/"; else if (pick==="fr") t="fr/"; else if (pick==="pt") t="pt/"; else if (pick==="th") t="th/"; else return; }
   else {
     if (/bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegram/i.test(navigator.userAgent)) return;
     var l=((navigator.languages&&navigator.languages[0])||navigator.language||"").toLowerCase();
     if (!l || /^(es|gl|eu)\b/.test(l)) return;
-    t = /^ca\b/.test(l) ? "ca/" : /^el\b/.test(l) ? "el/" : /^ru\b/.test(l) ? "ru/" : /^it\b/.test(l) ? "it/" : "en/";
+    t = /^ca\b/.test(l) ? "ca/" : /^it\b/.test(l) ? "it/" : /^el\b/.test(l) ? "el/" : /^ru\b/.test(l) ? "ru/" : /^de\b/.test(l) ? "de/" : /^fr\b/.test(l) ? "fr/" : /^pt\b/.test(l) ? "pt/" : /^th\b/.test(l) ? "th/" : "en/";
   }
   location.replace(t+location.hash);
 }catch(e){}})();
@@ -30,6 +30,10 @@
 <link rel="alternate" hreflang="it" href="https://ridescreen.app/it/">
 <link rel="alternate" hreflang="el" href="https://ridescreen.app/el/">
 <link rel="alternate" hreflang="ru" href="https://ridescreen.app/ru/">
+<link rel="alternate" hreflang="de" href="https://ridescreen.app/de/">
+<link rel="alternate" hreflang="fr" href="https://ridescreen.app/fr/">
+<link rel="alternate" hreflang="pt" href="https://ridescreen.app/pt/">
+<link rel="alternate" hreflang="th" href="https://ridescreen.app/th/">
 <link rel="alternate" hreflang="x-default" href="https://ridescreen.app/">
 <link rel="icon" href="img/icon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.png" type="image/png">
@@ -47,7 +51,7 @@
  "operatingSystem":"Android 10+","applicationCategory":"TravelApplication",
  "description":"Android Auto inalámbrico en el cuadro de motos Zontes y otras con cuadro EasyConn/Carbit.",
  "url":"https://ridescreen.app/","downloadUrl":"https://github.com/mgb1982/ridescreen-aa/releases/latest",
- "offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"inLanguage":["es","ca","en"],
+ "offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"inLanguage":["es","ca","en","it","el","ru","de","fr","pt","th"],
  "license":"https://www.gnu.org/licenses/agpl-3.0.html"}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -176,6 +180,10 @@ footer a { color: var(--fg); }
       <a href="it/" lang="it" hreflang="it" title="Italiano" data-lang="it"><img class="flag" src="img/flags/it.svg" alt="Italiano" width="24" height="16"></a>
       <a href="el/" lang="el" hreflang="el" title="Ελληνικά" data-lang="el"><img class="flag" src="img/flags/el.svg" alt="Ελληνικά" width="24" height="16"></a>
       <a href="ru/" lang="ru" hreflang="ru" title="Русский" data-lang="ru"><img class="flag" src="img/flags/ru.svg" alt="Русский" width="24" height="16"></a>
+      <a href="de/" lang="de" hreflang="de" title="Deutsch" data-lang="de"><img class="flag" src="img/flags/de.svg" alt="Deutsch" width="24" height="16"></a>
+      <a href="fr/" lang="fr" hreflang="fr" title="Français" data-lang="fr"><img class="flag" src="img/flags/fr.svg" alt="Français" width="24" height="16"></a>
+      <a href="pt/" lang="pt" hreflang="pt" title="Português" data-lang="pt"><img class="flag" src="img/flags/pt.svg" alt="Português" width="24" height="16"></a>
+      <a href="th/" lang="th" hreflang="th" title="ไทย" data-lang="th"><img class="flag" src="img/flags/th.svg" alt="ไทย" width="24" height="16"></a>
     </nav>
   </header>
 
@@ -202,9 +210,8 @@ footer a { color: var(--fg); }
     <h2>¿Funciona con <span>mi moto</span>?</h2>
     <p class="sub">Si tu cuadro muestra un <b>código QR</b> para conectar el móvil (MotoPlay / EasyConnect), casi seguro que sí. La app se prueba a diario en una Zontes 125X; parte de OpenCfMoto, que funciona con muchas marcas que usan el mismo cuadro.</p>
     <div class="bikes">
-      <span class="chip main">Zontes 125X</span><span class="chip main">Zontes 125V</span><span class="chip main">Zontes 125M</span><span class="chip main">Zontes 368 (G / K / E)</span><span class="chip main">Zontes 703RR</span><span class="chip main">Zontes T350X</span><span class="chip main">Zontes 703F</span><span class="chip main">Zontes 703T</span>
+      <span class="chip main">Zontes 125X</span><span class="chip main">Zontes 125V</span><span class="chip main">Zontes 125M</span><span class="chip main">Zontes 368 (G / K / E)</span><span class="chip main">Zontes 703RR</span><span class="chip main">Zontes T350X</span><span class="chip main">Zontes 703F</span><span class="chip main">Zontes 703T</span><span class="chip main">Zontes 350D (ajustes pendientes)</span><span class="chip main">Zontes 350E (ajustes pendientes)</span>
       <span class="chip">CFMoto</span><span class="chip">Voge</span><span class="chip">Moto Morini</span><span class="chip">QJ Motor</span><span class="chip">Benelli</span><span class="chip">Morbidelli</span><span class="chip">Rieju</span>
-      <span class="chip">Zontes 350D (en pruebas)</span><span class="chip">Zontes 350E (en pruebas)</span>
 
     <div class="bike-photos" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:18px">
       <figure style="margin:0;max-width:240px"><img src="img/moto-703rr-cuadro.webp" alt="Zontes 703RR con Android Auto en el cuadro" width="900" height="1200" loading="lazy" style="width:100%;height:auto;border-radius:14px"><figcaption style="font-size:.85rem;opacity:.8;margin-top:6px">Zontes 703RR · RideScreen AA 2.3</figcaption></figure>
@@ -295,7 +302,14 @@ footer a { color: var(--fg); }
       <a href="https://github.com/mgb1982/ridescreen-aa/blob/main/PRIVACY.md">Privacidad</a>
       <a href="https://ko-fi.com/mgb1982">☕ Ko-fi</a>
       <a href="ca/" lang="ca" data-lang="ca">Català</a>
-      <a href="en/" lang="en" data-lang="en">English</a> · <a href="el/" lang="el" data-lang="el">Ελληνικά</a> · <a href="ru/" lang="ru" data-lang="ru">Русский</a> · <a href="it/" lang="it" data-lang="it">Italiano</a>
+      <a href="en/" lang="en" data-lang="en">English</a>
+      <a href="it/" lang="it" data-lang="it">Italiano</a>
+      <a href="el/" lang="el" data-lang="el">Ελληνικά</a>
+      <a href="ru/" lang="ru" data-lang="ru">Русский</a>
+      <a href="de/" lang="de" data-lang="de">Deutsch</a>
+      <a href="fr/" lang="fr" data-lang="fr">Français</a>
+      <a href="pt/" lang="pt" data-lang="pt">Português</a>
+      <a href="th/" lang="th" data-lang="th">ไทย</a>
     </div>
     <p>RideScreen AA está basada en <a href="https://github.com/zanderp/open-cfmoto">OpenCfMoto</a> de Alexandru (zanderp). Software libre bajo licencia AGPL-3.0.</p>
     <p>No es una app oficial ni está afiliada con Zontes, CFMoto, Carbit ni Google. Android Auto es una marca de Google LLC. Úsala con responsabilidad: la vista, siempre en la carretera.</p>

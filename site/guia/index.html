@@ -4,17 +4,17 @@
 <link rel="canonical" href="https://ridescreen.app/guia/">
 <meta charset="utf-8">
 <script>
-/* Spanish/Galician/Basque browsers stay on this Spanish guide; Catalan, Greek, Russian and Italian
+/* Spanish/Galician/Basque browsers stay on this Spanish guide; Catalan, Italian, Greek, Russian, German, French, Portuguese and Thai
    browsers go to their matching guide; other languages go to English. A saved language choice wins.
    Crawlers and link previews stay on this entry page. */
 (function(){try{
   var t=null, pick=localStorage.getItem("rs_lang");
-  if (pick) { if (pick==="en") t="../en/guide/"; else if (pick==="ca") t="../ca/guia/"; else if (pick==="el") t="../el/guide/"; else if (pick==="ru") t="../ru/guide/"; else if (pick==="it") t="../it/guide/"; else return; }
+  if (pick) { if (pick==="ca") t="../ca/guia/"; else if (pick==="en") t="../en/guide/"; else if (pick==="it") t="../it/guide/"; else if (pick==="el") t="../el/guide/"; else if (pick==="ru") t="../ru/guide/"; else if (pick==="de") t="../de/guide/"; else if (pick==="fr") t="../fr/guide/"; else if (pick==="pt") t="../pt/guide/"; else if (pick==="th") t="../th/guide/"; else return; }
   else {
     if (/bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegram/i.test(navigator.userAgent)) return;
     var l=((navigator.languages&&navigator.languages[0])||navigator.language||"").toLowerCase();
     if (!l || /^(es|gl|eu)\b/.test(l)) return;
-    t = /^ca\b/.test(l) ? "../ca/guia/" : /^el\b/.test(l) ? "../el/guide/" : /^ru\b/.test(l) ? "../ru/guide/" : /^it\b/.test(l) ? "../it/guide/" : "../en/guide/";
+    t = /^ca\b/.test(l) ? "../ca/guia/" : /^it\b/.test(l) ? "../it/guide/" : /^el\b/.test(l) ? "../el/guide/" : /^ru\b/.test(l) ? "../ru/guide/" : /^de\b/.test(l) ? "../de/guide/" : /^fr\b/.test(l) ? "../fr/guide/" : /^pt\b/.test(l) ? "../pt/guide/" : /^th\b/.test(l) ? "../th/guide/" : "../en/guide/";
   }
   location.replace(t+location.hash);
 }catch(e){}})();
@@ -30,6 +30,10 @@
 <link rel="alternate" hreflang="it" href="https://ridescreen.app/it/guide/">
 <link rel="alternate" hreflang="el" href="https://ridescreen.app/el/guide/">
 <link rel="alternate" hreflang="ru" href="https://ridescreen.app/ru/guide/">
+<link rel="alternate" hreflang="de" href="https://ridescreen.app/de/guide/">
+<link rel="alternate" hreflang="fr" href="https://ridescreen.app/fr/guide/">
+<link rel="alternate" hreflang="pt" href="https://ridescreen.app/pt/guide/">
+<link rel="alternate" hreflang="th" href="https://ridescreen.app/th/guide/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap">
 <style>
@@ -111,7 +115,7 @@ a { color: var(--accent); }
 
 
 <div class="wrap">
-  <div class="eyebrow">RideScreen AA · app del móvil · <a href="../ca/guia/" lang="ca" data-lang="ca">Català</a> · <a href="../en/guide/" lang="en" data-lang="en">English</a> · <a href="../el/guide/" lang="el" data-lang="el">Ελληνικά</a> · <a href="../ru/guide/" lang="ru" data-lang="ru">Русский</a> · <a href="../it/guide/" lang="it" data-lang="it">Italiano</a></div>
+  <div class="eyebrow">RideScreen AA · app del móvil · <a href="../ca/guia/" lang="ca" data-lang="ca">Català</a> · <a href="../en/guide/" lang="en" data-lang="en">English</a> · <a href="../it/guide/" lang="it" data-lang="it">Italiano</a> · <a href="../el/guide/" lang="el" data-lang="el">Ελληνικά</a> · <a href="../ru/guide/" lang="ru" data-lang="ru">Русский</a> · <a href="../de/guide/" lang="de" data-lang="de">Deutsch</a> · <a href="../fr/guide/" lang="fr" data-lang="fr">Français</a> · <a href="../pt/guide/" lang="pt" data-lang="pt">Português</a> · <a href="../th/guide/" lang="th" data-lang="th">ไทย</a></div>
   <h1>Instalar y conectar <span>en 10 minutos</span></h1>
   <p class="lede">Android Auto en el cuadro de tu Zontes, paso a paso. La primera vez lleva unos minutos; después basta con un toque, o ninguno.</p>
   <p class="lede" style="font-size:15px;margin-top:6px">¿Tienes un reloj Wear OS? Después sigue con la <a href="../reloj/">guía del reloj</a>.</p>

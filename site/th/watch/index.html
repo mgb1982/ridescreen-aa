@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="วิธีติดตั้ง RideScreen AA บนนาฬิกา Wear OS และใช้ควบคุม Android Auto บนหน้าปัดรถของคุณ">
+<title>คู่มือนาฬิกา RideScreen AA</title>
+<link rel="canonical" href="https://ridescreen.app/th/watch/">
+<link rel="alternate" hreflang="es" href="https://ridescreen.app/reloj/">
+<link rel="alternate" hreflang="ca" href="https://ridescreen.app/ca/rellotge/">
+<link rel="alternate" hreflang="en" href="https://ridescreen.app/en/watch/">
+<link rel="alternate" hreflang="it" href="https://ridescreen.app/it/watch/">
+<link rel="alternate" hreflang="el" href="https://ridescreen.app/el/watch/">
+<link rel="alternate" hreflang="ru" href="https://ridescreen.app/ru/watch/">
+<link rel="alternate" hreflang="de" href="https://ridescreen.app/de/watch/">
+<link rel="alternate" hreflang="fr" href="https://ridescreen.app/fr/watch/">
+<link rel="alternate" hreflang="pt" href="https://ridescreen.app/pt/watch/">
+<link rel="alternate" hreflang="th" href="https://ridescreen.app/th/watch/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap">
+<style>
+/* Same look as the phone guide (site/guia): forest green surfaces, brass accent, dark-first.
+   Watch faces are round images; install steps use small CSS "watch screens" instead of photos. */
+:root {
+  --bg: #161D18; --surface: #212B24; --surface-2: #2A362E; --fg: #EEF2EA; --muted: #A9B5A6;
+  --accent: #D1A955; --accent-ink: #18211A; --line: #34423A; --warn: #E9C46A; --screen: #000;
+  --display: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --body: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+    --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; --warn: #8A5A00; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+  --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; --warn: #8A5A00; color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 880px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 56px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 6vw, 46px); line-height: 1.05; }
+h1 span { color: var(--accent); }
+.lede { color: var(--muted); max-width: 62ch; margin: 12px 0 0; font-size: 17px; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+h2 { font-family: var(--display); font-weight: 400; font-size: 24px; margin-top: 44px; }
+section > .eyebrow { margin-top: 44px; display: block; }
+section > .eyebrow + h2 { margin-top: 4px; }
+p.sub { color: var(--muted); margin: 8px 0 0; max-width: 62ch; }
+a { color: var(--accent); }
+kbd { font-family: var(--body); font-weight: 700; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; }
+
+.hero { display: grid; grid-template-columns: 1fr 220px; gap: 24px; align-items: center; }
+.round { width: 100%; max-width: 220px; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%; display: block; justify-self: center; margin-inline: auto;
+         box-shadow: 0 0 0 7px #2b2b2b, 0 0 0 9px #555; background: #000; }
+
+.check { margin-top: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; }
+.check ul { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.check li { position: relative; padding-left: 26px; min-width: 0; }
+.check li::before { content: "✓"; color: var(--accent); font-weight: 700; position: absolute; left: 0; top: 0; }
+
+.gallery { margin-top: 18px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 18px; }
+.gallery figure { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px 12px 12px; text-align: center; }
+.gallery .round { max-width: 120px; box-shadow: 0 0 0 5px #2b2b2b, 0 0 0 6px #555; }
+.gallery figcaption { margin-top: 12px; font-size: 14px; }
+.gallery figcaption b { display: block; font-size: 15px; }
+.gallery figcaption span { color: var(--muted); }
+
+.steps { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 18px; counter-reset: s; }
+.step { counter-increment: s; display: grid; grid-template-columns: 1fr 200px; gap: 22px; align-items: center;
+        background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+.step .txt { min-width: 0; }
+.step h3 { font-size: 19px; font-weight: 700; display: flex; gap: 12px; align-items: baseline; }
+.step h3::before { content: counter(s); font-family: var(--display); font-weight: 400; color: var(--accent-ink); background: var(--accent);
+                   min-width: 30px; height: 30px; border-radius: 15px; display: inline-grid; place-items: center; font-size: 15px; flex: none; transform: translateY(4px); }
+.step p { margin: 10px 0 0; }
+.note { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); font-size: 14.5px; }
+.note.warn { border-left: 3px solid var(--warn); }
+.cta { display: inline-block; margin-top: 12px; background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 700; padding: 10px 16px; border-radius: 22px; }
+.cta:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* CSS watch screen for the install steps (always dark, like a real watch). */
+.mock { width: 180px; aspect-ratio: 1; border-radius: 50%; background: var(--screen); color: #EDEDED; justify-self: center;
+        box-shadow: 0 0 0 7px #2b2b2b, 0 0 0 9px #555; display: grid; align-content: center; justify-items: center; gap: 6px;
+        padding: 26px; text-align: center; font-size: 12.5px; line-height: 1.3; overflow: hidden; }
+.mock .t { font-size: 11px; color: #9a9a9a; text-transform: uppercase; letter-spacing: .08em; }
+.mock .row { width: 100%; background: #1f1f1f; border-radius: 14px; padding: 7px 10px; display: flex; justify-content: space-between; gap: 6px; align-items: center; }
+.mock .row.hi { outline: 2px solid #D1A955; }
+.mock .sw { width: 26px; height: 15px; border-radius: 8px; background: #D1A955; position: relative; flex: none; }
+.mock .sw::after { content: ""; position: absolute; right: 2px; top: 2px; width: 11px; height: 11px; border-radius: 50%; background: #111; }
+.mock .big { font-size: 26px; font-weight: 700; letter-spacing: .06em; color: #fff; }
+.mock .tap { color: #D1A955; font-weight: 700; }
+.mock .btn { background: #D1A955; color: #111; border-radius: 16px; padding: 6px 14px; font-weight: 700; }
+.mock .bar { width: 100%; height: 6px; background: #333; border-radius: 3px; overflow: hidden; }
+.mock .bar i { display: block; height: 100%; width: 62%; background: #D1A955; }
+
+/* Controls */
+.pad { margin-top: 18px; display: grid; grid-template-columns: 240px 1fr; gap: 24px; align-items: center;
+       background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+.pad .round { max-width: 230px; }
+.keys { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.keys li { display: grid; grid-template-columns: 70px 1fr; gap: 10px; align-items: baseline; min-width: 0; }
+.keys .k { font-weight: 700; text-align: center; background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 2px 4px; }
+.two { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 18px 20px; min-width: 0; }
+.card h3 { font-size: 18px; }
+.card p, .card ul { margin: 10px 0 0; }
+.card ul { padding-left: 20px; }
+.card svg { display: block; margin: 4px auto 0; width: 120px; height: 120px; }
+.pages { margin-top: 18px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.pages figure { margin: 0; text-align: center; }
+.pages .round { max-width: 130px; box-shadow: 0 0 0 5px #2b2b2b, 0 0 0 6px #555; }
+.pages figcaption { margin-top: 10px; font-size: 14px; }
+.pages figcaption b { display: block; }
+.pages figcaption span { color: var(--muted); }
+
+.faq { margin-top: 16px; display: grid; gap: 10px; }
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 18px; }
+.faq summary { cursor: pointer; font-weight: 700; }
+.faq summary small { display: block; font-weight: 400; color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+.faq details p, .faq details ul { margin: 10px 0 0; }
+.faq ul { padding-left: 20px; }
+.foot { margin-top: 40px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+@media (max-width: 680px) {
+  .hero, .step, .pad, .two { grid-template-columns: 1fr; }
+  .hero .round { max-width: 180px; }
+  .pages { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div>
+      <div class="eyebrow">RideScreen AA · แอปนาฬิกา · <a href="../../reloj/" lang="es" data-lang="es">Español</a> · <a href="../../ca/rellotge/" lang="ca" data-lang="ca">Català</a> · <a href="../../en/watch/" lang="en" data-lang="en">English</a> · <a href="../../it/watch/" lang="it" data-lang="it">Italiano</a> · <a href="../../el/watch/" lang="el" data-lang="el">Ελληνικά</a> · <a href="../../ru/watch/" lang="ru" data-lang="ru">Русский</a> · <a href="../../de/watch/" lang="de" data-lang="de">Deutsch</a> · <a href="../../fr/watch/" lang="fr" data-lang="fr">Français</a> · <a href="../../pt/watch/" lang="pt" data-lang="pt">Português</a></div>
+      <h1>รถของคุณ <span>บนข้อมือ</span></h1>
+      <p class="lede">แอป Wear OS เป็นตัวเลือกเสริมและทำงานร่วมกับแอปมือถือ แสดงความเร็วและการเลี้ยวถัดไป สั่นก่อนเลี้ยวทุกครั้ง พาคุณกลับไปที่รถที่จอดไว้ และให้คุณควบคุม Android Auto บนหน้าปัดได้โดยไม่ต้องแตะมือถือ</p>
+      <p class="sub">ยังไม่มีแอปมือถือใช่ไหม เริ่มจาก<a href="../guide/">คู่มือมือถือ</a></p>
+    </div>
+    <img class="round" src="r_viaje.png" alt="นาฬิกาแสดง 123 km/h, 48.6 km, 52:10 สูงสุด 123 และเฉลี่ย 56 ขณะเชื่อมต่อกับหน้าปัด" width="300" height="300">
+  </div>
+
+  <section>
+    <span class="eyebrow">ทำอะไรได้บ้าง</span>
+    <h2>สิ่งที่คุณจะเห็นบนนาฬิกา</h2>
+    <div class="gallery">
+      <figure><img class="round" src="r_giro.png" alt="เลี้ยวถัดไปในอีก 120 ม. ที่ 47 km/h" loading="lazy" width="300" height="300"><figcaption><b>การเลี้ยวถัดไป</b><span>และการสั่นก่อนเลี้ยวทุกครั้ง</span></figcaption></figure>
+      <figure><img class="round" src="r_cruceta.png" alt="ปุ่มทิศทางพร้อมลูกศร OK ย้อนกลับ หน้าหลัก ไมโครโฟน และข้อมูล" loading="lazy" width="300" height="300"><figcaption><b>ปุ่มทิศทาง</b><span>สำหรับควบคุม Android Auto</span></figcaption></figure>
+      <figure><img class="round" src="r_brujula.png" alt="เข็มทิศชี้ไปที่รถที่จอดห่างไป 350 ม." loading="lazy" width="300" height="300"><figcaption><b>เข็มทิศชี้ไปที่รถ</b><span>ตอนเดินกลับไปที่รถ</span></figcaption></figure>
+      <figure><img class="round" src="r_tile.png" alt="ไทล์กำลังขับขี่ 12.4 km 18 นาที เฉลี่ย 41" loading="lazy" width="300" height="300"><figcaption><b>ไทล์และคอมพลิเคชัน</b><span>ดูการเดินทางได้ในพริบตา</span></figcaption></figure>
+      <figure><img class="round" src="r_viajes.png" alt="รายการการเดินทางพร้อมระยะทาง เวลา และความเร็ว" loading="lazy" width="300" height="300"><figcaption><b>การเดินทางของคุณ</b><span>แตะรายการเพื่อดูแผนที่</span></figcaption></figure>
+      <figure><img class="round" src="r_caida.png" alt="สัญญาณเตือน &quot;ล้มหรือเปล่า&quot; พร้อมนับถอยหลังและปุ่ม ฉันไม่เป็นไร" loading="lazy" width="300" height="300"><figcaption><b>สัญญาณเตือนการล้ม</b><span>ทดลอง ถ้าคุณเปิดใช้</span></figcaption></figure>
+    </div>
+  </section>
+
+  <div class="check">
+    <strong>ก่อนเริ่ม</strong>
+    <ul>
+      <li>นาฬิกาที่ใช้ <strong>Wear OS 3 ขึ้นไป</strong>: Galaxy Watch ตั้งแต่รุ่น 4, Pixel Watch และอื่นๆ นาฬิกา Huawei, Amazfit และ Garmin ไม่ได้ใช้ Wear OS จึงใช้ไม่ได้</li>
+      <li>นาฬิกาจับคู่กับมือถือแล้ว และติดตั้ง <strong>RideScreen AA 2.2 ขึ้นไป</strong> บนมือถือแล้ว</li>
+      <li>มือถือและนาฬิกาอยู่ใน<strong>เครือข่าย Wi‑Fi เดียวกัน</strong> (เช่น Wi‑Fi ที่บ้าน) จำเป็นเฉพาะการติดตั้งครั้งนี้</li>
+      <li>ประมาณ 10–15 นาที ทำ<strong>แค่ครั้งเดียว</strong>: เวอร์ชันต่อไปติดตั้งจากมือถือ</li>
+    </ul>
+  </div>
+
+  <section>
+    <span class="eyebrow">ส่วนที่ 1 · ครั้งเดียว</span>
+    <h2>ติดตั้งแอปบนนาฬิกา</h2>
+    <p class="sub">นาฬิกาเปิดไฟล์ APK แบบมือถือไม่ได้ ครั้งแรกนี้จึงต้องติดตั้งผ่านแอปบนมือถือที่คุยกับนาฬิกาผ่าน Wi‑Fi (การแก้ไขข้อบกพร่องแบบไร้สาย) ฟังดูยาก แต่แค่แตะไม่กี่ครั้ง</p>
+    <ol class="steps">
+      <li class="step">
+        <div class="txt">
+          <h3>ดาวน์โหลด APK ของนาฬิกาบนมือถือ</h3>
+          <p>แตะปุ่มเพื่อดาวน์โหลด APK ของนาฬิกาโดยตรง (ไฟล์ที่ลงท้ายด้วย <strong>WearOS-reloj.apk</strong>) เก็บไว้ในโฟลเดอร์ดาวน์โหลด</p>
+          <p>ติดตั้งแอปจาก Play Store แอปใดแอปหนึ่งนี้บนมือถือด้วย: <strong>Wear Installer 2</strong> หรือ <strong>Bugjaeger</strong></p>
+          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4/RideScreen-AA-v2.4-WearOS-reloj.apk" data-apk="watch">ดาวน์โหลด APK ของนาฬิกา<span class="apk-meta"></span></a>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">Assets</span><div class="row">RideScreen-AA-v2.4.apk</div><div class="row hi">…-WearOS-reloj.apk <span class="tap">⬇</span></div></div>
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>เปิดตัวเลือกสำหรับนักพัฒนาแอปของนาฬิกา</h3>
+          <p><strong>Galaxy Watch:</strong> การตั้งค่า → เกี่ยวกับนาฬิกา → ข้อมูลซอฟต์แวร์ → แตะ <strong>เวอร์ชันซอฟต์แวร์</strong> 5 ครั้ง</p>
+          <p><strong>Pixel Watch และรุ่นอื่น:</strong> การตั้งค่า → ระบบ → เกี่ยวกับ → แตะ <strong>หมายเลขบิลด์</strong> 7 ครั้ง</p>
+          <p>จะมีข้อความแจ้งว่าเปิดตัวเลือกสำหรับนักพัฒนาแอปแล้ว</p>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">ข้อมูลซอฟต์แวร์</span><div class="row hi">เวอร์ชันซอฟต์แวร์ <span class="tap">×5</span></div><div class="row">เวอร์ชัน One UI Watch</div></div>
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>เชื่อมต่อนาฬิกากับ Wi‑Fi</h3>
+          <p>การตั้งค่า → การเชื่อมต่อ → Wi‑Fi: ตั้งเป็น <strong>เปิด</strong> (ไม่ใช่อัตโนมัติ) และเชื่อมต่อเครือข่ายเดียวกับมือถือ</p>
+          <div class="note">ถ้าภายหลังนาฬิกาไม่แสดงที่อยู่ IP ให้ปิด Bluetooth ของมือถือสักครู่: นาฬิกาจะใช้ Wi‑Fi ก็ต่อเมื่อเชื่อมต่อมือถือผ่าน Bluetooth ไม่ได้</div>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">Wi‑Fi</span><div class="row hi">เปิด <span class="sw"></span></div><div class="row">บ้าน · เชื่อมต่อแล้ว</div></div>
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>เปิดการแก้ไขข้อบกพร่องแบบไร้สาย</h3>
+          <p>การตั้งค่า → <strong>ตัวเลือกสำหรับนักพัฒนาแอป</strong> → เปิด <strong>การแก้ไขข้อบกพร่อง ADB</strong> และ <strong>การแก้ไขข้อบกพร่องแบบไร้สาย</strong> เปิดการแก้ไขข้อบกพร่องแบบไร้สาย → <strong>จับคู่อุปกรณ์ใหม่</strong></p>
+          <p>นาฬิกาจะแสดง<strong>รหัส 6 หลัก</strong> และที่อยู่พร้อมพอร์ต เช่น <kbd>192.168.1.40:37115</kbd></p>
+          <div class="note warn">ตั้งเวลาปิดหน้าจอนาฬิกาให้นานขึ้นก่อน ถ้าหน้าจอดับระหว่างจับคู่ รหัสจะหมดอายุ</div>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">จับคู่</span><span class="big">482 913</span><span>192.168.1.40:37115</span></div>
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>จับคู่และติดตั้งจากมือถือ</h3>
+          <p>เปิด <strong>Wear Installer 2</strong> (หรือ Bugjaeger) ใส่ที่อยู่และรหัสจับคู่ แล้วเชื่อมต่อด้วยที่อยู่ที่แสดงในหน้าการแก้ไขข้อบกพร่องแบบไร้สาย</p>
+          <p>เลือกไฟล์ <strong>…-WearOS-reloj.apk</strong> จากโฟลเดอร์ดาวน์โหลดแล้วติดตั้ง ภายในหนึ่งนาที RideScreen AA จะขึ้นบนนาฬิกา</p>
+          <div class="note warn">พอร์ตสำหรับ<strong>จับคู่</strong>กับพอร์ตสำหรับ<strong>เชื่อมต่อ</strong>ไม่ใช่พอร์ตเดียวกัน เป็นข้อผิดพลาดที่พบบ่อยที่สุด</div>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">กำลังติดตั้ง</span><span>RideScreen AA</span><div class="bar"><i></i></div><span class="tap">62 %</span></div>
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>เปิดแอปแล้วปิดการแก้ไขข้อบกพร่อง</h3>
+          <p>เปิด RideScreen AA บนนาฬิกา แล้วอนุญาต<strong>ตำแหน่ง</strong> (สำหรับเข็มทิศชี้ไปที่รถ) และ<strong>การแจ้งเตือน</strong></p>
+          <p>ตอนนี้ปิดการแก้ไขข้อบกพร่องแบบไร้สายและ ADB ได้แล้ว: ไม่จำเป็นต่อการใช้งานหรืออัปเดต</p>
+        </div>
+        <img class="round" src="r_reposo.png" alt="นาฬิกาที่เปิด RideScreen AA ไม่มีการเดินทางอยู่" loading="lazy" width="300" height="300" style="max-width:180px">
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">ส่วนที่ 2</span>
+    <h2>ควบคุม Android Auto จากนาฬิกา</h2>
+    <p class="sub">หน้าปัด Zontes ไม่ใช่จอสัมผัส นาฬิกาจะช่วยคุณควบคุม Android Auto เหมือนปุ่มหมุนในรถยนต์: วงล้อสำหรับเลื่อนไปบนหน้าจอ และปุ่มสำหรับเลือก ย้อนกลับ หรือคุยกับ Assistant</p>
+
+    <div class="pad">
+      <img class="round" src="r_cruceta.png" alt="หน้าปุ่มทิศทางของนาฬิกา" loading="lazy" width="300" height="300">
+      <div>
+        <h3 style="font-size:18px">ปุ่มทิศทาง (ปัดไปหน้าที่สอง)</h3>
+        <ul class="keys" style="margin-top:12px">
+          <li><span class="k">▲ ▼</span><span><strong>แตะ:</strong> หมุนวงล้อของ Android Auto ทีละรายการ <strong>กดค้าง:</strong> ลูกศรขึ้นหรือลง</span></li>
+          <li><span class="k">◀ ▶</span><span>ลูกศรซ้ายและขวา: เปลี่ยนคอลัมน์หรือแท็บ</span></li>
+          <li><span class="k">OK</span><span>เลือกรายการที่ไฮไลต์</span></li>
+          <li><span class="k">↩</span><span>ย้อนกลับ</span></li>
+          <li><span class="k">⌂</span><span>หน้าหลักของ Android Auto</span></li>
+          <li><span class="k">🎤</span><span>Google Assistant ("พาฉันไป…", "เปิดเพลง")</span></li>
+          <li><span class="k">📊</span><span>กลับไปที่ข้อมูลการเดินทาง</span></li>
+        </ul>
+        <div class="note">เมื่อไม่ได้เชื่อมต่อกับหน้าปัด หน้านี้จะกลายเป็น "หารถของคุณ" และเปิดเข็มทิศ</div>
+      </div>
+    </div>
+
+    <div class="two">
+      <div class="card">
+        <svg viewBox="0 0 120 120" role="img" aria-label="นาฬิกาที่มีขอบหมุนและลูกศรหมุน">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="8" opacity=".35"/>
+          <circle cx="60" cy="60" r="40" fill="#000"/>
+          <path d="M60 6 A54 54 0 0 1 112 52" fill="none" stroke="#D1A955" stroke-width="4" stroke-linecap="round"/>
+          <path d="M108 44 L112 54 L101 51" fill="none" stroke="#D1A955" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M60 114 A54 54 0 0 1 8 68" fill="none" stroke="#D1A955" stroke-width="4" stroke-linecap="round"/>
+          <path d="M12 76 L8 66 L19 69" fill="none" stroke="#D1A955" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3>แบบมีขอบหมุนหรือเม็ดมะยม</h3>
+        <p>Galaxy Watch Classic, Pixel Watch และนาฬิกาที่มีเม็ดมะยมหมุนได้</p>
+        <ul>
+          <li><strong>หมุนขอบหรือเม็ดมะยม</strong>เพื่อเลื่อนไปใน Android Auto เหมือนปุ่มหมุนในรถยนต์ ใช้ได้ทุกหน้าของนาฬิกา</li>
+          <li>กด <strong>OK</strong> บนปุ่มทิศทางเพื่อเลือก</li>
+          <li>ในหน้า <strong>การเดินทาง</strong> ขอบหมุนจะเลื่อนรายการแทนการเลื่อน Android Auto</li>
+        </ul>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 120 120" role="img" aria-label="นาฬิกาไม่มีขอบหมุน มีลูกศรขึ้นลงบนหน้าจอ">
+          <circle cx="60" cy="60" r="50" fill="#000" stroke="currentColor" stroke-width="3" opacity=".9"/>
+          <circle cx="60" cy="32" r="13" fill="none" stroke="#D1A955" stroke-width="3"/>
+          <path d="M54 35 L60 27 L66 35 Z" fill="#D1A955"/>
+          <circle cx="60" cy="88" r="13" fill="none" stroke="#D1A955" stroke-width="3"/>
+          <path d="M54 85 L60 93 L66 85 Z" fill="#D1A955"/>
+          <circle cx="60" cy="60" r="11" fill="#2A362E"/>
+          <text x="60" y="64" text-anchor="middle" font-size="10" font-weight="700" fill="#EDEDED" font-family="Archivo, sans-serif">OK</text>
+        </svg>
+        <h3>แบบไม่มีขอบหมุน</h3>
+        <p>Galaxy Watch รุ่นปกติ (4, 5, 6, 7…) และนาฬิกาหน้าจอเรียบ</p>
+        <ul>
+          <li>ปุ่ม <strong>▲ ▼</strong> บนปุ่มทิศทางทำหน้าที่เป็นวงล้อ: แตะหนึ่งครั้ง ขยับหนึ่งช่อง</li>
+          <li><strong>กดค้างไว้</strong>เมื่อต้องการลูกศรจริง เช่น เพื่อเลื่อนขึ้นในรายการ</li>
+          <li>ใน Galaxy Watch ที่มี<strong>ขอบสัมผัส</strong> ให้เปิดในการตั้งค่านาฬิกา แล้วลากนิ้วรอบขอบจอเหมือนหมุนขอบ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">ส่วนที่ 3</span>
+    <h2>หน้าต่างๆ ของแอป</h2>
+    <p class="sub">ปัดซ้ายและขวา จุดด้านล่างบอกว่าคุณอยู่หน้าไหน</p>
+    <div class="pages">
+      <figure><img class="round" src="r_viaje.png" alt="หน้าการขับขี่" loading="lazy" width="300" height="300"><figcaption><b>1 · ขับขี่</b><span>ความเร็ว ระยะทาง เวลา สูงสุด และเฉลี่ย</span></figcaption></figure>
+      <figure><img class="round" src="r_cruceta.png" alt="หน้าปุ่มทิศทาง" loading="lazy" width="300" height="300"><figcaption><b>2 · ปุ่มทิศทาง</b><span>สำหรับควบคุม Android Auto</span></figcaption></figure>
+      <figure><img class="round" src="r_info.png" alt="หน้าข้อมูล" loading="lazy" width="300" height="300"><figcaption><b>3 · ข้อมูล</b><span>เวลา ทิศทาง ความสูง แบตเตอรี่มือถือ ระดับเสียง</span></figcaption></figure>
+      <figure><img class="round" src="r_viajes.png" alt="หน้าการเดินทาง" loading="lazy" width="300" height="300"><figcaption><b>4 · การเดินทาง</b><span>แตะรายการเพื่อดูแผนที่</span></figcaption></figure>
+    </div>
+    <div class="two">
+      <div class="card">
+        <h3>การสั่นเตือนเมื่อเลี้ยว</h3>
+        <p>เมื่อนำทางด้วย Android Auto นาฬิกาจะสั่นก่อนการเลี้ยวแต่ละครั้ง: <strong>2 ครั้ง</strong>สำหรับซ้าย <strong>3 ครั้ง</strong>สำหรับขวา <strong>ยาวหนึ่งครั้งและสั้น N ครั้ง</strong>สำหรับทางออกที่ N ของวงเวียน และ<strong>ยาวสองครั้ง</strong>สำหรับกลับรถ</p>
+        <p>เปิดในแอปมือถือ: ⚙️ การตั้งค่า → คุณสมบัติเพิ่มเติมสำหรับการขับขี่ → <strong>การสั่นเตือนเมื่อเลี้ยวที่นาฬิกา</strong> เป็นฟีเจอร์ทดลอง</p>
+      </div>
+      <div class="card">
+        <h3>ไทล์และคอมพลิเคชัน</h3>
+        <p>เพิ่มไทล์ <strong>ขับขี่</strong> (ปัดจากหน้าปัดนาฬิกาแล้วแตะ <kbd>+</kbd>) เพื่อดูการเดินทางปัจจุบันหรือจุดที่จอดรถ คอมพลิเคชัน <strong>RideScreen · km</strong> จะแสดงระยะทางบนหน้าปัดนาฬิกา</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">ส่วนที่ 4</span>
+    <h2>อัปเดตนาฬิกา</h2>
+    <ol class="steps" style="counter-reset: s 0">
+      <li class="step">
+        <div class="txt">
+          <h3>จากมือถือ ไม่ต้องใช้คอมพิวเตอร์</h3>
+          <p>ตั้งแต่เวอร์ชัน 2.2 เมื่อมีเวอร์ชันใหม่: บนมือถือ <strong>❓ ช่วยเหลือ → ⌚ อัปเดตแอปนาฬิกา → เวอร์ชันล่าสุด</strong></p>
+          <p>มือถือจะดาวน์โหลดแอปนาฬิกาแล้วส่งผ่าน Bluetooth <strong>ใช้เวลาสองสามนาที</strong>: ดูความคืบหน้าได้ทั้งบนมือถือและนาฬิกา เมื่อเสร็จแล้วแตะ <strong>ติดตั้ง</strong> บนนาฬิกา</p>
+          <div class="note">ครั้งแรก นาฬิกาจะขอให้คุณอนุญาตให้ RideScreen AA ติดตั้งแอป: เปิดใช้แล้วย้อนกลับ</div>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">อัปเดต</span><span>ติดตั้งแล้ว: 2.2<br>ใหม่: 2.3</span><span class="btn">ติดตั้ง</span></div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">ถ้ามีปัญหา</span>
+    <h2>ปัญหาที่พบบ่อย</h2>
+    <div class="faq">
+      <details>
+        <summary>นาฬิกาไม่แสดงที่อยู่ IP<small>ตอนเปิดการแก้ไขข้อบกพร่องแบบไร้สาย</small></summary>
+        <ul>
+          <li>ตั้ง Wi‑Fi ของนาฬิกาเป็น <strong>เปิด</strong> ไม่ใช่อัตโนมัติ และเชื่อมต่อเครือข่ายเดียวกับมือถือ</li>
+          <li>ปิด Bluetooth ของมือถือสักครู่เพื่อให้นาฬิกาเปลี่ยนไปใช้ Wi‑Fi เปิดกลับเมื่อเสร็จ</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Wear Installer เชื่อมต่อไม่ได้<small>ตอนจับคู่</small></summary>
+        <ul>
+          <li>ใช้พอร์ตจาก <strong>จับคู่อุปกรณ์ใหม่</strong> เพื่อจับคู่ และพอร์ตในหน้าหลักของการแก้ไขข้อบกพร่องแบบไร้สายเพื่อเชื่อมต่อ สองพอร์ตนี้ไม่เหมือนกัน</li>
+          <li>ถ้ารหัสหมดอายุ แตะจับคู่อุปกรณ์ใหม่อีกครั้ง: จะได้รหัสใหม่</li>
+        </ul>
+      </details>
+      <details>
+        <summary>"แพ็กเกจดูเหมือนจะไม่ถูกต้อง"<small>ตอนติดตั้ง</small></summary>
+        <p>น่าจะเป็น APK ของมือถือ นาฬิกาต้องใช้ไฟล์ที่ลงท้ายด้วย <strong>WearOS-reloj.apk</strong></p>
+      </details>
+      <details>
+        <summary>นาฬิกาขึ้นว่า "ไม่มีข้อมูลจากโทรศัพท์"<small>เมื่อติดตั้งแอปแล้ว</small></summary>
+        <ul>
+          <li>เปิด RideScreen AA บนมือถืออย่างน้อยหนึ่งครั้ง และตรวจว่านาฬิกาเชื่อมต่อกับมือถืออยู่ (แอป Galaxy Wearable หรือ Pixel Watch)</li>
+          <li>แอปมือถือและแอปนาฬิกาต้องมาจากหน้าดาวน์โหลดเดียวกัน: ใช้กับเวอร์ชันใน Play Store หรือ OpenCfMoto ต้นฉบับไม่ได้</li>
+        </ul>
+      </details>
+      <details>
+        <summary>"⚠️ เริ่มเซิร์ฟเวอร์หน่วยหลักของ AA"<small>ในหน้าการขับขี่</small></summary>
+        <p>เซิร์ฟเวอร์ชุดเครื่องเสียงของ Android Auto บนมือถือปิดอยู่ ใน Android Auto: ⋮ → เริ่มเซิร์ฟเวอร์ชุดเครื่องเสียง (<a href="../guide/">ขั้นตอนที่ 6 ของคู่มือมือถือ</a>)</p>
+      </details>
+      <details>
+        <summary>"นาฬิกานี้ไม่อนุญาตให้แอปติดตั้งอัปเดต"<small>ตอนอัปเดตจากมือถือ</small></summary>
+        <p>นาฬิกาของคุณไม่อนุญาตให้แอปหนึ่งติดตั้งแอปอื่น ติดตั้งเวอร์ชันใหม่เหมือนครั้งแรก (ส่วนที่ 1)</p>
+      </details>
+      <details>
+        <summary>ไม่ใช่ทั้งหมดข้างต้น<small>วิธีขอความช่วยเหลือ</small></summary>
+        <p>บนมือถือแตะ <strong>❓ ช่วยเหลือ → แชร์บันทึก</strong> แล้วส่งเข้ากลุ่มพร้อมรุ่นนาฬิกาและมือถือ</p>
+      </details>
+    </div>
+  </section>
+
+  <p class="foot">RideScreen AA ฟรีและเป็นโอเพนซอร์ส พัฒนาต่อจาก OpenCfMoto ของ Alexandru (zanderp) ไม่ใช่แอปทางการของ Zontes หรือ Google หน้าจอเป็นเพียงตัวอย่าง ชื่อการตั้งค่าจริงบนนาฬิกาของคุณอาจต่างไป · <a href="../guide/">คู่มือมือถือ</a></p>
+</div>
+<script>
+/* Direct APK download: point [data-apk] links at the latest release's APK (phone or watch) and show version + size.
+   Without JS, or if the GitHub API fails, they keep pointing at the release page. */
+(function(){var els=document.querySelectorAll("[data-apk]");if(!els.length||!window.fetch)return;
+fetch("https://api.github.com/repos/mgb1982/ridescreen-aa/releases/latest").then(function(r){return r.ok?r.json():null}).then(function(j){if(!j)return;
+var ph=null,w=null;(j.assets||[]).forEach(function(a){if(!/\.apk$/i.test(a.name))return;if(/wear/i.test(a.name)){w=w||a}else{ph=ph||a}});
+var v=(j.tag_name||"").replace(/^v/,"");
+els.forEach(function(e){var a=e.getAttribute("data-apk")==="watch"?w:ph;if(!a)return;e.href=a.browser_download_url;e.setAttribute("download","");
+var m=e.querySelector(".apk-meta");if(m)m.textContent=" · v"+v+" · "+Math.round(a.size/1048576)+" MB";});}).catch(function(){});})();
+</script>
+</body>
+</html>

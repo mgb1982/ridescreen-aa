@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Como instalar o RideScreen AA num relógio Wear OS e usá-lo para controlar o Android Auto no painel da tua mota.">
+<title>Guia do relógio do RideScreen AA</title>
+<link rel="canonical" href="https://ridescreen.app/pt/watch/">
+<link rel="alternate" hreflang="es" href="https://ridescreen.app/reloj/">
+<link rel="alternate" hreflang="ca" href="https://ridescreen.app/ca/rellotge/">
+<link rel="alternate" hreflang="en" href="https://ridescreen.app/en/watch/">
+<link rel="alternate" hreflang="it" href="https://ridescreen.app/it/watch/">
+<link rel="alternate" hreflang="el" href="https://ridescreen.app/el/watch/">
+<link rel="alternate" hreflang="ru" href="https://ridescreen.app/ru/watch/">
+<link rel="alternate" hreflang="de" href="https://ridescreen.app/de/watch/">
+<link rel="alternate" hreflang="fr" href="https://ridescreen.app/fr/watch/">
+<link rel="alternate" hreflang="pt" href="https://ridescreen.app/pt/watch/">
+<link rel="alternate" hreflang="th" href="https://ridescreen.app/th/watch/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap">
+<style>
+/* Same look as the phone guide (site/guia): forest green surfaces, brass accent, dark-first.
+   Watch faces are round images; install steps use small CSS "watch screens" instead of photos. */
+:root {
+  --bg: #161D18; --surface: #212B24; --surface-2: #2A362E; --fg: #EEF2EA; --muted: #A9B5A6;
+  --accent: #D1A955; --accent-ink: #18211A; --line: #34423A; --warn: #E9C46A; --screen: #000;
+  --display: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --body: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+    --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; --warn: #8A5A00; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+  --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; --warn: #8A5A00; color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 880px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 56px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 6vw, 46px); line-height: 1.05; }
+h1 span { color: var(--accent); }
+.lede { color: var(--muted); max-width: 62ch; margin: 12px 0 0; font-size: 17px; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+h2 { font-family: var(--display); font-weight: 400; font-size: 24px; margin-top: 44px; }
+section > .eyebrow { margin-top: 44px; display: block; }
+section > .eyebrow + h2 { margin-top: 4px; }
+p.sub { color: var(--muted); margin: 8px 0 0; max-width: 62ch; }
+a { color: var(--accent); }
+kbd { font-family: var(--body); font-weight: 700; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; }
+
+.hero { display: grid; grid-template-columns: 1fr 220px; gap: 24px; align-items: center; }
+.round { width: 100%; max-width: 220px; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%; display: block; justify-self: center; margin-inline: auto;
+         box-shadow: 0 0 0 7px #2b2b2b, 0 0 0 9px #555; background: #000; }
+
+.check { margin-top: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; }
+.check ul { margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.check li { position: relative; padding-left: 26px; min-width: 0; }
+.check li::before { content: "✓"; color: var(--accent); font-weight: 700; position: absolute; left: 0; top: 0; }
+
+.gallery { margin-top: 18px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 18px; }
+.gallery figure { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px 12px 12px; text-align: center; }
+.gallery .round { max-width: 120px; box-shadow: 0 0 0 5px #2b2b2b, 0 0 0 6px #555; }
+.gallery figcaption { margin-top: 12px; font-size: 14px; }
+.gallery figcaption b { display: block; font-size: 15px; }
+.gallery figcaption span { color: var(--muted); }
+
+.steps { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 18px; counter-reset: s; }
+.step { counter-increment: s; display: grid; grid-template-columns: 1fr 200px; gap: 22px; align-items: center;
+        background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+.step .txt { min-width: 0; }
+.step h3 { font-size: 19px; font-weight: 700; display: flex; gap: 12px; align-items: baseline; }
+.step h3::before { content: counter(s); font-family: var(--display); font-weight: 400; color: var(--accent-ink); background: var(--accent);
+                   min-width: 30px; height: 30px; border-radius: 15px; display: inline-grid; place-items: center; font-size: 15px; flex: none; transform: translateY(4px); }
+.step p { margin: 10px 0 0; }
+.note { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); font-size: 14.5px; }
+.note.warn { border-left: 3px solid var(--warn); }
+.cta { display: inline-block; margin-top: 12px; background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 700; padding: 10px 16px; border-radius: 22px; }
+.cta:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* CSS watch screen for the install steps (always dark, like a real watch). */
+.mock { width: 180px; aspect-ratio: 1; border-radius: 50%; background: var(--screen); color: #EDEDED; justify-self: center;
+        box-shadow: 0 0 0 7px #2b2b2b, 0 0 0 9px #555; display: grid; align-content: center; justify-items: center; gap: 6px;
+        padding: 26px; text-align: center; font-size: 12.5px; line-height: 1.3; overflow: hidden; }
+.mock .t { font-size: 11px; color: #9a9a9a; text-transform: uppercase; letter-spacing: .08em; }
+.mock .row { width: 100%; background: #1f1f1f; border-radius: 14px; padding: 7px 10px; display: flex; justify-content: space-between; gap: 6px; align-items: center; }
+.mock .row.hi { outline: 2px solid #D1A955; }
+.mock .sw { width: 26px; height: 15px; border-radius: 8px; background: #D1A955; position: relative; flex: none; }
+.mock .sw::after { content: ""; position: absolute; right: 2px; top: 2px; width: 11px; height: 11px; border-radius: 50%; background: #111; }
+.mock .big { font-size: 26px; font-weight: 700; letter-spacing: .06em; color: #fff; }
+.mock .tap { color: #D1A955; font-weight: 700; }
+.mock .btn { background: #D1A955; color: #111; border-radius: 16px; padding: 6px 14px; font-weight: 700; }
+.mock .bar { width: 100%; height: 6px; background: #333; border-radius: 3px; overflow: hidden; }
+.mock .bar i { display: block; height: 100%; width: 62%; background: #D1A955; }
+
+/* Controls */
+.pad { margin-top: 18px; display: grid; grid-template-columns: 240px 1fr; gap: 24px; align-items: center;
+       background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+.pad .round { max-width: 230px; }
+.keys { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.keys li { display: grid; grid-template-columns: 70px 1fr; gap: 10px; align-items: baseline; min-width: 0; }
+.keys .k { font-weight: 700; text-align: center; background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 2px 4px; }
+.two { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 18px 20px; min-width: 0; }
+.card h3 { font-size: 18px; }
+.card p, .card ul { margin: 10px 0 0; }
+.card ul { padding-left: 20px; }
+.card svg { display: block; margin: 4px auto 0; width: 120px; height: 120px; }
+.pages { margin-top: 18px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.pages figure { margin: 0; text-align: center; }
+.pages .round { max-width: 130px; box-shadow: 0 0 0 5px #2b2b2b, 0 0 0 6px #555; }
+.pages figcaption { margin-top: 10px; font-size: 14px; }
+.pages figcaption b { display: block; }
+.pages figcaption span { color: var(--muted); }
+
+.faq { margin-top: 16px; display: grid; gap: 10px; }
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 18px; }
+.faq summary { cursor: pointer; font-weight: 700; }
+.faq summary small { display: block; font-weight: 400; color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+.faq details p, .faq details ul { margin: 10px 0 0; }
+.faq ul { padding-left: 20px; }
+.foot { margin-top: 40px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+@media (max-width: 680px) {
+  .hero, .step, .pad, .two { grid-template-columns: 1fr; }
+  .hero .round { max-width: 180px; }
+  .pages { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div>
+      <div class="eyebrow">RideScreen AA · app do relógio · <a href="../../reloj/" lang="es" data-lang="es">Español</a> · <a href="../../ca/rellotge/" lang="ca" data-lang="ca">Català</a> · <a href="../../en/watch/" lang="en" data-lang="en">English</a> · <a href="../../it/watch/" lang="it" data-lang="it">Italiano</a> · <a href="../../el/watch/" lang="el" data-lang="el">Ελληνικά</a> · <a href="../../ru/watch/" lang="ru" data-lang="ru">Русский</a> · <a href="../../de/watch/" lang="de" data-lang="de">Deutsch</a> · <a href="../../fr/watch/" lang="fr" data-lang="fr">Français</a> · <a href="../../th/watch/" lang="th" data-lang="th">ไทย</a></div>
+      <h1>A tua mota <span>no pulso</span></h1>
+      <p class="lede">A app Wear OS é opcional e funciona com a app do telemóvel. Mostra a tua velocidade e a próxima manobra, vibra antes de cada viragem, leva-te de volta à mota estacionada e deixa-te controlar o Android Auto no painel sem tocar no telemóvel.</p>
+      <p class="sub">Ainda não tens a app do telemóvel? Começa pelo <a href="../guide/">guia do telemóvel</a>.</p>
+    </div>
+    <img class="round" src="r_viaje.png" alt="Relógio a mostrar 123 km/h, 48,6 km, 52:10, máxima 123 e média 56, ligado ao painel" width="300" height="300">
+  </div>
+
+  <section>
+    <span class="eyebrow">O que faz</span>
+    <h2>O que vais ver no relógio</h2>
+    <div class="gallery">
+      <figure><img class="round" src="r_giro.png" alt="Próxima manobra a 120 m, a 47 km/h" loading="lazy" width="300" height="300"><figcaption><b>Próxima manobra</b><span>e vibrações antes de cada viragem</span></figcaption></figure>
+      <figure><img class="round" src="r_cruceta.png" alt="Cruzeta com setas, OK, voltar, início, microfone e dados" loading="lazy" width="300" height="300"><figcaption><b>Cruzeta</b><span>para controlar o Android Auto</span></figcaption></figure>
+      <figure><img class="round" src="r_brujula.png" alt="Bússola a apontar para a mota estacionada a 350 m" loading="lazy" width="300" height="300"><figcaption><b>Bússola até à mota</b><span>quando voltas a pé</span></figcaption></figure>
+      <figure><img class="round" src="r_tile.png" alt="Mosaico EM VIAGEM com 12,4 km, 18 min e média 41" loading="lazy" width="300" height="300"><figcaption><b>Mosaico e complicação</b><span>a tua viagem num relance</span></figcaption></figure>
+      <figure><img class="round" src="r_viajes.png" alt="Lista de viagens com km, tempo e velocidades" loading="lazy" width="300" height="300"><figcaption><b>As tuas viagens</b><span>toca numa para ver o mapa</span></figcaption></figure>
+      <figure><img class="round" src="r_caida.png" alt="Alarme «Caíste?» com contagem decrescente e botão ESTOU BEM" loading="lazy" width="300" height="300"><figcaption><b>Alarme de queda</b><span>experimental, se o ativares</span></figcaption></figure>
+    </div>
+  </section>
+
+  <div class="check">
+    <strong>Antes de começar</strong>
+    <ul>
+      <li>Um relógio com <strong>Wear OS 3 ou posterior</strong>: Galaxy Watch a partir do 4, Pixel Watch e outros. Os relógios Huawei, Amazfit e Garmin não usam Wear OS e não funcionam.</li>
+      <li>O relógio já emparelhado com o telemóvel e o <strong>RideScreen AA 2.2 ou posterior</strong> instalado no telemóvel.</li>
+      <li>Telemóvel e relógio na <strong>mesma rede Wi‑Fi</strong> (a de casa, por exemplo). Só é preciso para esta instalação.</li>
+      <li>Uns 10–15 minutos. Fazes isto <strong>só uma vez</strong>: as versões seguintes instalam-se a partir do telemóvel.</li>
+    </ul>
+  </div>
+
+  <section>
+    <span class="eyebrow">Parte 1 · só uma vez</span>
+    <h2>Instalar a app no relógio</h2>
+    <p class="sub">Os relógios não abrem ficheiros APK como um telemóvel, por isso desta primeira vez instalas com uma app do telemóvel que fala com o relógio por Wi‑Fi (depuração sem fios). Parece técnico, mas são só uns toques.</p>
+    <ol class="steps">
+      <li class="step">
+        <div class="txt">
+          <h3>Descarrega o APK do relógio no telemóvel</h3>
+          <p>Toca no botão para descarregar diretamente o APK do relógio (o que termina em <strong>WearOS-reloj.apk</strong>). Deixa-o na pasta Transferências.</p>
+          <p>Instala também no telemóvel uma destas apps da Play Store: <strong>Wear Installer 2</strong> ou <strong>Bugjaeger</strong>.</p>
+          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4/RideScreen-AA-v2.4-WearOS-reloj.apk" data-apk="watch">Descarregar o APK do relógio<span class="apk-meta"></span></a>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">Assets</span><div class="row">RideScreen-AA-v2.4.apk</div><div class="row hi">…-WearOS-reloj.apk <span class="tap">⬇</span></div></div>
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Ativa as opções de programador do relógio</h3>
+          <p><strong>Galaxy Watch:</strong> Definições → Acerca do relógio → Informações do software → toca 5 vezes em <strong>Versão do software</strong>.</p>
+          <p><strong>Pixel Watch e outros:</strong> Definições → Sistema → Acerca → toca 7 vezes em <strong>Número da compilação</strong>.</p>
+          <p>Uma mensagem diz que as opções de programador estão ativadas.</p>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">Informações do software</span><div class="row hi">Versão do software <span class="tap">×5</span></div><div class="row">Versão One UI Watch</div></div>
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Liga o relógio ao Wi‑Fi</h3>
+          <p>Definições → Ligações → Wi‑Fi: põe em <strong>Ativado</strong> (não Automático) e liga-te à mesma rede do telemóvel.</p>
+          <div class="note">Se mais tarde o relógio não mostrar endereço IP, desliga o Bluetooth do telemóvel por um momento: o relógio só usa o Wi‑Fi quando não chega ao telemóvel por Bluetooth.</div>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">Wi‑Fi</span><div class="row hi">Ativado <span class="sw"></span></div><div class="row">Casa · Ligado</div></div>
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Ativa a depuração sem fios</h3>
+          <p>Definições → <strong>Opções de programador</strong> → ativa a <strong>Depuração ADB</strong> e a <strong>Depuração sem fios</strong>. Abre Depuração sem fios → <strong>Sincronizar novo dispositivo</strong>.</p>
+          <p>O relógio mostra um <strong>código de 6 dígitos</strong> e um endereço com porta, por exemplo <kbd>192.168.1.40:37115</kbd>.</p>
+          <div class="note warn">Aumenta primeiro o tempo limite do ecrã do relógio: se o ecrã se apagar durante a sincronização, o código expira.</div>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">Sincronizar</span><span class="big">482 913</span><span>192.168.1.40:37115</span></div>
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Sincroniza e instala a partir do telemóvel</h3>
+          <p>Abre o <strong>Wear Installer 2</strong> (ou o Bugjaeger), escreve o endereço e o código de sincronização e depois liga-te com o endereço que aparece no ecrã Depuração sem fios.</p>
+          <p>Escolhe o ficheiro <strong>…-WearOS-reloj.apk</strong> nas Transferências e instala-o. Em menos de um minuto o RideScreen AA aparece no relógio.</p>
+          <div class="note warn">A porta para <strong>sincronizar</strong> e a porta para <strong>ligar</strong> são diferentes. É o erro mais comum.</div>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">A instalar</span><span>RideScreen AA</span><div class="bar"><i></i></div><span class="tap">62 %</span></div>
+      </li>
+      <li class="step">
+        <div class="txt">
+          <h3>Abre-a e desativa a depuração</h3>
+          <p>Abre o RideScreen AA no relógio e permite a <strong>localização</strong> (para a bússola até à mota) e as <strong>notificações</strong>.</p>
+          <p>Já podes desativar a depuração sem fios e a depuração ADB: não são precisas para o usar nem atualizar.</p>
+        </div>
+        <img class="round" src="r_reposo.png" alt="Relógio com o RideScreen AA aberto, sem viagem em curso" loading="lazy" width="300" height="300" style="max-width:180px">
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">Parte 2</span>
+    <h2>Controlar o Android Auto a partir do relógio</h2>
+    <p class="sub">O painel da Zontes não é tátil. Com o relógio controlas o Android Auto como com o comando de um carro: uma roda para te moveres pelo ecrã e botões para selecionar, voltar ou falar com o Assistente.</p>
+
+    <div class="pad">
+      <img class="round" src="r_cruceta.png" alt="A página da cruzeta do relógio" loading="lazy" width="300" height="300">
+      <div>
+        <h3 style="font-size:18px">A cruzeta (desliza até à segunda página)</h3>
+        <ul class="keys" style="margin-top:12px">
+          <li><span class="k">▲ ▼</span><span><strong>Toque:</strong> roda a roda do Android Auto, de elemento em elemento. <strong>Manter premido:</strong> seta para cima ou para baixo.</span></li>
+          <li><span class="k">◀ ▶</span><span>Setas esquerda e direita: mudar de coluna ou separador.</span></li>
+          <li><span class="k">OK</span><span>Selecionar o elemento destacado.</span></li>
+          <li><span class="k">↩</span><span>Voltar.</span></li>
+          <li><span class="k">⌂</span><span>Início do Android Auto.</span></li>
+          <li><span class="k">🎤</span><span>Assistente Google («leva-me a…», «põe música»).</span></li>
+          <li><span class="k">📊</span><span>Voltar aos dados da viagem.</span></li>
+        </ul>
+        <div class="note">Sem ligação ao painel, esta página passa a «Encontra a tua mota» e abre a bússola.</div>
+      </div>
+    </div>
+
+    <div class="two">
+      <div class="card">
+        <svg viewBox="0 0 120 120" role="img" aria-label="Relógio com aro rotativo e setas de rotação">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="8" opacity=".35"/>
+          <circle cx="60" cy="60" r="40" fill="#000"/>
+          <path d="M60 6 A54 54 0 0 1 112 52" fill="none" stroke="#D1A955" stroke-width="4" stroke-linecap="round"/>
+          <path d="M108 44 L112 54 L101 51" fill="none" stroke="#D1A955" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M60 114 A54 54 0 0 1 8 68" fill="none" stroke="#D1A955" stroke-width="4" stroke-linecap="round"/>
+          <path d="M12 76 L8 66 L19 69" fill="none" stroke="#D1A955" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3>Com aro ou coroa rotativa</h3>
+        <p>Galaxy Watch Classic, Pixel Watch e relógios com coroa rotativa.</p>
+        <ul>
+          <li><strong>Roda o aro ou a coroa</strong> para te moveres pelo Android Auto, tal como a roda do comando de um carro. Funciona em qualquer página do relógio.</li>
+          <li>Carrega em <strong>OK</strong> na cruzeta para selecionar.</li>
+          <li>Na página <strong>Viagens</strong>, o aro percorre a lista em vez de mover o Android Auto.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 120 120" role="img" aria-label="Relógio sem aro com setas para cima e para baixo no ecrã">
+          <circle cx="60" cy="60" r="50" fill="#000" stroke="currentColor" stroke-width="3" opacity=".9"/>
+          <circle cx="60" cy="32" r="13" fill="none" stroke="#D1A955" stroke-width="3"/>
+          <path d="M54 35 L60 27 L66 35 Z" fill="#D1A955"/>
+          <circle cx="60" cy="88" r="13" fill="none" stroke="#D1A955" stroke-width="3"/>
+          <path d="M54 85 L60 93 L66 85 Z" fill="#D1A955"/>
+          <circle cx="60" cy="60" r="11" fill="#2A362E"/>
+          <text x="60" y="64" text-anchor="middle" font-size="10" font-weight="700" fill="#EDEDED" font-family="Archivo, sans-serif">OK</text>
+        </svg>
+        <h3>Sem aro</h3>
+        <p>Galaxy Watch normais (4, 5, 6, 7…) e relógios de ecrã plano.</p>
+        <ul>
+          <li>Os botões <strong>▲ ▼</strong> da cruzeta fazem de roda: um toque, um passo.</li>
+          <li><strong>Mantém-nos premidos</strong> quando precisares de uma seta de verdade, por exemplo para subir numa lista.</li>
+          <li>Nos Galaxy Watch com <strong>aro tátil</strong>, ativa-o nas definições do relógio e desliza o dedo pela borda do ecrã como se fosse o aro.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Parte 3</span>
+    <h2>As páginas da app</h2>
+    <p class="sub">Desliza para a esquerda e para a direita. Os pontos em baixo mostram em que página estás.</p>
+    <div class="pages">
+      <figure><img class="round" src="r_viaje.png" alt="Página da viagem" loading="lazy" width="300" height="300"><figcaption><b>1 · Viagem</b><span>velocidade, km, tempo, máxima e média</span></figcaption></figure>
+      <figure><img class="round" src="r_cruceta.png" alt="Página da cruzeta" loading="lazy" width="300" height="300"><figcaption><b>2 · Cruzeta</b><span>para controlar o Android Auto</span></figcaption></figure>
+      <figure><img class="round" src="r_info.png" alt="Página de informação" loading="lazy" width="300" height="300"><figcaption><b>3 · Info</b><span>hora, rumo, altitude, bateria do telemóvel, volume</span></figcaption></figure>
+      <figure><img class="round" src="r_viajes.png" alt="Página das viagens" loading="lazy" width="300" height="300"><figcaption><b>4 · Viagens</b><span>toca numa para ver o mapa</span></figcaption></figure>
+    </div>
+    <div class="two">
+      <div class="card">
+        <h3>Vibrações de viragem</h3>
+        <p>Com a navegação do Android Auto, o relógio vibra antes de cada manobra: <strong>2 toques</strong> para a esquerda, <strong>3</strong> para a direita, <strong>um longo e N curtos</strong> para a saída N de uma rotunda e <strong>dois longos</strong> para inversão de marcha.</p>
+        <p>Ativa-o na app do telemóvel: ⚙️ Definições → Extras de condução → <strong>Vibrações de viragem no relógio</strong>. É experimental.</p>
+      </div>
+      <div class="card">
+        <h3>Mosaico e complicação</h3>
+        <p>Adiciona o mosaico <strong>Percurso</strong> (desliza a partir do mostrador e toca em <kbd>+</kbd>) para veres a viagem em curso ou onde estacionaste. A complicação <strong>RideScreen · km</strong> põe os km da viagem no mostrador.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Parte 4</span>
+    <h2>Atualizar o relógio</h2>
+    <ol class="steps" style="counter-reset: s 0">
+      <li class="step">
+        <div class="txt">
+          <h3>A partir do telemóvel, sem computador</h3>
+          <p>A partir da versão 2.2, quando sair uma versão nova: no telemóvel, <strong>❓ Ajuda → ⌚ Atualizar a aplicação do relógio → Versão mais recente</strong>.</p>
+          <p>O telemóvel descarrega a app do relógio e envia-a por Bluetooth. <strong>Demora uns minutos</strong>: vês o progresso no telemóvel e no relógio. Quando acabar, toca em <strong>Instalar</strong> no relógio.</p>
+          <div class="note">Da primeira vez, o relógio pede-te para permitir que o RideScreen AA instale apps: ativa e volta atrás.</div>
+        </div>
+        <div class="mock" aria-hidden="true"><span class="t">Atualizar</span><span>Instalada: 2.2<br>Nova: 2.3</span><span class="btn">Instalar</span></div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="eyebrow">Se algo correr mal</span>
+    <h2>Problemas habituais</h2>
+    <div class="faq">
+      <details>
+        <summary>O relógio não mostra endereço IP<small>Ao ativar a depuração sem fios</small></summary>
+        <ul>
+          <li>Põe o Wi‑Fi do relógio em <strong>Ativado</strong>, não Automático, e liga-te à mesma rede do telemóvel.</li>
+          <li>Desliga o Bluetooth do telemóvel por um momento para o relógio passar para Wi‑Fi. Volta a ligá-lo quando acabares.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>O Wear Installer não liga<small>Ao sincronizar</small></summary>
+        <ul>
+          <li>Usa a porta de <strong>Sincronizar novo dispositivo</strong> para sincronizar, e a do ecrã principal de Depuração sem fios para ligar. São diferentes.</li>
+          <li>Se o código expirou, toca outra vez em Sincronizar novo dispositivo: recebes um novo.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>«O pacote parece ser inválido»<small>Ao instalar</small></summary>
+        <p>Provavelmente é o APK do telemóvel. O relógio precisa do que termina em <strong>WearOS-reloj.apk</strong>.</p>
+      </details>
+      <details>
+        <summary>O relógio diz «Sem dados do telemóvel»<small>Com a app instalada</small></summary>
+        <ul>
+          <li>Abre o RideScreen AA no telemóvel pelo menos uma vez e confirma que o relógio está ligado ao telemóvel (app Galaxy Wearable ou Pixel Watch).</li>
+          <li>As apps do telemóvel e do relógio têm de vir da mesma página de transferência: não funcionam com a versão da Play Store nem com o OpenCfMoto original.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>«⚠️ Iniciar o servidor head unit do Android Auto»<small>Na página da viagem</small></summary>
+        <p>O servidor da unidade principal do Android Auto está desligado no telemóvel. No Android Auto: ⋮ → Iniciar servidor da unidade principal (<a href="../guide/">passo 6 do guia do telemóvel</a>).</p>
+      </details>
+      <details>
+        <summary>«Este relógio não permite que as aplicações instalem atualizações»<small>Ao atualizar a partir do telemóvel</small></summary>
+        <p>O teu relógio não deixa que uma app instale outra. Instala a versão nova como da primeira vez (Parte 1).</p>
+      </details>
+      <details>
+        <summary>Nada disto<small>Como obter ajuda</small></summary>
+        <p>No telemóvel toca em <strong>❓ Ajuda → Partilhar registos</strong> e envia-o para o grupo com os modelos do relógio e do telemóvel.</p>
+      </details>
+    </div>
+  </section>
+
+  <p class="foot">O RideScreen AA é grátis e de código aberto, baseado no OpenCfMoto de Alexandru (zanderp). Não é uma app oficial da Zontes nem da Google. Os ecrãs são ilustrativos: os nomes exatos das definições podem variar no teu relógio. · <a href="../guide/">Guia do telemóvel</a></p>
+</div>
+<script>
+/* Direct APK download: point [data-apk] links at the latest release's APK (phone or watch) and show version + size.
+   Without JS, or if the GitHub API fails, they keep pointing at the release page. */
+(function(){var els=document.querySelectorAll("[data-apk]");if(!els.length||!window.fetch)return;
+fetch("https://api.github.com/repos/mgb1982/ridescreen-aa/releases/latest").then(function(r){return r.ok?r.json():null}).then(function(j){if(!j)return;
+var ph=null,w=null;(j.assets||[]).forEach(function(a){if(!/\.apk$/i.test(a.name))return;if(/wear/i.test(a.name)){w=w||a}else{ph=ph||a}});
+var v=(j.tag_name||"").replace(/^v/,"");
+els.forEach(function(e){var a=e.getAttribute("data-apk")==="watch"?w:ph;if(!a)return;e.href=a.browser_download_url;e.setAttribute("download","");
+var m=e.querySelector(".apk-meta");if(m)m.textContent=" · v"+v+" · "+Math.round(a.size/1048576)+" MB";});}).catch(function(){});})();
+</script>
+</body>
+</html>

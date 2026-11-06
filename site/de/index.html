@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RideScreen AA · Kabelloses Android Auto im Display deiner Zontes</title>
+<meta name="description" content="Kostenlose, werbefreie App, die kabelloses Android Auto ins Display deiner Zontes bringt (125X, 125V, 368G, 368K, 368E…) und anderer Motorräder mit EasyConn-/Carbit-Display. Navigation, Musik, Spritpreise, Fahrten, Videos und eine App für die Uhr.">
+<link rel="canonical" href="https://ridescreen.app/de/">
+<link rel="alternate" hreflang="es" href="https://ridescreen.app/">
+<link rel="alternate" hreflang="ca" href="https://ridescreen.app/ca/">
+<link rel="alternate" hreflang="en" href="https://ridescreen.app/en/">
+<link rel="alternate" hreflang="it" href="https://ridescreen.app/it/">
+<link rel="alternate" hreflang="el" href="https://ridescreen.app/el/">
+<link rel="alternate" hreflang="ru" href="https://ridescreen.app/ru/">
+<link rel="alternate" hreflang="de" href="https://ridescreen.app/de/">
+<link rel="alternate" hreflang="fr" href="https://ridescreen.app/fr/">
+<link rel="alternate" hreflang="pt" href="https://ridescreen.app/pt/">
+<link rel="alternate" hreflang="th" href="https://ridescreen.app/th/">
+<link rel="alternate" hreflang="x-default" href="https://ridescreen.app/">
+<link rel="icon" href="../img/icon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="../img/icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ridescreen.app/de/">
+<meta property="og:title" content="RideScreen AA · Kabelloses Android Auto auf deiner Zontes">
+<meta property="og:description" content="Kostenlos, ohne Werbung und Open Source. Google Maps, Waze, Spotify und der Assistant im Display deines Motorrads.">
+<meta property="og:image" content="https://ridescreen.app/img/og.jpg">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#161D18">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"RideScreen AA",
+ "operatingSystem":"Android 10+","applicationCategory":"TravelApplication",
+ "description":"Wireless Android Auto on the dash of Zontes bikes and others with an EasyConn/Carbit dash.",
+ "url":"https://ridescreen.app/de/","downloadUrl":"https://github.com/mgb1982/ridescreen-aa/releases/latest",
+ "offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"inLanguage":["es","ca","en","it","el","ru","de","fr","pt","th"],
+ "license":"https://www.gnu.org/licenses/agpl-3.0.html"}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap">
+<style>
+/* Same palette and type as the guides (the app's own): forest green surfaces, brass accent. */
+:root {
+  --bg: #161D18; --surface: #212B24; --surface-2: #2A362E; --fg: #EEF2EA; --muted: #A9B5A6;
+  --accent: #D1A955; --accent-ink: #18211A; --line: #34423A;
+  --display: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --body: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+    --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+  --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 17px; line-height: 1.55; }
+a { color: var(--accent); }
+img { max-width: 100%; height: auto; display: block; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 18px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(34px, 6.4vw, 62px); line-height: 1.02; letter-spacing: -.01em; }
+h1 span, h2 span { color: var(--accent); }
+h2 { font-family: var(--display); font-weight: 400; font-size: clamp(26px, 4vw, 36px); line-height: 1.08; }
+h3 { font-size: 19px; font-weight: 700; }
+.eyebrow { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.muted { color: var(--muted); }
+
+/* top bar */
+.top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding-block: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg); font-weight: 700; font-size: 18px; white-space: nowrap; flex-shrink: 0; }
+.brand img { width: 34px; height: 34px; border-radius: 50%; }
+.top nav { margin-left: auto; display: flex; gap: 8px 18px; flex-wrap: wrap; justify-content: flex-end; }
+.top nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 15px; }
+.top nav a:hover { color: var(--fg); }
+
+/* hero */
+.hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items: center; padding-block: 28px 56px; }
+.hero .lede { color: var(--muted); font-size: 19px; margin: 18px 0 26px; max-width: 54ch; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 22px; border-radius: 999px; font-weight: 700; text-decoration: none; font-size: 17px; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); }
+.btn.ghost { border: 2px solid var(--line); color: var(--fg); }
+.btn:hover { filter: brightness(1.06); }
+.facts { margin-top: 18px; font-size: 14px; color: var(--muted); }
+.facts.alt { margin-top: 6px; }
+.facts.alt a { color: var(--muted); text-decoration: underline; }
+.hero-media { position: relative; justify-self: center; width: min(360px, 100%); }
+.hero-media .video { border-radius: 26px; border: 3px solid var(--line); aspect-ratio: 9 / 16; object-fit: cover; width: 100%; }
+.hero-media .phone { position: absolute; width: 46%; left: -18%; bottom: -6%; border-radius: 20px; border: 3px solid var(--line); box-shadow: 0 18px 50px rgba(0,0,0,.45); }
+.badge { position: absolute; right: -10px; top: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 8px 12px; font-size: 13px; font-weight: 700; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+
+/* sections */
+section { padding-block: 56px; border-top: 1px solid var(--line); }
+section > .eyebrow { display: block; margin-bottom: 6px; }
+.sub { color: var(--muted); max-width: 62ch; margin: 12px 0 0; }
+
+.bikes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.chip { background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; font-weight: 600; }
+.chip.main { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-top: 26px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px; }
+.card .ic { font-size: 28px; line-height: 1; }
+.card h3 { margin-top: 12px; }
+.card p { margin: 6px 0 0; color: var(--muted); font-size: 15.5px; }
+.card .tag { display: inline-block; margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .08em; }
+
+.shots { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; margin-top: 26px; }
+.shots figure { margin: 0; flex: 0 0 200px; scroll-snap-align: start; }
+.shots img { border-radius: 18px; border: 2px solid var(--line); }
+.shots figcaption { margin-top: 8px; font-size: 14px; color: var(--muted); text-align: center; }
+
+.duo { display: grid; grid-template-columns: 1.3fr 1fr; gap: 22px; margin-top: 26px; align-items: center; }
+.duo .dash img { border-radius: 18px; border: 2px solid var(--line); }
+.duo .watch { display: flex; gap: 16px; justify-content: center; }
+.duo .watch img { width: 140px; height: 140px; border-radius: 50%; box-shadow: 0 0 0 6px #2b2b2b, 0 0 0 8px #555; }
+.caption { margin-top: 10px; color: var(--muted); font-size: 15px; text-align: center; }
+
+.steps { counter-reset: s; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 26px; padding: 0; list-style: none; }
+.steps li { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px 20px 20px 70px; position: relative; }
+.steps li::before { counter-increment: s; content: counter(s); position: absolute; left: 18px; top: 18px; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-family: var(--display); display: grid; place-items: center; }
+
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; margin-top: 10px; }
+summary { cursor: pointer; font-weight: 700; }
+details p { margin: 10px 0 2px; color: var(--muted); }
+
+footer { border-top: 1px solid var(--line); padding-block: 34px 48px; color: var(--muted); font-size: 14px; }
+footer .links { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
+footer a { color: var(--fg); }
+
+@media (max-width: 820px) {
+  .hero { grid-template-columns: 1fr; gap: 34px; }
+  .hero-media { width: min(300px, 78%); margin-left: 14%; }
+  .duo { grid-template-columns: 1fr; }
+  .top nav { gap: 12px; }
+  .top nav .opt { display: none; }
+}
+.top nav a:has(.flag) { display: inline-flex; align-items: center; }
+.flag { width: 24px; height: 16px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.18); display: block; }
+.top nav a:has(.flag):hover .flag { box-shadow: 0 0 0 2px var(--accent); }
+.thanks { margin: 6px 0 0 1.2em; padding: 0; color: var(--muted); columns: 2 220px; }
+.thanks li { margin: 2px 0; break-inside: avoid; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./"><img src="../img/icon.svg" alt="" width="34" height="34">RideScreen AA</a>
+    <nav>
+      <a href="#features" class="opt">Funktionen</a>
+      <a href="guide/">Anleitung</a>
+      <a href="watch/" class="opt">Uhr</a>
+      <a href="https://github.com/mgb1982/ridescreen-aa" class="opt">GitHub</a>
+      <a href="../" lang="es" hreflang="es" title="Español" data-lang="es"><img class="flag" src="../img/flags/es.svg" alt="Español" width="24" height="16"></a>
+      <a href="../ca/" lang="ca" hreflang="ca" title="Català" data-lang="ca"><img class="flag" src="../img/flags/ca.svg" alt="Català" width="24" height="16"></a>
+      <a href="../en/" lang="en" hreflang="en" title="English" data-lang="en"><img class="flag" src="../img/flags/en.svg" alt="English" width="24" height="16"></a>
+      <a href="../it/" lang="it" hreflang="it" title="Italiano" data-lang="it"><img class="flag" src="../img/flags/it.svg" alt="Italiano" width="24" height="16"></a>
+      <a href="../el/" lang="el" hreflang="el" title="Ελληνικά" data-lang="el"><img class="flag" src="../img/flags/el.svg" alt="Ελληνικά" width="24" height="16"></a>
+      <a href="../ru/" lang="ru" hreflang="ru" title="Русский" data-lang="ru"><img class="flag" src="../img/flags/ru.svg" alt="Русский" width="24" height="16"></a>
+      <a href="../fr/" lang="fr" hreflang="fr" title="Français" data-lang="fr"><img class="flag" src="../img/flags/fr.svg" alt="Français" width="24" height="16"></a>
+      <a href="../pt/" lang="pt" hreflang="pt" title="Português" data-lang="pt"><img class="flag" src="../img/flags/pt.svg" alt="Português" width="24" height="16"></a>
+      <a href="../th/" lang="th" hreflang="th" title="ไทย" data-lang="th"><img class="flag" src="../img/flags/th.svg" alt="ไทย" width="24" height="16"></a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Für Zontes und Motorräder mit EasyConn-/Carbit-Display</div>
+      <h1>Android Auto im Display deines Motorrads, <span>kabellos</span></h1>
+      <p class="lede">Google Maps, Waze, Spotify und der Assistant auf dem Bildschirm des Motorrads, verbindet sich von selbst, wenn du losfährst. Dazu: die günstigste Tankstelle in der Nähe, deine Fahrten mit Rekorden, Videos mit eingeblendeter Geschwindigkeit und eine App für die Uhr.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4/RideScreen-AA-v2.4.apk" data-apk="phone">⬇️ APK herunterladen<span class="apk-meta"></span></a>
+        <a class="btn ghost" href="guide/">Installationsanleitung</a>
+      </div>
+      <p class="facts">Kostenlos · ohne Werbung · Open Source · Android 10 oder neuer</p>
+      <p class="facts alt">Direkter Download der neuesten Version · <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">auch auf GitHub</a> · <a href="https://github.com/mgb1982/ridescreen-aa/releases/tag/v2.4">Neu in v2.4</a></p>
+    </div>
+    <div class="hero-media">
+      <img class="video" src="../img/hero-video.webp" alt="Fahrersicht mit Android Auto im Display und eingeblendeter Geschwindigkeit" width="720" height="1280">
+      <img class="phone" src="../img/de/inicio.webp" alt="Startbildschirm von RideScreen AA, mit dem Motorrad verbunden" width="540" height="1198" loading="lazy">
+    </div>
+  </div>
+
+  <section id="bikes">
+    <span class="eyebrow">Kompatibilität</span>
+    <h2>Funktioniert es mit <span>meinem Motorrad</span>?</h2>
+    <p class="sub">Wenn dein Display einen <b>QR-Code</b> zum Verbinden des Handys zeigt (MotoPlay / EasyConnect), dann fast sicher ja. Die App wird täglich auf einer Zontes 125X getestet und baut auf OpenCfMoto auf, das mit vielen Marken mit demselben Display funktioniert.</p>
+    <div class="bikes">
+      <span class="chip main">Zontes 125X</span><span class="chip main">Zontes 125V</span><span class="chip main">Zontes 125M</span><span class="chip main">Zontes 368 (G / K / E)</span><span class="chip main">Zontes 703RR</span><span class="chip main">Zontes T350X</span><span class="chip main">Zontes 703F</span><span class="chip main">Zontes 703T</span><span class="chip main">Zontes 350D (Feinschliff folgt)</span><span class="chip main">Zontes 350E (Feinschliff folgt)</span>
+      <span class="chip">CFMoto</span><span class="chip">Voge</span><span class="chip">Moto Morini</span><span class="chip">QJ Motor</span><span class="chip">Benelli</span><span class="chip">Morbidelli</span><span class="chip">Rieju</span>
+
+    <div class="bike-photos" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:18px">
+      <figure style="margin:0;max-width:240px"><img src="../img/moto-703rr-cuadro.webp" alt="Display der Zontes 703RR mit Android Auto" width="900" height="1200" loading="lazy" style="width:100%;height:auto;border-radius:14px"><figcaption style="font-size:.85rem;opacity:.8;margin-top:6px">Zontes 703RR · RideScreen AA 2.3</figcaption></figure>
+      <figure style="margin:0;max-width:240px"><img src="../img/moto-703rr-vista.webp" alt="Blick auf die 703RR mit Google Maps" width="900" height="1200" loading="lazy" style="width:100%;height:auto;border-radius:14px"><figcaption style="font-size:.85rem;opacity:.8;margin-top:6px">Zontes 703RR · RideScreen AA 2.3</figcaption></figure>
+    </div>
+    </div>
+  </section>
+
+  <section id="whats-new">
+    <span class="eyebrow">Neuigkeiten</span>
+    <h2>Neu in <span>v2.4</span></h2>
+    <p class="sub">Der Schlüssel im Handy, ein Dashboard mit deinen Daten im Display und zehn Sprachen. Kostenlos, wie immer.</p>
+    <div class="grid"><div class="card"><div class="ic">🔑</div><h3>Der Schlüssel im Handy</h3><p>Entriegeln, verriegeln und Sitzbank oder Tankdeckel öffnen aus der App, immer mit Bestätigung; danach prüft sie, wie das Motorrad geblieben ist. <b>Nie während der Fahrt.</b> Widget „Motorradsteuerung“, Entsperren beim Verbinden (optional), Sperren beendet die Fahrt (optional), und die McuID wird mit der Kamera aus dem QR des Displays gelesen.</p><span class="tag">Neu in 2.4</span></div><div class="card"><div class="ic">🔌</div><h3>OBD-Leser</h3><p>Mit einem Bluetooth-Adapter ELM327, <b>nur lesend</b>: verfügbare Daten, Fehlercodes und live Drehzahl, Geschwindigkeit, Temperatur und Gas. Und Dauerlesen während der Projektion: „Motor läuft“ kommt jetzt aus der echten Drehzahl.</p><span class="tag">Neu in 2.4</span></div><div class="card"><div class="ic">📊</div><h3>Dashboard im Display</h3><p>Statt Android Auto deine Daten im Display: Stile Sport, Racing und Touring, bei Tag und Nacht. Auf den Bildschirm der 125X abgestimmt, und die Vorschau ist genau das, was du auf dem Motorrad siehst. Die Skala der Instrumente passt sich deinem Motorrad an. Ohne OBD kommt die Geschwindigkeit vom GPS.</p><span class="tag">Neu in 2.4</span></div><div class="card"><div class="ic">🏍️</div><h3>Fahrten mit OBD-Daten</h3><p>Wiedergabe und Video der Fahrt mit Gas und Drehzahl, und Routen zusammenführen (lässt sich rückgängig machen).</p><span class="tag">Neu in 2.4</span></div><div class="card"><div class="ic">🎬</div><h3>Im Display und beim Parken</h3><p>Eine Begrüßung zu Beginn der Projektion, ein Abschied mit der Tageszusammenfassung und eine Regenwarnung beim Parken für die nächsten Stunden dort, wo du das Motorrad abgestellt hast.</p><span class="tag">Neu in 2.4</span></div><div class="card"><div class="ic">🎮</div><h3>Lautstärke mit Headset</h3><p>Mit „Lenkertasten steuern Android Auto“ kannst du ▲/▼ jetzt für die Lautstärke behalten.</p><span class="tag">Neu in 2.4</span></div><div class="card"><div class="ic">⌚</div><h3>Puls von der Uhr</h3><p>Der Puls deiner Uhr in der App (❓ Hilfe), alle 5 Sekunden. Und die Uhr-App in alle Sprachen übersetzt.</p><span class="tag">Neu in 2.4</span></div><div class="card"><div class="ic">🌍</div><h3>Zehn Sprachen</h3><p>App und Uhr komplett auf Spanisch, Katalanisch, Englisch, Italienisch, Französisch, Deutsch, Portugiesisch, Griechisch, Russisch und Thai.</p><span class="tag">Neu in 2.4</span></div></div>
+    <div class="shots"><figure><img src="../img/de/inicio.webp" alt="Start mit dem Schlüssel" width="540" height="1198" loading="lazy"><figcaption>Start mit dem Schlüssel</figcaption></figure><figure><img src="../img/de/llave.webp" alt="Verriegeln und entriegeln" width="540" height="1198" loading="lazy"><figcaption>Verriegeln und entriegeln</figcaption></figure><figure><img src="../img/de/widget-controles.webp" alt="Widget „Motorradsteuerung“" width="540" height="1198" loading="lazy"><figcaption>Widget „Motorradsteuerung“</figcaption></figure><figure><img src="../img/de/obd.webp" alt="OBD-Leser" width="540" height="1198" loading="lazy"><figcaption>OBD-Leser</figcaption></figure><figure><img src="../img/de/dashboard-estilo.webp" alt="Dashboard-Stil" width="540" height="1198" loading="lazy"><figcaption>Dashboard-Stil</figcaption></figure><figure><img src="../img/de/dashboard-escala.webp" alt="Skala der Instrumente" width="540" height="1198" loading="lazy"><figcaption>Skala der Instrumente</figcaption></figure><figure><img src="../img/de/viaje-obd.webp" alt="Fahrt mit OBD-Daten" width="540" height="1198" loading="lazy"><figcaption>Fahrt mit OBD-Daten</figcaption></figure><figure><img src="../img/de/pulso.webp" alt="Puls von der Uhr" width="540" height="1198" loading="lazy"><figcaption>Puls von der Uhr</figcaption></figure><!-- PENDIENTE (Manel): foto(s) del dashboard en el cuadro. No se genera ni se simula. --><figure class="pending"><div style="aspect-ratio:540/1198;border:2px dashed var(--accent);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:16px;color:var(--muted)"><span style="font-size:2rem">📷</span>Dashboard im Display<small>Foto folgt</small></div><figcaption>Dashboard im Display</figcaption></figure></div>
+    <h3 style="margin-top:28px">❤️ Danke</h3><p class="muted" style="margin-top:14px"><b>Besonderer Dank für die 2.4:</b></p><ul class="thanks"><li>Melo – für das iPhone, das er für die iOS-Tests geliehen hat</li><li>Inky en Moto — für die Protokolle, mit denen die T350X zum Laufen kam, und sein Video über die App (<a href="https://youtube.com/@inkyenmoto">youtube.com/@inkyenmoto</a>)</li><li>Luis Gil – für seine Hilfe beim OBD-Leser</li><li>Allen Testern der Testversionen der 2.4</li></ul><p class="muted" style="margin-top:14px"><b>Unterstützer auf Ko-fi: Vielen Dank!</b></p><ul class="thanks"><li>Francisco Javier S.</li><li>José Antonio R.</li><li>Raul</li><li>Luis Gil</li><li>INKY</li><li>Juanma M.</li><li>Alfonsomicra</li><li>Isra</li><li>Dionisios S.</li><li>José Manuel</li><li>Karsten</li><li>Francesc Xavier M.</li><li>Jon</li><li>Alberto</li><li>Anonyme Unterstützer</li></ul>
+  </section>
+
+  <section id="features">
+    <span class="eyebrow">Was sie kann</span>
+    <h2>Viel mehr als <span>Android Auto</span></h2>
+    <div class="grid">
+      <div class="card"><div class="ic">🔌</div><h3>Verbindet sich von selbst</h3><p>Motorrad starten, und Android Auto erscheint im Display – das Handy bleibt in der Tasche.</p></div>
+      <div class="card"><div class="ic">🎯</div><h3>Bild nach Maß</h3><p>Passe das Bild mit Pfeilen an dein Display an und sieh das Ergebnis live auf dem Motorrad.</p></div>
+      <div class="card"><div class="ic">🎙️</div><h3>"Ok Google"</h3><p>Sprich mit dem Assistant über dein Headset, deine Uhr oder deine Brille.</p></div>
+      <div class="card"><div class="ic">⛽</div><h3>Günstigster Sprit</h3><p>Offizielle Preise für Super 95 in deiner Nähe, und Maps bringt dich hin. Nur in Spanien.</p></div>
+      <div class="card"><div class="ic">🏍️</div><h3>Deine Fahrten</h3><p>Jede Fahrt wird automatisch gespeichert: Route nach Geschwindigkeit, Heatmap, Rekorde und Trophäen.</p></div>
+      <div class="card"><div class="ic">🎬</div><h3>Video der Fahrt</h3><p>Fügt deine Clips (Ray-Ban Meta, Actioncam, Handy) mit Karte, Geschwindigkeit und Uhrzeit zusammen.</p></div>
+      <div class="card"><div class="ic">🚦</div><h3>Deine Ampeln</h3><p>Wo du am meisten hältst, wie lange du wartest und welcher Weg wirklich schneller ist.</p></div>
+      <div class="card"><div class="ic">📸</div><h3>Wo ich geparkt habe</h3><p>Speichert den Platz und ein Foto; der Kompass der Uhr führt dich zurück zum Motorrad.</p></div>
+      <div class="card"><div class="ic">🔧</div><h3>Wartung</h3><p>Öl, Riemen, TÜV… mit Erinnerung, wenn es fällig ist, und deinem echten Verbrauch.</p></div>
+      <div class="card"><div class="ic">🆘</div><h3>Sturzerkennung</h3><p>Alarm auf Handy und Uhr und, wenn du nicht reagierst, eine SMS mit deinem Standort.</p><span class="tag">Experimentell</span></div>
+      <div class="card"><div class="ic">🔑</div><h3>Der Schlüssel im Handy</h3><p>Entriegeln, verriegeln und Sitzbank oder Tankdeckel öffnen aus der App, immer mit Bestätigung.</p><span class="tag">Neu in 2.4</span></div>
+      <div class="card"><div class="ic">📲</div><h3>Widget „Verbinden“</h3><p>Ein Tippen auf dem Startbildschirm verbindet mit deinem Motorrad, mit dem Foto aus deiner Garage.</p><span class="tag">Neu in 2.3</span></div>
+      <div class="card"><div class="ic">👥</div><h3>Sozius-Modus</h3><p>Dein Sozius wählt Ziel und Musik und steuert Android Auto von seinem Handy aus.</p><span class="tag">Neu in 2.3</span></div>
+      <div class="card"><div class="ic">🛟</div><h3>Fahrten in Sicherheit</h3><p>Deine Fahrt wird alle 30 s gespeichert, auch wenn die App geschlossen wird. Und du kannst GPX-Routen importieren.</p><span class="tag">Neu in 2.3</span></div>
+    </div>
+  </section>
+
+  <section id="screenshots">
+    <span class="eyebrow">Screenshots</span>
+    <h2>So <span>sieht es aus</span></h2>
+    <div class="shots">
+      <figure><img src="../img/de/inicio.webp" alt="Startbildschirm" width="540" height="1198" loading="lazy"><figcaption>Startbildschirm</figcaption></figure>
+      <figure><img src="../img/de/gasolineras.webp" alt="Tankstellen in der Nähe" width="540" height="1198" loading="lazy"><figcaption>Tankstellen</figcaption></figure>
+      <figure><img src="../img/de/viaje.webp" alt="Fahrt nach Geschwindigkeit eingefärbt" width="540" height="1198" loading="lazy"><figcaption>Deine Fahrten</figcaption></figure>
+      <figure><img src="../img/de/semaforos.webp" alt="Ampelkarte" width="540" height="1198" loading="lazy"><figcaption>Ampeln</figcaption></figure>
+      <figure><img src="../img/de/trofeos.webp" alt="Trophäen" width="540" height="1198" loading="lazy"><figcaption>Trophäen</figcaption></figure>
+      <figure><img src="../img/de/aparcamiento.webp" alt="Parken" width="540" height="1198" loading="lazy"><figcaption>Parken</figcaption></figure>
+      <figure><img src="../img/de/mantenimiento.webp" alt="Wartung" width="540" height="1198" loading="lazy"><figcaption>Wartung</figcaption></figure>
+      <figure><img src="../img/de/caidas.webp" alt="Sturzerkennung" width="540" height="1198" loading="lazy"><figcaption>Sturzerkennung</figcaption></figure>
+    </div>
+    <div class="duo">
+      <div class="dash"><img src="../img/cuadro.webp" alt="Das Display mit dem gelben Anpassungsrahmen" width="720" height="392" loading="lazy"><p class="caption">Bild anpassen, live im Display</p></div>
+      <div><div class="watch"><img src="../img/de/reloj-giro.webp" alt="Abbiegehinweis auf der Uhr" width="300" height="300" loading="lazy"><img src="../img/de/reloj-brujula.webp" alt="Kompass zum Motorrad auf der Uhr" width="300" height="300" loading="lazy"></div><p class="caption">App für Wear-OS-Uhren · <a href="watch/">Anleitung für die Uhr</a></p></div>
+    </div>
+  </section>
+
+  <section id="start">
+    <span class="eyebrow">Loslegen</span>
+    <h2>Fertig in <span>10 Minuten</span></h2>
+    <ol class="steps">
+      <li><h3>APK herunterladen</h3><p class="muted">Mit dem Button oben, direkt (oder <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">von GitHub</a>). Neue Versionen bietet dir die App selbst an.</p></li>
+      <li><h3>Android Auto einrichten</h3><p class="muted">Eine einmalige Einstellung in Android Auto. Die Anleitung zeigt es dir mit Screenshots.</p></li>
+      <li><h3>QR-Code im Display scannen</h3><p class="muted">Und auf Verbinden tippen. Ab dann verbindet sie sich von selbst, wenn du das Motorrad startest.</p></li>
+    </ol>
+    <p class="sub"><a href="guide/">Zur Schritt-für-Schritt-Anleitung →</a></p>
+  </section>
+
+  <section id="faq">
+    <span class="eyebrow">Fragen</span>
+    <h2>Häufige <span>Fragen</span></h2>
+    <details><summary>Ist das eine offizielle Zontes-App?</summary><p>Nein. Es ist ein unabhängiges Projekt, von einem Motorradfahrer für seine eigene Zontes gemacht und mit der Community geteilt. Es steht in keiner Verbindung zu Zontes, CFMoto, Carbit oder Google.</p></details>
+    <details><summary>Was kostet sie?</summary><p>Nichts. Sie ist kostenlos, ohne Werbung oder Abos, und der Code ist offen (Lizenz AGPL-3.0). Wenn sie dir nützt, kannst du <a href="https://ko-fi.com/mgb1982">mir einen Kaffee spendieren</a>.</p></details>
+    <details><summary>Warum ist sie nicht bei Google Play?</summary><p>Sie ist auf dem Weg. Bis dahin lädst du sie von dieser Website; wenn Play Protect warnt, kennt es die App nur noch nicht: Weitere Details → Trotzdem installieren.</p></details>
+    <details><summary>Was passiert mit meinen Daten?</summary><p>Deine Fahrten, Fotos und Einstellungen bleiben auf deinem Handy: keine Konten, keine Cloud. Die App sendet nur anonyme Fehlerberichte (nichts, was dich identifiziert), damit wir Fehler beheben können, und du kannst sie abschalten.</p></details>
+    <details><summary>Brauche ich mobile Daten?</summary><p>Für Karten, Musik-Streaming und Spritpreise ja, genau wie Android Auto im Auto. Die Verbindung zum Motorrad läuft über sein eigenes WLAN.</p></details>
+    <details><summary>Etwas funktioniert nicht, was tun?</summary><p>Schau in die <a href="guide/">Anleitung</a>, sie behandelt die häufigsten Fehler. Wenn es weiter hakt, in der App: ❓ Hilfe → Protokolle teilen, und schick es uns mit einer Beschreibung, was passiert ist.</p></details>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4/RideScreen-AA-v2.4.apk" data-apk="phone">Herunterladen</a>
+      <a href="guide/">Anleitung</a>
+      <a href="watch/">Uhr</a>
+      <a href="https://github.com/mgb1982/ridescreen-aa">Quellcode</a>
+      <a href="https://github.com/mgb1982/ridescreen-aa/blob/main/PRIVACY.md">Datenschutz</a>
+      <a href="../" lang="es" data-lang="es">Español</a>
+      <a href="../ca/" lang="ca" data-lang="ca">Català</a>
+      <a href="../en/" lang="en" data-lang="en">English</a>
+      <a href="../it/" lang="it" data-lang="it">Italiano</a>
+      <a href="../el/" lang="el" data-lang="el">Ελληνικά</a>
+      <a href="../ru/" lang="ru" data-lang="ru">Русский</a>
+      <a href="../fr/" lang="fr" data-lang="fr">Français</a>
+      <a href="../pt/" lang="pt" data-lang="pt">Português</a>
+      <a href="../th/" lang="th" data-lang="th">ไทย</a>
+      <a href="https://ko-fi.com/mgb1982">☕ Ko-fi</a>
+    </div>
+    <p>RideScreen AA basiert auf <a href="https://github.com/zanderp/open-cfmoto">OpenCfMoto</a> von Alexandru (zanderp). Freie Software unter der Lizenz AGPL-3.0.</p>
+    <p>Keine offizielle App und ohne Verbindung zu Zontes, CFMoto, Carbit oder Google. Android Auto ist eine Marke von Google LLC. Fahr verantwortungsvoll: Augen immer auf der Straße.</p>
+  </div>
+</footer>
+<script>
+/* Direct APK download: point [data-apk] links at the latest release's APK (phone or watch) and show version + size.
+   Without JS, or if the GitHub API fails, they keep pointing at the release page. */
+(function(){var els=document.querySelectorAll("[data-apk]");if(!els.length||!window.fetch)return;
+fetch("https://api.github.com/repos/mgb1982/ridescreen-aa/releases/latest").then(function(r){return r.ok?r.json():null}).then(function(j){if(!j)return;
+var ph=null,w=null;(j.assets||[]).forEach(function(a){if(!/\.apk$/i.test(a.name))return;if(/wear/i.test(a.name)){w=w||a}else{ph=ph||a}});
+var v=(j.tag_name||"").replace(/^v/,"");
+els.forEach(function(e){var a=e.getAttribute("data-apk")==="watch"?w:ph;if(!a)return;e.href=a.browser_download_url;e.setAttribute("download","");
+var m=e.querySelector(".apk-meta");if(m)m.textContent=" · v"+v+" · "+Math.round(a.size/1048576)+" MB";});}).catch(function(){});})();
+</script>
+</body>
+</html>
