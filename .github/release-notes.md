@@ -48,7 +48,7 @@ Basada en [OpenCfMoto](https://github.com/zanderp/open-cfmoto) de Alexandru (zan
 
 **Y además**: iconos nuevos en inicio, en la tarjeta de la llave y en el widget; y arreglados los cierres que nos habéis reportado en la v2.3.
 
-❤️ Gracias a Melo por prestar el iPhone para las pruebas de iOS, a Luis Gil por su ayuda con el OBD, a **Inky en Moto** por los registros que hicieron funcionar la T350X y por su [vídeo sobre la app](https://youtube.com/@inkyenmoto), a todos los testers y a quienes apoyáis el proyecto en Ko-fi: Francisco Javier S., José Antonio R., Raul, Luis Gil, INKY, Juanma M., Alfonsomicra, Isra, Dionisios S., José Manuel, Karsten y los donantes anónimos.
+❤️ Gracias a Melo por prestar el iPhone para las pruebas de iOS, a Luis Gil por sus pruebas con el OBD, a **Inky en Moto** por los registros que hicieron funcionar la T350X y por su [vídeo sobre la app](https://youtube.com/@inkyenmoto), a todos los testers y a quienes apoyáis el proyecto en Ko-fi: Francisco Javier S., José Antonio R., Raul, Luis Gil, INKY, Juanma M., Alfonsomicra, Isra, Dionisios S., José Manuel, Karsten, Francesc Xavier M., Jon, Alberto y los donantes anónimos.
 
 **Y todo lo de la v2.3**: widget Conectar, batería de la moto, Casa y Trabajo, más motos (toda la gama 368), viajes a salvo, importar GPX, vídeo del viaje, modo pasajero y mucho más.
 
