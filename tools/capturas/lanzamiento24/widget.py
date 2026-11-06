@@ -25,8 +25,13 @@ def widget(s, photo, lang, w_dp=330, h_dp=184, k=2.8, compact=False):
     btns = ""
     for key, ic, lab in BTN:
         a = ACC[key]
-        label = "" if compact else (f'<div style="font-family:Archivo;font-weight:500;font-size:{lab_px:.1f}px;color:#F1F4EC;'
-                                    f'margin-top:{gap:.1f}px;white-space:nowrap;line-height:1.15">{esc(s(lab))}</div>')
+        txt = s(lab)
+        # ControlWidget.button: shrinks the label 0.5 dp at a time (min 7 dp) until it fits w − 2 dp.
+        fit = lab_px
+        while fit > 7 * k and len(txt) * fit * 0.56 > bw - 2 * k:
+            fit -= 0.5 * k
+        label = "" if compact else (f'<div style="font-family:Archivo;font-weight:500;font-size:{fit:.1f}px;color:#F1F4EC;'
+                                    f'margin-top:{gap:.1f}px;white-space:nowrap;line-height:1.15">{esc(txt)}</div>')
         btns += (f'<div style="width:{bw:.1f}px;height:{band:.1f}px;display:flex;flex-direction:column;align-items:center;'
                  f'padding-top:{top:.1f}px"><div style="width:{d:.1f}px;height:{d:.1f}px;border-radius:50%;'
                  f'background:{_rgba(a, .26)};display:flex;align-items:center;justify-content:center">'
