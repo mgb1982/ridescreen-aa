@@ -54,7 +54,7 @@ def dash_picker(lang, theme="night"):
     cards = ""
     for i, d in enumerate(("sport", "racing", "touring")):
         sel = i == 0
-        img = _png(os.path.join(ASSETS, "dash24rc", f"{d}-{theme}-140-10000.png"))
+        img = _png(os.path.join(ASSETS, "dash24rc", f"{d}-{theme}-140-10000-{lang}.png"))
         cards += (f'<div style="background:#2A362D;border-radius:12px;padding:10px 12px;margin-bottom:10px;'
                   f'border:{2 if sel else 1}px solid {"var(--gold)" if sel else "rgba(241,244,236,.2)"}">'
                   f'<div style="font-weight:700;font-size:16px">{"✓&nbsp; " if sel else ""}{esc(s("dash_design_" + d))}</div>'
