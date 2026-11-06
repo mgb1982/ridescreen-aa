@@ -18,7 +18,7 @@ import java.io.File
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @ConscryptMode(ConscryptMode.Mode.OFF)
-@Config(sdk = [34])
+@Config(sdk = [34], application = android.app.Application::class)
 class PickerSnapshotTest {
     @Test
     fun renderPickerPreviews() {
