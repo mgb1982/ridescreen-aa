@@ -64,14 +64,22 @@ FONTS = "".join([
 ]) + _roboto()
 
 EMOJI = "'Noto Color Emoji'"
-SANS = f"'Archivo',{EMOJI},sans-serif"
-DISPLAY = f"'ArchivoBlack','Archivo',{EMOJI},sans-serif"
-WATCH_SANS = f"'Roboto','Inter',{EMOJI},sans-serif"
+# Thai (website, 6 Nov 2026): Noto Sans Thai (OFL) as a separate fallback family, like Android's own Thai font.
+SANS = f"'Archivo','NotoThai',{EMOJI},sans-serif"
+DISPLAY = f"'ArchivoBlack','Archivo','NotoThai',{EMOJI},sans-serif"
+WATCH_SANS = f"'Roboto','Inter','NotoThai',{EMOJI},sans-serif"
+
+
+def _thai():
+    return "".join(
+        f"@font-face{{font-family:'NotoThai';font-weight:{w};src:url('file://"
+        + os.path.join(EXTRA_FONTS, f"noto-sans-thai-thai-{f}-normal.woff2") + "') format('woff2')}"
+        for w, f in (("100 500", 400), ("600 900", 700)))
 
 
 def root_css():
     t = TOK
-    return f"""{FONTS}
+    return f"""{FONTS}{_thai()}
 :root{{--bg:{t['bg']};--surface:{t['surface']};--surface-high:{t['surface_high']};--outline:{t['outline']};
 --text:{t['text']};--text2:{t['text2']};--gold:{t['gold']};--on-brand:{t['on_brand']};--live:{t['live']};
 --busy:{t['busy']};--error:{t['error']};--idle:{t['idle']}}}

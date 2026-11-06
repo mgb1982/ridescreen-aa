@@ -7,7 +7,8 @@ import datetime as dt
 
 BIKE = "Zontes 125X"
 DASH_SSID = "ZT000000"            # invented; real dash codes look like ZT + 6 hex
-RIDER = {"es": "Álex", "ca": "Àlex", "en": "Alex", "it": "Alex", "el": "Άλεξ", "ru": "Алекс"}
+RIDER = {"es": "Álex", "ca": "Àlex", "en": "Alex", "it": "Alex", "el": "Άλεξ", "ru": "Алекс", "de": "Alex", "fr": "Alex",
+         "pt": "Alex", "th": "Alex"}
 CONTACTS = [("Laura", "+34 6•• ••• 412"), ("Jordi", "+34 6•• ••• 087")]
 # Plaça de Catalunya: public, central, nobody's home.
 CRASH_POS = (41.387015, 2.170047)
@@ -15,13 +16,14 @@ CRASH_POS_2 = (41.387021, 2.170052)
 
 # The headline trip, used on phone, watch, share card and web.
 TRIP = dict(
-    name={l: "Sants → Zona Franca" for l in ("es", "ca", "en", "it", "el", "ru")},
+    name={l: "Sants → Zona Franca" for l in ("es", "ca", "en", "it", "el", "ru", "de", "fr", "pt", "th")},
     date=dt.date(2026, 10, 6), start="08:12", end="08:31",
     km=6.8, secs=18 * 60 + 40, avg=22, max=71, clips=3,
 )
 TRIP_2 = dict(
     name={"es": "Por Sants", "ca": "Per Sants", "en": "Around Sants", "it": "Giro per Sants", "el": "Βόλτα στα Sants",
-          "ru": "По Сантсу"},
+          "ru": "По Сантсу", "de": "Runde durch Sants", "fr": "Tour de Sants", "pt": "Volta por Sants",
+          "th": "ขี่รอบ Sants"},
     date=dt.date(2026, 10, 6), start="13:31", end="13:42",
     km=2.4, secs=5 * 60 + 29, avg=25, max=53, clips=0,
 )
@@ -50,8 +52,9 @@ REPO = "mgb1982/ridescreen-aa"
 # ---------------------------------------------------------------- locale formatting
 
 # Java/Android number formatting per locale (CLDR). Russian groups thousands with a no-break space.
-DEC = {"es": ",", "ca": ",", "en": ".", "it": ",", "el": ",", "ru": ","}
-THOUS = {"es": ".", "ca": ".", "en": ",", "it": ".", "el": ".", "ru": "\u00a0"}
+DEC = {"es": ",", "ca": ",", "en": ".", "it": ",", "el": ",", "ru": ",", "de": ",", "fr": ",", "pt": ",", "th": "."}
+THOUS = {"es": ".", "ca": ".", "en": ",", "it": ".", "el": ".", "ru": "\u00a0", "de": ".", "fr": "\u202f", "pt": "\u00a0",
+         "th": ","}
 
 
 def num(lang, x, decimals=1):
@@ -109,7 +112,19 @@ MON_SHORT = {"es": ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep
              "ru": ["янв.", "февр.", "мар.", "апр.", "мая", "июн.", "июл.", "авг.", "сент.", "окт.", "нояб.", "дек."]}
 
 
+BABEL = {"de": "de_DE", "fr": "fr_FR", "pt": "pt_PT", "th": "th_TH"}
+_LONG = {"de": "EEEE, d. MMMM", "fr": "EEEE d MMMM", "pt": "EEEE, d 'de' MMMM", "th": "EEEEที่ d MMMM"}
+_SHORT = {"de": "EEE, d. MMM", "fr": "EEE d MMM", "pt": "EEE, d/MM", "th": "EEE d MMM"}
+
+
+def _babel(lang, d, pat):
+    from babel.dates import format_date
+    return format_date(d, pat, locale=BABEL[lang])
+
+
 def long_date(lang, d):
+    if lang in BABEL:
+        return _babel(lang, d, _LONG[lang])
     wd, mo = WEEKDAYS[lang][d.weekday()], MONTHS[lang][d.month - 1]
     if lang == "es":
         return f"{wd}, {d.day} de {mo}"
@@ -121,6 +136,8 @@ def long_date(lang, d):
 
 
 def short_date(lang, d):
+    if lang in BABEL:
+        return _babel(lang, d, _SHORT[lang])
     wd, mo = WD_SHORT[lang][d.weekday()], MON_SHORT[lang][d.month - 1]
     if lang == "en":
         return f"{wd} {d.day} {mo}"
@@ -132,7 +149,8 @@ def short_date(lang, d):
 def ago_minutes(lang, n):
     ru = "минут" if n % 10 in (0, 5, 6, 7, 8, 9) or 11 <= n % 100 <= 14 else ("минуту" if n % 10 == 1 else "минуты")
     return {"es": f"hace {n} minutos", "ca": f"fa {n} minuts", "en": f"{n} minutes ago", "it": f"{n} minuti fa",
-            "el": f"πριν από {n} λεπτά", "ru": f"{n} {ru} назад"}[lang]
+            "el": f"πριν από {n} λεπτά", "ru": f"{n} {ru} назад", "de": f"vor {n} Minuten",
+            "fr": f"il y a {n} minutes", "pt": f"há {n} minutos", "th": f"{n} นาทีที่แล้ว"}[lang]
 
 
 def medium_date(lang, d):
@@ -147,7 +165,7 @@ def medium_date(lang, d):
 NOW = dt.datetime(2026, 10, 6, 18, 42)
 CAREER = dict(first=dt.date(2026, 8, 17), trips=63, km=1248.0, hours=47.2, days=38, longest=48.6, top=98,
               best_streak=5, months=3, early=True, night=False, weekend=False)
-LONGEST_NAME = {l: "Sants → Garraf" for l in ("es", "ca", "en", "it", "el", "ru")}
+LONGEST_NAME = {l: "Sants → Garraf" for l in ("es", "ca", "en", "it", "el", "ru", "de", "fr", "pt", "th")}
 BEST_MONTH = dict(month=9, km=612)          # September
 TIME_OF_DAY = 0                              # morning commuter
 # Trophies.Family order, tiers and when each one was earned (None = locked). 11 of 31, see TROPHIES.

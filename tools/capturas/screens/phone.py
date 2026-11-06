@@ -342,8 +342,11 @@ SHARE_W, SHARE_H = 1080, 1350
 def share_card(lang):
     s = Strings(lang)
     t = D.TRIP
-    wd, mo = D.WEEKDAYS[lang][t["date"].weekday()], D.MONTHS[lang][t["date"].month - 1]
-    date = f"{wd} {t['date'].day} {mo} {t['date'].year}"   # RideShare.kt: "EEEE d MMMM yyyy"
+    if lang in D.BABEL:
+        date = D._babel(lang, t["date"], "EEEE d MMMM yyyy")   # RideShare.kt: "EEEE d MMMM yyyy"
+    else:
+        wd, mo = D.WEEKDAYS[lang][t["date"].weekday()], D.MONTHS[lang][t["date"].month - 1]
+        date = f"{wd} {t['date'].day} {mo} {t['date'].year}"   # RideShare.kt: "EEEE d MMMM yyyy"
     date = date[0].upper() + date[1:]
     title = f'{t["name"][lang]} · {date}'
     stats = [(s("share_km"), D.num(lang, t["km"])), (s("share_time"), D.dur(t["secs"])),
@@ -701,3 +704,12 @@ def key_actions(lang):
     s = Strings(lang)
     cells = "".join(f'<div><i style="{_bubble(c)}">{icon(ic, c, 18)}</i>{esc(s(k))}</div>' for ic, c, k in KEY_ACTIONS)
     return f'<style>{KEY_CSS}</style><div class="pka">{cells}</div>'
+
+
+# ---------------------------------------------------------------- de, fr, pt, th (website, 6 Nov 2026)
+from lib import l10n_extra as _X  # noqa: E402
+
+AVG_MAX.update(_X.AVG_MAX)
+SMS_EXAMPLE.update(_X.SMS_EXAMPLE)
+G1.update(_X.G1)
+G8.update(_X.G8)

@@ -21,5 +21,66 @@ SYS = {
 }
 
 
+# de/fr/pt/th (6 Nov 2026): «cancel» from AOSP; the rest translated from English, unverified on a phone.
+EXTRA = {
+ "cancel": {
+  "de": "Abbrechen",
+  "fr": "Annuler",
+  "pt": "Cancelar",
+  "th": "ยกเลิก"
+ },
+ "settings": {
+  "de": "Einstellungen",
+  "fr": "Paramètres",
+  "pt": "Definições",
+  "th": "การตั้งค่า"
+ },
+ "now": {
+  "de": "jetzt",
+  "fr": "maintenant",
+  "pt": "agora",
+  "th": "ตอนนี้"
+ },
+ "1min": {
+  "de": "vor 1 Min.",
+  "fr": "il y a 1 min",
+  "pt": "há 1 min",
+  "th": "1 นาทีที่แล้ว"
+ },
+ "2h": {
+  "de": "vor 2 Std.",
+  "fr": "il y a 2 h",
+  "pt": "há 2 h",
+  "th": "2 ชม. ที่แล้ว"
+ },
+ "yesterday": {
+  "de": "gestern",
+  "fr": "hier",
+  "pt": "ontem",
+  "th": "เมื่อวาน"
+ },
+ "today": {
+  "de": "Heute",
+  "fr": "Aujourd’hui",
+  "pt": "Hoje",
+  "th": "วันนี้"
+ },
+ "wifi_request": {
+  "de": "möchte eine Verbindung herstellen mit",
+  "fr": "souhaite se connecter à",
+  "pt": "pretende ligar-se a",
+  "th": "ต้องการเชื่อมต่อกับ"
+ },
+ "connect": {
+  "de": "Verbinden",
+  "fr": "Connecter",
+  "pt": "Ligar",
+  "th": "เชื่อมต่อ"
+ }
+}
+for _k, _v in EXTRA.items():
+    SYS[_k].update(_v)
+
+
 def sys_text(key, lang):
     return SYS[key][lang]

@@ -24,12 +24,15 @@ DOCS_I = "docs/screenshots/ridescreen/imagenes/"
 # Web folders per language.
 # it/el/ru follow the pages in PR #3 (site/<lang>/guide/, site/<lang>/watch/).
 WEB_IMG = {"es": "site/img/", "ca": "site/img/ca/", "en": "site/img/en/", "it": "site/img/it/",
-           "el": "site/img/el/", "ru": "site/img/ru/"}
+           "el": "site/img/el/", "ru": "site/img/ru/", "de": "site/img/de/", "fr": "site/img/fr/",
+           "pt": "site/img/pt/", "th": "site/img/th/"}
 WEB_GUIDE = {"es": "site/guia/", "ca": "site/ca/guia/", "en": "site/en/guide/", "it": "site/it/guide/",
-             "el": "site/el/guide/", "ru": "site/ru/guide/"}
+             "el": "site/el/guide/", "ru": "site/ru/guide/", "de": "site/de/guide/", "fr": "site/fr/guide/",
+             "pt": "site/pt/guide/", "th": "site/th/guide/"}
 WEB_WATCH = {"es": "site/reloj/", "ca": "site/ca/rellotge/", "en": "site/en/watch/", "it": "site/it/watch/",
-             "el": "site/el/watch/", "ru": "site/ru/watch/"}
-LANGS = ("es", "ca", "en", "it", "el", "ru")
+             "el": "site/el/watch/", "ru": "site/ru/watch/", "de": "site/de/watch/", "fr": "site/fr/watch/",
+             "pt": "site/pt/watch/", "th": "site/th/watch/"}
+LANGS = ("es", "ca", "en", "it", "el", "ru", "de", "fr", "pt", "th")
 
 PHONE_DOCS, PHONE_WEB, GUIDE = 540, 540, 824
 WATCH_DOCS, WATCH_WEB = 360, 300

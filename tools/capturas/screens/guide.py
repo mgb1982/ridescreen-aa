@@ -15,7 +15,7 @@ from lib.base import phone_page
 from lib.res import Strings, esc
 
 AOSP = json.load(open(os.path.join(os.path.dirname(__file__), "..", "lib", "android_aosp.json"), encoding="utf-8"))
-UNVERIFIED = {"it", "el", "ru"}   # Play Protect / Android Auto wording in these languages
+UNVERIFIED = {"it", "el", "ru", "de", "fr", "pt", "th"}   # Play Protect / Android Auto wording in these languages
 
 
 def aosp(lang, key):
@@ -291,3 +291,13 @@ def scan_qr(lang):
             f'{esc(POINT_AT_QR[lang])}</div>'
             f'<div class="nt" style="top:450px">{note}</div>')
     return _page(body)
+
+
+# ---------------------------------------------------------------- de, fr, pt, th (website, 6 Nov 2026)
+from lib import l10n_extra as _X  # noqa: E402
+
+PLAY_PROTECT.update(_X.PLAY_PROTECT)
+ANDROID_AUTO.update(_X.ANDROID_AUTO)
+POINT_AT_QR.update(_X.POINT_AT_QR)
+for _g, _d in _X.NOTES.items():
+    NOTES[_g].update(_d)

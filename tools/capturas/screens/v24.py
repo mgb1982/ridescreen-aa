@@ -54,7 +54,9 @@ def dash_picker(lang, theme="night"):
     cards = ""
     for i, d in enumerate(("sport", "racing", "touring")):
         sel = i == 0
-        img = _png(os.path.join(ASSETS, "dash24rc", f"{d}-{theme}-140-10000-{lang}.png"))
+        # DashboardRenderer draws its labels in English in every language, so any locale's render is the same.
+        f = os.path.join(ASSETS, "dash24rc", f"{d}-{theme}-140-10000-{lang}.png")
+        img = _png(f if os.path.exists(f) else f.replace(f"-{lang}.png", "-en.png"))
         cards += (f'<div style="background:#2A362D;border-radius:12px;padding:10px 12px;margin-bottom:10px;'
                   f'border:{2 if sel else 1}px solid {"var(--gold)" if sel else "rgba(241,244,236,.2)"}">'
                   f'<div style="font-weight:700;font-size:16px">{"✓&nbsp; " if sel else ""}{esc(s("dash_design_" + d))}</div>'
@@ -138,3 +140,8 @@ def widget_home(lang):
     body = (f'<div class="hs"></div><div class="clk">18:42</div>'
             f'<div class="w1">{big}</div><div class="w2">{small}</div><div class="ap">{icons}</div><div class="dk"></div>')
     return phone_page(body, bg="#1C232B", extra_css=css)
+
+
+from lib import l10n_extra as _X  # noqa: E402
+
+OK.update(_X.OK)
