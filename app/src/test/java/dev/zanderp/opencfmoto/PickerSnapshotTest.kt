@@ -22,8 +22,11 @@ import java.io.File
 class PickerSnapshotTest {
     @Test
     fun renderPickerPreviews() {
-        val ctx = ApplicationProvider.getApplicationContext<android.content.Context>()
         val out = File("build/dashboard-snapshots").apply { mkdirs() }
+        // The renderer draws its field labels from the app's strings: one set per website language.
+        for (lang in listOf("es", "ca", "en", "it", "el", "ru")) {
+        org.robolectric.RuntimeEnvironment.setQualifiers(lang)
+        val ctx = ApplicationProvider.getApplicationContext<android.content.Context>()
         for ((speed, rpm) in listOf(140 to 10_000, 240 to 14_000)) {
             DashboardMode.setSpeedMax(ctx, speed)
             DashboardMode.setRpmMax(ctx, rpm)
@@ -31,10 +34,11 @@ class PickerSnapshotTest {
                 DashboardMode.setTheme(ctx, theme)
                 for (d in DashboardMode.Design.entries) {
                     val bmp = DashboardMode.preview(ctx, d, 800, 416)
-                    val name = "${d.id}-${if (theme == DashboardMode.Theme.LIGHT) "day" else "night"}-${speed}-${rpm}.png"
+                    val name = "${d.id}-${if (theme == DashboardMode.Theme.LIGHT) "day" else "night"}-${speed}-${rpm}-$lang.png"
                     File(out, name).outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) }
                 }
             }
+        }
         }
     }
 }
