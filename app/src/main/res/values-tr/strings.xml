@@ -446,4 +446,9 @@
     <string name="setup_anonymous_telemetry_on">Açık — anonim veriler &amp; çökme raporları</string>
     <string name="setup_anonymous_telemetry_off">Kapalı — hiçbir şey yüklenmez</string>
     <string name="setup_anonymous_id">Anonim ID: %1$s</string>
+    <string name="controls_dash_scale">Gösterge ölçeği (azami hız ve devir)</string>
+    <string name="controls_dash_scale_speed">Hız göstergesi en fazla</string>
+    <string name="controls_dash_scale_rpm">Devir göstergesi en fazla</string>
+    <string name="controls_volume_drives_aa">▲/▼ Android Auto\'yu da kontrol eder</string>
+    <string name="controls_volume_drives_aa_desc">Kapalı: ses düğmeleri telefonun sesini değiştirmeye devam eder (interkom da), ses asla sabitlenmez. Android Auto yalnızca diğer gidon düğmelerini alır.</string>
 </resources>

@@ -647,4 +647,10 @@
     <string name="trips_merge_restore_confirm">¿Restaurar los tramos originales?</string>
     <string name="trips_merge_failed">No se pudieron unir los viajes.</string>
     <string name="trips_merge_done">Viajes unidos. Los tramos originales están guardados.</string>
+    <string name="setup_clock_smart_threshold">Umbral SMART (prueba): resincronizar si el cuadro pide la hora así de tarde (ms)</string>
+    <string name="controls_dash_scale">Escala de las esferas (velocidad y RPM máximas)</string>
+    <string name="controls_dash_scale_speed">Velocímetro hasta</string>
+    <string name="controls_dash_scale_rpm">Cuentarrevoluciones hasta</string>
+    <string name="controls_volume_drives_aa">▲/▼ también controlan Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Desactivado: los botones de volumen siguen cambiando el volumen del móvil (y también el intercomunicador), y el volumen nunca queda fijo. Android Auto solo recibe los demás botones del manillar.</string>
 </resources>

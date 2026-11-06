@@ -661,4 +661,10 @@
     <string name="trips_merge_restore_confirm">Vols restaurar els trams originals?</string>
     <string name="trips_merge_failed">No s’han pogut unir els viatges.</string>
     <string name="trips_merge_done">Viatges units. Els trams originals estan desats.</string>
+    <string name="setup_clock_smart_threshold">Llindar SMART (prova): resincronitzar si el quadre demana l\'hora tan tard (ms)</string>
+    <string name="controls_dash_scale">Escala de les esferes (velocitat i RPM màximes)</string>
+    <string name="controls_dash_scale_speed">Velocímetre fins a</string>
+    <string name="controls_dash_scale_rpm">Comptarevolucions fins a</string>
+    <string name="controls_volume_drives_aa">▲/▼ també controlen Android Auto</string>
+    <string name="controls_volume_drives_aa_desc">Desactivat: els botons de volum continuen canviant el volum del mòbil (i també l\'intercomunicador), i el volum mai queda fix. Android Auto només rep els altres botons del manillar.</string>
 </resources>

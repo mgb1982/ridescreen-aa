@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 2.4 RC: strings that fell back to English (OBD reader, dashboard styles, watch heart rate). -->
+<resources>
+    <string name="controls_dash_design">Estilo do painel</string>
+    <string name="controls_dash_fields">Campos visíveis</string>
+    <string name="dash_design_racing">Racing</string>
+    <string name="dash_design_sport">Sport</string>
+    <string name="dash_design_touring">Touring</string>
+    <string name="heart_rate_live">Leitura em direto do teu relógio</string>
+    <string name="heart_rate_waiting">À espera de uma leitura… Abre o RideScreen no relógio e permite os sensores corporais.</string>
+    <string name="help_heart_rate">❤️ Ritmo cardíaco (relógio)</string>
+    <string name="obd_connecting">A ligar ao adaptador…</string>
+    <string name="obd_entry">🔌 Leitor OBD (teste)</string>
+    <string name="obd_fail_ecu">O adaptador respondeu mas a centralina do motor não. Liga a ignição (ou o motor) e tenta de novo.</string>
+    <string name="obd_fail_link">Não foi possível ligar ao adaptador. Está emparelhado, alimentado (ignição ligada) e livre de outra app?</string>
+    <string name="obd_intro">Lê a centralina do motor através de %1$s: que dados oferece, os valores atuais, os códigos de avaria guardados e 20 s de rotações, velocidade, temperatura e acelerador em direto.\n\nSó leitura: nunca apaga códigos nem envia nada à mota. Ignição ligada (melhor com o motor a trabalhar) e Torque fechado.</string>
+    <string name="obd_live_disabled">Leitura contínua desligada.</string>
+    <string name="obd_live_enabled">A ler %1$s durante a projeção: motor ligado/desligado vem agora das rotações reais.</string>
+    <string name="obd_live_off">Deixar de o usar durante a projeção</string>
+    <string name="obd_live_on">Usar este adaptador durante a projeção</string>
+    <string name="obd_no_adapter">Nenhum adaptador OBD emparelhado encontrado.\n\nEmparelha primeiro o ELM327 em Android → Bluetooth (PIN normalmente 1234 ou 0000) e fecha outras apps OBD (Torque). Emparelhados: %1$s</string>
+    <string name="obd_pick_other">Escolher da lista de emparelhados</string>
+    <string name="obd_pick_title">Qual é o adaptador OBD?</string>
+    <string name="obd_share_hint">Também está tudo no registo: ❓ Ajuda → Partilhar registos.</string>
+    <string name="obd_start">Iniciar</string>
+    <string name="obd_title">Leitor OBD (teste)</string>
+    <string name="setup_clock_smart_threshold">Limiar SMART (teste): ressincronizar quando o painel pede a hora tão tarde (ms)</string>
+    <string-array name="dash_obd_field_names">
+        <item>RPM</item><item>Velocidade</item><item>Líquido de arrefecimento</item><item>Tensão</item><item>Carga calculada</item><item>Temperatura de admissão</item><item>Pressão barométrica</item><item>Carga absoluta</item><item>Throttle</item>
+    </string-array>
+</resources>

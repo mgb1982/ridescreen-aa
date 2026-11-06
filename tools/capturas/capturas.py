@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from lib.base import PHONE_DPR, PHONE_H, PHONE_W, WATCH_DPR, WATCH_W  # noqa: E402
 from lib.render import Job, render  # noqa: E402
-from screens import guide, phone, pills, stats, watch  # noqa: E402
+from screens import guide, phone, pills, stats, v24, watch  # noqa: E402
 
 DOCS_M = "docs/screenshots/ridescreen/movil/"
 DOCS_W = "docs/screenshots/ridescreen/reloj/"
@@ -41,9 +41,17 @@ def _docs(lang, rel):
 
 # name → (builder(lang), kind, outputs(lang) → [(path, width)])
 SCREENS = {
+    # v2.4 (RC 14f054c): new web images, one per language.
+    "v24_key": (lambda l: v24.key_menu(l), "phone", lambda l: [(WEB_IMG[l] + "llave.webp", PHONE_WEB)]),
+    "v24_widget": (lambda l: v24.widget_home(l), "phone", lambda l: [(WEB_IMG[l] + "widget-controles.webp", PHONE_WEB)]),
+    "v24_obd": (lambda l: v24.obd_intro(l), "phone", lambda l: [(WEB_IMG[l] + "obd.webp", PHONE_WEB)]),
+    "v24_dash_pick": (lambda l: v24.dash_picker(l), "phone", lambda l: [(WEB_IMG[l] + "dashboard-estilo.webp", PHONE_WEB)]),
+    "v24_dash_scale": (lambda l: v24.dash_scale(l), "phone", lambda l: [(WEB_IMG[l] + "dashboard-escala.webp", PHONE_WEB)]),
+    "v24_trip_obd": (lambda l: v24.trip_obd(l), "phone", lambda l: [(WEB_IMG[l] + "viaje-obd.webp", PHONE_WEB)]),
+    "v24_pulse": (lambda l: v24.pulse(l), "phone", lambda l: [(WEB_IMG[l] + "pulso.webp", PHONE_WEB)]),
     "home_stop": (lambda l: phone.home(l), "phone",
                   lambda l: [(DOCS_M + "01_inicio_parada.png", PHONE_DOCS)] if l == "es" else []),
-    "home_conn": (lambda l: phone.home(l, connected=True), "phone",
+    "home_conn": (lambda l: phone.home(l, connected=True, battery="running", locked=False, actions=True), "phone",
                   lambda l: ([(DOCS_M + "02_inicio_conectado.png", PHONE_DOCS)] if l == "es" else [])
                   + [(WEB_IMG[l] + "inicio.webp", PHONE_WEB), (WEB_GUIDE[l] + "g9_listo.png", GUIDE)]),
     "home_sheet": (lambda l: phone.home(l, sheet=True), "phone",

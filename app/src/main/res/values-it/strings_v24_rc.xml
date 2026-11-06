@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 2.4 RC: strings that fell back to English (OBD reader, dashboard styles, watch heart rate). -->
+<resources>
+    <string name="controls_dash_design">Stile della dashboard</string>
+    <string name="controls_dash_fields">Campi visibili</string>
+    <string name="dash_design_racing">Racing</string>
+    <string name="dash_design_sport">Sport</string>
+    <string name="dash_design_touring">Touring</string>
+    <string name="heart_rate_live">Lettura dal vivo dal tuo orologio</string>
+    <string name="heart_rate_waiting">In attesa di una lettura… Apri RideScreen sull\'orologio e consenti i sensori del corpo.</string>
+    <string name="help_heart_rate">❤️ Battito cardiaco (orologio)</string>
+    <string name="obd_connecting">Connessione all\'adattatore…</string>
+    <string name="obd_entry">🔌 Lettore OBD (prova)</string>
+    <string name="obd_fail_ecu">L\'adattatore ha risposto ma la centralina motore no. Accendi il quadro (o avvia il motore) e riprova.</string>
+    <string name="obd_fail_link">Impossibile connettersi all\'adattatore. È associato, alimentato (quadro acceso) e non usato da un\'altra app?</string>
+    <string name="obd_intro">Legge la centralina motore tramite %1$s: quali dati offre, i valori attuali, i codici di errore memorizzati e 20 s di giri, velocità, temperatura e acceleratore dal vivo.\n\nSolo lettura: non cancella mai codici e non invia nulla alla moto. Quadro acceso (meglio a motore acceso) e Torque chiuso.</string>
+    <string name="obd_live_disabled">Lettura continua disattivata.</string>
+    <string name="obd_live_enabled">Lettura di %1$s durante la proiezione: motore acceso/spento ora viene dai giri reali.</string>
+    <string name="obd_live_off">Non usarlo più durante la proiezione</string>
+    <string name="obd_live_on">Usa questo adattatore durante la proiezione</string>
+    <string name="obd_no_adapter">Nessun adattatore OBD associato trovato.\n\nAssocia prima l\'ELM327 in Android → Bluetooth (PIN di solito 1234 o 0000) e chiudi altre app OBD (Torque). Associati ora: %1$s</string>
+    <string name="obd_pick_other">Scegli dall\'elenco dei dispositivi associati</string>
+    <string name="obd_pick_title">Qual è l\'adattatore OBD?</string>
+    <string name="obd_share_hint">È tutto anche nel registro: ❓ Aiuto → Condividi registri.</string>
+    <string name="obd_start">Avvia</string>
+    <string name="obd_title">Lettore OBD (prova)</string>
+    <string name="setup_clock_smart_threshold">Soglia SMART (prova): risincronizza quando il cruscotto chiede l\'ora così tardi (ms)</string>
+    <string-array name="dash_obd_field_names">
+        <item>RPM</item><item>Velocità</item><item>Liquido refrigerante</item><item>Tensione</item><item>Carico calcolato</item><item>Temperatura aspirazione</item><item>Pressione barometrica</item><item>Carico assoluto</item><item>Throttle</item>
+    </string-array>
+</resources>

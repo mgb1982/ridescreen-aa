@@ -74,12 +74,20 @@ def _bubble(col):
     return f"background:rgba({r},{g},{b},.2)"
 
 
+# v2.4 · MainActivity.buildTile: line icon tinted with the tile's accent in a 20 %-tinted circle.
+TILE_ICON = {"trips": "ic_line_trips", "fuel": "ic_line_fuel", "maint": "ic_line_maint", "tl": "ic_line_traffic",
+             "live": "ic_line_live", "help": "ic_line_help", "park": "ic_line_camera", "controls": "ic_line_pad",
+             "hud": "ic_line_dash", "trip": "ic_line_watch"}
+
+
 def _tile(emoji, key, title, sub="", big=False, sel=False):
     cls = "tile big" if big else "tile"
     if sel:
         cls += " sel"
     s = f'<div class="s">{esc(sub)}</div>' if sub else ""
-    return (f'<div class="{cls}"><div class="b" style="{_bubble(TILE_COL[key])}">{emoji}</div>'
+    size = 42 if big else 46
+    glyph = icon(TILE_ICON[key], TILE_COL[key], size - 2 * (10 if big else 11)) if key in TILE_ICON else emoji
+    return (f'<div class="{cls}"><div class="b" style="{_bubble(TILE_COL[key])}">{glyph}</div>'
             f'<div class="t">{esc(title)}</div>{s}</div>')
 
 
@@ -108,7 +116,7 @@ def _more(s):
     return f'<div class="more-t">{esc(s("main_more"))}</div><div class="more">{cells}</div>'
 
 
-def home(lang, connected=False, sheet=False, battery=None, locked=True):
+def home(lang, connected=False, sheet=False, battery=None, locked=True, actions=False):
     s = Strings(lang)
     if connected:
         state, dot, sub = s("conn_streaming"), "var(--live)", D.BIKE
@@ -126,6 +134,8 @@ def home(lang, connected=False, sheet=False, battery=None, locked=True):
     body = '<div class="scroll">' + _hero(s, 190 if connected else 280) + '<div class="wrap">' + status
     if battery:
         body += battery_card(lang, running=(battery == "running"), locked=locked)
+    if actions:
+        body += key_actions(lang)
     if connected:
         nav = s("dest_home"), s("dest_work")
         body += (f'<div class="tiles">{_tile("📸", "park", s("home_big_park"), s("home_big_park_sub"), big=True, sel=True)}'
@@ -673,3 +683,21 @@ def battery_card(lang, running=False, locked=True):
     return (f'<style>{BATTERY_CSS}</style><div class="pke"><div><div class="t">{esc(s("pke_card_title"))}</div>'
             f'<div class="v">{volts}<small>V</small></div><div class="s">{esc(sub)}</div></div>'
             f'<div class="l">{esc(lock)}</div></div>')
+
+
+# ---------------------------------------------------------------- 2.4 key actions card (activity_main.xml #pke_actions_card)
+
+KEY_CSS = """
+.pka{display:flex;margin-top:10px;background:var(--surface);border-radius:20px;padding:6px 8px}
+.pka div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px;font-weight:600;font-size:12px}
+.pka i{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+"""
+KEY_ACTIONS = [("ic_line_unlock", "#5FD07A", "pke_short_unlock"), ("ic_line_lock", "#5B8DEF", "pke_short_lock"),
+               ("ic_line_seat", "#4FB6A6", "pke_short_seat"), ("ic_line_fuel", "#E5774E", "pke_short_fuel")]
+
+
+def key_actions(lang):
+    """MainActivity.renderPkeActions: 34 dp circle (accent at 20 %) with an 8 dp inset line icon, label below."""
+    s = Strings(lang)
+    cells = "".join(f'<div><i style="{_bubble(c)}">{icon(ic, c, 18)}</i>{esc(s(k))}</div>' for ic, c, k in KEY_ACTIONS)
+    return f'<style>{KEY_CSS}</style><div class="pka">{cells}</div>'
