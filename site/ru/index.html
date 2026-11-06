@@ -142,6 +142,8 @@ footer a { color: var(--fg); }
 .top nav a:has(.flag) { display: inline-flex; align-items: center; }
 .flag { width: 24px; height: 16px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.18); display: block; }
 .top nav a:has(.flag):hover .flag { box-shadow: 0 0 0 2px var(--accent); }
+.thanks { margin: 6px 0 0 1.2em; padding: 0; color: var(--muted); columns: 2 220px; }
+.thanks li { margin: 2px 0; break-inside: avoid; }
 </style>
 </head>
 <body>
@@ -167,11 +169,11 @@ footer a { color: var(--fg); }
       <h1>Android Auto на дисплее мотоцикла, <span>без проводов</span></h1>
       <p class="lede">Google Maps, Waze, Spotify и Ассистент на дисплее мотоцикла с автоматическим подключением при запуске. А ещё: недорогие заправки, записи поездок с рекордами, видео с наложенной скоростью и приложение для часов.</p>
       <div class="cta">
-        <a class="btn primary" href="https://github.com/mgb1982/ridescreen-aa/releases/latest" data-apk="phone">⬇️ Скачать APK<span class="apk-meta"></span></a>
+        <a class="btn primary" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4/RideScreen-AA-v2.4.apk" data-apk="phone">⬇️ Скачать APK<span class="apk-meta"></span></a>
         <a class="btn ghost" href="guide/">Руководство по установке</a>
       </div>
       <p class="facts">Бесплатно · без рекламы · открытый исходный код · Android 10 или новее</p>
-      <p class="facts alt">Прямая загрузка последней версии · <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">также на GitHub</a> · <a href="https://github.com/mgb1982/ridescreen-aa/releases/tag/v2.3">новое в версии 2.3</a></p>
+      <p class="facts alt">Прямая загрузка последней версии · <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">также на GitHub</a> · <a href="https://github.com/mgb1982/ridescreen-aa/releases/tag/v2.4">что нового в v2.4</a></p>
     </div>
     <div class="hero-media">
       <img class="video" src="../img/hero-video.webp" alt="Вид с места водителя: Android Auto на дисплее и наложенная скорость" width="720" height="1280">
@@ -186,13 +188,22 @@ footer a { color: var(--fg); }
     <div class="bikes">
       <span class="chip main">Zontes 125X</span><span class="chip main">Zontes 125V</span><span class="chip main">Zontes 125M</span><span class="chip main">Zontes 368 (G / K / E)</span><span class="chip main">Zontes 703RR</span><span class="chip main">Zontes T350X</span><span class="chip main">Zontes 703F</span><span class="chip main">Zontes 703T</span>
       <span class="chip">CFMoto</span><span class="chip">Voge</span><span class="chip">Moto Morini</span><span class="chip">QJ Motor</span><span class="chip">Benelli</span><span class="chip">Morbidelli</span><span class="chip">Rieju</span>
-      <span class="chip">Zontes 350D (тестируется)</span>
+      <span class="chip">Zontes 350D (тестируется)</span><span class="chip">Zontes 350E (тестируется)</span>
 
     <div class="bike-photos" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:18px">
       <figure style="margin:0;max-width:240px"><img src="../img/moto-703rr-cuadro.webp" alt="Android Auto на дисплее Zontes 703RR" width="900" height="1200" loading="lazy" style="width:100%;height:auto;border-radius:14px"><figcaption style="font-size:.85rem;opacity:.8;margin-top:6px">Zontes 703RR · RideScreen AA 2.3</figcaption></figure>
       <figure style="margin:0;max-width:240px"><img src="../img/moto-703rr-vista.webp" alt="Google Maps на дисплее Zontes 703RR" width="900" height="1200" loading="lazy" style="width:100%;height:auto;border-radius:14px"><figcaption style="font-size:.85rem;opacity:.8;margin-top:6px">Zontes 703RR · RideScreen AA 2.3</figcaption></figure>
     </div>
     </div>
+  </section>
+
+  <section id="whats-new">
+    <span class="eyebrow">Что нового</span>
+    <h2>Что нового в <span>v2.4</span></h2>
+    <p class="sub">Ключ в телефоне, дашборд с вашими данными на приборной панели и десять языков. Бесплатно, как всегда.</p>
+    <div class="grid"><div class="card"><div class="ic">🔑</div><h3>Ключ — в телефоне</h3><p>Разблокировка, блокировка и открытие сиденья или крышки бака из приложения, всегда с подтверждением; затем приложение проверяет состояние мотоцикла. <b>Никогда во время движения.</b> Виджет «Управление мотоциклом», разблокировка при подключении (по желанию), блокировка завершает поездку (по желанию), а McuID считывается камерой с QR-кода приборной панели.</p><span class="tag">Новое в 2.4</span></div><div class="card"><div class="ic">🔌</div><h3>Считыватель OBD</h3><p>С Bluetooth-адаптером ELM327, <b>только чтение</b>: доступные данные, коды ошибок и в реальном времени обороты, скорость, температура и дроссель. И непрерывное чтение во время проекции: «двигатель работает» теперь определяется по реальным оборотам.</p><span class="tag">Новое в 2.4</span></div><div class="card"><div class="ic">📊</div><h3>Дашборд на приборной панели</h3><p>Вместо Android Auto — ваши данные на панели: стили Sport, Racing и Touring, днём и ночью. Подогнан под экран 125X, а предпросмотр — это ровно то, что вы увидите на мотоцикле. Шкалы приборов настраиваются под ваш мотоцикл. Без OBD скорость берётся из GPS.</p><span class="tag">Новое в 2.4</span></div><div class="card"><div class="ic">🏍️</div><h3>Поездки с данными OBD</h3><p>Воспроизведение и видео поездки с дросселем и оборотами, а также объединение маршрутов (можно отменить).</p><span class="tag">Новое в 2.4</span></div><div class="card"><div class="ic">🎬</div><h3>На панели и при парковке</h3><p>Приветствие в начале проекции, прощание с итогами дня и предупреждение о дожде при парковке на ближайшие часы там, где вы оставили мотоцикл.</p><span class="tag">Новое в 2.4</span></div><div class="card"><div class="ic">🎮</div><h3>Громкость с переговорным устройством</h3><p>С настройкой «Кнопки руля управляют Android Auto» теперь можно оставить ▲/▼ для громкости.</p><span class="tag">Новое в 2.4</span></div><div class="card"><div class="ic">⌚</div><h3>Пульс с часов</h3><p>Пульс с часов в приложении (❓ Помощь), каждые 5 секунд. И приложение для часов переведено на все языки.</p><span class="tag">Новое в 2.4</span></div><div class="card"><div class="ic">🌍</div><h3>Десять языков</h3><p>Приложение и часы полностью на испанском, каталанском, английском, итальянском, французском, немецком, португальском, греческом, русском и тайском.</p><span class="tag">Новое в 2.4</span></div></div>
+    <div class="shots"><figure><img src="../img/ru/inicio.webp" alt="Главный экран с ключом" width="540" height="1198" loading="lazy"><figcaption>Главный экран с ключом</figcaption></figure><figure><img src="../img/ru/llave.webp" alt="Блокировка и разблокировка" width="540" height="1198" loading="lazy"><figcaption>Блокировка и разблокировка</figcaption></figure><figure><img src="../img/ru/widget-controles.webp" alt="Виджет «Управление мотоциклом»" width="540" height="1198" loading="lazy"><figcaption>Виджет «Управление мотоциклом»</figcaption></figure><figure><img src="../img/ru/obd.webp" alt="Считыватель OBD" width="540" height="1198" loading="lazy"><figcaption>Считыватель OBD</figcaption></figure><figure><img src="../img/ru/dashboard-estilo.webp" alt="Стиль дашборда" width="540" height="1198" loading="lazy"><figcaption>Стиль дашборда</figcaption></figure><figure><img src="../img/ru/dashboard-escala.webp" alt="Шкалы приборов" width="540" height="1198" loading="lazy"><figcaption>Шкалы приборов</figcaption></figure><figure><img src="../img/ru/viaje-obd.webp" alt="Поездка с данными OBD" width="540" height="1198" loading="lazy"><figcaption>Поездка с данными OBD</figcaption></figure><figure><img src="../img/ru/pulso.webp" alt="Пульс с часов" width="540" height="1198" loading="lazy"><figcaption>Пульс с часов</figcaption></figure><!-- PENDIENTE (Manel): foto(s) del dashboard en el cuadro. No se genera ni se simula. --><figure class="pending"><div style="aspect-ratio:540/1198;border:2px dashed var(--accent);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:16px;color:var(--muted)"><span style="font-size:2rem">📷</span>Дашборд на приборной панели<small>Фото скоро</small></div><figcaption>Дашборд на приборной панели</figcaption></figure></div>
+    <h3 style="margin-top:28px">❤️ Спасибо</h3><p class="muted" style="margin-top:14px"><b>Особая благодарность за версию 2.4:</b></p><ul class="thanks"><li>Melo — за iPhone для тестов iOS</li><li>Inky en Moto — за журналы, благодаря которым заработал T350X, и его видео о приложении (<a href="https://youtube.com/@inkyenmoto">youtube.com/@inkyenmoto</a>)</li><li>Luis Gil — за помощь с OBD-ридером</li><li>Всем тестировщикам тестовых сборок 2.4</li></ul><p class="muted" style="margin-top:14px"><b>Спасибо спонсорам на Ko-fi!</b></p><ul class="thanks"><li>Francisco Javier S.</li><li>José Antonio R.</li><li>Raul</li><li>Luis Gil</li><li>INKY</li><li>Juanma M.</li><li>Alfonsomicra</li><li>Isra</li><li>Dionisios S.</li><li>José Manuel</li><li>Karsten</li><li>Francesc Xavier M.</li><li>Jon</li><li>Alberto</li><li>Анонимные спонсоры</li></ul>
   </section>
 
   <section id="features">
@@ -209,7 +220,7 @@ footer a { color: var(--fg); }
       <div class="card"><div class="ic">📸</div><h3>Где я припарковался</h3><p>Сохрани место и фотографию; компас на часах поможет вернуться к мотоциклу.</p></div>
       <div class="card"><div class="ic">🔧</div><h3>Обслуживание</h3><p>Масло, ремень, техосмотр и другое. Приложение напомнит, когда пора, и поможет учитывать фактический расход топлива.</p></div>
       <div class="card"><div class="ic">🆘</div><h3>Обнаружение падения</h3><p>Сигнал тревоги на телефоне и часах; если не ответишь, придёт SMS с твоим местоположением.</p><span class="tag">Экспериментальная функция</span></div>
-      <div class="card"><div class="ic">🔋</div><h3>Аккумулятор мотоцикла</h3><p>Напряжение и статус блокировки считываются с keyless-блока. Только чтение, команды не отправляются.</p><span class="tag">Новое в версии 2.3</span></div>
+      <div class="card"><div class="ic">🔑</div><h3>Ключ — в телефоне</h3><p>Разблокировка, блокировка и открытие сиденья или крышки бака из приложения, всегда с подтверждением.</p><span class="tag">Новое в 2.4</span></div>
       <div class="card"><div class="ic">📲</div><h3>Виджет «Подключить»</h3><p>Одно нажатие на главном экране подключает приложение к мотоциклу и показывает фотографию из гаража.</p><span class="tag">Новое в версии 2.3</span></div>
       <div class="card"><div class="ic">👥</div><h3>Режим пассажира</h3><p>Пассажир выбирает пункт назначения и музыку и управляет Android Auto со своего телефона.</p><span class="tag">Новое в версии 2.3</span></div>
       <div class="card"><div class="ic">🛟</div><h3>Надёжное сохранение поездок</h3><p>Поездка сохраняется каждые 30 секунд, даже если приложение закроется. Можно также импортировать маршруты GPX.</p><span class="tag">Новое в версии 2.3</span></div>
@@ -261,7 +272,7 @@ footer a { color: var(--fg); }
 <footer>
   <div class="wrap">
     <div class="links">
-      <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest" data-apk="phone">Скачать</a>
+      <a href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4/RideScreen-AA-v2.4.apk" data-apk="phone">Скачать</a>
       <a href="guide/">Руководство</a>
       <a href="watch/">Часы</a>
       <a href="https://github.com/mgb1982/ridescreen-aa">Исходный код</a>

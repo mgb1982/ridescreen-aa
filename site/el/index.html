@@ -142,6 +142,8 @@ footer a { color: var(--fg); }
 .top nav a:has(.flag) { display: inline-flex; align-items: center; }
 .flag { width: 24px; height: 16px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.18); display: block; }
 .top nav a:has(.flag):hover .flag { box-shadow: 0 0 0 2px var(--accent); }
+.thanks { margin: 6px 0 0 1.2em; padding: 0; color: var(--muted); columns: 2 220px; }
+.thanks li { margin: 2px 0; break-inside: avoid; }
 </style>
 </head>
 <body>
@@ -167,11 +169,11 @@ footer a { color: var(--fg); }
       <h1>Android Auto στην οθόνη της μοτοσικλέτας σου, <span>ασύρματα</span></h1>
       <p class="lede">Google Maps, Waze, Spotify και ο Βοηθός στην οθόνη της μοτοσικλέτας σου, με αυτόματη σύνδεση όταν ξεκινάς. Επιπλέον: φθηνότερα πρατήρια καυσίμων, καταγραφή διαδρομών με ρεκόρ, βίντεο με επικάλυψη ταχύτητας και εφαρμογή για ρολόι.</p>
       <div class="cta">
-        <a class="btn primary" href="https://github.com/mgb1982/ridescreen-aa/releases/latest" data-apk="phone">⬇️ Λήψη APK<span class="apk-meta"></span></a>
+        <a class="btn primary" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4/RideScreen-AA-v2.4.apk" data-apk="phone">⬇️ Λήψη APK<span class="apk-meta"></span></a>
         <a class="btn ghost" href="guide/">Οδηγός εγκατάστασης</a>
       </div>
       <p class="facts">Δωρεάν · χωρίς διαφημίσεις · ανοικτού κώδικα · Android 10 ή νεότερο</p>
-      <p class="facts alt">Άμεση λήψη της τελευταίας έκδοσης · <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">διαθέσιμη και στο GitHub</a> · <a href="https://github.com/mgb1982/ridescreen-aa/releases/tag/v2.3">τι νέο υπάρχει στην έκδοση 2.3</a></p>
+      <p class="facts alt">Άμεση λήψη της τελευταίας έκδοσης · <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">διαθέσιμη και στο GitHub</a> · <a href="https://github.com/mgb1982/ridescreen-aa/releases/tag/v2.4">τι νέο φέρνει η v2.4</a></p>
     </div>
     <div class="hero-media">
       <img class="video" src="../img/hero-video.webp" alt="Η οπτική του αναβάτη με Android Auto στην οθόνη και επικάλυψη ταχύτητας" width="720" height="1280">
@@ -186,13 +188,22 @@ footer a { color: var(--fg); }
     <div class="bikes">
       <span class="chip main">Zontes 125X</span><span class="chip main">Zontes 125V</span><span class="chip main">Zontes 125M</span><span class="chip main">Zontes 368 (G / K / E)</span><span class="chip main">Zontes 703RR</span><span class="chip main">Zontes T350X</span><span class="chip main">Zontes 703F</span><span class="chip main">Zontes 703T</span>
       <span class="chip">CFMoto</span><span class="chip">Voge</span><span class="chip">Moto Morini</span><span class="chip">QJ Motor</span><span class="chip">Benelli</span><span class="chip">Morbidelli</span><span class="chip">Rieju</span>
-      <span class="chip">Zontes 350D (σε δοκιμές)</span>
+      <span class="chip">Zontes 350D (σε δοκιμές)</span><span class="chip">Zontes 350E (σε δοκιμές)</span>
 
     <div class="bike-photos" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:18px">
       <figure style="margin:0;max-width:240px"><img src="../img/moto-703rr-cuadro.webp" alt="Android Auto στην οθόνη Zontes 703RR" width="900" height="1200" loading="lazy" style="width:100%;height:auto;border-radius:14px"><figcaption style="font-size:.85rem;opacity:.8;margin-top:6px">Zontes 703RR · RideScreen AA 2.3</figcaption></figure>
       <figure style="margin:0;max-width:240px"><img src="../img/moto-703rr-vista.webp" alt="Google Maps στην οθόνη Zontes 703RR" width="900" height="1200" loading="lazy" style="width:100%;height:auto;border-radius:14px"><figcaption style="font-size:.85rem;opacity:.8;margin-top:6px">Zontes 703RR · RideScreen AA 2.3</figcaption></figure>
     </div>
     </div>
+  </section>
+
+  <section id="whats-new">
+    <span class="eyebrow">Τι νέο υπάρχει</span>
+    <h2>Τι νέο φέρνει η <span>v2.4</span></h2>
+    <p class="sub">Το κλειδί στο κινητό, ένα dashboard με τα δεδομένα σου στον πίνακα οργάνων και δέκα γλώσσες. Δωρεάν, όπως πάντα.</p>
+    <div class="grid"><div class="card"><div class="ic">🔑</div><h3>Το κλειδί, στο κινητό</h3><p>Ξεκλείδωμα, κλείδωμα και άνοιγμα σέλας ή τάπας ρεζερβουάρ από την εφαρμογή, πάντα με επιβεβαίωση· μετά ελέγχει πώς έμεινε η μοτοσικλέτα. <b>Ποτέ με τη μοτοσικλέτα σε κίνηση.</b> Widget «Χειριστήρια μοτοσικλέτας», ξεκλείδωμα κατά τη σύνδεση (προαιρετικό), το κλείδωμα τερματίζει τη διαδρομή (προαιρετικό) και το McuID διαβάζεται με την κάμερα από το QR του πίνακα.</p><span class="tag">Νέο στην 2.4</span></div><div class="card"><div class="ic">🔌</div><h3>Αναγνώστης OBD</h3><p>Με αντάπτορα ELM327 Bluetooth, <b>μόνο ανάγνωση</b>: διαθέσιμα δεδομένα, κωδικοί βλαβών και ζωντανά στροφές, ταχύτητα, θερμοκρασία και γκάζι. Και συνεχής ανάγνωση κατά την προβολή: το «κινητήρας σε λειτουργία» προκύπτει πλέον από τις πραγματικές στροφές.</p><span class="tag">Νέο στην 2.4</span></div><div class="card"><div class="ic">📊</div><h3>Dashboard στον πίνακα οργάνων</h3><p>Αντί για το Android Auto, τα δεδομένα σου στον πίνακα: στυλ Sport, Racing και Touring, μέρα και νύχτα. Προσαρμοσμένο στην οθόνη της 125X, και η προεπισκόπηση είναι αυτό που θα δεις στη μοτοσικλέτα. Η κλίμακα των οργάνων προσαρμόζεται στη μοτοσικλέτα σου. Χωρίς OBD, η ταχύτητα προέρχεται από το GPS.</p><span class="tag">Νέο στην 2.4</span></div><div class="card"><div class="ic">🏍️</div><h3>Διαδρομές με δεδομένα OBD</h3><p>Αναπαραγωγή και βίντεο της διαδρομής με γκάζι και στροφές, και συγχώνευση διαδρομών (αναιρείται).</p><span class="tag">Νέο στην 2.4</span></div><div class="card"><div class="ic">🎬</div><h3>Στον πίνακα και στο παρκάρισμα</h3><p>Καλωσόρισμα στην αρχή της προβολής, αποχαιρετισμός με τη σύνοψη της ημέρας και ειδοποίηση βροχής όταν παρκάρεις, για τις επόμενες ώρες εκεί που άφησες τη μοτοσικλέτα.</p><span class="tag">Νέο στην 2.4</span></div><div class="card"><div class="ic">🎮</div><h3>Ένταση με ενδοεπικοινωνία</h3><p>Με το «Τα κουμπιά του τιμονιού ελέγχουν το Android Auto», μπορείς τώρα να κρατήσεις τα ▲/▼ για την ένταση.</p><span class="tag">Νέο στην 2.4</span></div><div class="card"><div class="ic">⌚</div><h3>Παλμοί από το ρολόι</h3><p>Οι παλμοί του ρολογιού στην εφαρμογή (❓ Βοήθεια), κάθε 5 δευτερόλεπτα. Και η εφαρμογή του ρολογιού, μεταφρασμένη σε όλες τις γλώσσες.</p><span class="tag">Νέο στην 2.4</span></div><div class="card"><div class="ic">🌍</div><h3>Δέκα γλώσσες</h3><p>Η εφαρμογή και το ρολόι, πλήρως σε ισπανικά, καταλανικά, αγγλικά, ιταλικά, γαλλικά, γερμανικά, πορτογαλικά, ελληνικά, ρωσικά και ταϊλανδικά.</p><span class="tag">Νέο στην 2.4</span></div></div>
+    <div class="shots"><figure><img src="../img/el/inicio.webp" alt="Αρχική με το κλειδί" width="540" height="1198" loading="lazy"><figcaption>Αρχική με το κλειδί</figcaption></figure><figure><img src="../img/el/llave.webp" alt="Κλείδωμα και ξεκλείδωμα" width="540" height="1198" loading="lazy"><figcaption>Κλείδωμα και ξεκλείδωμα</figcaption></figure><figure><img src="../img/el/widget-controles.webp" alt="Widget «Χειριστήρια μοτοσικλέτας»" width="540" height="1198" loading="lazy"><figcaption>Widget «Χειριστήρια μοτοσικλέτας»</figcaption></figure><figure><img src="../img/el/obd.webp" alt="Αναγνώστης OBD" width="540" height="1198" loading="lazy"><figcaption>Αναγνώστης OBD</figcaption></figure><figure><img src="../img/el/dashboard-estilo.webp" alt="Στυλ του dashboard" width="540" height="1198" loading="lazy"><figcaption>Στυλ του dashboard</figcaption></figure><figure><img src="../img/el/dashboard-escala.webp" alt="Κλίμακα οργάνων" width="540" height="1198" loading="lazy"><figcaption>Κλίμακα οργάνων</figcaption></figure><figure><img src="../img/el/viaje-obd.webp" alt="Διαδρομή με δεδομένα OBD" width="540" height="1198" loading="lazy"><figcaption>Διαδρομή με δεδομένα OBD</figcaption></figure><figure><img src="../img/el/pulso.webp" alt="Παλμοί από το ρολόι" width="540" height="1198" loading="lazy"><figcaption>Παλμοί από το ρολόι</figcaption></figure><!-- PENDIENTE (Manel): foto(s) del dashboard en el cuadro. No se genera ni se simula. --><figure class="pending"><div style="aspect-ratio:540/1198;border:2px dashed var(--accent);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:16px;color:var(--muted)"><span style="font-size:2rem">📷</span>Dashboard στον πίνακα οργάνων<small>Φωτογραφία σύντομα</small></div><figcaption>Dashboard στον πίνακα οργάνων</figcaption></figure></div>
+    <h3 style="margin-top:28px">❤️ Ευχαριστούμε</h3><p class="muted" style="margin-top:14px"><b>Ιδιαίτερες ευχαριστίες για την 2.4:</b></p><ul class="thanks"><li>Melo — για τον δανεισμό του iPhone για τις δοκιμές iOS</li><li>Inky en Moto — για τα αρχεία καταγραφής που έκαναν το T350X να λειτουργήσει και το βίντεό του για την εφαρμογή (<a href="https://youtube.com/@inkyenmoto">youtube.com/@inkyenmoto</a>)</li><li>Luis Gil — για τη βοήθειά του με τον αναγνώστη OBD</li><li>Όλους τους δοκιμαστές των δοκιμαστικών εκδόσεων της 2.4</li></ul><p class="muted" style="margin-top:14px"><b>Υποστηρικτές στο Ko-fi — ευχαριστούμε!</b></p><ul class="thanks"><li>Francisco Javier S.</li><li>José Antonio R.</li><li>Raul</li><li>Luis Gil</li><li>INKY</li><li>Juanma M.</li><li>Alfonsomicra</li><li>Isra</li><li>Dionisios S.</li><li>José Manuel</li><li>Karsten</li><li>Francesc Xavier M.</li><li>Jon</li><li>Alberto</li><li>Ανώνυμοι υποστηρικτές</li></ul>
   </section>
 
   <section id="features">
@@ -209,7 +220,7 @@ footer a { color: var(--fg); }
       <div class="card"><div class="ic">📸</div><h3>Πού πάρκαρα</h3><p>Αποθήκευσε το σημείο και μια φωτογραφία· η πυξίδα του ρολογιού σε οδηγεί πίσω στη μοτοσικλέτα.</p></div>
       <div class="card"><div class="ic">🔧</div><h3>Συντήρηση</h3><p>Λάδι, ιμάντας, τεχνικός έλεγχος και άλλα, με υπενθύμιση όταν έρθει η ώρα και καταγραφή της πραγματικής κατανάλωσης.</p></div>
       <div class="card"><div class="ic">🆘</div><h3>Ανίχνευση πτώσης</h3><p>Συναγερμός στο τηλέφωνο και στο ρολόι και, αν δεν απαντήσεις, SMS με την τοποθεσία σου.</p><span class="tag">Πειραματική λειτουργία</span></div>
-      <div class="card"><div class="ic">🔋</div><h3>Μπαταρία μοτοσικλέτας</h3><p>Τάση και κατάσταση κλειδώματος από τη μονάδα keyless. Μόνο ανάγνωση, χωρίς αποστολή εντολών.</p><span class="tag">Νέο στην έκδοση 2.3</span></div>
+      <div class="card"><div class="ic">🔑</div><h3>Το κλειδί, στο κινητό</h3><p>Ξεκλείδωμα, κλείδωμα και άνοιγμα σέλας ή τάπας ρεζερβουάρ από την εφαρμογή, πάντα με επιβεβαίωση.</p><span class="tag">Νέο στην 2.4</span></div>
       <div class="card"><div class="ic">📲</div><h3>Widget «Σύνδεση»</h3><p>Ένα πάτημα στην αρχική οθόνη συνδέει την εφαρμογή με τη μοτοσικλέτα, με τη φωτογραφία από το Γκαράζ σου.</p><span class="tag">Νέο στην έκδοση 2.3</span></div>
       <div class="card"><div class="ic">👥</div><h3>Λειτουργία συνεπιβάτη</h3><p>Ο συνεπιβάτης επιλέγει προορισμό και μουσική και χειρίζεται το Android Auto από το δικό του τηλέφωνο.</p><span class="tag">Νέο στην έκδοση 2.3</span></div>
       <div class="card"><div class="ic">🛟</div><h3>Ασφαλής αποθήκευση διαδρομών</h3><p>Η διαδρομή αποθηκεύεται κάθε 30 δευτερόλεπτα ακόμη κι αν κλείσει η εφαρμογή. Μπορείς επίσης να εισαγάγεις διαδρομές GPX.</p><span class="tag">Νέο στην έκδοση 2.3</span></div>
@@ -261,7 +272,7 @@ footer a { color: var(--fg); }
 <footer>
   <div class="wrap">
     <div class="links">
-      <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest" data-apk="phone">Λήψη</a>
+      <a href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4/RideScreen-AA-v2.4.apk" data-apk="phone">Λήψη</a>
       <a href="guide/">Οδηγός</a>
       <a href="watch/">Ρολόι</a>
       <a href="https://github.com/mgb1982/ridescreen-aa">Πηγαίος κώδικας</a>

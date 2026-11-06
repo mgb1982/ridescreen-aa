@@ -158,6 +158,8 @@ footer a { color: var(--fg); }
 .top nav a:has(.flag) { display: inline-flex; align-items: center; }
 .flag { width: 24px; height: 16px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.18); display: block; }
 .top nav a:has(.flag):hover .flag { box-shadow: 0 0 0 2px var(--accent); }
+.thanks { margin: 6px 0 0 1.2em; padding: 0; color: var(--muted); columns: 2 220px; }
+.thanks li { margin: 2px 0; break-inside: avoid; }
 </style>
 </head>
 <body>
@@ -183,11 +185,11 @@ footer a { color: var(--fg); }
       <h1>Android Auto en el cuadro de tu moto, <span>sin cables</span></h1>
       <p class="lede">Google Maps, Waze, Spotify y el Asistente en la pantalla de la moto, conectando solo al arrancar. Y además: gasolineras más baratas, tus viajes con récords, vídeos con la velocidad encima y app para el reloj.</p>
       <div class="cta">
-        <a class="btn primary" href="https://github.com/mgb1982/ridescreen-aa/releases/latest" data-apk="phone">⬇️ Descargar APK<span class="apk-meta"></span></a>
+        <a class="btn primary" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4/RideScreen-AA-v2.4.apk" data-apk="phone">⬇️ Descargar APK<span class="apk-meta"></span></a>
         <a class="btn ghost" href="guia/">Guía de instalación</a>
       </div>
       <p class="facts">Gratis · sin anuncios · de código abierto · Android 10 o superior</p>
-      <p class="facts alt">Descarga directa de la última versión · <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">también en GitHub</a> · <a href="https://github.com/mgb1982/ridescreen-aa/releases/tag/v2.3">novedades de la v2.3</a></p>
+      <p class="facts alt">Descarga directa de la última versión · <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">también en GitHub</a> · <a href="https://github.com/mgb1982/ridescreen-aa/releases/tag/v2.4">novedades de la v2.4</a></p>
     </div>
     <div class="hero-media">
       <img class="video" src="img/hero-video.webp" alt="Vista desde la moto con Android Auto en el cuadro y la velocidad del viaje sobreimpresa" width="720" height="1280">
@@ -202,13 +204,22 @@ footer a { color: var(--fg); }
     <div class="bikes">
       <span class="chip main">Zontes 125X</span><span class="chip main">Zontes 125V</span><span class="chip main">Zontes 125M</span><span class="chip main">Zontes 368 (G / K / E)</span><span class="chip main">Zontes 703RR</span><span class="chip main">Zontes T350X</span><span class="chip main">Zontes 703F</span><span class="chip main">Zontes 703T</span>
       <span class="chip">CFMoto</span><span class="chip">Voge</span><span class="chip">Moto Morini</span><span class="chip">QJ Motor</span><span class="chip">Benelli</span><span class="chip">Morbidelli</span><span class="chip">Rieju</span>
-      <span class="chip">Zontes 350D (en pruebas)</span>
+      <span class="chip">Zontes 350D (en pruebas)</span><span class="chip">Zontes 350E (en pruebas)</span>
 
     <div class="bike-photos" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:18px">
       <figure style="margin:0;max-width:240px"><img src="img/moto-703rr-cuadro.webp" alt="Zontes 703RR con Android Auto en el cuadro" width="900" height="1200" loading="lazy" style="width:100%;height:auto;border-radius:14px"><figcaption style="font-size:.85rem;opacity:.8;margin-top:6px">Zontes 703RR · RideScreen AA 2.3</figcaption></figure>
       <figure style="margin:0;max-width:240px"><img src="img/moto-703rr-vista.webp" alt="Vista del cuadro con Google Maps en la 703RR" width="900" height="1200" loading="lazy" style="width:100%;height:auto;border-radius:14px"><figcaption style="font-size:.85rem;opacity:.8;margin-top:6px">Zontes 703RR · RideScreen AA 2.3</figcaption></figure>
     </div>
     </div>
+  </section>
+
+  <section id="novedades">
+    <span class="eyebrow">Novedades</span>
+    <h2>Novedades de la <span>v2.4</span></h2>
+    <p class="sub">La llave en el móvil, un dashboard con tus datos en el cuadro y diez idiomas. Gratis, como siempre.</p>
+    <div class="grid"><div class="card"><div class="ic">🔑</div><h3>La llave, en el móvil</h3><p>Desbloquea, bloquea y abre el asiento o el depósito desde la app, siempre con confirmación; después comprueba cómo ha quedado la moto. <b>Nunca con la moto en marcha.</b> Widget «Controles de la moto», desbloquear al conectar (opcional), bloquear termina el viaje (opcional) y el McuID se lee con la cámara desde el QR del cuadro.</p><span class="tag">Nuevo en 2.4</span></div><div class="card"><div class="ic">🔌</div><h3>Lector OBD</h3><p>Con un adaptador ELM327 Bluetooth y <b>solo lectura</b>: datos disponibles, códigos de avería y RPM, velocidad, temperatura y acelerador en directo. Y lectura continua mientras proyectas: «motor en marcha» sale de las RPM reales.</p><span class="tag">Nuevo en 2.4</span></div><div class="card"><div class="ic">📊</div><h3>Dashboard en el cuadro</h3><p>En lugar de Android Auto, tus datos en el cuadro: estilos Sport, Racing y Touring, de día y de noche. Ajustado a la pantalla de la 125X, y la vista previa es lo que verás en la moto. La escala de las esferas se adapta a tu moto. Sin OBD, la velocidad sale del GPS.</p><span class="tag">Nuevo en 2.4</span></div><div class="card"><div class="ic">🏍️</div><h3>Viajes con datos del OBD</h3><p>Reproducción y vídeo del viaje con acelerador y RPM, y fusionar recorridos (se puede deshacer).</p><span class="tag">Nuevo en 2.4</span></div><div class="card"><div class="ic">🎬</div><h3>En el cuadro y al aparcar</h3><p>Bienvenida al empezar a proyectar, despedida con el resumen del día y aviso de lluvia al aparcar para las próximas horas donde has dejado la moto.</p><span class="tag">Nuevo en 2.4</span></div><div class="card"><div class="ic">🎮</div><h3>Volumen con intercomunicador</h3><p>Con «Los botones del manillar controlan Android Auto», ahora puedes dejar ▲/▼ para el volumen.</p><span class="tag">Nuevo en 2.4</span></div><div class="card"><div class="ic">⌚</div><h3>Pulso del reloj</h3><p>El pulso de tu reloj en la app (❓ Ayuda), cada 5 segundos. Y la app del reloj, traducida a todos los idiomas.</p><span class="tag">Nuevo en 2.4</span></div><div class="card"><div class="ic">🌍</div><h3>Diez idiomas</h3><p>La app y el reloj, completos en castellano, catalán, inglés, italiano, francés, alemán, portugués, griego, ruso y tailandés.</p><span class="tag">Nuevo en 2.4</span></div></div>
+    <div class="shots"><figure><img src="img/inicio.webp" alt="Inicio con la llave" width="540" height="1198" loading="lazy"><figcaption>Inicio con la llave</figcaption></figure><figure><img src="img/llave.webp" alt="Bloquear y desbloquear" width="540" height="1198" loading="lazy"><figcaption>Bloquear y desbloquear</figcaption></figure><figure><img src="img/widget-controles.webp" alt="Widget «Controles de la moto»" width="540" height="1198" loading="lazy"><figcaption>Widget «Controles de la moto»</figcaption></figure><figure><img src="img/obd.webp" alt="Lector OBD" width="540" height="1198" loading="lazy"><figcaption>Lector OBD</figcaption></figure><figure><img src="img/dashboard-estilo.webp" alt="Estilo del dashboard" width="540" height="1198" loading="lazy"><figcaption>Estilo del dashboard</figcaption></figure><figure><img src="img/dashboard-escala.webp" alt="Escala de las esferas" width="540" height="1198" loading="lazy"><figcaption>Escala de las esferas</figcaption></figure><figure><img src="img/viaje-obd.webp" alt="Viaje con datos OBD" width="540" height="1198" loading="lazy"><figcaption>Viaje con datos OBD</figcaption></figure><figure><img src="img/pulso.webp" alt="Pulso del reloj" width="540" height="1198" loading="lazy"><figcaption>Pulso del reloj</figcaption></figure><!-- PENDIENTE (Manel): foto(s) del dashboard en el cuadro. No se genera ni se simula. --><figure class="pending"><div style="aspect-ratio:540/1198;border:2px dashed var(--accent);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:16px;color:var(--muted)"><span style="font-size:2rem">📷</span>Dashboard en el cuadro<small>Foto pendiente</small></div><figcaption>Dashboard en el cuadro</figcaption></figure></div>
+    <h3 style="margin-top:28px">❤️ Gracias</h3><p class="muted" style="margin-top:14px"><b>Agradecimientos especiales de la 2.4:</b></p><ul class="thanks"><li>Melo, por prestar el iPhone para las pruebas de iOS</li><li>Inky en Moto, por los registros con los que la T350X empezó a funcionar y su vídeo sobre la app (<a href="https://youtube.com/@inkyenmoto">youtube.com/@inkyenmoto</a>)</li><li>Luis Gil, por su ayuda con el lector OBD</li><li>Todos los testers de las builds de prueba de la 2.4</li></ul><p class="muted" style="margin-top:14px"><b>Donantes en Ko-fi — ¡gracias!</b></p><ul class="thanks"><li>Francisco Javier S.</li><li>José Antonio R.</li><li>Raul</li><li>Luis Gil</li><li>INKY</li><li>Juanma M.</li><li>Alfonsomicra</li><li>Isra</li><li>Dionisios S.</li><li>José Manuel</li><li>Karsten</li><li>Francesc Xavier M.</li><li>Jon</li><li>Alberto</li><li>Donantes anónimos</li></ul>
   </section>
 
   <section id="funciones">
@@ -225,7 +236,7 @@ footer a { color: var(--fg); }
       <div class="card"><div class="ic">📸</div><h3>Dónde aparqué</h3><p>Guarda el sitio y una foto; la brújula del reloj te lleva hasta la moto.</p></div>
       <div class="card"><div class="ic">🔧</div><h3>Mantenimiento</h3><p>Aceite, correa, ITV… con aviso cuando toca, y tu consumo real.</p></div>
       <div class="card"><div class="ic">🆘</div><h3>Detector de caídas</h3><p>Alarma en el móvil y el reloj y, si no respondes, SMS con tu ubicación.</p><span class="tag">Experimental</span></div>
-      <div class="card"><div class="ic">🔋</div><h3>La batería de tu moto</h3><p>Voltaje y si está bloqueada, leídos de la caja keyless. Solo lectura: nunca envía órdenes.</p><span class="tag">Nuevo en 2.3</span></div>
+      <div class="card"><div class="ic">🔑</div><h3>La llave, en el móvil</h3><p>Desbloquea, bloquea y abre el asiento o el depósito desde la app, siempre con confirmación.</p><span class="tag">Nuevo en 2.4</span></div>
       <div class="card"><div class="ic">📲</div><h3>Widget «Conectar»</h3><p>Un toque en la pantalla de inicio y conecta con tu moto, con la foto de tu Garaje.</p><span class="tag">Nuevo en 2.3</span></div>
       <div class="card"><div class="ic">👥</div><h3>Modo pasajero</h3><p>Tu acompañante elige destino y música y mueve Android Auto desde su móvil.</p><span class="tag">Nuevo en 2.3</span></div>
       <div class="card"><div class="ic">🛟</div><h3>Viajes a salvo</h3><p>El viaje se guarda cada 30 s aunque la app se cierre. Y puedes importar rutas GPX.</p><span class="tag">Nuevo en 2.3</span></div>
@@ -277,7 +288,7 @@ footer a { color: var(--fg); }
 <footer>
   <div class="wrap">
     <div class="links">
-      <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest" data-apk="phone">Descargar</a>
+      <a href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4/RideScreen-AA-v2.4.apk" data-apk="phone">Descargar</a>
       <a href="guia/">Guía</a>
       <a href="reloj/">Reloj</a>
       <a href="https://github.com/mgb1982/ridescreen-aa">Código fuente</a>

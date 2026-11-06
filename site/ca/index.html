@@ -142,6 +142,8 @@ footer a { color: var(--fg); }
 .top nav a:has(.flag) { display: inline-flex; align-items: center; }
 .flag { width: 24px; height: 16px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.18); display: block; }
 .top nav a:has(.flag):hover .flag { box-shadow: 0 0 0 2px var(--accent); }
+.thanks { margin: 6px 0 0 1.2em; padding: 0; color: var(--muted); columns: 2 220px; }
+.thanks li { margin: 2px 0; break-inside: avoid; }
 </style>
 </head>
 <body>
@@ -167,11 +169,11 @@ footer a { color: var(--fg); }
       <h1>Android Auto al quadre de la teva moto, <span>sense cables</span></h1>
       <p class="lede">Google Maps, Waze, Spotify i l'Assistent a la pantalla de la moto, connectant-se sol en engegar. I a més: les benzineres més barates, els teus viatges amb rècords, vídeos amb la velocitat a sobre i app per al rellotge.</p>
       <div class="cta">
-        <a class="btn primary" href="https://github.com/mgb1982/ridescreen-aa/releases/latest" data-apk="phone">⬇️ Descarregar l’APK<span class="apk-meta"></span></a>
+        <a class="btn primary" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4/RideScreen-AA-v2.4.apk" data-apk="phone">⬇️ Descarregar l’APK<span class="apk-meta"></span></a>
         <a class="btn ghost" href="guia/">Guia d'instal·lació</a>
       </div>
       <p class="facts">Gratuïta · sense anuncis · de codi obert · Android 10 o superior</p>
-      <p class="facts alt">Descàrrega directa de l’última versió · <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">també a GitHub</a> · <a href="https://github.com/mgb1982/ridescreen-aa/releases/tag/v2.3">novetats de la v2.3</a></p>
+      <p class="facts alt">Descàrrega directa de l’última versió · <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">també a GitHub</a> · <a href="https://github.com/mgb1982/ridescreen-aa/releases/tag/v2.4">novetats de la v2.4</a></p>
     </div>
     <div class="hero-media">
       <img class="video" src="../img/hero-video.webp" alt="Vista des de la moto amb Android Auto al quadre i la velocitat del viatge sobreimpresa" width="720" height="1280">
@@ -186,13 +188,22 @@ footer a { color: var(--fg); }
     <div class="bikes">
       <span class="chip main">Zontes 125X</span><span class="chip main">Zontes 125V</span><span class="chip main">Zontes 125M</span><span class="chip main">Zontes 368 (G / K / E)</span><span class="chip main">Zontes 703RR</span><span class="chip main">Zontes T350X</span><span class="chip main">Zontes 703F</span><span class="chip main">Zontes 703T</span>
       <span class="chip">CFMoto</span><span class="chip">Voge</span><span class="chip">Moto Morini</span><span class="chip">QJ Motor</span><span class="chip">Benelli</span><span class="chip">Morbidelli</span><span class="chip">Rieju</span>
-      <span class="chip">Zontes 350D (en proves)</span>
+      <span class="chip">Zontes 350D (en proves)</span><span class="chip">Zontes 350E (en proves)</span>
 
     <div class="bike-photos" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:18px">
       <figure style="margin:0;max-width:240px"><img src="../img/moto-703rr-cuadro.webp" alt="Quadre del Zontes 703RR amb Android Auto" width="900" height="1200" loading="lazy" style="width:100%;height:auto;border-radius:14px"><figcaption style="font-size:.85rem;opacity:.8;margin-top:6px">Zontes 703RR · RideScreen AA 2.3</figcaption></figure>
       <figure style="margin:0;max-width:240px"><img src="../img/moto-703rr-vista.webp" alt="Vista de la moto amb Google Maps a la 703RR" width="900" height="1200" loading="lazy" style="width:100%;height:auto;border-radius:14px"><figcaption style="font-size:.85rem;opacity:.8;margin-top:6px">Zontes 703RR · RideScreen AA 2.3</figcaption></figure>
     </div>
     </div>
+  </section>
+
+  <section id="novedades">
+    <span class="eyebrow">Novetats</span>
+    <h2>Novetats de la <span>v2.4</span></h2>
+    <p class="sub">La clau al mòbil, un dashboard amb les teves dades al quadre i deu idiomes. Gratis, com sempre.</p>
+    <div class="grid"><div class="card"><div class="ic">🔑</div><h3>La clau, al mòbil</h3><p>Desbloqueja, bloqueja i obre el seient o el dipòsit des de l’app, sempre amb confirmació; després comprova com ha quedat la moto. <b>Mai amb la moto en marxa.</b> Widget «Controls de la moto», desbloquejar en connectar (opcional), bloquejar acaba el viatge (opcional) i el McuID es llegeix amb la càmera des del QR del quadre.</p><span class="tag">Nou a la 2.4</span></div><div class="card"><div class="ic">🔌</div><h3>Lector OBD</h3><p>Amb un adaptador ELM327 Bluetooth i <b>només lectura</b>: dades disponibles, codis d’avaria i RPM, velocitat, temperatura i accelerador en directe. I lectura contínua mentre projectes: «motor en marxa» surt de les RPM reals.</p><span class="tag">Nou a la 2.4</span></div><div class="card"><div class="ic">📊</div><h3>Dashboard al quadre</h3><p>En lloc d’Android Auto, les teves dades al quadre: estils Sport, Racing i Touring, de dia i de nit. Ajustat a la pantalla de la 125X, i la previsualització és el que veuràs a la moto. L’escala de les esferes s’adapta a la teva moto. Sense OBD, la velocitat surt del GPS.</p><span class="tag">Nou a la 2.4</span></div><div class="card"><div class="ic">🏍️</div><h3>Viatges amb dades de l’OBD</h3><p>Reproducció i vídeo del viatge amb accelerador i RPM, i fusionar recorreguts (es pot desfer).</p><span class="tag">Nou a la 2.4</span></div><div class="card"><div class="ic">🎬</div><h3>Al quadre i en aparcar</h3><p>Benvinguda en començar a projectar, comiat amb el resum del dia i avís de pluja en aparcar per a les properes hores on has deixat la moto.</p><span class="tag">Nou a la 2.4</span></div><div class="card"><div class="ic">🎮</div><h3>Volum amb intercomunicador</h3><p>Amb «Els botons del manillar impulsen Android Auto», ara pots deixar ▲/▼ per al volum.</p><span class="tag">Nou a la 2.4</span></div><div class="card"><div class="ic">⌚</div><h3>Pulsacions del rellotge</h3><p>Les pulsacions del rellotge a l’app (❓ Ajuda), cada 5 segons. I l’app del rellotge, traduïda a tots els idiomes.</p><span class="tag">Nou a la 2.4</span></div><div class="card"><div class="ic">🌍</div><h3>Deu idiomes</h3><p>L’app i el rellotge, complets en català, castellà, anglès, italià, francès, alemany, portuguès, grec, rus i tai.</p><span class="tag">Nou a la 2.4</span></div></div>
+    <div class="shots"><figure><img src="../img/ca/inicio.webp" alt="Inici amb la clau" width="540" height="1198" loading="lazy"><figcaption>Inici amb la clau</figcaption></figure><figure><img src="../img/ca/llave.webp" alt="Bloquejar i desbloquejar" width="540" height="1198" loading="lazy"><figcaption>Bloquejar i desbloquejar</figcaption></figure><figure><img src="../img/ca/widget-controles.webp" alt="Widget «Controls de la moto»" width="540" height="1198" loading="lazy"><figcaption>Widget «Controls de la moto»</figcaption></figure><figure><img src="../img/ca/obd.webp" alt="Lector OBD" width="540" height="1198" loading="lazy"><figcaption>Lector OBD</figcaption></figure><figure><img src="../img/ca/dashboard-estilo.webp" alt="Estil del dashboard" width="540" height="1198" loading="lazy"><figcaption>Estil del dashboard</figcaption></figure><figure><img src="../img/ca/dashboard-escala.webp" alt="Escala de les esferes" width="540" height="1198" loading="lazy"><figcaption>Escala de les esferes</figcaption></figure><figure><img src="../img/ca/viaje-obd.webp" alt="Viatge amb dades OBD" width="540" height="1198" loading="lazy"><figcaption>Viatge amb dades OBD</figcaption></figure><figure><img src="../img/ca/pulso.webp" alt="Pulsacions del rellotge" width="540" height="1198" loading="lazy"><figcaption>Pulsacions del rellotge</figcaption></figure><!-- PENDIENTE (Manel): foto(s) del dashboard en el cuadro. No se genera ni se simula. --><figure class="pending"><div style="aspect-ratio:540/1198;border:2px dashed var(--accent);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:16px;color:var(--muted)"><span style="font-size:2rem">📷</span>Dashboard al quadre<small>Foto pendent</small></div><figcaption>Dashboard al quadre</figcaption></figure></div>
+    <h3 style="margin-top:28px">❤️ Gràcies</h3><p class="muted" style="margin-top:14px"><b>Agraïments especials de la 2.4:</b></p><ul class="thanks"><li>Melo, per deixar l&#x27;iPhone per a les proves d&#x27;iOS</li><li>Inky en Moto, pels registres amb què la T350X va començar a funcionar i el seu vídeo sobre l&#x27;app (<a href="https://youtube.com/@inkyenmoto">youtube.com/@inkyenmoto</a>)</li><li>Luis Gil, per la seva ajuda amb el lector OBD</li><li>Tots els testers de les builds de prova de la 2.4</li></ul><p class="muted" style="margin-top:14px"><b>Donants a Ko-fi — gràcies!</b></p><ul class="thanks"><li>Francisco Javier S.</li><li>José Antonio R.</li><li>Raul</li><li>Luis Gil</li><li>INKY</li><li>Juanma M.</li><li>Alfonsomicra</li><li>Isra</li><li>Dionisios S.</li><li>José Manuel</li><li>Karsten</li><li>Francesc Xavier M.</li><li>Jon</li><li>Alberto</li><li>Donants anònims</li></ul>
   </section>
 
   <section id="funciones">
@@ -209,7 +220,7 @@ footer a { color: var(--fg); }
       <div class="card"><div class="ic">📸</div><h3>On he aparcat</h3><p>Desa el lloc i una foto; la brúixola del rellotge et porta fins a la moto.</p></div>
       <div class="card"><div class="ic">🔧</div><h3>Manteniment</h3><p>Oli, corretja, ITV… amb avís quan toca, i el teu consum real.</p></div>
       <div class="card"><div class="ic">🆘</div><h3>Detector de caigudes</h3><p>Alarma al mòbil i al rellotge i, si no respons, SMS amb la teva ubicació.</p><span class="tag">Experimental</span></div>
-      <div class="card"><div class="ic">🔋</div><h3>La bateria de la teva moto</h3><p>Voltatge i si està bloquejada, llegits de la caixa keyless. Només lectura: mai no envia ordres.</p><span class="tag">Nou a la 2.3</span></div>
+      <div class="card"><div class="ic">🔑</div><h3>La clau, al mòbil</h3><p>Desbloqueja, bloqueja i obre el seient o el dipòsit des de l’app, sempre amb confirmació.</p><span class="tag">Nou a la 2.4</span></div>
       <div class="card"><div class="ic">📲</div><h3>Widget «Connecta»</h3><p>Un toc a la pantalla d’inici i es connecta amb la moto, amb la foto del teu Garatge.</p><span class="tag">Nou a la 2.3</span></div>
       <div class="card"><div class="ic">👥</div><h3>Mode passatger</h3><p>El teu acompanyant tria destinació i música i mou Android Auto des del seu mòbil.</p><span class="tag">Nou a la 2.3</span></div>
       <div class="card"><div class="ic">🛟</div><h3>Viatges a salvo</h3><p>El viatge es desa cada 30 s encara que l’app es tanqui. I pots importar rutes GPX.</p><span class="tag">Nou a la 2.3</span></div>
@@ -261,7 +272,7 @@ footer a { color: var(--fg); }
 <footer>
   <div class="wrap">
     <div class="links">
-      <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest" data-apk="phone">Descarregar</a>
+      <a href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4/RideScreen-AA-v2.4.apk" data-apk="phone">Descarregar</a>
       <a href="guia/">Guia</a>
       <a href="rellotge/">Rellotge</a>
       <a href="https://github.com/mgb1982/ridescreen-aa">Codi font</a>
