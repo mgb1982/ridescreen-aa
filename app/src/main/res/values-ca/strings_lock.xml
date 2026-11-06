@@ -4,4 +4,5 @@
     <string name="lock_ends_trip">Bloquejar acaba el viatge</string>
     <string name="lock_ends_trip_desc">En bloquejar la moto des de l\'app es desa on has aparcat i es deixa de projectar. Mai en marxa (més de 5 km/h) ni amb el motor encès.</string>
     <string name="pke_fail_moving">No s\'ha bloquejat: la moto s\'està movent.</string>
+    <string name="pke_fail_moving_any">No s\'ha fet: la moto s\'està movent.</string>
 </resources>

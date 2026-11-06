@@ -16,7 +16,7 @@ android {
         applicationId = "dev.zanderp.opencfmoto"
         minSdk = 30          // Wear OS 3 (Galaxy Watch 4 and newer)
         targetSdk = 36
-        versionCode = 1
+        versionCode = 2
         versionName = ((project.findProperty("appVersion") as String?) ?: "1") +
             ((project.findProperty("versionSuffix") as String?) ?: "-dev")
     }

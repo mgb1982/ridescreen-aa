@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 2.4 RC: strings that fell back to English (OBD reader, dashboard styles, watch heart rate). -->
+<resources>
+    <string name="controls_dash_design">Estil del dashboard</string>
+    <string name="controls_dash_fields">Camps visibles</string>
+    <string name="dash_design_racing">Racing</string>
+    <string name="dash_design_sport">Sport</string>
+    <string name="dash_design_touring">Touring</string>
+    <string name="heart_rate_live">Lectura en directe del rellotge</string>
+    <string name="heart_rate_waiting">Esperant una lectura… Obre RideScreen al rellotge i permet els sensors corporals.</string>
+    <string name="help_heart_rate">❤️ Pols (rellotge)</string>
+    <string-array name="dash_obd_field_names">
+        <item>RPM</item><item>Velocitat</item><item>Refrigerant</item><item>Voltatge</item><item>Càrrega calculada</item><item>Temperatura d\'admissió</item><item>Pressió baromètrica</item><item>Càrrega absoluta</item><item>Throttle</item>
+    </string-array>
+</resources>

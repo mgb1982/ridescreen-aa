@@ -154,10 +154,17 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
         photoShown = null // the photo may have arrived while we were away
         Wearable.getMessageClient(this).addListener(this)
         val permission = heartRatePermission()
+        val prefs = getSharedPreferences("wear_prefs", MODE_PRIVATE)
         if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
             registerHeartRateSensor()
             requestNotificationPermissionIfNeeded()
-        } else requestPermissions(arrayOf(permission), 73)
+        } else if (!prefs.getBoolean(KEY_HEART_ASKED, false)) {
+            // Ask once: onResume runs on every wrist raise, and a denied prompt must not come back each time.
+            prefs.edit().putBoolean(KEY_HEART_ASKED, true).apply()
+            requestPermissions(arrayOf(permission), 73)
+        } else {
+            requestNotificationPermissionIfNeeded()
+        }
         handler.removeCallbacks(subscribeTick)
         if (!ambient) handler.post(subscribeTick)
         root.requestFocus()
@@ -578,6 +585,7 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
         private const val AMBIENT_STALE_MS = 90_000L
         private val COLOR_AMBER = Color.parseColor("#FFB300")
         private val COLOR_GREY = Color.parseColor("#9E9E9E")
+        private const val KEY_HEART_ASKED = "heart_permission_asked"
         private val COLOR_ACCENT = Color.parseColor("#D1A955")
     }
 }

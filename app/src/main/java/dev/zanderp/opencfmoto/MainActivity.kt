@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
             log("QR scan cancelled")
             return@registerForActivityResult
         }
-        log("QR raw: $raw")
+        log("QR raw: ${QrData.loggableRaw(raw)}")
         val qr = QrData.parse(raw)
         if (qr == null) {
             val hint = QrData.parseFailureHint(raw)
@@ -2318,6 +2318,8 @@ class MainActivity : AppCompatActivity() {
                     )
                     runOnUiThread {
                         ConnectionState.set(Phase.ERROR, getString(R.string.main_phone_hotspot_no_iface))
+                        // The scan runs ~45 s; the screen may be gone by now (2.3 crash: BadTokenException).
+                        if (isFinishing || isDestroyed) return@runOnUiThread
                         com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
                             .setTitle(R.string.main_phone_hotspot_dialog_title)
                             .setMessage(R.string.main_phone_hotspot_no_iface)

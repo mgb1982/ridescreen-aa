@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 2.4 RC: strings that fell back to English (OBD reader, dashboard styles, watch heart rate). -->
+<resources>
+    <string name="controls_dash_design">Стиль приборной панели</string>
+    <string name="controls_dash_fields">Видимые поля</string>
+    <string name="dash_design_racing">Racing</string>
+    <string name="dash_design_sport">Sport</string>
+    <string name="dash_design_touring">Touring</string>
+    <string name="heart_rate_live">Показания с часов в реальном времени</string>
+    <string name="heart_rate_waiting">Ждём показаний… Откройте RideScreen на часах и разрешите датчики тела.</string>
+    <string name="help_heart_rate">❤️ Пульс (часы)</string>
+    <string name="obd_connecting">Подключение к адаптеру…</string>
+    <string name="obd_entry">🔌 Считыватель OBD (тест)</string>
+    <string name="obd_fail_ecu">Адаптер ответил, а блок управления двигателем — нет. Включите зажигание (или заведите двигатель) и повторите.</string>
+    <string name="obd_fail_link">Не удалось подключиться к адаптеру. Он сопряжён, получает питание (зажигание включено) и не занят другим приложением?</string>
+    <string name="obd_intro">Читает блок управления двигателем через %1$s: какие данные он даёт, их текущие значения, сохранённые коды ошибок и 20 с оборотов, скорости, температуры и дросселя в реальном времени.\n\nТолько чтение: никогда не стирает коды и ничего не отправляет на мотоцикл. Зажигание включено (лучше с работающим двигателем), Torque закрыт.</string>
+    <string name="obd_live_disabled">Непрерывное чтение выключено.</string>
+    <string name="obd_live_enabled">Чтение %1$s во время проекции: работа двигателя теперь определяется по реальным оборотам.</string>
+    <string name="obd_live_off">Не использовать во время проекции</string>
+    <string name="obd_live_on">Использовать этот адаптер во время проекции</string>
+    <string name="obd_no_adapter">Сопряжённый адаптер OBD не найден.\n\nСначала выполните сопряжение ELM327 в Android → Bluetooth (PIN обычно 1234 или 0000) и закройте другие OBD-приложения (Torque). Сопряжено сейчас: %1$s</string>
+    <string name="obd_pick_other">Выбрать из списка сопряжённых</string>
+    <string name="obd_pick_title">Какой из них адаптер OBD?</string>
+    <string name="obd_share_hint">Всё есть и в журнале: ❓ Помощь → Поделиться журналами.</string>
+    <string name="obd_start">Начать</string>
+    <string name="obd_title">Считыватель OBD (тест)</string>
+    <string name="setup_clock_smart_threshold">Порог SMART (тест): повторная синхронизация, если панель запрашивает время так поздно (мс)</string>
+    <string-array name="dash_obd_field_names">
+        <item>RPM</item><item>Скорость</item><item>Охлаждающая жидкость</item><item>Напряжение</item><item>Расчётная нагрузка</item><item>Температура на впуске</item><item>Атмосферное давление</item><item>Абсолютная нагрузка</item><item>Throttle</item>
+    </string-array>
+</resources>

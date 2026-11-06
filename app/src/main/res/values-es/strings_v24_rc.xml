@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 2.4 RC: strings that fell back to English (OBD reader, dashboard styles, watch heart rate). -->
+<resources>
+    <string name="heart_rate_live">Lectura en directo de tu reloj</string>
+    <string name="heart_rate_waiting">Esperando una lectura… Abre RideScreen en el reloj y permite los sensores corporales.</string>
+    <string name="help_heart_rate">❤️ Pulso (reloj)</string>
+</resources>

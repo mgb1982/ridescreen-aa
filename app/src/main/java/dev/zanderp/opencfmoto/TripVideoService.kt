@@ -90,7 +90,19 @@ class TripVideoService : Service() {
             return START_NOT_STICKY
         }
         val req = TripVideoJob.pending
-        if (req == null || transformer != null) { if (req == null) stopSelf(); return START_NOT_STICKY }
+        if (req == null || transformer != null) {
+            if (req == null) {
+                // Started with startForegroundService(): going foreground before stopping avoids the
+                // "did not call startForeground()" crash (the 2.3 crashes in the other services).
+                runCatching {
+                    ServiceCompat.startForeground(this, NOTIF_PROGRESS, progressNotification(0, map = true),
+                        if (Build.VERSION.SDK_INT >= 29) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC else 0)
+                    ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+                }
+                stopSelf()
+            }
+            return START_NOT_STICKY
+        }
         TripVideoJob.pending = null
         finished = false
         try {

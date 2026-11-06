@@ -239,9 +239,10 @@ object PkeUnlock {
     // ── the send (blocking: call it off the main thread, same contract as PkeBattery.read)
 
     fun send(ctx: Context, action: Action): Result {
-        // The bike must never be locked while it moves: refused before anything is sent to the box.
-        if (action == Action.LOCK && LockEndsTrip.refusesLock(ctx)) {
-            log("lock refused: the bike is moving")
+        // Nothing but unlock while the bike moves: locking, the seat or the fuel cap in motion is never
+        // wanted. Refused before anything is sent to the box.
+        if (action != Action.UNLOCK && LockEndsTrip.refusesLock(ctx)) {
+            log("${action.label} refused: the bike is moving")
             return Result(false, Failure.MOVING, action)
         }
         val res = sendRaw(ctx, action)

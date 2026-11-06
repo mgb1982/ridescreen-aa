@@ -250,9 +250,24 @@ data class QrData(
         /**
          * Hint for failed scans (vehicle-info QR, app-download QR, etc.) — not a pairing code.
          */
+        /**
+         * The keyless (PKE) pairing QR — `125;010;<id>;<hex>;…` from the dash's Information screen —
+         * carries key material. Riders sometimes scan it by mistake in the bike scanner.
+         */
+        fun isKeylessPairingQr(raw: String): Boolean {
+            val t = raw.trim()
+            return !t.contains("ssid=", ignoreCase = true) && !t.contains("://") && t.count { it == ';' } >= 5
+        }
+
+        /** What the log may show of a scanned QR: never the keyless pairing QR's fields. */
+        fun loggableRaw(raw: String): String =
+            if (isKeylessPairingQr(raw)) "keyless pairing QR (${raw.trim().split(';').size} fields, not logged)" else raw
+
         fun parseFailureHint(raw: String): String? {
             val t = raw.trim()
             when {
+                isKeylessPairingQr(t) ->
+                    return "that is the keyless (PKE) pairing QR, not screen mirroring — put the dash on its mirroring screen (screen 3 on the 125X) and scan that QR"
                 t.contains("motomorini.com", ignoreCase = true) &&
                     !t.contains("Wifi=", ignoreCase = true) ->
                     return "Moto Morini QR has no Wifi= field — open the phone-link / MotoFun QR on the dash"

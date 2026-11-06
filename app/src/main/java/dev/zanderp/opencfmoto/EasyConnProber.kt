@@ -100,7 +100,9 @@ class EasyConnProber(
         log("[RESYNC] $reason — closing ${socks.size} bike socket(s); reconnect will re-probe")
         for (s in socks) try { s.close() } catch (_: Exception) {}
     }
-    private val servers = ArrayList<ServerSocket>()
+    /** Copy-on-write: the heartbeat logger reads it while start/stop add and clear it (2.3 crash:
+     *  IndexOutOfBounds in ec-hb; locking only the reader didn't help, the writers never locked). */
+    private val servers = java.util.concurrent.CopyOnWriteArrayList<ServerSocket>()
     private var multicastLock: WifiManager.MulticastLock? = null
     private var heartbeatThread: Thread? = null
     /** One heartbeat thread per live :10922 channel socket (CAR_CTRL + CAR_DATA). */
@@ -1199,7 +1201,7 @@ class EasyConnProber(
                 // Another thread may be closing the servers list (2.3 crash: IndexOutOfBounds in ec-hb).
                 try {
                     val yFrames = yunmo?.framesSent ?: 0
-                    val open = synchronized(servers) { servers.toList() }.count { !it.isClosed }
+                    val open = servers.count { !it.isClosed }
                     log(
                         "hb#$i probed=$probed video=${video != null} framesSent=$framesSent" +
                             (if (yFrames > 0 || yunmo != null) " yunmoFrames=$yFrames" else "") +

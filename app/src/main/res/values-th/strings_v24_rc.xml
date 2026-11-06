@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 2.4 RC: strings that fell back to English (OBD reader, dashboard styles, watch heart rate). -->
+<resources>
+    <string name="controls_dash_design">สไตล์แดชบอร์ด</string>
+    <string name="controls_dash_fields">ช่องที่แสดง</string>
+    <string name="dash_design_racing">Racing</string>
+    <string name="dash_design_sport">Sport</string>
+    <string name="dash_design_touring">Touring</string>
+    <string name="heart_rate_live">ค่าสดจากนาฬิกาของคุณ</string>
+    <string name="heart_rate_waiting">กำลังรอค่า… เปิด RideScreen บนนาฬิกาและอนุญาตเซ็นเซอร์ร่างกาย</string>
+    <string name="help_heart_rate">❤️ ชีพจร (นาฬิกา)</string>
+    <string name="setup_clock_smart_threshold">เกณฑ์ SMART (ทดสอบ): ซิงค์ใหม่เมื่อหน้าปัดถามเวลาช้าเท่านี้ (ms)</string>
+    <string-array name="dash_obd_field_names">
+        <item>RPM</item><item>ความเร็ว</item><item>น้ำหล่อเย็น</item><item>แรงดันไฟ</item><item>โหลดที่คำนวณ</item><item>อุณหภูมิอากาศเข้า</item><item>ความกดอากาศ</item><item>โหลดสัมบูรณ์</item><item>Throttle</item>
+    </string-array>
+</resources>

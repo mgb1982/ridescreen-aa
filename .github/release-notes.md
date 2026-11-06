@@ -2,69 +2,64 @@
 
 Basada en [OpenCfMoto](https://github.com/zanderp/open-cfmoto) de Alexandru (zanderp). No es una app oficial de Zontes ni de CFMoto. Código fuente en este repositorio, licencia AGPL-3.0.
 
-> ⚠️ **¿La probaste alguna vez y no te funcionó? Dale otra oportunidad.** Desde la v2.2 es mucho más intuitiva, y la v2.3 amplía la gama de motos compatibles.
+> ⚠️ **¿La probaste alguna vez y no te funcionó? Dale otra oportunidad.** Desde la v2.2 es mucho más intuitiva, y la v2.3 y la v2.4 amplían la gama de motos compatibles.
 >
 > 📱 [Guía del móvil](https://ridescreen.app/guia/) · ⌚ [Guía del reloj](https://ridescreen.app/reloj/)
 
-### Novedades de la v2.3
-**🏠 Tu moto, de un vistazo**
-- **📲 Widget 1×1 «Conectar»** (idea de Luis Gil): un toque en tu pantalla de inicio conecta con la moto guardada. Lleva la foto de tu Garaje y un anillo de estado: gris (listo), dorado (conectando) y verde con ✓ (conectado).
-- **🛡️ Sin cancelaciones por error**: el botón **Conectar/Detener** de la app se bloquea 3 segundos al empezar a conectar y se ve difuminado mientras tanto. El widget nunca cancela.
-- **🔋 Tarjeta «Batería de la moto»**: voltaje y estado (bloqueada / desbloqueada) leídos de la caja keyless de la moto, **solo lectura**: nunca envía órdenes ni toca llaves, cerraduras ni firmware. También con la moto apagada y bloqueada. Se pone naranja o roja si la batería anda justa. Aparece al meter tu código PKE en **Ayuda → Batería** (solo lo muestra la app oficial de Zontes, en la gestión del vehículo).
-- **🏍️ «Motor en marcha» / «motor parado»**: la app lo deduce del voltaje (sube al arrancar, baja al apagar) y lo muestra junto a «Conectado: proyectando». Con la app abierta, lee el voltaje cada 15 s mientras proyectas.
-- **⚡ Velocidad en directo** en la pantalla principal mientras ruedas, y un **sonido al conectar o perder la moto** (6 estilos, pensados para ir con casco).
-- **🏠 Casa, Trabajo y tus próximas citas** del calendario, a un toque al estar conectado. «Llego en X min» avisa de tu hora de llegada. Elige **Waze o Google Maps**.
-- **📊 Tu racha, el resumen del domingo y el comparador de trayectos** («4 min más que lo habitual»).
+### Novedades de la v2.4
 
-**Más motos**
-- **🏍️ «¿Qué moto es?»**: elige tu Zontes (125X, 125V, 368 G/K/E) y la app aplica la configuración de pantalla que sabemos que funciona. **Toda la gama 368 es compatible**.
-- **En pruebas con la comunidad**: Zontes 125M, 350D y T350X (conexión por punto de acceso del móvil y Wi-Fi Direct).
-- **Wi-Fi Direct y Android 17**: la app pide los permisos que hacen falta antes de hablar con el cuadro.
+**🔑 La llave, en el móvil**
+- **Desbloquear, bloquear, abrir el asiento y el depósito** desde la app (❓ Ayuda → 🔒 Bloquear / desbloquear), siempre con confirmación. Después de bloquear o desbloquear, la app vuelve a leer el estado y te avisa si no coincide.
+- **Nunca con la moto en marcha**: bloquear, asiento y depósito se rechazan si la moto se mueve (velocidad del OBD o del GPS).
+- **Widget «Controles de la moto»** (4×2, o 5×1 solo con iconos): Conectar, Desbloquear, Bloquear, Asiento y Depósito, con la foto de tu Garaje.
+- **Desbloquear al conectar** (opcional, apagado por defecto). Solo cuando pulsas Conectar tú: nunca en la conexión automática.
+- **Bloquear termina el viaje** (opcional): guarda dónde has aparcado y deja de proyectar. Nunca en marcha ni con el motor encendido.
+- **El McuID se lee con la cámara** desde el QR de Información del cuadro. No va a las copias de seguridad.
 
-**Conexión**
-- **🔌 El Bluetooth del cuadro** despierta la espera larga y puede **arrancar la conexión solo**: en Ajustes, *Conectar cuando se conecte un dispositivo Bluetooth*.
-- **🔌 Android Auto se recupera solo** si se cae una vez enlazado el cuadro.
-- **Primera conexión más clara**: pide «Dispositivos cercanos» al abrir y te lleva directo al interruptor del Wi-Fi si está apagado. En Xiaomi/Redmi/POCO explica el Autostart una sola vez.
-- **🎙️ Micrófono del casco** fijado para la voz de Android Auto.
-- **🎮 Controles siempre a mano** (fila «Más»), y se acabó el cierre cuando una parada coincidía con un arranque.
+**🔌 OBD**
+- **Lector OBD** (❓ Ayuda → 🔌 Lector OBD) con un adaptador ELM327 Bluetooth, **solo lectura**: datos disponibles, códigos de avería y RPM, velocidad, temperatura y acelerador en directo.
+- **Lectura continua mientras proyectas**: «motor en marcha» sale de las RPM reales.
 
-**Tus viajes**
-- **🛟 Tus viajes, a salvo**: el viaje en curso se guarda cada 30 segundos. Si la app se cierra a mitad de camino, al volver a abrirla lo recupera y lo guarda en Viajes.
-- **📥 Importar viaje (GPX)**: en Viajes puedes traer un recorrido grabado con otra app (o rescatado de la Cronología de Google) y cuenta como un viaje más: mapa, récords y kilómetros de mantenimiento.
-- **🎬 Vídeo del viaje, mucho más completo**: 6 estilos, mapa de ruta, de colores por velocidad o de calles reales, tarjetas de apertura y cierre, vista previa en directo, elegir qué clips entran, **«Lo mejor del viaje»** en vertical, música y ×4 sincronizado. Se exporta en segundo plano y los vídeos quedan listados en la app.
-- **🚦 Onda verde (observación)**: predice cada semáforo con tus viajes anteriores y puntúa el acierto.
-- **🔧 Mantenimiento**: plan manual de la 125X (aceite, casquillos de la polea, dirección, válvulas…) y primer servicio a X km, luego cada Y.
+**📊 Dashboard en el cuadro**
+- En lugar de Android Auto, el cuadro puede mostrar un **dashboard con tus datos**: estilos **Sport, Racing y Touring**, de día y de noche, con los campos que elijas. Sin OBD, la velocidad sale del GPS.
+- **Ajustado a la pantalla de la 125X**: nada importante queda debajo de la franja del cuadro, y la vista previa es exactamente lo que verás en la moto.
+- **Escala de las esferas** a tu moto: velocímetro de 120 a 240 km/h y cuentarrevoluciones de 10.000 a 14.000 rpm (en una 125X viene en 140 km/h y 10.000 rpm). Zona roja desde 9.000 rpm.
+- Se cambia desde Controles o el atajo del icono de la app, y puede **empezar directamente** al conectar.
 
-**Seguridad y privacidad**
-- **📦 Caja negra (experimental)** con el detector de caídas: guarda el último minuto antes del impacto, con informe y GPX. Incluye «Simular caída».
-- **Copias de seguridad privadas**: sin contraseñas ni contactos.
-- **Aviso de telemetría** claro y transparente.
+**🏍️ Viajes**
+- **Reproducción y vídeo del viaje con datos del OBD** (acelerador y RPM) y **fusionar recorridos** (se puede deshacer).
 
-**Pasajero**
-- **👥 Modo pasajero**: tu acompañante mueve Android Auto, elige el destino y cambia la música desde su móvil. Avisos de «voy de camino» por WhatsApp.
+**🎬 En el cuadro y al aparcar**
+- **Bienvenida** al empezar a proyectar y **despedida** con el resumen del día.
+- **Aviso de lluvia al aparcar** para las próximas horas donde has dejado la moto.
 
-**Reloj**
-- **⌚ Anillo de velocidad** en la página principal y tarjeta con el **resumen del último viaje**.
+**🎮 Mandos**
+- Con «Los botones del manillar controlan Android Auto», ahora puedes dejar **▲/▼ para el volumen** (ideal si llevas intercomunicador): el volumen ya no se queda fijo.
 
-**Control externo (avanzado)**
-- Órdenes `app.ridescreen.action.*` por *broadcast* para Key Mapper (modo Experto con Shizuku), Tasker o MacroDroid. **Desactivado por defecto** y solo las obedece mientras proyectas.
+**⌚ Reloj**
+- **Pulso** del reloj en la app (❓ Ayuda), cada 5 segundos.
+- La app del reloj, traducida a todos los idiomas de la app.
 
-**Idiomas**: toda la app en castellano, nueva traducción completa al **italiano**, y catalán.
+**Motos**
+- **Zontes 350D y 350E** (Wi‑Fi Direct): **en pruebas** con la comunidad. Conectan, pero la conexión todavía tarda y la imagen va a pocas imágenes por segundo.
+- Mejoras de Wi‑Fi Direct para la T350X.
 
-**Y además**: la foto de tu moto en el Garaje ya no sale girada (vuelve a elegirla si te salía tumbada); el vídeo se recupera mejor si el decodificador del móvil se atasca; la hora del cuadro se puede volver a poner tocando el reloj de la tarjeta de estado; los mapas de viajes y semáforos reutilizan la caché (sin volver a descargar tras actualizar); dirección web nueva (**ridescreen.app**) para precios, guías y enlaces; y muchas correcciones de estabilidad.
+**Idiomas**: francés, alemán, portugués, griego, ruso y tailandés **completos** (app y reloj), además de castellano, catalán, inglés e italiano.
 
-❤️ Gracias a los primeros que han apoyado el proyecto en Ko-fi: Francisco Javier S., José Antonio R., Raul y tres donantes anónimos. Gracias a vosotros esto sigue adelante.
+**Y además**: iconos nuevos en inicio, en la tarjeta de la llave y en el widget; y arreglados los cierres que nos habéis reportado en la v2.3.
 
-**Y todo lo de la v2.2 y la v2**: pantalla principal nueva, Aparcar con foto, gasolineras con precio, semáforos, ajuste de pantalla en directo, detector de caídas, mapa de calor, récords, tu año en moto, libreta de mantenimiento y brújula hacia tu moto en el reloj.
+❤️ Gracias a Melo por prestar el iPhone para las pruebas de iOS, a Luis Gil por su ayuda con el OBD, a **Inky en Moto** por los registros que hicieron funcionar la T350X y por su [vídeo sobre la app](https://youtube.com/@inkyenmoto), a todos los testers y a quienes apoyáis el proyecto en Ko-fi: Francisco Javier S., José Antonio R., Raul, Luis Gil, INKY, Juanma M., Alfonsomicra, Isra, Dionisios S., José Manuel, Karsten y los donantes anónimos.
+
+**Y todo lo de la v2.3**: widget Conectar, batería de la moto, Casa y Trabajo, más motos (toda la gama 368), viajes a salvo, importar GPX, vídeo del viaje, modo pasajero y mucho más.
 
 ### Instalación en el móvil
-1. Descarga **`RideScreen-AA-v2.3.apk`** (abajo, en *Assets*).
-2. Si vienes de la **v1/v1.1/v2/v2.2** o de la versión del grupo (zontes-1/2), se instala **encima** sin perder nada. Si tienes la OpenCfMoto **oficial**, desinstálala primero: están firmadas con claves distintas.
+1. Descarga **`RideScreen-AA-v2.4.apk`** (abajo, en *Assets*).
+2. Si vienes de la **v1/v1.1/v2/v2.2/v2.3** o de la versión del grupo (zontes-1/2), se instala **encima** sin perder nada. Si tienes la OpenCfMoto **oficial**, desinstálala primero: están firmadas con claves distintas.
 3. Si sale el aviso de **Play Protect** ("app no segura" o "bloqueada"), es porque Google aún no conoce la app: **Más detalles → Instalar de todas formas**.
 4. Las próximas versiones te las ofrecerá la propia app.
 
 ### Instalación en el reloj (opcional, Wear OS)
-Desde la v2.2 el reloj se actualiza **desde el móvil**: **❓ Ayuda → ⌚ Actualizar la app del reloj** descarga **`RideScreen-AA-v2.3-WearOS-reloj.apk`** y se la envía por Bluetooth (tarda un par de minutos). Si es tu primera vez, la instalación inicial se hace por depuración inalámbrica: paso a paso en la [guía del reloj](https://ridescreen.app/reloj/).
+Desde la v2.2 el reloj se actualiza **desde el móvil**: **❓ Ayuda → ⌚ Actualizar la app del reloj** descarga **`RideScreen-AA-v2.4-WearOS-reloj.apk`** y se la envía por Bluetooth (tarda un par de minutos). Si es tu primera vez, la instalación inicial se hace por depuración inalámbrica: paso a paso en la [guía del reloj](https://ridescreen.app/reloj/).
 
 ### Si algo falla
 Mira la [guía del móvil](https://ridescreen.app/guia/) (tiene los mensajes de error más habituales y qué hacer). Si sigue, en la app **❓ Ayuda → Compartir registros** y pásalo por el grupo contando qué ha pasado. Los registros ocultan números de serie y contraseñas.

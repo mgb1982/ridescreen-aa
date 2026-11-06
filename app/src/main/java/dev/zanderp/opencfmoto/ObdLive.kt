@@ -52,6 +52,10 @@ object ObdLive {
         private set
     @Volatile private var worker: Thread? = null
     @Volatile private var stopFlag = false
+
+    /** A reader thread stops when asked or when it is no longer the current [worker] (a quick
+     *  stop() + start() resets [stopFlag]; the old thread must not keep using the adapter). */
+    private fun stopping(): Boolean = stopFlag || worker !== Thread.currentThread()
     @Volatile private var engine: Boolean? = null
     @Volatile private var yieldedToPke = false
 
@@ -104,11 +108,11 @@ object ObdLive {
     private fun loop(ctx: Context, adapterName: String) {
         var wait = RETRY_MIN_MS
         log("live reader on for '$adapterName' (read only)")
-        while (!stopFlag) {
+        while (!stopping()) {
             if (pkeBusy()) { waitForPke(); continue }
             yieldedToPke = false
             val ok = try { session(ctx, adapterName) } catch (e: InterruptedException) { break } catch (e: Exception) { log("live reader error: $e"); false }
-            if (stopFlag) break
+            if (stopping()) break
             latest = null
             setEngine(null)
             if (yieldedToPke) continue
@@ -123,18 +127,18 @@ object ObdLive {
     /** Waits (radio free) until the keyless box is released, plus a short grace so the box isn't raced. */
     private fun waitForPke() {
         log("live reader: paused while the keyless box is in use")
-        while (!stopFlag && pkeBusy()) {
+        while (!stopping() && pkeBusy()) {
             try { Thread.sleep(250) } catch (_: InterruptedException) { return }
         }
         try { Thread.sleep(1_000) } catch (_: InterruptedException) { return }
-        if (!stopFlag) log("live reader: resuming")
+        if (!stopping()) log("live reader: resuming")
     }
 
     /** Sleeps [ms] in small steps; false if the reader is stopping or the keyless box needs the radio. */
     private fun idle(ms: Long): Boolean {
         val end = SystemClock.elapsedRealtime() + ms
         while (SystemClock.elapsedRealtime() < end) {
-            if (stopFlag) return false
+            if (stopping()) return false
             if (pkeBusy()) { yieldedToPke = true; return false }
             try { Thread.sleep(250) } catch (_: InterruptedException) { return false }
         }
@@ -180,7 +184,7 @@ object ObdLive {
             log("live reader: reading ${pids.joinToString(", ") { ObdDecode.pid(it)!!.name }} · ${mode.label}")
             var round = 0
             var failed = 0
-            while (!stopFlag) {
+            while (!stopping()) {
                 if (pkeBusy()) { yieldedToPke = true; return true }
                 val t0 = SystemClock.elapsedRealtime()
                 val got = readRound(elm, mode, pids, round)

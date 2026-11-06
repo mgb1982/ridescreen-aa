@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 2.4 RC: strings that fell back to English (OBD reader, dashboard styles, watch heart rate). -->
+<resources>
+    <string name="controls_dash_design">Dashboard-Stil</string>
+    <string name="controls_dash_fields">Sichtbare Felder</string>
+    <string name="dash_design_racing">Racing</string>
+    <string name="dash_design_sport">Sport</string>
+    <string name="dash_design_touring">Touring</string>
+    <string name="heart_rate_live">Live-Wert von deiner Uhr</string>
+    <string name="heart_rate_waiting">Warte auf einen Wert… Öffne RideScreen auf deiner Uhr und erlaube Körpersensoren.</string>
+    <string name="help_heart_rate">❤️ Puls (Uhr)</string>
+    <string name="obd_connecting">Verbinde mit dem Adapter…</string>
+    <string name="obd_entry">🔌 OBD-Leser (Test)</string>
+    <string name="obd_fail_ecu">Der Adapter hat geantwortet, das Motorsteuergerät aber nicht. Zündung an (oder Motor starten) und erneut versuchen.</string>
+    <string name="obd_fail_link">Keine Verbindung zum Adapter. Ist er gekoppelt, mit Strom versorgt (Zündung an) und nicht von einer anderen App belegt?</string>
+    <string name="obd_intro">Liest das Motorsteuergerät über %1$s: welche Daten es anbietet, ihre aktuellen Werte, gespeicherte Fehlercodes und 20 s Live-Drehzahl, Geschwindigkeit, Temperatur und Gas.\n\nNur lesen: Es löscht nie Codes und sendet nichts an das Motorrad. Zündung an (besser mit laufendem Motor) und Torque geschlossen.</string>
+    <string name="obd_live_disabled">Dauerlesen aus.</string>
+    <string name="obd_live_enabled">%1$s wird beim Projizieren gelesen: Motor an/aus kommt jetzt aus der echten Drehzahl.</string>
+    <string name="obd_live_off">Beim Projizieren nicht mehr verwenden</string>
+    <string name="obd_live_on">Diesen Adapter beim Projizieren verwenden</string>
+    <string name="obd_no_adapter">Kein gekoppelter OBD-Adapter gefunden.\n\nKopple den ELM327 zuerst unter Android → Bluetooth (PIN meist 1234 oder 0000) und schließe andere OBD-Apps (Torque). Jetzt gekoppelt: %1$s</string>
+    <string name="obd_pick_other">Aus der Liste der gekoppelten Geräte wählen</string>
+    <string name="obd_pick_title">Welches ist der OBD-Adapter?</string>
+    <string name="obd_share_hint">Alles steht auch im Protokoll: ❓ Hilfe → Protokolle teilen.</string>
+    <string name="obd_start">Starten</string>
+    <string name="obd_title">OBD-Leser (Test)</string>
+    <string name="setup_clock_smart_threshold">SMART-Schwelle (Test): neu synchronisieren, wenn das Display so spät nach der Uhrzeit fragt (ms)</string>
+    <string-array name="dash_obd_field_names">
+        <item>RPM</item><item>Geschwindigkeit</item><item>Kühlmittel</item><item>Spannung</item><item>Berechnete Last</item><item>Ansauglufttemperatur</item><item>Luftdruck</item><item>Absolute Last</item><item>Throttle</item>
+    </string-array>
+</resources>

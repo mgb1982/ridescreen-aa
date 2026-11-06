@@ -4,4 +4,5 @@
     <string name="lock_ends_trip">Locking ends the ride</string>
     <string name="lock_ends_trip_desc">When you lock the bike from the app, it saves where you parked and stops projecting. Not while moving (over 5 km/h) or with the engine running.</string>
     <string name="pke_fail_moving">Not locked: the bike is moving.</string>
+    <string name="pke_fail_moving_any">Not done: the bike is moving.</string>
 </resources>

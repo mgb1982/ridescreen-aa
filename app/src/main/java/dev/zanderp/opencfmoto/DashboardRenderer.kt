@@ -171,14 +171,25 @@ internal object DashboardRenderer {
     fun render(
         ctx: Context, w: Int, h: Int, d: DashboardMode.Data, light: Boolean,
         design: DashboardMode.Design, visible: Set<String>,
+        /** True for the style picker: draw into a new bitmap. The live one belongs to the GL thread until
+         *  it is uploaded; reusing (or recycling, on a dash whose canvas isn't 800×416) it from the UI
+         *  thread showed the preview on the bike or crashed on a recycled bitmap. */
+        standalone: Boolean = false,
     ): Bitmap {
         loadFonts(ctx)
-        var target = bitmap
-        if (target == null || target.width != w || target.height != h) {
-            target?.recycle()
+        var target = if (standalone) null else bitmap
+        val c: Canvas
+        if (standalone) {
             target = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-            bitmap = target
-            canvas = Canvas(target)
+            c = Canvas(target)
+        } else {
+            if (target == null || target.width != w || target.height != h) {
+                // Not recycled: the GL thread may still be about to upload it.
+                target = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+                bitmap = target
+                canvas = Canvas(target)
+            }
+            c = canvas!!
         }
         val p = when (design) {
             DashboardMode.Design.SPORT -> if (light) sportDay else sportNight
@@ -206,13 +217,12 @@ internal object DashboardRenderer {
             layer = bg
             layerKey = key
         }
-        val c = canvas!!
         c.drawBitmap(layer!!, 0f, 0f, null)
         c.save(); c.translate(dx, dy); c.scale(scale, scale)
         pass = Pass.LIVE
         drawFace(ctx, c, d, p, design, all)
         c.restore()
-        return target
+        return target!!
     }
 
     private fun drawFace(

@@ -101,8 +101,7 @@ object DashboardMode {
             throttle = 10.0, volt = 14.1, load = 44.0, intake = 42.0,
             baro = 100.0, absoluteLoad = 32.0, relativeThrottle = 10.0, obdLive = true,
         )
-        return DashboardRenderer.render(ctx, width, height, sample, isLight(ctx), design, fieldIds.toSet())
-            .copy(android.graphics.Bitmap.Config.ARGB_8888, false)
+        return DashboardRenderer.render(ctx, width, height, sample, isLight(ctx), design, fieldIds.toSet(), standalone = true)
     }
 
     private val fieldIds = listOf("rpm", "speed", "coolant", "volt", "load", "intake", "baro", "absolute", "throttle")

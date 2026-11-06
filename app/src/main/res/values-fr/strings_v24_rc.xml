@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 2.4 RC: strings that fell back to English (OBD reader, dashboard styles, watch heart rate). -->
+<resources>
+    <string name="controls_dash_design">Style du tableau de bord</string>
+    <string name="controls_dash_fields">Champs visibles</string>
+    <string name="dash_design_racing">Racing</string>
+    <string name="dash_design_sport">Sport</string>
+    <string name="dash_design_touring">Touring</string>
+    <string name="heart_rate_live">Mesure en direct de ta montre</string>
+    <string name="heart_rate_waiting">En attente d\'une mesure… Ouvre RideScreen sur ta montre et autorise les capteurs corporels.</string>
+    <string name="help_heart_rate">❤️ Fréquence cardiaque (montre)</string>
+    <string name="obd_connecting">Connexion à l\'adaptateur…</string>
+    <string name="obd_entry">🔌 Lecteur OBD (test)</string>
+    <string name="obd_fail_ecu">L\'adaptateur a répondu mais pas le calculateur moteur. Mets le contact (ou démarre le moteur) et réessaie.</string>
+    <string name="obd_fail_link">Impossible de se connecter à l\'adaptateur. Est-il appairé, alimenté (contact mis) et libre de toute autre app ?</string>
+    <string name="obd_intro">Lit le calculateur moteur via %1$s : les données qu\'il propose, leurs valeurs actuelles, les codes défaut enregistrés et 20 s de régime, vitesse, température et accélérateur en direct.\n\nLecture seule : il n\'efface jamais de codes et n\'envoie rien à la moto. Contact mis (moteur tournant, c\'est mieux) et Torque fermé.</string>
+    <string name="obd_live_disabled">Lecture continue désactivée.</string>
+    <string name="obd_live_enabled">Lecture de %1$s pendant la projection : moteur allumé/éteint vient maintenant du vrai régime.</string>
+    <string name="obd_live_off">Ne plus l\'utiliser pendant la projection</string>
+    <string name="obd_live_on">Utiliser cet adaptateur pendant la projection</string>
+    <string name="obd_no_adapter">Aucun adaptateur OBD appairé trouvé.\n\nAppaire d\'abord l\'ELM327 dans Android → Bluetooth (code souvent 1234 ou 0000) et ferme toute autre app OBD (Torque). Appairés : %1$s</string>
+    <string name="obd_pick_other">Choisir dans la liste des appareils appairés</string>
+    <string name="obd_pick_title">Lequel est l\'adaptateur OBD ?</string>
+    <string name="obd_share_hint">Tout est aussi dans le journal : ❓ Aide → Partager les journaux.</string>
+    <string name="obd_start">Démarrer</string>
+    <string name="obd_title">Lecteur OBD (test)</string>
+    <string name="setup_clock_smart_threshold">Seuil SMART (test) : resynchroniser quand le tableau de bord demande l\'heure aussi tard (ms)</string>
+    <string-array name="dash_obd_field_names">
+        <item>RPM</item><item>Vitesse</item><item>Liquide de refroidissement</item><item>Tension</item><item>Charge calculée</item><item>Température d\'admission</item><item>Pression barométrique</item><item>Charge absolue</item><item>Throttle</item>
+    </string-array>
+</resources>

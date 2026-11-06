@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 2.4 RC: strings that fell back to English (OBD reader, dashboard styles, watch heart rate). -->
+<resources>
+    <string name="controls_dash_design">Στυλ ταμπλό</string>
+    <string name="controls_dash_fields">Ορατά πεδία</string>
+    <string name="dash_design_racing">Racing</string>
+    <string name="dash_design_sport">Sport</string>
+    <string name="dash_design_touring">Touring</string>
+    <string name="heart_rate_live">Ζωντανή μέτρηση από το ρολόι σου</string>
+    <string name="heart_rate_waiting">Αναμονή για μέτρηση… Άνοιξε το RideScreen στο ρολόι και επίτρεψε τους αισθητήρες σώματος.</string>
+    <string name="help_heart_rate">❤️ Παλμοί (ρολόι)</string>
+    <string name="obd_connecting">Σύνδεση με τον αντάπτορα…</string>
+    <string name="obd_entry">🔌 Αναγνώστης OBD (δοκιμή)</string>
+    <string name="obd_fail_ecu">Ο αντάπτορας απάντησε αλλά όχι η μονάδα ελέγχου κινητήρα. Άνοιξε τον διακόπτη (ή βάλε μπρος) και ξαναδοκίμασε.</string>
+    <string name="obd_fail_link">Δεν ήταν δυνατή η σύνδεση με τον αντάπτορα. Είναι συζευγμένος, τροφοδοτείται (διακόπτης ανοιχτός) και δεν τον χρησιμοποιεί άλλη εφαρμογή;</string>
+    <string name="obd_intro">Διαβάζει τη μονάδα ελέγχου κινητήρα μέσω %1$s: ποια δεδομένα προσφέρει, τις τρέχουσες τιμές, τους αποθηκευμένους κωδικούς βλάβης και 20 s ζωντανές στροφές, ταχύτητα, θερμοκρασία και γκάζι.\n\nΜόνο ανάγνωση: δεν σβήνει ποτέ κωδικούς ούτε στέλνει τίποτα στη μοτοσικλέτα. Διακόπτης ανοιχτός (καλύτερα με τον κινητήρα σε λειτουργία) και Torque κλειστό.</string>
+    <string name="obd_live_disabled">Η συνεχής ανάγνωση απενεργοποιήθηκε.</string>
+    <string name="obd_live_enabled">Ανάγνωση %1$s κατά την προβολή: το αν δουλεύει ο κινητήρας προκύπτει πλέον από τις πραγματικές στροφές.</string>
+    <string name="obd_live_off">Να μη χρησιμοποιείται κατά την προβολή</string>
+    <string name="obd_live_on">Χρήση αυτού του αντάπτορα κατά την προβολή</string>
+    <string name="obd_no_adapter">Δεν βρέθηκε συζευγμένος αντάπτορας OBD.\n\nΣύζευξε πρώτα το ELM327 στο Android → Bluetooth (PIN συνήθως 1234 ή 0000) και κλείσε άλλες εφαρμογές OBD (Torque). Συζευγμένα τώρα: %1$s</string>
+    <string name="obd_pick_other">Επιλογή από τη λίστα συζευγμένων</string>
+    <string name="obd_pick_title">Ποιος είναι ο αντάπτορας OBD;</string>
+    <string name="obd_share_hint">Όλα υπάρχουν και στο αρχείο καταγραφής: ❓ Βοήθεια → Κοινοποίηση αρχείων.</string>
+    <string name="obd_start">Έναρξη</string>
+    <string name="obd_title">Αναγνώστης OBD (δοκιμή)</string>
+    <string name="setup_clock_smart_threshold">Όριο SMART (δοκιμή): επανασυγχρονισμός όταν το ταμπλό ζητά την ώρα τόσο αργά (ms)</string>
+    <string-array name="dash_obd_field_names">
+        <item>RPM</item><item>Ταχύτητα</item><item>Ψυκτικό</item><item>Τάση</item><item>Υπολογισμένο φορτίο</item><item>Θερμοκρασία εισαγωγής</item><item>Βαρομετρική πίεση</item><item>Απόλυτο φορτίο</item><item>Throttle</item>
+    </string-array>
+</resources>
