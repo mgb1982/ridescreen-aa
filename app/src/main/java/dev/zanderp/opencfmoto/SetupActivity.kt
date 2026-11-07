@@ -57,6 +57,39 @@ class SetupActivity : AppCompatActivity() {
         importSettingsFromUri(uri)
     }
 
+    private val fullBackupSaveLauncher = registerForActivityResult(
+        ActivityResultContracts.CreateDocument("application/zip")
+    ) { uri: Uri? ->
+        if (uri == null) return@registerForActivityResult
+        Thread {
+            val result = try {
+                contentResolver.openOutputStream(uri)?.use { FullBackup.export(this, it) }
+                    ?: FullBackup.Result(false, "Can't write the file")
+            } catch (e: Exception) { FullBackup.Result(false, "Backup failed: ${e.message}") }
+            runOnUiThread { Toast.makeText(this, result.message, Toast.LENGTH_LONG).show() }
+        }.start()
+    }
+
+    private val fullBackupRestoreLauncher = registerForActivityResult(
+        ActivityResultContracts.OpenDocument()
+    ) { uri: Uri? ->
+        if (uri == null) return@registerForActivityResult
+        val (manifest, error) = FullBackup.inspect(this, uri)
+        if (manifest == null) { Toast.makeText(this, error, Toast.LENGTH_LONG).show(); return@registerForActivityResult }
+        val made = java.text.DateFormat.getDateTimeInstance().format(java.util.Date(manifest.optLong("exportedAt")))
+        AlertDialog.Builder(this)
+            .setTitle("Restore full backup?")
+            .setMessage("Backup from $made (RideScreen AA ${manifest.optString("appVersion")}).\n\n" +
+                "It replaces this phone's settings, trips, places and bikes with the backup's. The app restarts afterwards.")
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton("Restore") { _, _ ->
+                val result = try { FullBackup.restore(this, uri) } catch (e: Exception) { FullBackup.Result(false, "Restore failed: ${e.message}") }
+                Toast.makeText(this, result.message, Toast.LENGTH_LONG).show()
+                if (result.ok) window.decorView.postDelayed({ FullBackup.restart(this) }, 1_500)
+            }
+            .show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setup)
@@ -265,6 +298,12 @@ class SetupActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.settings_share).setOnClickListener { shareSettingsJson() }
         findViewById<MaterialButton>(R.id.settings_import).setOnClickListener {
             importSettingsLauncher.launch(arrayOf("application/json", "text/*", "*/*"))
+        }
+        findViewById<MaterialButton>(R.id.full_backup_save).setOnClickListener {
+            fullBackupSaveLauncher.launch(FullBackup.suggestedFileName())
+        }
+        findViewById<MaterialButton>(R.id.full_backup_restore).setOnClickListener {
+            fullBackupRestoreLauncher.launch(arrayOf("application/zip", "application/octet-stream", "*/*"))
         }
         findViewById<MaterialButton>(R.id.bt_settings_btn).setOnClickListener { BluetoothHelper.openBluetoothSettings(this) }
         resumeBtn.setOnClickListener { requestOverlayPermission() }
