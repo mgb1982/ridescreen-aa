@@ -28,6 +28,7 @@ Basada en [OpenCfMoto](https://github.com/zanderp/open-cfmoto) de Alexandru (zan
 
 **🏍️ Viajes**
 - **Reproducción y vídeo del viaje con datos del OBD** (acelerador y RPM) y **fusionar recorridos** (se puede deshacer).
+- **Nuevo estilo de vídeo «Gauges»**: esferas de RPM y velocidad, acelerador y carga del motor, aceleración, temperatura del refrigerante y minimapa sobre tus clips (en inglés; las traducciones llegan en la 2.5).
 
 **🎬 En el cuadro y al aparcar**
 - **Bienvenida** al empezar a proyectar y **despedida** con el resumen del día.

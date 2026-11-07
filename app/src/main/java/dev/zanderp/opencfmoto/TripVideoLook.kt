@@ -36,9 +36,12 @@ import kotlin.math.tan
 enum class VideoStyle(val labelRes: Int) {
     CLASSIC(R.string.tvs_classic), SPORT(R.string.tvs_sport), MINIMAL(R.string.tvs_minimal),
     CINEMA(R.string.tvs_cinema), RETRO(R.string.tvs_retro), TELEMETRY(R.string.tvs_telemetry),
+    /** v2.4: dials from the trip's OBD data (RPM, speed, throttle, load, coolant) — English only until 2.5. */
+    GAUGES(R.string.tvs_gauges),
 }
 
-fun nightStyle(s: VideoStyle) = s == VideoStyle.SPORT || s == VideoStyle.TELEMETRY || s == VideoStyle.RETRO || s == VideoStyle.CINEMA
+fun nightStyle(s: VideoStyle) = s == VideoStyle.SPORT || s == VideoStyle.TELEMETRY || s == VideoStyle.RETRO ||
+    s == VideoStyle.CINEMA || s == VideoStyle.GAUGES
 
 enum class VideoMap(val labelRes: Int) { LINE(R.string.tvm_line), SPEED(R.string.tvm_speed), STREETS(R.string.tvm_streets) }
 
@@ -150,7 +153,7 @@ class StreetTiles private constructor(private val dir: File, val zoom: Int) {
 }
 
 /** v2.3: the overlay pieces the rider can drag in the preview; the export draws them where they were left. */
-enum class OverlayPart { TITLE, SPEED, MAP, EXTRA }
+enum class OverlayPart { TITLE, SPEED, MAP, EXTRA, THROTTLE, DISTANCE }
 
 /** Offset of a piece from its home spot, as fractions of the frame width and height. */
 data class PartOffset(val dx: Float, val dy: Float)
@@ -543,6 +546,178 @@ class TripLook(
                         Color.argb(110, 255, 255, 255), sky, idx, u)
                 }
             }
+            VideoStyle.GAUGES -> gaugesFrame(c, w, h, tMs, idx, clock, kmDone, u)
+        }
+    }
+
+    // ── v2.4 Gauges look: dials from the OBD samples recorded with the trip (English labels until 2.5)
+
+    private val obd = trip.obdSamples
+    private val hasRpm = obd.any { it.rpm != null }
+    private val rpmScaleK: Int = run {
+        val seen = obd.mapNotNull { it.rpm }.maxOrNull() ?: 0.0
+        max(DashboardMode.rpmMax(ctx), ((seen / 1000.0).let { kotlin.math.ceil(it) } * 1000).toInt()) / 1000
+    }
+    private val speedScale: Int = DashboardMode.speedMax(ctx)
+
+    /** One OBD value at [tMs], interpolated between the nearest samples that carry it (≤ 3 s away). */
+    private fun obdValue(tMs: Long, pick: (ObdTripSample) -> Double?): Double? {
+        if (obd.isEmpty()) return null
+        val i = obd.binarySearchBy(tMs) { it.timeMs }
+        if (i >= 0) pick(obd[i])?.let { return it }
+        val after = if (i >= 0) i + 1 else -i - 1
+        var a = after - 1
+        while (a >= 0 && pick(obd[a]) == null && tMs - obd[a].timeMs <= 3_000) a--
+        var b = after
+        while (b <= obd.lastIndex && pick(obd[b]) == null && obd[b].timeMs - tMs <= 3_000) b++
+        val va = obd.getOrNull(a)?.takeIf { tMs - it.timeMs <= 3_000 }?.let { s -> pick(s)?.let { s.timeMs to it } }
+        val vb = obd.getOrNull(b)?.takeIf { it.timeMs - tMs <= 3_000 }?.let { s -> pick(s)?.let { s.timeMs to it } }
+        return when {
+            va != null && vb != null && vb.first != va.first ->
+                va.second + (vb.second - va.second) * (tMs - va.first).toDouble() / (vb.first - va.first)
+            else -> (va ?: vb)?.second
+        }
+    }
+
+    /** GPS speed at [tMs], interpolated between fixes. */
+    private fun gpsKmh(tMs: Long): Double {
+        val i = indexAt(tMs)
+        val b = pts[i]; val a = pts[(i - 1).coerceAtLeast(0)]
+        if (b.time == a.time || tMs >= b.time) return b.speedMs * 3.6
+        val f = ((tMs - a.time).toDouble() / (b.time - a.time)).coerceIn(0.0, 1.0)
+        return (a.speedMs + (b.speedMs - a.speedMs) * f) * 3.6
+    }
+
+    private fun speedKmhAt(tMs: Long): Double = obdValue(tMs) { it.speedKmh } ?: gpsKmh(tMs)
+
+    /** Longitudinal acceleration in g, from the speed 1.5 s either side (smooths sensor noise). */
+    private fun accelG(tMs: Long): Double = (speedKmhAt(tMs + 1_500) - speedKmhAt(tMs - 1_500)) / 3.6 / 3.0 / 9.81
+
+    private fun gaugesFrame(c: Canvas, w: Int, h: Int, tMs: Long, idx: Int, clock: String, kmDone: Double, u: Float) {
+        val dim = Color.argb(200, 255, 255, 255)
+        // Brand (top-left): app icon + RIDESCREEN / AA, trip name and time underneath.
+        val sub = "$title · $clock"
+        val subSize = fitSize(sub, tfMedium, w * 0.38f, 2.3f * u)
+        part(c, OverlayPart.TITLE, w, h, RectF(2.5f * u, 2.5f * u, 2.5f * u + max(24 * u, measure(sub, tfMedium, subSize) + 1 * u), 15 * u)) {
+            val icon = 7.5f * u
+            try {
+                ResourcesCompat.getDrawable(ctx.resources, R.mipmap.ic_launcher_round, null)?.let { d ->
+                    d.setBounds((3 * u).toInt(), (3 * u).toInt(), (3 * u + icon).toInt(), (3 * u + icon).toInt()); d.draw(c)
+                }
+            } catch (_: Exception) {}
+            text(c, "RIDESCREEN", 3 * u + icon + 1.6f * u, 6.4f * u, 3.3f * u, tfCondItalic)
+            text(c, "AA", 3 * u + icon + 1.6f * u, 10f * u, 3.3f * u, tfCondItalic, amber)
+            text(c, sub, 3 * u, 14 * u, subSize, tfMedium, dim)
+        }
+
+        // Distance (top-centre) with a progress line.
+        val dist = RectF(w / 2f - 17 * u, 2.5f * u, w / 2f + 17 * u, 11 * u)
+        part(c, OverlayPart.DISTANCE, w, h, dist) {
+            val v = km(kmDone)
+            val vs = 5.5f * u
+            val vw = measure(v, tfCondItalic, vs)
+            text(c, v, w / 2f - 1.5f * u, 8 * u, vs, tfCondItalic, align = Paint.Align.CENTER)
+            text(c, "KM", w / 2f - 1.5f * u + vw / 2 + 0.8f * u, 8 * u, 2.2f * u, tfMedium, dim)
+            stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeCap = Paint.Cap.ROUND
+            stroke.strokeWidth = 0.4f * u; stroke.color = Color.argb(90, 255, 255, 255)
+            c.drawLine(dist.left + 2 * u, 10 * u, dist.right - 2 * u, 10 * u, stroke)
+            val frac = if (totalKm > 0) (kmDone / totalKm).toFloat().coerceIn(0f, 1f) else 0f
+            stroke.color = amber
+            c.drawLine(dist.left + 2 * u, 10 * u, dist.left + 2 * u + (dist.width() - 4 * u) * frac, 10 * u, stroke)
+        }
+
+        // Acceleration (top-right) and coolant below it.
+        val accel = RectF(w - 42 * u, 2.5f * u, w - 2.5f * u, 15.5f * u)
+        part(c, OverlayPart.EXTRA, w, h, accel) {
+            val g = accelG(tMs)
+            val box = RectF(w - 18 * u, 3 * u, w - 3 * u, 9.5f * u)
+            val braking = g < -0.05
+            c.drawRoundRect(box, 1 * u, 1 * u, fill(if (braking) red else amber))
+            text(c, String.format(Locale.US, "%.2f g", g).replace("-0.00", "0.00"), box.centerX(), box.bottom - 1.6f * u,
+                3.8f * u, tfCondItalic, Color.rgb(20, 20, 20), Paint.Align.CENTER, shadow = false)
+            text(c, if (braking) "BRAKING" else "ACCELERATION", box.left - 1.5f * u, box.bottom - 1.8f * u, 2.2f * u,
+                tfMedium, if (braking) red else amber, Paint.Align.RIGHT)
+            obdValue(tMs) { it.coolantC }?.let { t ->
+                val col = when { t >= 108 -> red; t >= 100 -> amber; else -> Color.WHITE }
+                text(c, "${t.roundToInt()}°C", w - 3 * u, 14.5f * u, 3 * u, tfCondItalic, col, Paint.Align.RIGHT)
+                text(c, "COOLANT", w - 3 * u - measure("${t.roundToInt()}°C", tfCondItalic, 3 * u) - 1.2f * u, 14.5f * u,
+                    2 * u, tfMedium, dim, Paint.Align.RIGHT)
+            }
+        }
+
+        // RPM dial with the speed inside (bottom-left). Trips without OBD get a speed dial instead.
+        val r = 11 * u
+        val cx = 4 * u + r + 3 * u
+        val cy = h - 4 * u - r
+        part(c, OverlayPart.SPEED, w, h, RectF(cx - r - 4 * u, cy - r - 4 * u, cx + r + 4 * u, cy + r + 3 * u)) {
+            val kmhNow = speedKmhAt(tMs).coerceAtLeast(0.0)
+            val rpm = if (hasRpm) obdValue(tMs) { it.rpm } else null
+            val scale = if (hasRpm) rpmScaleK else speedScale
+            val value = if (hasRpm) (rpm ?: 0.0) / 1000.0 else kmhNow
+            dial(c, cx, cy, r, u, value, scale.toDouble(), if (hasRpm) 0.85f else 2f, labelEvery = if (hasRpm) 1 else 20)
+            text(c, String.format(Locale.US, "%03d", kmhNow.roundToInt()), cx, cy + 2.6f * u, 8 * u, tfCondItalic, align = Paint.Align.CENTER)
+            text(c, "KM/H", cx, cy + 5.6f * u, 2 * u, tfMedium, dim, Paint.Align.CENTER)
+            text(c, if (hasRpm) (rpm?.let { "${(it / 10).roundToInt() * 10} RPM" } ?: "— RPM") else "GPS",
+                cx, cy + r * 0.92f, 2 * u, tfMedium, if (hasRpm) amber else dim, Paint.Align.CENTER)
+        }
+
+        // Throttle and engine load (bottom-centre), only when the trip has them.
+        val thr = obdValue(tMs) { it.relativeThrottlePct ?: it.throttlePct }
+        val load = obdValue(tMs) { it.engineLoadPct }
+        if (obd.any { it.relativeThrottlePct != null || it.throttlePct != null }) {
+            val tr = 8.5f * u
+            val tx = w / 2f
+            val ty = h - 6.5f * u
+            part(c, OverlayPart.THROTTLE, w, h, RectF(tx - tr - 2 * u, ty - tr - 2 * u, tx + tr + 2 * u, ty + 5 * u)) {
+                val rect = RectF(tx - tr, ty - tr, tx + tr, ty + tr)
+                stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeCap = Paint.Cap.BUTT
+                stroke.strokeWidth = 1.4f * u; stroke.color = Color.argb(80, 255, 255, 255)
+                c.drawArc(rect, 180f, 180f, false, stroke)
+                val tf = ((thr ?: 0.0) / 100.0).toFloat().coerceIn(0f, 1f)
+                stroke.color = amber; c.drawArc(rect, 180f, 180f * tf, false, stroke)
+                if (load != null) {
+                    val inner = RectF(rect).apply { inset(2.2f * u, 2.2f * u) }
+                    stroke.strokeWidth = 0.6f * u; stroke.color = Color.argb(60, 255, 255, 255)
+                    c.drawArc(inner, 180f, 180f, false, stroke)
+                    stroke.color = Color.WHITE
+                    c.drawArc(inner, 180f, 180f * (load / 100.0).toFloat().coerceIn(0f, 1f), false, stroke)
+                }
+                text(c, thr?.let { "${it.roundToInt()}%" } ?: "—", tx, ty - 0.6f * u, 4.6f * u, tfCondItalic, align = Paint.Align.CENTER)
+                text(c, "THROTTLE", tx, ty + 2.4f * u, 2 * u, tfMedium, amber, Paint.Align.CENTER)
+                if (load != null) text(c, "LOAD ${load.roundToInt()}%", tx, ty + 4.8f * u, 1.8f * u, tfMedium, dim, Paint.Align.CENTER)
+            }
+        }
+
+        // Mini-map (bottom-right).
+        val s = 20 * u
+        val box = RectF(w - s - 3 * u, h - s - 3 * u, w - 3 * u, h - 3 * u)
+        part(c, OverlayPart.MAP, w, h, box) {
+            minimap(c, box, false, Color.argb(150, 12, 14, 16), Color.argb(60, 255, 255, 255),
+                Color.argb(110, 255, 255, 255), amber, idx, u)
+        }
+    }
+
+    /** 270° dial: track, red zone from [redFrac], value arc, and a label every [labelEvery] units. */
+    private fun dial(c: Canvas, cx: Float, cy: Float, r: Float, u: Float, value: Double, max: Double, redFrac: Float, labelEvery: Int) {
+        val rect = RectF(cx - r, cy - r, cx + r, cy + r)
+        val start = 135f; val sweep = 270f
+        stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeCap = Paint.Cap.BUTT
+        stroke.strokeWidth = 1.6f * u
+        c.drawRoundRect(RectF(cx - r - 3.6f * u, cy - r - 3.6f * u, cx + r + 3.6f * u, cy + r + 3.6f * u), r, r, fill(Color.argb(90, 0, 0, 0)))
+        stroke.color = Color.argb(80, 255, 255, 255); c.drawArc(rect, start, sweep, false, stroke)
+        if (redFrac < 1f) { stroke.color = Color.argb(120, 229, 57, 53); c.drawArc(rect, start + sweep * redFrac, sweep * (1 - redFrac), false, stroke) }
+        val f = (value / max).toFloat().coerceIn(0f, 1f)
+        stroke.color = amber; c.drawArc(rect, start, sweep * min(f, redFrac), false, stroke)
+        if (f > redFrac) { stroke.color = red; c.drawArc(rect, start + sweep * redFrac, sweep * (f - redFrac), false, stroke) }
+        // Numbers just outside the arc.
+        var k = 0
+        while (k <= max.toInt()) {
+            val a = Math.toRadians((start + sweep * k / max).toDouble())
+            val lx = cx + (r + 2.6f * u) * cos(a).toFloat()
+            val ly = cy + (r + 2.6f * u) * kotlin.math.sin(a).toFloat() + 0.8f * u
+            val hot = k / max >= redFrac
+            text(c, "$k", lx, ly, 2 * u, tfCondItalic, if (hot) red else Color.WHITE, Paint.Align.CENTER)
+            k += labelEvery
         }
     }
 
@@ -619,12 +794,12 @@ class TripLook(
     }
 
     private fun accent() = when (style) {
-        VideoStyle.SPORT -> amber; VideoStyle.CINEMA -> gold; VideoStyle.TELEMETRY -> sky
+        VideoStyle.SPORT, VideoStyle.GAUGES -> amber; VideoStyle.CINEMA -> gold; VideoStyle.TELEMETRY -> sky
         VideoStyle.CLASSIC -> yellow; else -> Color.WHITE
     }
 
     private fun headline() = when (style) {
-        VideoStyle.SPORT -> tfCondItalic; VideoStyle.MINIMAL -> tfLight; VideoStyle.CINEMA -> tfSerifItalic
+        VideoStyle.SPORT, VideoStyle.GAUGES -> tfCondItalic; VideoStyle.MINIMAL -> tfLight; VideoStyle.CINEMA -> tfSerifItalic
         VideoStyle.RETRO -> tfMono; VideoStyle.TELEMETRY -> tfArchivoBlack; else -> Typeface.DEFAULT_BOLD
     }
 
