@@ -45,6 +45,8 @@ Basada en [OpenCfMoto](https://github.com/zanderp/open-cfmoto) de Alexandru (zan
 - **Zontes 350D y 350E** (Wi‑Fi Direct): **en pruebas** con la comunidad. Conectan, pero la conexión todavía tarda y la imagen va a pocas imágenes por segundo.
 - Mejoras de Wi‑Fi Direct para la T350X.
 
+**💾 Copia de seguridad completa**: guarda en un solo .zip todos los ajustes, viajes, lugares y el Garaje de este móvil (antes de una actualización del sistema, un restablecimiento o al cambiar de móvil) y restáuralo después. Está junto a Compartir/Importar ajustes, **en inglés** (las traducciones llegan en la 2.5). Guárdala en privado: incluye la contraseña del Wi‑Fi de la moto y los códigos de la llave.
+
 **Idiomas**: francés, alemán, portugués, griego, ruso y tailandés **completos** (app y reloj), además de castellano, catalán, inglés e italiano.
 
 **Y además**: iconos nuevos en inicio, en la tarjeta de la llave y en el widget; y arreglados los cierres que nos habéis reportado en la v2.3.
