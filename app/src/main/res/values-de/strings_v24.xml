@@ -19,4 +19,5 @@
     <string name="dc_parked_photo">Abgestellt · Foto gespeichert</string>
     <string name="dc_parked">Abgestellt</string>
     <string name="dc_rain_tomorrow">Morgen um 8:00 Uhr: %1$d%% Regenwahrscheinlichkeit · Regenkleidung mitnehmen</string>
+    <string name="pke_unlock_scan_code_too">Auch den PKE-Code (…%1$s).</string>
 </resources>

@@ -20,4 +20,5 @@
     <string name="dc_parked_photo">Parked · photo saved</string>
     <string name="dc_parked">Parked</string>
     <string name="dc_rain_tomorrow">Tomorrow 8:00: %1$d%% chance of rain · bring the rain gear</string>
+    <string name="pke_unlock_scan_code_too">Also the PKE code (…%1$s).</string>
 </resources>

@@ -20,4 +20,5 @@
     <string name="dc_parked_photo">Aparcada · foto desada</string>
     <string name="dc_parked">Aparcada</string>
     <string name="dc_rain_tomorrow">Demà a les 8:00: %1$d %% de pluja · porta l’impermeable</string>
+    <string name="pke_unlock_scan_code_too">També el codi PKE (…%1$s).</string>
 </resources>

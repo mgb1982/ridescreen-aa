@@ -20,4 +20,5 @@
     <string name="dc_parked_photo">จอดแล้ว · บันทึกรูปภาพแล้ว</string>
     <string name="dc_parked">จอดแล้ว</string>
     <string name="dc_rain_tomorrow">พรุ่งนี้ 8:00: โอกาสฝนตก %1$d%% · เตรียมอุปกรณ์กันฝน</string>
+    <string name="pke_unlock_scan_code_too">รวมถึงรหัส PKE (…%1$s)</string>
 </resources>

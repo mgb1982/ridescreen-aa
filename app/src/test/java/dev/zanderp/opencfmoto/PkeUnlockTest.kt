@@ -73,4 +73,11 @@ class PkeUnlockTest {
         assertEquals(true, PkeBattery.lockedFrom("*AT,…4404,10,001,7,1#"))
         assertNull(PkeBattery.lockedFrom("*AT,…4404,10,001,1,1#"))
     }
+
+    @Test fun pkeCodeFromBikeInfoQr() {
+        val qr = "125;010;123456789012345;0A1B2C3D;4E5F6A7B;;;00112233445566778899AABBCCDDEEFF;;8C9D0E1F"
+        assertEquals("123456789012345", PkeUnlock.pkeCodeFromQr(qr))
+        assertEquals("00112233445566778899AABBCCDDEEFF", PkeUnlock.mcuIdFromQr(qr))
+        assertNull(PkeUnlock.pkeCodeFromQr("125;010;12345"))
+    }
 }

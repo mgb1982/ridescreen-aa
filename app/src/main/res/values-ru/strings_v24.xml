@@ -19,4 +19,5 @@
     <string name="dc_parked_photo">Припаркован · фото сохранено</string>
     <string name="dc_parked">Припаркован</string>
     <string name="dc_rain_tomorrow">Завтра в 8:00: вероятность дождя %1$d%% · возьми дождевую экипировку</string>
+    <string name="pke_unlock_scan_code_too">И код PKE (…%1$s).</string>
 </resources>

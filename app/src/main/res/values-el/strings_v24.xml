@@ -19,4 +19,5 @@
     <string name="dc_parked_photo">Σταθμευμένη · η φωτογραφία αποθηκεύτηκε</string>
     <string name="dc_parked">Σταθμευμένη</string>
     <string name="dc_rain_tomorrow">Αύριο στις 8:00: πιθανότητα βροχής %1$d%% · πάρε αδιάβροχα</string>
+    <string name="pke_unlock_scan_code_too">Και τον κωδικό PKE (…%1$s).</string>
 </resources>

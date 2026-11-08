@@ -27,12 +27,16 @@ class PkeMcuScanActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.pke_unlock_scan_not_found, Toast.LENGTH_LONG).show()
             finish(); return@registerForActivityResult
         }
-        LogBus.log("[PKE-unlock] info QR scanned: McuID found")
+        val code = PkeUnlock.pkeCodeFromQr(raw)
+        LogBus.log("[PKE-unlock] info QR scanned: McuID found" + if (code != null) ", PKE code found (…${code.takeLast(4)})" else ", no PKE code")
+        val message = getString(R.string.pke_unlock_scan_confirm, masked(id)) +
+            if (code != null) "\n\n" + getString(R.string.pke_unlock_scan_code_too, code.takeLast(4)) else ""
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.pke_unlock_mcu_title)
-            .setMessage(getString(R.string.pke_unlock_scan_confirm, masked(id)))
+            .setMessage(message)
             .setPositiveButton(R.string.dest_save) { _, _ ->
                 PkeUnlock.setMcuId(this, id)
+                if (code != null) PkeBattery.setCode(this, code)
                 Toast.makeText(this, R.string.pke_unlock_scan_saved, Toast.LENGTH_SHORT).show()
                 finish()
             }

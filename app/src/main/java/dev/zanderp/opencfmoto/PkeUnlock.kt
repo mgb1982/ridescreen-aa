@@ -144,6 +144,17 @@ object PkeUnlock {
         return all.singleOrNull()?.uppercase()
     }
 
+    /**
+     * The PKE code from the same information QR: the bike QR is `;`-separated and its third field is the
+     * 15-digit PKE code shown in the official app (checked on two bikes, firmware PKE3.0_APP_1.2.5_010).
+     * Falls back to the single 15-digit field anywhere in it; null when none or several.
+     */
+    internal fun pkeCodeFromQr(raw: String): String? {
+        val fields = raw.split(';').map { it.trim() }
+        fields.getOrNull(2)?.takeIf { it.length == 15 && it.all(Char::isDigit) }?.let { return it }
+        return fields.filter { it.length == 15 && it.all(Char::isDigit) }.singleOrNull()
+    }
+
     // ── pure bits (unit-testable, same style as PkeBattery's)
 
     /** The raw challenge field (between `008` and the voltage) of a `008` reply, unparsed. */

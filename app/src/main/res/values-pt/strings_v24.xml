@@ -19,4 +19,5 @@
     <string name="dc_parked_photo">Estacionada · fotografia guardada</string>
     <string name="dc_parked">Estacionada</string>
     <string name="dc_rain_tomorrow">Amanhã às 8:00: probabilidade de chuva de %1$d%% · leva equipamento para a chuva</string>
+    <string name="pke_unlock_scan_code_too">Também o código PKE (…%1$s).</string>
 </resources>

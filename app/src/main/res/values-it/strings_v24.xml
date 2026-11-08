@@ -20,4 +20,5 @@
     <string name="dc_parked_photo">Parcheggiata · foto salvata</string>
     <string name="dc_parked">Parcheggiata</string>
     <string name="dc_rain_tomorrow">Domani alle 8:00: %1$d %% di pioggia · porta l\'antipioggia</string>
+    <string name="pke_unlock_scan_code_too">Anche il codice PKE (…%1$s).</string>
 </resources>

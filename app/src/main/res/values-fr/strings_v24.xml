@@ -19,4 +19,5 @@
     <string name="dc_parked_photo">Moto garée · photo enregistrée</string>
     <string name="dc_parked">Moto garée</string>
     <string name="dc_rain_tomorrow">Demain à 8 h : %1$d%% de risque de pluie · pense à prendre ton équipement de pluie</string>
+    <string name="pke_unlock_scan_code_too">Le code PKE aussi (…%1$s).</string>
 </resources>
