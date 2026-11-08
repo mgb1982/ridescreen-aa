@@ -329,3 +329,57 @@ if __name__ == "__main__":
     for r, size in render([j for L in langs for j in jobs(L)], dry=True):
         print(size, r)
     print("ENGLISH FALLBACKS:", sorted(FALLBACKS))
+
+
+# ---------------------------------------------------------------- general overview (new groups)
+G = {
+"es": dict(tag="Gratis y sin anuncios", k="Para tu moto", t="Android Auto en el cuadro de tu moto",
+    s="Inalámbrico, cuadros EasyConn/Carbit. Código abierto, 10 idiomas.",
+    tiles=[("🔑", "Llave en el móvil", "Abre, cierra, asiento, depósito"),
+           ("📊", "Dashboard en el cuadro", "Tus datos con OBD o GPS"),
+           ("🏍️", "Tus viajes", "Mapa, récords, vídeo"),
+           ("🅿️", "Aparcar con foto", "Y aviso de lluvia"),
+           ("⛽", "Gasolineras y semáforos", "Precios y onda verde"),
+           ("🛟", "Detector de caídas", "Avisa si te caes"),
+           ("👥", "Modo pasajero", "Destino y música desde atrás"),
+           ("⌚", "Reloj Wear OS", "Velocidad y brújula a tu moto")],
+    bikes="Zontes 125 (X/M/V/D/E), 368, 703, T350X, 350D, 350E y más"),
+"en": dict(tag="Free, no ads", k="For your bike", t="Android Auto on your bike’s dash",
+    s="Wireless, on EasyConn/Carbit dashes. Open source, in 10 languages.",
+    tiles=[("🔑", "Key on your phone", "Unlock, lock, seat, fuel cap"),
+           ("📊", "Dashboard on the dash", "Your data via OBD or GPS"),
+           ("🏍️", "Your rides", "Map, records, video"),
+           ("🅿️", "Park with a photo", "Plus a rain alert"),
+           ("⛽", "Fuel and traffic lights", "Prices and green wave"),
+           ("🛟", "Crash detection", "Alerts if you go down"),
+           ("👥", "Passenger mode", "Pillion picks route and music"),
+           ("⌚", "Wear OS watch", "Speed and a compass to your bike")],
+    bikes="Zontes 125 (X/M/V/D/E), 368, 703, T350X, 350D, 350E and more"),
+}
+XG = """
+.gn h1{font-size:54px;line-height:1.08}
+.gn .hero{position:relative;margin-top:22px;height:190px;border-radius:30px;overflow:hidden;border:2px solid var(--outline)}
+.gn .hero img{width:100%;height:100%;object-fit:cover;object-position:center 45%}
+.g8{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.g8 .tile{padding:12px 18px;display:flex;gap:14px;align-items:center}
+.g8 .e{font-size:40px;flex:none}
+.g8 .lb{font-size:28px}.g8 .lb small{font-size:28px;margin-top:2px}
+.bk2{margin-top:16px;font-size:28px;color:var(--text2);line-height:1.35}
+.bk2 b{color:var(--gold)}
+"""
+
+
+def general(lang):
+    g = G[lang]
+    tiles = "".join(f'<div class="tile"><div class="e">{e}</div><div class="lb">{esc(a)}<small>{esc(b)}</small></div></div>'
+                    for e, a, b in g["tiles"])
+    body = (f'<div class="gn"><div class="k">{esc(g["k"])}</div><h1>{esc(g["t"])}</h1><div class="s">{esc(g["s"])}</div>'
+            f'<div class="hero"><img src="{_webp("dashboard-cuadro-2.webp")}"></div><div class="g8">{tiles}</div>'
+            f'<div class="bk2"><b>🏍️</b> {esc(g["bikes"])}</div></div>')
+    return page(lang, body, g["tag"]).replace("</style>", XG + "</style>", 1)
+
+
+if __name__ == "__main__" and os.environ.get("RS_GENERAL"):
+    for r, size in render([Job(f"msg24_general_{L}", general(L), 1080, 1350, 1,
+                               [(f"lanzamiento24/mensajes/general-{L}.png", None)]) for L in G], dry=True):
+        print(size, r)
