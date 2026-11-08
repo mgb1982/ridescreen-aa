@@ -81,6 +81,7 @@ Riders have projected Android Auto with these (US + international as noted):
 | **Zontes 703RR** | Confirmed (2026-10-24) — works on RideScreen AA 2.3 with Google Maps full screen; same screen as the 703 range (maintainer's check, not measured); Carbit / EasyConnect QR |
 | **Zontes 350E** | Confirmed (Ricky, 2026-11) — Wi‑Fi Direct-only QR (`action=8`, modelId 21313); waits up to 2 min for the dash and paces video to the dash, from RideScreen AA 2.4 |
 | **Zontes 350D** | Confirmed (2026-11) — same modelId 21313 and Wi‑Fi Direct fixes as the 350E, from RideScreen AA 2.4 |
+| **Zontes 350E** (JCDZ21 dash, modelId 21321) | In testing (2026-11) — dash clock fix (it no longer stays on the QR screen) from RideScreen AA 2.4; rider confirmation pending |
 | **Zontes** (other TFT + pairing QR) | Same Carbit / EasyConnect path — try Connect; report logs in Discord |
 | **Morbidelli T1002VX** | Community-confirmed (Argentina) — Carbit / EasyConnect QR |
 | **Morbidelli T352X** | Community-confirmed (2026-08) — AA split on Carbit dash — Discord `#t352x` |
