@@ -14,6 +14,10 @@
 <link rel="alternate" hreflang="it" href="https://ridescreen.app/it/">
 <link rel="alternate" hreflang="el" href="https://ridescreen.app/el/">
 <link rel="alternate" hreflang="ru" href="https://ridescreen.app/ru/">
+<link rel="alternate" hreflang="de" href="https://ridescreen.app/de/">
+<link rel="alternate" hreflang="fr" href="https://ridescreen.app/fr/">
+<link rel="alternate" hreflang="pt" href="https://ridescreen.app/pt/">
+<link rel="alternate" hreflang="th" href="https://ridescreen.app/th/">
 <link rel="alternate" hreflang="x-default" href="https://ridescreen.app/">
 <link rel="icon" href="../img/icon.svg" type="image/svg+xml">
 <link rel="icon" href="../favicon.png" type="image/png">
@@ -31,7 +35,7 @@
  "operatingSystem":"Android 10+","applicationCategory":"TravelApplication",
  "description":"Wireless Android Auto on the dash of Zontes bikes and others with an EasyConn/Carbit dash.",
  "url":"https://ridescreen.app/en/","downloadUrl":"https://github.com/mgb1982/ridescreen-aa/releases/latest",
- "offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"inLanguage":["es","ca","en"],
+ "offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"inLanguage":["es","ca","en","it","el","ru","de","fr","pt","th"],
  "license":"https://www.gnu.org/licenses/agpl-3.0.html"}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -142,6 +146,8 @@ footer a { color: var(--fg); }
 .top nav a:has(.flag) { display: inline-flex; align-items: center; }
 .flag { width: 24px; height: 16px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.18); display: block; }
 .top nav a:has(.flag):hover .flag { box-shadow: 0 0 0 2px var(--accent); }
+.thanks { margin: 6px 0 0 1.2em; padding: 0; color: var(--muted); columns: 2 220px; }
+.thanks li { margin: 2px 0; break-inside: avoid; }
 </style>
 </head>
 <body>
@@ -158,6 +164,10 @@ footer a { color: var(--fg); }
       <a href="../it/" lang="it" hreflang="it" title="Italiano" data-lang="it"><img class="flag" src="../img/flags/it.svg" alt="Italiano" width="24" height="16"></a>
       <a href="../el/" lang="el" hreflang="el" title="Ελληνικά" data-lang="el"><img class="flag" src="../img/flags/el.svg" alt="Ελληνικά" width="24" height="16"></a>
       <a href="../ru/" lang="ru" hreflang="ru" title="Русский" data-lang="ru"><img class="flag" src="../img/flags/ru.svg" alt="Русский" width="24" height="16"></a>
+      <a href="../de/" lang="de" hreflang="de" title="Deutsch" data-lang="de"><img class="flag" src="../img/flags/de.svg" alt="Deutsch" width="24" height="16"></a>
+      <a href="../fr/" lang="fr" hreflang="fr" title="Français" data-lang="fr"><img class="flag" src="../img/flags/fr.svg" alt="Français" width="24" height="16"></a>
+      <a href="../pt/" lang="pt" hreflang="pt" title="Português" data-lang="pt"><img class="flag" src="../img/flags/pt.svg" alt="Português" width="24" height="16"></a>
+      <a href="../th/" lang="th" hreflang="th" title="ไทย" data-lang="th"><img class="flag" src="../img/flags/th.svg" alt="ไทย" width="24" height="16"></a>
     </nav>
   </header>
 
@@ -167,11 +177,11 @@ footer a { color: var(--fg); }
       <h1>Android Auto on your bike's dash, <span>wireless</span></h1>
       <p class="lede">Google Maps, Waze, Spotify and the Assistant on the bike's screen, connecting by itself when you start the bike. Plus: cheapest fuel nearby, your rides with records, videos with your speed overlaid and a watch app.</p>
       <div class="cta">
-        <a class="btn primary" href="https://github.com/mgb1982/ridescreen-aa/releases/latest" data-apk="phone">⬇️ Download the APK<span class="apk-meta"></span></a>
+        <a class="btn primary" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4/RideScreen-AA-v2.4.apk" data-apk="phone">⬇️ Download the APK<span class="apk-meta"></span></a>
         <a class="btn ghost" href="guide/">Install guide</a>
       </div>
       <p class="facts">Free · no ads · open source · Android 10 or newer</p>
-      <p class="facts alt">Direct download of the latest version · <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">also on GitHub</a> · <a href="https://github.com/mgb1982/ridescreen-aa/releases/tag/v2.3">what’s new in v2.3</a></p>
+      <p class="facts alt">Direct download of the latest version · <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">also on GitHub</a> · <a href="https://github.com/mgb1982/ridescreen-aa/releases/tag/v2.4">what’s new in v2.4</a></p>
     </div>
     <div class="hero-media">
       <img class="video" src="../img/hero-video.webp" alt="Rider's view with Android Auto on the dash and the ride speed overlaid" width="720" height="1280">
@@ -184,15 +194,24 @@ footer a { color: var(--fg); }
     <h2>Will it work on <span>my bike</span>?</h2>
     <p class="sub">If your dash shows a <b>QR code</b> to connect your phone (MotoPlay / EasyConnect), almost certainly yes. The app is tested daily on a Zontes 125X, and it builds on OpenCfMoto, which works with many brands that use the same dash.</p>
     <div class="bikes">
-      <span class="chip main">Zontes 125X</span><span class="chip main">Zontes 125V</span><span class="chip main">Zontes 125M</span><span class="chip main">Zontes 368 (G / K / E)</span><span class="chip main">Zontes 703RR</span><span class="chip main">Zontes T350X</span><span class="chip main">Zontes 703F</span><span class="chip main">Zontes 703T</span>
+      <span class="chip main">Zontes 125X</span><span class="chip main">Zontes 125M</span><span class="chip main">Zontes 125V</span><span class="chip main">Zontes 125D</span><span class="chip main">Zontes 125E</span><span class="chip main">Zontes 368 (G / K / E)</span><span class="chip main">Zontes 703F</span><span class="chip main">Zontes 703T</span><span class="chip main">Zontes 703RR</span><span class="chip main">Zontes T350X</span><span class="chip main">Zontes 350E</span><span class="chip main">Zontes 350D</span><span class="chip main">Voge 800</span>
       <span class="chip">CFMoto</span><span class="chip">Voge</span><span class="chip">Moto Morini</span><span class="chip">QJ Motor</span><span class="chip">Benelli</span><span class="chip">Morbidelli</span><span class="chip">Rieju</span>
-      <span class="chip">Zontes 350D (in testing)</span>
+      <p class="muted" style="margin-top:14px;flex-basis:100%">Zontes 350D, 350E and T350X: work from RideScreen AA 2.4, which includes their connection fixes.</p>
 
     <div class="bike-photos" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:18px">
       <figure style="margin:0;max-width:240px"><img src="../img/moto-703rr-cuadro.webp" alt="Zontes 703RR dash running Android Auto" width="900" height="1200" loading="lazy" style="width:100%;height:auto;border-radius:14px"><figcaption style="font-size:.85rem;opacity:.8;margin-top:6px">Zontes 703RR · RideScreen AA 2.3</figcaption></figure>
       <figure style="margin:0;max-width:240px"><img src="../img/moto-703rr-vista.webp" alt="Bike view with Google Maps on the 703RR" width="900" height="1200" loading="lazy" style="width:100%;height:auto;border-radius:14px"><figcaption style="font-size:.85rem;opacity:.8;margin-top:6px">Zontes 703RR · RideScreen AA 2.3</figcaption></figure>
     </div>
     </div>
+  </section>
+
+  <section id="whats-new">
+    <span class="eyebrow">What’s new</span>
+    <h2>What’s new in <span>v2.4</span></h2>
+    <p class="sub">Your key on your phone, a dashboard with your data on the dash, and ten languages. Free, as always.</p>
+    <div class="grid"><div class="card"><div class="ic">🔑</div><h3>Your key, on your phone</h3><p>Unlock, lock and open the seat or the fuel cap from the app, always with a confirmation; then it checks how the bike was left. <b>Never while the bike is moving.</b> “Bike controls” widget, Unlock on Connect (optional), locking ends the ride (optional), and the McuID is read with the camera from the dash QR.</p><span class="tag">New in 2.4</span></div><div class="card"><div class="ic">🔌</div><h3>OBD reader</h3><p>With a Bluetooth ELM327 adapter, <b>read-only</b>: available data, fault codes, and live RPM, speed, temperature and throttle. And continuous reading while you project: “engine running” now comes from the real RPM.</p><span class="tag">New in 2.4</span></div><div class="card"><div class="ic">📊</div><h3>Dashboard on the dash</h3><p>Instead of Android Auto, your data on the dash: Sport, Racing and Touring styles, day and night. Fitted to the 125X screen, and the preview is what you’ll see on the bike. The dial scale adapts to your bike. Without OBD, speed comes from the GPS.</p><span class="tag">New in 2.4</span></div><div class="card"><div class="ic">🏍️</div><h3>Rides with OBD data</h3><p>Ride replay and video with throttle and RPM, and merge routes (can be undone).</p><span class="tag">New in 2.4</span></div><div class="card"><div class="ic">🎬</div><h3>On the dash and when you park</h3><p>A welcome when projection starts, a goodbye with the day’s summary, and a rain alert when you park for the next hours where you left the bike.</p><span class="tag">New in 2.4</span></div><div class="card"><div class="ic">🎮</div><h3>Volume with an intercom</h3><p>With “Handlebar buttons drive Android Auto”, you can now keep ▲/▼ for the volume.</p><span class="tag">New in 2.4</span></div><div class="card"><div class="ic">⌚</div><h3>Heart rate from the watch</h3><p>Your watch’s heart rate in the app (❓ Help), every 5 seconds. And the watch app, translated into every language.</p><span class="tag">New in 2.4</span></div><div class="card"><div class="ic">🌍</div><h3>Ten languages</h3><p>The app and the watch, fully translated into Spanish, Catalan, English, Italian, French, German, Portuguese, Greek, Russian and Thai.</p><span class="tag">New in 2.4</span></div></div>
+    <div class="shots"><figure><img src="../img/en/inicio.webp" alt="Home with the key" width="540" height="1198" loading="lazy"><figcaption>Home with the key</figcaption></figure><figure><img src="../img/en/llave.webp" alt="Lock and unlock" width="540" height="1198" loading="lazy"><figcaption>Lock and unlock</figcaption></figure><figure><img src="../img/en/widget-controles.webp" alt="“Bike controls” widget" width="540" height="1198" loading="lazy"><figcaption>“Bike controls” widget</figcaption></figure><figure><img src="../img/en/obd.webp" alt="OBD reader" width="540" height="1198" loading="lazy"><figcaption>OBD reader</figcaption></figure><figure><img src="../img/en/dashboard-estilo.webp" alt="Dashboard style" width="540" height="1198" loading="lazy"><figcaption>Dashboard style</figcaption></figure><figure><img src="../img/en/dashboard-escala.webp" alt="Dial scale" width="540" height="1198" loading="lazy"><figcaption>Dial scale</figcaption></figure><figure><img src="../img/en/viaje-obd.webp" alt="Ride with OBD data" width="540" height="1198" loading="lazy"><figcaption>Ride with OBD data</figcaption></figure><figure><img src="../img/en/pulso.webp" alt="Heart rate from the watch" width="540" height="1198" loading="lazy"><figcaption>Heart rate from the watch</figcaption></figure><figure style="flex:0 0 320px;align-self:flex-start"><img src="../img/dashboard-cuadro-1.webp" alt="Dashboard on the dash · Racing · Zontes 125X" width="890" height="695" loading="lazy"><figcaption>Dashboard on the dash · Racing</figcaption></figure><figure style="flex:0 0 320px;align-self:flex-start"><img src="../img/dashboard-cuadro-2.webp" alt="Dashboard on the dash · Touring · Zontes 125X" width="890" height="695" loading="lazy"><figcaption>Dashboard on the dash · Touring</figcaption></figure></div>
+    <h3 style="margin-top:28px">❤️ Thank you</h3><p class="muted" style="margin-top:14px"><b>Special thanks for the 2.4:</b></p><ul class="thanks"><li>Melo — for lending the iPhone for the iOS tests</li><li>Inky en Moto — for the logs that got the T350X working and his video about the app (<a href="https://youtube.com/@inkyenmoto">youtube.com/@inkyenmoto</a>)</li><li>Luis Gil — for his help with the OBD reader</li><li>All the testers of the 2.4 test builds</li></ul><p class="muted" style="margin-top:14px"><b>Supporters on Ko-fi — thank you!</b></p><ul class="thanks"><li>Francisco Javier S.</li><li>José Antonio R.</li><li>Raul</li><li>Luis Gil</li><li>INKY</li><li>Juanma M.</li><li>Alfonsomicra</li><li>Isra</li><li>Dionisios S.</li><li>José Manuel</li><li>Karsten</li><li>Francesc Xavier M.</li><li>Jon</li><li>Alberto</li><li>Anonymous supporters</li></ul>
   </section>
 
   <section id="features">
@@ -209,7 +228,7 @@ footer a { color: var(--fg); }
       <div class="card"><div class="ic">📸</div><h3>Where I parked</h3><p>Saves the spot and a photo; the watch compass leads you back to the bike.</p></div>
       <div class="card"><div class="ic">🔧</div><h3>Maintenance</h3><p>Oil, belt, inspection… with a reminder when it's due, and your real fuel consumption.</p></div>
       <div class="card"><div class="ic">🆘</div><h3>Crash detection</h3><p>Alarm on phone and watch and, if you don't respond, an SMS with your location.</p><span class="tag">Experimental</span></div>
-      <div class="card"><div class="ic">🔋</div><h3>Your bike’s battery</h3><p>Voltage and lock state, read from the keyless box. Read-only: it never sends commands.</p><span class="tag">New in 2.3</span></div>
+      <div class="card"><div class="ic">🔑</div><h3>Your key, on your phone</h3><p>Unlock, lock and open the seat or the fuel cap from the app, always with a confirmation.</p><span class="tag">New in 2.4</span></div>
       <div class="card"><div class="ic">📲</div><h3>“Connect” widget</h3><p>One tap on your home screen connects to your bike, with your Garage photo.</p><span class="tag">New in 2.3</span></div>
       <div class="card"><div class="ic">👥</div><h3>Passenger mode</h3><p>Your passenger picks the destination and music and moves Android Auto from their phone.</p><span class="tag">New in 2.3</span></div>
       <div class="card"><div class="ic">🛟</div><h3>Rides kept safe</h3><p>Your ride is saved every 30 s even if the app closes. And you can import GPX routes.</p><span class="tag">New in 2.3</span></div>
@@ -261,16 +280,20 @@ footer a { color: var(--fg); }
 <footer>
   <div class="wrap">
     <div class="links">
-      <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest" data-apk="phone">Download</a>
+      <a href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4/RideScreen-AA-v2.4.apk" data-apk="phone">Download</a>
       <a href="guide/">Guide</a>
       <a href="watch/">Watch</a>
       <a href="https://github.com/mgb1982/ridescreen-aa">Source code</a>
       <a href="https://github.com/mgb1982/ridescreen-aa/blob/main/PRIVACY.md">Privacy</a>
-      <a href="../" data-lang="es">Español</a>
-      <a href="../ca/" data-lang="ca">Català</a>
+      <a href="../" lang="es" data-lang="es">Español</a>
+      <a href="../ca/" lang="ca" data-lang="ca">Català</a>
+      <a href="../it/" lang="it" data-lang="it">Italiano</a>
       <a href="../el/" lang="el" data-lang="el">Ελληνικά</a>
       <a href="../ru/" lang="ru" data-lang="ru">Русский</a>
-      <a href="../it/" lang="it" data-lang="it">Italiano</a>
+      <a href="../de/" lang="de" data-lang="de">Deutsch</a>
+      <a href="../fr/" lang="fr" data-lang="fr">Français</a>
+      <a href="../pt/" lang="pt" data-lang="pt">Português</a>
+      <a href="../th/" lang="th" data-lang="th">ไทย</a>
       <a href="https://ko-fi.com/mgb1982">☕ Ko-fi</a>
     </div>
     <p>RideScreen AA is based on <a href="https://github.com/zanderp/open-cfmoto">OpenCfMoto</a> by Alexandru (zanderp). Free software under the AGPL-3.0 licence.</p>
