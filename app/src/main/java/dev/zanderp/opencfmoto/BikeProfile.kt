@@ -706,8 +706,8 @@ private class LearnedGeometryProfile(
  * EasyConn links and frames flow, but mis-scoring as CFDL26 800MT was common — keep a dedicated
  * Baseline landscape profile so CLIENT_INFO / canvas stay on the Morini SoftAP shape.
  */
-/** Zontes dash channels that work on the Baseline CFDL16 MotoPlay Landscape profile (125X, 368, T350X, 350D/350E). */
-private val ZONTES_CHANNELS = setOf("21340", "21334", "34808", "21313")
+/** Zontes dash channels that work on the Baseline CFDL16 MotoPlay Landscape profile (125X, 368, T350X, 350D/350E, 350E JCDZ21). */
+private val ZONTES_CHANNELS = setOf("21340", "21334", "34808", "21313", "21321")
 
 object MoriniMlSoftApProfile : BikeProfile {
     override val name = "Morini SoftAP / Alltrhike (MLN)"
@@ -846,6 +846,9 @@ internal object KnownDashes {
         // 21313 / JCDZ13, REQ_CONFIG_CAPTURE 1024×464. Without this the QR guess was legacy and CLIENT_INFO
         // scored the Morini profile (flavor 51, no touch); same family as the 368/T350X, so same profile.
         "21313" to Dash("Zontes 350D/350E", { Cfdl16MotoPlayLandscapeProfile }, 1024 to 464),
+        // Zontes 350E with a JCDZ21 dash (Salvador, 8 Nov 2026): channel 21321, Wi-Fi Direct QR action=8,
+        // 1024×464 — same family and shape as 21313.
+        "21321" to Dash("Zontes 350E (21321)", { Cfdl16MotoPlayLandscapeProfile }, 1024 to 464),
         // Zontes 125X (Manel's, 17 Oct logs): panel 800×416. AA at a plain 800×480 with no margins +
         // Fill keeps Android Auto's icon bar at the bottom, where it hides under the dash's own
         // speed/fuel strip; "match aspect" margins make AA put the bar on the left instead.

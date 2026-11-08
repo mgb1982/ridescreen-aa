@@ -369,6 +369,13 @@ class PxcHandshake(
         const val ZONTES_350E_CHANNEL = "21313"
 
         /**
+         * Zontes 350E with a JCDZ21 dash (channel/QR modelId 21321, Wi‑Fi Direct QR action=8, 1024×464;
+         * Salvador, 8 Nov 2026): link and video worked but the dash kept its QR — no APPSTATUS and an empty
+         * HU_QUERY_TIME, the same cause as 21313 before build 390. Gets the same session messages.
+         */
+        const val ZONTES_350E_JCDZ21_CHANNEL = "21321"
+
+        /**
          * Zontes T350X (2023 dash, HUName ZHKJ08, sdk 0.9.19.1, 20 Oct 2026): links CAR_CTRL and
          * CAR_DATA, then only polls 0x10430 / 0x10630 every 2 s and never opens the media ports —
          * like the 368 that kept its QR on screen. Give it the official app's session messages.
@@ -383,7 +390,8 @@ class PxcHandshake(
          */
         fun clockFixDash(channel: String?, phoneHotspotDash: Boolean): Boolean {
             val ch = channel?.trim().orEmpty()
-            return ch == ZONTES_CHANNEL || ch == ZONTES_368_CHANNEL || ch == ZONTES_350E_CHANNEL || ch == ZONTES_T350X_CHANNEL ||
+            return ch == ZONTES_CHANNEL || ch == ZONTES_368_CHANNEL || ch == ZONTES_350E_CHANNEL || ch == ZONTES_350E_JCDZ21_CHANNEL ||
+                ch == ZONTES_T350X_CHANNEL ||
                 (ch == ZONTES_125M_CHANNEL && phoneHotspotDash)
         }
         /** Master switch for the Zontes APPSTATUS loop. */
