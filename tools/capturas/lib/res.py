@@ -6,7 +6,7 @@ import re
 import xml.etree.ElementTree as ET
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
-APP_RES = os.path.join(ROOT, "app", "src", "main", "res")
+APP_RES = os.environ.get("RS_APP_RES") or os.path.join(ROOT, "app", "src", "main", "res")  # RS_APP_RES: e.g. a release tag's res
 WEAR_RES = os.path.join(ROOT, "wear", "src", "main", "res")
 FONT_DIR = os.path.join(APP_RES, "font")
 
@@ -39,18 +39,24 @@ def _text(el):
     return _unescape(raw.strip())
 
 
+FALLBACKS = set()  # (lang, key) shown in English because the language lacks it
+
+
 class Strings:
     """Merged strings for one language, falling back to the default (English) values."""
 
     def __init__(self, lang, res=APP_RES):
         self.lang = lang
         self.s, self.p, self.a = {}, {}, {}
+        self.own = set()  # keys the language itself translates (the rest fall back to English)
         for folder in ["values", "values" + LANG_DIR[lang]] if LANG_DIR[lang] else ["values"]:
             for f in sorted(glob.glob(os.path.join(res, folder, "strings*.xml"))
                             + glob.glob(os.path.join(res, folder, "arrays*.xml"))):
                 root = ET.parse(f).getroot()
                 for el in root.iter("string"):
                     self.s[el.get("name")] = _text(el)
+                    if folder != "values":
+                        self.own.add(el.get("name"))
                 for el in root.iter("string-array"):
                     self.a[el.get("name")] = [_text(i) for i in el.iter("item")]
                 for el in root.iter("plurals"):
@@ -58,6 +64,8 @@ class Strings:
 
     def __call__(self, key, *args):
         v = self.s[key]
+        if self.lang != "en" and key not in self.own:
+            FALLBACKS.add((self.lang, key))
         return fmt(v, *args) if args else v
 
     def plural(self, key, n, *args):
