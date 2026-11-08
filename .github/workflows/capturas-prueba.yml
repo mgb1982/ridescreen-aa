@@ -1,0 +1,47 @@
+name: Captura de prueba (generador oficial)
+on:
+  push:
+    branches: [capturas/prueba-trip-map]
+    paths:
+      - .github/workflows/capturas-prueba.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del generador
+        uses: actions/checkout@v4
+        with:
+          ref: capturas/v2.4-lanzamiento
+          path: generador
+      - name: Checkout de recursos de release/v2.4
+        uses: actions/checkout@v4
+        with:
+          ref: release/v2.4
+          path: recursos
+          sparse-checkout: app/src/main/res
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright pillow babel
+          python -m playwright install --with-deps chromium
+      - name: Comprobar generador
+        working-directory: generador
+        run: python3 tools/capturas/capturas.py --list trip_map --lang=es
+      - name: Generar captura de prueba
+        working-directory: generador
+        env:
+          RS_APP_RES: ${{ github.workspace }}/recursos/app/src/main/res
+        run: python3 tools/capturas/capturas.py trip_map --lang=es --dry
+      - name: Publicar PNG de prueba
+        uses: actions/upload-artifact@v4
+        with:
+          name: ridescreen-captura-trip-map-es
+          path: generador/tools/capturas/out/dry/docs/screenshots/ridescreen/movil/15_viaje_por_velocidad.png
+          if-no-files-found: error
