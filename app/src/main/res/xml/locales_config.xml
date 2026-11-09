@@ -15,4 +15,6 @@
     <locale android:name="tr" />
     <locale android:name="ko" />
     <locale android:name="bg" />
+    <locale android:name="sr" />
+    <locale android:name="sr-Latn" />
 </locale-config>

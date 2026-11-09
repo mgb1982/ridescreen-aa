@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_button">❤ Подржи пројекат</string>
+    <string name="support_title">Подржи RideScreen AA</string>
+    <string name="support_title_play">Частите ме…</string>
+    <string name="support_body">RideScreen AA је бесплатан и нема рекламе. Ако вам улепшава вожње, можете ме частити кафом и помоћи да се покрију трошкови (као што је Google Play програмерски налог). Хвала!</string>
+    <string name="support_kofi">Частите ме кафом (Ko-fi)</string>
+    <string name="support_original">Подржи аутора OpenCfMoto-а</string>
+    <string name="support_later">Не сада</string>
+    <string name="support_coffee">☕ Кафа</string>
+    <string name="support_sandwich">🥪 Сендвич</string>
+    <string name="support_tank">⛽ Пун резервоар</string>
+    <string name="support_thanks">Хвала вам пуно! 🙌</string>
+    <string name="support_unavailable">Донације тренутно нису доступне. Покушајте поново касније.</string>
+</resources>

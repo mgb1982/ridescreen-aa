@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_settings_desc">Подешавања</string>
+    <string name="stat_km_today">км данас</string>
+    <string name="stat_max_today">макс. км/ч</string>
+    <string name="stat_clock">сат на табли</string>
+    <string name="stat_clock_ok">сат на табли ✓</string>
+    <string name="stat_clock_adjusting">подешавам…</string>
+    <string name="main_trips_pill">Вожње</string>
+    <string name="main_more">Више</string>
+</resources>

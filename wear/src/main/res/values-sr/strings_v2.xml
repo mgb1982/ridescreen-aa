@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="find_title">🅿️ ВАШ МОТОР</string>
+    <string name="find_waiting_gps">Тражим GPS…</string>
+    <string name="find_maps">Упутства</string>
+    <string name="find_none">Још нема сачуваног места паркирања</string>
+    <string name="find_parked_ago">Паркиран %1$s</string>
+    <string name="find_here">Ту сте! 🏍️</string>
+    <string name="status_hus_off">⚠️ Покрените AA сервер главне јединице</string>
+    <string name="tile_tap_compass">Додирните да га пронађете</string>
+    <string name="park_page_find">🧭 Пронађи га</string>
+</resources>

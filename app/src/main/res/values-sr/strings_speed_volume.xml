@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="speed_volume_title">Јачина звука према брзини</string>
+    <string name="speed_volume_desc">Појачава јачину медија на телефону (глас навигације и музику) што брже возите, да надјача буку ветра. Ваша јачина звука је основа: мењајте је кад год желите и појачање је прати. Паузирано док дугмад на управљачу управљају Android Auto-ом.</string>
+    <string name="speed_volume_off">Искључено</string>
+    <string name="speed_volume_low">Ниско</string>
+    <string name="speed_volume_medium">Средње</string>
+    <string name="speed_volume_high">Високо</string>
+    <string name="speed_volume_status_off">Искључено</string>
+    <string name="speed_volume_status_waiting">Чекам везу са мотором…</string>
+    <string name="speed_volume_status_paused">Паузирано: дугмад на управљачу фиксирају јачину звука</string>
+    <string name="speed_volume_status_no_gps">Активно: чекам GPS брзину…</string>
+    <string name="speed_volume_status_live">Активно: %1$d км/ч · појачање +%2$d</string>
+    <string name="speed_volume_advanced_show">Напредно ▾</string>
+    <string name="speed_volume_advanced_hide">Напредно ▴</string>
+    <string name="speed_volume_custom">Прилагођена крива (замењује криву нивоа)</string>
+    <string name="speed_volume_start_label">Почни појачање од: %1$d км/ч</string>
+    <string name="speed_volume_step_label">Још један корак на сваких: %1$d км/ч</string>
+    <string name="speed_volume_max_label">Максимално појачање: +%1$d корака</string>
+    <string name="speed_volume_custom_hint">Кораци су на скали јачине од 15 корака. Да би прилагођена крива радила, мора бити изабран неки ниво осим Искључено.</string>
+</resources>
