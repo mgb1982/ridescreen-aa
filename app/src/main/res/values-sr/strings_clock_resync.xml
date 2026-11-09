@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_clock_resync">Поново синхронизуј сат на табли (Zontes)</string>
+    <string name="setup_clock_resync_desc">Прекида везу на неколико секунди и поново се повезује како би табла поново преузела време. Паметно: само када је табла касно затражила време (знак неуспеле синхронизације), највише 3 пута. Увек једном: при првом повезивању после сваког паљења табле. Ради само на Zontes таблама.</string>
+    <string name="setup_clock_resync_smart">Паметно</string>
+    <string name="setup_clock_resync_once">Увек једном</string>
+    <string name="clock_resyncing">⏱ Подешавам сат на табли…</string>
+</resources>

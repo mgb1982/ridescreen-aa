@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Bike switched off for a long time: stop waiting (battery). -->
+    <string name="bike_gone_channel">Motor nije pronađen</string>
+    <string name="bike_gone_title">Prestao sam da čekam motor</string>
+    <string name="bike_gone_text">Motor je bio ugašen 20 minuta, pa je aplikacija prestala da ga traži kako bi štedela bateriju. Dodirnite Poveži kada se vratite na motor.</string>
+
+    <!-- Trophies -->
+    <string name="tr_channel">Trofeji</string>
+    <string name="tr_unlocked_title">🏆 Trofej otključan!</string>
+    <string name="tr_screen_title">Trofeji</string>
+    <string name="tr_header">Otključano %1$d od %2$d</string>
+    <string name="tr_next">Sledeće</string>
+    <string name="tr_earned_on">Osvojeno %1$s</string>
+    <string name="tr_card_line">🏆 Trofeji: %1$d od %2$d · prikaži sve ›</string>
+    <string name="tr_distance">Kilometri</string>
+    <string name="tr_distance_d">Ukupno pređite %1$s km</string>
+    <string name="tr_longest">Duga vožnja</string>
+    <string name="tr_longest_d">Jedna vožnja od %1$s km ili više</string>
+    <string name="tr_speed">Najveća brzina</string>
+    <string name="tr_speed_d">Dostignite %1$s km/h (GPS)</string>
+    <string name="tr_streak">U naletu</string>
+    <string name="tr_streak_d">Vozite %1$s dana zaredom</string>
+    <string name="tr_rides">Redovan</string>
+    <string name="tr_rides_d">Sačuvajte %1$s vožnji</string>
+    <string name="tr_hours">Sati u sedlu</string>
+    <string name="tr_hours_d">%1$s sati vožnje</string>
+    <string name="tr_months">Cele godine</string>
+    <string name="tr_months_d">Vozite u %1$s različitih meseci</string>
+    <string name="tr_early">Ranoranilac</string>
+    <string name="tr_early_d">Krenite na vožnju pre 7:00</string>
+    <string name="tr_night">Noćni vozač</string>
+    <string name="tr_night_d">Završite vožnju posle 23:00</string>
+    <string name="tr_weekend">Vikend vozač</string>
+    <string name="tr_weekend_d">Vozite u subotu i nedelju istog vikenda</string>
+</resources>
