@@ -312,4 +312,17 @@ PILLS = [
          note="Nada pasa por internet: los móviles hablan por Bluetooth, y los vinculados solo pueden enviar "
               "destinos, teclas de Android Auto y controles de música.",
          foot="Se vincula una sola vez"),
+
+    dict(slug="22-conexion-automatica", icon="🔗", tag="Conexión",
+         title="Conecta al acercarte a la moto",
+         sub="Configura el Bluetooth como disparador y RideScreen AA iniciará la conexión con tu moto guardada cuando la detecte.",
+         steps=[
+             "Primero, vincula la moto desde **Ajustes del teléfono → Bluetooth**. Comprueba que aparece entre los dispositivos vinculados.",
+             "Abre RideScreen AA → **Configuración**. Activa la conexión automática cuando el Wi‑Fi de la moto esté al alcance.",
+             "En **[[setup_bt_trigger]]**, pulsa el selector y elige la moto en la lista de dispositivos Bluetooth vinculados. Así queda como dispositivo de confianza para iniciar Connect.",
+             "En los ajustes del teléfono: **Aplicaciones → RideScreen AA → Batería** y selecciona **Sin restricciones** (o **No optimizar**, según el móvil). Permite también la actividad en segundo plano y el inicio automático si tu marca ofrece esas opciones.",
+             "Para que pueda abrir Android Auto sin tocar el móvil, permite **Mostrar sobre otras aplicaciones** a RideScreen AA. Si no lo permites, Android puede mostrar una notificación que tendrás que tocar para continuar.",
+         ],
+         note="Enciende la moto y deja el cuadro en la pantalla del QR (interfaz 3): ahí se activa el Wi‑Fi que RideScreen AA necesita para completar la conexión. Los nombres de los menús cambian según Samsung, Xiaomi y otras marcas.",
+         foot="Bluetooth detecta la moto; el Wi‑Fi confirma que está encendida"),
 ]
