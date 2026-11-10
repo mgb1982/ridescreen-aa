@@ -322,12 +322,12 @@ PILLS = [
          title="Configura e usa i comandi PKE",
          sub="La versione 2.4.1 aggiunge una password Bluetooth facoltativa per alcune centraline keyless che ricevono i comandi ma non li eseguono.",
          steps=[
-             "In RideScreen AA apri **❓ Aiuto → PKE**. Inserisci il **codice PKE** della moto (app ufficiale Zontes Smart → gestione moto) e imposta il **McuID** scansionando il QR informativo della moto.",
-             "Nel nuovo campo **Bluetooth password (optional, 6 digits)** inserisci la password esadecimale di 6 caratteri usata quando la moto è stata associata in Zontes Smart. Salvala insieme al McuID.",
+             "In RideScreen AA apri **❓ Aiuto → PKE**. Se l'app ti chiede ancora il **codice PKE**, inseriscilo per continuare.",
+             "Nella configurazione del **McuID**, tocca **Scansiona QR** e inquadra il QR informativo della moto. RideScreen AA estrae il **McuID** e, se presente, anche il **codice PKE**. Controlla la conferma e salva i dati.",
+             "Nel campo **Bluetooth password (optional, 6 digits)** inserisci la password Bluetooth **esadecimale di 6 caratteri** usata quando la moto è stata associata in Zontes Smart. Salvala insieme al McuID.",
              "Il campo è facoltativo: **se blocco, sblocco, sella e sportello del serbatoio funzionano già, lascialo vuoto**. Provalo solo se la centralina riceve i comandi ma non esegue l'azione.",
              "Torna alla schermata PKE e prova **Blocca** o **Sblocca**. Per **Sella** e **Sportello carburante**, conferma l'azione quando l'app te lo chiede.",
-             "Controlla sempre il risultato direttamente sulla moto. Se non si collega, chiudi Zontes Smart e qualsiasi altra app collegata alla centralina: la centralina PKE accetta un solo client Bluetooth alla volta.",
          ],
-         note="La password deve contenere esattamente 6 caratteri esadecimali (0–9 e A–F). Non è il codice PKE né il McuID. Se non conosci la password usata durante l'associazione della moto, non inventarla: lascia il campo vuoto.",
+         note="Se il QR non contiene il codice PKE, inseriscilo manualmente dall'apposita opzione. La password Bluetooth deve avere esattamente 6 caratteri esadecimali (0–9 e A–F): non è il codice PKE né il McuID. Se non la conosci, lascia il campo vuoto.",
          foot="La versione 2.4.1 mantiene il metodo precedente se il campo è vuoto"),
 ]
