@@ -78,31 +78,31 @@ object SettingsBackup {
         val root = try {
             JSONObject(json.trim().removePrefix("\uFEFF"))
         } catch (e: Exception) {
-            return Result(false, "Not valid JSON: ${e.message}")
+            return Result(false, context.getString(R.string.import_bad_json, e.message ?: ""))
         }
         val format = root.optString("format", "")
         if (format != FORMAT) {
-            return Result(false, "Not an OpenCfMoto settings file (format=$format)")
+            return Result(false, context.getString(R.string.import_bad_format, format))
         }
         val ver = root.optInt("version", 0)
         if (ver < 1 || ver > VERSION) {
-            return Result(false, "Unsupported settings version $ver (this app reads 1…$VERSION)")
+            return Result(false, context.getString(R.string.import_bad_version, ver, VERSION))
         }
         val s = root.optJSONObject("settings")
-            ?: return Result(false, "Missing settings object")
+            ?: return Result(false, context.getString(R.string.import_missing))
 
         try {
             applySettings(context, s)
         } catch (e: Exception) {
-            return Result(false, "Import failed: ${e.message}")
+            return Result(false, context.getString(R.string.import_failed_detail, e.message ?: ""))
         }
 
         val hint = root.optJSONObject("bikeHint")
         val profile = hint?.optString("profile")?.takeIf { it.isNotBlank() && it != "null" }
             ?: hint?.optString("profileOverride")?.takeIf { it.isNotBlank() && it != "null" }
-        val onto = BikeMemory.lastBikeName(context) ?: "selected bike"
-        val msg = if (profile != null) "Imported bike tuning ($profile) onto $onto"
-        else "Bike tuning imported onto $onto"
+        val onto = BikeMemory.lastBikeName(context) ?: context.getString(R.string.import_selected_bike)
+        val msg = if (profile != null) context.getString(R.string.import_ok_profile, profile, onto)
+        else context.getString(R.string.import_ok, onto)
         return Result(true, msg)
     }
 

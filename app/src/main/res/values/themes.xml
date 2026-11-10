@@ -9,6 +9,9 @@
         <item name="colorOnPrimaryContainer">@color/on_brand</item>
 
         <item name="android:colorBackground">@color/bg</item>
+        <item name="android:windowBackground">@drawable/bg_screen</item>
+        <item name="android:windowSplashScreenBackground">@color/bg</item>
+        <item name="android:progressBarStyleHorizontal">@style/Widget.OpenCfMoto.Progress</item>
         <item name="colorSurface">@color/surface</item>
         <item name="colorSurfaceVariant">@color/surface_high</item>
         <item name="colorOnSurface">@color/text_primary</item>
@@ -113,10 +116,10 @@
         <item name="android:letterSpacing">0.01</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
-        <item name="cornerRadius">32dp</item>
-        <item name="android:minHeight">64dp</item>
-        <item name="android:letterSpacing">0.08</item>
-        <item name="android:textAllCaps">true</item>
+        <item name="cornerRadius">36dp</item>
+        <item name="android:minHeight">@dimen/btn_connect_min_height</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAllCaps">false</item>
         <item name="android:fontFamily">@font/archivo_black</item>
         <item name="fontFamily">@font/archivo_black</item>
         <item name="iconGravity">textStart</item>
@@ -215,7 +218,7 @@
     </style>
 
     <style name="Card.OpenCfMoto" parent="Widget.Material3.CardView.Elevated">
-        <item name="cardCornerRadius">22dp</item>
+        <item name="cardCornerRadius">28dp</item>
         <item name="cardBackgroundColor">@color/surface</item>
         <item name="cardElevation">0dp</item>
         <item name="strokeColor">@color/outline</item>
@@ -251,7 +254,7 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:minHeight">108dp</item>
+        <item name="android:minHeight">120dp</item>
         <item name="android:orientation">vertical</item>
         <item name="android:gravity">center</item>
         <item name="android:paddingTop">14dp</item>
@@ -265,7 +268,7 @@
     </style>
 
     <style name="HomeTile.Big">
-        <item name="android:minHeight">112dp</item>
+        <item name="android:minHeight">128dp</item>
         <item name="android:gravity">center_vertical|start</item>
         <item name="android:paddingStart">16dp</item>
         <item name="android:paddingEnd">10dp</item>
@@ -274,6 +277,7 @@
     <style name="HomeMore" parent="Widget.Material3.Button.TextButton">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">56dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:paddingStart">0dp</item>
@@ -288,5 +292,38 @@
         <item name="iconTint">@color/text_secondary</item>
         <item name="iconPadding">4dp</item>
         <item name="iconSize">22dp</item>
+    </style>
+
+    <!-- Language chip on the photo hero. Large enough for gloves, readable on the scrim. -->
+    <style name="Widget.OpenCfMoto.Button.Lang" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:minWidth">72dp</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:paddingEnd">14dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="cornerRadius">28dp</item>
+        <item name="backgroundTint">#CC243028</item>
+    </style>
+
+    <style name="Widget.OpenCfMoto.Progress" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_mint</item>
+        <item name="android:minHeight">8dp</item>
+        <item name="android:maxHeight">8dp</item>
+    </style>
+
+    <style name="Widget.OpenCfMoto.Button.LangOption" parent="Widget.OpenCfMoto.Button.Tonal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">64dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
     </style>
 </resources>

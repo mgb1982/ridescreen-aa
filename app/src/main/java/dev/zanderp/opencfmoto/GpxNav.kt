@@ -3,6 +3,8 @@
 // Part of OpenCfMoto. Free software under the GNU AGPL v3 or later; see LICENSE and NOTICE.
 package dev.zanderp.opencfmoto
 
+import android.content.Context
+import androidx.annotation.StringRes
 import kotlin.math.*
 
 /** Ride maths for OpenCfMoto Map / GPX: ETA, elevation, turn and waypoint prompts on the dash. */
@@ -10,6 +12,8 @@ class GpxNav(
     private val track: GpxTrack,
     /** OSRM guidance steps for road routes; null/empty falls back to geometry turn inference. */
     private val steps: List<OsrmRouter.RouteStep>? = null,
+    /** When set, turn phrases follow the app language. Null keeps the English wording (unit tests). */
+    private val strings: Context? = null,
 ) {
     val cumDistM: DoubleArray
     val totalM: Double
@@ -237,25 +241,25 @@ class GpxNav(
                 val distFromRider = (d - startDist).coerceAtLeast(0.0)
                 val distLabel = formatDistance(distFromRider, units)
                 val dirWord = when (dir) {
-                    TurnDir.LEFT -> "turn left"
-                    TurnDir.RIGHT -> "turn right"
-                    TurnDir.SHARP_LEFT -> "sharp left"
-                    TurnDir.SHARP_RIGHT -> "sharp right"
-                    else -> "continue"
+                    TurnDir.LEFT -> tx(R.string.nav_speak_left, "turn left")
+                    TurnDir.RIGHT -> tx(R.string.nav_speak_right, "turn right")
+                    TurnDir.SHARP_LEFT -> tx(R.string.nav_speak_sharp_left, "sharp left")
+                    TurnDir.SHARP_RIGHT -> tx(R.string.nav_speak_sharp_right, "sharp right")
+                    else -> tx(R.string.nav_speak_straight, "continue")
                 }
                 val short = when (dir) {
-                    TurnDir.LEFT -> "← Left"
-                    TurnDir.RIGHT -> "Right →"
-                    TurnDir.SHARP_LEFT -> "←← Sharp"
-                    TurnDir.SHARP_RIGHT -> "Sharp →→"
-                    else -> "↑"
+                    TurnDir.LEFT -> tx(R.string.nav_short_left, "← Left")
+                    TurnDir.RIGHT -> tx(R.string.nav_short_right, "Right →")
+                    TurnDir.SHARP_LEFT -> tx(R.string.nav_short_sharp_left, "←← Sharp")
+                    TurnDir.SHARP_RIGHT -> tx(R.string.nav_short_sharp_right, "Sharp →→")
+                    else -> tx(R.string.nav_short_straight, "↑")
                 }
                 return TurnCue(
                     index = i,
                     distanceAlongM = d,
                     distanceFromRiderM = distFromRider,
                     dir = dir,
-                    speak = "In $distLabel, $dirWord",
+                    speak = tx(R.string.nav_in_then, "In $distLabel, $dirWord", distLabel, dirWord),
                     shortLabel = "$short · $distLabel",
                     instr = dirWord,
                 )
@@ -287,14 +291,15 @@ class GpxNav(
             val distFromRider = dist.coerceAtLeast(0.0)
             val distLabel = formatDistance(distFromRider, units)
             val road = step.roadName.takeIf { it.isNotBlank() }
-            val instr = instruction(type, step.modifier, road, step.exit)
+            val instr = instruction(strings, type, step.modifier, road, step.exit)
+            val spoken = tx(R.string.nav_in_then, "In $distLabel, $instr", distLabel, instr)
             val laneLabel = laneLabel(step.lanes)
             return TurnCue(
                 index = idx,
                 distanceAlongM = cumDistM.getOrElse(idx) { startDist },
                 distanceFromRiderM = distFromRider,
                 dir = dir,
-                speak = "In $distLabel, $instr",
+                speak = spoken,
                 shortLabel = buildString {
                     append(arrowFor(dir))
                     if (road != null) append(" ").append(road)
@@ -350,6 +355,11 @@ class GpxNav(
         return bearingDeg(a.lat, a.lon, b.lat, b.lon)
     }
 
+    private fun tx(@StringRes id: Int, fallback: String, vararg args: Any): String {
+        val c = strings ?: return fallback
+        return if (args.isEmpty()) c.getString(id) else c.getString(id, *args)
+    }
+
     companion object {
         fun haversineM(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
             val r = 6371000.0
@@ -397,29 +407,29 @@ class GpxNav(
         }
 
         /** Short HUD label while walking/riding back onto the route. */
-        fun joinRouteWord(dir: TurnDir): String = when (dir) {
-            TurnDir.LEFT -> "Turn left"
-            TurnDir.RIGHT -> "Turn right"
-            TurnDir.SHARP_LEFT -> "Sharp left"
-            TurnDir.SHARP_RIGHT -> "Sharp right"
-            TurnDir.SLIGHT_LEFT -> "Bear left"
-            TurnDir.SLIGHT_RIGHT -> "Bear right"
-            TurnDir.UTURN -> "Turn around"
-            TurnDir.STRAIGHT, TurnDir.CONTINUE -> "Go ahead"
-            else -> "To route"
+        fun joinRouteWord(context: Context, dir: TurnDir): String = when (dir) {
+            TurnDir.LEFT -> context.getString(R.string.nav_turn_left)
+            TurnDir.RIGHT -> context.getString(R.string.nav_turn_right)
+            TurnDir.SHARP_LEFT -> context.getString(R.string.nav_sharp_left)
+            TurnDir.SHARP_RIGHT -> context.getString(R.string.nav_sharp_right)
+            TurnDir.SLIGHT_LEFT -> context.getString(R.string.nav_bear_left)
+            TurnDir.SLIGHT_RIGHT -> context.getString(R.string.nav_bear_right)
+            TurnDir.UTURN -> context.getString(R.string.nav_turn_around)
+            TurnDir.STRAIGHT, TurnDir.CONTINUE -> context.getString(R.string.nav_go_ahead)
+            else -> context.getString(R.string.nav_to_route)
         }
 
         /** Spoken cue while off the road / joining the route. */
-        fun joinRouteSpeak(dir: TurnDir): String = when (dir) {
-            TurnDir.LEFT -> "turn left toward the route"
-            TurnDir.RIGHT -> "turn right toward the route"
-            TurnDir.SHARP_LEFT -> "sharp left toward the route"
-            TurnDir.SHARP_RIGHT -> "sharp right toward the route"
-            TurnDir.SLIGHT_LEFT -> "bear left toward the route"
-            TurnDir.SLIGHT_RIGHT -> "bear right toward the route"
-            TurnDir.UTURN -> "turn around toward the route"
-            TurnDir.STRAIGHT, TurnDir.CONTINUE -> "go ahead to the route"
-            else -> "head to the route"
+        fun joinRouteSpeak(context: Context, dir: TurnDir): String = when (dir) {
+            TurnDir.LEFT -> context.getString(R.string.nav_join_left)
+            TurnDir.RIGHT -> context.getString(R.string.nav_join_right)
+            TurnDir.SHARP_LEFT -> context.getString(R.string.nav_join_sharp_left)
+            TurnDir.SHARP_RIGHT -> context.getString(R.string.nav_join_sharp_right)
+            TurnDir.SLIGHT_LEFT -> context.getString(R.string.nav_join_bear_left)
+            TurnDir.SLIGHT_RIGHT -> context.getString(R.string.nav_join_bear_right)
+            TurnDir.UTURN -> context.getString(R.string.nav_join_around)
+            TurnDir.STRAIGHT, TurnDir.CONTINUE -> context.getString(R.string.nav_join_ahead)
+            else -> context.getString(R.string.nav_join_head)
         }
 
         /** Off-route distance above which we guide by compass toward the snap point. */
@@ -448,45 +458,60 @@ class GpxNav(
             }
         }
 
-        fun instruction(type: String, modifier: String?, road: String?, exit: Int?): String {
+        fun instruction(ctx: Context?, type: String, modifier: String?, road: String?, exit: Int?): String {
+            fun t(@StringRes id: Int, fallback: String, vararg args: Any): String {
+                val c = ctx ?: return fallback
+                return if (args.isEmpty()) c.getString(id) else c.getString(id, *args)
+            }
             val m = modifier?.lowercase()
-            val onto = if (road != null) " onto $road" else ""
+            val onto = if (road != null) t(R.string.nav_onto, " onto $road", road) else ""
+            val mod = modWord(ctx, m)
+            val side = sideWord(ctx, m) ?: t(R.string.nav_word_ahead, "ahead")
+            val modBit = if (mod != null) t(R.string.nav_comma_mod, ", $mod", mod) else ""
+            val modSpace = if (mod != null) " $mod" else ""
             return when (type.lowercase()) {
                 "roundabout", "rotary", "roundabout turn" ->
-                    if (exit != null) "at the roundabout take exit $exit$onto"
-                    else "at the roundabout${modWord(m)?.let { ", $it" } ?: ""}$onto"
-                "merge" -> "merge${modWord(m)?.let { " $it" } ?: ""}$onto"
-                "fork" -> "keep ${sideWord(m) ?: "ahead"}$onto"
-                "on ramp" -> "take the ramp${modWord(m)?.let { " $it" } ?: ""}$onto"
-                "off ramp" -> "take the exit${modWord(m)?.let { " $it" } ?: ""}$onto"
-                "end of road" -> "turn ${sideWord(m) ?: "ahead"}$onto"
-                "new name", "continue" -> if (road != null) "continue onto $road" else "continue straight"
-                "arrive" -> "you have arrived"
+                    if (exit != null) t(R.string.nav_roundabout_exit, "at the roundabout, take exit $exit$onto", exit, onto)
+                    else t(R.string.nav_roundabout_mod, "at the roundabout$modBit$onto", modBit, onto)
+                "merge" -> t(R.string.nav_merge_onto, "merge$modSpace$onto", modSpace, onto)
+                "fork" -> t(R.string.nav_keep_onto, "keep $side$onto", side, onto)
+                "on ramp" -> t(R.string.nav_ramp, "take the ramp$modSpace$onto", modSpace, onto)
+                "off ramp" -> t(R.string.nav_exit_ramp, "take the exit$modSpace$onto", modSpace, onto)
+                "end of road" -> t(R.string.nav_end_road, "turn $side$onto", side, onto)
+                "new name", "continue" -> if (road != null) t(R.string.nav_continue_onto, "continue onto $road", road)
+                    else t(R.string.nav_speak_straight, "continue straight")
+                "arrive" -> t(R.string.nav_speak_arrived, "you have arrived")
                 else -> when (m) {
-                    "uturn" -> "make a U-turn$onto"
-                    null, "straight" -> "continue straight$onto"
-                    else -> "turn ${modWord(m)}$onto"
+                    "uturn" -> t(R.string.nav_uturn_onto, "make a U-turn$onto", onto)
+                    null, "straight" -> t(R.string.nav_straight_onto, "continue straight$onto", onto)
+                    else -> t(R.string.nav_end_road, "turn ${mod ?: side}$onto", mod ?: side, onto)
                 }
             }
         }
 
-        private fun modWord(m: String?): String? = when (m) {
-            "sharp left" -> "sharp left"
-            "sharp right" -> "sharp right"
-            "slight left" -> "slight left"
-            "slight right" -> "slight right"
-            "left" -> "left"
-            "right" -> "right"
-            "straight" -> "straight"
-            "uturn" -> "around"
-            else -> null
+        private fun modWord(ctx: Context?, m: String?): String? {
+            fun t(@StringRes id: Int, fallback: String) = ctx?.getString(id) ?: fallback
+            return when (m) {
+                "sharp left" -> t(R.string.nav_word_sharp_left, "sharp left")
+                "sharp right" -> t(R.string.nav_word_sharp_right, "sharp right")
+                "slight left" -> t(R.string.nav_word_slight_left, "slight left")
+                "slight right" -> t(R.string.nav_word_slight_right, "slight right")
+                "left" -> t(R.string.nav_word_left, "left")
+                "right" -> t(R.string.nav_word_right, "right")
+                "straight" -> t(R.string.nav_word_straight, "straight")
+                "uturn" -> t(R.string.nav_word_around, "around")
+                else -> null
+            }
         }
 
-        private fun sideWord(m: String?): String? = when {
-            m == null -> null
-            m.contains("left") -> "left"
-            m.contains("right") -> "right"
-            else -> null
+        private fun sideWord(ctx: Context?, m: String?): String? {
+            fun t(@StringRes id: Int, fallback: String) = ctx?.getString(id) ?: fallback
+            return when {
+                m == null -> null
+                m.contains("left") -> t(R.string.nav_word_left, "left")
+                m.contains("right") -> t(R.string.nav_word_right, "right")
+                else -> null
+            }
         }
 
         fun arrowFor(dir: TurnDir): String = when (dir) {

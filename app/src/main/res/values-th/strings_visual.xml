@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="brand_wordmark" translatable="false">MTL – MotoLink</string>
+    <string name="main_settings_desc">การตั้งค่า</string>
+    <string name="stat_km_today">กม. วันนี้</string>
+    <string name="stat_max_today">สูงสุด กม./ชม</string>
+    <string name="stat_clock">นาฬิกาหน้าปัด</string>
+    <string name="stat_clock_ok">นาฬิกาหน้าปัด ✓</string>
+    <string name="stat_clock_adjusting">กำลังปรับ...</string>
+    <string name="main_trips_pill">ทริป</string>
+    <string name="main_more">มากกว่า</string>
+</resources>

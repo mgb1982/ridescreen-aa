@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_button">❤สนับสนุนโครงการ</string>
+    <string name="support_title">สนับสนุน RideScreen AA</string>
+    <string name="support_title_play">ซื้อฉัน…</string>
+    <string name="support_body">RideScreen AA ฟรีและไม่มีโฆษณา ถ้ามันทำให้การเดินทางของคุณดีขึ้น คุณสามารถซื้อกาแฟให้ฉันเพื่อช่วยครอบคลุมค่าใช้จ่ายได้ (เช่น บัญชีนักพัฒนาซอฟต์แวร์ Google) ขอบคุณ!</string>
+    <string name="support_kofi">ซื้อกาแฟให้ฉันหน่อย (Ko-fi)</string>
+    <string name="support_original">สนับสนุนผู้เขียนของ OpenCfMoto</string>
+    <string name="support_later">ไม่ใช่ตอนนี้</string>
+    <string name="support_coffee">☕กาแฟ</string>
+    <string name="support_sandwich">🥪 แซนด์วิช</string>
+    <string name="support_tank">⛽เต็มถัง</string>
+    <string name="support_thanks">ขอบคุณมาก! 🙌</string>
+    <string name="support_unavailable">ไม่สามารถบริจาคได้ในขณะนี้ โปรดลองอีกครั้งในภายหลัง</string>
+</resources>

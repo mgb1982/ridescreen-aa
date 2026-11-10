@@ -1,122 +1,119 @@
-<div align="center">
+# MTL – MotoLink
 
-# 🏍️ RideScreen AA
+**MTL – MotoLink** ส่งหน้าจอแบบ Android Auto ไปที่หน้าปัดรถมอเตอร์ไซค์ผ่าน Wi-Fi ไม่ต้องรูทเครื่อง ชื่อบนหน้าจอเครื่องคือ **MTL** ทดลองใช้กับ **Zontes 368G V2** และมือถือ **Samsung Galaxy S23 Ultra**
 
-### Android Auto inalámbrico en el cuadro de tu moto, con extras pensados para la Zontes 125X / 125V
+โปรเจกต์นี้เป็นฟอร์กของ [mgb1982/ridescreen-aa](https://github.com/mgb1982/ridescreen-aa) ซึ่งต่อจาก [OpenCfMoto](https://github.com/zanderp/open-cfmoto) ของ Alexandru (zanderp) **ไม่ใช่แอปทางการของ Zontes, CFMoto หรือ Google**
 
-*Wireless Android Auto on your motorbike's dash, with extras built for the Zontes 125X / 125V — [English summary below](#-in-english)*
-
-[![Descargas](https://img.shields.io/github/downloads/mgb1982/ridescreen-aa/total?style=for-the-badge&label=Descargas&color=D1A955)](https://github.com/mgb1982/ridescreen-aa/releases/latest)
-[![Última versión](https://img.shields.io/github/v/release/mgb1982/ridescreen-aa?style=for-the-badge&label=Versi%C3%B3n&color=243028)](https://github.com/mgb1982/ridescreen-aa/releases/latest)
-[![Ko-fi](https://img.shields.io/badge/Ko--fi-Inv%C3%ADtame%20a%20un%20caf%C3%A9-ff5e5b?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/mgb1982)
-
-**[⬇️ Descargar](https://github.com/mgb1982/ridescreen-aa/releases/latest)** · **[📖 Guía de instalación](https://ridescreen.app/guia/)** · **[📸 Todas las capturas](docs/CAPTURAS.md)**
-
-<br/>
-
-<img src="docs/screenshots/ridescreen/movil/01_inicio_parada.png" width="230" alt="Pantalla principal con la moto aparcada"/>&nbsp;
-<img src="docs/screenshots/ridescreen/movil/02_inicio_conectado.png" width="230" alt="Pantalla principal conectado al cuadro"/>&nbsp;
-<img src="docs/screenshots/ridescreen/movil/13_viajes.png" width="230" alt="Viajes guardados"/>
-
-</div>
-
-## ¿Qué es?
-
-**RideScreen AA** pone **Google Maps, Waze, la música y el Asistente** de Android Auto en el cuadro de tu moto, por Wi‑Fi y sin cables, desde un móvil Android. Funciona con los cuadros **EasyConn / Carbit** (los que muestran un QR de MotoPlay) y está probada a diario en la **Zontes 125X / ZT125T‑X** y la **125V**, y confirmada en la **368K** y la **368E**.
-
-Además de proyectar, la app **registra tus viajes**, te dice **dónde aparcaste** (con foto), lleva el **mantenimiento**, busca la **gasolina más barata**, **avisa a tus contactos si te caes** y tiene **app para el reloj Wear OS**.
-
-Está basada en [OpenCfMoto](https://github.com/zanderp/open-cfmoto), de Alexandru (zanderp), sin el que nada de esto existiría. **No es una app oficial de Zontes ni de CFMoto.** Software libre con licencia AGPL‑3.0.
-
-## Instalación
-
-1. Descarga **`RideScreen-AA-….apk`** de la [última versión](https://github.com/mgb1982/ridescreen-aa/releases/latest) (en *Assets*).
-2. Si Android avisa de **Play Protect**, es porque la app aún no está en Play Store: **Más detalles → Instalar de todas formas**.
-3. Sigue la **[guía paso a paso](https://ridescreen.app/guia/)**: permisos, el servidor de unidad principal de Android Auto y el QR del cuadro (interfaz 3).
-4. Las siguientes versiones te las ofrece la propia app.
+ภาษาในแอปตามภาษามือถือ และมีตัวเลือกในแอปเป็น **ไทย / English / ตามระบบ**
 
 <p align="center">
-<img src="docs/screenshots/ridescreen/movil/05_primera_conexion_wifi_apagada.png" width="200" alt="Primera conexión"/>&nbsp;
-<img src="docs/screenshots/ridescreen/movil/07_ajustar_pantalla_al_cuadro.png" width="200" alt="Ajustar la pantalla al cuadro"/>&nbsp;
-<img src="docs/screenshots/ridescreen/movil/08_esperando_a_la_moto.png" width="200" alt="Esperando a la moto"/>
+<img src="docs/screenshots/fork/home-th.png" width="220" alt="หน้าแรกภาษาไทย พร้อมวงสถานะการเชื่อมต่อ"/>
+<img src="docs/screenshots/fork/tiles-th.png" width="220" alt="ปุ่มลัดแบบการ์ด"/>
+<img src="docs/screenshots/fork/setup-th.png" width="220" alt="หน้าตั้งค่าภาษาไทย"/>
+<img src="docs/screenshots/fork/lang-th.png" width="220" alt="ตัวเลือกภาษา"/>
 </p>
 
-## Qué incluye
+## ทำอะไรได้
 
-### 🔌 Conexión
-- **Conecta sola al arrancar la moto**: por el Bluetooth del cuadro, o esperando su Wi‑Fi en modo ahorro.
-- **Ajusta la imagen al cuadro con flechas**, viendo el resultado en directo en la moto (también paneles verticales).
-- **«Ok Google»** y el botón de voz del intercomunicador o del reloj.
-- Si Android Auto no arranca, la app te lleva directa a reiniciar su **servidor de unidad principal**.
+- ส่ง **Android Auto** (แผนที่ เพลง ผู้ช่วย) ไปที่หน้าปัด EasyConn / Carbit / MotoPlay แบบไร้สาย
+- แสดงขั้นตอนเชื่อมต่อชัดเจน: **ต่อ Wi-Fi แล้ว → เจอหน้าปัด → กำลังจับคู่ → กำลังส่งภาพ**
+- ถ้าเชื่อมไม่สำเร็จ แอปบอกขั้นถัดไป เช่น ดับสวิตช์แล้วเปิดใหม่ แล้วเปิดหน้า MotoPlay ค้างไว้
+- ปรับภาษาไทยหรืออังกฤษในแอป ตัวอักษรไทยใช้ Noto Sans Thai
+- ปุ่มใหญ่จับถนัดแม้ใส่ถุงมือ ธีมมืดโทนเขียวมินต์
+- บันทึกทริป จุดจอดรถ บำรุงรักษา และแอป Wear OS ตามของต้นทาง
 
-### 🅿️ Tu moto
-- **Dónde aparcaste**, guardado al apagar la moto, con **foto** opcional del sitio, distancia y cómo llegar andando.
-- **⛽ Gasolineras cerca** con el precio oficial de la Gasolina 95 (España), ordenadas por precio o distancia.
-- **🔧 Libreta de mantenimiento** (aceite, correa, frenos, ITV, seguro…) y **repostajes** con tu consumo real.
+พฤติกรรมการคุยกับหน้าปัด (โปรโตคอล) ไม่ได้ถูกเปลี่ยนจากต้นทาง
 
-<p align="center">
-<img src="docs/screenshots/ridescreen/movil/09_aparcamiento_opciones.png" width="200" alt="Aparcamiento"/>&nbsp;
-<img src="docs/screenshots/ridescreen/movil/12_gasolineras.png" width="200" alt="Gasolineras cerca"/>&nbsp;
-<img src="docs/screenshots/ridescreen/movil/22_mantenimiento.png" width="200" alt="Mantenimiento"/>
-</p>
+## ดาวน์โหลดและติดตั้ง
 
-### 🏍️ Tus viajes
-- Cada salida se guarda sola: **ruta coloreada por velocidad**, km, tiempos y nombre automático («Sants → Zona Franca»).
-- **Mapa de calor** de todo lo que has rodado, **récords**, **trofeos** y **tu año en moto** para compartir.
-- **🚦 Tus semáforos**: dónde más paras, cuánto esperas y cuál de tus caminos es de verdad más rápido.
-- **🎬 Vídeo del viaje**: tus clips (Ray‑Ban Meta, cámara de acción…) con la ruta, la velocidad y la hora encima.
-- **📍 Ruta en directo**: un enlace privado para que te sigan en el mapa.
+1. เปิด [Releases](https://github.com/natthapongnks/ridescreen-aa/releases) แล้วดาวน์โหลด APK รุ่นพรีวิว (prerelease)
+2. ถ้าระบบขึ้น Play Protect เพราะแอปยังไม่อยู่บน Play Store ให้เลือก **รายละเอียดเพิ่มเติม → ติดตั้งต่อไป**
+3. เปิดแอป แล้วเลือกภาษาได้ที่ปุ่ม **ไทย** บนหน้าแรก หรือในการตั้งค่า
 
-<p align="center">
-<img src="docs/screenshots/ridescreen/movil/15_viaje_por_velocidad.png" width="200" alt="Viaje coloreado por velocidad"/>&nbsp;
-<img src="docs/screenshots/ridescreen/movil/16_mapa_de_calor.png" width="200" alt="Mapa de calor"/>&nbsp;
-<img src="docs/screenshots/ridescreen/movil/17_semaforos.png" width="200" alt="Tus semáforos"/>&nbsp;
-<img src="docs/screenshots/ridescreen/movil/19_video_del_viaje.png" width="200" alt="Vídeo del viaje"/>
-</p>
-<p align="center">
-<img src="docs/screenshots/ridescreen/imagenes/03_fotograma_video_recreacion.png" width="560" alt="Fotograma de un vídeo del viaje con mapa, velocidad y hora"/>
-</p>
+## วิธีเชื่อมต่อ
 
-### 🆘 Detector de caídas (experimental, opcional)
-Si vas en moto y hay un golpe fuerte, el móvil se queda quieto y acaba tumbado, suena una **alarma de 60 s** en el móvil y en el reloj. Si nadie pulsa **«Estoy bien»**, envía un **SMS con tu ubicación** a hasta 3 contactos, y otro a los 5 minutos. Se puede simular y mandar un SMS de prueba. Nunca llama a emergencias por su cuenta y **no es un dispositivo de seguridad certificado**.
+1. บน Zontes 368G V2 เปิดหน้า **MotoPlay** (หน้าจอที่มี QR) ค้างไว้
+2. ในแอป กด **เชื่อมต่อ** แล้วสแกน QR หรือใช้รถที่จำไว้แล้ว
+3. ให้มือถือเข้า **Wi-Fi ของรถ** เมื่อระบบถาม ให้กดเชื่อมต่อและอย่าปิดหน้าต่างนั้นค้าง
+4. ในแอป Android Auto เปิดเมนู ⋮ แล้ว **Start head unit server** (ครั้งแรกอาจต้องแตะ Version ประมาณ 10 ครั้งเพื่อปลดล็อกเมนูนักพัฒนา) จากนั้นกดเชื่อมต่ออีกครั้ง
+5. เมื่อวงสถานะครบและขึ้นว่ากำลังส่งภาพ เก็บมือถือได้
 
-<p align="center">
-<img src="docs/screenshots/ridescreen/movil/24_detector_de_caidas.png" width="200" alt="Detector de caídas"/>&nbsp;
-<img src="docs/screenshots/ridescreen/movil/25_alarma_de_caida.png" width="200" alt="Alarma de caída"/>&nbsp;
-<img src="docs/screenshots/ridescreen/movil/26_sms_al_contacto.png" width="200" alt="SMS al contacto"/>
-</p>
+บน Samsung ให้ปิดการจำกัดแบตเตอรี่ของแอปนี้ และเปิด Wi-Fi กับอุปกรณ์ใกล้เคียงไว้
 
-### ⌚ Reloj Wear OS
-Velocidad y próxima maniobra, vibraciones de giro, **brújula hacia tu moto aparcada**, trofeos, la alarma de caída y una **cruceta** para manejar Android Auto (también en relojes sin bisel).
+## ถ้าเชื่อมค้างที่ «กำลังจับคู่»
 
-<p align="center">
-<img src="docs/screenshots/ridescreen/reloj/01_brujula_hacia_tu_moto.png" width="150" alt="Brújula hacia tu moto"/>&nbsp;
-<img src="docs/screenshots/ridescreen/reloj/03_aviso_de_giro.png" width="150" alt="Aviso de giro"/>&nbsp;
-<img src="docs/screenshots/ridescreen/reloj/06_cruceta_sin_bisel.png" width="150" alt="Cruceta"/>&nbsp;
-<img src="docs/screenshots/ridescreen/reloj/07_alarma_de_caida.png" width="150" alt="Alarma de caída en el reloj"/>
-</p>
+1. ดับสวิตช์กุญแจ รอประมาณ 5 วินาที แล้วเปิดใหม่
+2. เปิดหน้า MotoPlay บนหน้าปัดค้างไว้
+3. กด **เชื่อมต่อ** อีกครั้ง
+4. ถ้า Android Auto ไม่เริ่ม ให้รีสตาร์ท head unit server แล้วลองใหม่
+5. ถ้ายังไม่ได้ ไปที่ความช่วยเหลือแล้วแชร์บันทึก
 
-> Las capturas son recreaciones fieles de la app (mismos textos, colores y distribución), hechas para no mostrar datos personales. **[Ver todas](docs/CAPTURAS.md).**
+## บิลด์จากซอร์ส
 
-## Si algo falla
-En la app, **❓ Ayuda → Compartir registros**, y pásalo por el grupo contando qué ha pasado. Los registros ocultan números de serie y contraseñas. La app envía **informes anónimos de errores** (sin ubicación ni datos personales; ver [privacidad](PRIVACY.md)).
+ต้องมี Android SDK (compileSdk 36.1) และ JDK 17 ขึ้นไป
 
-## Apoya el proyecto
-RideScreen AA es gratis y sin anuncios. Si te resulta útil, puedes [invitarme a un café en Ko‑fi](https://ko-fi.com/mgb1982) ☕. Y sobre todo, gracias a **Alexandru (zanderp)** por [OpenCfMoto](https://github.com/zanderp/open-cfmoto).
+```bash
+./gradlew :app:assembleGithubDebug
+```
+
+APK อยู่ที่ `app/build/outputs/apk/github/debug/app-github-debug.apk`
+
+## เครดิต
+
+- [mgb1982/ridescreen-aa](https://github.com/mgb1982/ridescreen-aa) — RideScreen AA ต้นทาง (Manel)
+- [OpenCfMoto](https://github.com/zanderp/open-cfmoto) — Alexandru (zanderp) และผู้ร่วมพัฒนา open-cfmoto
+- ฟอนต์ไทย: Noto Sans Thai (SIL OFL 1.1) ดู `licenses/OFL-NotoSansThai.txt`
+- ฟอนต์ละติน: Archivo (SIL OFL 1.1)
+
+## สัญญาอนุญาต
+
+[AGPL-3.0-or-later](LICENSE) ดู [NOTICE](NOTICE) ด้วย
+
+ไม่เกี่ยวข้องกับ Zontes, CFMoto หรือ Google Android Auto เป็นเครื่องหมายการค้าของ Google LLC
 
 ---
 
-## 🇬🇧 In English
+## English
 
-**RideScreen AA** puts **Android Auto** (Google Maps, Waze, music, Assistant) on your motorbike's **EasyConn / Carbit dash** over Wi‑Fi, from an Android phone — no root, no PC. It's a fork of [OpenCfMoto](https://github.com/zanderp/open-cfmoto) by Alexandru (zanderp), tuned and tested daily on the **Zontes 125X / 125V** (also confirmed on the **368K** and **368E**), with extras:
+**MTL – MotoLink** (launcher name **MTL**) mirrors an Android Auto-style screen from an Android phone onto a motorcycle dash over Wi-Fi. This fork is aimed at a **Zontes 368G V2** with a **Samsung Galaxy S23 Ultra**. It is a fork of [mgb1982/ridescreen-aa](https://github.com/mgb1982/ridescreen-aa), itself built on [OpenCfMoto](https://github.com/zanderp/open-cfmoto) by Alexandru (zanderp). It is not an official Zontes, CFMoto, or Google app.
 
-- **Auto‑connect** when the bike starts (dash Bluetooth or Wi‑Fi in low‑power mode); **live screen fit** with arrows; voice assistant.
-- **Parking spot** with photo and walking directions; **cheapest petrol nearby** (Spain); **maintenance log** and real fuel consumption.
-- **Ride log** coloured by speed, heat map, records, trophies, year in review; **traffic‑light analysis**; **ride video** with map/speed overlay; **live location sharing**.
-- **Crash detection** (experimental, opt‑in): alarm on phone and watch, then an SMS with your location to up to 3 contacts. Not a certified safety device.
-- **Wear OS app**: next turn, compass to your parked bike, D‑pad for Android Auto, crash alarm.
+The phone language is used by default. An in-app picker can force **ไทย**, **English**, or follow the system. Thai text uses Noto Sans Thai.
 
-The app is in Spanish, Catalan and English. Download the APK from **[Releases](https://github.com/mgb1982/ridescreen-aa/releases/latest)**. The original OpenCfMoto documentation (supported bikes, handlebar buttons, protocol notes) is kept in **[docs/OPENCFMOTO-README.md](docs/OPENCFMOTO-README.md)**.
+### Features
 
-## Licencia · License
-AGPL‑3.0‑or‑later. Ver [LICENSE](LICENSE) y [NOTICE](NOTICE). Not affiliated with Zontes, CFMoto or Google. Android Auto is a trademark of Google LLC.
+- Wireless projection to EasyConn / Carbit / MotoPlay dashes
+- Four-step connection status: Wi-Fi joined, dashboard found, linking, streaming
+- Next-step errors (restart the ignition, leave MotoPlay open, start the Android Auto head unit server)
+- Large glove-friendly controls and a dark mint smart-home look
+- Trip log, parking spot, maintenance, and the Wear OS app from upstream
+- Dash protocol behaviour is unchanged
+
+### Download
+
+Install the prerelease APK from [GitHub Releases](https://github.com/natthapongnks/ridescreen-aa/releases). If Play Protect warns you, choose More details, then Install anyway.
+
+### Setup
+
+1. On the Zontes 368G, leave the **MotoPlay** QR screen open.
+2. In the app, tap **Connect** and scan the dash QR (later rides can reuse the saved bike).
+3. Join the **bike Wi-Fi** when the phone asks. Do not leave that dialog sitting open.
+4. In Android Auto, open the ⋮ menu and **Start head unit server** (the first time, tap Version about 10 times to unlock developer settings), then tap Connect again.
+5. When the ring completes and the status says the picture is streaming, the phone can go in a pocket.
+
+On a Samsung phone, turn off battery limits for this app and leave Wi-Fi and Nearby devices allowed.
+
+### If it stays on “Linking”
+
+Turn the ignition off, wait about 5 seconds, turn it on, open MotoPlay, and tap Connect again. If Android Auto never starts, restart its head unit server. If it still fails, share the logs from Help.
+
+### Build
+
+JDK 17+ and Android SDK 36.1.
+
+```bash
+./gradlew :app:assembleGithubDebug
+```
+
+### Credits and license
+
+Upstream: [mgb1982/ridescreen-aa](https://github.com/mgb1982/ridescreen-aa) and [OpenCfMoto](https://github.com/zanderp/open-cfmoto). License: [AGPL-3.0-or-later](LICENSE). See [NOTICE](NOTICE). Android Auto is a trademark of Google LLC.
