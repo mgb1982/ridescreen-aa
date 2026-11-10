@@ -1,0 +1,46 @@
+name: Renderizar píldora PKE 2.4.1
+on:
+  push:
+    branches: [capturas/pildora-pke-241]
+    paths:
+      - tools/capturas/pills/es.py
+      - .github/workflows/captura-pke-241.yml
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del generador
+        uses: actions/checkout@v4
+        with:
+          ref: capturas/pildora-pke-241
+          path: generador
+      - name: Checkout de recursos de la app 2.4.1
+        uses: actions/checkout@v4
+        with:
+          ref: v2.4.1
+          path: recursos
+          sparse-checkout: app/src/main/res
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar dependencias y Chromium
+        run: |
+          python -m pip install playwright pillow babel
+          python -m playwright install --with-deps chromium
+      - name: Verificar píldora
+        working-directory: generador
+        run: python3 tools/capturas/capturas.py --list pill22 --lang=es
+      - name: Renderizar PNG
+        working-directory: generador
+        env:
+          RS_APP_RES: ${{ github.workspace }}/recursos/app/src/main/res
+        run: python3 tools/capturas/capturas.py pill22 --lang=es --dry
+      - name: Subir imagen
+        uses: actions/upload-artifact@v4
+        with:
+          name: ridescreen-pildora-pke-241-es
+          path: generador/tools/capturas/out/dry/docs/pildoras/es/22-control-pke-contrasena-bluetooth.png
+          if-no-files-found: error
