@@ -4,6 +4,9 @@ on:
     branches: [capturas/pildora-pke-241]
     paths:
       - tools/capturas/pills/es.py
+      - tools/capturas/pills/en.py
+      - tools/capturas/pills/it.py
+      - tools/capturas/pills/th.py
       - .github/workflows/captura-pke-241.yml
 permissions:
   contents: read
@@ -32,15 +35,15 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Verificar píldora
         working-directory: generador
-        run: python3 tools/capturas/capturas.py --list pill22 --lang=es
+        run: python3 tools/capturas/capturas.py --list pill22 --lang=es,en,it,th
       - name: Renderizar PNG
         working-directory: generador
         env:
           RS_APP_RES: ${{ github.workspace }}/recursos/app/src/main/res
-        run: python3 tools/capturas/capturas.py pill22 --lang=es --dry
+        run: python3 tools/capturas/capturas.py pill22 --lang=es,en,it,th --dry
       - name: Subir imagen
         uses: actions/upload-artifact@v4
         with:
-          name: ridescreen-pildora-pke-241-es
-          path: generador/tools/capturas/out/dry/docs/pildoras/es/22-control-pke-contrasena-bluetooth.png
+          name: ridescreen-pildora-pke-241-es-en-it-th
+          path: generador/tools/capturas/out/dry/docs/pildoras/*/22-control-pke-contrasena-bluetooth.png
           if-no-files-found: error
