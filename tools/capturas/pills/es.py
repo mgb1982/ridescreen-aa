@@ -317,12 +317,12 @@ PILLS = [
          title="Configura y controla el PKE",
          sub="La 2.4.1 añade una contraseña Bluetooth opcional para algunas cajas que reciben las órdenes, pero no las ejecutan.",
          steps=[
-             "En RideScreen AA abre **❓ Ayuda → PKE**. Introduce el **código PKE** de tu moto (app oficial Zontes Smart → gestión de motos) y configura el **McuID** escaneando el QR de información de la moto.",
-             "En el campo nuevo **Bluetooth password (optional, 6 digits)** introduce la contraseña Bluetooth de **6 caracteres hexadecimales** que se utilizó al vincular la moto en Zontes Smart. Guarda los cambios junto con el McuID.",
-             "Este campo es opcional: **si bloquear, desbloquear, asiento y tapa del depósito ya funcionan, déjalo vacío**. Solo pruébalo si la caja responde a las órdenes, pero no ejecuta ninguna acción.",
+             "En RideScreen AA abre **❓ Ayuda → PKE**. Si la app todavía te pide el **código PKE**, introdúcelo para continuar.",
+             "En la configuración del **McuID**, pulsa **Escanear QR** y apunta al QR de información de la moto. RideScreen AA extrae el **McuID** y, si está incluido, también el **código PKE**. Revisa la confirmación y guarda los datos.",
+             "En el campo **Bluetooth password (optional, 6 digits)** introduce la contraseña Bluetooth de **6 caracteres hexadecimales** utilizada al vincular la moto en Zontes Smart. Guarda el cambio junto con el McuID.",
+             "Este campo es opcional: **si bloquear, desbloquear, asiento y tapa del depósito ya funcionan, déjalo vacío**. Pruébalo solo si la caja recibe las órdenes, pero no ejecuta ninguna acción.",
              "Vuelve a la pantalla PKE y prueba **Bloquear** o **Desbloquear**. Para **Asiento** y **Tapa del depósito**, confirma la acción cuando la app lo pida.",
-             "Comprueba siempre el resultado directamente en la moto. Si no conecta, cierra Zontes Smart y cualquier otra app conectada a la caja: el PKE solo admite un cliente Bluetooth a la vez.",
          ],
-         note="La contraseña debe tener exactamente 6 caracteres hexadecimales (0–9 y A–F). No es el código PKE ni el McuID. Si no sabes cuál se usó al vincular la moto, no inventes uno: deja el campo vacío.",
+         note="Si el QR no contiene el código PKE, tendrás que introducirlo manualmente desde la opción de código PKE. La contraseña Bluetooth debe tener exactamente 6 caracteres hexadecimales (0–9 y A–F): no es el código PKE ni el McuID. Si no la conoces, deja el campo vacío.",
          foot="La 2.4.1 conserva el método anterior cuando el campo está vacío"),
 ]
