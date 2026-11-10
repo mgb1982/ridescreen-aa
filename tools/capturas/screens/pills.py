@@ -18,7 +18,7 @@ from lib.base import root_css
 from lib.res import WEAR_RES, Strings, esc
 
 W = 1080
-WORD = {"es": "píldora", "ca": "píndola", "en": "tip", "it": "pillola", "el": "συμβουλή", "ru": "совет"}
+WORD = {"es": "píldora", "ca": "píndola", "en": "tip", "it": "pillola", "el": "συμβουλή", "ru": "совет", "th": "คำแนะนำ"}
 
 CSS = """
 .pl{width:1080px;padding:64px 60px 52px;background:var(--bg);color:var(--text)}
