@@ -313,12 +313,12 @@ PILLS = [
          title="Set up and use PKE controls",
          sub="Version 2.4.1 adds an optional Bluetooth password for some keyless units that receive commands but do not carry them out.",
          steps=[
-             "In RideScreen AA, open **❓ Help → PKE**. Enter your bike's **PKE code** (official Zontes Smart app → bike management) and set the **McuID** by scanning the bike's information QR.",
-             "In the new **Bluetooth password (optional, 6 digits)** field, enter the 6-character hexadecimal password used when the bike was bound in Zontes Smart. Save it with the McuID.",
-             "This field is optional: **if lock, unlock, seat and fuel-cap release already work, leave it empty**. Only try it if the box responds to commands but does not perform the action.",
-             "Go back to the PKE screen and try **Lock** or **Unlock**. For **Seat** and **Fuel cap**, confirm the action when the app asks.",
-             "Always check the result on the bike itself. If it won't connect, close Zontes Smart and any other app connected to the keyless unit: the PKE box only allows one Bluetooth client at a time.",
+             "In RideScreen AA, open **❓ Help → PKE**. If the app still asks for your **PKE code**, enter it to continue.",
+             "In the **McuID** setup, tap **Scan QR** and scan the bike's information QR. RideScreen AA extracts the **McuID** and, if present, the **PKE code** too. Check the confirmation and save the details.",
+             "In **Bluetooth password (optional, 6 digits)**, enter the **6-character hexadecimal** Bluetooth password used when the bike was paired in Zontes Smart. Save it with the McuID.",
+             "This field is optional: **if lock, unlock, seat and fuel-cap release already work, leave it empty**. Only try it if the box receives commands but does not carry out the action.",
+             "Return to the PKE screen and try **Lock** or **Unlock**. For **Seat** and **Fuel cap**, confirm the action when the app asks.",
          ],
-         note="The password must be exactly 6 hexadecimal characters (0–9 and A–F). It is not your PKE code or McuID. If you don't know the password used when the bike was bound, don't guess: leave the field empty.",
+         note="If the QR does not contain the PKE code, enter it manually using the PKE code option. The Bluetooth password must be exactly 6 hexadecimal characters (0–9 and A–F): it is not the PKE code or McuID. If you don't know it, leave the field empty.",
          foot="Version 2.4.1 keeps the previous method when this field is empty"),
 ]
