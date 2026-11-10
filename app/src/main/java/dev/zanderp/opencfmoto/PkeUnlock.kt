@@ -78,6 +78,7 @@ object PkeUnlock {
     private const val PREFS = "pke_unlock"
     private const val KEY_MCU_ID = "mcu_id"
     private const val KEY_UNLOCK_ON_CONNECT = "unlock_on_connect"
+    private const val KEY_BT_PASSWORD = "bt_password"
 
     enum class Action(val code: String, val label: String) {
         LOCK("1", "lock"),
@@ -121,6 +122,20 @@ object PkeUnlock {
         ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putString(KEY_MCU_ID, id.trim().uppercase()).apply()
     }
     
+    /**
+     * TEST (Luis's 125X): the keyless box's Bluetooth password, the 6 characters typed when the bike
+     * was bound in the official app. Optional; empty = the derivation RideScreen has always used.
+     */
+    fun btPassword(ctx: Context): String = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString(KEY_BT_PASSWORD, "").orEmpty()
+
+    fun setBtPassword(ctx: Context, pwd: String) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putString(KEY_BT_PASSWORD, pwd.trim()).apply()
+    }
+
+    /** Empty (not used) or exactly 6 hexadecimal digits, which the official app reads as 3 bytes. */
+    internal fun isValidBtPassword(pwd: String): Boolean =
+        pwd.isEmpty() || (pwd.length == 6 && pwd.all { it in '0'..'9' || it.lowercaseChar() in 'a'..'f' })
+
     /** AES plaintext must be one 16-byte block, written as 32 hexadecimal digits. */
     internal fun isValidMcuId(id: String): Boolean =
         id.length == 32 && id.all { it in '0'..'9' || it.lowercaseChar() in 'a'..'f' }
@@ -199,8 +214,11 @@ object PkeUnlock {
      * The exact derivation read from BlueToothOperateActivity.java / a/vf9.java (its h/K/i/e).
      * Logs the shape of each stage (never the McuID value, only its byte length) so a failed
      * attempt tells us which step broke.
+     *
+     * [btPassword] (optional) follows a/vf9.java a()/j(): the first 3 bytes of the session key are
+     * XORed with the hex-decoded Bluetooth password. Empty leaves the key as before.
      */
-    internal fun derive(pkeCode: String, mcuId: String, challenge: ByteArray): Derived {
+    internal fun derive(pkeCode: String, mcuId: String, challenge: ByteArray, btPassword: String = ""): Derived {
         if (challenge.size != 4) return Derived.Failed
         // Keep this pure validation ahead of diagnostic logging: JVM unit tests do not provide
         // Android's android.util.Log implementation, and malformed input needs no AES work.
@@ -215,16 +233,30 @@ object PkeUnlock {
             log("derive: McuID is ${mcuBytes.size} bytes, AES needs exactly 16 — the stored McuID is the wrong length/format")
             return Derived.BadMcuId
         }
-        val h = runCatching { aesEcbEncrypt(AES_KEY_ASCII.toByteArray(Charsets.US_ASCII), mcuBytes) }.getOrNull()
-        if (h == null || h.size != 16) { log("derive: AES step 1 (h) failed"); return Derived.BadMcuId }
+        if (btPassword.isNotEmpty() && !isValidBtPassword(btPassword)) {
+            log("derive: Bluetooth password is not 6 hex digits — nothing sent")
+            return Derived.Failed
+        }
+        log(if (btPassword.isEmpty()) "derive: no Bluetooth password set" else "derive: Bluetooth password mixed into the key (3 bytes)")
+        val cipher = runCatching { cipherBytes(pkeCode, mcuBytes, challenge, btPassword) }.getOrNull()
+            ?: return Derived.Failed.also { log("derive: AES failed") }
+        log("derive: cipher ready (${cipher.size} bytes)")
+        return Derived.Ok(BleProtocol.bytesToHex(cipher))
+    }
+
+    /** The maths alone (no logging, so JVM tests can call it). [btPassword] is empty or 6 hex digits. */
+    internal fun cipherBytes(pkeCode: String, mcuBytes: ByteArray, challenge: ByteArray, btPassword: String = ""): ByteArray {
+        val h = aesEcbEncrypt(AES_KEY_ASCII.toByteArray(Charsets.US_ASCII), mcuBytes)
         val k = ByteArray(16)
         for (i in 0 until 16) k[i] = if (i < 12) h[i] else (challenge[i - 12].toInt() xor h[i].toInt()).toByte()
+        if (btPassword.isNotEmpty()) {
+            val pwd = BleProtocol.hexToBytes(btPassword)
+            for (i in 0 until 3) k[i] = (k[i].toInt() xor pwd[i].toInt()).toByte()
+        }
         val block = ByteArray(16)
         val codeBytes = pkeCode.toByteArray(Charsets.US_ASCII)
         System.arraycopy(codeBytes, 0, block, 0, minOf(15, codeBytes.size))
-        val cipher = runCatching { aesEcbEncrypt(k, block) }.getOrNull() ?: return Derived.Failed.also { log("derive: AES step 4 (cipher) failed") }
-        log("derive: cipher ready (${cipher.size} bytes)")
-        return Derived.Ok(BleProtocol.bytesToHex(cipher))
+        return aesEcbEncrypt(k, block)
     }
 
     internal fun frame(pke: String, action: Action, cipherHex: String): ByteArray =
@@ -305,7 +337,7 @@ object PkeUnlock {
                 log("challenge field '${challengeField(challengeReply) ?: "?"}' didn't decode to 4 bytes — nothing sent")
                 return Result(false, Failure.BAD_CHALLENGE)
             }
-            val cipherHex = when (val d = derive(pke, mcu, challenge)) {
+            val cipherHex = when (val d = derive(pke, mcu, challenge, btPassword(ctx))) {
                 is Derived.Ok -> d.cipherHex
                 is Derived.BadMcuId -> return Result(false, Failure.BAD_MCU_ID)
                 is Derived.Failed -> return Result(false, Failure.DERIVE_FAILED)

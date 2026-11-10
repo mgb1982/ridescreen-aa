@@ -49,14 +49,30 @@ object PkeUnlockUi {
             setText(PkeUnlock.mcuId(activity))
             hint = "32 hexadecimal digits"
         }
+        // TEST build: optional Bluetooth password of the keyless box (English only for now).
+        val pwdInput = EditText(activity).apply {
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            setText(PkeUnlock.btPassword(activity))
+            hint = "Bluetooth password (optional, 6 digits)"
+        }
+        val box = android.widget.LinearLayout(activity).apply {
+            orientation = android.widget.LinearLayout.VERTICAL
+            val pad = (20 * resources.displayMetrics.density).toInt()
+            setPadding(pad, 0, pad, 0)
+            addView(input)
+            addView(pwdInput)
+        }
         MaterialAlertDialogBuilder(activity)
             .setTitle(R.string.pke_unlock_mcu_title)
             .setMessage(R.string.pke_unlock_mcu_body)
-            .setView(input)
+            .setView(box)
             .setPositiveButton(R.string.dest_save) { _, _ ->
                 val id = input.text?.toString()?.trim().orEmpty()
                 if (!PkeUnlock.isValidMcuId(id)) { Toast.makeText(activity, R.string.pke_unlock_mcu_invalid, Toast.LENGTH_LONG).show(); return@setPositiveButton }
+                val pwd = pwdInput.text?.toString()?.trim().orEmpty()
+                if (!PkeUnlock.isValidBtPassword(pwd)) { Toast.makeText(activity, "Bluetooth password: 6 digits, or leave it empty", Toast.LENGTH_LONG).show(); return@setPositiveButton }
                 PkeUnlock.setMcuId(activity, id)
+                PkeUnlock.setBtPassword(activity, pwd)
                 then()
             }
             .setNeutralButton(R.string.pke_unlock_scan) { _, _ ->

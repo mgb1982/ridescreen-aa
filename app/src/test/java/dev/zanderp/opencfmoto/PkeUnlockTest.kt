@@ -2,6 +2,7 @@ package dev.zanderp.opencfmoto
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -79,5 +80,32 @@ class PkeUnlockTest {
         assertEquals("123456789012345", PkeUnlock.pkeCodeFromQr(qr))
         assertEquals("00112233445566778899AABBCCDDEEFF", PkeUnlock.mcuIdFromQr(qr))
         assertNull(PkeUnlock.pkeCodeFromQr("125;010;12345"))
+    }
+
+    @Test
+    fun btPasswordChangesOnlyTheKeyAndZeroIsNeutral() {
+        val code = "123456789012345"; val mcu = "00112233445566778899AABBCCDDEEFF"; val ch = byteArrayOf(1, 2, 3, 4)
+        val mcuBytes = mcu.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
+        fun hex(b: ByteArray) = b.joinToString("") { "%02x".format(it) }
+        val plain = hex(PkeUnlock.cipherBytes(code, mcuBytes, ch))
+        val zero = hex(PkeUnlock.cipherBytes(code, mcuBytes, ch, "000000"))
+        val pwd = hex(PkeUnlock.cipherBytes(code, mcuBytes, ch, "482913"))
+        assertEquals(plain, zero)
+        assertNotEquals(plain, pwd)
+        // Reference from the official app's a()/j(): AES(TAYO, mcu), [12..15]^=challenge, [0..2]^=48 29 13.
+        assertEquals(referenceCipher(code, mcu, ch, byteArrayOf(0x48, 0x29, 0x13)), pwd)
+        assertEquals(referenceCipher(code, mcu, ch, byteArrayOf(0, 0, 0)), plain)
+        assertTrue(PkeUnlock.isValidBtPassword("")); assertTrue(PkeUnlock.isValidBtPassword("12ab56"))
+        assertFalse(PkeUnlock.isValidBtPassword("12345")); assertFalse(PkeUnlock.isValidBtPassword("12345g"))
+    }
+
+    private fun referenceCipher(code: String, mcuHex: String, ch: ByteArray, pwd: ByteArray): String {
+        fun aes(k: ByteArray, b: ByteArray) = javax.crypto.Cipher.getInstance("AES/ECB/NoPadding").run {
+            init(javax.crypto.Cipher.ENCRYPT_MODE, javax.crypto.spec.SecretKeySpec(k, "AES")); doFinal(b)
+        }
+        val k = aes("TAYOBTa1YCWc2gTS".toByteArray(), mcuHex.chunked(2).map { it.toInt(16).toByte() }.toByteArray())
+        for (i in 0 until 4) k[12 + i] = (k[12 + i].toInt() xor ch[i].toInt()).toByte()
+        for (i in 0 until 3) k[i] = (k[i].toInt() xor pwd[i].toInt()).toByte()
+        return aes(k, code.toByteArray() + 0).joinToString("") { "%02x".format(it) }
     }
 }
