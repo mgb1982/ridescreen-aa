@@ -6,6 +6,14 @@ Basada en [OpenCfMoto](https://github.com/zanderp/open-cfmoto) de Alexandru (zan
 >
 > 📱 [Guía del móvil](https://ridescreen.app/guia/) · ⌚ [Guía del reloj](https://ridescreen.app/reloj/)
 
+### Novedades de la v2.4.1
+
+**🔑 Contraseña Bluetooth de la llave (opcional)**
+- Algunas motos solo aceptan **desbloquear, bloquear, asiento y depósito** si la clave incluye la **contraseña Bluetooth** de 6 dígitos que se puso al vincular la moto con la app oficial de Zontes. Si a ti los comandos no te funcionan (la caja contesta pero no actúa), prueba esto.
+- Dónde: ❓ Ayuda → 🔒 Bloquear / desbloquear → cambiar McuID, campo **Bluetooth password (optional, 6 digits)** debajo del McuID. Déjalo **vacío** si tu moto ya funciona: no cambia nada.
+- Si no la recuerdas, puede ser la que viene de fábrica (los **últimos 6 dígitos del código PKE**). Se guarda junto al McuID, no sale en los registros y entra en la copia de seguridad completa: guárdala en privado.
+- El campo está **en inglés** (las traducciones llegan en la 2.5).
+
 ### Novedades de la v2.4
 
 **🔑 La llave, en el móvil**
@@ -56,13 +64,13 @@ Basada en [OpenCfMoto](https://github.com/zanderp/open-cfmoto) de Alexandru (zan
 **Y todo lo de la v2.3**: widget Conectar, batería de la moto, Casa y Trabajo, más motos (toda la gama 368), viajes a salvo, importar GPX, vídeo del viaje, modo pasajero y mucho más.
 
 ### Instalación en el móvil
-1. Descarga **`RideScreen-AA-v2.4.apk`** (abajo, en *Assets*).
-2. Si vienes de la **v1/v1.1/v2/v2.2/v2.3** o de la versión del grupo (zontes-1/2), se instala **encima** sin perder nada. Si tienes la OpenCfMoto **oficial**, desinstálala primero: están firmadas con claves distintas.
+1. Descarga **`RideScreen-AA-v2.4.1.apk`** (abajo, en *Assets*).
+2. Si vienes de la **v1/v1.1/v2/v2.2/v2.3/v2.4** o de la versión del grupo (zontes-1/2), se instala **encima** sin perder nada. Si tienes la OpenCfMoto **oficial**, desinstálala primero: están firmadas con claves distintas.
 3. Si sale el aviso de **Play Protect** ("app no segura" o "bloqueada"), es porque Google aún no conoce la app: **Más detalles → Instalar de todas formas**.
 4. Las próximas versiones te las ofrecerá la propia app.
 
 ### Instalación en el reloj (opcional, Wear OS)
-Desde la v2.2 el reloj se actualiza **desde el móvil**: **❓ Ayuda → ⌚ Actualizar la app del reloj** descarga **`RideScreen-AA-v2.4-WearOS-reloj.apk`** y se la envía por Bluetooth (tarda un par de minutos). Si es tu primera vez, la instalación inicial se hace por depuración inalámbrica: paso a paso en la [guía del reloj](https://ridescreen.app/reloj/).
+Desde la v2.2 el reloj se actualiza **desde el móvil**: **❓ Ayuda → ⌚ Actualizar la app del reloj** descarga **`RideScreen-AA-v2.4.1-WearOS-reloj.apk`** y se la envía por Bluetooth (tarda un par de minutos). Si es tu primera vez, la instalación inicial se hace por depuración inalámbrica: paso a paso en la [guía del reloj](https://ridescreen.app/reloj/).
 
 ### Si algo falla
 Mira la [guía del móvil](https://ridescreen.app/guia/) (tiene los mensajes de error más habituales y qué hacer). Si sigue, en la app **❓ Ayuda → Compartir registros** y pásalo por el grupo contando qué ha pasado. Los registros ocultan números de serie y contraseñas.

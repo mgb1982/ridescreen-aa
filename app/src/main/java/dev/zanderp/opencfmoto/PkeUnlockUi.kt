@@ -49,7 +49,7 @@ object PkeUnlockUi {
             setText(PkeUnlock.mcuId(activity))
             hint = "32 hexadecimal digits"
         }
-        // TEST build: optional Bluetooth password of the keyless box (English only for now).
+        // Optional Bluetooth password of the keyless box (English only until 2.5).
         val pwdInput = EditText(activity).apply {
             inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             setText(PkeUnlock.btPassword(activity))

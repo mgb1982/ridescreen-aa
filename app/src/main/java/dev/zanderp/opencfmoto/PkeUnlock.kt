@@ -123,7 +123,7 @@ object PkeUnlock {
     }
     
     /**
-     * TEST (Luis's 125X): the keyless box's Bluetooth password, the 6 characters typed when the bike
+     * The keyless box's Bluetooth password, the 6 characters typed when the bike
      * was bound in the official app. Optional; empty = the derivation RideScreen has always used.
      */
     fun btPassword(ctx: Context): String = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString(KEY_BT_PASSWORD, "").orEmpty()

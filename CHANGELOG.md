@@ -2,6 +2,11 @@
 
 Changes for the RideScreen AA fork. Version 2.4 is currently a preview line, not a stable release.
 
+## 2.4.1
+
+- **Keyless box Bluetooth password (optional):** some bikes only accept lock, unlock, seat and fuel-cap commands when the key includes the 6-digit Bluetooth password set when the bike was bound in the official Zontes app. A new optional field under the McuID takes it. Left empty, nothing changes. The password is never written to the log, and it is stored with the McuID (so it is included in the full backup).
+- The new field is English-only for now; translations arrive in 2.5.
+
 ## 2.4 preview · build 368
 
 - **PKE battery/status card:** read the keyless box battery voltage and reported lock state over Bluetooth; live voltage is available while projecting.
