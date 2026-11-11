@@ -138,23 +138,23 @@ class ServiceDiscoveryResponse
             }
 
             return Control.ServiceDiscoveryResponse.newBuilder().apply {
-                make = "OpenCfMoto"
-                model = "MotoPlay"
+                make = "RideScreen"
+                model = "AA"
                 year = "2024"
                 vehicleId = "opencfmoto"
-                headUnitModel = "CFDL16-6GUV"
-                headUnitMake = "CFMoto"
+                headUnitModel = "AA"
+                headUnitMake = "RideScreen"
                 headUnitSoftwareBuild = "1"
                 headUnitSoftwareVersion = "0.1.0"
                 driverPosition = Control.DriverPosition.DRIVER_POSITION_LEFT
                 canPlayNativeMediaDuringVr = false
                 hideProjectedClock = false
-                setDisplayName("OpenCfMoto")
+                setDisplayName("RideScreen")
                 setHeadunitInfo(Common.HeadUnitInfo.newBuilder().apply {
-                    setHeadUnitMake("CFMoto")
-                    setHeadUnitModel("CFDL16-6GUV")
-                    setMake("OpenCfMoto")
-                    setModel("MotoPlay")
+                    setHeadUnitMake("RideScreen")
+                    setHeadUnitModel("AA")
+                    setMake("RideScreen")
+                    setModel("AA")
                     setYear("2024")
                     setVehicleId("opencfmoto")
                     setHeadUnitSoftwareBuild("1")

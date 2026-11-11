@@ -12,7 +12,7 @@ object ProblemReport {
     fun file(problem: String, model: String, year: String, diagnostics: String, log: String): String =
         buildString {
             appendLine(RULE)
-            appendLine("OpenCfMoto problem report")
+            appendLine("RideScreen AA problem report")
             appendLine(RULE)
             appendLine()
             appendLine("WHAT WENT WRONG")
@@ -47,11 +47,11 @@ object ProblemReport {
         }
 
     fun subject(model: String, version: String): String =
-        "OpenCfMoto ${bikeLine(model, "")} report — $version"
+        "RideScreen AA ${bikeLine(model, "")} report — $version"
 
     private fun bikeLine(model: String, year: String): String {
         val m = model.trim().ifEmpty { "unknown model" }
         val y = year.trim()
-        return if (y.isEmpty()) "CFMOTO $m" else "CFMOTO $m, $y"
+        return if (y.isEmpty()) m else "$m, $y"
     }
 }
