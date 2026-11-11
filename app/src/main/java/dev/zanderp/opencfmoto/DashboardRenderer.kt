@@ -85,6 +85,12 @@ internal object DashboardRenderer {
         0xFF13876A.toInt(), 0xFF4DB894.toInt(), 0xFFC93630.toInt(),
     )
 
+    /** 2.5 · the rider's accent over a style palette. Racing also tints its card edges; red stays red. */
+    private fun Palette.withAccent(color: Int, design: DashboardMode.Design): Palette {
+        val a = DashLayout.accentFor(color, night, tile)
+        return copy(accent = a.accent, accent2 = a.accent2, edge = if (design == DashboardMode.Design.RACING) a.edge else edge)
+    }
+
     private const val GREEN = 0xFF3CC35A.toInt()
     private const val YELLOW = 0xFFF2C230.toInt()
     private const val WHITE = 0xFFFFFFFF.toInt()
@@ -141,8 +147,6 @@ internal object DashboardRenderer {
         Metric("absolute", "Abs Load", d.absoluteLoad, "%", 260.0),
     )
 
-    /** The five cards of the reference, in its order. */
-    private val cardIds = listOf("coolant", "volt", "load", "intake", "baro")
 
     private fun value(m: Metric?): String = m?.value?.let {
         if (m.unit == "V") String.format(Locale.US, "%.1f", it)
@@ -175,6 +179,10 @@ internal object DashboardRenderer {
          *  it is uploaded; reusing (or recycling, on a dash whose canvas isn't 800×416) it from the UI
          *  thread showed the preview on the bike or crashed on a recycled bitmap. */
         standalone: Boolean = false,
+        /** 2.5 · rider's card order ([DashLayout.orderedCards] fills in the rest). */
+        cardOrder: List<String> = DashLayout.DEFAULT_CARDS,
+        /** 2.5 · accent colour, 0 = the style's own. */
+        accent: Int = 0,
     ): Bitmap {
         loadFonts(ctx)
         var target = if (standalone) null else bitmap
@@ -191,20 +199,23 @@ internal object DashboardRenderer {
             }
             c = canvas!!
         }
-        val p = when (design) {
+        night = !light
+        val base = when (design) {
             DashboardMode.Design.SPORT -> if (light) sportDay else sportNight
             DashboardMode.Design.RACING -> if (light) racingDay else racingNight
             DashboardMode.Design.TOURING -> if (light) touringDay else touringNight
         }
-        night = !light
+        val p = if (accent == 0) base else base.withAccent(accent, design)
         speedMax = DashboardMode.speedMax(ctx)
         rpmMax = DashboardMode.rpmMax(ctx)
         val all = metrics(d).filter { it.id in visible }.associateBy { it.id }
+        val cards = DashLayout.orderedCards(cardOrder, visible).mapNotNull(all::get)
         val scale = minOf(w / W, h / H)
         val dx = (w - W * scale) / 2f
         val dy = (h - H * scale) / 2f
 
-        val key = "${design.id}|$light|${w}x$h|$speedMax|$rpmMax|${visible.sorted().joinToString(",")}"
+        val key = "${design.id}|$light|${w}x$h|$speedMax|$rpmMax|${visible.sorted().joinToString(",")}|" +
+            "${cards.joinToString(",") { it.id }}|$accent"
         if (key != layerKey || layer == null) {
             layer?.recycle()
             val bg = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
@@ -212,7 +223,7 @@ internal object DashboardRenderer {
             lc.drawColor(p.bg)
             lc.save(); lc.translate(dx, dy); lc.scale(scale, scale)
             pass = Pass.STATIC
-            drawFace(ctx, lc, d, p, design, all)
+            drawFace(ctx, lc, d, p, design, all, cards)
             lc.restore()
             layer = bg
             layerKey = key
@@ -220,22 +231,22 @@ internal object DashboardRenderer {
         c.drawBitmap(layer!!, 0f, 0f, null)
         c.save(); c.translate(dx, dy); c.scale(scale, scale)
         pass = Pass.LIVE
-        drawFace(ctx, c, d, p, design, all)
+        drawFace(ctx, c, d, p, design, all, cards)
         c.restore()
         return target!!
     }
 
     private fun drawFace(
         ctx: Context, c: Canvas, d: DashboardMode.Data, p: Palette,
-        design: DashboardMode.Design, all: Map<String, Metric>,
+        design: DashboardMode.Design, all: Map<String, Metric>, cards: List<Metric>,
     ) {
         still { drawBackground(c, p, design) }
         // No header: the dash's own clock bar sits right above the frame.
         live { drawShiftLights(c, d.rpm, p, design) }
         when (design) {
-            DashboardMode.Design.SPORT -> drawSport(c, d, p, all)
-            DashboardMode.Design.RACING -> drawRacing(c, d, p, all)
-            DashboardMode.Design.TOURING -> drawTouring(c, d, p, all)
+            DashboardMode.Design.SPORT -> drawSport(c, d, p, all, cards)
+            DashboardMode.Design.RACING -> drawRacing(c, d, p, all, cards)
+            DashboardMode.Design.TOURING -> drawTouring(c, d, p, all, cards)
         }
         live {
             if (!d.obdLive) txt(c, ctx.getString(R.string.dash_no_obd), 24f, 22f, 13f, p.muted, fLabel)
@@ -431,16 +442,14 @@ internal object DashboardRenderer {
 
     // ── SPORT ─────────────────────────────────────────────────────────────────────────────
 
-    private fun drawSport(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>) {
+    private fun drawSport(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>, cards: List<Metric>) {
         drawSportSpeed(c, a["speed"], 178f, 172f, 152f, p, d.speedFromGps)
-        // Two columns of cards (360–785); the dials sit centred over them. The right column stops
-        // at row 2 because the dash strip steps up there.
+        // The dials sit centred over the two columns of cards (360–785); the cards themselves are laid
+        // out by DashLayout, which keeps them clear of the dash strip's step.
         val colW = 206f; val gapX = 13f; val left = 360f
         drawSmallDial(c, a["rpm"], left + colW / 2f, 78f, 62f, p, rpm = true)
         drawSmallDial(c, a["throttle"], left + colW + gapX + colW / 2f, 78f, 62f, p, rpm = false)
-        cardIds.mapNotNull(a::get).forEachIndexed { i, m ->
-            drawCard(c, m, left + (i % 2) * (colW + gapX), 152f + (i / 2) * 58f, colW, 52f, p, CardLook.SPORT)
-        }
+        DashLayout.cards(DashLayout.SPORT, cards.size).forEachIndexed { i, b -> drawCard(c, cards[i], b, p, CardLook.SPORT) }
     }
 
     private fun drawSportSpeed(c: Canvas, m: Metric?, cx: Float, cy: Float, r: Float, p: Palette, gps: Boolean) {
@@ -573,16 +582,15 @@ internal object DashboardRenderer {
 
     // ── RACING ────────────────────────────────────────────────────────────────────────────
 
-    private fun drawRacing(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>) {
+    private fun drawRacing(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>, cards: List<Metric>) {
         still { textWithGlow(c, "RPM", 30f, 30f, 16f, p.fg, fValue, null) }
         drawRacingTach(c, a["rpm"], p, 30f, 34f, 742f, 44f)
         drawSpeedPlate(c, a["speed"], d.speedFromGps, p, 30f, 104f, 352f, 102f)
         drawRacingThrottle(c, a["throttle"], 528f, 204f, 98f, p)
         still { drawCheckers(c, 652f, 124f, p) }
-        cardIds.mapNotNull(a::get).forEachIndexed { i, m ->
-            if (i < 3) drawCard(c, m, 30f + i * 248f, 216f, 238f, 50f, p, CardLook.RACING)
-            // Second row ends before the strip's step (x≈676).
-            else drawCard(c, m, 30f + (i - 3) * 325f, 272f, 315f, 50f, p, CardLook.RACING_WIDE)
+        // Wide cards carry the racing stripes, as the second row of the reference does.
+        DashLayout.cards(DashLayout.RACING, cards.size).forEachIndexed { i, b ->
+            drawCard(c, cards[i], b, p, if (b.w >= 280f) CardLook.RACING_WIDE else CardLook.RACING)
         }
     }
 
@@ -727,16 +735,12 @@ internal object DashboardRenderer {
 
     // ── TOURING ───────────────────────────────────────────────────────────────────────────
 
-    private fun drawTouring(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>) {
+    private fun drawTouring(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>, cards: List<Metric>) {
         still { drawLandscape(c, p) }
         drawTouringSpeed(c, a["speed"], 205f, 190f, 168f, p, d.speedFromGps)
         drawTouringRpm(c, a["rpm"], p, 432f, 58f, 48f, 142f)
         drawTouringThrottle(c, a["throttle"], 652f, 118f, 88f, p)
-        cardIds.mapNotNull(a::get).forEachIndexed { i, m ->
-            if (i < 3) drawCard(c, m, 22f + i * 255f, 214f, 246f, 50f, p, CardLook.TOURING)
-            // Second row ends before the strip's step (x≈676).
-            else drawCard(c, m, 22f + (i - 3) * 327f, 270f, 317f, 50f, p, CardLook.TOURING)
-        }
+        DashLayout.cards(DashLayout.TOURING, cards.size).forEachIndexed { i, b -> drawCard(c, cards[i], b, p, CardLook.TOURING) }
     }
 
     private fun drawTouringSpeed(c: Canvas, m: Metric?, cx: Float, cy: Float, r: Float, p: Palette, gps: Boolean) {
@@ -877,13 +881,18 @@ internal object DashboardRenderer {
 
     private enum class CardLook { SPORT, RACING, RACING_WIDE, TOURING }
 
-    /** Icon on the left, title above, value with its unit right after it (as in the reference). */
-    private fun drawCard(c: Canvas, m: Metric, x: Float, y: Float, w: Float, h: Float, p: Palette, look: CardLook) {
+    /**
+     * Icon on the left, title above, value with its unit right after it (as in the reference). 2.5: the
+     * card is a [DashLayout.Box] and everything inside follows its height; text that would run past the
+     * right edge is shrunk to fit.
+     */
+    private fun drawCard(c: Canvas, m: Metric, b: DashLayout.Box, p: Palette, look: CardLook) {
+        val x = b.x; val y = b.y; val w = b.w; val h = b.h
+        val t = DashLayout.cardText(b)
         val radius = if (look == CardLook.TOURING) 10f else 7f
         val racing = look == CardLook.RACING || look == CardLook.RACING_WIDE
-        val tx = x + 46f
-        val titleSize = if (h >= 56f) 14f else 13f
-        val valueSize = if (h >= 56f) 27f else 24f
+        // Wide racing cards keep their stripes clear of the text.
+        val textRight = x + w - (if (look == CardLook.RACING_WIDE) 62f else 10f)
         still {
             val r = RectF(x, y, x + w, y + h)
             shadowRoundRect(c, r, radius, 7f)
@@ -918,17 +927,23 @@ internal object DashboardRenderer {
                     c.drawPath(stripe, fill)
                 }
             }
-            drawMetricIcon(c, m.id, x + 23f, y + h / 2f, 10f, p.fg)
-            txt(c, m.title, tx, y + h * .40f, titleSize, p.muted, fLabel)
+            drawMetricIcon(c, m.id, t.iconX, y + h / 2f, t.iconR, p.fg)
+            text.typeface = fLabel; text.textSize = t.titleSize
+            val titleSize = t.titleSize * DashLayout.fitScale(textRight - t.textX, text.measureText(m.title))
+            txt(c, m.title, t.textX, t.titleY, titleSize, p.muted, fLabel)
         }
         live {
             val warn = m.id == "coolant" && (m.value ?: 0.0) >= DashboardMode.COOLANT_AMBER
-            if (warn) drawMetricIcon(c, m.id, x + 23f, y + h / 2f, 10f, p.red)
+            if (warn) drawMetricIcon(c, m.id, t.iconX, y + h / 2f, t.iconR, p.red)
             val v = value(m)
-            txt(c, v, tx, y + h - 7f, valueSize, if (warn) p.red else p.fg, fValue)
-            text.typeface = fValue; text.textSize = valueSize
+            text.typeface = fValue; text.textSize = t.valueSize
             val vw = text.measureText(v)
-            txt(c, m.unit, tx + vw + 4f, y + h - 7f, valueSize * .58f, p.fg, fLabel)
+            text.typeface = fLabel; text.textSize = t.valueSize * .58f
+            val uw = text.measureText(m.unit)
+            val k = DashLayout.fitScale(textRight - t.textX, vw + 4f + uw)
+            val size = t.valueSize * k
+            txt(c, v, t.textX, t.valueY, size, if (warn) p.red else p.fg, fValue)
+            txt(c, m.unit, t.textX + vw * k + 4f * k, t.valueY, size * .58f, p.fg, fLabel)
         }
     }
 

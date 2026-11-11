@@ -101,7 +101,11 @@ object DashboardMode {
             throttle = 10.0, volt = 14.1, load = 44.0, intake = 42.0,
             baro = 100.0, absoluteLoad = 32.0, relativeThrottle = 10.0, obdLive = true,
         )
-        return DashboardRenderer.render(ctx, width, height, sample, isLight(ctx), design, fieldIds.toSet(), standalone = true)
+        // 2.5: the rider's own fields, order and colour, so the picker shows what the bike will.
+        return DashboardRenderer.render(
+            ctx, width, height, sample, isLight(ctx), design, visibleFields(ctx), standalone = true,
+            cardOrder = cardOrder(ctx), accent = accent(ctx),
+        )
     }
 
     private val fieldIds = listOf("rpm", "speed", "coolant", "volt", "load", "intake", "baro", "absolute", "throttle")
@@ -130,6 +134,24 @@ object DashboardMode {
             .apply()
     }
     fun fieldIds(): List<String> = fieldIds
+
+    // ── 2.5 · layout engine settings (per bike, like the fields)
+
+    /** Fields shown as cards, in their default order. The others are dials or bars. */
+    fun cardFields(): List<String> = DashLayout.DEFAULT_CARDS
+
+    /** The rider's card order; ids it misses follow in the default order ([DashLayout.orderedCards]). */
+    fun cardOrder(ctx: Context): List<String> =
+        DashLayout.orderedCards(DashLayout.parseOrder(BikeScope.getString(prefs(ctx), ctx, "card_order", null)),
+            DashLayout.DEFAULT_CARDS.toSet())
+    fun setCardOrder(ctx: Context, order: List<String>) =
+        BikeScope.putString(prefs(ctx), ctx, "card_order", DashLayout.encodeOrder(order))
+    /** Moves one card a place up (-1) or down (+1). */
+    fun moveCard(ctx: Context, id: String, delta: Int) = setCardOrder(ctx, DashLayout.move(cardOrder(ctx), id, delta))
+
+    /** Accent colour (opaque ARGB), or 0 for the style's own. */
+    fun accent(ctx: Context): Int = DashLayout.parseColor(BikeScope.getString(prefs(ctx), ctx, "accent", null))
+    fun setAccent(ctx: Context, color: Int) = BikeScope.putString(prefs(ctx), ctx, "accent", DashLayout.encodeColor(color))
 
     /** A3 · battery saver: Android Auto stops sending video while the dashboard is shown. Off by default. */
     fun saver(ctx: Context) = BikeScope.getBoolean(prefs(ctx), ctx, "saver", false)
@@ -255,7 +277,10 @@ object DashboardMode {
     private fun liveBuilder(app: Context): (Int, Int) -> android.graphics.Bitmap = { w, h -> render(app, w, h) }
 
     private fun render(ctx: Context, w: Int, h: Int): android.graphics.Bitmap =
-        DashboardRenderer.render(ctx, w, h, collect(ctx), isLight(ctx), design(ctx), visibleFields(ctx))
+        DashboardRenderer.render(
+            ctx, w, h, collect(ctx), isLight(ctx), design(ctx), visibleFields(ctx),
+            cardOrder = cardOrder(ctx), accent = accent(ctx),
+        )
 
     // ── data
 
@@ -286,7 +311,9 @@ object DashboardMode {
 
     /** A4 · what the dashboard would paint now, rounded like the renderer (text) and fine enough for needles. */
     private fun signature(ctx: Context): String = signatureOf(
-        collect(ctx), isLight(ctx), design(ctx).name, visibleFields(ctx).sorted().joinToString(","),
+        collect(ctx), isLight(ctx), design(ctx).name,
+        // Fields, card order and accent: changing any of them repaints at once.
+        visibleFields(ctx).sorted().joinToString(",") + "|" + cardOrder(ctx).joinToString(",") + "|" + accent(ctx),
         java.text.SimpleDateFormat("HH:mm", java.util.Locale.US).format(java.util.Date()),
     )
 
