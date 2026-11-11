@@ -45,7 +45,7 @@ object DvrProbe {
             .show()
     }
 
-    private fun pickNetwork(ctx: Context): Network? {
+    internal fun pickNetwork(ctx: Context): Network? {
         BikeWifi.currentNetwork?.let { log("using RideScreen's bike network"); return it }
         val cm = ctx.getSystemService(ConnectivityManager::class.java)
         @Suppress("DEPRECATION")
