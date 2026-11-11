@@ -61,6 +61,9 @@ class AaReceiver(
     @Volatile private var steadyVideoFired = false
     /** Consecutive seconds with real (≥10 fps) but slow video: slow phones never reach 25 fps. */
     @Volatile private var slowVideoSeconds = 0
+    // A7 · "[AA] decode fps" was a third of every log (one line a second). Only on a change > 3 fps or every 30 s.
+    private var lastFpsLogged = -100
+    private var lastFpsLogAt = 0L
 
     /**
      * Fired when an AA session ends. [userExit] is true when the rider tapped Exit in Android Auto
@@ -72,7 +75,11 @@ class AaReceiver(
         fallbackWidth = ServiceDiscoveryResponse.AA_WIDTH
         fallbackHeight = ServiceDiscoveryResponse.AA_HEIGHT
         onFpsChanged = { fps ->
-            log("[AA] decode fps=$fps")
+            val now = android.os.SystemClock.elapsedRealtime()
+            if (FpsLog.shouldLog(lastFpsLogged, fps, now - lastFpsLogAt)) {
+                log("[AA] decode fps=$fps")
+                lastFpsLogged = fps; lastFpsLogAt = now
+            }
             AaVideoBridge.aaDecoding = true
             slowVideoSeconds = if (fps >= 10) slowVideoSeconds + 1 else 0
             if (!steadyVideoFired && (fps >= 25 || slowVideoSeconds >= 2)) {
@@ -375,4 +382,12 @@ class AaReceiver(
         try { registrationListener?.let { nsdManager?.unregisterService(it) } } catch (_: Exception) {}
         registrationListener = null
     }
+}
+
+/** A7 · pure rule (unit tested) for the decode-fps log line. */
+internal object FpsLog {
+    const val MIN_CHANGE = 3
+    const val EVERY_MS = 30_000L
+    fun shouldLog(lastLogged: Int, fps: Int, msSinceLast: Long): Boolean =
+        kotlin.math.abs(fps - lastLogged) > MIN_CHANGE || msSinceLast >= EVERY_MS
 }
