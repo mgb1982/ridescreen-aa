@@ -588,7 +588,7 @@ class GpxDashUi(
                 searchStatus.textSize = 16f
                 searchStatus.text = "⌨ Type on PHONE — results show here"
                 if (!DashRemote.requestTypeOnPhone()) {
-                    searchStatus.text = "Open OpenCfMoto on the phone, then type"
+                    searchStatus.text = "Open RideScreen AA on the phone, then type"
                 } else if (voiceOn) {
                     try { voiceLocal.speak("Type your search on the phone") } catch (_: Exception) {}
                 }

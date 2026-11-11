@@ -16,13 +16,13 @@ object TripGpx {
     private val fileStamp = SimpleDateFormat("yyyyMMdd_HHmm", Locale.US)
 
     fun suggestedFileName(trip: Trip): String =
-        "opencfmoto_trip_${fileStamp.format(Date(trip.start))}.gpx"
+        "ridescreen_trip_${fileStamp.format(Date(trip.start))}.gpx"
 
     fun toXml(trip: Trip): String {
-        val name = escape("OpenCfMoto ${trip.dateText()} ${trip.timeRangeText()}")
+        val name = escape("RideScreen AA ${trip.dateText()} ${trip.timeRangeText()}")
         val sb = StringBuilder()
         sb.append("""<?xml version="1.0" encoding="UTF-8"?>""").append('\n')
-        sb.append("""<gpx version="1.1" creator="OpenCfMoto" """)
+        sb.append("""<gpx version="1.1" creator="RideScreen AA" """)
         sb.append("""xmlns="http://www.topografix.com/GPX/1/1">""").append('\n')
         sb.append("  <metadata>\n")
         sb.append("    <name>").append(name).append("</name>\n")

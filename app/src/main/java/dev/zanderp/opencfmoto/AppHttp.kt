@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit
 object AppHttp {
     /** Identifying UA required by the OSM/Nominatim/Overpass usage policies. */
     val USER_AGENT: String =
-        "OpenCfMoto/${BuildConfig.VERSION_NAME} (moto dash map; +https://github.com/zanderp/open-cfmoto)"
+        "RideScreenAA/${BuildConfig.VERSION_NAME} (motorcycle dash map; +https://github.com/mgb1982/ridescreen-aa)"
 
     private const val MAX_RESPONSE_BYTES = 8 * 1024 * 1024 // guard against runaway responses
     /** Long road routes (steps + full geometry) routinely exceed 8 MB on public demos. */

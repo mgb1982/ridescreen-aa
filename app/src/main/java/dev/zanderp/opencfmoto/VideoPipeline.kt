@@ -494,7 +494,7 @@ class VideoPipeline(
                 setBackgroundColor(Color.parseColor("#0D47A1"))
             }
             val title = TextView(pres.context).apply {
-                text = "OpenCfMoto"
+                text = "RideScreen AA"
                 setTextColor(Color.WHITE)
                 textSize = 28f
                 gravity = Gravity.CENTER

@@ -708,13 +708,10 @@ class MainActivity : AppCompatActivity() {
         try {
             androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle(R.string.main_crash_title)
-                .setMessage(
-                    "OpenCfMoto closed unexpectedly last time. The log and crash report were saved — " +
-                        "open Logs and tap Share Logs so we can see what happened.",
-                )
-                .setPositiveButton("Share Logs") { _, _ -> shareLog() }
-                .setNegativeButton("Keep logs") { _, _ -> }
-                .setNeutralButton("Dismiss") { _, _ -> CrashGuard.clearCrash(this) }
+                .setMessage(R.string.crash_dialog_message)
+                .setPositiveButton(R.string.crash_dialog_share) { _, _ -> shareLog() }
+                .setNegativeButton(R.string.crash_dialog_keep) { _, _ -> }
+                .setNeutralButton(R.string.crash_dialog_dismiss) { _, _ -> CrashGuard.clearCrash(this) }
                 .show()
         } catch (e: Exception) {
             log("crash recovery UI failed: $e")
@@ -754,7 +751,7 @@ class MainActivity : AppCompatActivity() {
                                     "Single app — that app must stay on screen; Android sends no frames " +
                                     "in the background. Prefer GPX / Tracks or Android Auto for pocket use.\n\n" +
                                     "Bike touch does not drive mirrored apps. Continue connects and " +
-                                    "sends OpenCfMoto to the background.",
+                                    "sends RideScreen AA to the background.",
                             )
                             .setPositiveButton("Continue") { _, _ -> startMirrorLink() }
                             .setCancelable(false)

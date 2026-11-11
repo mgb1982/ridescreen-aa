@@ -683,4 +683,45 @@
     <string name="garage_rename_title">Rename bike</string>
     <string name="garage_remove_title">Remove %s?</string>
     <string name="garage_remove_message">This forgets its pairing, photo and settings. You can re-scan the dash QR or enter Wi‑Fi again later.</string>
+    <!-- WifiGate -->
+    <string name="wifigate_notif_title">Turn on Wi‑Fi</string>
+    <string name="wifigate_notif_text">RideScreen AA can’t reach the bike — tap to open Wi‑Fi settings.</string>
+    <!-- Crash recovery dialog -->
+    <string name="crash_dialog_message">RideScreen AA closed unexpectedly last time. The log and crash report were saved — open Logs and tap Share Logs so we can see what happened.</string>
+    <string name="crash_dialog_share">Share Logs</string>
+    <string name="crash_dialog_keep">Keep logs</string>
+    <string name="crash_dialog_dismiss">Dismiss</string>
+    <!-- Button mapping -->
+    <string name="buttons_overlay_settings_hint">Open Settings → Apps → RideScreen AA → Display over other apps</string>
+    <!-- DependencyPrompt -->
+    <string name="dep_aa_title">Google Android Auto</string>
+    <string name="dep_aa_detail">Required to project Maps / Waze to the dash. Install it from the Play Store.</string>
+    <string name="dep_gms_title">Google Play services</string>
+    <string name="dep_gms_detail">Android Auto needs Play services on this phone. Install or update them from the Play Store.</string>
+    <string name="dep_perms_title">App permissions</string>
+    <string name="dep_perms_detail">Still needed: %1$s.</string>
+    <string name="dep_wifi_title">Phone Wi‑Fi is off</string>
+    <string name="dep_wifi_detail">The bike link uses Wi‑Fi. Turn Wi‑Fi on before Connect.</string>
+    <string name="dep_mic_title">Microphone (optional)</string>
+    <string name="dep_mic_detail">Needed for Voice / Assistant on the pad. You can grant it later when you use Voice.</string>
+    <string name="dep_overlay_title">Display over other apps (optional)</string>
+    <string name="dep_overlay_detail">Lets RideScreen AA relaunch Android Auto after a long stop without tapping a notification.</string>
+    <string name="dep_header">RideScreen AA needs a few things on this phone before it can talk to your bike:</string>
+    <string name="dep_recommended">Recommended:</string>
+    <string name="dep_dialog_title">Missing dependencies</string>
+    <string name="dep_btn_install_aa">Install Android Auto</string>
+    <string name="dep_btn_install_gms">Install Play services</string>
+    <string name="dep_btn_grant">Grant permissions</string>
+    <string name="dep_btn_wifi">Wi‑Fi settings</string>
+    <string name="dep_btn_overlay">Enable overlay</string>
+    <string name="dep_btn_open_setup">Open Setup</string>
+    <string name="dep_btn_later">Later</string>
+    <string name="dep_toast_open_setup">Open Setup to finish prerequisites</string>
+    <string name="dep_toast_no_play">Couldn\'t open the Play Store</string>
+    <string name="dep_toast_no_app_settings">Couldn\'t open app settings</string>
+    <string name="dep_toast_no_overlay_settings">Couldn\'t open overlay settings</string>
+    <string name="dep_perm_camera">Camera (scan QR)</string>
+    <string name="dep_perm_location">Location (join bike Wi‑Fi)</string>
+    <string name="dep_perm_notifications">Notifications</string>
+    <string name="dep_perm_microphone">Microphone</string>
 </resources>

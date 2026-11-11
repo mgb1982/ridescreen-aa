@@ -184,7 +184,7 @@ object CrashGuard {
         error.printStackTrace(PrintWriter(sw))
         val stack = sw.toString()
         val header = buildString {
-            append("=== OpenCfMoto FATAL ")
+            append("=== RideScreen AA FATAL ")
             append(stampFmt.format(Date()))
             append(" ===\n")
             append("version=").append(BuildConfig.VERSION_NAME)

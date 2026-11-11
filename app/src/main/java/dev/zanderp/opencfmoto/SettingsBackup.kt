@@ -82,7 +82,7 @@ object SettingsBackup {
         }
         val format = root.optString("format", "")
         if (format != FORMAT) {
-            return Result(false, "Not an OpenCfMoto settings file (format=$format)")
+            return Result(false, "Not a RideScreen AA settings file (format=$format)")
         }
         val ver = root.optInt("version", 0)
         if (ver < 1 || ver > VERSION) {
@@ -113,7 +113,7 @@ object SettingsBackup {
             ProfileOverride.AUTO -> "auto"
             else -> ov.id
         }
-        return "OpenCfMoto-$slug-settings.json"
+        return "RideScreen-AA-$slug-settings.json"
     }
 
     private fun applySettings(context: Context, s: JSONObject) {

@@ -325,10 +325,10 @@ class SetupActivity : AppCompatActivity() {
             val profile = ProfilePrefs.get(this).shortLabel
             val send = Intent(Intent.ACTION_SEND).apply {
                 type = "application/json"
-                putExtra(Intent.EXTRA_SUBJECT, "OpenCfMoto bike tuning — $profile")
+                putExtra(Intent.EXTRA_SUBJECT, "RideScreen AA bike tuning — $profile")
                 putExtra(
                     Intent.EXTRA_TEXT,
-                    "OpenCfMoto bike tuning ($profile) — profile / resolution / margins / buttons " +
+                    "RideScreen AA bike tuning ($profile) — profile / resolution / margins / buttons " +
                         "(no passwords, no bike name/SSID).\n" +
                         "Import via Setup → Wi‑Fi & logs → Import…",
                 )

@@ -53,7 +53,7 @@ object UpdateChecker {
             connectTimeout = 8000
             readTimeout = 8000
             setRequestProperty("Accept", "application/vnd.github+json")
-            setRequestProperty("User-Agent", "OpenCfMoto")
+            setRequestProperty("User-Agent", "RideScreenAA")
         }
         try {
             if (conn.responseCode != 200) null else {

@@ -15,7 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 /**
- * Lists what OpenCfMoto needs and offers Install / Grant / Settings actions.
+ * Lists what RideScreen AA needs and offers Install / Grant / Settings actions.
  *
  * Kept deliberately light on launch: we must not block auto-connect or reconnect just because
  * Camera isn't granted (only needed to scan a new QR). Wi‑Fi-off is handled by [WifiGate], not here.
@@ -47,8 +47,8 @@ object DependencyPrompt {
             add(
                 Issue(
                     id = "aa",
-                    title = "Google Android Auto",
-                    detail = "Required to project Maps / Waze to the dash. Install it from the Play Store.",
+                    title = ctx.getString(R.string.dep_aa_title),
+                    detail = ctx.getString(R.string.dep_aa_detail),
                     required = true,
                     action = Action.INSTALL_ANDROID_AUTO,
                 ),
@@ -58,8 +58,8 @@ object DependencyPrompt {
             add(
                 Issue(
                     id = "gms",
-                    title = "Google Play services",
-                    detail = "Android Auto needs Play services on this phone. Install or update them from the Play Store.",
+                    title = ctx.getString(R.string.dep_gms_title),
+                    detail = ctx.getString(R.string.dep_gms_detail),
                     required = true,
                     action = Action.INSTALL_PLAY_SERVICES,
                 ),
@@ -74,8 +74,8 @@ object DependencyPrompt {
             add(
                 Issue(
                     id = "perms",
-                    title = "App permissions",
-                    detail = "Still needed: ${missing.joinToString(", ") { permLabel(it) }}.",
+                    title = ctx.getString(R.string.dep_perms_title),
+                    detail = ctx.getString(R.string.dep_perms_detail, missing.joinToString(", ") { permLabel(ctx, it) }),
                     required = true,
                     action = Action.GRANT_PERMISSIONS,
                 ),
@@ -86,8 +86,8 @@ object DependencyPrompt {
             add(
                 Issue(
                     id = "wifi",
-                    title = "Phone Wi‑Fi is off",
-                    detail = "The bike link uses Wi‑Fi. Turn Wi‑Fi on before Connect.",
+                    title = ctx.getString(R.string.dep_wifi_title),
+                    detail = ctx.getString(R.string.dep_wifi_detail),
                     required = false,
                     action = Action.ENABLE_WIFI,
                 ),
@@ -99,8 +99,8 @@ object DependencyPrompt {
             add(
                 Issue(
                     id = "mic",
-                    title = "Microphone (optional)",
-                    detail = "Needed for Voice / Assistant on the pad. You can grant it later when you use Voice.",
+                    title = ctx.getString(R.string.dep_mic_title),
+                    detail = ctx.getString(R.string.dep_mic_detail),
                     required = false,
                     action = Action.GRANT_PERMISSIONS,
                 ),
@@ -110,8 +110,8 @@ object DependencyPrompt {
             add(
                 Issue(
                     id = "overlay",
-                    title = "Display over other apps (optional)",
-                    detail = "Lets OpenCfMoto relaunch Android Auto after a long stop without tapping a notification.",
+                    title = ctx.getString(R.string.dep_overlay_title),
+                    detail = ctx.getString(R.string.dep_overlay_detail),
                     required = false,
                     action = Action.OPEN_OVERLAY,
                 ),
@@ -153,13 +153,13 @@ object DependencyPrompt {
             emptyList()
         }
         val body = buildString {
-            append("OpenCfMoto needs a few things on this phone before it can talk to your bike:\n")
+            append(activity.getString(R.string.dep_header)).append("\n")
             for (issue in required) {
                 append("\n• ").append(issue.title)
                 append("\n  ").append(issue.detail)
             }
             if (optional.isNotEmpty()) {
-                append("\n\nRecommended:")
+                append("\n\n").append(activity.getString(R.string.dep_recommended))
                 for (issue in optional) {
                     append("\n• ").append(issue.title)
                     append("\n  ").append(issue.detail)
@@ -168,26 +168,26 @@ object DependencyPrompt {
         }
         val primary = required.firstOrNull() ?: optional.firstOrNull()
         val positiveLabel = when (primary?.action) {
-            Action.INSTALL_ANDROID_AUTO -> "Install Android Auto"
-            Action.INSTALL_PLAY_SERVICES -> "Install Play services"
-            Action.GRANT_PERMISSIONS -> "Grant permissions"
-            Action.ENABLE_WIFI -> "Wi‑Fi settings"
-            Action.OPEN_OVERLAY -> "Enable overlay"
-            Action.OPEN_SETUP, null -> "Open Setup"
+            Action.INSTALL_ANDROID_AUTO -> activity.getString(R.string.dep_btn_install_aa)
+            Action.INSTALL_PLAY_SERVICES -> activity.getString(R.string.dep_btn_install_gms)
+            Action.GRANT_PERMISSIONS -> activity.getString(R.string.dep_btn_grant)
+            Action.ENABLE_WIFI -> activity.getString(R.string.dep_btn_wifi)
+            Action.OPEN_OVERLAY -> activity.getString(R.string.dep_btn_overlay)
+            Action.OPEN_SETUP, null -> activity.getString(R.string.dep_btn_open_setup)
         }
         try {
             AlertDialog.Builder(activity)
-                .setTitle("Missing dependencies")
+                .setTitle(R.string.dep_dialog_title)
                 .setMessage(body)
                 .setPositiveButton(positiveLabel) { _, _ ->
                     primary?.let { fix(activity, it) } ?: SetupActivity.start(activity)
                 }
-                .setNeutralButton("Open Setup") { _, _ -> SetupActivity.start(activity) }
-                .setNegativeButton("Later", null)
+                .setNeutralButton(R.string.dep_btn_open_setup) { _, _ -> SetupActivity.start(activity) }
+                .setNegativeButton(R.string.dep_btn_later, null)
                 .show()
         } catch (e: Exception) {
             LogBus.log("[deps] dialog failed: $e")
-            Toast.makeText(activity, "Open Setup to finish prerequisites", Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, R.string.dep_toast_open_setup, Toast.LENGTH_LONG).show()
             SetupActivity.start(activity)
         }
     }
@@ -217,11 +217,11 @@ object DependencyPrompt {
         }
     }
 
-    private fun permLabel(perm: String): String = when (perm) {
-        Manifest.permission.CAMERA -> "Camera (scan QR)"
-        Manifest.permission.ACCESS_FINE_LOCATION -> "Location (join bike Wi‑Fi)"
-        Manifest.permission.POST_NOTIFICATIONS -> "Notifications"
-        Manifest.permission.RECORD_AUDIO -> "Microphone"
+    private fun permLabel(ctx: android.content.Context, perm: String): String = when (perm) {
+        Manifest.permission.CAMERA -> ctx.getString(R.string.dep_perm_camera)
+        Manifest.permission.ACCESS_FINE_LOCATION -> ctx.getString(R.string.dep_perm_location)
+        Manifest.permission.POST_NOTIFICATIONS -> ctx.getString(R.string.dep_perm_notifications)
+        Manifest.permission.RECORD_AUDIO -> ctx.getString(R.string.dep_perm_microphone)
         else -> perm.substringAfterLast('.')
     }
 
@@ -238,7 +238,7 @@ object DependencyPrompt {
                     ),
                 )
             } catch (_: Exception) {
-                Toast.makeText(activity, "Couldn't open the Play Store", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.dep_toast_no_play, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -252,7 +252,7 @@ object DependencyPrompt {
                 ),
             )
         } catch (_: Exception) {
-            Toast.makeText(activity, "Couldn't open app settings", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, R.string.dep_toast_no_app_settings, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -268,7 +268,7 @@ object DependencyPrompt {
             try {
                 activity.startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION))
             } catch (_: Exception) {
-                Toast.makeText(activity, "Couldn't open overlay settings", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.dep_toast_no_overlay_settings, Toast.LENGTH_SHORT).show()
             }
         }
     }

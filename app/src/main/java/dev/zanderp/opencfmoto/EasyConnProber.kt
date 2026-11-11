@@ -259,7 +259,7 @@ class EasyConnProber(
         // no frames and a blank dash. Fail fast with an actionable message instead of failing silently.
         if (bindConflict) {
             log("!! link ports are held by another app (usually the official CFMoto/EasyConnect app). " +
-                "Close it (force-stop) and reconnect — OpenCfMoto needs ports ${LISTEN_PORTS.toList()}.")
+                "Close it (force-stop) and reconnect — RideScreen AA needs ports ${LISTEN_PORTS.toList()}.")
             ConnectionState.set(Phase.ERROR, "close the official CFMoto app, then reconnect")
             stop()
             return

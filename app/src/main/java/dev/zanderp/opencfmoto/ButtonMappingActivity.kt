@@ -60,7 +60,7 @@ class ButtonMappingActivity : AppCompatActivity() {
                 startActivity(NavLauncher.overlayPermissionIntent(this))
             } catch (e: Exception) {
                 LogBus.log("couldn't open the overlay permission screen ($e)")
-                Toast.makeText(this, "Open Settings → Apps → OpenCfMoto → Display over other apps",
+                Toast.makeText(this, R.string.buttons_overlay_settings_hint,
                     Toast.LENGTH_LONG).show()
             }
         }

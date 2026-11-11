@@ -56,7 +56,7 @@ object MapDataBackup {
             return Result(false, "Not valid JSON: ${e.message}")
         }
         if (root.optString("format") != FORMAT) {
-            return Result(false, "Not an OpenCfMoto map file")
+            return Result(false, "Not a RideScreen AA map file")
         }
         val ver = root.optInt("version", 0)
         if (ver < 1 || ver > VERSION) {
@@ -101,7 +101,7 @@ object MapDataBackup {
     }
 
     fun suggestedFileName(): String =
-        "OpenCfMoto-map-${SimpleDateFormat("yyyyMMdd", Locale.US).format(Date())}.json"
+        "RideScreen-AA-map-${SimpleDateFormat("yyyyMMdd", Locale.US).format(Date())}.json"
 
     private fun placesArray(list: List<MapPlace>): JSONArray {
         val arr = JSONArray()

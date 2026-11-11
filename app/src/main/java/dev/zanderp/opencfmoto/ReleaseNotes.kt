@@ -16,7 +16,7 @@ object ReleaseNotes {
         val src = markdown.trim().take(maxChars)
         if (src.isEmpty()) {
             return HtmlCompat.fromHtml(
-                "A newer OpenCfMoto release is available.",
+                "A newer RideScreen AA release is available.",
                 HtmlCompat.FROM_HTML_MODE_LEGACY,
             )
         }
