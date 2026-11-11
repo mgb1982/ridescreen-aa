@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_entry">🔌 OBD-olvasó (teszt)</string>
+    <string name="obd_title">OBD-olvasó (teszt)</string>
+    <string name="obd_no_adapter">Nem található párosított OBD-adapter.\n\nElőbb párosítsd az ELM327-et az Androidon: Bluetooth (a PIN általában 1234 vagy 0000), és zárj be minden más OBD-alkalmazást (Torque). Most párosítva: %1$s</string>
+    <string name="obd_pick_other">Válassz a párosítottak listájából</string>
+    <string name="obd_pick_title">Melyik az OBD-adapter?</string>
+    <string name="obd_intro">A motorvezérlő egységet olvassa a(z) %1$s segítségével: megmutatja, milyen adatokat kínál, az aktuális értékeket, a tárolt hibakódokat, és 20 másodpercnyi élő fordulatszámot, sebességet, hőmérsékletet és gázállást.\n\nCsak olvas: sosem törli a hibakódokat, és semmit nem küld a motornak. Gyújtás bekapcsolva (járó motornál jobb), és a Torque legyen bezárva.</string>
+    <string name="obd_start">Indítás</string>
+    <string name="obd_connecting">Csatlakozás az adapterhez…</string>
+    <string name="obd_fail_link">Nem sikerült csatlakozni az adapterhez. Párosítva van, áram alatt van (gyújtás be), és nem használja másik alkalmazás?</string>
+    <string name="obd_fail_ecu">Az adapter válaszolt, de a motorvezérlő nem. Kapcsold be a gyújtást (vagy indítsd be a motort), és próbáld újra.</string>
+    <string name="obd_share_hint">Minden benne van a naplóban is: ❓ Súgó → Naplók megosztása.</string>
+    <string name="obd_live_on">Ezt az adaptert használja vetítés közben</string>
+    <string name="obd_live_off">Ne használja vetítés közben</string>
+    <string name="obd_live_enabled">A(z) %1$s olvasása vetítés közben: a motor be/ki állapotát mostantól a valódi fordulatszám adja.</string>
+    <string name="obd_live_disabled">Folyamatos olvasás kikapcsolva.</string>
+</resources>

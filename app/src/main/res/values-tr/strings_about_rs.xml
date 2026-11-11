@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rs_about_tagline">Motorunun ekranında kablosuz Android Auto (Carbit/EasyConnect ekranları), Zontes 125X / ZT125T-X için düzeltmeler ve ekstralar. OpenCfMoto temel alınarak yapıldı.</string>
+    <string name="rs_about_community">Sorun, log veya yeni bir motor mu var? GitHub\'da bir sorun aç veya grupta sor. Bağışlar masrafların karşılanmasına yardımcı olur.</string>
+    <string name="rs_about_issues">GitHub</string>
+    <string name="rs_about_copyright">© 2026 Alexandru (zanderp), OpenCfMoto\n© 2026 Manel (mgb1982), RideScreen AA</string>
+    <string name="rs_about_copyright_body">RideScreen AA is maintained by Manel (mgb1982). It is a derivative of OpenCfMoto, © 2026 Alexandru (zanderp), and like it, free software under the GNU AGPL v3 or later: see LICENSE and NOTICE in the repository.</string>
+    <string name="rs_about_original">Özgün proje: OpenCfMoto (zanderp)</string>
+    <string name="rs_about_source">RideScreen AA kaynak kodu</string>
+    <string name="rs_about_credits">• Alexandru (zanderp) — RideScreen AA\'nın üzerine kurulduğu uygulama OpenCfMoto\'nun yaratıcısı. Teşekkürler!\n• Manel (mgb1982) — RideScreen AA: ekran saati düzeltmesi, Wear OS uygulaması, yeni tasarım, sürüş ekstraları\n\nOpenCfMoto kendisi de open-cfmoto topluluğunun üzerine kuruludur:\n• dcoletto / coletz — özgün QR &amp; EasyConn çalışması\n• BojanJ — Android Auto alıcı entegrasyonu\n• richardbizik — 1000 MT‑X desteği\n• ionutradu252 / open-cflink — gidon kontrolleri, kenar boşlukları, yeniden bağlanma &amp; cilalama\n• eugen0309 — Wi‑Fi Direct / CL‑C450 yolu\n• Martin Escudero (martinescudero) — Android Auto 17.4+ head unit sunucu yolu\n• Glifaus — Wi‑Fi Direct canlı tutma\n• sashop2001 — AA DPI, Bluetooth tetikleyici, Bulgarca\n• Authoritt — araç telemetrisi saha notları\n• headunit-revived — Android Auto yansıtma altyapısı (AGPL)\n\nTestleri yapan, logları paylaşan ve sorun bildiren herkese teşekkürler.\n\n2.4 için özel teşekkürler:\n• Melo — iOS testleri için iPhone\'unu ödünç verdiği için\n• Inky en Moto — T350X\'i çalıştıran logları ve uygulama hakkındaki videosu için (youtube.com/@inkyenmoto)\n• Luis Gil — OBD okuyucu konusundaki yardımı için\n• 2.4 test sürümlerinin tüm test edenleri\n\nKo-fi destekçileri — teşekkürler!\n• Francisco Javier S.\n• José Antonio R.\n• Raul\n• Luis Gil\n• INKY\n• Juanma M.\n• Alfonsomicra\n• Isra\n• Dionisios S.\n• José Manuel\n• Karsten\n• Francesc Xavier M.\n• Jon\n• Alberto\n• Anonim destekçiler</string>
+    <string name="rs_thanks_title">Teşekkürler, Alexandru</string>
+    <string name="rs_thanks_body">RideScreen AA, Alexandru (zanderp) tarafından yaratılan OpenCfMoto sayesinde var. Ekrana bağlantı, kablosuz Android Auto, haritalar, kontroller ve bu uygulamanın yaptığı neredeyse her şey onun ve bir araya getirdiği open-cfmoto topluluğunun işi. RideScreen AA üzerine sadece birkaç şey ekler. Uygulama sana faydalıysa lütfen onu da destekle.</string>
+    <string name="rs_thanks_kofi">❤ Alexandru\'yu destekle (Ko-fi)</string>
+    <string name="rs_thanks_github">GitHub\'da OpenCfMoto</string>
+    <string name="rs_thanks_discord">OpenCfMoto Discord</string>
+    <string name="rs_bikes_tested_title">RideScreen AA ile test edilenler</string>
+    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: her şey çalışıyor; ekran saati her zaman doğru, Wear OS uygulaması ve sürüş ekstraları dahil. Aynı ekran, farklı kaporta.\nZontes 368 G / 368 K / 368 E: çalıştığı doğrulandı; görüntü ilk bağlantıdan itibaren büyük ekrana sığıyor.\nTestte: Zontes 125M (telefon erişim noktası üzerinden bağlanır) ve Zontes 350D (Wi‑Fi Direct QR). Bir tane sende varsa logun yardımcı olur.</string>
+</resources>

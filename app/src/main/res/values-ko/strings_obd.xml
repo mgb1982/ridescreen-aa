@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_entry">🔌 OBD 리더 (테스트)</string>
+    <string name="obd_title">OBD 리더 (테스트)</string>
+    <string name="obd_no_adapter">페어링된 OBD 어댑터를 찾을 수 없습니다.\n\n먼저 Android → Bluetooth에서 ELM327을 페어링하세요(PIN은 보통 1234 또는 0000). 다른 OBD 앱(Torque)은 닫아 주세요. 현재 페어링됨: %1$s</string>
+    <string name="obd_pick_other">페어링된 목록에서 선택</string>
+    <string name="obd_pick_title">어느 기기가 OBD 어댑터인가요?</string>
+    <string name="obd_intro">%1$s을(를) 통해 엔진 제어 장치를 읽습니다. 제공하는 데이터 목록, 현재 값, 저장된 고장 코드, 그리고 20초 동안의 실시간 RPM, 속도, 온도, 스로틀 값을 표시합니다.\n\n읽기 전용입니다. 코드를 지우거나 오토바이에 아무것도 보내지 않습니다. 시동을 켜고(엔진이 켜져 있으면 더 좋습니다) Torque는 닫아 두세요.</string>
+    <string name="obd_start">시작</string>
+    <string name="obd_connecting">어댑터에 연결하는 중…</string>
+    <string name="obd_fail_link">어댑터에 연결할 수 없습니다. 페어링되어 있는지, 전원이 들어와 있는지(시동 켜짐), 다른 앱이 사용 중이 아닌지 확인하세요.</string>
+    <string name="obd_fail_ecu">어댑터는 응답했지만 엔진 제어 장치는 응답하지 않았습니다. 시동을 켜거나(또는 엔진을 시동하고) 다시 시도하세요.</string>
+    <string name="obd_share_hint">모든 내용은 로그에도 있습니다: ❓ 도움말 → 로그 공유.</string>
+    <string name="obd_live_on">프로젝션 중에 이 어댑터 사용</string>
+    <string name="obd_live_off">프로젝션 중 어댑터 사용 중지</string>
+    <string name="obd_live_enabled">프로젝션 중 %1$s 읽는 중: 엔진 켜짐/꺼짐 상태를 이제 실제 RPM으로 판단합니다.</string>
+    <string name="obd_live_disabled">지속 읽기가 꺼졌습니다.</string>
+</resources>

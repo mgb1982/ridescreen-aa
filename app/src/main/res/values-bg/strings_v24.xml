@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dc_good_morning">Добро утро</string>
+    <string name="dc_good_afternoon">Добър ден</string>
+    <string name="dc_good_evening">Добър вечер</string>
+    <string name="dc_streak_days">дни поред</string>
+    <string name="dc_rain_soon">Вероятен дъжд: %1$d%% в следващите часове</string>
+    <string name="dc_wx_clear">ясно</string>
+    <string name="dc_wx_cloudy">облачно</string>
+    <string name="dc_wx_fog">мъгла</string>
+    <string name="dc_wx_rain">дъжд</string>
+    <string name="dc_wx_snow">сняг</string>
+    <string name="dc_wx_storm">буря</string>
+    <string name="dc_bye_title">До скоро · дневното обобщение</string>
+    <string name="dc_km_today">км днес</string>
+    <string name="dc_min">мин</string>
+    <string name="dc_kmh_avg">км/ч ср.</string>
+    <string name="dc_kmh_max">км/ч макс.</string>
+    <string name="dc_parked_photo">Паркирано · снимката е запазена</string>
+    <string name="dc_parked">Паркирано</string>
+    <string name="dc_rain_tomorrow">Утре в 8:00: %1$d%% шанс за дъжд · вземете дъждобрана</string>
+    <string name="pke_unlock_scan_code_too">Също и кодът PKE (…%1$s).</string>
+</resources>

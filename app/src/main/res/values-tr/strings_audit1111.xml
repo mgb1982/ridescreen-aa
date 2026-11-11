@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controls_dash_saver">Gösterge ile pil tasarrufu</string>
+    <string name="controls_dash_saver_hint">Gösterge ekranda açıkken Android Auto video göndermeyi durdurur. Ses ve yönlendirme devam eder; Android Auto\'ya dönmek yaklaşık bir saniye sürer.</string>
+    <string name="dashcam_entry">Motor kamera kliplerini içe aktar</string>
+    <string name="dashcam_title">Motor kamera klipleri</string>
+    <string name="dashcam_channel">Motor kamerası içe aktarma</string>
+    <string name="dashcam_stop_first_title">Yansıtma durdurulsun mu?</string>
+    <string name="dashcam_stop_first_msg">Motor Android Auto veya haritayı gösterirken klipler indirilemez: Wi-Fi\'si ikisini birden taşıyamaz. Yansıtmayı durdurup devam edilsin mi?</string>
+    <string name="dashcam_stop_and_continue">Durdur ve devam et</string>
+    <string name="dashcam_pick_trip">Kamera kliplerini şunun için içe aktar…</string>
+    <string name="dashcam_no_trips">Henüz sürüş yok</string>
+    <string name="dashcam_joining">Motorun Wi-Fi\'sine bağlanılıyor…</string>
+    <string name="dashcam_join_failed">Motorun kamerasına ulaşılamadı. Motor açık ve ekran yanıyor mu?</string>
+    <string name="dashcam_looking">Klipler aranıyor…</string>
+    <string name="dashcam_none">Bu sürüş için kamera klibi yok.</string>
+    <string name="dashcam_camera_front">Ön</string>
+    <string name="dashcam_camera_rear">Arka</string>
+    <string name="dashcam_camera_both">İkisi de</string>
+    <string name="dashcam_total">%1$d klip · %2$d MB</string>
+    <string name="dashcam_no_space">Yeterli boş alan yok: %1$d MB gerekli, %2$d MB boş.</string>
+    <string name="dashcam_import">İçe aktar</string>
+    <string name="dashcam_progress">Klip %1$d / %2$d · %3$d MB</string>
+    <string name="dashcam_done">İçe aktarılan %1$d · zaten olan %2$d · başarısız %3$d</string>
+    <string name="dashcam_done_hint">Sürüşün video oluşturucusunu aç: klipler zamana göre yerleştirilir.</string>
+    <string name="dashcam_already_running">Klipler zaten içe aktarılıyor</string>
+    <string name="dashcam_wifi_lost">Motorun Wi-Fi\'si koptu: %1$d içe aktarıldı, %2$d kaldı. Motor açıkken tekrar dene.</string>
+</resources>

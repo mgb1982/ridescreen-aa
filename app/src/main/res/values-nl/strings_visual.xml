@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_settings_desc">Instellingen</string>
+    <string name="stat_km_today">km vandaag</string>
+    <string name="stat_max_today">max km/u</string>
+    <string name="stat_clock">klok dashboard</string>
+    <string name="stat_clock_ok">klok dashboard ✓</string>
+    <string name="stat_clock_adjusting">bijstellen…</string>
+    <string name="main_trips_pill">Ritten</string>
+    <string name="main_more">Meer</string>
+</resources>

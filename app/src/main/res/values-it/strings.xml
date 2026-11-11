@@ -657,4 +657,20 @@
     <string name="controls_dash_scale_rpm">Contagiri fino a</string>
     <string name="controls_volume_drives_aa">▲/▼ controllano anche Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Disattivato: i tasti del volume continuano a cambiare il volume del telefono (anche l\'interfono), e il volume non viene mai bloccato. Android Auto riceve solo gli altri tasti del manubrio.</string>
+    <string name="tvs_gauges">Indicatori</string>
+    <string name="garage_added">%s aggiunta</string>
+    <string name="garage_image_unreadable">Impossibile leggere quell\'immagine</string>
+    <string name="garage_selected">%s selezionata</string>
+    <string name="garage_active_subtitle">Moto attiva · tocca per modificare</string>
+    <string name="garage_tap_to_select">tocca per selezionare o modificare</string>
+    <string name="garage_use_this_bike">Usa questa moto</string>
+    <string name="garage_rename">Rinomina</string>
+    <string name="garage_change_photo">Cambia foto</string>
+    <string name="garage_add_photo">Aggiungi foto</string>
+    <string name="garage_remove_photo">Rimuovi foto</string>
+    <string name="garage_remove_bike">Rimuovi moto</string>
+    <string name="garage_bike_name_hint">Nome della moto</string>
+    <string name="garage_rename_title">Rinomina moto</string>
+    <string name="garage_remove_title">Rimuovere %s?</string>
+    <string name="garage_remove_message">Verranno dimenticati abbinamento, foto e impostazioni. In seguito potrai riscansionare il QR del cruscotto o reinserire il Wi‑Fi.</string>
 </resources>

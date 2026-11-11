@@ -668,4 +668,20 @@
     <string name="controls_dash_scale_rpm">Comptarevolucions fins a</string>
     <string name="controls_volume_drives_aa">▲/▼ també controlen Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Desactivat: els botons de volum continuen canviant el volum del mòbil (i també l\'intercomunicador), i el volum mai queda fix. Android Auto només rep els altres botons del manillar.</string>
+    <string name="tvs_gauges">Indicadors</string>
+    <string name="garage_added">S\'ha afegit %s</string>
+    <string name="garage_image_unreadable">No s\'ha pogut llegir aquella imatge</string>
+    <string name="garage_selected">S\'ha seleccionat %s</string>
+    <string name="garage_active_subtitle">Moto activa · toqueu per editar</string>
+    <string name="garage_tap_to_select">toqueu per seleccionar o editar</string>
+    <string name="garage_use_this_bike">Utilitza aquesta moto</string>
+    <string name="garage_rename">Canvia el nom</string>
+    <string name="garage_change_photo">Canvia la foto</string>
+    <string name="garage_add_photo">Afegeix una foto</string>
+    <string name="garage_remove_photo">Elimina la foto</string>
+    <string name="garage_remove_bike">Elimina la moto</string>
+    <string name="garage_bike_name_hint">Nom de la moto</string>
+    <string name="garage_rename_title">Canvia el nom de la moto</string>
+    <string name="garage_remove_title">Eliminar %s?</string>
+    <string name="garage_remove_message">S\'oblidaran l\'aparellament, la foto i la configuració. Més endavant podeu tornar a escanejar el QR del quadre o introduir el Wi‑Fi.</string>
 </resources>

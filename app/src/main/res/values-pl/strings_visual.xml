@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_settings_desc">Ustawienia</string>
+    <string name="stat_km_today">km dziś</string>
+    <string name="stat_max_today">maks. km/h</string>
+    <string name="stat_clock">zegar na ekranie</string>
+    <string name="stat_clock_ok">zegar na ekranie ✓</string>
+    <string name="stat_clock_adjusting">dostosowuję…</string>
+    <string name="main_trips_pill">Podróże</string>
+    <string name="main_more">Więcej</string>
+</resources>

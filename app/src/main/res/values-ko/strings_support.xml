@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_button">❤ 프로젝트 후원하기</string>
+    <string name="support_title">RideScreen AA 후원</string>
+    <string name="support_title_play">커피 사 주기…</string>
+    <string name="support_body">RideScreen AA는 무료이며 광고가 없습니다. 주행이 더 즐거워졌다면 운영 비용(Google Play 개발자 계정 등)에 도움이 되도록 커피 한 잔 사 주세요. 감사합니다!</string>
+    <string name="support_kofi">커피 한 잔 사 주기 (Ko-fi)</string>
+    <string name="support_original">OpenCfMoto 제작자 후원하기</string>
+    <string name="support_later">나중에</string>
+    <string name="support_coffee">☕ 커피</string>
+    <string name="support_sandwich">🥪 샌드위치</string>
+    <string name="support_tank">⛽ 기름 가득</string>
+    <string name="support_thanks">정말 감사합니다! 🙌</string>
+    <string name="support_unavailable">지금은 후원을 받을 수 없습니다. 나중에 다시 시도해 주세요.</string>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="speed_volume_title">Volum în funcție de viteză</string>
+    <string name="speed_volume_desc">Ridică volumul media al telefonului (vocea de navigare și muzica) pe măsură ce mergi mai repede, ca să învingi zgomotul vântului. Volumul tău e baza: schimbă-l oricând și creșterea urmează. Se pune pe pauză cât timp butoanele de ghidon controlează Android Auto.</string>
+    <string name="speed_volume_off">Oprit</string>
+    <string name="speed_volume_low">Scăzut</string>
+    <string name="speed_volume_medium">Mediu</string>
+    <string name="speed_volume_high">Ridicat</string>
+    <string name="speed_volume_status_off">Oprit</string>
+    <string name="speed_volume_status_waiting">Se așteaptă conexiunea cu moto…</string>
+    <string name="speed_volume_status_paused">Pe pauză: butoanele de ghidon fixează volumul</string>
+    <string name="speed_volume_status_no_gps">Activ: se așteaptă viteza GPS…</string>
+    <string name="speed_volume_status_live">Activ: %1$d km/h · creștere +%2$d</string>
+    <string name="speed_volume_advanced_show">Avansat ▾</string>
+    <string name="speed_volume_advanced_hide">Avansat ▴</string>
+    <string name="speed_volume_custom">Curbă personalizată (înlocuiește curba nivelului)</string>
+    <string name="speed_volume_start_label">Începe creșterea la: %1$d km/h</string>
+    <string name="speed_volume_step_label">Un pas în plus la fiecare: %1$d km/h</string>
+    <string name="speed_volume_max_label">Creștere maximă: +%1$d trepte</string>
+    <string name="speed_volume_custom_hint">Treptele sunt pe o scară de volum de 15 trepte. Trebuie selectat un nivel diferit de Oprit ca să ruleze curba personalizată.</string>
+</resources>

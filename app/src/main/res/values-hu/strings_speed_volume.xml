@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="speed_volume_title">Sebességfüggő hangerő</string>
+    <string name="speed_volume_desc">Gyorsabban haladva megemeli a telefon média-hangerejét (navigációs hang és zene), hogy túllicitálja a szélzajt. A saját hangerőd az alap: bármikor módosíthatod, és a növelés követi. Szünetel, amíg a kormánygombok az Android Autót vezérlik.</string>
+    <string name="speed_volume_off">Ki</string>
+    <string name="speed_volume_low">Alacsony</string>
+    <string name="speed_volume_medium">Közepes</string>
+    <string name="speed_volume_high">Magas</string>
+    <string name="speed_volume_status_off">Ki</string>
+    <string name="speed_volume_status_waiting">Várakozás a motor kapcsolatára…</string>
+    <string name="speed_volume_status_paused">Szünetel: a kormánygombok rögzítik a hangerőt</string>
+    <string name="speed_volume_status_no_gps">Aktív: várakozás a GPS-sebességre…</string>
+    <string name="speed_volume_status_live">Aktív: %1$d km/h · növelés +%2$d</string>
+    <string name="speed_volume_advanced_show">Speciális ▾</string>
+    <string name="speed_volume_advanced_hide">Speciális ▴</string>
+    <string name="speed_volume_custom">Egyéni görbe (a szint görbéjét helyettesíti)</string>
+    <string name="speed_volume_start_label">Növelés kezdete: %1$d km/h</string>
+    <string name="speed_volume_step_label">Újabb lépés minden: %1$d km/h</string>
+    <string name="speed_volume_max_label">Maximális növelés: +%1$d lépés</string>
+    <string name="speed_volume_custom_hint">A lépések egy 15 fokozatú hangerőskálán vannak. Az egyéni görbe futtatásához a Ki-tól eltérő szintet is ki kell választani.</string>
+</resources>

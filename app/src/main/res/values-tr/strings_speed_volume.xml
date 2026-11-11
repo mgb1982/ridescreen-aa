@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="speed_volume_title">Hıza göre ses</string>
+    <string name="speed_volume_desc">Rüzgar gürültüsünü bastırmak için hızlandıkça telefonun medya sesini (navigasyon sesi ve müzik) yükseltir. Senin ayarladığın ses taban alınır: istediğin zaman değiştir, artış ona göre uygulanır. Gidon tuşları Android Auto\'yu yönetirken duraklatılır.</string>
+    <string name="speed_volume_off">Kapalı</string>
+    <string name="speed_volume_low">Düşük</string>
+    <string name="speed_volume_medium">Orta</string>
+    <string name="speed_volume_high">Yüksek</string>
+    <string name="speed_volume_status_off">Kapalı</string>
+    <string name="speed_volume_status_waiting">Motor bağlantısı bekleniyor…</string>
+    <string name="speed_volume_status_paused">Duraklatıldı: gidon tuşları sesi sabitliyor</string>
+    <string name="speed_volume_status_no_gps">Etkin: GPS hızı bekleniyor…</string>
+    <string name="speed_volume_status_live">Etkin: %1$d km/sa · artış +%2$d</string>
+    <string name="speed_volume_advanced_show">Gelişmiş ▾</string>
+    <string name="speed_volume_advanced_hide">Gelişmiş ▴</string>
+    <string name="speed_volume_custom">Özel eğri (seviyenin eğrisinin yerine geçer)</string>
+    <string name="speed_volume_start_label">Artışa başlama hızı: %1$d km/sa</string>
+    <string name="speed_volume_step_label">Her bir ek adım için: %1$d km/sa</string>
+    <string name="speed_volume_max_label">En yüksek artış: +%1$d adım</string>
+    <string name="speed_volume_custom_hint">Adımlar 15 adımlık bir ses ölçeğinde. Özel eğrinin çalışması için Kapalı dışında bir seviyenin de seçili olması gerekir.</string>
+</resources>

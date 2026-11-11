@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_settings_desc">Nastavení</string>
+    <string name="stat_km_today">km dnes</string>
+    <string name="stat_max_today">max km/h</string>
+    <string name="stat_clock">hodiny na desce</string>
+    <string name="stat_clock_ok">hodiny na desce ✓</string>
+    <string name="stat_clock_adjusting">nastavuji…</string>
+    <string name="main_trips_pill">Záznam</string>
+    <string name="main_more">Více</string>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bike_gone_channel">Motor nem található</string>
+    <string name="bike_gone_title">A motor keresése abbahagyva</string>
+    <string name="bike_gone_text">A motor 20 percig ki volt kapcsolva, ezért az alkalmazás az akkumulátor kímélése érdekében abbahagyta a keresést. Koppints a Csatlakozásra, amikor újra a motornál vagy.</string>
+    <string name="tr_channel">Trófeák</string>
+    <string name="tr_unlocked_title">🏆 Trófea megszerezve!</string>
+    <string name="tr_screen_title">Trófeák</string>
+    <string name="tr_header">%2$d közül %1$d feloldva</string>
+    <string name="tr_next">Következő</string>
+    <string name="tr_earned_on">Megszerezve: %1$s</string>
+    <string name="tr_card_line">🏆 Trófeák: %1$d / %2$d · összes ›</string>
+    <string name="tr_distance">Kilométerek</string>
+    <string name="tr_distance_d">Összesen %1$s km-t motorozz</string>
+    <string name="tr_longest">Hosszú út</string>
+    <string name="tr_longest_d">Egy %1$s km-es vagy hosszabb út</string>
+    <string name="tr_speed">Csúcssebesség</string>
+    <string name="tr_speed_d">Érj el %1$s km/h-t (GPS)</string>
+    <string name="tr_streak">Lendületben</string>
+    <string name="tr_streak_d">Motorozz %1$s napon át egymás után</string>
+    <string name="tr_rides">Rendszeres</string>
+    <string name="tr_rides_d">Rögzíts %1$s utat</string>
+    <string name="tr_hours">Nyeregidő</string>
+    <string name="tr_hours_d">%1$s óra motorozás</string>
+    <string name="tr_months">Egész évben</string>
+    <string name="tr_months_d">Motorozz %1$s különböző hónapban</string>
+    <string name="tr_early">Korai madár</string>
+    <string name="tr_early_d">Kezdj el egy utat 7:00 előtt</string>
+    <string name="tr_night">Éjszakai motoros</string>
+    <string name="tr_night_d">Fejezz be egy utat 23:00 után</string>
+    <string name="tr_weekend">Hétvégi motoros</string>
+    <string name="tr_weekend_d">Motorozz ugyanazon hétvége szombatján és vasárnapján</string>
+</resources>

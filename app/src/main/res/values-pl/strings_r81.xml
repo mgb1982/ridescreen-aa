@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="bike_gone_channel">Nie znaleziono motocykla</string>
+    <string name="bike_gone_title">Przestano czekać na motocykl</string>
+    <string name="bike_gone_text">Motocykl był wyłączony przez 20 minut, więc aplikacja przestała go szukać, aby oszczędzać baterię. Dotknij Połącz, gdy wrócisz na motocykl.</string>
+    <string name="tr_channel">Trofea</string>
+    <string name="tr_unlocked_title">🏆 Odblokowano trofeum!</string>
+    <string name="tr_screen_title">Trofea</string>
+    <string name="tr_header">Odblokowane: %1$d z %2$d</string>
+    <string name="tr_next">Następne</string>
+    <string name="tr_earned_on">Zdobyte %1$s</string>
+    <string name="tr_card_line">🏆 Trofea: %1$d z %2$d · zobacz wszystkie ›</string>
+    <string name="tr_distance">Kilometry</string>
+    <string name="tr_distance_d">Przejedź łącznie %1$s km</string>
+    <string name="tr_longest">Długa jazda</string>
+    <string name="tr_longest_d">Jedna jazda na %1$s km lub więcej</string>
+    <string name="tr_speed">Prędkość maksymalna</string>
+    <string name="tr_speed_d">Osiągnij %1$s km/h (GPS)</string>
+    <string name="tr_streak">Na fali</string>
+    <string name="tr_streak_d">Jedź przez %1$s dni z rzędu</string>
+    <string name="tr_rides">Regularny</string>
+    <string name="tr_rides_d">Zapisz %1$s przejazdów</string>
+    <string name="tr_hours">Czas w siodełku</string>
+    <string name="tr_hours_d">%1$s godzin jazdy</string>
+    <string name="tr_months">Przez cały rok</string>
+    <string name="tr_months_d">Jedź w %1$s różnych miesiącach</string>
+    <string name="tr_early">Ranny ptaszek</string>
+    <string name="tr_early_d">Zacznij jazdę przed 7:00</string>
+    <string name="tr_night">Nocny jeździec</string>
+    <string name="tr_night_d">Zakończ jazdę po 23:00</string>
+    <string name="tr_weekend">Weekendowy jeździec</string>
+    <string name="tr_weekend_d">Jedź w sobotę i niedzielę tego samego weekendu</string>
+</resources>

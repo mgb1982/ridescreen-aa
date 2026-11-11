@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="speed_volume_title">Сила на звука според скоростта</string>
+    <string name="speed_volume_desc">Повишава силата на звука на медията в телефона (гласовите указания и музиката), докато карате по-бързо, за да надвика вятъра. Вашата сила на звука е основата: променяйте я по всяко време и усилването ще я следва. Спира, докато бутоните на кормилото управляват Android Auto.</string>
+    <string name="speed_volume_off">Изкл.</string>
+    <string name="speed_volume_low">Ниско</string>
+    <string name="speed_volume_medium">Средно</string>
+    <string name="speed_volume_high">Високо</string>
+    <string name="speed_volume_status_off">Изкл.</string>
+    <string name="speed_volume_status_waiting">Изчакване на връзката с мотора…</string>
+    <string name="speed_volume_status_paused">Пауза: бутоните на кормилото задържат силата на звука</string>
+    <string name="speed_volume_status_no_gps">Активно: изчакване на скоростта от GPS…</string>
+    <string name="speed_volume_status_live">Активно: %1$d км/ч · усилване +%2$d</string>
+    <string name="speed_volume_advanced_show">Разширени ▾</string>
+    <string name="speed_volume_advanced_hide">Разширени ▴</string>
+    <string name="speed_volume_custom">Персонална крива (заменя кривата на нивото)</string>
+    <string name="speed_volume_start_label">Започване на усилване при: %1$d км/ч</string>
+    <string name="speed_volume_step_label">Още една стъпка на всеки: %1$d км/ч</string>
+    <string name="speed_volume_max_label">Максимално усилване: +%1$d стъпки</string>
+    <string name="speed_volume_custom_hint">Стъпките са по скала от 15 стъпки за силата на звука. За да работи персоналната крива, трябва да е избрано ниво, различно от Изкл.</string>
+</resources>

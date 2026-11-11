@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lock_ends_trip">잠금하면 주행이 끝납니다</string>
+    <string name="lock_ends_trip_desc">앱에서 오토바이를 잠그면 주차 위치를 저장하고 프로젝션을 멈춥니다. 움직이는 중(시속 5km 초과)이거나 엔진이 켜져 있으면 잠그지 않습니다.</string>
+    <string name="pke_fail_moving">잠기지 않았습니다: 오토바이가 움직이고 있습니다.</string>
+    <string name="pke_fail_moving_any">실행하지 않았습니다: 오토바이가 움직이고 있습니다.</string>
+</resources>

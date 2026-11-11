@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_settings_desc">Ayarlar</string>
+    <string name="stat_km_today">bugün km</string>
+    <string name="stat_max_today">maks. km/sa</string>
+    <string name="stat_clock">ekran saati</string>
+    <string name="stat_clock_ok">ekran saati ✓</string>
+    <string name="stat_clock_adjusting">ayarlanıyor…</string>
+    <string name="main_trips_pill">Sürüşler</string>
+    <string name="main_more">Daha fazla</string>
+</resources>

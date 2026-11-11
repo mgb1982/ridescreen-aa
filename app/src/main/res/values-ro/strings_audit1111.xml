@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controls_dash_saver">Economisire baterie cu tabloul de bord</string>
+    <string name="controls_dash_saver_hint">Android Auto oprește trimiterea video cât timp tabloul de bord e pe bord. Sunetul și indicațiile continuă; revenirea la Android Auto durează aproximativ o secundă.</string>
+    <string name="dashcam_entry">Importă clipuri de la camera moto</string>
+    <string name="dashcam_title">Clipuri de la camera moto</string>
+    <string name="dashcam_channel">Import de la camera moto</string>
+    <string name="dashcam_stop_first_title">Oprești proiecția?</string>
+    <string name="dashcam_stop_first_msg">Clipurile nu pot fi descărcate cât timp moto arată Android Auto sau harta: Wi‑Fi-ul ei nu poate duce ambele. Oprești proiecția și continui?</string>
+    <string name="dashcam_stop_and_continue">Oprește și continuă</string>
+    <string name="dashcam_pick_trip">Importă clipurile camerei pentru…</string>
+    <string name="dashcam_no_trips">Încă nu există trasee</string>
+    <string name="dashcam_joining">Se conectează la Wi‑Fi-ul moto…</string>
+    <string name="dashcam_join_failed">Nu s-a putut ajunge la camera moto. Moto e pornită, cu bordul aprins?</string>
+    <string name="dashcam_looking">Se caută clipuri…</string>
+    <string name="dashcam_none">Niciun clip de la cameră pentru acest traseu.</string>
+    <string name="dashcam_camera_front">Față</string>
+    <string name="dashcam_camera_rear">Spate</string>
+    <string name="dashcam_camera_both">Ambele</string>
+    <string name="dashcam_total">%1$d clipuri · %2$d MB</string>
+    <string name="dashcam_no_space">Spațiu liber insuficient: sunt necesari %1$d MB, sunt %2$d MB liberi.</string>
+    <string name="dashcam_import">Importă</string>
+    <string name="dashcam_progress">Clip %1$d din %2$d · %3$d MB</string>
+    <string name="dashcam_done">Importate %1$d · deja existente %2$d · eșuate %3$d</string>
+    <string name="dashcam_done_hint">Deschide editorul video al traseului: clipurile sunt puse după oră.</string>
+    <string name="dashcam_already_running">Se importă deja clipuri</string>
+    <string name="dashcam_wifi_lost">Wi‑Fi-ul moto s-a pierdut: %1$d importate, %2$d rămase. Încearcă din nou cu moto pornită.</string>
+</resources>

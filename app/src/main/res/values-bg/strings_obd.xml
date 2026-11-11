@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_entry">🔌 Четец на OBD (тест)</string>
+    <string name="obd_title">Четец на OBD (тест)</string>
+    <string name="obd_no_adapter">Не е намерен сдвоен OBD адаптер.\n\nПърво сдвоете ELM327 в Android → Bluetooth (PIN обикновено е 1234 или 0000) и затворете всяко друго OBD приложение (Torque). Сдвоени сега: %1$s</string>
+    <string name="obd_pick_other">Изберете от сдвоените устройства</string>
+    <string name="obd_pick_title">Кое е OBD адаптерът?</string>
+    <string name="obd_intro">Чете блока за управление на двигателя през %1$s: какви данни предлага, текущите им стойности, записаните кодове за грешки и 20 сек. на живо обороти, скорост, температура и газ.\n\nСамо четене: никога не изчиства кодове и не изпраща нищо към мотора. Контактът включен (по-добре с работещ двигател) и Torque затворен.</string>
+    <string name="obd_start">Старт</string>
+    <string name="obd_connecting">Свързване с адаптера…</string>
+    <string name="obd_fail_link">Не успяхме да се свържем с адаптера. Сдвоен ли е, захранван ли е (контактът включен) и не се ли използва от друго приложение?</string>
+    <string name="obd_fail_ecu">Адаптерът отговори, но блокът за управление на двигателя не. Включете контакта (или стартирайте двигателя) и опитайте отново.</string>
+    <string name="obd_share_hint">Всичко е и в лога: ❓ Помощ → Споделяне на логовете.</string>
+    <string name="obd_live_on">Използване на този адаптер при прожектиране</string>
+    <string name="obd_live_off">Спиране на използването му при прожектиране</string>
+    <string name="obd_live_enabled">Четене на %1$s при прожектиране: включен/изключен двигател сега се определя от реалните обороти.</string>
+    <string name="obd_live_disabled">Непрекъснатото четене е изключено.</string>
+</resources>

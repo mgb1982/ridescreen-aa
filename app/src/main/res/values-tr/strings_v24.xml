@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dc_good_morning">Günaydın</string>
+    <string name="dc_good_afternoon">İyi öğleden sonralar</string>
+    <string name="dc_good_evening">İyi akşamlar</string>
+    <string name="dc_streak_days">gündür arka arkaya</string>
+    <string name="dc_rain_soon">Yağmur olası: önümüzdeki saatlerde %1$d%%</string>
+    <string name="dc_wx_clear">açık</string>
+    <string name="dc_wx_cloudy">bulutlu</string>
+    <string name="dc_wx_fog">sis</string>
+    <string name="dc_wx_rain">yağmur</string>
+    <string name="dc_wx_snow">kar</string>
+    <string name="dc_wx_storm">fırtına</string>
+    <string name="dc_bye_title">Görüşürüz · bugünün özeti</string>
+    <string name="dc_km_today">bugün km</string>
+    <string name="dc_min">dk</string>
+    <string name="dc_kmh_avg">km/sa ort.</string>
+    <string name="dc_kmh_max">km/sa maks.</string>
+    <string name="dc_parked_photo">Park edildi · fotoğraf kaydedildi</string>
+    <string name="dc_parked">Park edildi</string>
+    <string name="dc_rain_tomorrow">Yarın 08:00: %1$d%% yağmur ihtimali · yağmurluğunu al</string>
+    <string name="pke_unlock_scan_code_too">Ayrıca PKE kodu (…%1$s).</string>
+</resources>

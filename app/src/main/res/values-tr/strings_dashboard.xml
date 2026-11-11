@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_coolant">Soğutucu</string>
+    <string name="dash_throttle">Gaz</string>
+    <string name="dash_battery">Pil</string>
+    <string name="dash_no_obd">OBD verisi yok</string>
+    <string name="dash_need_stream">Önce motoru bağla: Android Auto henüz ekranda değil</string>
+    <string name="dash_shortcut">Gösterge</string>
+    <string name="controls_dash_title">Gösterge</string>
+    <string name="controls_dash_desc">OBD adaptöründen gelen devir, hız, soğutucu, gaz ve pil bilgilerini Android Auto yerine ekranda gösterir. OBD verisi yoksa hız telefonun GPS\'inden alınır.</string>
+    <string name="controls_dash_show">Göstergeyi ekranda göster</string>
+    <string name="controls_dash_hide">Android Auto\'ya dön</string>
+    <string name="controls_dash_start">Motor bağlandığında göstergede başla</string>
+    <string name="controls_dash_fields">Görünen alanlar</string>
+    <string name="controls_dash_design">Gösterge stili</string>
+    <string name="dash_design_sport">Spor</string>
+    <string name="dash_design_racing">Yarış</string>
+    <string name="dash_design_touring">Tur</string>
+    <string-array name="dash_obd_field_names">
+        <item>Devir</item>
+        <item>Hız</item>
+        <item>Soğutucu</item>
+        <item>Voltaj</item>
+        <item>Hesaplanan yük</item>
+        <item>Emme havası sıcaklığı</item>
+        <item>Barometrik basınç</item>
+        <item>Mutlak yük</item>
+        <item>Gaz</item>
+    </string-array>
+</resources>

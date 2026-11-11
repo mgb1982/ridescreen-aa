@@ -660,4 +660,20 @@
     <string name="controls_dash_scale_rpm">Drehzahlmesser bis</string>
     <string name="controls_volume_drives_aa">▲/▼ steuern auch Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Aus: Die Lautstärketasten ändern weiter die Handy-Lautstärke (auch die Gegensprechanlage), und die Lautstärke wird nie festgehalten. Android Auto bekommt dann nur die übrigen Lenkertasten.</string>
+    <string name="tvs_gauges">Anzeigen</string>
+    <string name="garage_added">%s hinzugefügt</string>
+    <string name="garage_image_unreadable">Das Bild konnte nicht gelesen werden</string>
+    <string name="garage_selected">%s ausgewählt</string>
+    <string name="garage_active_subtitle">Aktives Motorrad · tippen zum Bearbeiten</string>
+    <string name="garage_tap_to_select">tippen zum Auswählen oder Bearbeiten</string>
+    <string name="garage_use_this_bike">Dieses Motorrad verwenden</string>
+    <string name="garage_rename">Umbenennen</string>
+    <string name="garage_change_photo">Foto ändern</string>
+    <string name="garage_add_photo">Foto hinzufügen</string>
+    <string name="garage_remove_photo">Foto entfernen</string>
+    <string name="garage_remove_bike">Motorrad entfernen</string>
+    <string name="garage_bike_name_hint">Name des Motorrads</string>
+    <string name="garage_rename_title">Motorrad umbenennen</string>
+    <string name="garage_remove_title">%s entfernen?</string>
+    <string name="garage_remove_message">Die Kopplung, das Foto und die Einstellungen werden vergessen. Du kannst den Dash-QR später erneut scannen oder das WLAN erneut eingeben.</string>
 </resources>

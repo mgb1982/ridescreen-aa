@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="setup_clock_resync">계기판 시계 다시 맞추기 (Zontes)</string>
+    <string name="setup_clock_resync_desc">몇 초 동안 연결을 끊었다가 다시 연결해서 계기판이 시간을 다시 받도록 합니다. 스마트: 계기판이 시간을 늦게 요청한 경우에만(동기화 실패의 신호), 최대 3회. 항상 한 번: 계기판을 켤 때마다 첫 연결 시. Zontes 계기판에서만 동작합니다.</string>
+    <string name="setup_clock_resync_smart">스마트</string>
+    <string name="setup_clock_resync_once">항상 한 번</string>
+    <string name="clock_resyncing">⏱ 계기판 시계 맞추는 중…</string>
+</resources>

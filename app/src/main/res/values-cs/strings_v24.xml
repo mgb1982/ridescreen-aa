@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dc_good_morning">Dobré ráno</string>
+    <string name="dc_good_afternoon">Dobré odpoledne</string>
+    <string name="dc_good_evening">Dobrý večer</string>
+    <string name="dc_streak_days">dní v řadě</string>
+    <string name="dc_rain_soon">Pravděpodobně prší: %1$d%% v následujících hodinách</string>
+    <string name="dc_wx_clear">jasno</string>
+    <string name="dc_wx_cloudy">zataženo</string>
+    <string name="dc_wx_fog">mlha</string>
+    <string name="dc_wx_rain">déšť</string>
+    <string name="dc_wx_snow">sníh</string>
+    <string name="dc_wx_storm">bouřka</string>
+    <string name="dc_bye_title">Naviděnou · dnešní souhrn</string>
+    <string name="dc_km_today">km dnes</string>
+    <string name="dc_min">min</string>
+    <string name="dc_kmh_avg">km/h průměr</string>
+    <string name="dc_kmh_max">km/h max</string>
+    <string name="dc_parked_photo">Zaparkováno · fotografie uložena</string>
+    <string name="dc_parked">Zaparkováno</string>
+    <string name="dc_rain_tomorrow">Zítra v 8:00: %1$d%% šance na déšť · vezměte si pláštěnku</string>
+    <string name="pke_unlock_scan_code_too">Také kód PKE (…%1$s).</string>
+</resources>

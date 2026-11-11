@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_clock_resync">Resincronizează ceasul bordului (Zontes)</string>
+    <string name="setup_clock_resync_desc">Întrerupe legătura câteva secunde și se reconectează ca bordul să preia din nou ora. Inteligent: doar când bordul a cerut ora târziu (semnul unei sincronizări eșuate), de până la 3 ori. Mereu o dată: la prima conectare a fiecărei porniri a bordului. Acționează doar pe bordurile Zontes.</string>
+    <string name="setup_clock_resync_smart">Inteligent</string>
+    <string name="setup_clock_resync_once">Mereu o dată</string>
+    <string name="clock_resyncing">⏱ Se ajustează ceasul bordului…</string>
+</resources>

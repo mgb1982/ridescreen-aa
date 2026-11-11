@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_coolant">Lichid de răcire</string>
+    <string name="dash_throttle">Clapetă</string>
+    <string name="dash_battery">Baterie</string>
+    <string name="dash_no_obd">Fără date OBD</string>
+    <string name="dash_need_stream">Conectează întâi moto: Android Auto nu e încă pe bord</string>
+    <string name="dash_shortcut">Tablou de bord</string>
+    <string name="controls_dash_title">Tablou de bord</string>
+    <string name="controls_dash_desc">Afișează RPM, viteza, lichidul de răcire, clapeta și bateria de la adaptorul tău OBD pe bord, în locul Android Auto. Fără date OBD, viteza vine din GPS-ul telefonului.</string>
+    <string name="controls_dash_show">Afișează tabloul de bord pe bord</string>
+    <string name="controls_dash_hide">Înapoi la Android Auto</string>
+    <string name="controls_dash_start">Pornește în tabloul de bord când se conectează moto</string>
+    <string name="controls_dash_fields">Câmpuri vizibile</string>
+    <string name="controls_dash_design">Stil tablou de bord</string>
+    <string name="dash_design_sport">Sport</string>
+    <string name="dash_design_racing">Racing</string>
+    <string name="dash_design_touring">Touring</string>
+    <string-array name="dash_obd_field_names">
+        <item>RPM</item>
+        <item>Viteză</item>
+        <item>Lichid de răcire</item>
+        <item>Tensiune</item>
+        <item>Sarcină calculată</item>
+        <item>Temperatura admisiei</item>
+        <item>Presiune barometrică</item>
+        <item>Sarcină absolută</item>
+        <item>Clapetă</item>
+    </string-array>
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controls_dash_saver">Akkumulátorkímélő az irányítópulttal</string>
+    <string name="controls_dash_saver_hint">Az Android Auto leállítja a videó küldését, amíg az irányítópult a műszerfalon van. A hang és a navigáció működik tovább; az Android Autóra való visszatérés kb. egy másodpercet vesz igénybe.</string>
+    <string name="dashcam_entry">Motorkamera-felvételek importálása</string>
+    <string name="dashcam_title">Motorkamera-felvételek</string>
+    <string name="dashcam_channel">Motorkamera-import</string>
+    <string name="dashcam_stop_first_title">Leállítod a vetítést?</string>
+    <string name="dashcam_stop_first_msg">A felvételek nem tölthetők le, amíg a motor Android Autót vagy térképet mutat: a Wi-Fi-je nem bírja mindkettőt. Leállítod a vetítést, és folytatod?</string>
+    <string name="dashcam_stop_and_continue">Leállítás és folytatás</string>
+    <string name="dashcam_pick_trip">Kamera-felvételek importálása ehhez: …</string>
+    <string name="dashcam_no_trips">Még nincs út</string>
+    <string name="dashcam_joining">Csatlakozás a motor Wi-Fi-jéhez…</string>
+    <string name="dashcam_join_failed">Nem sikerült elérni a motor kameráját. Be van kapcsolva a motor, világít a műszerfal?</string>
+    <string name="dashcam_looking">Felvételek keresése…</string>
+    <string name="dashcam_none">Ehhez az úthoz nincs kamera-felvétel.</string>
+    <string name="dashcam_camera_front">Első</string>
+    <string name="dashcam_camera_rear">Hátsó</string>
+    <string name="dashcam_camera_both">Mindkettő</string>
+    <string name="dashcam_total">%1$d felvétel · %2$d MB</string>
+    <string name="dashcam_no_space">Nincs elég szabad hely: %1$d MB kell, %2$d MB szabad.</string>
+    <string name="dashcam_import">Importálás</string>
+    <string name="dashcam_progress">%1$d. felvétel a(z) %2$d-ből · %3$d MB</string>
+    <string name="dashcam_done">Importálva: %1$d · már megvolt: %2$d · sikertelen: %3$d</string>
+    <string name="dashcam_done_hint">Nyisd meg az út videószerkesztőjét: a felvételeket időpont szerint helyezi el.</string>
+    <string name="dashcam_already_running">Felvételek importálása már folyamatban</string>
+    <string name="dashcam_wifi_lost">Elveszett a motor Wi-Fi-je: %1$d importálva, %2$d hátravan. Próbáld újra, a motor bekapcsolva.</string>
+</resources>

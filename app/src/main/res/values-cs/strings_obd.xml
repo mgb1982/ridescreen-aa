@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_entry">🔌 Čtečka OBD (test)</string>
+    <string name="obd_title">Čtečka OBD (test)</string>
+    <string name="obd_no_adapter">Nebyl nalezen žádný spárovaný adaptér OBD.\n\nNejprve spárujte ELM327 v Androidu → Bluetooth (PIN je obvykle 1234 nebo 0000) a zavřete jakoukoli jinou aplikaci OBD (Torque). Nyní spárováno: %1$s</string>
+    <string name="obd_pick_other">Vyberte ze seznamu spárovaných zařízení</string>
+    <string name="obd_pick_title">Které z nich je adaptér OBD?</string>
+    <string name="obd_intro">Čte řídicí jednotku motoru přes %1$s: jaká data nabízí, jejich aktuální hodnoty, uložené chybové kódy a 20 s živých otáček, rychlosti, teploty a plynu.\n\nPouze čtení: nikdy nemaže kódy ani do motocyklu nic neposílá. Zapněte kontakt (lépe s během motoru) a zavřete Torque.</string>
+    <string name="obd_start">Spustit</string>
+    <string name="obd_connecting">Připojování k adaptéru…</string>
+    <string name="obd_fail_link">Nepodařilo se připojit k adaptéru. Je spárovaný, napájený (zapnutý kontakt) a nepoužívá ho jiná aplikace?</string>
+    <string name="obd_fail_ecu">Adaptér odpověděl, ale řídicí jednotka motoru ne. Zapněte kontakt (nebo nastartujte motor) a zkuste to znovu.</string>
+    <string name="obd_share_hint">Vše je také v záznamu: ❓ Nápověda → Sdílet záznamy.</string>
+    <string name="obd_live_on">Používat tento adaptér při promítání</string>
+    <string name="obd_live_off">Přestat ho používat při promítání</string>
+    <string name="obd_live_enabled">Čtení %1$s při promítání: zapnutí a vypnutí motoru se nyní řídí skutečnými otáčkami.</string>
+    <string name="obd_live_disabled">Průběžné čtení vypnuto.</string>
+</resources>

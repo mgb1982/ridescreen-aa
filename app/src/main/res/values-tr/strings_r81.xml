@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bike_gone_channel">Motor bulunamadı</string>
+    <string name="bike_gone_title">Motoru beklemek durduruldu</string>
+    <string name="bike_gone_text">Motor 20 dakikadır kapalıydı, bu yüzden pili korumak için uygulama onu aramayı bıraktı. Motora döndüğünde Bağlan\'a dokun.</string>
+    <string name="tr_channel">Başarımlar</string>
+    <string name="tr_unlocked_title">🏆 Başarım açıldı!</string>
+    <string name="tr_screen_title">Başarımlar</string>
+    <string name="tr_header">%2$d başarımdan %1$d tanesi açık</string>
+    <string name="tr_next">Sırada</string>
+    <string name="tr_earned_on">%1$s tarihinde kazanıldı</string>
+    <string name="tr_card_line">🏆 Başarımlar: %2$d başarımdan %1$d · hepsini gör ›</string>
+    <string name="tr_distance">Kilometre</string>
+    <string name="tr_distance_d">Toplamda %1$s km sür</string>
+    <string name="tr_longest">Uzun sürüş</string>
+    <string name="tr_longest_d">%1$s km veya daha uzun tek bir sürüş</string>
+    <string name="tr_speed">En yüksek hız</string>
+    <string name="tr_speed_d">%1$s km/sa hıza ulaş (GPS)</string>
+    <string name="tr_streak">Akışta</string>
+    <string name="tr_streak_d">Arka arkaya %1$s gün sür</string>
+    <string name="tr_rides">Düzenli</string>
+    <string name="tr_rides_d">%1$s sürüş kaydet</string>
+    <string name="tr_hours">Sürüş süresi</string>
+    <string name="tr_hours_d">%1$s saat sürüş</string>
+    <string name="tr_months">Yıl boyunca</string>
+    <string name="tr_months_d">%1$s farklı ayda sür</string>
+    <string name="tr_early">Erken kuş</string>
+    <string name="tr_early_d">Saat 7:00\'den önce bir sürüşe başla</string>
+    <string name="tr_night">Gece sürücüsü</string>
+    <string name="tr_night_d">Saat 23:00\'ten sonra biten bir sürüş yap</string>
+    <string name="tr_weekend">Hafta sonu sürücüsü</string>
+    <string name="tr_weekend_d">Aynı hafta sonunun cumartesi ve pazarında sür</string>
+</resources>

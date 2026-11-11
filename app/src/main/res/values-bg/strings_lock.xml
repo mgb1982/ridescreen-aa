@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lock_ends_trip">Заключването приключва пътуването</string>
+    <string name="lock_ends_trip_desc">Когато заключите мотора от приложението, то записва къде сте паркирали и спира прожектирането. Не се прави при движение (над 5 км/ч) или с работещ двигател.</string>
+    <string name="pke_fail_moving">Не е заключено: мотора се движи.</string>
+    <string name="pke_fail_moving_any">Не е направено: мотора се движи.</string>
+</resources>

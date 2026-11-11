@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lock_ends_trip">A zárás lezárja az utat</string>
+    <string name="lock_ends_trip_desc">Ha a motort az alkalmazásból zárod le, elmenti, hol parkoltál, és leáll a vetítés. Mozgás közben (5 km/h felett) vagy járó motornál nem zárja le.</string>
+    <string name="pke_fail_moving">Nincs lezárva: a motor mozog.</string>
+    <string name="pke_fail_moving_any">Nem történt meg: a motor mozog.</string>
+</resources>

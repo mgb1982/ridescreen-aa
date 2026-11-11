@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_coolant">냉각수</string>
+    <string name="dash_throttle">스로틀</string>
+    <string name="dash_battery">배터리</string>
+    <string name="dash_no_obd">OBD 데이터 없음</string>
+    <string name="dash_need_stream">먼저 오토바이를 연결하세요. 아직 계기판에 Android Auto가 표시되지 않았습니다</string>
+    <string name="dash_shortcut">대시보드</string>
+    <string name="controls_dash_title">대시보드</string>
+    <string name="controls_dash_desc">OBD 어댑터의 RPM, 속도, 냉각수 온도, 스로틀, 배터리 정보를 Android Auto 대신 계기판에 표시합니다. OBD 데이터가 없으면 속도는 휴대폰 GPS에서 가져옵니다.</string>
+    <string name="controls_dash_show">계기판에 대시보드 표시</string>
+    <string name="controls_dash_hide">Android Auto로 돌아가기</string>
+    <string name="controls_dash_start">오토바이가 연결되면 대시보드로 시작</string>
+    <string name="controls_dash_fields">표시할 항목</string>
+    <string name="controls_dash_design">대시보드 스타일</string>
+    <string name="dash_design_sport">스포츠</string>
+    <string name="dash_design_racing">레이싱</string>
+    <string name="dash_design_touring">투어링</string>
+    <string-array name="dash_obd_field_names">
+        <item>RPM</item>
+        <item>속도</item>
+        <item>냉각수 온도</item>
+        <item>전압</item>
+        <item>계산된 부하</item>
+        <item>흡기 온도</item>
+        <item>대기압</item>
+        <item>절대 부하</item>
+        <item>스로틀</item>
+    </string-array>
+</resources>

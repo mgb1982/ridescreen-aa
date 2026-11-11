@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_entry">🔌 Czytnik OBD (test)</string>
+    <string name="obd_title">Czytnik OBD (test)</string>
+    <string name="obd_no_adapter">Nie znaleziono sparowanego adaptera OBD.\n\nNajpierw sparuj ELM327 w Androidzie → Bluetooth (PIN to zwykle 1234 lub 0000) i zamknij inne aplikacje OBD (Torque). Teraz sparowane: %1$s</string>
+    <string name="obd_pick_other">Wybierz z listy sparowanych</string>
+    <string name="obd_pick_title">Który to adapter OBD?</string>
+    <string name="obd_intro">Odczytuje sterownik silnika przez %1$s: jakie dane oferuje, aktualne wartości, zapisane kody usterek i 20 s obrotów, prędkości, temperatury i przepustnicy na żywo.\n\nTylko odczyt: nigdy nie kasuje kodów ani nie wysyła nic do motocykla. Włącz zapłon (lepiej z pracującym silnikiem) i zamknij Torque.</string>
+    <string name="obd_start">Start</string>
+    <string name="obd_connecting">Łączenie z adapterem…</string>
+    <string name="obd_fail_link">Nie udało się połączyć z adapterem. Czy jest sparowany, zasilany (zapłon włączony) i nie używa go inna aplikacja?</string>
+    <string name="obd_fail_ecu">Adapter odpowiedział, ale sterownik silnika nie. Włącz zapłon (lub uruchom silnik) i spróbuj ponownie.</string>
+    <string name="obd_share_hint">Wszystko jest też w logu: ❓ Pomoc → Udostępnij logi.</string>
+    <string name="obd_live_on">Używaj tego adaptera podczas projekcji</string>
+    <string name="obd_live_off">Przestań używać go podczas projekcji</string>
+    <string name="obd_live_enabled">Odczyt %1$s podczas projekcji: stan silnika włączony/wyłączony pochodzi teraz z prawdziwych obrotów.</string>
+    <string name="obd_live_disabled">Ciągły odczyt wyłączony.</string>
+</resources>

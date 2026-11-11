@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_settings_desc">Beállítások</string>
+    <string name="stat_km_today">km ma</string>
+    <string name="stat_max_today">max km/h</string>
+    <string name="stat_clock">műszerfali óra</string>
+    <string name="stat_clock_ok">műszerfali óra ✓</string>
+    <string name="stat_clock_adjusting">igazítás…</string>
+    <string name="main_trips_pill">Utak</string>
+    <string name="main_more">Több</string>
+</resources>

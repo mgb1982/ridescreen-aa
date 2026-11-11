@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lock_ends_trip">Kilitlemek sürüşü bitirir</string>
+    <string name="lock_ends_trip_desc">Motoru uygulamadan kilitlediğinde nereye park ettiğini kaydeder ve yansıtmayı durdurur. Motor hareketteyken (5 km/saatten fazla) veya motor çalışırken yapılmaz.</string>
+    <string name="pke_fail_moving">Kilitlenmedi: motor hareket ediyor.</string>
+    <string name="pke_fail_moving_any">Yapılmadı: motor hareket ediyor.</string>
+</resources>

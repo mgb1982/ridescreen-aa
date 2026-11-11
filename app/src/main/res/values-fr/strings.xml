@@ -660,4 +660,20 @@
     <string name="controls_dash_scale_rpm">Compte-tours jusqu\'à</string>
     <string name="controls_volume_drives_aa">▲/▼ pilotent aussi Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Désactivé : les boutons de volume continuent de régler le volume du téléphone (l\'intercom aussi), et le volume n\'est jamais bloqué. Android Auto ne reçoit alors que les autres boutons du guidon.</string>
+    <string name="tvs_gauges">Jauges</string>
+    <string name="garage_added">%s ajoutée</string>
+    <string name="garage_image_unreadable">Impossible de lire cette image</string>
+    <string name="garage_selected">%s sélectionnée</string>
+    <string name="garage_active_subtitle">Moto active · touche pour modifier</string>
+    <string name="garage_tap_to_select">touche pour sélectionner ou modifier</string>
+    <string name="garage_use_this_bike">Utiliser cette moto</string>
+    <string name="garage_rename">Renommer</string>
+    <string name="garage_change_photo">Changer la photo</string>
+    <string name="garage_add_photo">Ajouter une photo</string>
+    <string name="garage_remove_photo">Supprimer la photo</string>
+    <string name="garage_remove_bike">Supprimer la moto</string>
+    <string name="garage_bike_name_hint">Nom de la moto</string>
+    <string name="garage_rename_title">Renommer la moto</string>
+    <string name="garage_remove_title">Supprimer %s ?</string>
+    <string name="garage_remove_message">Cela efface l\'appairage, la photo et les réglages. Tu pourras rescanner le QR du tableau de bord ou saisir de nouveau le Wi‑Fi plus tard.</string>
 </resources>

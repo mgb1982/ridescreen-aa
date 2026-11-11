@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_settings_desc">설정</string>
+    <string name="stat_km_today">오늘 km</string>
+    <string name="stat_max_today">최고 km/h</string>
+    <string name="stat_clock">계기판 시계</string>
+    <string name="stat_clock_ok">계기판 시계 ✓</string>
+    <string name="stat_clock_adjusting">맞추는 중…</string>
+    <string name="main_trips_pill">주행</string>
+    <string name="main_more">더보기</string>
+</resources>

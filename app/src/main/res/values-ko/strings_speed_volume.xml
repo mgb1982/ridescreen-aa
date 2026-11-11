@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="speed_volume_title">속도별 음량</string>
+    <string name="speed_volume_desc">주행 속도가 빨라지면 바람 소리를 이기도록 휴대폰 미디어 음량(길 안내 음성과 음악)을 올립니다. 설정한 음량이 기준이며, 언제든 바꿀 수 있고 증폭도 그에 맞춰 따라갑니다. 핸들바 버튼이 Android Auto를 조작하는 동안에는 일시 중지됩니다.</string>
+    <string name="speed_volume_off">끔</string>
+    <string name="speed_volume_low">약</string>
+    <string name="speed_volume_medium">중</string>
+    <string name="speed_volume_high">강</string>
+    <string name="speed_volume_status_off">꺼짐</string>
+    <string name="speed_volume_status_waiting">오토바이 연결을 기다리는 중…</string>
+    <string name="speed_volume_status_paused">일시 중지: 핸들바 버튼이 음량을 고정하고 있습니다</string>
+    <string name="speed_volume_status_no_gps">작동 중: GPS 속도를 기다리는 중…</string>
+    <string name="speed_volume_status_live">작동 중: %1$d km/h · 증폭 +%2$d</string>
+    <string name="speed_volume_advanced_show">고급 ▾</string>
+    <string name="speed_volume_advanced_hide">고급 ▴</string>
+    <string name="speed_volume_custom">사용자 지정 곡선 (단계의 곡선을 대체)</string>
+    <string name="speed_volume_start_label">증폭 시작 속도: %1$d km/h</string>
+    <string name="speed_volume_step_label">한 단계 올리는 간격: %1$d km/h</string>
+    <string name="speed_volume_max_label">최대 증폭: +%1$d 단계</string>
+    <string name="speed_volume_custom_hint">단계는 15단계 음량 기준입니다. 사용자 지정 곡선이 작동하려면 “끔” 이외의 단계를 선택해야 합니다.</string>
+</resources>

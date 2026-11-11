@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rs_about_tagline">Draadloos Android Auto op het dashboard van uw motor (Carbit/EasyConnect-dashboards), met oplossingen en extra\'s voor de Zontes 125X / ZT125T-X. Gebaseerd op OpenCfMoto.</string>
+    <string name="rs_about_community">Vragen, logboeken of een nieuwe motor? Open een issue op GitHub of stel uw vraag in de groep. Donaties helpen de kosten te dekken.</string>
+    <string name="rs_about_issues">GitHub</string>
+    <string name="rs_about_copyright">© 2026 Alexandru (zanderp), OpenCfMoto\n© 2026 Manel (mgb1982), RideScreen AA</string>
+    <string name="rs_about_copyright_body">RideScreen AA is maintained by Manel (mgb1982). It is a derivative of OpenCfMoto, © 2026 Alexandru (zanderp), and like it, free software under the GNU AGPL v3 or later: see LICENSE and NOTICE in the repository.</string>
+    <string name="rs_about_original">Oorspronkelijk project: OpenCfMoto (zanderp)</string>
+    <string name="rs_about_source">RideScreen AA-broncode</string>
+    <string name="rs_about_credits">• Alexandru (zanderp) — maker van OpenCfMoto, de app waarop RideScreen AA is gebouwd. Dank u wel!\n• Manel (mgb1982) — RideScreen AA: fix voor de dashboardklok, Wear OS-app, nieuw ontwerp, ritextra\'s\n\nOpenCfMoto zelf bouwt voort op de open-cfmoto-gemeenschap:\n• dcoletto / coletz — oorspronkelijk werk aan QR &amp; EasyConn\n• BojanJ — integratie van de Android Auto-ontvanger\n• richardbizik — ondersteuning 1000 MT‑X\n• ionutradu252 / open-cflink — stuurbediening, marges, opnieuw verbinden &amp; afwerking\n• eugen0309 — Wi‑Fi Direct / CL‑C450-pad\n• Martin Escudero (martinescudero) — pad van de head unit-server voor Android Auto 17.4+\n• Glifaus — Wi‑Fi Direct keep-alive\n• sashop2001 — AA-DPI, Bluetooth-trigger, Bulgaars\n• Authoritt — notities over voertuigtelemetrie\n• headunit-revived — Android Auto-projectiestapel (AGPL)\n\nEn iedereen die motoren heeft getest, logs heeft gedeeld en problemen heeft gemeld.\n\nBijzondere dank voor 2.4:\n• Melo — voor het uitlenen van de iPhone voor de iOS-tests\n• Inky en Moto — voor de logs waarmee de T350X ging werken, en zijn video over de app (youtube.com/@inkyenmoto)\n• Luis Gil — voor zijn hulp bij de OBD-lezer\n• Alle testers van 2.4</string>
+    <string name="rs_thanks_title">Dank u wel, Alexandru</string>
+    <string name="rs_thanks_body">RideScreen AA bestaat dankzij OpenCfMoto, gemaakt door Alexandru (zanderp). De verbinding met het dashboard, draadloos Android Auto, de kaarten, de bediening en vrijwel alles wat deze app doet is zijn werk en dat van de open-cfmoto-gemeenschap die hij bijeenbracht. RideScreen AA voegt er alleen een paar dingen aan toe. Als de app u helpt, steun dan ook hem.</string>
+    <string name="rs_thanks_kofi">❤ Steun Alexandru (Ko-fi)</string>
+    <string name="rs_thanks_github">OpenCfMoto op GitHub</string>
+    <string name="rs_thanks_discord">OpenCfMoto Discord</string>
+    <string name="rs_bikes_tested_title">Getest met RideScreen AA</string>
+    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: alles werkt, inclusief de dashboardklok die altijd klopt, de Wear OS-app en de ritextra\'s. Zelfde dashboard, andere kuip.\nZontes 368 G / 368 K / 368 E: bevestigd werkend; het beeld past vanaf de eerste verbinding op het grote scherm.\nIn test: Zontes 125M (verbindt via de telefoonhotspot) en Zontes 350D (Wi‑Fi Direct-QR). Heeft u er een? Uw log helpt.</string>
+</resources>

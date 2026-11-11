@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="speed_volume_title">Głośność zależna od prędkości</string>
+    <string name="speed_volume_desc">Podnosi głośność multimediów w telefonie (głos nawigacji i muzyka), gdy jedziesz szybciej, aby przebić szum wiatru. Twoja głośność jest bazą: zmień ją w dowolnym momencie, a wzmocnienie pójdzie za nią. Wstrzymane, gdy przyciski kierownicy sterują Android Auto.</string>
+    <string name="speed_volume_off">Wyłączone</string>
+    <string name="speed_volume_low">Niski</string>
+    <string name="speed_volume_medium">Średni</string>
+    <string name="speed_volume_high">Wysoki</string>
+    <string name="speed_volume_status_off">Wyłączone</string>
+    <string name="speed_volume_status_waiting">Czekam na połączenie z motocyklem…</string>
+    <string name="speed_volume_status_paused">Wstrzymane: przyciski kierownicy przypinają głośność</string>
+    <string name="speed_volume_status_no_gps">Aktywne: czekam na prędkość z GPS…</string>
+    <string name="speed_volume_status_live">Aktywne: %1$d km/h · wzmocnienie +%2$d</string>
+    <string name="speed_volume_advanced_show">Zaawansowane ▾</string>
+    <string name="speed_volume_advanced_hide">Zaawansowane ▴</string>
+    <string name="speed_volume_custom">Własna krzywa (zastępuje krzywą poziomu)</string>
+    <string name="speed_volume_start_label">Zacznij wzmacniać od: %1$d km/h</string>
+    <string name="speed_volume_step_label">Kolejny krok co: %1$d km/h</string>
+    <string name="speed_volume_max_label">Maksymalne wzmocnienie: +%1$d kroków</string>
+    <string name="speed_volume_custom_hint">Kroki są na 15-stopniowej skali głośności. Aby własna krzywa działała, nadal musi być wybrany poziom inny niż Wyłączone.</string>
+</resources>

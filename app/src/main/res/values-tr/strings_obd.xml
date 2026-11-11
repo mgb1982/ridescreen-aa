@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_entry">🔌 OBD okuyucu (test)</string>
+    <string name="obd_title">OBD okuyucu (test)</string>
+    <string name="obd_no_adapter">Eşleşmiş bir OBD adaptörü bulunamadı.\n\nÖnce Android → Bluetooth üzerinden ELM327\'yi eşleştir (PIN genellikle 1234 veya 0000) ve diğer OBD uygulamalarını (Torque) kapat. Şu an eşleşmiş: %1$s</string>
+    <string name="obd_pick_other">Eşleşmiş listeden seç</string>
+    <string name="obd_pick_title">Hangisi OBD adaptörü?</string>
+    <string name="obd_intro">Motor kontrol ünitesini %1$s üzerinden okur: sunduğu veriler, güncel değerleri, kayıtlı arıza kodları ve 20 sn canlı devir, hız, sıcaklık ve gaz verisi.\n\nYalnızca okuma: hiçbir kodu silmez ve motora bir şey göndermez. Kontak açık olmalı (motor çalışıyorsa daha iyi) ve Torque kapalı.</string>
+    <string name="obd_start">Başlat</string>
+    <string name="obd_connecting">Adaptöre bağlanılıyor…</string>
+    <string name="obd_fail_link">Adaptöre bağlanılamadı. Eşleşmiş mi, açık mı (kontak açık) ve başka bir uygulama kullanıyor mu?</string>
+    <string name="obd_fail_ecu">Adaptör yanıt verdi ama motor kontrol ünitesi vermedi. Kontağı aç (ya da motoru çalıştır) ve tekrar dene.</string>
+    <string name="obd_share_hint">Her şey günlükte de var: ❓ Yardım → Logları paylaş.</string>
+    <string name="obd_live_on">Yansıtma sırasında bu adaptörü kullan</string>
+    <string name="obd_live_off">Yansıtma sırasında kullanmayı bırak</string>
+    <string name="obd_live_enabled">Yansıtma sırasında %1$s okunuyor: motorun açık/kapalı durumu artık gerçek devirden gelir.</string>
+    <string name="obd_live_disabled">Sürekli okuma kapalı.</string>
+</resources>

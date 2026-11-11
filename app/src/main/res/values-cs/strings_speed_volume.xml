@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="speed_volume_title">Hlasitost podle rychlosti</string>
+    <string name="speed_volume_desc">Zvyšuje hlasitost médií telefonu (hlas navigace a hudba) s rostoucí rychlostí, aby přehlušila vítr. Základem je vaše vlastní hlasitost: kdykoli ji změníte, zvýšení se přizpůsobí. Pozastaveno, když tlačítka na řídítkách ovládají Android Auto.</string>
+    <string name="speed_volume_off">Vypnuto</string>
+    <string name="speed_volume_low">Nízká</string>
+    <string name="speed_volume_medium">Střední</string>
+    <string name="speed_volume_high">Vysoká</string>
+    <string name="speed_volume_status_off">Vypnuto</string>
+    <string name="speed_volume_status_waiting">Čeká se na připojení motocyklu…</string>
+    <string name="speed_volume_status_paused">Pozastaveno: tlačítka na řídítkách drží hlasitost</string>
+    <string name="speed_volume_status_no_gps">Aktivní: čeká se na rychlost z GPS…</string>
+    <string name="speed_volume_status_live">Aktivní: %1$d km/h · zvýšení +%2$d</string>
+    <string name="speed_volume_advanced_show">Pokročilé ▾</string>
+    <string name="speed_volume_advanced_hide">Pokročilé ▴</string>
+    <string name="speed_volume_custom">Vlastní křivka (nahrazuje křivku úrovně)</string>
+    <string name="speed_volume_start_label">Začít zvyšovat při: %1$d km/h</string>
+    <string name="speed_volume_step_label">Každý další krok při: %1$d km/h</string>
+    <string name="speed_volume_max_label">Maximální zvýšení: +%1$d kroků</string>
+    <string name="speed_volume_custom_hint">Kroky jsou na stupnici hlasitosti s 15 kroky. Aby se vlastní křivka spustila, musí být vybrána úroveň jiná než Vypnuto.</string>
+</resources>

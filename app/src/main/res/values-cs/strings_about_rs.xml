@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rs_about_tagline">Bezdrátové Android Auto na přístrojové desce motocyklu (desky Carbit/EasyConnect) s opravami a doplňky pro Zontes 125X / ZT125T-X. Vychází z projektu OpenCfMoto.</string>
+    <string name="rs_about_community">Otázky, záznamy, nebo novou motorku? Otevřete problém na GitHubu nebo se zeptejte ve skupině. Dary pomáhají pokrýt náklady.</string>
+    <string name="rs_about_issues">GitHub</string>
+    <string name="rs_about_copyright">© 2026 Alexandru (zanderp), OpenCfMoto\n© 2026 Manel (mgb1982), RideScreen AA</string>
+    <string name="rs_about_copyright_body">RideScreen AA is maintained by Manel (mgb1982). It is a derivative of OpenCfMoto, © 2026 Alexandru (zanderp), and like it, free software under the GNU AGPL v3 or later: see LICENSE and NOTICE in the repository.</string>
+    <string name="rs_about_original">Původní projekt: OpenCfMoto (zanderp)</string>
+    <string name="rs_about_source">Zdrojový kód aplikace RideScreen AA</string>
+    <string name="rs_about_credits">• Alexandru (zanderp) — autor OpenCfMoto, aplikace, na které RideScreen AA stojí. Děkujeme!\n• Manel (mgb1982) — RideScreen AA: oprava hodin na desce, aplikace pro Wear OS, nový design, doplňky k jízdě\n\nOpenCfMoto samo stojí na komunitě open-cfmoto:\n• dcoletto / coletz — původní práce na QR a EasyConn\n• BojanJ — integrace přijímače Android Auto\n• richardbizik — podpora 1000 MT‑X\n• ionutradu252 / open-cflink — ovládání řídítek, okraje, opětovné připojení &amp; vyleštění\n• eugen0309 — Wi‑Fi Direct / cesta CL‑C450\n• Martin Escudero (martinescudero) — cesta serveru hlavní jednotky Android Auto 17.4+\n• Glifaus — udržování spojení Wi‑Fi Direct\n• sashop2001 — DPI pro AA, spouštění přes Bluetooth, bulharština\n• Authoritt — poznámky z terénu k telemetrii vozidla\n• headunit-revived — zásobník projekce Android Auto (AGPL)\n\nA všem, kdo testovali motocykly, sdíleli záznamy a hlásili problémy.\n\nZvláštní poděkování za verzi 2.4:\n• Melo — za půjčení iPhonu pro testy iOS\n• Inky en Moto — za záznamy, díky nimž se podařilo zprovoznit T350X, a za video o aplikaci (youtube.com/@inkyenmoto)\n• Luis Gil — za pomoc s čtečkou OBD\n• Všem testerům testovacích sestavení 2.4\n\nPodporovatelé na Ko-fi — děkujeme!\n• Francisco Javier S.\n• José Antonio R.\n• Raul\n• Luis Gil\n• INKY\n• Juanma M.\n• Alfonsomicra\n• Isra\n• Dionisios S.\n• José Manuel\n• Karsten\n• Francesc Xavier M.\n• Jon\n• Alberto\n• Anonymní podporovatelé</string>
+    <string name="rs_thanks_title">Děkujeme, Alexandru</string>
+    <string name="rs_thanks_body">RideScreen AA vzniklo díky OpenCfMoto, které vytvořil Alexandru (zanderp). Připojení k desce, bezdrátové Android Auto, mapy, ovládání a téměř vše, co tato aplikace dělá, je jeho práce a práce komunity open-cfmoto, kterou dal dohromady. RideScreen AA k tomu přidává jen pár věcí. Pokud je pro vás aplikace užitečná, podpořte prosím i jeho.</string>
+    <string name="rs_thanks_kofi">❤ Podpořit Alexandru (Ko-fi)</string>
+    <string name="rs_thanks_github">OpenCfMoto na GitHubu</string>
+    <string name="rs_thanks_discord">OpenCfMoto Discord</string>
+    <string name="rs_bikes_tested_title">Otestováno s RideScreen AA</string>
+    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: funguje vše, včetně hodin na desce, které jsou vždy přesné, aplikace pro Wear OS a doplňků k jízdě. Stejná deska, jiná kapotáž.\nZontes 368 G / 368 K / 368 E: potvrzeno, funguje; obraz se od prvního připojení vejde na velký displej.\nV testování: Zontes 125M (připojuje se přes hotspot telefonu) a Zontes 350D (Wi‑Fi Direct QR). Máte jeden? Váš záznam pomůže.</string>
+</resources>

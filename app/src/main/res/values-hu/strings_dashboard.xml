@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_coolant">Hűtőfolyadék</string>
+    <string name="dash_throttle">Gázállás</string>
+    <string name="dash_battery">Akkumulátor</string>
+    <string name="dash_no_obd">Nincs OBD-adat</string>
+    <string name="dash_need_stream">Előbb csatlakoztasd a motort: az Android Auto még nincs a műszerfalon</string>
+    <string name="dash_shortcut">Irányítópult</string>
+    <string name="controls_dash_title">Irányítópult</string>
+    <string name="controls_dash_desc">Az OBD-adapteredből a fordulatszámot, sebességet, hűtőfolyadékot, gázállást és akkumulátort az Android Auto helyett a műszerfalon mutatja. OBD-adat nélkül a sebességet a telefon GPS-e adja.</string>
+    <string name="controls_dash_show">Irányítópult megjelenítése a műszerfalon</string>
+    <string name="controls_dash_hide">Vissza az Android Autóhoz</string>
+    <string name="controls_dash_start">Indítás az irányítópulton, amikor a motor csatlakozik</string>
+    <string name="controls_dash_fields">Látható mezők</string>
+    <string name="controls_dash_design">Irányítópult stílusa</string>
+    <string name="dash_design_sport">Sport</string>
+    <string name="dash_design_racing">Verseny</string>
+    <string name="dash_design_touring">Túra</string>
+    <string-array name="dash_obd_field_names">
+        <item>Fordulatszám</item>
+        <item>Sebesség</item>
+        <item>Hűtőfolyadék</item>
+        <item>Feszültség</item>
+        <item>Számított terhelés</item>
+        <item>Szívólevegő-hőmérséklet</item>
+        <item>Légnyomás</item>
+        <item>Abszolút terhelés</item>
+        <item>Gázállás</item>
+    </string-array>
+</resources>

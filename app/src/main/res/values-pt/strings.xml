@@ -662,4 +662,20 @@
     <string name="controls_dash_scale_rpm">Conta-rotações até</string>
     <string name="controls_volume_drives_aa">▲/▼ também controlam o Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Desligado: os botões de volume continuam a mudar o volume do telemóvel (e também o intercomunicador), e o volume nunca fica fixo. O Android Auto recebe só os outros botões do guiador.</string>
+    <string name="tvs_gauges">Indicadores</string>
+    <string name="garage_added">%s adicionada</string>
+    <string name="garage_image_unreadable">Não foi possível ler essa imagem</string>
+    <string name="garage_selected">%s selecionada</string>
+    <string name="garage_active_subtitle">Mota ativa · toca para editar</string>
+    <string name="garage_tap_to_select">toca para selecionar ou editar</string>
+    <string name="garage_use_this_bike">Usar esta mota</string>
+    <string name="garage_rename">Mudar o nome</string>
+    <string name="garage_change_photo">Mudar a fotografia</string>
+    <string name="garage_add_photo">Adicionar fotografia</string>
+    <string name="garage_remove_photo">Remover fotografia</string>
+    <string name="garage_remove_bike">Remover mota</string>
+    <string name="garage_bike_name_hint">Nome da mota</string>
+    <string name="garage_rename_title">Mudar o nome da mota</string>
+    <string name="garage_remove_title">Remover %s?</string>
+    <string name="garage_remove_message">Isto esquece o emparelhamento, a fotografia e as definições. Mais tarde podes voltar a ler o QR do painel ou introduzir o Wi‑Fi.</string>
 </resources>

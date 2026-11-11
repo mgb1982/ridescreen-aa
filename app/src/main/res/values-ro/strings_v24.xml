@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dc_good_morning">Bună dimineața</string>
+    <string name="dc_good_afternoon">Bună ziua</string>
+    <string name="dc_good_evening">Bună seara</string>
+    <string name="dc_streak_days">zile la rând</string>
+    <string name="dc_rain_soon">Probabilă ploaie: %1$d%% în următoarele ore</string>
+    <string name="dc_wx_clear">senin</string>
+    <string name="dc_wx_cloudy">noros</string>
+    <string name="dc_wx_fog">ceață</string>
+    <string name="dc_wx_rain">ploaie</string>
+    <string name="dc_wx_snow">ninsoare</string>
+    <string name="dc_wx_storm">furtună</string>
+    <string name="dc_bye_title">Pe curând · rezumatul zilei</string>
+    <string name="dc_km_today">km azi</string>
+    <string name="dc_min">min</string>
+    <string name="dc_kmh_avg">km/h medie</string>
+    <string name="dc_kmh_max">km/h max.</string>
+    <string name="dc_parked_photo">Parcată · poză salvată</string>
+    <string name="dc_parked">Parcată</string>
+    <string name="dc_rain_tomorrow">Mâine la 8:00: %1$d%% șansă de ploaie · ia echipamentul de ploaie</string>
+    <string name="pke_unlock_scan_code_too">Și codul PKE (…%1$s).</string>
+</resources>

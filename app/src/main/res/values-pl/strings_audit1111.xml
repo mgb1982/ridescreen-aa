@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controls_dash_saver">Oszczędzanie baterii z pulpitem</string>
+    <string name="controls_dash_saver_hint">Android Auto przestaje wysyłać wideo, gdy na ekranie motocykla jest pulpit. Dźwięk i wskazówki nawigacji działają dalej; powrót do Android Auto trwa około sekundy.</string>
+    <string name="dashcam_entry">Importuj nagrania z kamery motocykla</string>
+    <string name="dashcam_title">Nagrania z kamery motocykla</string>
+    <string name="dashcam_channel">Import z kamery motocykla</string>
+    <string name="dashcam_stop_first_title">Zatrzymać projekcję?</string>
+    <string name="dashcam_stop_first_msg">Nagrań nie da się pobrać, gdy motocykl pokazuje Android Auto lub mapę: jego Wi-Fi nie obsłuży obu. Zatrzymać projekcję i kontynuować?</string>
+    <string name="dashcam_stop_and_continue">Zatrzymaj i kontynuuj</string>
+    <string name="dashcam_pick_trip">Importuj nagrania z kamery dla…</string>
+    <string name="dashcam_no_trips">Brak podróży</string>
+    <string name="dashcam_joining">Łączenie z Wi-Fi motocykla…</string>
+    <string name="dashcam_join_failed">Nie udało się połączyć z kamerą motocykla. Czy motocykl jest włączony, a ekran podświetlony?</string>
+    <string name="dashcam_looking">Szukam nagrań…</string>
+    <string name="dashcam_none">Brak nagrań z kamery dla tej podróży.</string>
+    <string name="dashcam_camera_front">Przednia</string>
+    <string name="dashcam_camera_rear">Tylna</string>
+    <string name="dashcam_camera_both">Obie</string>
+    <string name="dashcam_total">Nagrania: %1$d · %2$d MB</string>
+    <string name="dashcam_no_space">Za mało wolnego miejsca: potrzeba %1$d MB, wolne %2$d MB.</string>
+    <string name="dashcam_import">Importuj</string>
+    <string name="dashcam_progress">Nagranie %1$d z %2$d · %3$d MB</string>
+    <string name="dashcam_done">Zaimportowano: %1$d · już były: %2$d · nieudane: %3$d</string>
+    <string name="dashcam_done_hint">Otwórz edytor wideo podróży: nagrania są ułożone według czasu.</string>
+    <string name="dashcam_already_running">Import nagrań już trwa</string>
+    <string name="dashcam_wifi_lost">Utracono Wi-Fi motocykla: zaimportowano %1$d, pozostało %2$d. Spróbuj ponownie, gdy motocykl będzie włączony.</string>
+</resources>

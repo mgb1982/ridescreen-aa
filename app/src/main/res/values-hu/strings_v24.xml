@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dc_good_morning">Jó reggelt</string>
+    <string name="dc_good_afternoon">Szép délutánt</string>
+    <string name="dc_good_evening">Jó estét</string>
+    <string name="dc_streak_days">egymás utáni nap</string>
+    <string name="dc_rain_soon">Valószínű eső: %1$d%% a következő órákban</string>
+    <string name="dc_wx_clear">derült</string>
+    <string name="dc_wx_cloudy">felhős</string>
+    <string name="dc_wx_fog">köd</string>
+    <string name="dc_wx_rain">eső</string>
+    <string name="dc_wx_snow">hó</string>
+    <string name="dc_wx_storm">vihar</string>
+    <string name="dc_bye_title">Viszlát · a mai összefoglaló</string>
+    <string name="dc_km_today">km ma</string>
+    <string name="dc_min">perc</string>
+    <string name="dc_kmh_avg">km/h átl.</string>
+    <string name="dc_kmh_max">km/h max.</string>
+    <string name="dc_parked_photo">Parkolva · fotó mentve</string>
+    <string name="dc_parked">Parkolva</string>
+    <string name="dc_rain_tomorrow">Holnap 8:00: %1$d%% eső esélye · vidd magaddal az esőruhát</string>
+    <string name="pke_unlock_scan_code_too">A PKE-kódod is (…%1$s).</string>
+</resources>

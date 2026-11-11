@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lock_ends_trip">Blocarea încheie turul</string>
+    <string name="lock_ends_trip_desc">Când blochezi moto din aplicație, salvează unde ai parcat și oprește proiecția. Nu în timpul mersului (peste 5 km/h) sau cu motorul pornit.</string>
+    <string name="pke_fail_moving">Nu s-a blocat: moto se mișcă.</string>
+    <string name="pke_fail_moving_any">Nu s-a făcut: moto se mișcă.</string>
+</resources>

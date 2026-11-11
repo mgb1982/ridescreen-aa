@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dc_good_morning">Dzień dobry</string>
+    <string name="dc_good_afternoon">Miłego popołudnia</string>
+    <string name="dc_good_evening">Dobry wieczór</string>
+    <string name="dc_streak_days">dni z rzędu</string>
+    <string name="dc_rain_soon">Prawdopodobny deszcz: %1$d%% w najbliższych godzinach</string>
+    <string name="dc_wx_clear">bezchmurnie</string>
+    <string name="dc_wx_cloudy">pochmurno</string>
+    <string name="dc_wx_fog">mgła</string>
+    <string name="dc_wx_rain">deszcz</string>
+    <string name="dc_wx_snow">śnieg</string>
+    <string name="dc_wx_storm">burza</string>
+    <string name="dc_bye_title">Do zobaczenia · podsumowanie dnia</string>
+    <string name="dc_km_today">km dziś</string>
+    <string name="dc_min">min</string>
+    <string name="dc_kmh_avg">km/h śr.</string>
+    <string name="dc_kmh_max">km/h maks.</string>
+    <string name="dc_parked_photo">Zaparkowano · zdjęcie zapisane</string>
+    <string name="dc_parked">Zaparkowano</string>
+    <string name="dc_rain_tomorrow">Jutro o 8:00: %1$d%% szans na deszcz · weź strój przeciwdeszczowy</string>
+    <string name="pke_unlock_scan_code_too">Także kod PKE (…%1$s).</string>
+</resources>

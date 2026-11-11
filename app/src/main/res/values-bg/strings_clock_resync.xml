@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_clock_resync">Синхронизиране на часовника на таблото (Zontes)</string>
+    <string name="setup_clock_resync_desc">Прекъсва връзката за няколко секунди и се свързва отново, за да може таблото да приеме часа отново. Умно: само когато таблото е поискало часа късно (признак за неуспешна синхронизация), до 3 пъти. Винаги веднъж: при първата връзка при всяко стартиране на таблото. Действа само при табла Zontes.</string>
+    <string name="setup_clock_resync_smart">Умно</string>
+    <string name="setup_clock_resync_once">Винаги веднъж</string>
+    <string name="clock_resyncing">⏱ Нагласяне на часовника на таблото…</string>
+</resources>

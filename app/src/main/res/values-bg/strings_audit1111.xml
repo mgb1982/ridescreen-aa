@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controls_dash_saver">Пестене на батерията с таблото</string>
+    <string name="controls_dash_saver_hint">Android Auto спира да изпраща видео, докато таблото е на мотора. Звукът и указанията продължават; връщането към Android Auto отнема около секунда.</string>
+    <string name="dashcam_entry">Импорт на клипове от камерата на мотора</string>
+    <string name="dashcam_title">Клипове от камерата на мотора</string>
+    <string name="dashcam_channel">Импорт от камерата на мотора</string>
+    <string name="dashcam_stop_first_title">Да спра ли прожектирането?</string>
+    <string name="dashcam_stop_first_msg">Клиповете не могат да се изтеглят, докато мотора показва Android Auto или картата: Wi-Fi мрежата му не може да поеме и двете. Да спра ли прожектирането и да продължа?</string>
+    <string name="dashcam_stop_and_continue">Спри и продължи</string>
+    <string name="dashcam_pick_trip">Импорт на клипове от камерата за…</string>
+    <string name="dashcam_no_trips">Още няма пътувания</string>
+    <string name="dashcam_joining">Свързване с Wi-Fi на мотора…</string>
+    <string name="dashcam_join_failed">Не успяхме да се свържем с камерата на мотора. Мотоциклета включен ли е и таблото светва ли?</string>
+    <string name="dashcam_looking">Търсене на клипове…</string>
+    <string name="dashcam_none">Няма клипове от камерата за това пътуване.</string>
+    <string name="dashcam_camera_front">Предна</string>
+    <string name="dashcam_camera_rear">Задна</string>
+    <string name="dashcam_camera_both">И двете</string>
+    <string name="dashcam_total">%1$d клипа · %2$d MB</string>
+    <string name="dashcam_no_space">Няма достатъчно свободно място: нужни са %1$d MB, свободни са %2$d MB.</string>
+    <string name="dashcam_import">Импорт</string>
+    <string name="dashcam_progress">Клип %1$d от %2$d · %3$d MB</string>
+    <string name="dashcam_done">Импортирани: %1$d · вече били там: %2$d · неуспешни: %3$d</string>
+    <string name="dashcam_done_hint">Отворете редактора на видео за пътуването: клиповете се подреждат по време.</string>
+    <string name="dashcam_already_running">Вече се импортират клипове</string>
+    <string name="dashcam_wifi_lost">Връзката с Wi-Fi на мотора се загуби: импортирани %1$d, останаха %2$d. Опитайте отново, с включен мотор.</string>
+</resources>

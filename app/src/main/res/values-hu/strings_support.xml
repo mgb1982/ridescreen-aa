@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_button">❤ Támogasd a projektet</string>
+    <string name="support_title">Támogasd a RideScreen AA-t</string>
+    <string name="support_title_play">Vegyél nekem…</string>
+    <string name="support_body">A RideScreen AA ingyenes, és nincs benne hirdetés. Ha jobbá teszi a motorozásodat, vehetsz nekem egy kávét a költségek fedezésére (például a Google Play fejlesztői fiókét). Köszönöm!</string>
+    <string name="support_kofi">Vegyél nekem egy kávét (Ko-fi)</string>
+    <string name="support_original">Támogasd az OpenCfMoto szerzőjét</string>
+    <string name="support_later">Most nem</string>
+    <string name="support_coffee">☕ Egy kávé</string>
+    <string name="support_sandwich">🥪 Egy szendvics</string>
+    <string name="support_tank">⛽ Teli tank</string>
+    <string name="support_thanks">Nagyon köszönöm! 🙌</string>
+    <string name="support_unavailable">Az adományozás most nem érhető el. Próbáld meg később.</string>
+</resources>

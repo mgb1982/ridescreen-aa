@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controls_dash_saver">Batterijbesparing met het dashboard</string>
+    <string name="controls_dash_saver_hint">Android Auto stopt met video verzenden zolang het dashboard op de motor staat. Geluid en routeaanwijzingen blijven doorgaan; terugschakelen naar Android Auto duurt ongeveer een seconde.</string>
+    <string name="dashcam_entry">Camerabeelden van de motor importeren</string>
+    <string name="dashcam_title">Camerabeelden van de motor</string>
+    <string name="dashcam_channel">Import camerabeelden motor</string>
+    <string name="dashcam_stop_first_title">Projectie stoppen?</string>
+    <string name="dashcam_stop_first_msg">Clips kunnen niet worden gedownload terwijl de motor Android Auto of de kaart toont: de Wi-Fi kan niet beide dragen. Stop de projectie en ga door?</string>
+    <string name="dashcam_stop_and_continue">Stoppen en doorgaan</string>
+    <string name="dashcam_pick_trip">Camerabeelden importeren voor…</string>
+    <string name="dashcam_no_trips">Nog geen ritten</string>
+    <string name="dashcam_joining">Verbinden met de Wi-Fi van de motor…</string>
+    <string name="dashcam_join_failed">De camera van de motor kon niet worden bereikt. Staat de motor aan, met het dashboard verlicht?</string>
+    <string name="dashcam_looking">Clips zoeken…</string>
+    <string name="dashcam_none">Geen camerabeelden voor deze rit.</string>
+    <string name="dashcam_camera_front">Voor</string>
+    <string name="dashcam_camera_rear">Achter</string>
+    <string name="dashcam_camera_both">Beide</string>
+    <string name="dashcam_total">%1$d clips · %2$d MB</string>
+    <string name="dashcam_no_space">Niet genoeg vrije ruimte: %1$d MB nodig, %2$d MB vrij.</string>
+    <string name="dashcam_import">Importeren</string>
+    <string name="dashcam_progress">Clip %1$d van %2$d · %3$d MB</string>
+    <string name="dashcam_done">Geïmporteerd %1$d · al aanwezig %2$d · mislukt %3$d</string>
+    <string name="dashcam_done_hint">Open de videomaker van de rit: de clips worden op tijd geplaatst.</string>
+    <string name="dashcam_already_running">Er worden al clips geïmporteerd</string>
+    <string name="dashcam_wifi_lost">Wi-Fi van de motor verbroken: %1$d geïmporteerd, %2$d over. Probeer het opnieuw met de motor aan.</string>
+</resources>

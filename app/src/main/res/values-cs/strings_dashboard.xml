@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_coolant">Chladicí kapalina</string>
+    <string name="dash_throttle">Plyn</string>
+    <string name="dash_battery">Baterie</string>
+    <string name="dash_no_obd">Žádná data OBD</string>
+    <string name="dash_need_stream">Nejprve připojte motocykl: Android Auto zatím není na desce</string>
+    <string name="dash_shortcut">Přehled</string>
+    <string name="controls_dash_title">Přehled</string>
+    <string name="controls_dash_desc">Místo Android Auto zobrazuje na desce otáčky, rychlost, teplotu chladicí kapaliny, plyn a baterii z vašeho adaptéru OBD. Bez dat OBD se rychlost bere z GPS telefonu.</string>
+    <string name="controls_dash_show">Zobrazit přehled na desce</string>
+    <string name="controls_dash_hide">Zpět na Android Auto</string>
+    <string name="controls_dash_start">Spustit v přehledu, když se motocykl připojí</string>
+    <string name="controls_dash_fields">Viditelná pole</string>
+    <string name="controls_dash_design">Styl přehledu</string>
+    <string name="dash_design_sport">Sport</string>
+    <string name="dash_design_racing">Závodní</string>
+    <string name="dash_design_touring">Turistický</string>
+    <string-array name="dash_obd_field_names">
+        <item>Otáčky (RPM)</item>
+        <item>Rychlost</item>
+        <item>Chladicí kapalina</item>
+        <item>Napětí</item>
+        <item>Vypočtená zátěž</item>
+        <item>Teplota nasávaného vzduchu</item>
+        <item>Barometrický tlak</item>
+        <item>Absolutní zátěž</item>
+        <item>Plyn</item>
+    </string-array>
+</resources>

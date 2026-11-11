@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lock_ends_trip">Zablokowanie kończy jazdę</string>
+    <string name="lock_ends_trip_desc">Gdy zablokujesz motocykl z aplikacji, zapisuje się miejsce parkowania i projekcja się zatrzymuje. Nie dzieje się tak w ruchu (powyżej 5 km/h) ani przy włączonym silniku.</string>
+    <string name="pke_fail_moving">Nie zablokowano: motocykl jest w ruchu.</string>
+    <string name="pke_fail_moving_any">Nie wykonano: motocykl jest w ruchu.</string>
+</resources>

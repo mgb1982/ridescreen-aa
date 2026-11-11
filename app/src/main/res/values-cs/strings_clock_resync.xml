@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_clock_resync">Znovu synchronizovat hodiny desky (Zontes)</string>
+    <string name="setup_clock_resync_desc">Na několik sekund přeruší spojení a znovu se připojí, aby si deska čas znovu převzala. Chytrý režim: pouze tehdy, když si deska vyžádala čas pozdě (příznak neúspěšné synchronizace), nejvýše třikrát. Vždy jednou: při prvním připojení po každém spuštění desky. Platí jen pro desky Zontes.</string>
+    <string name="setup_clock_resync_smart">Chytrý režim</string>
+    <string name="setup_clock_resync_once">Vždy jednou</string>
+    <string name="clock_resyncing">⏱ Nastavuji hodiny na desce…</string>
+</resources>

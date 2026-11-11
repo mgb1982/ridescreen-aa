@@ -669,4 +669,20 @@
     <string name="controls_dash_scale_rpm">Тахометр до</string>
     <string name="controls_volume_drives_aa">▲/▼ тоже управляют Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Выкл.: кнопки громкости по-прежнему меняют громкость телефона (и гарнитура тоже), громкость никогда не фиксируется. Android Auto получает только остальные кнопки руля.</string>
+    <string name="tvs_gauges">Приборы</string>
+    <string name="garage_added">Добавлено: %s</string>
+    <string name="garage_image_unreadable">Не удалось прочитать это изображение</string>
+    <string name="garage_selected">Выбрано: %s</string>
+    <string name="garage_active_subtitle">Активный мотоцикл · нажмите для изменения</string>
+    <string name="garage_tap_to_select">нажмите, чтобы выбрать или изменить</string>
+    <string name="garage_use_this_bike">Использовать этот мотоцикл</string>
+    <string name="garage_rename">Переименовать</string>
+    <string name="garage_change_photo">Изменить фото</string>
+    <string name="garage_add_photo">Добавить фото</string>
+    <string name="garage_remove_photo">Удалить фото</string>
+    <string name="garage_remove_bike">Удалить мотоцикл</string>
+    <string name="garage_bike_name_hint">Название мотоцикла</string>
+    <string name="garage_rename_title">Переименовать мотоцикл</string>
+    <string name="garage_remove_title">Удалить %s?</string>
+    <string name="garage_remove_message">Будут забыты сопряжение, фото и настройки. Позже можно снова отсканировать QR с приборной панели или ввести Wi‑Fi.</string>
 </resources>

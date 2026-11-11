@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_coolant">Chłodziwo</string>
+    <string name="dash_throttle">Przepustnica</string>
+    <string name="dash_battery">Bateria</string>
+    <string name="dash_no_obd">Brak danych OBD</string>
+    <string name="dash_need_stream">Najpierw połącz motocykl: Android Auto nie jest jeszcze na ekranie</string>
+    <string name="dash_shortcut">Pulpit</string>
+    <string name="controls_dash_title">Pulpit</string>
+    <string name="controls_dash_desc">Pokazuje obroty, prędkość, chłodziwo, przepustnicę i baterię z adaptera OBD na ekranie motocykla zamiast Android Auto. Bez danych OBD prędkość pochodzi z GPS telefonu.</string>
+    <string name="controls_dash_show">Pokaż pulpit na ekranie motocykla</string>
+    <string name="controls_dash_hide">Powrót do Android Auto</string>
+    <string name="controls_dash_start">Uruchamiaj od pulpitu, gdy motocykl się połączy</string>
+    <string name="controls_dash_fields">Widoczne pola</string>
+    <string name="controls_dash_design">Styl pulpitu</string>
+    <string name="dash_design_sport">Sport</string>
+    <string name="dash_design_racing">Wyścigowy</string>
+    <string name="dash_design_touring">Turystyczny</string>
+    <string-array name="dash_obd_field_names">
+        <item>Obroty</item>
+        <item>Prędkość</item>
+        <item>Chłodziwo</item>
+        <item>Napięcie</item>
+        <item>Obciążenie obliczeniowe</item>
+        <item>Temperatura powietrza dolotowego</item>
+        <item>Ciśnienie barometryczne</item>
+        <item>Obciążenie bezwzględne</item>
+        <item>Przepustnica</item>
+    </string-array>
+</resources>

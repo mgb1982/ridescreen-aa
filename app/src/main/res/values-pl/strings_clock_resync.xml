@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="setup_clock_resync">Zresynchronizuj zegar na ekranie (Zontes)</string>
+    <string name="setup_clock_resync_desc">Na kilka sekund rozłącza połączenie i łączy ponownie, aby ekran ponownie pobrał czas. Inteligentne: tylko gdy ekran poprosił o czas z opóźnieniem (znak nieudanej synchronizacji), maks. 3 razy. Zawsze raz: przy pierwszym połączeniu po każdym uruchomieniu ekranu. Działa tylko z ekranami Zontes.</string>
+    <string name="setup_clock_resync_smart">Inteligentnie</string>
+    <string name="setup_clock_resync_once">Zawsze raz</string>
+    <string name="clock_resyncing">⏱ Dostosowuję zegar na ekranie…</string>
+</resources>

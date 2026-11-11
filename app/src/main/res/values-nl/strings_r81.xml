@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bike_gone_channel">Motor niet gevonden</string>
+    <string name="bike_gone_title">Wachten op de motor gestopt</string>
+    <string name="bike_gone_text">De motor was 20 minuten uit, dus de app is gestopt met zoeken om batterij te sparen. Tik op Verbinden als u weer op de motor zit.</string>
+    <string name="tr_channel">Trofeeën</string>
+    <string name="tr_unlocked_title">🏆 Trofee ontgrendeld!</string>
+    <string name="tr_screen_title">Trofeeën</string>
+    <string name="tr_header">%1$d van %2$d ontgrendeld</string>
+    <string name="tr_next">Volgende</string>
+    <string name="tr_earned_on">Behaald op %1$s</string>
+    <string name="tr_card_line">🏆 Trofeeën: %1$d van %2$d · alles bekijken ›</string>
+    <string name="tr_distance">Kilometers</string>
+    <string name="tr_distance_d">Rijd in totaal %1$s km</string>
+    <string name="tr_longest">Lange rit</string>
+    <string name="tr_longest_d">Eén rit van %1$s km of meer</string>
+    <string name="tr_speed">Topsnelheid</string>
+    <string name="tr_speed_d">Bereik %1$s km/u (GPS)</string>
+    <string name="tr_streak">Op dreef</string>
+    <string name="tr_streak_d">Rijd %1$s dagen achter elkaar</string>
+    <string name="tr_rides">Vaste klant</string>
+    <string name="tr_rides_d">Sla %1$s ritten op</string>
+    <string name="tr_hours">Zadeltijd</string>
+    <string name="tr_hours_d">%1$s uur rijden</string>
+    <string name="tr_months">Het hele jaar door</string>
+    <string name="tr_months_d">Rijd in %1$s verschillende maanden</string>
+    <string name="tr_early">Vroege vogel</string>
+    <string name="tr_early_d">Begin een rit vóór 7:00</string>
+    <string name="tr_night">Nachtrijder</string>
+    <string name="tr_night_d">Eindig een rit na 23:00</string>
+    <string name="tr_weekend">Weekendrijder</string>
+    <string name="tr_weekend_d">Rijd op zaterdag en zondag van hetzelfde weekend</string>
+</resources>

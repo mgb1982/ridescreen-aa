@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controls_dash_saver">Úsporný režim s přehledem</string>
+    <string name="controls_dash_saver_hint">Android Auto přestane posílat video, dokud je přehled na desce. Zvuk a navigace běží dál; návrat na Android Auto trvá asi sekundu.</string>
+    <string name="dashcam_entry">Importovat záznamy z kamery motocyklu</string>
+    <string name="dashcam_title">Záznamy z kamery motocyklu</string>
+    <string name="dashcam_channel">Import z kamery motocyklu</string>
+    <string name="dashcam_stop_first_title">Zastavit promítání?</string>
+    <string name="dashcam_stop_first_msg">Záznamy nelze stáhnout, dokud motocykl zobrazuje Android Auto nebo mapu: jeho Wi-Fi nezvládne obojí. Zastavit promítání a pokračovat?</string>
+    <string name="dashcam_stop_and_continue">Zastavit a pokračovat</string>
+    <string name="dashcam_pick_trip">Importovat záznamy z kamery pro…</string>
+    <string name="dashcam_no_trips">Zatím žádné cesty</string>
+    <string name="dashcam_joining">Připojování k Wi-Fi motocyklu…</string>
+    <string name="dashcam_join_failed">Kameru motocyklu se nepodařilo zastihnout. Je motocykl zapnutý a svítí deska?</string>
+    <string name="dashcam_looking">Hledání záznamů…</string>
+    <string name="dashcam_none">Pro tuto cestu nejsou žádné záznamy z kamery.</string>
+    <string name="dashcam_camera_front">Přední</string>
+    <string name="dashcam_camera_rear">Zadní</string>
+    <string name="dashcam_camera_both">Obě</string>
+    <string name="dashcam_total">%1$d záznamů · %2$d MB</string>
+    <string name="dashcam_no_space">Není dost volného místa: potřeba %1$d MB, volných %2$d MB.</string>
+    <string name="dashcam_import">Importovat</string>
+    <string name="dashcam_progress">Záznam %1$d z %2$d · %3$d MB</string>
+    <string name="dashcam_done">Naimportováno %1$d · už tam bylo %2$d · selhalo %3$d</string>
+    <string name="dashcam_done_hint">Otevřete tvůrce videa k cestě: záznamy se seřadí podle času.</string>
+    <string name="dashcam_already_running">Import záznamů už běží</string>
+    <string name="dashcam_wifi_lost">Ztracena Wi-Fi motocyklu: naimportováno %1$d, zbývá %2$d. Zkuste to znovu se zapnutým motocyklem.</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dc_good_morning">Goedemorgen</string>
+    <string name="dc_good_afternoon">Goedemiddag</string>
+    <string name="dc_good_evening">Goedenavond</string>
+    <string name="dc_streak_days">dagen achter elkaar</string>
+    <string name="dc_rain_soon">Regen waarschijnlijk: %1$d%% in de komende uren</string>
+    <string name="dc_wx_clear">helder</string>
+    <string name="dc_wx_cloudy">bewolkt</string>
+    <string name="dc_wx_fog">mist</string>
+    <string name="dc_wx_rain">regen</string>
+    <string name="dc_wx_snow">sneeuw</string>
+    <string name="dc_wx_storm">storm</string>
+    <string name="dc_bye_title">Tot ziens · samenvatting van vandaag</string>
+    <string name="dc_km_today">km vandaag</string>
+    <string name="dc_min">min</string>
+    <string name="dc_kmh_avg">km/u gem.</string>
+    <string name="dc_kmh_max">km/u max</string>
+    <string name="dc_parked_photo">Geparkeerd · foto opgeslagen</string>
+    <string name="dc_parked">Geparkeerd</string>
+    <string name="dc_rain_tomorrow">Morgen 8:00: %1$d%% kans op regen · neem regenkleding mee</string>
+    <string name="pke_unlock_scan_code_too">Ook de PKE-code (…%1$s).</string>
+</resources>

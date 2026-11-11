@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dc_good_morning">좋은 아침입니다</string>
+    <string name="dc_good_afternoon">좋은 오후입니다</string>
+    <string name="dc_good_evening">좋은 저녁입니다</string>
+    <string name="dc_streak_days">일 연속</string>
+    <string name="dc_rain_soon">곧 비 예상: 앞으로 몇 시간 내 %1$d%%</string>
+    <string name="dc_wx_clear">맑음</string>
+    <string name="dc_wx_cloudy">흐림</string>
+    <string name="dc_wx_fog">안개</string>
+    <string name="dc_wx_rain">비</string>
+    <string name="dc_wx_snow">눈</string>
+    <string name="dc_wx_storm">폭풍</string>
+    <string name="dc_bye_title">또 만나요 · 오늘의 요약</string>
+    <string name="dc_km_today">오늘 km</string>
+    <string name="dc_min">분</string>
+    <string name="dc_kmh_avg">km/h 평균</string>
+    <string name="dc_kmh_max">km/h 최고</string>
+    <string name="dc_parked_photo">주차됨 · 사진 저장됨</string>
+    <string name="dc_parked">주차됨</string>
+    <string name="dc_rain_tomorrow">내일 8:00: 비 올 확률 %1$d%% · 우비를 챙기세요</string>
+    <string name="pke_unlock_scan_code_too">PKE 코드도 (…%1$s).</string>
+</resources>

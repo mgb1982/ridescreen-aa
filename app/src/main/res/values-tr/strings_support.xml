@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_button">❤ Projeyi destekle</string>
+    <string name="support_title">RideScreen AA\'yı destekle</string>
+    <string name="support_title_play">Bana ısmarla…</string>
+    <string name="support_body">RideScreen AA ücretsiz ve reklamsız. Sürüşlerini daha iyi hale getiriyorsa, masrafların (Google Play geliştirici hesabı gibi) karşılanmasına yardımcı olmak için bana bir kahve ısmarlayabilirsin. Teşekkürler!</string>
+    <string name="support_kofi">Bana kahve ısmarla (Ko-fi)</string>
+    <string name="support_original">OpenCfMoto\'nun yazarını destekle</string>
+    <string name="support_later">Şimdi değil</string>
+    <string name="support_coffee">☕ Bir kahve</string>
+    <string name="support_sandwich">🥪 Bir sandviç</string>
+    <string name="support_tank">⛽ Tam depo</string>
+    <string name="support_thanks">Çok teşekkürler! 🙌</string>
+    <string name="support_unavailable">Bağışlar şu anda kullanılamıyor. Lütfen daha sonra tekrar dene.</string>
+</resources>

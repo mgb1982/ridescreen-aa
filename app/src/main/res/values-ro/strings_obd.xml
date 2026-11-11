@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_entry">🔌 Cititor OBD (test)</string>
+    <string name="obd_title">Cititor OBD (test)</string>
+    <string name="obd_no_adapter">Niciun adaptor OBD asociat găsit.\n\nAsociază mai întâi ELM327 în Android → Bluetooth (PIN-ul e de obicei 1234 sau 0000) și închide orice altă aplicație OBD (Torque). Asociate acum: %1$s</string>
+    <string name="obd_pick_other">Alege din lista asociată</string>
+    <string name="obd_pick_title">Care e adaptorul OBD?</string>
+    <string name="obd_intro">Citește unitatea de control a motorului prin %1$s: ce date oferă, valorile actuale, codurile de defect stocate și 20 s de RPM, viteză, temperatură și clapetă în timp real.\n\nDoar citire: nu șterge coduri și nu trimite nimic la moto. Contact pornit (motorul pornit e mai bine) și Torque închis.</string>
+    <string name="obd_start">Pornește</string>
+    <string name="obd_connecting">Se conectează la adaptor…</string>
+    <string name="obd_fail_link">Nu s-a putut conecta la adaptor. E asociat, alimentat (contact pornit) și nefolosit de altă aplicație?</string>
+    <string name="obd_fail_ecu">Adaptorul a răspuns, dar unitatea de control a motorului nu. Pornește contactul (sau motorul) și încearcă din nou.</string>
+    <string name="obd_share_hint">Totul e și în jurnal: ❓ Ajutor → Partajează jurnalele.</string>
+    <string name="obd_live_on">Folosește adaptorul în timpul proiecției</string>
+    <string name="obd_live_off">Oprește folosirea lui în timpul proiecției</string>
+    <string name="obd_live_enabled">Se citește %1$s în timpul proiecției: motorul pornit/oprit vine acum din RPM-ul real.</string>
+    <string name="obd_live_disabled">Citirea continuă dezactivată.</string>
+</resources>

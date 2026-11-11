@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="bike_gone_channel">오토바이를 찾을 수 없음</string>
+    <string name="bike_gone_title">오토바이 찾기를 중지했습니다</string>
+    <string name="bike_gone_text">오토바이가 20분 동안 꺼져 있어서 배터리를 아끼려고 찾기를 중지했습니다. 오토바이로 돌아오면 연결을 누르세요.</string>
+    <string name="tr_channel">트로피</string>
+    <string name="tr_unlocked_title">🏆 트로피를 획득했습니다!</string>
+    <string name="tr_screen_title">트로피</string>
+    <string name="tr_header">%2$d개 중 %1$d개 획득</string>
+    <string name="tr_next">다음 목표</string>
+    <string name="tr_earned_on">%1$s에 획득</string>
+    <string name="tr_card_line">🏆 트로피: %2$d개 중 %1$d개 · 전체 보기 ›</string>
+    <string name="tr_distance">주행 거리</string>
+    <string name="tr_distance_d">총 %1$s km 주행</string>
+    <string name="tr_longest">장거리 주행</string>
+    <string name="tr_longest_d">한 번에 %1$s km 이상 주행</string>
+    <string name="tr_speed">최고 속도</string>
+    <string name="tr_speed_d">%1$s km/h 도달 (GPS)</string>
+    <string name="tr_streak">상승세</string>
+    <string name="tr_streak_d">%1$s일 연속 주행</string>
+    <string name="tr_rides">단골</string>
+    <string name="tr_rides_d">주행 %1$s회 기록</string>
+    <string name="tr_hours">안장 위의 시간</string>
+    <string name="tr_hours_d">%1$s시간 주행</string>
+    <string name="tr_months">사계절 라이더</string>
+    <string name="tr_months_d">서로 다른 %1$s개월에 주행</string>
+    <string name="tr_early">얼리 버드</string>
+    <string name="tr_early_d">오전 7시 이전에 주행 시작</string>
+    <string name="tr_night">야간 라이더</string>
+    <string name="tr_night_d">오후 11시 이후에 주행 종료</string>
+    <string name="tr_weekend">주말 라이더</string>
+    <string name="tr_weekend_d">같은 주말의 토요일과 일요일에 주행</string>
+</resources>

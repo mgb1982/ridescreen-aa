@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_clock_resync">Dashboardklok opnieuw synchroniseren (Zontes)</string>
+    <string name="setup_clock_resync_desc">Verbreekt de verbinding een paar seconden en maakt opnieuw verbinding zodat het dashboard de tijd weer overneemt. Slim: alleen wanneer het dashboard te laat om de tijd vroeg (teken van een mislukte sync), maximaal 3 keer. Altijd eenmalig: bij de eerste verbinding bij elke start van het dashboard. Werkt alleen op Zontes-dashboards.</string>
+    <string name="setup_clock_resync_smart">Slim</string>
+    <string name="setup_clock_resync_once">Altijd eenmalig</string>
+    <string name="clock_resyncing">⏱ Dashboardklok bijstellen…</string>
+</resources>

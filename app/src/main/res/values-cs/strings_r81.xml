@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bike_gone_channel">Motocykl nenalezen</string>
+    <string name="bike_gone_title">Přestali jsme čekat na motocykl</string>
+    <string name="bike_gone_text">Motocykl byl 20 minut vypnutý, takže aplikace přestala hledat, aby šetřila baterii. Až budete zase na motocyklu, klepněte na Připojit.</string>
+    <string name="tr_channel">Trofeje</string>
+    <string name="tr_unlocked_title">🏆 Trofej odemčena!</string>
+    <string name="tr_screen_title">Trofeje</string>
+    <string name="tr_header">Odemčeno %1$d z %2$d</string>
+    <string name="tr_next">Příště</string>
+    <string name="tr_earned_on">Získáno %1$s</string>
+    <string name="tr_card_line">🏆 Trofeje: %1$d z %2$d · zobrazit vše ›</string>
+    <string name="tr_distance">Kilometry</string>
+    <string name="tr_distance_d">Najeďte celkem %1$s km</string>
+    <string name="tr_longest">Dlouhá jízda</string>
+    <string name="tr_longest_d">Jedna jízda o délce %1$s km a více</string>
+    <string name="tr_speed">Nejvyšší rychlost</string>
+    <string name="tr_speed_d">Dosáhněte %1$s km/h (GPS)</string>
+    <string name="tr_streak">Na vlně</string>
+    <string name="tr_streak_d">Jezděte %1$s dní v řadě</string>
+    <string name="tr_rides">Pravidelný</string>
+    <string name="tr_rides_d">Zaznamenejte %1$s jízd</string>
+    <string name="tr_hours">Čas v sedle</string>
+    <string name="tr_hours_d">%1$s hodin jízdy</string>
+    <string name="tr_months">Celoroční</string>
+    <string name="tr_months_d">Jezděte v %1$s různých měsících</string>
+    <string name="tr_early">Ranní ptáče</string>
+    <string name="tr_early_d">Začněte jízdu před 7:00</string>
+    <string name="tr_night">Noční jezdec</string>
+    <string name="tr_night_d">Dokončete jízdu po 23:00</string>
+    <string name="tr_weekend">Víkendový jezdec</string>
+    <string name="tr_weekend_d">Jezděte v sobotu a v neděli téhož víkendu</string>
+</resources>

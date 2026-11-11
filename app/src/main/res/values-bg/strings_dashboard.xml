@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_coolant">Охл. течност</string>
+    <string name="dash_throttle">Газ</string>
+    <string name="dash_battery">Батерия</string>
+    <string name="dash_no_obd">Няма данни от OBD</string>
+    <string name="dash_need_stream">Първо свържете мотора: Android Auto още не е на таблото</string>
+    <string name="dash_shortcut">Табло</string>
+    <string name="controls_dash_title">Табло</string>
+    <string name="controls_dash_desc">Показва обороти, скорост, охл. течност, газ и батерия от вашия OBD адаптер на таблото вместо Android Auto. Без данни от OBD скоростта идва от GPS на телефона.</string>
+    <string name="controls_dash_show">Показване на таблото на мотора</string>
+    <string name="controls_dash_hide">Обратно към Android Auto</string>
+    <string name="controls_dash_start">Стартиране с таблото, когато мотора се свърже</string>
+    <string name="controls_dash_fields">Видими полета</string>
+    <string name="controls_dash_design">Стил на таблото</string>
+    <string name="dash_design_sport">Спорт</string>
+    <string name="dash_design_racing">Състезателен</string>
+    <string name="dash_design_touring">Туристически</string>
+    <string-array name="dash_obd_field_names">
+        <item>Обороти</item>
+        <item>Скорост</item>
+        <item>Охл. течност</item>
+        <item>Напрежение</item>
+        <item>Изчислено натоварване</item>
+        <item>Температура на въздуха</item>
+        <item>Атмосферно налягане</item>
+        <item>Абсолютно натоварване</item>
+        <item>Газ</item>
+    </string-array>
+</resources>

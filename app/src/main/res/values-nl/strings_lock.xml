@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lock_ends_trip">Vergrendelen beëindigt de rit</string>
+    <string name="lock_ends_trip_desc">Als u de motor via de app vergrendelt, wordt opgeslagen waar u geparkeerd staat en stopt de projectie. Niet tijdens het rijden (boven 5 km/u) of met de motor aan.</string>
+    <string name="pke_fail_moving">Niet vergrendeld: de motor rijdt.</string>
+    <string name="pke_fail_moving_any">Niet uitgevoerd: de motor rijdt.</string>
+</resources>

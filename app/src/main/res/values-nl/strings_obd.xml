@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_entry">🔌 OBD-lezer (test)</string>
+    <string name="obd_title">OBD-lezer (test)</string>
+    <string name="obd_no_adapter">Geen gekoppelde OBD-adapter gevonden.\n\nKoppel eerst de ELM327 in Android → Bluetooth (pincode is meestal 1234 of 0000) en sluit andere OBD-apps (Torque). Nu gekoppeld: %1$s</string>
+    <string name="obd_pick_other">Kies uit de gekoppelde lijst</string>
+    <string name="obd_pick_title">Welke is de OBD-adapter?</string>
+    <string name="obd_intro">Leest de motorbesturing via %1$s: welke gegevens die aanbiedt, de huidige waarden, opgeslagen storingscodes en 20 s live toerental, snelheid, temperatuur en gas.\n\nAlleen lezen: er worden nooit codes gewist of iets naar de motor gestuurd. Contact aan (motor draaiend is beter) en Torque gesloten.</string>
+    <string name="obd_start">Starten</string>
+    <string name="obd_connecting">Verbinden met de adapter…</string>
+    <string name="obd_fail_link">Kon niet verbinden met de adapter. Is hij gekoppeld, ingeschakeld (contact aan) en niet in gebruik door een andere app?</string>
+    <string name="obd_fail_ecu">De adapter antwoordde, maar de motorbesturing niet. Zet het contact aan (of start de motor) en probeer het opnieuw.</string>
+    <string name="obd_share_hint">Alles staat ook in het logboek: ❓ Help → Logs delen.</string>
+    <string name="obd_live_on">Deze adapter gebruiken tijdens projecteren</string>
+    <string name="obd_live_off">Stoppen met gebruiken tijdens projecteren</string>
+    <string name="obd_live_enabled">%1$s lezen tijdens projecteren: motor aan/uit komt nu van het echte toerental.</string>
+    <string name="obd_live_disabled">Continu lezen uit.</string>
+</resources>

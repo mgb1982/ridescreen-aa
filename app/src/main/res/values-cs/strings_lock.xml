@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lock_ends_trip">Zamknutím se jízda ukončí</string>
+    <string name="lock_ends_trip_desc">Když motocykl zamknete z aplikace, uloží se místo, kde jste zaparkovali, a promítání se zastaví. Nelze to provést za jízdy (nad 5 km/h) ani při běžícím motoru.</string>
+    <string name="pke_fail_moving">Nezamčeno: motocykl je v pohybu.</string>
+    <string name="pke_fail_moving_any">Neprovedeno: motocykl je v pohybu.</string>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bike_gone_channel">Moto nu a fost găsită</string>
+    <string name="bike_gone_title">Am încetat să mai caut moto</string>
+    <string name="bike_gone_text">Moto a stat oprită 20 de minute, deci aplicația a încetat s-o caute ca să economisească bateria. Atinge Conectează când ești din nou pe moto.</string>
+    <string name="tr_channel">Trofee</string>
+    <string name="tr_unlocked_title">🏆 Trofeu deblocat!</string>
+    <string name="tr_screen_title">Trofee</string>
+    <string name="tr_header">%1$d din %2$d deblocate</string>
+    <string name="tr_next">Urmează</string>
+    <string name="tr_earned_on">Obținut pe %1$s</string>
+    <string name="tr_card_line">🏆 Trofee: %1$d din %2$d · vezi tot ›</string>
+    <string name="tr_distance">Kilometri</string>
+    <string name="tr_distance_d">Parcurge %1$s km în total</string>
+    <string name="tr_longest">Tur lung</string>
+    <string name="tr_longest_d">Un tur de %1$s km sau mai mult</string>
+    <string name="tr_speed">Viteză maximă</string>
+    <string name="tr_speed_d">Atinge %1$s km/h (GPS)</string>
+    <string name="tr_streak">În serie</string>
+    <string name="tr_streak_d">Parcurge %1$s zile la rând</string>
+    <string name="tr_rides">Regulat</string>
+    <string name="tr_rides_d">Înregistrează %1$s ture</string>
+    <string name="tr_hours">Timp în șa</string>
+    <string name="tr_hours_d">%1$s ore de condus</string>
+    <string name="tr_months">Tot anul</string>
+    <string name="tr_months_d">Condu în %1$s luni diferite</string>
+    <string name="tr_early">Pasărea de dimineață</string>
+    <string name="tr_early_d">Începe un tur înainte de 7:00</string>
+    <string name="tr_night">Motociclist de noapte</string>
+    <string name="tr_night_d">Încheie un tur după 23:00</string>
+    <string name="tr_weekend">Motociclist de weekend</string>
+    <string name="tr_weekend_d">Condu sâmbătă și duminică în același weekend</string>
+</resources>

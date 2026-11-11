@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_coolant">Koelvloeistof</string>
+    <string name="dash_throttle">Gas</string>
+    <string name="dash_battery">Accu</string>
+    <string name="dash_no_obd">Geen OBD-gegevens</string>
+    <string name="dash_need_stream">Verbind eerst de motor: Android Auto staat nog niet op het dashboard</string>
+    <string name="dash_shortcut">Dashboard</string>
+    <string name="controls_dash_title">Dashboard</string>
+    <string name="controls_dash_desc">Toont toerental, snelheid, koelvloeistof, gas en accu van uw OBD-adapter op het dashboard in plaats van Android Auto. Zonder OBD-gegevens komt de snelheid van de GPS van de telefoon.</string>
+    <string name="controls_dash_show">Het dashboard op het dashboard tonen</string>
+    <string name="controls_dash_hide">Terug naar Android Auto</string>
+    <string name="controls_dash_start">Starten met het dashboard wanneer de motor verbindt</string>
+    <string name="controls_dash_fields">Zichtbare velden</string>
+    <string name="controls_dash_design">Dashboardstijl</string>
+    <string name="dash_design_sport">Sport</string>
+    <string name="dash_design_racing">Racing</string>
+    <string name="dash_design_touring">Touring</string>
+    <string-array name="dash_obd_field_names">
+        <item>Toerental</item>
+        <item>Snelheid</item>
+        <item>Koelvloeistof</item>
+        <item>Spanning</item>
+        <item>Berekende belasting</item>
+        <item>Inlaatluchttemperatuur</item>
+        <item>Barometrische druk</item>
+        <item>Absolute belasting</item>
+        <item>Gas</item>
+    </string-array>
+</resources>

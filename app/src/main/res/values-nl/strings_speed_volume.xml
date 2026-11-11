@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="speed_volume_title">Snelheidsvolume</string>
+    <string name="speed_volume_desc">Verhoogt het mediavolume van de telefoon (navigatiestem en muziek) naarmate u sneller rijdt, tegen windgeruis. Uw eigen volume is de basis: wijzig het wanneer u wilt en de verhoging volgt. Gepauzeerd terwijl de stuurknoppen Android Auto bedienen.</string>
+    <string name="speed_volume_off">Uit</string>
+    <string name="speed_volume_low">Laag</string>
+    <string name="speed_volume_medium">Midden</string>
+    <string name="speed_volume_high">Hoog</string>
+    <string name="speed_volume_status_off">Uit</string>
+    <string name="speed_volume_status_waiting">Wachten op de motorverbinding…</string>
+    <string name="speed_volume_status_paused">Gepauzeerd: stuurknoppen vastzetten het volume</string>
+    <string name="speed_volume_status_no_gps">Actief: wachten op GPS-snelheid…</string>
+    <string name="speed_volume_status_live">Actief: %1$d km/u · verhoging +%2$d</string>
+    <string name="speed_volume_advanced_show">Geavanceerd ▾</string>
+    <string name="speed_volume_advanced_hide">Geavanceerd ▴</string>
+    <string name="speed_volume_custom">Eigen curve (vervangt de curve van het niveau)</string>
+    <string name="speed_volume_start_label">Beginnen met verhogen bij: %1$d km/u</string>
+    <string name="speed_volume_step_label">Nog een stap elke: %1$d km/u</string>
+    <string name="speed_volume_max_label">Maximale verhoging: +%1$d stappen</string>
+    <string name="speed_volume_custom_hint">Stappen zitten op een volumeschaal van 15 stappen. Er moet een ander niveau dan Uit geselecteerd zijn, anders wordt de eigen curve niet uitgevoerd.</string>
+</resources>

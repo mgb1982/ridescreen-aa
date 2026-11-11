@@ -654,4 +654,20 @@
     <string name="controls_dash_scale_rpm">Cuentarrevoluciones hasta</string>
     <string name="controls_volume_drives_aa">▲/▼ también controlan Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Desactivado: los botones de volumen siguen cambiando el volumen del móvil (y también el intercomunicador), y el volumen nunca queda fijo. Android Auto solo recibe los demás botones del manillar.</string>
+    <string name="tvs_gauges">Indicadores</string>
+    <string name="garage_added">Se ha añadido %s</string>
+    <string name="garage_image_unreadable">No se pudo leer esa imagen</string>
+    <string name="garage_selected">Se ha seleccionado %s</string>
+    <string name="garage_active_subtitle">Moto activa · toca para editar</string>
+    <string name="garage_tap_to_select">toca para seleccionar o editar</string>
+    <string name="garage_use_this_bike">Usar esta moto</string>
+    <string name="garage_rename">Cambiar nombre</string>
+    <string name="garage_change_photo">Cambiar foto</string>
+    <string name="garage_add_photo">Añadir foto</string>
+    <string name="garage_remove_photo">Quitar foto</string>
+    <string name="garage_remove_bike">Quitar moto</string>
+    <string name="garage_bike_name_hint">Nombre de la moto</string>
+    <string name="garage_rename_title">Cambiar nombre de la moto</string>
+    <string name="garage_remove_title">¿Quitar %s?</string>
+    <string name="garage_remove_message">Se olvidarán el emparejamiento, la foto y los ajustes. Más adelante puedes volver a escanear el QR del tablero o introducir el Wi‑Fi.</string>
 </resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_settings_desc">Setări</string>
+    <string name="stat_km_today">km azi</string>
+    <string name="stat_max_today">max km/h</string>
+    <string name="stat_clock">ceasul bordului</string>
+    <string name="stat_clock_ok">ceasul bordului ✓</string>
+    <string name="stat_clock_adjusting">se ajustează…</string>
+    <string name="main_trips_pill">Ture</string>
+    <string name="main_more">Mai mult</string>
+</resources>

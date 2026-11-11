@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_clock_resync">Műszerfali óra újraszinkronizálása (Zontes)</string>
+    <string name="setup_clock_resync_desc">Néhány másodpercre megszakítja a kapcsolatot, majd újracsatlakozik, hogy a műszerfal újra átvegye az időt. Okos: csak akkor, ha a műszerfal későn kérte az időt (ez a sikertelen szinkron jele), legfeljebb 3-szor. Mindig egyszer: minden műszerfal-indításkor az első csatlakozáskor. Csak Zontes műszerfalaknál működik.</string>
+    <string name="setup_clock_resync_smart">Okos</string>
+    <string name="setup_clock_resync_once">Mindig egyszer</string>
+    <string name="clock_resyncing">⏱ Műszerfali óra igazítása…</string>
+</resources>
