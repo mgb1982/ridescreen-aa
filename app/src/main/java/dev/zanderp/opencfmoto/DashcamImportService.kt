@@ -84,9 +84,12 @@ class DashcamImportService : Service() {
         return START_NOT_STICKY
     }
 
+    private enum class Outcome { OK, FAILED, LOST }
+
     private fun run(clips: List<DashcamImport.Remote>) {
-        var imported = 0; var present = 0; var failed = 0
+        var imported = 0; var present = 0; var failed = 0; var lostLeft = -1
         try {
+            removeOrphans()
             val net = ImportLink.network ?: awaitNetwork()
             if (net == null) {
                 DashcamImport.log("no bike Wi-Fi for the import")
@@ -98,22 +101,29 @@ class DashcamImportService : Service() {
                 if (cancelled) break
                 val display = displayName(c)
                 if (exists(display)) { present++; continue }
+                // F4: the bike's Wi-Fi is gone — stop with a clear message instead of failing clip after clip.
+                val live = ImportLink.network ?: awaitNetwork()
+                if (live == null) { lostLeft = clips.size - i; break }
                 notifyProgress(i + 1, clips.size, c.size)
-                val ok = downloadWithRetries(ImportLink.network ?: net, c, display)
-                if (ok) imported++ else if (!cancelled) failed++
+                when (downloadWithRetries(live, c, display)) {
+                    Outcome.OK -> imported++
+                    Outcome.FAILED -> if (!cancelled) failed++
+                    Outcome.LOST -> { lostLeft = clips.size - i; break }
+                }
             }
+            if (lostLeft > 0) DashcamImport.log("the bike's Wi-Fi is gone — stopping with $lostLeft clips left")
         } catch (e: Exception) {
             DashcamImport.log("service error: ${e.javaClass.simpleName}: ${e.message}")
         } finally {
             DashcamImport.log("done: imported $imported, already there $present, failed $failed${if (cancelled) " (cancelled)" else ""}")
-            notifyDone(imported, present, failed)
+            notifyDone(imported, present, failed, lostLeft)
             finish(if (cancelled) "cancelled" else "done")
         }
     }
 
-    /** The picker hands over a live network; if it blipped, give it a few seconds to come back. */
+    /** The network may blip (the request stays active and Android re-delivers it): wait up to 15 s. */
     private fun awaitNetwork(): Network? {
-        repeat(20) {
+        repeat(30) {
             ImportLink.network?.let { return it }
             try { Thread.sleep(500) } catch (_: InterruptedException) { return null }
         }
@@ -122,18 +132,22 @@ class DashcamImportService : Service() {
 
     // ── B3 · retries with Range
 
-    private fun downloadWithRetries(net: Network, c: DashcamImport.Remote, display: String): Boolean {
+    private fun downloadWithRetries(net: Network, c: DashcamImport.Remote, display: String): Outcome {
         var uri: Uri? = null
         var written = 0L
         for (attempt in 1..ATTEMPTS) {
             if (cancelled) break
+            if (attempt > 1 && ImportLink.network == null && awaitNetwork() == null) {
+                uri?.let { runCatching { contentResolver.delete(it, null, null) } }
+                return Outcome.LOST
+            }
             try {
                 val u = uri ?: insertPending(c, display).also { uri = it }
                 written = fetch(ImportLink.network ?: net, c, u, written)
                 if (c.size <= 0 || written >= c.size) {
                     contentResolver.update(u, ContentValues().apply { put(MediaStore.Video.Media.IS_PENDING, 0) }, null, null)
                     DashcamImport.log("saved $display ${written / 1048576} MB${if (attempt > 1) " (try $attempt)" else ""}")
-                    return true
+                    return Outcome.OK
                 }
                 DashcamImport.log("$display: stream ended at ${written / 1048576} of ${c.size / 1048576} MB (try $attempt)")
             } catch (e: Exception) {
@@ -143,8 +157,35 @@ class DashcamImportService : Service() {
             if (attempt < ATTEMPTS) try { Thread.sleep(2_000L * attempt) } catch (_: InterruptedException) { break }
         }
         uri?.let { runCatching { contentResolver.delete(it, null, null) } }
+        if (!cancelled && ImportLink.network == null && awaitNetwork() == null) return Outcome.LOST
         if (!cancelled) DashcamImport.log("$display: given up after $ATTEMPTS tries")
-        return false
+        return Outcome.FAILED
+    }
+
+    /** F4 · a previous import killed mid-clip leaves a pending (invisible) file; delete it before starting. */
+    private fun removeOrphans() {
+        try {
+            val base = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+            val sel = "${MediaStore.Video.Media.IS_PENDING} = 1 AND ${MediaStore.Video.Media.RELATIVE_PATH} LIKE ? AND ${MediaStore.Video.Media.DISPLAY_NAME} LIKE ?"
+            val args = arrayOf("%RideScreen dashcam%", "DASHCAM%")
+            val proj = arrayOf(MediaStore.Video.Media._ID)
+            val cursor = if (Build.VERSION.SDK_INT >= 30) {
+                contentResolver.query(base, proj, android.os.Bundle().apply {
+                    putString(android.content.ContentResolver.QUERY_ARG_SQL_SELECTION, sel)
+                    putStringArray(android.content.ContentResolver.QUERY_ARG_SQL_SELECTION_ARGS, args)
+                    putInt(MediaStore.QUERY_ARG_MATCH_PENDING, MediaStore.MATCH_INCLUDE)
+                }, null)
+            } else {
+                @Suppress("DEPRECATION")
+                contentResolver.query(MediaStore.setIncludePending(base), proj, sel, args, null)
+            }
+            val ids = ArrayList<Long>()
+            cursor?.use { cur -> while (cur.moveToNext()) ids += cur.getLong(0) }
+            for (id in ids) runCatching {
+                contentResolver.delete(android.content.ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id), null, null)
+            }
+            if (ids.isNotEmpty()) DashcamImport.log("removed ${ids.size} unfinished clip(s) left by an earlier import")
+        } catch (e: Exception) { DashcamImport.log("orphan check failed: ${e.javaClass.simpleName}") }
     }
 
     /** One GET; resumes from [from] with Range when possible. Returns the bytes now in the file. */
@@ -249,10 +290,11 @@ class DashcamImportService : Service() {
         getSystemService(NotificationManager::class.java)?.notify(NOTIF_PROGRESS, progress(n, of, bytes))
     }
 
-    private fun notifyDone(imported: Int, present: Int, failed: Int) {
+    private fun notifyDone(imported: Int, present: Int, failed: Int, lostLeft: Int) {
         val open = PendingIntent.getActivity(this, 32,
             Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), PendingIntent.FLAG_IMMUTABLE)
-        val text = getString(R.string.dashcam_done, imported, present, failed)
+        val text = if (lostLeft > 0) getString(R.string.dashcam_wifi_lost, imported, lostLeft)
+            else getString(R.string.dashcam_done, imported, present, failed)
         val n = NotificationCompat.Builder(this, CHANNEL)
             .setSmallIcon(R.drawable.ic_launcher_monochrome)
             .setContentTitle(getString(R.string.dashcam_title))

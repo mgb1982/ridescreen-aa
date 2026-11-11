@@ -24,4 +24,5 @@
     <string name="dashcam_done">นำเข้า %1$d · มีอยู่แล้ว %2$d · ล้มเหลว %3$d</string>
     <string name="dashcam_done_hint">เปิดตัวสร้างวิดีโอของทริป: คลิปจะถูกวางตามเวลาเอง</string>
     <string name="dashcam_already_running">กำลังนำเข้าคลิปอยู่แล้ว</string>
+    <string name="dashcam_wifi_lost">Wi‑Fi ของรถหลุด: นำเข้าแล้ว %1$d เหลืออีก %2$d ลองใหม่อีกครั้งโดยเปิดรถไว้</string>
 </resources>

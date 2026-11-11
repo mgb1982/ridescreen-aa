@@ -24,4 +24,5 @@
     <string name="dashcam_done">Importats %1$d · ja hi eren %2$d · fallits %3$d</string>
     <string name="dashcam_done_hint">Obre el creador de vídeo del viatge: els clips es col·loquen sols per l\'hora.</string>
     <string name="dashcam_already_running">Ja s\'estan important clips</string>
+    <string name="dashcam_wifi_lost">S\'ha perdut el Wi‑Fi de la moto: %1$d importats, en falten %2$d. Torna-ho a provar amb la moto engegada.</string>
 </resources>

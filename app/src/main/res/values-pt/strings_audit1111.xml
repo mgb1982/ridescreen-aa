@@ -24,4 +24,5 @@
     <string name="dashcam_done">Importados %1$d · já existiam %2$d · falhados %3$d</string>
     <string name="dashcam_done_hint">Abre o criador de vídeo da viagem: os clips ficam colocados pela hora.</string>
     <string name="dashcam_already_running">Já está a importar clips</string>
+    <string name="dashcam_wifi_lost">Perdeu-se o Wi‑Fi da mota: %1$d importados, faltam %2$d. Tenta de novo com a mota ligada.</string>
 </resources>

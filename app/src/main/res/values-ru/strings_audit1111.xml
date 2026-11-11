@@ -24,4 +24,5 @@
     <string name="dashcam_done">Импортировано %1$d · уже были %2$d · с ошибкой %3$d</string>
     <string name="dashcam_done_hint">Откройте создание видео поездки: клипы расставляются по времени.</string>
     <string name="dashcam_already_running">Импорт клипов уже идёт</string>
+    <string name="dashcam_wifi_lost">Wi‑Fi мотоцикла потерян: импортировано %1$d, осталось %2$d. Попробуйте снова при включённом мотоцикле.</string>
 </resources>

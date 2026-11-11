@@ -24,4 +24,5 @@
     <string name="dashcam_done">Importés %1$d · déjà là %2$d · échecs %3$d</string>
     <string name="dashcam_done_hint">Ouvre le créateur de vidéo du trajet : les clips sont placés selon l\'heure.</string>
     <string name="dashcam_already_running">Import des clips déjà en cours</string>
+    <string name="dashcam_wifi_lost">Wi‑Fi de la moto perdu : %1$d importés, il en reste %2$d. Réessaie avec la moto allumée.</string>
 </resources>

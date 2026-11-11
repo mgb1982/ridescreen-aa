@@ -24,4 +24,5 @@
     <string name="dashcam_done">Imported %1$d · already there %2$d · failed %3$d</string>
     <string name="dashcam_done_hint">Open the trip\'s video maker: the clips are placed by time.</string>
     <string name="dashcam_already_running">Already importing clips</string>
+    <string name="dashcam_wifi_lost">Lost the bike\'s Wi-Fi: %1$d imported, %2$d left. Try again with the bike on.</string>
 </resources>

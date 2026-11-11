@@ -24,4 +24,5 @@
     <string name="dashcam_done">Εισήχθησαν %1$d · υπήρχαν ήδη %2$d · απέτυχαν %3$d</string>
     <string name="dashcam_done_hint">Άνοιξε τη δημιουργία βίντεο της διαδρομής: τα κλιπ μπαίνουν στη θέση τους με βάση την ώρα.</string>
     <string name="dashcam_already_running">Η εισαγωγή κλιπ βρίσκεται ήδη σε εξέλιξη</string>
+    <string name="dashcam_wifi_lost">Χάθηκε το Wi‑Fi της μηχανής: εισήχθησαν %1$d, απομένουν %2$d. Δοκίμασε ξανά με τη μηχανή αναμμένη.</string>
 </resources>
