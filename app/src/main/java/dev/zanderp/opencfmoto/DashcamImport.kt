@@ -26,12 +26,11 @@ import java.util.concurrent.atomic.AtomicBoolean
  *  - POST {"METHOD":"VIDEO.INFO.LIST","date":…,"index":0,"num":120,"previewType":"front","sort":"des","time":"10-11"}
  *      → videoBeanList[]: name, duration, size, recordTime, playUrl, thumbUrl
  *  - GET  http://<playUrl>  → the MP4 (≈60 MB per 60 s clip, ≈0.7 MB/s)
- * READ-ONLY on the dash: only list requests and GETs. The rear camera's previewType is not known yet:
- * "rear" and "back" are tried as plain list reads and the answers are logged.
+ * READ-ONLY on the dash: only list requests and GETs. Rear camera previewType is "rear" (confirmed by capture).
  */
 object DashcamImport {
     private const val HOST = "192.168.3.1:7686"
-    private val ANGLES = listOf("front", "rear", "back")
+    private val ANGLES = listOf("front", "rear")
     private const val MARGIN_MS = 60_000L
     private fun log(s: String) = LogBus.log("[DASHCAM] $s")
 
