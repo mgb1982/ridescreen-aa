@@ -136,8 +136,20 @@ class AdaptiveVideoController(
         }
     }
 
+    /** A2 · the encoder is paused because the dash stopped pulling: don't learn anything from it. */
+    private var frozen = false
+
     fun onTick(pipeline: VideoPipeline?) {
         val pipe = pipeline ?: return
+        if (pipe.isLinkPaused()) {
+            if (!frozen) { frozen = true; log("[adaptive] frozen — the dash isn't pulling") }
+            return
+        }
+        if (frozen) {
+            frozen = false
+            reset()   // back to the user's target; the drop counter is re-based on the next tick
+            log("[adaptive] unfrozen — starting again from the target bitrate")
+        }
 
         if (VideoPrefs.power(context) != PowerMode.AUTO) {
             // Rider switched to a fixed mode mid-session: hand the rate back once.

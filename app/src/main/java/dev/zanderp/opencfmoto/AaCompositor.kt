@@ -147,7 +147,7 @@ class AaCompositor(private val log: (String) -> Unit) {
     private val liveTick = object : Runnable {
         override fun run() {
             val build = liveBuild ?: return
-            if (canvasW > 0 && canvasH > 0 && windowSurface != EGL14.EGL_NO_SURFACE &&
+            if (!linkIdle && canvasW > 0 && canvasH > 0 && windowSurface != EGL14.EGL_NO_SURFACE &&
                 cardUntil <= android.os.SystemClock.uptimeMillis()) {
                 // The dashboard fills the whole bike canvas: rider margins are for Android Auto, and
                 // the area outside them would otherwise stay black (a bar on top on the 125X).
@@ -229,6 +229,15 @@ class AaCompositor(private val log: (String) -> Unit) {
     @Volatile private var pendingFrame = false
     private var lastDrawMs = 0L
     @Volatile private var minFrameIntervalMs = 42L  // default 24 fps; overridden by setFrameCap()
+    // A2 · the dash isn't pulling (link dropped): hold the encoder input at ~1 fps until it is back.
+    @Volatile private var linkIdle = false
+    private fun frameInterval(): Long = if (linkIdle) 1_000L else minFrameIntervalMs
+
+    fun setLinkIdle(idle: Boolean) {
+        if (linkIdle == idle) return
+        linkIdle = idle
+        log("[COMPOSITOR] ${if (idle) "link idle — encoder input held at 1 fps" else "link back — frame cap ${1000 / minFrameIntervalMs}fps"}")
+    }
 
     // Keep-alive cadence. The tick is fast enough to promptly flush a coalesced trailing frame after
     // motion stops; the idle re-draw is deliberately slow — the bike only needs a frame every ~9s
@@ -553,7 +562,7 @@ class AaCompositor(private val log: (String) -> Unit) {
         // Throttle live frames to the power-mode cap. A too-soon frame is kept (texture already
         // latched above) and drawn by the keep-alive tick, so we cap the rate without losing motion.
         val idleMs = android.os.SystemClock.uptimeMillis() - lastDrawMs
-        if (idleMs >= minFrameIntervalMs) drawFrame() else pendingFrame = true
+        if (idleMs >= frameInterval()) drawFrame() else pendingFrame = true
     }
 
     /**
@@ -568,7 +577,7 @@ class AaCompositor(private val log: (String) -> Unit) {
         override fun run() {
             if (hasContent && (windowSurface != EGL14.EGL_NO_SURFACE || previewSurface != EGL14.EGL_NO_SURFACE)) {
                 val idleMs = android.os.SystemClock.uptimeMillis() - lastDrawMs
-                if (pendingFrame && idleMs >= minFrameIntervalMs) {
+                if (pendingFrame && idleMs >= frameInterval()) {
                     // Flush the last coalesced live frame so motion doesn't stall at the cap.
                     drawFrame()
                 } else if (idleMs >= IDLE_REDRAW_MS) {

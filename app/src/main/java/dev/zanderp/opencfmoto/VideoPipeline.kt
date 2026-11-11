@@ -111,6 +111,36 @@ class VideoPipeline(
     // freshly-attached bike client receives is a full SPS+PPS+IDR. See onBikeDataStart().
     @Volatile private var awaitKeyframe = false
 
+    // A2 · the dash stopped pulling (link dropped, "waiting for bike Wi-Fi"). Nobody takes frames, so the
+    // 8-frame queue overflowed every ~5 s and the adaptive controller read that as congestion and cut the
+    // bitrate for nothing (11 Nov 2026 log: 104 "dash fell behind" in minutes without a single pull).
+    // While paused: encoder output is discarded (not queued, not counted as drops), the compositor is held
+    // at ~1 fps, the adaptive controller is frozen. The next pull / bike attach resumes everything.
+    @Volatile private var lastPullMs = 0L
+    @Volatile private var linkPaused = false
+    fun isLinkPaused(): Boolean = linkPaused
+
+    private fun pauseForIdleLink(now: Long) {
+        if (linkPaused) return
+        linkPaused = true
+        frameQueue.clear()
+        aaCompositor?.setLinkIdle(true)
+        log("[VIDEO] dash stopped pulling for ${(now - lastPullMs) / 1000} s — encoder paused (frames discarded, adaptive frozen) until it's back")
+    }
+
+    private fun resumeAfterIdleLink(why: String) {
+        if (!linkPaused) return
+        linkPaused = false
+        aaCompositor?.setLinkIdle(false)
+        if (baseBitrate > 0) setEncoderBitrate(baseBitrate)
+        frameQueue.clear()
+        awaitKeyframe = true
+        try {
+            codec?.setParameters(android.os.Bundle().apply { putInt(MediaCodec.PARAMETER_KEY_REQUEST_SYNC_FRAME, 0) })
+        } catch (_: Exception) {}
+        log("[VIDEO] dash pulling again ($why) — encoder resumed at ${baseBitrate / 1000}kbps, keyframe requested")
+    }
+
     /** Latest Annex-B SPS/PPS from the encoder (null until [BUFFER_FLAG_CODEC_CONFIG]). */
     fun codecConfigBytes(): ByteArray? = codecConfig
 
@@ -595,7 +625,12 @@ class VideoPipeline(
                         // until a keyframe happens to get through (Francis, 15 Oct: seconds of grey on
                         // the map). Instead: drop the whole backlog, keep the dash on its last good
                         // picture and restart from a fresh keyframe right away.
-                        if (!frameQueue.offerLast(out)) {
+                        // A2: while nobody pulls, output is discarded (not queued, not counted as drops).
+                        val queued = !linkPaused && frameQueue.offerLast(out)
+                        val nowMs = System.currentTimeMillis()
+                        if (!queued && !linkPaused && LinkIdle.isIdle(lastPullMs, nowMs)) {
+                            pauseForIdleLink(nowMs)
+                        } else if (!queued && !linkPaused) {
                             val lost = frameQueue.size + 1
                             frameQueue.clear()
                             droppedFrames += lost
@@ -728,8 +763,11 @@ class VideoPipeline(
     val compositing: Boolean get() = aaCompositor != null
 
     /** Called by the data socket on each REQ_RV_DATA_NEXT(114). Returns one access unit. */
-    fun pollFrame(timeoutMs: Long): ByteArray? =
-        try { frameQueue.pollFirst(timeoutMs, TimeUnit.MILLISECONDS) } catch (e: InterruptedException) { null }
+    fun pollFrame(timeoutMs: Long): ByteArray? {
+        lastPullMs = System.currentTimeMillis()
+        if (linkPaused) resumeAfterIdleLink("frame request")
+        return try { frameQueue.pollFirst(timeoutMs, TimeUnit.MILLISECONDS) } catch (e: InterruptedException) { null }
+    }
 
     /**
      * A bike video client is (re)attaching and about to pull frames (REQ_RV_DATA_START). Guarantee the
@@ -744,6 +782,8 @@ class VideoPipeline(
      * (Mirror mode avoided this only by creating its encoder lazily right as the bike attaches.)
      */
     fun onBikeDataStart() {
+        lastPullMs = System.currentTimeMillis()
+        if (linkPaused) resumeAfterIdleLink("bike attached")
         frameQueue.clear()
         awaitKeyframe = true
         try {
@@ -873,4 +913,10 @@ class VideoPipeline(
         /** How many access units to capture before auto-stopping the dump (~20s at 30fps). */
         const val DUMP_CAP = 600
     }
+}
+
+/** A2 · pure rule (unit tested): the dash counts as gone once it has pulled before and not for [IDLE_MS]. */
+internal object LinkIdle {
+    const val IDLE_MS = 2_000L
+    fun isIdle(lastPullMs: Long, nowMs: Long): Boolean = lastPullMs > 0L && nowMs - lastPullMs >= IDLE_MS
 }
