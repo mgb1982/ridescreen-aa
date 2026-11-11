@@ -47,11 +47,13 @@ class GarageActivity : AppCompatActivity() {
         if (result.resultCode != RESULT_OK || raw == null) return@registerForActivityResult
         val qr = QrData.parse(raw)
         if (qr == null) {
-            Toast.makeText(this, "Invalid QR", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.main_invalid_qr, Toast.LENGTH_SHORT).show()
             return@registerForActivityResult
         }
         BikeMemory.save(this, raw, qr)
-        Toast.makeText(this, "Added ${BikeMemory.lastBikeName(this)}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            this, getString(R.string.garage_added, BikeMemory.lastBikeName(this)), Toast.LENGTH_SHORT
+        ).show()
         refresh()
     }
 
@@ -66,7 +68,7 @@ class GarageActivity : AppCompatActivity() {
             BikeMemory.setPhoto(this, raw, path)
             refresh()
         } else {
-            Toast.makeText(this, "Couldn't read that image", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.garage_image_unreadable, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -87,8 +89,9 @@ class GarageActivity : AppCompatActivity() {
         findViewById<View>(R.id.garage_manual).setOnClickListener {
             ManualWifiPairing.show(this) { raw, qr ->
                 BikeMemory.save(this, raw, qr)
-                Toast.makeText(this, "Added ${BikeMemory.lastBikeName(this)}", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(
+                    this, getString(R.string.garage_added, BikeMemory.lastBikeName(this)), Toast.LENGTH_SHORT
+                ).show()
                 refresh()
             }
         }
@@ -153,7 +156,8 @@ class GarageActivity : AppCompatActivity() {
             setTypeface(typeface, android.graphics.Typeface.BOLD)
         })
         col.addView(TextView(this).apply {
-            text = if (isActive) "Active bike · tap to edit" else (bike.qr?.ssid ?: "tap to select or edit")
+            text = if (isActive) getString(R.string.garage_active_subtitle)
+            else (bike.qr?.ssid ?: getString(R.string.garage_tap_to_select))
             setTextColor(
                 ContextCompat.getColor(
                     this@GarageActivity,
@@ -170,38 +174,33 @@ class GarageActivity : AppCompatActivity() {
 
     private fun showActions(bike: SavedBike, isActive: Boolean) {
         val hasPhoto = bike.photoPath != null
-        val items = buildList {
-            if (!isActive) add("Use this bike")
-            add("Rename")
-            add(getString(R.string.bike_picker_menu))
-            add(if (hasPhoto) "Change photo" else "Add photo")
-            if (hasPhoto) add("Remove photo")
-            add("Remove bike")
-        }.toTypedArray()
+        // Each entry pairs its label with its action, so the choice is by position, never by (translated) text.
+        val entries = buildList<Pair<Int, () -> Unit>> {
+            if (!isActive) add(R.string.garage_use_this_bike to {
+                BikeMemory.select(this@GarageActivity, bike.raw)
+                Toast.makeText(
+                    this@GarageActivity, getString(R.string.garage_selected, bike.name), Toast.LENGTH_SHORT
+                ).show()
+                refresh()
+            })
+            add(R.string.garage_rename to { promptRename(bike) })
+            add(R.string.bike_picker_menu to { BikePicker.show(this@GarageActivity, bike.raw) { refresh() } })
+            add((if (hasPhoto) R.string.garage_change_photo else R.string.garage_add_photo) to {
+                photoTargetRaw = bike.raw
+                photoLauncher.launch("image/*")
+            })
+            if (hasPhoto) add(R.string.garage_remove_photo to {
+                deletePhotoFile(bike.photoPath)
+                BikeMemory.setPhoto(this@GarageActivity, bike.raw, null)
+                refresh()
+            })
+            add(R.string.garage_remove_bike to { confirmRemove(bike) })
+        }
+        val items = entries.map { getString(it.first) }.toTypedArray()
 
         MaterialAlertDialogBuilder(this)
             .setTitle(bike.name)
-            .setItems(items) { _, which ->
-                when (items[which]) {
-                    "Use this bike" -> {
-                        BikeMemory.select(this, bike.raw)
-                        Toast.makeText(this, "Selected ${bike.name}", Toast.LENGTH_SHORT).show()
-                        refresh()
-                    }
-                    "Rename" -> promptRename(bike)
-                    getString(R.string.bike_picker_menu) -> BikePicker.show(this, bike.raw) { refresh() }
-                    "Add photo", "Change photo" -> {
-                        photoTargetRaw = bike.raw
-                        photoLauncher.launch("image/*")
-                    }
-                    "Remove photo" -> {
-                        deletePhotoFile(bike.photoPath)
-                        BikeMemory.setPhoto(this, bike.raw, null)
-                        refresh()
-                    }
-                    "Remove bike" -> confirmRemove(bike)
-                }
-            }
+            .setItems(items) { _, which -> entries[which].second() }
             .show()
     }
 
@@ -209,7 +208,7 @@ class GarageActivity : AppCompatActivity() {
         val input = EditText(this).apply {
             setText(bike.name)
             setSelection(text.length)
-            hint = "Bike name"
+            hint = getString(R.string.garage_bike_name_hint)
         }
         val pad = dp(20)
         val wrap = LinearLayout(this).apply {
@@ -217,26 +216,26 @@ class GarageActivity : AppCompatActivity() {
             addView(input)
         }
         MaterialAlertDialogBuilder(this)
-            .setTitle("Rename bike")
+            .setTitle(R.string.garage_rename_title)
             .setView(wrap)
-            .setPositiveButton("Save") { _, _ ->
+            .setPositiveButton(R.string.res_save) { _, _ ->
                 BikeMemory.rename(this, bike.raw, input.text.toString())
                 refresh()
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.dash_cancel, null)
             .show()
     }
 
     private fun confirmRemove(bike: SavedBike) {
         MaterialAlertDialogBuilder(this)
-            .setTitle("Remove ${bike.name}?")
-            .setMessage("This forgets its pairing, photo and settings. You can re-scan the dash QR or enter Wi‑Fi again later.")
-            .setPositiveButton("Remove") { _, _ ->
+            .setTitle(getString(R.string.garage_remove_title, bike.name))
+            .setMessage(R.string.garage_remove_message)
+            .setPositiveButton(R.string.gpx_remove) { _, _ ->
                 deletePhotoFile(bike.photoPath)
                 BikeMemory.remove(this, bike.raw)
                 refresh()
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.dash_cancel, null)
             .show()
     }
 

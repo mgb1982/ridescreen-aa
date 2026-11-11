@@ -668,4 +668,19 @@
     <string name="controls_dash_scale_rpm">Rev counter up to</string>
     <string name="controls_volume_drives_aa">▲/▼ also drive Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Off: the volume buttons keep changing the phone volume (and your intercom too), and the phone volume is never locked. Android Auto then only gets the other handlebar buttons.</string>
+    <string name="garage_added">Added %s</string>
+    <string name="garage_image_unreadable">Couldn\'t read that image</string>
+    <string name="garage_selected">Selected %s</string>
+    <string name="garage_active_subtitle">Active bike · tap to edit</string>
+    <string name="garage_tap_to_select">tap to select or edit</string>
+    <string name="garage_use_this_bike">Use this bike</string>
+    <string name="garage_rename">Rename</string>
+    <string name="garage_change_photo">Change photo</string>
+    <string name="garage_add_photo">Add photo</string>
+    <string name="garage_remove_photo">Remove photo</string>
+    <string name="garage_remove_bike">Remove bike</string>
+    <string name="garage_bike_name_hint">Bike name</string>
+    <string name="garage_rename_title">Rename bike</string>
+    <string name="garage_remove_title">Remove %s?</string>
+    <string name="garage_remove_message">This forgets its pairing, photo and settings. You can re-scan the dash QR or enter Wi‑Fi again later.</string>
 </resources>
