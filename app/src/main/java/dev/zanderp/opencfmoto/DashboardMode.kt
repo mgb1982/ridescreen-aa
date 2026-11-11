@@ -190,13 +190,44 @@ object DashboardMode {
     /** The projection was stopped by the rider: the next connection starts in Android Auto again. */
     fun reset() {
         wanted = false
+        lossPending = false
         AaVideoBridge.videoFocusHeld = false
     }
 
     private val main by lazy { android.os.Handler(android.os.Looper.getMainLooper()) }
 
+    @Volatile private var saverApp: Context? = null
+    /** F1 · the dashboard was engaged with the saver before this AA session was steady: LOSS is owed. */
+    @Volatile private var lossPending = false
+
+    /** F1 · the AA session reached steady video: apply a LOSS the dashboard already asked for. */
+    fun onAaSteadyVideo() {
+        val app = saverApp ?: return
+        if (lossPending && SaverFocus.shouldApplyLoss(wanted, saver(app), AaVideoBridge.aaSteady)) {
+            LogBus.log("[DASHBOARD] saver: Android Auto video is steady and the dashboard is up — applying LOSS")
+            applySaver(app, true)
+        }
+    }
+
+    /** F1 · a new (or ended) AA session holds GAIN, whatever the previous one had; the dashboard re-applies. */
+    fun onAaSessionReset(why: String) {
+        // The dashboard may still be on the dash (same pipeline, Android Auto restarted): owe a LOSS for
+        // when the new session is steady. If the pipeline is rebuilt, onDashReady re-engages anyway.
+        lossPending = wanted && saverApp?.let { saver(it) } == true
+        if (!AaVideoBridge.videoFocusHeld) return
+        AaVideoBridge.videoFocusHeld = false
+        LogBus.log("[DASHBOARD] saver: $why — focus back to GAIN; LOSS again once the dashboard is up")
+    }
+
     /** A3 · hold (true) or give back (false) the screen to Android Auto. */
     private fun applySaver(app: Context, hold: Boolean) {
+        saverApp = app
+        if (hold && !SaverFocus.shouldApplyLoss(wanted, true, AaVideoBridge.aaSteady)) {
+            lossPending = true
+            LogBus.log("[DASHBOARD] saver: waiting for steady Android Auto video before applying LOSS")
+            return
+        }
+        lossPending = false
         if (AaVideoBridge.videoFocusHeld == hold) return
         AaVideoBridge.videoFocusHeld = hold
         val send = AaVideoBridge.sendVideoFocus
@@ -289,4 +320,15 @@ object DashboardMode {
     /** How many of [segments] bar segments are lit for [rpm]. */
     internal fun litSegments(rpm: Double?, segments: Int): Int =
         if (rpm == null) 0 else Math.round(rpm.coerceIn(0.0, RPM_MAX) / RPM_MAX * segments).toInt()
+}
+
+/** F1 · pure video-focus decisions for the dashboard saver (unit tested). */
+internal object SaverFocus {
+    /** Opening the video channel always gives the screen to Android Auto. */
+    const val CHANNEL_OPEN_GAIN = true
+    /** LOSS only with the dashboard wanted, the saver on, and this AA session already at steady video. */
+    fun shouldApplyLoss(dashboardWanted: Boolean, saverOn: Boolean, sessionSteady: Boolean): Boolean =
+        dashboardWanted && saverOn && sessionSteady
+    /** Reply to an AA request for the screen: refuse it only while the saver holds a steady session. */
+    fun projectedReplyGain(saverHeld: Boolean, sessionSteady: Boolean): Boolean = !(saverHeld && sessionSteady)
 }

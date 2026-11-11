@@ -87,6 +87,8 @@ class AaReceiver(
                 steadyVideoFired = true
                 log("[AA] steady video reached (fps=$fps) — signalling ready for bike hand-off")
                 try { AaVideoBridge.onSteadyVideo?.invoke() } catch (_: Exception) {}
+                AaVideoBridge.aaSteady = true
+                try { dev.zanderp.opencfmoto.DashboardMode.onAaSteadyVideo() } catch (_: Exception) {}
             }
         }
     }
@@ -208,6 +210,8 @@ class AaReceiver(
             log("[AA] transport quit (clean=$clean, userExit=$userExit)")
             AaVideoBridge.aaSessionLive = false
             AaVideoBridge.aaDecoding = false
+            AaVideoBridge.aaSteady = false
+            dev.zanderp.opencfmoto.DashboardMode.onAaSessionReset("Android Auto session ended")
             AaVideoBridge.touchSink = null
             AaVideoBridge.keySink = null
             AaVideoBridge.scrollSink = null
@@ -229,6 +233,8 @@ class AaReceiver(
         dev.zanderp.opencfmoto.AaVideoBridge.requestAaKeyframe = { if (transport === t) t.requestKeyframe() }
         AaVideoBridge.aaSessionLive = true
         AaVideoBridge.aaSessionSeen = true
+        AaVideoBridge.aaSteady = false
+        dev.zanderp.opencfmoto.DashboardMode.onAaSessionReset("new Android Auto session")
         AaVideoBridge.aaDecoding = false
         steadyVideoFired = false; slowVideoSeconds = 0
 

@@ -61,6 +61,8 @@ object AaVideoBridge {
      * request for the screen) gets LOSS too while it is set.
      */
     @Volatile var videoFocusHeld: Boolean = false
+    /** F1 · this AA session has reached steady video (bike hand-off can happen). Reset on every new session. */
+    @Volatile var aaSteady: Boolean = false
     /** Set by the AA receiver: sends a VideoFocus event to the live session (true = gain). */
     @Volatile var sendVideoFocus: ((Boolean) -> Unit)? = null
     /** Set by the AA receiver: asks Android Auto for a fresh keyframe (focus cycle). */

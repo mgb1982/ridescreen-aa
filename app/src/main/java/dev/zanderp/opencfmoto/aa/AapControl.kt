@@ -35,7 +35,8 @@ internal class AapControlMedia(private val aapTransport: AapTransport) : AapCont
                     aapTransport.wasUserExit = true
                     aapTransport.stop()
                 } else if (focusRequest.mode == Media.VideoFocusMode.VIDEO_FOCUS_PROJECTED) {
-                    if (dev.zanderp.opencfmoto.AaVideoBridge.videoFocusHeld) {
+                    if (!dev.zanderp.opencfmoto.SaverFocus.projectedReplyGain(
+                            dev.zanderp.opencfmoto.AaVideoBridge.videoFocusHeld, dev.zanderp.opencfmoto.AaVideoBridge.aaSteady)) {
                         // A3: dashboard saver on — keep the screen to ourselves; audio/guidance continue.
                         AaLog.i("Video Focus PROJECTED received while the dashboard saver holds the screen → LOSS")
                         aapTransport.send(VideoFocusEvent(gain = false, unsolicited = false))
@@ -91,9 +92,11 @@ internal class AapControlMedia(private val aapTransport: AapTransport) : AapCont
         if (channel == Channel.ID_VID) {
             // Headless: no projection Activity to broadcast to — grant video focus directly so
             // the phone starts streaming H.264 into our (always-ready) encoder surface.
-            val held = dev.zanderp.opencfmoto.AaVideoBridge.videoFocusHeld
-            AaLog.i("Video channel set up → sending VideoFocus ${if (held) "LOSS (dashboard saver)" else "GAIN"}")
-            aapTransport.send(VideoFocusEvent(gain = !held, unsolicited = true))
+            // F1: a new session always opens with GAIN, or it never reaches steady video and the bike is
+            // never linked. The dashboard saver applies LOSS afterwards, once the dashboard is up.
+            val gain = dev.zanderp.opencfmoto.SaverFocus.CHANNEL_OPEN_GAIN
+            AaLog.i("Video channel set up → sending VideoFocus ${if (gain) "GAIN" else "LOSS"}")
+            aapTransport.send(VideoFocusEvent(gain = gain, unsolicited = true))
         }
         return 0
     }
