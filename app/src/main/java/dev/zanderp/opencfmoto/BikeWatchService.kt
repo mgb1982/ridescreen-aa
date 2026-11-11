@@ -122,6 +122,11 @@ class BikeWatchService : Service() {
                 BtConnectTrigger.notifyWifiOff(applicationContext)
             }
             if (wifiOn && wifiOffNotified) { wifiOffNotified = false; BtConnectTrigger.clearWifiOffNotification(applicationContext) }
+            if (seen == false) LockHold.onWifiGone(applicationContext)
+            if (seen == true && !LockHold.allowsAuto(applicationContext, LockHold.Trigger.WIFI_SEEN)) {
+                h.postDelayed(this, if (mode == Mode.LONG) LONG_EVERY_MS else SHORT_EVERY_MS)
+                return
+            }
             if (seen == true) {
                 LogBus.log("[WATCH] '$ssid' is up after $checks check(s) — starting Connect")
                 running = false
@@ -163,6 +168,7 @@ class BikeWatchService : Service() {
             override fun onAvailable(network: android.net.Network) {
                 h.post {
                     if (!running) return@post
+                    if (!LockHold.allowsAuto(applicationContext, LockHold.Trigger.WIFI_SEEN)) { stopProbe(); return@post }
                     LogBus.log("[WATCH] joined '$ssid' in the background (phone can stay locked) — starting Connect")
                     try { CrashGuard.persistSessionAsync(applicationContext) } catch (_: Exception) {}
                     running = false

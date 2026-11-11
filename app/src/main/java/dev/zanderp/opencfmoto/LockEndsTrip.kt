@@ -56,6 +56,7 @@ object LockEndsTrip {
 
     /** Called by [PkeUnlock.send] with every result; does nothing unless it was a confirmed lock. */
     fun after(ctx: Context, action: PkeUnlock.Action, res: PkeUnlock.Result) {
+        if (action == PkeUnlock.Action.UNLOCK && res.ok) LockHold.release(ctx, "unlocked from the app")
         if (action != PkeUnlock.Action.LOCK) return
         val app = ctx.applicationContext
         val speed = speedKmh(app)
@@ -70,6 +71,7 @@ object LockEndsTrip {
         }
         val riding = ConnectionState.phase != Phase.IDLE && ConnectionState.phase != Phase.STOPPED
         LogBus.log("[PKE] locked → saving the parking spot${if (riding) " and ending the ride" else ""} ($why)")
+        LockHold.arm(app)
         main.post {
             try { Parking.saveNow(app) } catch (e: Exception) { LogBus.log("[PKE] parking not saved: $e") }
             if (riding) try { RideStop.stopAll(app, "bike locked from the app", notify = false) } catch (e: Exception) { LogBus.log("[PKE] stop failed: $e") }

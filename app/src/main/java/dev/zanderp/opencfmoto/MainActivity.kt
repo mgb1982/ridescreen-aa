@@ -885,6 +885,7 @@ class MainActivity : AppCompatActivity() {
                 log("→ Connect blocked — missing dependencies (see dialog)")
                 return@setOnClickListener
             }
+            LockHold.release(this, "Connect tapped")
             val saved = BikeMemory.lastQr(this)
             if (saved != null) {
                 log("→ Connect: reusing saved bike '${BikeMemory.lastBikeName(this)}' (no scan needed)")

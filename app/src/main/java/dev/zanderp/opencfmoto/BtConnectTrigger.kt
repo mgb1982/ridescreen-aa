@@ -72,6 +72,8 @@ class BtConnectTrigger : BroadcastReceiver() {
             LogBus.log("→ BT trigger $mac ignored — no saved bike")
             return
         }
+        // Locked from the app a moment ago: this is the same parked bike, not a new ride.
+        if (!LockHold.allowsAuto(context, LockHold.Trigger.BT_CONNECTED)) return
         // The dash's Bluetooth can be up with the bike off (and the phone may connect walking past).
         // Only the bike's Wi-Fi means "on": connect if it's visible, else watch for it for a few minutes.
         when (BikeWifi.isSsidInRange(context, saved.ssid)) {
