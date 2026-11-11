@@ -211,11 +211,32 @@ object ObdLive {
                 }
                 if (round % 40 == 0) LogBus.logThrottled("obd-live", "[OBD] live: ${describe(latest)} (${now - t0} ms/round)", 60_000)
                 round++
+                // A5 · full rate only with the dashboard on the dash; otherwise one round every ~700 ms.
+                // The wait is cut short the moment the dashboard comes up, or the keyless box needs the radio.
+                val full = dashboardVisible()
+                if (full != lastFull) { lastFull = full; log("live reader: ${if (full) "full rate (dashboard on the dash)" else "one round every ${ObdPace.SLOW_ROUND_MS} ms (no dashboard)"}") }
+                val gap = ObdPace.gapMs(full, SystemClock.elapsedRealtime() - t0)
+                if (gap > 0 && !paceWait(gap)) { if (pkeBusy()) { yieldedToPke = true; return true } }
             }
             return true
         } finally {
             runCatching { socket.close() }
         }
+    }
+
+    @Volatile private var lastFull: Boolean? = null
+
+    private fun dashboardVisible(): Boolean = DashboardMode.wanted && AaVideoBridge.pipeline != null
+
+    /** Sleeps up to [ms] in 50 ms steps; returns early (true) if the dashboard appears, false if stopping / box busy. */
+    private fun paceWait(ms: Long): Boolean {
+        val end = SystemClock.elapsedRealtime() + ms
+        while (SystemClock.elapsedRealtime() < end) {
+            if (stopping() || pkeBusy()) return false
+            if (dashboardVisible()) return true
+            try { Thread.sleep(50) } catch (_: InterruptedException) { return false }
+        }
+        return true
     }
 
     private fun describe(s: Snapshot?): String = if (s == null) "-" else listOfNotNull(
@@ -262,4 +283,11 @@ object ObdLive {
         log("live reader: speed test · ${report.joinToString(" · ")} → ${best.name}")
         return best
     }
+}
+
+/** A5 · pure pacing rule (unit tested): full rate with the dashboard, else at most one round per [SLOW_ROUND_MS]. */
+internal object ObdPace {
+    const val SLOW_ROUND_MS = 700L
+    fun gapMs(dashboardVisible: Boolean, roundTookMs: Long): Long =
+        if (dashboardVisible) 0L else (SLOW_ROUND_MS - roundTookMs).coerceAtLeast(0L)
 }
