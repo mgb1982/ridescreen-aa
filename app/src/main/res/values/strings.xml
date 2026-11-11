@@ -285,7 +285,7 @@
     <string name="margins_summary_profile_default">Top %1$d · bottom %2$d · left %3$d · right %4$d px (profile default)</string>
     <string name="margins_summary_custom">Top %1$d · bottom %2$d · left %3$d · right %4$d px</string>
     <string name="setup_setup_settings">Setup &amp; settings</string>
-    <string name="setup_a_one_time_setup_so_android_auto_can_project_to_">A one-time setup so Android Auto can project to your CFMoto dash, plus display and battery options.</string>
+    <string name="setup_a_one_time_setup_so_android_auto_can_project_to_">A one-time setup so Android Auto can project to your bike\'s dash, plus display and battery options.</string>
     <string name="setup_get_started">Get started</string>
     <string name="setup_1_android_auto">1. Android Auto</string>
     <string name="setup_android_auto_runs_maps_waze_opencfmoto_relays_it">Android Auto runs Maps/Waze. RideScreen AA relays its screen to the bike.</string>
@@ -326,7 +326,7 @@
     <string name="setup_portrait">Portrait</string>
     <string name="setup_720_1280">720×1280</string>
     <string name="setup_1080_1920">1080×1920</string>
-    <string name="setup_auto_fits_recognized_cfmoto_dashes_if_your_bike_">Auto fits recognized CFMoto dashes. If your bike\'s screen is a different shape (e.g. a tall portrait display) or isn\'t recognized, pick the orientation + size that matches it. Android Auto supports only these fixed sizes, so Screen fit above decides how it\'s placed (Fill crops, Fit adds bars, Stretch distorts). HD is sharper but heavier and can black-screen on some dashes — drop to a smaller size or Auto if so.</string>
+    <string name="setup_auto_fits_recognized_cfmoto_dashes_if_your_bike_">Auto fits recognized dashes. If your bike\'s screen is a different shape (e.g. a tall portrait display) or isn\'t recognized, pick the orientation + size that matches it. Android Auto supports only these fixed sizes, so Screen fit above decides how it\'s placed (Fill crops, Fit adds bars, Stretch distorts). HD is sharper but heavier and can black-screen on some dashes — drop to a smaller size or Auto if so.</string>
     <string name="setup_match_panel_aspect">Match panel aspect…</string>
     <string name="setup_disable_touchscreen">Disable touchscreen</string>
     <string name="setup_holds_off_desc">Off — every release is a tap / ×2 (use with a long double-tap delay)</string>
