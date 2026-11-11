@@ -1629,16 +1629,20 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    // ── v2.4: live voltage while projecting. One BLE link kept open, 008 every 2 s and 001,7 every 10 s
+    // ── v2.4: live voltage while projecting. One BLE link kept open, 008 every 5 s and 001,7 every 30 s (A6;
+    // with a fresh OBD voltage the link isn't kept at all, see PkeLivePolicy)
     // (read only, same two queries). Runs only while the app is in front AND streaming/mirroring; if
     // the box won't keep the link (3 sessions without a single answer) it gives up for 5 min and the
     // normal 15 s reads carry on. Every minute it logs reads / average latency / drops so we learn what
     // the box and the Bluetooth–Wi‑Fi coexistence really do.
     @Volatile private var liveOn = false
+    @Volatile private var obdVoltMode = false
+    @Volatile private var lastLockReadAt = 0L
     @Volatile private var resumedNow = false
     private var liveGaveUpAt = 0L
 
-    private fun liveShouldRun() = resumedNow && ConnectionState.phase.let { it == Phase.STREAMING || it == Phase.MIRRORING }
+    private fun liveShouldRun() = resumedNow &&
+        ConnectionState.phase.let { it == Phase.STREAMING || it == Phase.MIRRORING }
 
     private fun maybeStartLive() {
         if (liveOn || PkeUnlock.holdingBox || !liveShouldRun() || PkeBattery.code(this).length < 8) return
@@ -1655,6 +1659,20 @@ class MainActivity : AppCompatActivity() {
                     // A command (menu, card or widget) holds the box: wait it out, don't fight it for the link.
                     while (liveShouldRun() && PkeUnlock.holdingBox) Thread.sleep(500)
                     if (!liveShouldRun()) break
+                    // A6: the OBD already gives the voltage — don't hold the box's link for it. Only the lock
+                    // state is read, on a short link, at most every 30 s (and by PkeUnlock after every command).
+                    if (PkeLivePolicy.useObdVolt(ObdLive.freshVolt())) {
+                        if (!obdVoltMode) { obdVoltMode = true; LogBus.log("[PKE] live: voltage from the OBD — box link only for the lock state every ${PkeLivePolicy.LOCK_EVERY_MS / 1000} s") }
+                        val now0 = android.os.SystemClock.elapsedRealtime()
+                        if (PkeLivePolicy.lockDue(now0 - lastLockReadAt) && !PkeUnlock.holdingBox) {
+                            lastLockReadAt = now0
+                            PkeBattery.openLive(app)?.let { l -> try { l.locked() } finally { l.close() } }
+                        }
+                        runOnUiThread { renderPkeCard() }
+                        PkeBattery.livePause(1_000L) { PkeUnlock.holdingBox }
+                        continue
+                    }
+                    if (obdVoltMode) { obdVoltMode = false; LogBus.log("[PKE] live: no OBD voltage — reading it from the box every ${PkeLivePolicy.VOLT_EVERY_MS / 1000} s") }
                     val live = PkeBattery.openLive(app)
                     if (live == null) {
                         if (++emptySessions >= 3) break
@@ -1664,7 +1682,8 @@ class MainActivity : AppCompatActivity() {
                     var sumMs = 0L; var maxMs = 0L
                     var statAt = android.os.SystemClock.elapsedRealtime()
                     val t0 = statAt
-                    while (liveShouldRun() && !PkeUnlock.holdingBox && live.alive && miss < 3) {
+                    while (liveShouldRun() && !PkeUnlock.holdingBox && live.alive && miss < 3 &&
+                        !PkeLivePolicy.useObdVolt(ObdLive.freshVolt())) {
                         val t = android.os.SystemClock.elapsedRealtime()
                         val v = live.volts()
                         val took = android.os.SystemClock.elapsedRealtime() - t
@@ -1672,7 +1691,9 @@ class MainActivity : AppCompatActivity() {
                             miss = 0; n++; sumMs += took; if (took > maxMs) maxMs = took
                             runOnUiThread { pkeFails = 0; renderPkeCard() }
                         } else miss++
-                        if (++tick % 5 == 0 && live.alive && !PkeUnlock.holdingBox) {
+                        tick++
+                        if (PkeLivePolicy.lockDue(android.os.SystemClock.elapsedRealtime() - lastLockReadAt) && live.alive && !PkeUnlock.holdingBox) {
+                            lastLockReadAt = android.os.SystemClock.elapsedRealtime()
                             val before = PkeBattery.last(app)?.locked
                             val l = live.locked()
                             if (l != null && l != before) runOnUiThread { renderPkeCard() }
@@ -1682,7 +1703,7 @@ class MainActivity : AppCompatActivity() {
                             statAt = now
                             LogBus.log("[PKE] live: $n reads in ${(now - t0) / 1000} s, avg ${if (n > 0) sumMs / n else 0} ms, max $maxMs ms, misses $miss")
                         }
-                        val rest = 2_000L - (android.os.SystemClock.elapsedRealtime() - t)
+                        val rest = PkeLivePolicy.VOLT_EVERY_MS - (android.os.SystemClock.elapsedRealtime() - t)
                         PkeBattery.livePause(rest) { PkeUnlock.holdingBox }
                     }
                     val handedOver = PkeUnlock.holdingBox && live.alive
@@ -1750,7 +1771,8 @@ class MainActivity : AppCompatActivity() {
         }
         card.visibility = View.VISIBLE
         val running = engineState() == true
-        val v = r.volts
+        // A6: a fresh OBD voltage wins (the box's live link isn't opened for it then).
+        val v = ObdLive.freshVolt()?.toFloat() ?: r.volts
         val volts = findViewById<TextView>(R.id.pke_volts)
         volts.text = if (v != null) String.format(java.util.Locale.getDefault(), "%.1f", v) else "--"
         // Manel (22 Oct): orange < 11.5 V parked / < 12.1 V running; red < 11.2 V parked / < 11.8 V running.

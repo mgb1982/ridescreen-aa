@@ -70,6 +70,12 @@ object ObdLive {
 
     internal fun engineFromRpm(rpm: Double): Boolean = rpm >= ENGINE_ON_RPM
 
+    /** A6 · the ECU's module voltage if read under [maxAgeMs] ago, else null. */
+    fun freshVolt(maxAgeMs: Long = PkeLivePolicy.OBD_VOLT_FRESH_MS): Double? {
+        val s = latest ?: return null
+        return s.volt?.takeIf { SystemClock.elapsedRealtime() - s.atMs < maxAgeMs }
+    }
+
     fun running(): Boolean = worker?.isAlive == true
 
     fun start(ctx: Context) {
@@ -290,4 +296,15 @@ internal object ObdPace {
     const val SLOW_ROUND_MS = 700L
     fun gapMs(dashboardVisible: Boolean, roundTookMs: Long): Long =
         if (dashboardVisible) 0L else (SLOW_ROUND_MS - roundTookMs).coerceAtLeast(0L)
+}
+
+/** A6 · pure rules for the keyless box's live link (unit tested). */
+internal object PkeLivePolicy {
+    const val OBD_VOLT_FRESH_MS = 5_000L
+    /** Voltage from the box this often when there is no OBD voltage (was 2 s). */
+    const val VOLT_EVERY_MS = 5_000L
+    /** Lock state at most this long apart (always also re-read after a command, in PkeUnlock). */
+    const val LOCK_EVERY_MS = 30_000L
+    fun useObdVolt(obdVolt: Double?): Boolean = obdVolt != null
+    fun lockDue(msSinceLockRead: Long): Boolean = msSinceLockRead >= LOCK_EVERY_MS
 }
