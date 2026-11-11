@@ -128,10 +128,20 @@ class AaCompositor(private val log: (String) -> Unit) {
     private var cardFullCanvas = false          // true: [cardPending] belongs to the caller (reused), don't recycle it
     private val LIVE_TICK_MS = 125L       // 8 fps: gauges don't need more, and a static scene is cheap to encode
 
+    // A4 · [liveSig] returns what the dashboard would paint (already rounded). Same as last tick → no
+    // redraw, no upload, no encode; still redrawn at least every [LIVE_FORCE_MS].
+    @Volatile private var liveSig: (() -> Any?)? = null
+    private var lastLiveSig: Any? = null
+    private var lastLiveDrawMs = 0L
+    private var liveForce = true
+    private val LIVE_FORCE_MS = 2_000L
+
     /** Turn the live layer on ([build] runs on the GL thread each tick) or off (null: back to Android Auto). */
-    fun setLiveLayer(build: ((Int, Int) -> Bitmap?)?) {
+    fun setLiveLayer(build: ((Int, Int) -> Bitmap?)?, sig: (() -> Any?)? = null) {
         handler.post {
             handler.removeCallbacks(liveTick)
+            liveSig = sig
+            liveForce = true
             liveBuild = build
             if (build != null) {
                 log("[DASHBOARD] live layer on (${1000 / LIVE_TICK_MS} fps)")
@@ -151,8 +161,15 @@ class AaCompositor(private val log: (String) -> Unit) {
                 cardUntil <= android.os.SystemClock.uptimeMillis()) {
                 // The dashboard fills the whole bike canvas: rider margins are for Android Auto, and
                 // the area outside them would otherwise stay black (a bar on top on the 125X).
-                val bmp = try { build(canvasW, canvasH) } catch (e: Exception) { log("[DASHBOARD] draw failed: $e"); null }
-                if (bmp != null) { cardPending = bmp; cardKeep = true; cardFullCanvas = true; drawFrame() }
+                val now = android.os.SystemClock.uptimeMillis()
+                val sig = try { liveSig?.invoke()?.let { listOf(it, canvasW, canvasH) } } catch (_: Exception) { null }
+                if (LiveRedraw.shouldDraw(sig, lastLiveSig, now - lastLiveDrawMs, liveForce, LIVE_FORCE_MS)) {
+                    val bmp = try { build(canvasW, canvasH) } catch (e: Exception) { log("[DASHBOARD] draw failed: $e"); null }
+                    if (bmp != null) {
+                        cardPending = bmp; cardKeep = true; cardFullCanvas = true; drawFrame()
+                        lastLiveSig = sig; lastLiveDrawMs = now; liveForce = false
+                    }
+                }
             }
             handler.postDelayed(this, LIVE_TICK_MS)
         }
@@ -175,7 +192,7 @@ class AaCompositor(private val log: (String) -> Unit) {
             log("[CARD] showing ${w}x$h card for ${ms} ms")
             drawFrame()
             handler.postDelayed({
-                if (cardUntil == until) { cardUntil = 0L; log("[CARD] done — back to Android Auto"); drawFrame() }
+                if (cardUntil == until) { cardUntil = 0L; liveForce = true; log("[CARD] done — back to Android Auto"); drawFrame() }
             }, ms + 30)
         }
     }
@@ -772,4 +789,10 @@ class AaCompositor(private val log: (String) -> Unit) {
         }
         return s
     }
+}
+
+/** A4 · pure rule (unit tested): draw the live dashboard only if what it shows changed, or it's due. */
+internal object LiveRedraw {
+    fun shouldDraw(sig: Any?, lastSig: Any?, msSinceLastDraw: Long, forced: Boolean, forceEveryMs: Long): Boolean =
+        forced || sig == null || sig != lastSig || msSinceLastDraw >= forceEveryMs
 }

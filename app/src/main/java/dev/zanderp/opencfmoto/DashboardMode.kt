@@ -188,7 +188,7 @@ object DashboardMode {
     private fun engage(ctx: Context, vp: VideoPipeline?, on: Boolean) {
         wanted = on
         val app = ctx.applicationContext
-        vp?.setLiveLayer(if (on) liveBuilder(app) else null)
+        vp?.setLiveLayer(if (on) liveBuilder(app) else null, if (on) { { signature(app) } } else null)
         LogBus.log("[DASHBOARD] ${if (on) "on" else "off"} (theme ${theme(app).id})")
     }
 
@@ -224,7 +224,23 @@ object DashboardMode {
         return gpsKmh
     }
 
+    /** A4 · what the dashboard would paint now, rounded like the renderer (text) and fine enough for needles. */
+    private fun signature(ctx: Context): String = signatureOf(
+        collect(ctx), isLight(ctx), design(ctx).name, visibleFields(ctx).sorted().joinToString(","),
+        java.text.SimpleDateFormat("HH:mm", java.util.Locale.US).format(java.util.Date()),
+    )
+
     // ── pure helpers (unit tested)
+
+    /** Speed, temperatures and percentages to the unit, RPM to 50 (0.5 % of the dial), volts to 0.1. */
+    internal fun signatureOf(d: Data, light: Boolean, design: String, fields: String, clock: String): String {
+        fun r(v: Double?, step: Double) = v?.let { Math.round(it / step) }?.toString() ?: "-"
+        return listOf(
+            r(d.rpm, 50.0), r(d.speedKmh, 1.0), d.speedFromGps, r(d.coolant, 1.0), r(d.throttle, 1.0), r(d.volt, 0.1),
+            r(d.load, 1.0), r(d.intake, 1.0), r(d.baro, 1.0), r(d.absoluteLoad, 1.0), r(d.relativeThrottle, 1.0),
+            d.obdLive, light, design, fields, clock,
+        ).joinToString("|")
+    }
 
     /** OBD speed wins; otherwise the GPS one (flagged), with the standstill jitter removed. Null: no speed at all. */
     internal fun pickSpeed(obdKmh: Double?, gpsKmh: Double?): Pair<Double, Boolean>? = when {
