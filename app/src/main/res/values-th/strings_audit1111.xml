@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controls_dash_saver">ประหยัดแบตเมื่อใช้แดชบอร์ด</string>
+    <string name="controls_dash_saver_hint">Android Auto จะหยุดส่งวิดีโอระหว่างที่แดชบอร์ดแสดงบนหน้าปัด เสียงและการนำทางยังทำงานต่อ การกลับไปที่ Android Auto ใช้เวลาประมาณหนึ่งวินาที</string>
+</resources>

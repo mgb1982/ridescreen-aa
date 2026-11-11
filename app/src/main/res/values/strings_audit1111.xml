@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controls_dash_saver">Battery saver with the dashboard</string>
+    <string name="controls_dash_saver_hint">Android Auto stops sending video while the dashboard is on the dash. Sound and directions keep going; going back to Android Auto takes about a second.</string>
+</resources>

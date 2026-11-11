@@ -131,6 +131,13 @@ object DashboardMode {
     }
     fun fieldIds(): List<String> = fieldIds
 
+    /** A3 · battery saver: Android Auto stops sending video while the dashboard is shown. Off by default. */
+    fun saver(ctx: Context) = BikeScope.getBoolean(prefs(ctx), ctx, "saver", false)
+    fun setSaver(ctx: Context, on: Boolean) {
+        BikeScope.putBoolean(prefs(ctx), ctx, "saver", on)
+        if (wanted) applySaver(ctx.applicationContext, on)   // takes effect now if the dashboard is up
+    }
+
     /** Open straight into the dashboard when the dash connects, instead of Android Auto. */
     fun startInDashboard(ctx: Context) = BikeScope.getBoolean(prefs(ctx), ctx, "start", false)
     fun setStartInDashboard(ctx: Context, on: Boolean) = BikeScope.putBoolean(prefs(ctx), ctx, "start", on)
@@ -183,11 +190,33 @@ object DashboardMode {
     /** The projection was stopped by the rider: the next connection starts in Android Auto again. */
     fun reset() {
         wanted = false
+        AaVideoBridge.videoFocusHeld = false
+    }
+
+    private val main by lazy { android.os.Handler(android.os.Looper.getMainLooper()) }
+
+    /** A3 · hold (true) or give back (false) the screen to Android Auto. */
+    private fun applySaver(app: Context, hold: Boolean) {
+        if (AaVideoBridge.videoFocusHeld == hold) return
+        AaVideoBridge.videoFocusHeld = hold
+        val send = AaVideoBridge.sendVideoFocus
+        LogBus.log("[DASHBOARD] saver: ${if (hold) "Android Auto video focus LOSS (audio and guidance keep going)" else "video focus GAIN back to Android Auto"}${if (send == null) " (no AA session yet)" else ""}")
+        try { send?.invoke(!hold) } catch (e: Exception) { LogBus.log("[DASHBOARD] saver: focus change failed: $e") }
+        if (!hold) {
+            val askedAt = SystemClock.elapsedRealtime()
+            main.postDelayed({
+                if (!AaVideoBridge.videoFocusHeld && AaVideoBridge.lastAaFrameAtMs < askedAt) {
+                    LogBus.log("[DASHBOARD] saver: no Android Auto picture 2 s after giving the screen back — asking for a keyframe")
+                    try { AaVideoBridge.requestAaKeyframe?.invoke() } catch (_: Exception) {}
+                }
+            }, 2_000L)
+        }
     }
 
     private fun engage(ctx: Context, vp: VideoPipeline?, on: Boolean) {
         wanted = on
         val app = ctx.applicationContext
+        if (on && saver(app)) applySaver(app, true) else if (!on) applySaver(app, false)
         vp?.setLiveLayer(if (on) liveBuilder(app) else null, if (on) { { signature(app) } } else null)
         LogBus.log("[DASHBOARD] ${if (on) "on" else "off"} (theme ${theme(app).id})")
     }

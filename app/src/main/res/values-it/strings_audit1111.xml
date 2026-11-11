@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controls_dash_saver">Risparmio con la dashboard</string>
+    <string name="controls_dash_saver_hint">Android Auto smette di inviare video mentre la dashboard è sul cruscotto. Audio e indicazioni continuano; tornare ad Android Auto richiede circa un secondo.</string>
+</resources>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controls_dash_saver">Экономия с дашбордом</string>
+    <string name="controls_dash_saver_hint">Android Auto перестаёт отправлять видео, пока на приборной панели показан дашборд. Звук и подсказки продолжают работать; возврат к Android Auto занимает около секунды.</string>
+</resources>

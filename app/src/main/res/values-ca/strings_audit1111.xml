@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controls_dash_saver">Estalvi amb el dashboard</string>
+    <string name="controls_dash_saver_hint">Android Auto deixa d\'enviar vídeo mentre el dashboard és al quadre. El so i les indicacions continuen; tornar a Android Auto triga un segon.</string>
+</resources>

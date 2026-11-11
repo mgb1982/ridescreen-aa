@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controls_dash_saver">Εξοικονόμηση με το ταμπλό</string>
+    <string name="controls_dash_saver_hint">Το Android Auto σταματά να στέλνει βίντεο όσο το ταμπλό εμφανίζεται στην οθόνη της μηχανής. Ο ήχος και οι οδηγίες συνεχίζουν· η επιστροφή στο Android Auto παίρνει περίπου ένα δευτερόλεπτο.</string>
+</resources>

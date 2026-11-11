@@ -55,6 +55,20 @@ object AaVideoBridge {
     @Volatile var onSteadyVideo: (() -> Unit)? = null
 
     /**
+     * A3 · "battery saver with the dashboard": while true the head unit tells Android Auto it doesn't
+     * have the screen (VideoFocus LOSS), so the phone stops rendering and sending video; audio and
+     * guidance keep going. Read by [dev.zanderp.opencfmoto.aa.AapControl] so a new AA session (or an AA
+     * request for the screen) gets LOSS too while it is set.
+     */
+    @Volatile var videoFocusHeld: Boolean = false
+    /** Set by the AA receiver: sends a VideoFocus event to the live session (true = gain). */
+    @Volatile var sendVideoFocus: ((Boolean) -> Unit)? = null
+    /** Set by the AA receiver: asks Android Auto for a fresh keyframe (focus cycle). */
+    @Volatile var requestAaKeyframe: (() -> Unit)? = null
+    /** Elapsed time of the last second in which Android Auto video was decoded (fps > 0). */
+    @Volatile var lastAaFrameAtMs: Long = 0L
+
+    /**
      * Bike-touchscreen → Android Auto input bridge. [EasyConnProber] decodes the dash's touch frames
      * (PXC media cmdType 32) and calls this with the raw bike-canvas coordinates, the finger index
      * ([pointerId], 0/1 — the CFDL26 dash reports two-finger multi-touch), and a normalised action

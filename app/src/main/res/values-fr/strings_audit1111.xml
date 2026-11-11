@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controls_dash_saver">Économie avec le tableau de bord</string>
+    <string name="controls_dash_saver_hint">Android Auto arrête d\'envoyer la vidéo tant que le tableau de bord est affiché. Le son et le guidage continuent ; revenir à Android Auto prend environ une seconde.</string>
+</resources>

@@ -35,8 +35,14 @@ internal class AapControlMedia(private val aapTransport: AapTransport) : AapCont
                     aapTransport.wasUserExit = true
                     aapTransport.stop()
                 } else if (focusRequest.mode == Media.VideoFocusMode.VIDEO_FOCUS_PROJECTED) {
-                    AaLog.i("Video Focus PROJECTED received. Replying with VideoFocusEvent GAIN.")
-                    aapTransport.send(VideoFocusEvent(gain = true, unsolicited = false))
+                    if (dev.zanderp.opencfmoto.AaVideoBridge.videoFocusHeld) {
+                        // A3: dashboard saver on — keep the screen to ourselves; audio/guidance continue.
+                        AaLog.i("Video Focus PROJECTED received while the dashboard saver holds the screen → LOSS")
+                        aapTransport.send(VideoFocusEvent(gain = false, unsolicited = false))
+                    } else {
+                        AaLog.i("Video Focus PROJECTED received. Replying with VideoFocusEvent GAIN.")
+                        aapTransport.send(VideoFocusEvent(gain = true, unsolicited = false))
+                    }
                 }
                 return 0
             }
@@ -85,8 +91,9 @@ internal class AapControlMedia(private val aapTransport: AapTransport) : AapCont
         if (channel == Channel.ID_VID) {
             // Headless: no projection Activity to broadcast to — grant video focus directly so
             // the phone starts streaming H.264 into our (always-ready) encoder surface.
-            AaLog.i("Video channel set up → sending VideoFocus GAIN")
-            aapTransport.send(VideoFocusEvent(gain = true, unsolicited = true))
+            val held = dev.zanderp.opencfmoto.AaVideoBridge.videoFocusHeld
+            AaLog.i("Video channel set up → sending VideoFocus ${if (held) "LOSS (dashboard saver)" else "GAIN"}")
+            aapTransport.send(VideoFocusEvent(gain = !held, unsolicited = true))
         }
         return 0
     }

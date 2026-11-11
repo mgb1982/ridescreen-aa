@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controls_dash_saver">Poupança com o painel</string>
+    <string name="controls_dash_saver_hint">O Android Auto deixa de enviar vídeo enquanto o painel está no ecrã da mota. O som e as indicações continuam; voltar ao Android Auto demora cerca de um segundo.</string>
+</resources>

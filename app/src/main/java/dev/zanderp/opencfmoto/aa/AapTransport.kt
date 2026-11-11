@@ -60,7 +60,14 @@ class AapTransport(
     val isAlive: Boolean
         get() = pollThread?.isAlive ?: false
 
+    /** A3: public entry for a keyframe request (same focus cycle as the decoder-error recovery). */
+    fun requestKeyframe() = triggerFocusCycleRecovery()
+
     private fun triggerFocusCycleRecovery() {
+        if (dev.zanderp.opencfmoto.AaVideoBridge.videoFocusHeld) {
+            AaLog.w("AapTransport: keyframe recovery skipped — the dashboard saver holds the screen")
+            return
+        }
         AaLog.w("AapTransport: Requesting recovery keyframe via focus cycle.")
         send(VideoFocusEvent(gain = false, unsolicited = false))
         Handler(Looper.getMainLooper()).postDelayed({

@@ -76,6 +76,7 @@ class AaReceiver(
         fallbackHeight = ServiceDiscoveryResponse.AA_HEIGHT
         onFpsChanged = { fps ->
             val now = android.os.SystemClock.elapsedRealtime()
+            if (fps > 0) dev.zanderp.opencfmoto.AaVideoBridge.lastAaFrameAtMs = now
             if (FpsLog.shouldLog(lastFpsLogged, fps, now - lastFpsLogAt)) {
                 log("[AA] decode fps=$fps")
                 lastFpsLogged = fps; lastFpsLogAt = now
@@ -222,6 +223,10 @@ class AaReceiver(
             try { onSessionEnded?.invoke(userExit) } catch (_: Exception) {}
         }
         transport = t
+        dev.zanderp.opencfmoto.AaVideoBridge.sendVideoFocus = { gain ->
+            if (transport === t) t.send(VideoFocusEvent(gain = gain, unsolicited = true))
+        }
+        dev.zanderp.opencfmoto.AaVideoBridge.requestAaKeyframe = { if (transport === t) t.requestKeyframe() }
         AaVideoBridge.aaSessionLive = true
         AaVideoBridge.aaSessionSeen = true
         AaVideoBridge.aaDecoding = false
