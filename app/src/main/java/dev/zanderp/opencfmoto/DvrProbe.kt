@@ -22,7 +22,7 @@ object DvrProbe {
 
     /** 7686: HTTP JSON endpoint at 192.168.3.1 found (unused) in the official EU app.
      *  11021: Carbit firmware FTP — connect only, never log in. */
-    private val PORTS = listOf(21, 23, 80, 443, 554, 1935, 7686, 8000, 8080, 8081, 8192, 8888, 9000,
+    private val PORTS = listOf(21, 80, 443, 554, 1935, 7686, 8000, 8080, 8081, 8192, 8888, 9000,
         10920, 10921, 10922, 10930, 11021, 6666, 6667, 3333, 5000)
     private val HTTP_PORTS = setOf(80, 7686, 8000, 8080, 8081, 8192, 8888, 9000, 5000)
     private val NO_READ = setOf(11021, 10920, 10921, 10922, 10930) // don't disturb the projection plane
@@ -86,7 +86,7 @@ object DvrProbe {
         net.socketFactory.createSocket().use { it.connect(InetSocketAddress(host, port), 800); true }
     } catch (_: Exception) { false }
 
-    /** Reads whatever the server sends by itself (FTP/telnet greetings). Sends nothing. */
+    /** Reads whatever the server sends by itself (service greetings). Sends nothing. */
     private fun banner(net: Network, host: String, port: Int) {
         try {
             net.socketFactory.createSocket().use { s: Socket ->
