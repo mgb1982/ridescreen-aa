@@ -22,7 +22,7 @@
 
 ## ¿Qué es?
 
-**RideScreen AA** pone **Google Maps, Waze, la música y el Asistente** de Android Auto en el cuadro de tu moto, por Wi‑Fi y sin cables, desde un móvil Android. Funciona con los cuadros **EasyConn / Carbit** (los que muestran un QR de MotoPlay) y está probada a diario en la **Zontes 125X / ZT125T‑X** y la **125V**, y confirmada en la **368K** y la **368E**.
+**RideScreen AA** pone **Google Maps, Waze, la música y el Asistente** de Android Auto en el cuadro de tu moto, por Wi‑Fi y sin cables, desde un móvil Android. Funciona con los cuadros **EasyConn / Carbit** (los que muestran un QR de MotoPlay) y está probada a diario en la **Zontes 125X / ZT125T‑X** y la **125V**. La comunidad la ha confirmado en el resto de la gama 125 (125D, 125E, 125M), toda la gama **368**, la gama **703** (703F, 703T, 703RR), la **T350X** y la **350D / 350E**, y en motos de otras marcas como Voge, Moto Morini, QJ Motor, Benelli o Rieju. Lista completa en **[motos compatibles](docs/SUPPORTED-BIKES.md)**.
 
 Además de proyectar, la app **registra tus viajes**, te dice **dónde aparcaste** (con foto), lleva el **mantenimiento**, busca la **gasolina más barata**, **avisa a tus contactos si te caes** y tiene **app para el reloj Wear OS**.
 
@@ -59,6 +59,16 @@ Está basada en [OpenCfMoto](https://github.com/zanderp/open-cfmoto), de Alexand
 <img src="docs/screenshots/ridescreen/movil/12_gasolineras.png" width="200" alt="Gasolineras cerca"/>&nbsp;
 <img src="docs/screenshots/ridescreen/movil/22_mantenimiento.png" width="200" alt="Mantenimiento"/>
 </p>
+
+### 🔑 La llave en el móvil (Zontes con llave de proximidad)
+- **Desbloquear, bloquear, abrir el asiento y el depósito** desde la app o desde el **widget «Controles de la moto»**. Tras bloquear o desbloquear, la app relee el estado y avisa si no coincide.
+- **Nunca con la moto en marcha**: bloquear, asiento y depósito se rechazan si la moto se mueve.
+- **Contraseña Bluetooth de la llave** (opcional, 2.4.1) para las motos que la piden.
+- El **McuID** se lee con la cámara desde el QR de información del cuadro, y no va a las copias de seguridad.
+
+### 🔌 OBD y dashboard
+- **Lector OBD** con un adaptador ELM327 Bluetooth, **solo lectura**: códigos de avería y RPM, velocidad, temperatura y acelerador en directo.
+- **Dashboard en el cuadro** en lugar de Android Auto: estilos **Sport, Racing y Touring**, de día y de noche. Sin OBD, la velocidad sale del GPS.
 
 ### 🏍️ Tus viajes
 - Cada salida se guarda sola: **ruta coloreada por velocidad**, km, tiempos y nombre automático («Sants → Zona Franca»).
@@ -115,8 +125,10 @@ RideScreen AA es gratis y sin anuncios. Si te resulta útil, puedes [invitarme a
 - **Ride log** coloured by speed, heat map, records, trophies, year in review; **traffic‑light analysis**; **ride video** with map/speed overlay; **live location sharing**.
 - **Crash detection** (experimental, opt‑in): alarm on phone and watch, then an SMS with your location to up to 3 contacts. Not a certified safety device.
 - **Wear OS app**: next turn, compass to your parked bike, D‑pad for Android Auto, crash alarm.
+- **Phone as the key** (Zontes with proximity key): unlock, lock, seat and fuel cap from the app or a home‑screen widget, refused while the bike moves; optional Bluetooth key password (2.4.1).
+- **OBD reader** (ELM327 Bluetooth, read‑only) and an **on‑dash dashboard** (Sport, Racing, Touring) instead of Android Auto.
 
-The app is in Spanish, Catalan and English. Download the APK from **[Releases](https://github.com/mgb1982/ridescreen-aa/releases/latest)**. The original OpenCfMoto documentation (supported bikes, handlebar buttons, protocol notes) is kept in **[docs/OPENCFMOTO-README.md](docs/OPENCFMOTO-README.md)**.
+The app is in English, Spanish, Catalan, Italian, French, German, Portuguese, Greek, Russian and Thai. Tested daily on the Zontes 125X / 125V and confirmed by the community on many more bikes: see the **[supported bikes list](docs/SUPPORTED-BIKES.md)**. Download the APK from **[Releases](https://github.com/mgb1982/ridescreen-aa/releases/latest)**. The original OpenCfMoto documentation (supported bikes, handlebar buttons, protocol notes) is kept in **[docs/OPENCFMOTO-README.md](docs/OPENCFMOTO-README.md)**.
 
 ## Licencia · License
 AGPL‑3.0‑or‑later. Ver [LICENSE](LICENSE) y [NOTICE](NOTICE). Not affiliated with Zontes, CFMoto or Google. Android Auto is a trademark of Google LLC.
