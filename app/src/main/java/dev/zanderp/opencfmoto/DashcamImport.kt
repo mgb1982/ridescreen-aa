@@ -77,10 +77,10 @@ object DashcamImport {
         val found = ArrayList<Remote>()
         for (angle in ANGLES) {
             if (cancelled.get()) break
-            val dates = try { listDates(net, angle) } catch (e: Exception) { log("$angle: DATE failed ${e.javaClass.simpleName}"); emptyList() }
+            val dates = try { listDates(net, angle) } catch (e: Exception) { log("$angle: DATE failed ${e.javaClass.simpleName}: ${e.message}"); emptyList() }
             log("$angle: dates=$dates")
             for (day in wantDays.filter { it in dates }) {
-                val slots = try { listSlots(net, angle, day) } catch (e: Exception) { log("$angle $day: TIME failed ${e.javaClass.simpleName}"); emptyList() }
+                val slots = try { listSlots(net, angle, day) } catch (e: Exception) { log("$angle $day: TIME failed ${e.javaClass.simpleName}: ${e.message}"); emptyList() }
                 for (slot in slots) {
                     for (c in listClips(net, angle, day, slot)) {
                         val end = c.startMs + c.durMs

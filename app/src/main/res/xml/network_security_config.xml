@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Plain HTTP is allowed ONLY to the bike dash (192.168.3.1): the Zontes 368G camera clips are
+     served over unencrypted HTTP on its own Wi-Fi. Everything else keeps the Android default. -->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">192.168.3.1</domain>
+    </domain-config>
+</network-security-config>
