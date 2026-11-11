@@ -223,13 +223,13 @@ object DashcamImport {
         }
         listView.adapter = adapter
 
-        lateinit var dialog: androidx.appcompat.app.AlertDialog
+        var dialogRef: androidx.appcompat.app.AlertDialog? = null
         fun refresh() {
             val chosen = visible().filter { it in checked }
             val mb = chosen.sumOf { it.size } / 1048576
             total.text = activity.getString(R.string.dashcam_total, chosen.size, mb)
             adapter.notifyDataSetChanged()
-            if (::dialog.isInitialized) dialog.getButton(android.content.DialogInterface.BUTTON_POSITIVE)?.isEnabled = chosen.isNotEmpty()
+            dialogRef?.getButton(android.content.DialogInterface.BUTTON_POSITIVE)?.isEnabled = chosen.isNotEmpty()
         }
         listView.setOnItemClickListener { _, _, p, _ ->
             val c = visible()[p]
@@ -242,13 +242,14 @@ object DashcamImport {
             refresh()
         }
 
-        dialog = MaterialAlertDialogBuilder(activity)
+        val dialog = MaterialAlertDialogBuilder(activity)
             .setTitle(R.string.dashcam_title)
             .setView(root)
             .setPositiveButton(R.string.dashcam_import, null)
             .setNegativeButton(android.R.string.cancel) { _, _ -> ImportLink.release(activity, "cancelled at the clip list") }
             .setCancelable(false)
             .create()
+        dialogRef = dialog
         dialog.setOnShowListener {
             refresh()
             dialog.getButton(android.content.DialogInterface.BUTTON_POSITIVE).setOnClickListener {
