@@ -2,4 +2,26 @@
 <resources>
     <string name="controls_dash_saver">ประหยัดแบตเมื่อใช้แดชบอร์ด</string>
     <string name="controls_dash_saver_hint">Android Auto จะหยุดส่งวิดีโอระหว่างที่แดชบอร์ดแสดงบนหน้าปัด เสียงและการนำทางยังทำงานต่อ การกลับไปที่ Android Auto ใช้เวลาประมาณหนึ่งวินาที</string>
+    <string name="dashcam_entry">นำเข้าคลิปจากกล้องรถ</string>
+    <string name="dashcam_title">คลิปจากกล้องรถ</string>
+    <string name="dashcam_channel">การนำเข้าจากกล้อง</string>
+    <string name="dashcam_stop_first_title">หยุดการฉายภาพไหม</string>
+    <string name="dashcam_stop_first_msg">ดาวน์โหลดคลิปไม่ได้ขณะที่หน้าปัดแสดง Android Auto หรือแผนที่ เพราะ Wi‑Fi ของรถรับทั้งสองอย่างพร้อมกันไม่ไหว หยุดการฉายภาพแล้วทำต่อไหม</string>
+    <string name="dashcam_stop_and_continue">หยุดแล้วทำต่อ</string>
+    <string name="dashcam_pick_trip">นำเข้าคลิปกล้องของ…</string>
+    <string name="dashcam_no_trips">ยังไม่มีทริป</string>
+    <string name="dashcam_joining">กำลังเชื่อมต่อ Wi‑Fi ของรถ…</string>
+    <string name="dashcam_join_failed">เชื่อมต่อกล้องของรถไม่ได้ รถเปิดอยู่และหน้าปัดทำงานอยู่หรือไม่</string>
+    <string name="dashcam_looking">กำลังค้นหาคลิป…</string>
+    <string name="dashcam_none">ไม่มีคลิปจากกล้องสำหรับทริปนี้</string>
+    <string name="dashcam_camera_front">หน้า</string>
+    <string name="dashcam_camera_rear">หลัง</string>
+    <string name="dashcam_camera_both">ทั้งสอง</string>
+    <string name="dashcam_total">%1$d คลิป · %2$d MB</string>
+    <string name="dashcam_no_space">พื้นที่ไม่พอ: ต้องใช้ %1$d MB เหลือ %2$d MB</string>
+    <string name="dashcam_import">นำเข้า</string>
+    <string name="dashcam_progress">คลิป %1$d จาก %2$d · %3$d MB</string>
+    <string name="dashcam_done">นำเข้า %1$d · มีอยู่แล้ว %2$d · ล้มเหลว %3$d</string>
+    <string name="dashcam_done_hint">เปิดตัวสร้างวิดีโอของทริป: คลิปจะถูกวางตามเวลาเอง</string>
+    <string name="dashcam_already_running">กำลังนำเข้าคลิปอยู่แล้ว</string>
 </resources>

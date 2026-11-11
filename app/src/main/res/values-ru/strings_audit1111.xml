@@ -2,4 +2,26 @@
 <resources>
     <string name="controls_dash_saver">Экономия с дашбордом</string>
     <string name="controls_dash_saver_hint">Android Auto перестаёт отправлять видео, пока на приборной панели показан дашборд. Звук и подсказки продолжают работать; возврат к Android Auto занимает около секунды.</string>
+    <string name="dashcam_entry">Импорт клипов с камеры мотоцикла</string>
+    <string name="dashcam_title">Клипы с камеры мотоцикла</string>
+    <string name="dashcam_channel">Импорт с камеры</string>
+    <string name="dashcam_stop_first_title">Остановить проекцию?</string>
+    <string name="dashcam_stop_first_msg">Клипы нельзя скачать, пока на приборной панели Android Auto или карта: её Wi‑Fi не тянет и то и другое. Остановить проекцию и продолжить?</string>
+    <string name="dashcam_stop_and_continue">Остановить и продолжить</string>
+    <string name="dashcam_pick_trip">Импортировать клипы камеры для…</string>
+    <string name="dashcam_no_trips">Поездок пока нет</string>
+    <string name="dashcam_joining">Подключение к Wi‑Fi мотоцикла…</string>
+    <string name="dashcam_join_failed">Не удалось связаться с камерой мотоцикла. Мотоцикл включён и приборная панель работает?</string>
+    <string name="dashcam_looking">Поиск клипов…</string>
+    <string name="dashcam_none">Для этой поездки нет клипов камеры.</string>
+    <string name="dashcam_camera_front">Передняя</string>
+    <string name="dashcam_camera_rear">Задняя</string>
+    <string name="dashcam_camera_both">Обе</string>
+    <string name="dashcam_total">Клипов: %1$d · %2$d МБ</string>
+    <string name="dashcam_no_space">Недостаточно места: нужно %1$d МБ, свободно %2$d МБ.</string>
+    <string name="dashcam_import">Импортировать</string>
+    <string name="dashcam_progress">Клип %1$d из %2$d · %3$d МБ</string>
+    <string name="dashcam_done">Импортировано %1$d · уже были %2$d · с ошибкой %3$d</string>
+    <string name="dashcam_done_hint">Откройте создание видео поездки: клипы расставляются по времени.</string>
+    <string name="dashcam_already_running">Импорт клипов уже идёт</string>
 </resources>

@@ -2,4 +2,26 @@
 <resources>
     <string name="controls_dash_saver">Ahorro con el dashboard</string>
     <string name="controls_dash_saver_hint">Android Auto deja de enviar vídeo mientras el dashboard está en el cuadro. El sonido y las indicaciones siguen; volver a Android Auto tarda un segundo.</string>
+    <string name="dashcam_entry">Importar clips de la cámara de la moto</string>
+    <string name="dashcam_title">Clips de la cámara de la moto</string>
+    <string name="dashcam_channel">Importación de la cámara</string>
+    <string name="dashcam_stop_first_title">¿Parar la proyección?</string>
+    <string name="dashcam_stop_first_msg">No se pueden bajar los clips mientras el cuadro muestra Android Auto o el mapa: su Wi‑Fi no puede con las dos cosas. ¿Paro la proyección y sigo?</string>
+    <string name="dashcam_stop_and_continue">Parar y seguir</string>
+    <string name="dashcam_pick_trip">Importar clips de la cámara de…</string>
+    <string name="dashcam_no_trips">Aún no hay viajes</string>
+    <string name="dashcam_joining">Conectando con el Wi‑Fi de la moto…</string>
+    <string name="dashcam_join_failed">No se ha podido llegar a la cámara de la moto. ¿Está la moto encendida y el cuadro activo?</string>
+    <string name="dashcam_looking">Buscando clips…</string>
+    <string name="dashcam_none">No hay clips de la cámara para este viaje.</string>
+    <string name="dashcam_camera_front">Delantera</string>
+    <string name="dashcam_camera_rear">Trasera</string>
+    <string name="dashcam_camera_both">Ambas</string>
+    <string name="dashcam_total">%1$d clips · %2$d MB</string>
+    <string name="dashcam_no_space">No hay espacio suficiente: hacen falta %1$d MB y quedan %2$d MB.</string>
+    <string name="dashcam_import">Importar</string>
+    <string name="dashcam_progress">Clip %1$d de %2$d · %3$d MB</string>
+    <string name="dashcam_done">Importados %1$d · ya estaban %2$d · fallidos %3$d</string>
+    <string name="dashcam_done_hint">Abre el creador de vídeo del viaje: los clips se colocan solos por la hora.</string>
+    <string name="dashcam_already_running">Ya se están importando clips</string>
 </resources>

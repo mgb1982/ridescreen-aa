@@ -59,6 +59,11 @@ object LockHold {
 
     /** True if an automatic connect may go ahead now; logs once per refusal. */
     fun allowsAuto(ctx: Context, trigger: Trigger): Boolean {
+        // B1/B4: an import of bike camera clips holds the bike's Wi-Fi without Android Auto — don't start a ride under it.
+        if (DashcamImport.busy()) {
+            LogBus.logThrottled("dashcam-hold", "[DASHCAM] automatic connect (${trigger.name.lowercase()}) skipped — importing camera clips", 60_000)
+            return false
+        }
         val p = prefs(ctx)
         val at = p.getLong(KEY_AT, 0L)
         val ok = allows(at, SystemClock.elapsedRealtime(), p.getBoolean(KEY_GONE, false), trigger)

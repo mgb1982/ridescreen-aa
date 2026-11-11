@@ -223,6 +223,10 @@
             </intent-filter>
         </service>
         <service
+            android:name=".DashcamImportService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+        <service
             android:name=".TripVideoService"
             android:exported="false"
             android:foregroundServiceType="dataSync" />

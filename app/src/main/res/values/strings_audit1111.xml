@@ -2,4 +2,26 @@
 <resources>
     <string name="controls_dash_saver">Battery saver with the dashboard</string>
     <string name="controls_dash_saver_hint">Android Auto stops sending video while the dashboard is on the dash. Sound and directions keep going; going back to Android Auto takes about a second.</string>
+    <string name="dashcam_entry">Import bike camera clips</string>
+    <string name="dashcam_title">Bike camera clips</string>
+    <string name="dashcam_channel">Bike camera import</string>
+    <string name="dashcam_stop_first_title">Stop the projection?</string>
+    <string name="dashcam_stop_first_msg">Clips can\'t be downloaded while the bike shows Android Auto or the map: its Wi-Fi can\'t carry both. Stop the projection and continue?</string>
+    <string name="dashcam_stop_and_continue">Stop and continue</string>
+    <string name="dashcam_pick_trip">Import camera clips for…</string>
+    <string name="dashcam_no_trips">No trips yet</string>
+    <string name="dashcam_joining">Connecting to the bike\'s Wi-Fi…</string>
+    <string name="dashcam_join_failed">Couldn\'t reach the bike\'s camera. Is the bike on, with the dash lit?</string>
+    <string name="dashcam_looking">Looking for clips…</string>
+    <string name="dashcam_none">No camera clips for this trip.</string>
+    <string name="dashcam_camera_front">Front</string>
+    <string name="dashcam_camera_rear">Rear</string>
+    <string name="dashcam_camera_both">Both</string>
+    <string name="dashcam_total">%1$d clips · %2$d MB</string>
+    <string name="dashcam_no_space">Not enough free space: %1$d MB needed, %2$d MB free.</string>
+    <string name="dashcam_import">Import</string>
+    <string name="dashcam_progress">Clip %1$d of %2$d · %3$d MB</string>
+    <string name="dashcam_done">Imported %1$d · already there %2$d · failed %3$d</string>
+    <string name="dashcam_done_hint">Open the trip\'s video maker: the clips are placed by time.</string>
+    <string name="dashcam_already_running">Already importing clips</string>
 </resources>

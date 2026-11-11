@@ -2,4 +2,26 @@
 <resources>
     <string name="controls_dash_saver">Estalvi amb el dashboard</string>
     <string name="controls_dash_saver_hint">Android Auto deixa d\'enviar vídeo mentre el dashboard és al quadre. El so i les indicacions continuen; tornar a Android Auto triga un segon.</string>
+    <string name="dashcam_entry">Importa clips de la càmera de la moto</string>
+    <string name="dashcam_title">Clips de la càmera de la moto</string>
+    <string name="dashcam_channel">Importació de la càmera</string>
+    <string name="dashcam_stop_first_title">Aturar la projecció?</string>
+    <string name="dashcam_stop_first_msg">No es poden baixar els clips mentre el quadre mostra Android Auto o el mapa: el seu Wi‑Fi no pot amb les dues coses. Aturo la projecció i continuo?</string>
+    <string name="dashcam_stop_and_continue">Atura i continua</string>
+    <string name="dashcam_pick_trip">Importa clips de la càmera de…</string>
+    <string name="dashcam_no_trips">Encara no hi ha viatges</string>
+    <string name="dashcam_joining">Connectant amb el Wi‑Fi de la moto…</string>
+    <string name="dashcam_join_failed">No s\'ha pogut arribar a la càmera de la moto. La moto és engegada i el quadre actiu?</string>
+    <string name="dashcam_looking">Cercant clips…</string>
+    <string name="dashcam_none">No hi ha clips de la càmera per a aquest viatge.</string>
+    <string name="dashcam_camera_front">Davantera</string>
+    <string name="dashcam_camera_rear">Posterior</string>
+    <string name="dashcam_camera_both">Totes dues</string>
+    <string name="dashcam_total">%1$d clips · %2$d MB</string>
+    <string name="dashcam_no_space">No hi ha prou espai: calen %1$d MB i en queden %2$d MB.</string>
+    <string name="dashcam_import">Importa</string>
+    <string name="dashcam_progress">Clip %1$d de %2$d · %3$d MB</string>
+    <string name="dashcam_done">Importats %1$d · ja hi eren %2$d · fallits %3$d</string>
+    <string name="dashcam_done_hint">Obre el creador de vídeo del viatge: els clips es col·loquen sols per l\'hora.</string>
+    <string name="dashcam_already_running">Ja s\'estan important clips</string>
 </resources>

@@ -2,4 +2,26 @@
 <resources>
     <string name="controls_dash_saver">Akkusparen mit dem Dashboard</string>
     <string name="controls_dash_saver_hint">Android Auto sendet kein Video, solange das Dashboard im Cockpit angezeigt wird. Ton und Navigationsansagen laufen weiter; zurück zu Android Auto dauert etwa eine Sekunde.</string>
+    <string name="dashcam_entry">Clips der Motorradkamera importieren</string>
+    <string name="dashcam_title">Clips der Motorradkamera</string>
+    <string name="dashcam_channel">Kamera-Import</string>
+    <string name="dashcam_stop_first_title">Projektion beenden?</string>
+    <string name="dashcam_stop_first_msg">Clips lassen sich nicht laden, solange das Cockpit Android Auto oder die Karte zeigt: Sein WLAN schafft nicht beides. Projektion beenden und weitermachen?</string>
+    <string name="dashcam_stop_and_continue">Beenden und weiter</string>
+    <string name="dashcam_pick_trip">Kameraclips importieren für…</string>
+    <string name="dashcam_no_trips">Noch keine Fahrten</string>
+    <string name="dashcam_joining">Verbinde mit dem WLAN des Motorrads…</string>
+    <string name="dashcam_join_failed">Die Kamera des Motorrads ist nicht erreichbar. Ist das Motorrad an und das Cockpit eingeschaltet?</string>
+    <string name="dashcam_looking">Suche Clips…</string>
+    <string name="dashcam_none">Keine Kameraclips für diese Fahrt.</string>
+    <string name="dashcam_camera_front">Vorne</string>
+    <string name="dashcam_camera_rear">Hinten</string>
+    <string name="dashcam_camera_both">Beide</string>
+    <string name="dashcam_total">%1$d Clips · %2$d MB</string>
+    <string name="dashcam_no_space">Nicht genug Speicher: %1$d MB nötig, %2$d MB frei.</string>
+    <string name="dashcam_import">Importieren</string>
+    <string name="dashcam_progress">Clip %1$d von %2$d · %3$d MB</string>
+    <string name="dashcam_done">Importiert %1$d · schon da %2$d · fehlgeschlagen %3$d</string>
+    <string name="dashcam_done_hint">Öffne den Videoersteller der Fahrt: Die Clips werden nach Uhrzeit eingeordnet.</string>
+    <string name="dashcam_already_running">Clips werden bereits importiert</string>
 </resources>

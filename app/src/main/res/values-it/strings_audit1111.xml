@@ -2,4 +2,26 @@
 <resources>
     <string name="controls_dash_saver">Risparmio con la dashboard</string>
     <string name="controls_dash_saver_hint">Android Auto smette di inviare video mentre la dashboard è sul cruscotto. Audio e indicazioni continuano; tornare ad Android Auto richiede circa un secondo.</string>
+    <string name="dashcam_entry">Importa i clip della telecamera della moto</string>
+    <string name="dashcam_title">Clip della telecamera della moto</string>
+    <string name="dashcam_channel">Importazione telecamera</string>
+    <string name="dashcam_stop_first_title">Interrompere la proiezione?</string>
+    <string name="dashcam_stop_first_msg">I clip non si possono scaricare mentre il cruscotto mostra Android Auto o la mappa: il suo Wi‑Fi non regge entrambe le cose. Interrompo la proiezione e continuo?</string>
+    <string name="dashcam_stop_and_continue">Interrompi e continua</string>
+    <string name="dashcam_pick_trip">Importa i clip della telecamera per…</string>
+    <string name="dashcam_no_trips">Ancora nessun viaggio</string>
+    <string name="dashcam_joining">Connessione al Wi‑Fi della moto…</string>
+    <string name="dashcam_join_failed">Impossibile raggiungere la telecamera della moto. La moto è accesa con il cruscotto attivo?</string>
+    <string name="dashcam_looking">Ricerca dei clip…</string>
+    <string name="dashcam_none">Nessun clip della telecamera per questo viaggio.</string>
+    <string name="dashcam_camera_front">Anteriore</string>
+    <string name="dashcam_camera_rear">Posteriore</string>
+    <string name="dashcam_camera_both">Entrambe</string>
+    <string name="dashcam_total">%1$d clip · %2$d MB</string>
+    <string name="dashcam_no_space">Spazio insufficiente: servono %1$d MB, liberi %2$d MB.</string>
+    <string name="dashcam_import">Importa</string>
+    <string name="dashcam_progress">Clip %1$d di %2$d · %3$d MB</string>
+    <string name="dashcam_done">Importati %1$d · già presenti %2$d · non riusciti %3$d</string>
+    <string name="dashcam_done_hint">Apri il creatore di video del viaggio: i clip vengono messi in ordine per orario.</string>
+    <string name="dashcam_already_running">Importazione dei clip già in corso</string>
 </resources>

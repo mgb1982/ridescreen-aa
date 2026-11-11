@@ -2,4 +2,26 @@
 <resources>
     <string name="controls_dash_saver">Εξοικονόμηση με το ταμπλό</string>
     <string name="controls_dash_saver_hint">Το Android Auto σταματά να στέλνει βίντεο όσο το ταμπλό εμφανίζεται στην οθόνη της μηχανής. Ο ήχος και οι οδηγίες συνεχίζουν· η επιστροφή στο Android Auto παίρνει περίπου ένα δευτερόλεπτο.</string>
+    <string name="dashcam_entry">Εισαγωγή κλιπ από την κάμερα της μηχανής</string>
+    <string name="dashcam_title">Κλιπ από την κάμερα της μηχανής</string>
+    <string name="dashcam_channel">Εισαγωγή κάμερας</string>
+    <string name="dashcam_stop_first_title">Διακοπή της προβολής;</string>
+    <string name="dashcam_stop_first_msg">Τα κλιπ δεν μπορούν να κατέβουν όσο το ταμπλό δείχνει το Android Auto ή τον χάρτη: το Wi‑Fi του δεν αντέχει και τα δύο. Να σταματήσω την προβολή και να συνεχίσω;</string>
+    <string name="dashcam_stop_and_continue">Διακοπή και συνέχεια</string>
+    <string name="dashcam_pick_trip">Εισαγωγή κλιπ κάμερας για…</string>
+    <string name="dashcam_no_trips">Δεν υπάρχουν ακόμη διαδρομές</string>
+    <string name="dashcam_joining">Σύνδεση στο Wi‑Fi της μηχανής…</string>
+    <string name="dashcam_join_failed">Δεν ήταν δυνατή η σύνδεση με την κάμερα της μηχανής. Είναι αναμμένη η μηχανή με ενεργό ταμπλό;</string>
+    <string name="dashcam_looking">Αναζήτηση κλιπ…</string>
+    <string name="dashcam_none">Δεν υπάρχουν κλιπ κάμερας για αυτή τη διαδρομή.</string>
+    <string name="dashcam_camera_front">Μπροστά</string>
+    <string name="dashcam_camera_rear">Πίσω</string>
+    <string name="dashcam_camera_both">Και οι δύο</string>
+    <string name="dashcam_total">%1$d κλιπ · %2$d MB</string>
+    <string name="dashcam_no_space">Δεν υπάρχει αρκετός χώρος: χρειάζονται %1$d MB, ελεύθερα %2$d MB.</string>
+    <string name="dashcam_import">Εισαγωγή</string>
+    <string name="dashcam_progress">Κλιπ %1$d από %2$d · %3$d MB</string>
+    <string name="dashcam_done">Εισήχθησαν %1$d · υπήρχαν ήδη %2$d · απέτυχαν %3$d</string>
+    <string name="dashcam_done_hint">Άνοιξε τη δημιουργία βίντεο της διαδρομής: τα κλιπ μπαίνουν στη θέση τους με βάση την ώρα.</string>
+    <string name="dashcam_already_running">Η εισαγωγή κλιπ βρίσκεται ήδη σε εξέλιξη</string>
 </resources>

@@ -2,4 +2,26 @@
 <resources>
     <string name="controls_dash_saver">Économie avec le tableau de bord</string>
     <string name="controls_dash_saver_hint">Android Auto arrête d\'envoyer la vidéo tant que le tableau de bord est affiché. Le son et le guidage continuent ; revenir à Android Auto prend environ une seconde.</string>
+    <string name="dashcam_entry">Importer les clips de la caméra de la moto</string>
+    <string name="dashcam_title">Clips de la caméra de la moto</string>
+    <string name="dashcam_channel">Import de la caméra</string>
+    <string name="dashcam_stop_first_title">Arrêter la projection ?</string>
+    <string name="dashcam_stop_first_msg">Impossible de télécharger les clips pendant que le tableau de bord affiche Android Auto ou la carte : son Wi‑Fi ne peut pas faire les deux. J\'arrête la projection et je continue ?</string>
+    <string name="dashcam_stop_and_continue">Arrêter et continuer</string>
+    <string name="dashcam_pick_trip">Importer les clips de la caméra pour…</string>
+    <string name="dashcam_no_trips">Aucun trajet pour l\'instant</string>
+    <string name="dashcam_joining">Connexion au Wi‑Fi de la moto…</string>
+    <string name="dashcam_join_failed">Impossible de joindre la caméra de la moto. La moto est-elle allumée avec le tableau de bord actif ?</string>
+    <string name="dashcam_looking">Recherche des clips…</string>
+    <string name="dashcam_none">Aucun clip de la caméra pour ce trajet.</string>
+    <string name="dashcam_camera_front">Avant</string>
+    <string name="dashcam_camera_rear">Arrière</string>
+    <string name="dashcam_camera_both">Les deux</string>
+    <string name="dashcam_total">%1$d clips · %2$d Mo</string>
+    <string name="dashcam_no_space">Pas assez d\'espace : il faut %1$d Mo, il reste %2$d Mo.</string>
+    <string name="dashcam_import">Importer</string>
+    <string name="dashcam_progress">Clip %1$d sur %2$d · %3$d Mo</string>
+    <string name="dashcam_done">Importés %1$d · déjà là %2$d · échecs %3$d</string>
+    <string name="dashcam_done_hint">Ouvre le créateur de vidéo du trajet : les clips sont placés selon l\'heure.</string>
+    <string name="dashcam_already_running">Import des clips déjà en cours</string>
 </resources>

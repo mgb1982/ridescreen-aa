@@ -1534,7 +1534,7 @@ class MainActivity : AppCompatActivity() {
         add(getString(R.string.pke_unlock_entry) to { PkeUnlockUi.show(this@MainActivity); Unit })
         add(getString(R.string.obd_entry) to { ObdProbeUi.show(this@MainActivity); Unit })
         add("DVR probe (test)" to { DvrProbe.show(this@MainActivity); Unit })
-        add("Bike camera import (test)" to { DashcamImport.showForTrips(this@MainActivity); Unit })
+        add(getString(R.string.dashcam_entry) to { DashcamImport.showForTrips(this@MainActivity) { stopEverything() }; Unit })
         add(getString(R.string.help_heart_rate) to { HeartRateStore.show(this@MainActivity); Unit })
         add(getString(R.string.help_support) to { Support.open(this@MainActivity); Unit })
     }
@@ -1615,7 +1615,8 @@ class MainActivity : AppCompatActivity() {
     private fun pkeRefresh() {
         if (PkeBattery.code(this).length < 8) { renderPkeCard(); return }
         // Don't compete with the connect flow for the radio.
-        if (pkeBusy || liveOn || PkeUnlock.holdingBox || ConnectionState.phase.busy) { renderPkeCard(); return }
+        // B4: no keyless-box reads while bike camera clips download.
+        if (pkeBusy || liveOn || PkeUnlock.holdingBox || ConnectionState.phase.busy || DashcamImport.busy()) { renderPkeCard(); return }
         pkeBusy = true
         val app = applicationContext
         Thread({
@@ -1641,7 +1642,7 @@ class MainActivity : AppCompatActivity() {
     @Volatile private var resumedNow = false
     private var liveGaveUpAt = 0L
 
-    private fun liveShouldRun() = resumedNow &&
+    private fun liveShouldRun() = resumedNow && !DashcamImport.busy() &&
         ConnectionState.phase.let { it == Phase.STREAMING || it == Phase.MIRRORING }
 
     private fun maybeStartLive() {
