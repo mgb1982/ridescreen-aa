@@ -305,6 +305,9 @@ class PxcHandshake(
         lastClientInfo = json
         carHuid = json.optString("HUID").ifEmpty { json.optString("huid") }.ifEmpty { null }
         log("[$tag] carHuid=$carHuid HUName=${json.optString("HUName")} channel=${json.optString("channel")}")
+        // TEST (368G DVR): EasyConn ECP_SUPPORT_FUNCTION_WEB_CAR_DVR = bit 262144 of supportFunction.
+        val sf = json.optInt("supportFunction", 0)
+        log("[$tag] [DVR] supportFunction=$sf webCarDvr=${(sf and 262144) != 0}")
         logClockLabBanner()
 
         profile = BikeProfiles.select(json, log)

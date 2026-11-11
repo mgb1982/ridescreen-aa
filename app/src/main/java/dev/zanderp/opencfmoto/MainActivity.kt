@@ -1532,6 +1532,7 @@ class MainActivity : AppCompatActivity() {
         add(getString(R.string.pke_entry) to { PkeBatteryUi.show(this@MainActivity); Unit })
         add(getString(R.string.pke_unlock_entry) to { PkeUnlockUi.show(this@MainActivity); Unit })
         add(getString(R.string.obd_entry) to { ObdProbeUi.show(this@MainActivity); Unit })
+        add("DVR probe (test)" to { DvrProbe.show(this@MainActivity); Unit })
         add(getString(R.string.help_heart_rate) to { HeartRateStore.show(this@MainActivity); Unit })
         add(getString(R.string.help_support) to { Support.open(this@MainActivity); Unit })
     }
