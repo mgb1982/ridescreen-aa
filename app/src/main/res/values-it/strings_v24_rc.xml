@@ -10,6 +10,8 @@
     <string name="controls_dash_accent">Colore principale</string>
     <string name="controls_dash_accent_title">Colore principale</string>
     <string name="controls_dash_accent_style">Colore dello stile</string>
+    <string name="controls_dash_nav_arrow">Freccia della prossima svolta</string>
+    <string name="controls_dash_nav_arrow_hint">Legge la prossima svolta da Android Auto così che la dashboard possa mostrarla. Ha effetto la prossima volta che ti colleghi.</string>
     <string name="dash_design_racing">Racing</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_touring">Touring</string>

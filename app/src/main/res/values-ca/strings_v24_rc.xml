@@ -10,6 +10,8 @@
     <string name="controls_dash_accent">Color principal</string>
     <string name="controls_dash_accent_title">Color principal</string>
     <string name="controls_dash_accent_style">Color de l\'estil</string>
+    <string name="controls_dash_nav_arrow">Fletxa del següent gir</string>
+    <string name="controls_dash_nav_arrow_hint">Llegeix el següent gir des d\'Android Auto perquè el dashboard el pugui mostrar. Entra en vigor la propera vegada que es connecti.</string>
     <string name="dash_design_racing">Racing</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_touring">Touring</string>

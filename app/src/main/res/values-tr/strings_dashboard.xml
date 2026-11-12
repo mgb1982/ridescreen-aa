@@ -19,6 +19,8 @@
     <string name="controls_dash_accent">Ana renk</string>
     <string name="controls_dash_accent_title">Ana renk</string>
     <string name="controls_dash_accent_style">Stil rengi</string>
+    <string name="controls_dash_nav_arrow">Sonraki dönüş oku</string>
+    <string name="controls_dash_nav_arrow_hint">Android Auto\'dan bir sonraki dönüşü okur, böylece gösterge bunu gösterebilir. Bir sonraki bağlantıda uygulanır.</string>
     <string name="controls_dash_design">Gösterge stili</string>
     <string name="dash_design_sport">Spor</string>
     <string name="dash_design_racing">Yarış</string>

@@ -19,6 +19,8 @@
     <string name="controls_dash_accent">Kolor główny</string>
     <string name="controls_dash_accent_title">Kolor główny</string>
     <string name="controls_dash_accent_style">Kolor stylu</string>
+    <string name="controls_dash_nav_arrow">Strzałka następnego zakrętu</string>
+    <string name="controls_dash_nav_arrow_hint">Odczytuje następny zakręt z Android Auto, aby pulpit mógł go pokazać. Zmiana zadziała przy następnym połączeniu.</string>
     <string name="controls_dash_design">Styl pulpitu</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_racing">Wyścigowy</string>

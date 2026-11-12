@@ -19,6 +19,8 @@
     <string name="controls_dash_accent">Culoare principală</string>
     <string name="controls_dash_accent_title">Culoare principală</string>
     <string name="controls_dash_accent_style">Culoarea stilului</string>
+    <string name="controls_dash_nav_arrow">Săgeată pentru următorul viraj</string>
+    <string name="controls_dash_nav_arrow_hint">Citește următorul viraj din Android Auto, ca tabloul de bord să-l poată afișa. Se aplică data viitoare când te conectezi.</string>
     <string name="controls_dash_design">Stil tablou de bord</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_racing">Racing</string>

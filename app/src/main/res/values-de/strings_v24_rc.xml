@@ -10,6 +10,8 @@
     <string name="controls_dash_accent">Hauptfarbe</string>
     <string name="controls_dash_accent_title">Hauptfarbe</string>
     <string name="controls_dash_accent_style">Stilfarbe</string>
+    <string name="controls_dash_nav_arrow">Pfeil für die nächste Abbiegung</string>
+    <string name="controls_dash_nav_arrow_hint">Liest die nächste Abbiegung aus Android Auto, damit das Dashboard sie anzeigen kann. Wirkt beim nächsten Verbinden.</string>
     <string name="dash_design_racing">Racing</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_touring">Touring</string>

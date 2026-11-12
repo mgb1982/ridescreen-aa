@@ -10,6 +10,8 @@
     <string name="controls_dash_accent">Κύριο χρώμα</string>
     <string name="controls_dash_accent_title">Κύριο χρώμα</string>
     <string name="controls_dash_accent_style">Χρώμα στυλ</string>
+    <string name="controls_dash_nav_arrow">Βέλος επόμενης στροφής</string>
+    <string name="controls_dash_nav_arrow_hint">Διαβάζει την επόμενη στροφή από το Android Auto, ώστε το ταμπλό να μπορεί να την εμφανίσει. Ισχύει την επόμενη φορά που θα συνδεθείς.</string>
     <string name="dash_design_racing">Racing</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_touring">Touring</string>

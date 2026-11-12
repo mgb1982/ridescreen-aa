@@ -19,6 +19,8 @@
     <string name="controls_dash_accent">Hlavní barva</string>
     <string name="controls_dash_accent_title">Hlavní barva</string>
     <string name="controls_dash_accent_style">Barva stylu</string>
+    <string name="controls_dash_nav_arrow">Šipka pro další zatáčku</string>
+    <string name="controls_dash_nav_arrow_hint">Načítá další zatáčku z Android Auto, aby ji mohl přehled zobrazit. Projeví se až při příštím připojení.</string>
     <string name="controls_dash_design">Styl přehledu</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_racing">Závodní</string>

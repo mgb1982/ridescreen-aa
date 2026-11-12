@@ -10,6 +10,8 @@
     <string name="controls_dash_accent">Couleur principale</string>
     <string name="controls_dash_accent_title">Couleur principale</string>
     <string name="controls_dash_accent_style">Couleur du style</string>
+    <string name="controls_dash_nav_arrow">Flèche du prochain virage</string>
+    <string name="controls_dash_nav_arrow_hint">Lit le prochain virage depuis Android Auto pour que le tableau de bord puisse l\'afficher. Prend effet la prochaine fois que tu te connectes.</string>
     <string name="dash_design_racing">Racing</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_touring">Touring</string>

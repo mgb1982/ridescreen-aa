@@ -10,6 +10,8 @@
     <string name="controls_dash_accent">สีหลัก</string>
     <string name="controls_dash_accent_title">สีหลัก</string>
     <string name="controls_dash_accent_style">สีของสไตล์</string>
+    <string name="controls_dash_nav_arrow">ลูกศรเลี้ยวถัดไป</string>
+    <string name="controls_dash_nav_arrow_hint">อ่านการเลี้ยวถัดไปจาก Android Auto เพื่อให้แดชบอร์ดแสดงได้ มีผลเมื่อเชื่อมต่อครั้งถัดไป</string>
     <string name="dash_design_racing">Racing</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_touring">Touring</string>

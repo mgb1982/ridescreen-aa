@@ -19,6 +19,8 @@
     <string name="controls_dash_accent">Основен цвят</string>
     <string name="controls_dash_accent_title">Основен цвят</string>
     <string name="controls_dash_accent_style">Цвят на стила</string>
+    <string name="controls_dash_nav_arrow">Стрелка за следващия завой</string>
+    <string name="controls_dash_nav_arrow_hint">Чете следващия завой от Android Auto, за да може таблото да го покаже. Влиза в сила при следващото ви свързване.</string>
     <string name="controls_dash_design">Стил на таблото</string>
     <string name="dash_design_sport">Спорт</string>
     <string name="dash_design_racing">Състезателен</string>

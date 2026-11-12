@@ -20,6 +20,8 @@
     <string name="controls_dash_accent">Color principal</string>
     <string name="controls_dash_accent_title">Color principal</string>
     <string name="controls_dash_accent_style">Color del estilo</string>
+    <string name="controls_dash_nav_arrow">Flecha de próximo giro</string>
+    <string name="controls_dash_nav_arrow_hint">Lee el próximo giro de Android Auto para que el dashboard pueda mostrarlo. Se aplica la próxima vez que conectes.</string>
     <string name="controls_dash_design">Estilo del dashboard</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_racing">Racing</string>

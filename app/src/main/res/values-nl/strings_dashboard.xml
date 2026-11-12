@@ -19,6 +19,8 @@
     <string name="controls_dash_accent">Hoofdkleur</string>
     <string name="controls_dash_accent_title">Hoofdkleur</string>
     <string name="controls_dash_accent_style">Stijlkleur</string>
+    <string name="controls_dash_nav_arrow">Pijl voor volgende afslag</string>
+    <string name="controls_dash_nav_arrow_hint">Leest de volgende afslag uit Android Auto, zodat het dashboard die kan tonen. Werkt de volgende keer dat u verbinding maakt.</string>
     <string name="controls_dash_design">Dashboardstijl</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_racing">Racing</string>

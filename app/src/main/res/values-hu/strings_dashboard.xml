@@ -19,6 +19,8 @@
     <string name="controls_dash_accent">Fő szín</string>
     <string name="controls_dash_accent_title">Fő szín</string>
     <string name="controls_dash_accent_style">Stílus színe</string>
+    <string name="controls_dash_nav_arrow">Következő kanyar nyila</string>
+    <string name="controls_dash_nav_arrow_hint">Az Android Auto-ból beolvassa a következő kanyart, hogy az irányítópult megjeleníthesse. A következő csatlakozáskor lép életbe.</string>
     <string name="controls_dash_design">Irányítópult stílusa</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_racing">Verseny</string>
