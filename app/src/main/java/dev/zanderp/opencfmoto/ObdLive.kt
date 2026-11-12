@@ -41,7 +41,6 @@ object ObdLive {
     private const val FRESH_MS = 5_000L
     private const val ENGINE_ON_RPM = 400.0
     private const val RETRY_MIN_MS = 5_000L
-    private const val RETRY_MAX_MS = 30_000L
     /** With the contact off the link stays open and the ECU is asked again this often (no reconnects). */
     private const val CONTACT_POLL_MS = 10_000L
 
@@ -112,7 +111,7 @@ object ObdLive {
     }
 
     private fun loop(ctx: Context, adapterName: String) {
-        var wait = RETRY_MIN_MS
+        var failures = 0
         log("live reader on for '$adapterName' (read only)")
         while (!stopping()) {
             if (pkeBusy()) { waitForPke(); continue }
@@ -122,8 +121,11 @@ object ObdLive {
             latest = null
             setEngine(null)
             if (yieldedToPke) continue
-            wait = if (ok) RETRY_MIN_MS else (wait * 2).coerceAtMost(RETRY_MAX_MS)
-            try { Thread.sleep(wait) } catch (_: InterruptedException) { break }
+            failures = if (ok) 0 else failures + 1
+            val wait = if (ok) RETRY_MIN_MS else ObdBackoff.waitAfter(failures)
+            if (failures == 5) log("live reader: adapter not reachable 5 times in a row (bike off?) · trying less often")
+            // Sleep in steps so a stop() or a keyless-box command is not held up by a long wait.
+            if (!idle(wait) && stopping()) break
         }
         log("live reader off")
     }
