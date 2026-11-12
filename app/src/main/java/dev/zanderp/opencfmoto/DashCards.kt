@@ -209,10 +209,56 @@ object DashCards {
             c.drawText(t, cx, y, big)
             c.drawText("🔥 ${ctx.getString(R.string.dc_streak_days)}", cx, y + 30f * s, small)
         }
+        var lineY = y + 84f * s
+        val accent = paint(GOLD, 24f * s, font(ctx, R.font.archivo_semibold))
         wx(ctx)?.takeIf { it.rainSoon >= 60 }?.let {
-            c.drawText("☔ " + ctx.getString(R.string.dc_rain_soon, it.rainSoon), x, y + 84f * s, paint(GOLD, 24f * s, font(ctx, R.font.archivo_semibold)))
+            c.drawText("☔ " + ctx.getString(R.string.dc_rain_soon, it.rainSoon), x, lineY, accent)
+            lineY += 40f * s
+        }
+        maintenanceLine(ctx)?.let { t ->
+            fit(accent, t, w - x - 24f * s)
+            c.drawText("🔧 $t", x, lineY, accent)
         }
         return bmp
+    }
+
+    /** The single most urgent logbook task (overdue or under 300 km / 14 days), or null. */
+    private fun maintenanceLine(ctx: Context): String? = try {
+        val b = Maintenance.load(ctx)
+        val odo = b.odometer
+        val tasks = b.tasks.filter { it.enabled }.map { t ->
+            // Manufacturer-style tasks: the km window gives the previous mark and the next one.
+            val w = if (t.firstKm != null) Maintenance.kmWindow(t, odo) else null
+            if (w != null) MaintenanceDue.Task(t.name, (w.second - w.first).toInt(), t.everyMonths, w.first, t.lastAt)
+            else MaintenanceDue.Task(t.name, t.everyKm.takeIf { t.firstKm == null }, t.everyMonths, t.lastKm, t.lastAt)
+        }
+        MaintenanceDue.pick(tasks, odo, System.currentTimeMillis())?.let { d ->
+            when (d.kind) {
+                MaintenanceDue.Kind.OVERDUE -> ctx.getString(R.string.cd_maint_overdue, d.name)
+                MaintenanceDue.Kind.KM_LEFT -> ctx.getString(R.string.cd_maint_km_left, d.name, Fmt.distance(ctx, d.amount * 1000.0, 0))
+                MaintenanceDue.Kind.DAYS_LEFT -> ctx.resources.getQuantityString(R.plurals.cd_maint_days_left, d.amount, d.name, d.amount)
+            }
+        }
+    } catch (_: Exception) { null }
+
+    /** "New record: top speed 142 km/h" for a record set today (earlier trips exist), or null. */
+    private fun recordLine(ctx: Context, all: List<Trip>, since: Long): String? {
+        val earlier = all.filter { it.start < since }
+        if (earlier.isEmpty()) return null
+        val today = all.filter { it.start >= since }
+        if (today.isEmpty()) return null
+        val before = Records.compute(earlier)
+        val after = Records.compute(all)
+        val topToday = Records.compute(today)
+        return when {
+            topToday.topKmh > before.topKmh && after.topKmh == topToday.topKmh ->
+                ctx.getString(R.string.cd_record_top_speed, Fmt.speed(ctx, topToday.topKmh))
+            topToday.longestKm >= 1.0 && topToday.longestKm > before.longestKm ->
+                ctx.getString(R.string.cd_record_longest, Fmt.distance(ctx, topToday.longestKm * 1000.0, 1))
+            after.bestDayKm > before.bestDayKm + 0.05 && Records.dayKey(after.bestDay) == Records.dayKey(since) ->
+                ctx.getString(R.string.cd_record_best_day, Fmt.distance(ctx, after.bestDayKm * 1000.0, 1))
+            else -> null
+        }
     }
 
     private fun farewellBitmap(ctx: Context, w: Int, h: Int): Bitmap {
@@ -249,6 +295,13 @@ object DashCards {
             cx += maxOf(p.measureText(it.first), small.measureText(label)) + 40f * s
         }
         var y = y0 + 110f * s
+        val record = try { recordLine(ctx, TripStore.summaries(ctx), since) } catch (_: Exception) { null }
+        if (record != null) {
+            val rp = paint(GOLD, 28f * s, font(ctx, R.font.archivo_semibold))
+            fit(rp, record, w - x - 24f * s)
+            c.drawText("🏆 $record", x, y - 30f * s, rp)
+            y += 30f * s
+        }
         val chip = paint(WHITE, 26f * s, font(ctx, R.font.archivo_regular))
         if (Parking.get(ctx) != null) {
             val t = "🅿️ " + ctx.getString(if (Parking.hasPhoto(ctx)) R.string.dc_parked_photo else R.string.dc_parked)

@@ -93,6 +93,7 @@ object Parking {
     }
 
     fun saveNow(ctx: Context) {
+        BatteryAlertNotifier.onParked(ctx)
         val loc = RideExtras.lastLocation(ctx, MAX_FIX_AGE_MS)
         if (loc == null) {
             LogBus.log("[PARK] no recent GPS fix — parking spot not saved")

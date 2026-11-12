@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_maint_overdue">%1$s: overdue</string>
+    <string name="cd_maint_km_left">%1$s: %2$s left</string>
+    <plurals name="cd_maint_days_left">
+        <item quantity="one">%1$s: %2$d day left</item>
+        <item quantity="other">%1$s: %2$d days left</item>
+    </plurals>
+    <string name="cd_record_top_speed">New record: top speed %1$s</string>
+    <string name="cd_record_longest">New record: longest ride %1$s</string>
+    <string name="cd_record_best_day">New record: most km in a day %1$s</string>
+    <string name="cd_battery_channel">Bike battery</string>
+    <string name="cd_battery_title">Bike battery low</string>
+    <string name="cd_battery_low">Bike battery is low: %1$s V. It may not start after a few days. Consider charging it.</string>
+</resources>
