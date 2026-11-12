@@ -8,7 +8,11 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Point
+import android.graphics.Rect
 import android.os.Bundle
+import android.text.TextPaint
+import android.text.TextUtils
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -18,6 +22,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.ColorUtils
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.card.MaterialCardView
@@ -40,13 +45,17 @@ class TrafficLightsActivity : AppCompatActivity() {
     private lateinit var routes: LinearLayout
     private lateinit var wave: LinearLayout
     private val io = Executors.newSingleThreadExecutor()
+    private lateinit var scroll: ScrollView
     private var result: TrafficLights.Result? = null
+    private var selected: TrafficLights.JunctionStats? = null
+    private val lightCards = HashMap<Pair<Double, Double>, MutableList<MaterialCardView>>()
+    private val waveCards = HashMap<Pair<Double, Double>, MutableList<MaterialCardView>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GpxOsmdroid.configure(this)  // v2.3 · shared persistent tile cache (90 days), so maps load instantly after an update
         enableEdgeToEdge()
-        val scroll = ScrollView(this).apply { setBackgroundColor(color(R.color.bg)) }
+        scroll = ScrollView(this).apply { setBackgroundColor(color(R.color.bg)) }
         val root = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(16), dp(12), dp(16), dp(28)) }
         scroll.addView(root)
         root.addView(TextView(this).apply {
@@ -131,6 +140,7 @@ class TrafficLightsActivity : AppCompatActivity() {
         val r = result
         if (r == null) { status.setText(R.string.tl_failed); return }
         if (r.tripsUsed == 0) { status.setText(R.string.tl_no_trips); return }
+        selected = null
         status.text = getString(R.string.tl_summary, r.tripsUsed, r.junctions.size) +
             if (r.offline) "\n" + getString(R.string.tl_partial) else ""
         map.overlays.clear()
@@ -153,6 +163,7 @@ class TrafficLightsActivity : AppCompatActivity() {
     private fun renderWave() {
         val r = result ?: return
         wave.removeAllViews()
+        waveCards.clear()
         val dirs = resources.getStringArray(R.array.tl_dirs)
         val items = r.junctions.flatMap { j -> j.approaches.mapNotNull { a -> a.wave?.let { Triple(j, a, it) } } }
             .filter { it.third.predicted > 0 || it.third.soonErrorsS.isNotEmpty() }
@@ -161,6 +172,7 @@ class TrafficLightsActivity : AppCompatActivity() {
         if (items.isEmpty()) {
             val learning = r.junctions.flatMap { it.approaches }.maxOfOrNull { it.stops } ?: 0
             wave.addView(body(getString(R.string.gw_empty, learning)))
+            applyHighlight()
             return
         }
         for ((j, a, sc) in items.take(12)) {
@@ -177,11 +189,15 @@ class TrafficLightsActivity : AppCompatActivity() {
                 sc.predicted >= 3 && sc.accuracy < 0.6f -> Color.rgb(229, 57, 53)
                 else -> Color.rgb(251, 192, 45)
             }
-            wave.addView(card(title, text, accent) {
+            val c = card(title, text, accent) {
+                select(j, fromMap = false)
                 map.controller.animateTo(GeoPoint(j.junction.lat, j.junction.lon), 17.0, 600L)
                 info.text = "$title\n$text"
-            })
+            }
+            wave.addView(c)
+            waveCards.getOrPut(key(j)) { ArrayList() }.add(c)
         }
+        applyHighlight()
     }
 
     private fun junctionLabel(j: TrafficLights.JunctionStats): String =
@@ -199,13 +215,61 @@ class TrafficLightsActivity : AppCompatActivity() {
     private fun renderLights() {
         val r = result ?: return
         lights.removeAllViews()
+        lightCards.clear()
         val top = r.junctions.filter { it.stops > 0 }.take(10)
-        if (top.isEmpty()) { lights.addView(body(getString(R.string.tl_no_stops))); return }
+        if (top.isEmpty()) { lights.addView(body(getString(R.string.tl_no_stops))); applyHighlight(); return }
         for (j in top) {
-            lights.addView(card(junctionLabel(j), describe(j), rateColor(j.stopRate)) {
+            val c = card(junctionLabel(j), describe(j), rateColor(j.stopRate)) {
+                select(j, fromMap = false)
                 map.controller.animateTo(GeoPoint(j.junction.lat, j.junction.lon), 17.0, 600L)
-                info.text = "${junctionLabel(j)}\n${describe(j)}"
-            })
+            }
+            lights.addView(c)
+            lightCards.getOrPut(key(j)) { ArrayList() }.add(c)
+        }
+        applyHighlight()
+    }
+
+    private fun key(j: TrafficLights.JunctionStats) = j.junction.lat to j.junction.lon
+    private fun same(a: TrafficLights.JunctionStats?, b: TrafficLights.JunctionStats?) =
+        a != null && b != null && key(a) == key(b)
+
+    /** Single entry point for selecting a junction, from a list card or from a map tap. */
+    private fun select(j: TrafficLights.JunctionStats, fromMap: Boolean) {
+        selected = j
+        info.text = "${junctionLabel(j)}\n${describe(j)}"
+        applyHighlight()
+        map.invalidate()
+        if (!fromMap) return
+        val card = lightCards[key(j)]?.firstOrNull() ?: waveCards[key(j)]?.firstOrNull()
+        if (card != null) {
+            scroll.post {
+                val r = Rect(0, 0, card.width, card.height)
+                scroll.offsetDescendantRectToMyCoords(card, r)
+                scroll.smoothScrollTo(0, (r.top - dp(12)).coerceAtLeast(0))
+            }
+        }
+        // The tap came from the map, so it is normally visible; only re-centre (same zoom) if it is off-screen.
+        val p = Point()
+        map.projection.toPixels(GeoPoint(j.junction.lat, j.junction.lon), p)
+        if (p.x < 0 || p.y < 0 || p.x > map.width || p.y > map.height) {
+            map.controller.animateTo(GeoPoint(j.junction.lat, j.junction.lon))
+        }
+    }
+
+    private fun clearSelection() {
+        if (selected == null) return
+        selected = null
+        applyHighlight()
+        map.invalidate()
+    }
+
+    /** Thicker border + soft tint on every card of the selected junction; plain look on the rest. */
+    private fun applyHighlight() {
+        val sel = selected?.let { key(it) }
+        for (m in listOf(lightCards, waveCards)) for ((k, cards) in m) for (c in cards) {
+            val on = k == sel
+            c.strokeWidth = if (on) dp(4) else dp(1)
+            c.setCardBackgroundColor(if (on) ColorUtils.blendARGB(color(R.color.surface), c.strokeColor, 0.18f) else color(R.color.surface))
         }
     }
 
@@ -238,29 +302,68 @@ class TrafficLightsActivity : AppCompatActivity() {
         private val ring = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE; strokeWidth = 3f; color = Color.WHITE }
         private val pt = Point()
 
+        private val halo = Paint(Paint.ANTI_ALIAS_FLAG)
+        private val edge = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE; strokeWidth = 2f; color = Color.argb(200, 20, 20, 20) }
+        private val bigRing = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE; strokeWidth = 5f; color = Color.WHITE }
+        private val labelBg = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.argb(230, 30, 30, 30) }
+        private val labelText = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = Color.WHITE
+            textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12f, resources.displayMetrics)
+        }
+
+        private fun radius(j: TrafficLights.JunctionStats) = dp(5) + (dp(9) * (j.passes.coerceAtMost(20) / 20f))
+
         override fun draw(c: Canvas, mapView: MapView, shadow: Boolean) {
             if (shadow) return
             val proj = mapView.projection
+            val sel = selected
             for (j in items) {
+                if (sel != null && same(j, sel)) continue
                 proj.toPixels(GeoPoint(j.junction.lat, j.junction.lon), pt)
-                val rad = dp(5) + (dp(9) * (j.passes.coerceAtMost(20) / 20f))
+                val rad = radius(j)
                 fill.color = rateColor(j.stopRate)
+                ring.color = Color.WHITE
+                if (sel != null) { fill.alpha = 150; ring.alpha = 150 }
                 c.drawCircle(pt.x.toFloat(), pt.y.toFloat(), rad, fill)
                 c.drawCircle(pt.x.toFloat(), pt.y.toFloat(), rad, ring)
             }
+            if (sel == null) return
+            proj.toPixels(GeoPoint(sel.junction.lat, sel.junction.lon), pt)
+            val x = pt.x.toFloat(); val y = pt.y.toFloat()
+            val rad = radius(sel) + dp(6)
+            val base = rateColor(sel.stopRate)
+            halo.color = Color.argb(90, Color.red(base), Color.green(base), Color.blue(base))
+            c.drawCircle(x, y, rad + dp(6), halo)  // = base radius + dp(12)
+            fill.color = base
+            c.drawCircle(x, y, rad, fill)
+            c.drawCircle(x, y, rad, bigRing)
+            c.drawCircle(x, y, rad + 2.5f, edge)
+            // Label above the circle, kept inside the visible map.
+            val padH = dp(8).toFloat(); val padV = dp(4).toFloat(); val margin = dp(4).toFloat()
+            val maxText = (mapView.width * 0.6f - 2 * padH).coerceAtLeast(dp(40).toFloat())
+            val text = TextUtils.ellipsize(junctionLabel(sel), labelText, maxText, TextUtils.TruncateAt.END).toString()
+            val fm = labelText.fontMetrics
+            val w = labelText.measureText(text) + 2 * padH
+            val h = (fm.descent - fm.ascent) + 2 * padV
+            val left = (x - w / 2).coerceIn(margin, (mapView.width - w - margin).coerceAtLeast(margin))
+            val top = (y - rad - dp(6) - h).coerceIn(margin, (mapView.height - h - margin).coerceAtLeast(margin))
+            c.drawRoundRect(left, top, left + w, top + h, dp(8).toFloat(), dp(8).toFloat(), labelBg)
+            c.drawText(text, left + padH, top + padV - fm.ascent, labelText)
         }
 
         override fun onSingleTapConfirmed(e: MotionEvent, mapView: MapView): Boolean {
             val proj = mapView.projection
-            var best: TrafficLights.JunctionStats? = null
-            var bestD = dp(28).toFloat()
-            for (j in items) {
+            val maxD = dp(28).toFloat()
+            val cands = items.indices.mapNotNull { i ->
+                val j = items[i]
                 proj.toPixels(GeoPoint(j.junction.lat, j.junction.lon), pt)
                 val d = kotlin.math.hypot(pt.x - e.x, pt.y - e.y)
-                if (d < bestD) { bestD = d; best = j }
-            }
-            val j = best ?: return false
-            info.text = "${junctionLabel(j)}\n${describe(j)}"
+                if (d <= maxD) i to d else null
+            }.sortedBy { it.second }.map { it.first }
+            val cur = items.indexOfFirst { same(it, selected) }.takeIf { it >= 0 }
+            val pick = TlPick.next(cands, cur)
+            if (pick == null) { clearSelection(); return false }
+            select(items[pick], fromMap = true)
             return true
         }
     }
