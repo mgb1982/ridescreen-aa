@@ -37,6 +37,10 @@ class AndroidAutoService : Service() {
     private var receiver: AaReceiver? = null
     private var mediaButtons: MediaButtonBridge? = null
     private var wakeLock: PowerManager.WakeLock? = null
+    /** True while the service wants the CPU wake lock (taken, not released on purpose): see [renewExpiredLocks]. */
+    private var wakeLockWanted = false
+    private var lastLockRenewAt = 0L
+    private var lastScreenRenewAt = 0L
     /** Dim screen wake while GPX Presentation is up (VirtualDisplay stalls if the phone sleeps hard). */
     private var screenWakeLock: PowerManager.WakeLock? = null
     // Wi-Fi locks that keep the bike link fast for the whole streaming session (see [acquireWifiLocks]).
@@ -145,6 +149,7 @@ class AndroidAutoService : Service() {
                 try { tickWatchdog() } catch (e: Exception) { logTickFailure("Watchdog", e) }
                 try { adaptive.onTick(pipeline) } catch (e: Exception) { logTickFailure("Adaptive", e) }
                 try { tickTripLogging() } catch (e: Exception) { logTickFailure("TripLogging", e) }
+                try { renewExpiredLocks() } catch (e: Exception) { logTickFailure("LockRenewal", e) }
                 watchdogHandler.postDelayed(this, WATCHDOG_TICK_MS)
             }
         }, WATCHDOG_TICK_MS)
@@ -260,6 +265,7 @@ class AndroidAutoService : Service() {
             applyGpxScreenWake(true)
             LogBus.log("[GPX] keeping wake locks — map session still active")
         } else {
+            wakeLockWanted = false
             try { if (wakeLock?.isHeld == true) wakeLock?.release() } catch (_: Exception) {}
             releaseScreenWake()
             releaseWifiLocks()   // parked: let the radio idle again while we wait for the bike
@@ -333,6 +339,26 @@ class AndroidAutoService : Service() {
     }
 
     /** (Re)acquire every lock the streaming session needs to stay alive backgrounded / screen-off. */
+    /**
+     * A9 · the CPU and screen wake locks carry a 4 h ceiling and expire silently on a longer ride, and only
+     * events (start, resume, reconnect) took them again. Called from the watchdog tick: renew a lock that
+     * expired while it was still wanted. A lock released on purpose (parked, stopping) stays released.
+     */
+    private fun renewExpiredLocks() {
+        if (!isRunning) return
+        val now = android.os.SystemClock.elapsedRealtime()
+        if (LockRenewal.due(wakeLockWanted, wakeLock?.isHeld == true, now, lastLockRenewAt)) {
+            lastLockRenewAt = now
+            LogBus.log("[AA] CPU wake lock expired (4 h ceiling) — taking it again")
+            reacquireLocks()
+        }
+        if (GpxSession.active && LockRenewal.due(true, screenWakeLock?.isHeld == true, now, lastScreenRenewAt)) {
+            lastScreenRenewAt = now
+            LogBus.log("[GPX] screen wake lock expired (4 h ceiling) — taking it again")
+            applyGpxScreenWake(true)
+        }
+    }
+
     private fun reacquireLocks() {
         try {
             if (wakeLock == null) {
@@ -341,6 +367,7 @@ class AndroidAutoService : Service() {
                     .apply { setReferenceCounted(false) }
             }
             if (wakeLock?.isHeld != true) wakeLock?.acquire(4 * 60 * 60 * 1000L)
+            wakeLockWanted = true
         } catch (e: Exception) { LogBus.log("[AA] wake lock failed: $e") }
         acquireWifiLocks()
     }
@@ -737,6 +764,7 @@ class AndroidAutoService : Service() {
         AaVideoBridge.pipeline = null
         try { pipeline?.stop() } catch (_: Exception) {}
         pipeline = null
+        wakeLockWanted = false
         try { if (wakeLock?.isHeld == true) wakeLock?.release() } catch (_: Exception) {}
         wakeLock = null
         releaseScreenWake()
