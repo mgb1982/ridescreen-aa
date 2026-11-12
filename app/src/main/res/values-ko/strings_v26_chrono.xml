@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">0–100 타이머</string>
+    <string name="chr_open">0–100 타이머</string>
+    <string name="chr_state_idle">준비됨. 오토바이를 정지시킨 후 타이머를 설정합니다.</string>
+    <string name="chr_state_armed">준비됨 · «시작»</string>
+    <string name="chr_state_countdown">준비하십시오…</string>
+    <string name="chr_state_waiting">GO! 출발을 기다리는 중…</string>
+    <string name="chr_state_running">측정 중…</string>
+    <string name="chr_state_done">완료</string>
+    <string name="chr_state_cancelled">취소됨</string>
+    <string name="chr_warning">폐쇄된 도로에서만 사용하십시오. 주행 방식에 대한 책임은 본인에게 있습니다.</string>
+    <string name="chr_gps_warning">GPS 속도: ±0.2 s 정밀도</string>
+    <string name="chr_btn_arm">설정</string>
+    <string name="chr_btn_go">시작</string>
+    <string name="chr_btn_cancel">취소</string>
+    <string name="chr_btn_clear">기록 지우기</string>
+    <string name="chr_clear_title">기록을 지우시겠습니까?</string>
+    <string name="chr_clear_msg">저장된 모든 주행 기록과 개인 기록이 삭제됩니다.</string>
+    <string name="chr_clear_yes">지우기</string>
+    <string name="chr_clear_no">유지</string>
+    <string name="chr_not_stopped">먼저 오토바이를 정지하십시오 (1 km/h 미만).</string>
+    <string name="chr_no_speed">아직 속도 정보가 없습니다 (OBD 또는 GPS).</string>
+    <string name="chr_cancel_moved">취소됨: 출발 전에 움직였습니다.</string>
+    <string name="chr_cancel_rolling">취소됨: 정지 상태에서의 출발이 아니었습니다.</string>
+    <string name="chr_cancel_timeout">취소됨: 제한 시간 내에 목표에 도달하지 못했습니다.</string>
+    <string name="chr_cancel_user">취소됨.</string>
+    <string name="chr_new_record">신기록!</string>
+    <string name="chr_record">기록</string>
+    <string name="chr_history">최근 주행</string>
+    <string name="chr_history_empty">아직 주행 기록이 없습니다.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">GO</string>
+    <string name="chr_dash_off_note">The big countdown shows on the dashboard only while it is on.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

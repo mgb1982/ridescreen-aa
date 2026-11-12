@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_design_clean">Letisztult</string>
+    <string name="dash_design_pit">Pit</string>
+    <string name="dash_design_classic">Klasszikus</string>
+    <string name="dash_design_focus">Fókusz</string>
+</resources>

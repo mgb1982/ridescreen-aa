@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">0–100 kronometre</string>
+    <string name="chr_open">0–100 kronometre</string>
+    <string name="chr_state_idle">Hazır. Motoru durdur, sonra kronometreyi kur.</string>
+    <string name="chr_state_armed">HAZIR · «Başlat»</string>
+    <string name="chr_state_countdown">Hazır ol…</string>
+    <string name="chr_state_waiting">GO! Harekete geçmeni bekliyor…</string>
+    <string name="chr_state_running">Ölçülüyor…</string>
+    <string name="chr_state_done">Tamamlandı</string>
+    <string name="chr_state_cancelled">İptal edildi</string>
+    <string name="chr_warning">Yalnızca kapalı yolda. Sürüşünden sen sorumlusun.</string>
+    <string name="chr_gps_warning">GPS hızı: ±0.2 s hassasiyet</string>
+    <string name="chr_btn_arm">Kur</string>
+    <string name="chr_btn_go">Başlat</string>
+    <string name="chr_btn_cancel">İptal</string>
+    <string name="chr_btn_clear">Geçmişi temizle</string>
+    <string name="chr_clear_title">Geçmiş silinsin mi?</string>
+    <string name="chr_clear_msg">Bu işlem kaydedilmiş tüm sürüşleri ve kişisel rekorları siler.</string>
+    <string name="chr_clear_yes">Temizle</string>
+    <string name="chr_clear_no">Sakla</string>
+    <string name="chr_not_stopped">Önce motoru durdur (1 km/h altında).</string>
+    <string name="chr_no_speed">Henüz hız yok (OBD veya GPS).</string>
+    <string name="chr_cancel_moved">İptal edildi: başlamadan önce hareket ettin.</string>
+    <string name="chr_cancel_rolling">İptal edildi: duruştan başlangıç değildi.</string>
+    <string name="chr_cancel_timeout">İptal edildi: hedefe zamanında ulaşılamadı.</string>
+    <string name="chr_cancel_user">İptal edildi.</string>
+    <string name="chr_new_record">Yeni rekor!</string>
+    <string name="chr_record">Rekor</string>
+    <string name="chr_history">Son sürüşler</string>
+    <string name="chr_history_empty">Henüz sürüş yok.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">GİT</string>
+    <string name="chr_dash_off_note">Büyük geri sayım yalnızca açıkken gösterge panelinde görünür.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

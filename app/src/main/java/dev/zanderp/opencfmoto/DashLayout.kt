@@ -35,6 +35,8 @@ internal object DashLayout {
     val SPORT = Area(left = 360f, top = 152f, right = 785f, gapX = 13f)
     val RACING = Area(left = 30f, top = 216f, right = 770f, gapX = 10f)
     val TOURING = Area(left = 22f, top = 214f, right = 778f, gapX = 9f)
+    /** v2.6 Pit: the 2x2 grid right of the big speed, between the RPM scale and the dash strip's step. */
+    val PIT = Area(left = 470f, top = 100f, right = 770f, bottom = 282f, gapX = 10f, gapY = 10f, maxH = 82f)
 
     // A card needs about this much width for its height: icon, title and a value such as "105 °C".
     private const val WIDTH_PER_H = 2.4f

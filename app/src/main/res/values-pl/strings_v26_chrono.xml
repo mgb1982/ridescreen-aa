@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">Stoper 0–100</string>
+    <string name="chr_open">Stoper 0–100</string>
+    <string name="chr_state_idle">Gotowe. Zatrzymaj motocykl, a potem włącz stoper.</string>
+    <string name="chr_state_armed">GOTOWE · «Start»</string>
+    <string name="chr_state_countdown">Przygotuj się…</string>
+    <string name="chr_state_waiting">GO! Czekam, aż ruszysz…</string>
+    <string name="chr_state_running">Mierzenie…</string>
+    <string name="chr_state_done">Gotowe</string>
+    <string name="chr_state_cancelled">Anulowano</string>
+    <string name="chr_warning">Tylko na zamkniętej drodze. Za styl jazdy odpowiadasz sam.</string>
+    <string name="chr_gps_warning">Prędkość GPS: dokładność ±0.2 s</string>
+    <string name="chr_btn_arm">Włącz</string>
+    <string name="chr_btn_go">Start</string>
+    <string name="chr_btn_cancel">Anuluj</string>
+    <string name="chr_btn_clear">Wyczyść historię</string>
+    <string name="chr_clear_title">Wyczyścić historię?</string>
+    <string name="chr_clear_msg">To usunie wszystkie zapisane przejazdy i rekordy osobiste.</string>
+    <string name="chr_clear_yes">Wyczyść</string>
+    <string name="chr_clear_no">Zachowaj</string>
+    <string name="chr_not_stopped">Najpierw zatrzymaj motocykl (poniżej 1 km/h).</string>
+    <string name="chr_no_speed">Brak jeszcze prędkości (OBD lub GPS).</string>
+    <string name="chr_cancel_moved">Anulowano: ruszyłeś przed startem.</string>
+    <string name="chr_cancel_rolling">Anulowano: to nie był start z miejsca.</string>
+    <string name="chr_cancel_timeout">Anulowano: cel nie został osiągnięty na czas.</string>
+    <string name="chr_cancel_user">Anulowano.</string>
+    <string name="chr_new_record">Nowy rekord!</string>
+    <string name="chr_record">Rekord</string>
+    <string name="chr_history">Ostatnie przejazdy</string>
+    <string name="chr_history_empty">Brak przejazdów.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">RUSZ</string>
+    <string name="chr_dash_off_note">Duże odliczanie pojawia się na desce rozdzielczej tylko wtedy, gdy jest włączone.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

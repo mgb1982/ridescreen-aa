@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_maint_overdue">%1$s: em atraso</string>
+    <string name="cd_maint_km_left">%1$s: faltam %2$s</string>
+    <plurals name="cd_maint_days_left">
+        <item quantity="one">%1$s: falta %2$d dia</item>
+        <item quantity="many">%1$s: faltam %2$d dias</item>
+        <item quantity="other">%1$s: faltam %2$d dias</item>
+    </plurals>
+    <string name="cd_record_top_speed">Novo recorde: velocidade máxima %1$s</string>
+    <string name="cd_record_longest">Novo recorde: percurso mais longo %1$s</string>
+    <string name="cd_record_best_day">Novo recorde: mais distância num dia %1$s</string>
+    <string name="cd_battery_channel">Bateria da mota</string>
+    <string name="cd_battery_title">Bateria da mota fraca</string>
+    <string name="cd_battery_low">A bateria da mota está fraca: %1$s V. Pode não arrancar daqui a alguns dias. Convém carregá-la.</string>
+</resources>

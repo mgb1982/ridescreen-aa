@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">Cronómetro 0–100</string>
+    <string name="chr_open">Cronómetro 0–100</string>
+    <string name="chr_state_idle">Pronto. Para a mota e depois arma o cronómetro.</string>
+    <string name="chr_state_armed">PRONTO · «Começar»</string>
+    <string name="chr_state_countdown">Prepara-te…</string>
+    <string name="chr_state_waiting">JÁ! À espera que arranques…</string>
+    <string name="chr_state_running">A cronometrar…</string>
+    <string name="chr_state_done">Concluído</string>
+    <string name="chr_state_cancelled">Cancelado</string>
+    <string name="chr_warning">Apenas em estrada fechada. És responsável pela forma como conduzes.</string>
+    <string name="chr_gps_warning">Velocidade GPS: precisão de ±0.2 s</string>
+    <string name="chr_btn_arm">Armar</string>
+    <string name="chr_btn_go">Começar</string>
+    <string name="chr_btn_cancel">Cancelar</string>
+    <string name="chr_btn_clear">Limpar histórico</string>
+    <string name="chr_clear_title">Limpar histórico?</string>
+    <string name="chr_clear_msg">Isto apaga todas as corridas guardadas e os recordes pessoais.</string>
+    <string name="chr_clear_yes">Limpar</string>
+    <string name="chr_clear_no">Manter</string>
+    <string name="chr_not_stopped">Para primeiro a mota (abaixo de 1 km/h).</string>
+    <string name="chr_no_speed">Ainda não há velocidade (OBD ou GPS).</string>
+    <string name="chr_cancel_moved">Cancelado: moveste-te antes do arranque.</string>
+    <string name="chr_cancel_rolling">Cancelado: não foi um arranque parado.</string>
+    <string name="chr_cancel_timeout">Cancelado: o objetivo não foi atingido a tempo.</string>
+    <string name="chr_cancel_user">Cancelado.</string>
+    <string name="chr_new_record">Novo recorde!</string>
+    <string name="chr_record">Recorde</string>
+    <string name="chr_history">Últimas corridas</string>
+    <string name="chr_history_empty">Ainda não há corridas.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">JÁ</string>
+    <string name="chr_dash_off_note">A contagem decrescente grande só aparece no painel enquanto estiver ativa.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

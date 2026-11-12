@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">Stopky 0–100</string>
+    <string name="chr_open">Stopky 0–100</string>
+    <string name="chr_state_idle">Připraveno. Zastavte motorku a poté stopky aktivujte.</string>
+    <string name="chr_state_armed">PŘIPRAVENO · «Start»</string>
+    <string name="chr_state_countdown">Připravte se…</string>
+    <string name="chr_state_waiting">GO! Čekáme, až se rozjedete…</string>
+    <string name="chr_state_running">Měření…</string>
+    <string name="chr_state_done">Hotovo</string>
+    <string name="chr_state_cancelled">Zrušeno</string>
+    <string name="chr_warning">Pouze na uzavřené silnici. Za způsob jízdy odpovídáte sami.</string>
+    <string name="chr_gps_warning">Rychlost GPS: přesnost ±0.2 s</string>
+    <string name="chr_btn_arm">Aktivovat</string>
+    <string name="chr_btn_go">Start</string>
+    <string name="chr_btn_cancel">Zrušit</string>
+    <string name="chr_btn_clear">Smazat historii</string>
+    <string name="chr_clear_title">Smazat historii?</string>
+    <string name="chr_clear_msg">Tím se smažou všechny uložené jízdy a osobní rekordy.</string>
+    <string name="chr_clear_yes">Smazat</string>
+    <string name="chr_clear_no">Ponechat</string>
+    <string name="chr_not_stopped">Nejdřív zastavte motorku (pod 1 km/h).</string>
+    <string name="chr_no_speed">Rychlost zatím není k dispozici (OBD nebo GPS).</string>
+    <string name="chr_cancel_moved">Zrušeno: před startem jste se pohnuli.</string>
+    <string name="chr_cancel_rolling">Zrušeno: nešlo o rozjezd z klidu.</string>
+    <string name="chr_cancel_timeout">Zrušeno: cíle se nepodařilo dosáhnout včas.</string>
+    <string name="chr_cancel_user">Zrušeno.</string>
+    <string name="chr_new_record">Nový rekord!</string>
+    <string name="chr_record">Rekord</string>
+    <string name="chr_history">Poslední jízdy</string>
+    <string name="chr_history_empty">Zatím žádné jízdy.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">JDI</string>
+    <string name="chr_dash_off_note">Velké odpočítávání se na palubní desce zobrazuje jen při zapnutém režimu.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_maint_overdue">%1$s: εκπρόθεσμο</string>
+    <string name="cd_maint_km_left">%1$s: απομένουν %2$s</string>
+    <plurals name="cd_maint_days_left">
+        <item quantity="one">%1$s: απομένει %2$d ημέρα</item>
+        <item quantity="other">%1$s: απομένουν %2$d ημέρες</item>
+    </plurals>
+    <string name="cd_record_top_speed">Νέο ρεκόρ: μέγιστη ταχύτητα %1$s</string>
+    <string name="cd_record_longest">Νέο ρεκόρ: μεγαλύτερη διαδρομή %1$s</string>
+    <string name="cd_record_best_day">Νέο ρεκόρ: περισσότερη απόσταση σε μία μέρα %1$s</string>
+    <string name="cd_battery_channel">Μπαταρία μοτοσικλέτας</string>
+    <string name="cd_battery_title">Χαμηλή μπαταρία μοτοσικλέτας</string>
+    <string name="cd_battery_low">Η μπαταρία της μοτοσικλέτας είναι χαμηλή: %1$s V. Ενδέχεται να μην ξεκινήσει σε λίγες μέρες. Φρόντισε να τη φορτίσεις.</string>
+</resources>

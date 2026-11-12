@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <!-- v2.3: suggest today's appointments as one-tap destinations (only read when the rider allows it). -->
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -213,6 +214,9 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChronoActivity"
             android:exported="false" />
         <service
             android:name=".WearListenerService"

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">0–100-Timer</string>
+    <string name="chr_open">0–100-Timer</string>
+    <string name="chr_state_idle">Bereit. Halte das Motorrad an und aktiviere dann den Timer.</string>
+    <string name="chr_state_armed">BEREIT · «Start»</string>
+    <string name="chr_state_countdown">Mach dich bereit…</string>
+    <string name="chr_state_waiting">LOS! Warte, bis du losfährst…</string>
+    <string name="chr_state_running">Läuft…</string>
+    <string name="chr_state_done">Fertig</string>
+    <string name="chr_state_cancelled">Abgebrochen</string>
+    <string name="chr_warning">Nur auf einer gesperrten Straße. Du bist selbst für deine Fahrweise verantwortlich.</string>
+    <string name="chr_gps_warning">GPS-Geschwindigkeit: ±0.2 s Genauigkeit</string>
+    <string name="chr_btn_arm">Aktivieren</string>
+    <string name="chr_btn_go">Start</string>
+    <string name="chr_btn_cancel">Abbrechen</string>
+    <string name="chr_btn_clear">Verlauf löschen</string>
+    <string name="chr_clear_title">Verlauf löschen?</string>
+    <string name="chr_clear_msg">Damit werden alle gespeicherten Fahrten und persönlichen Bestzeiten gelöscht.</string>
+    <string name="chr_clear_yes">Löschen</string>
+    <string name="chr_clear_no">Behalten</string>
+    <string name="chr_not_stopped">Halte das Motorrad zuerst an (unter 1 km/h).</string>
+    <string name="chr_no_speed">Noch keine Geschwindigkeit verfügbar (OBD oder GPS).</string>
+    <string name="chr_cancel_moved">Abgebrochen: Du hast dich vor dem Start bewegt.</string>
+    <string name="chr_cancel_rolling">Abgebrochen: Kein Start aus dem Stand.</string>
+    <string name="chr_cancel_timeout">Abgebrochen: Das Ziel wurde nicht rechtzeitig erreicht.</string>
+    <string name="chr_cancel_user">Abgebrochen.</string>
+    <string name="chr_new_record">Neue Bestzeit!</string>
+    <string name="chr_record">Bestzeit</string>
+    <string name="chr_history">Letzte Fahrten</string>
+    <string name="chr_history_empty">Noch keine Fahrten.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">LOS</string>
+    <string name="chr_dash_off_note">Der große Countdown wird nur im eingeschalteten Zustand auf dem Display angezeigt.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

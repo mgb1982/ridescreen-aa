@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_maint_overdue">%1$s: depășit</string>
+    <string name="cd_maint_km_left">%1$s: mai sunt %2$s</string>
+    <plurals name="cd_maint_days_left">
+        <item quantity="one">%1$s: mai este %2$d zi</item>
+        <item quantity="few">%1$s: mai sunt %2$d zile</item>
+        <item quantity="other">%1$s: mai sunt %2$d de zile</item>
+    </plurals>
+    <string name="cd_record_top_speed">Record nou: viteza maximă %1$s</string>
+    <string name="cd_record_longest">Record nou: cea mai lungă plimbare %1$s</string>
+    <string name="cd_record_best_day">Record nou: cea mai mare distanță într-o zi %1$s</string>
+    <string name="cd_battery_channel">Bateria motocicletei</string>
+    <string name="cd_battery_title">Bateria motocicletei este slabă</string>
+    <string name="cd_battery_low">Bateria motocicletei este slabă: %1$s V. Ar putea să nu mai pornească peste câteva zile. Încarc-o.</string>
+</resources>

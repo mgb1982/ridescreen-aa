@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">Χρονόμετρο 0–100</string>
+    <string name="chr_open">Χρονόμετρο 0–100</string>
+    <string name="chr_state_idle">Έτοιμο. Σταμάτα τη μοτοσικλέτα και μετά ενεργοποίησε το χρονόμετρο.</string>
+    <string name="chr_state_armed">ΕΤΟΙΜΟ · «Έναρξη»</string>
+    <string name="chr_state_countdown">Ετοιμάσου…</string>
+    <string name="chr_state_waiting">ΠΑΜΕ! Περιμένουμε να κινηθείς…</string>
+    <string name="chr_state_running">Μέτρηση…</string>
+    <string name="chr_state_done">Ολοκληρώθηκε</string>
+    <string name="chr_state_cancelled">Ακυρώθηκε</string>
+    <string name="chr_warning">Μόνο σε κλειστό δρόμο. Είσαι υπεύθυνος για τον τρόπο που οδηγείς.</string>
+    <string name="chr_gps_warning">Ταχύτητα GPS: ακρίβεια ±0.2 s</string>
+    <string name="chr_btn_arm">Ενεργοποίηση</string>
+    <string name="chr_btn_go">Έναρξη</string>
+    <string name="chr_btn_cancel">Ακύρωση</string>
+    <string name="chr_btn_clear">Εκκαθάριση ιστορικού</string>
+    <string name="chr_clear_title">Εκκαθάριση ιστορικού;</string>
+    <string name="chr_clear_msg">Θα διαγραφούν όλες οι αποθηκευμένες διαδρομές και τα προσωπικά ρεκόρ.</string>
+    <string name="chr_clear_yes">Εκκαθάριση</string>
+    <string name="chr_clear_no">Διατήρηση</string>
+    <string name="chr_not_stopped">Σταμάτα πρώτα τη μοτοσικλέτα (κάτω από 1 km/h).</string>
+    <string name="chr_no_speed">Δεν υπάρχει ακόμη ταχύτητα (OBD ή GPS).</string>
+    <string name="chr_cancel_moved">Ακυρώθηκε: κινήθηκες πριν από την εκκίνηση.</string>
+    <string name="chr_cancel_rolling">Ακυρώθηκε: δεν ήταν εκκίνηση από στάση.</string>
+    <string name="chr_cancel_timeout">Ακυρώθηκε: ο στόχος δεν επιτεύχθηκε στον χρόνο.</string>
+    <string name="chr_cancel_user">Ακυρώθηκε.</string>
+    <string name="chr_new_record">Νέο ρεκόρ!</string>
+    <string name="chr_record">Ρεκόρ</string>
+    <string name="chr_history">Τελευταίες διαδρομές</string>
+    <string name="chr_history_empty">Δεν υπάρχουν διαδρομές ακόμη.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">GO</string>
+    <string name="chr_dash_off_note">The big countdown shows on the dashboard only while it is on.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

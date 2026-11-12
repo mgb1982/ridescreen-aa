@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_maint_overdue">%1$s: 기한 초과</string>
+    <string name="cd_maint_km_left">%1$s: %2$s 남음</string>
+    <plurals name="cd_maint_days_left">
+        <item quantity="other">%1$s: %2$d일 남음</item>
+    </plurals>
+    <string name="cd_record_top_speed">새 기록: 최고 속도 %1$s</string>
+    <string name="cd_record_longest">새 기록: 가장 긴 주행 %1$s</string>
+    <string name="cd_record_best_day">새 기록: 하루 최장 주행 거리 %1$s</string>
+    <string name="cd_battery_channel">오토바이 배터리</string>
+    <string name="cd_battery_title">오토바이 배터리 부족</string>
+    <string name="cd_battery_low">오토바이 배터리가 부족합니다: %1$s V. 며칠 뒤에는 시동이 걸리지 않을 수 있습니다. 충전을 권장합니다.</string>
+</resources>

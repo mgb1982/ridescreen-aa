@@ -164,6 +164,9 @@ class ControlsActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.btn_customize).setOnClickListener {
             startActivity(Intent(this, ButtonMappingActivity::class.java))
         }
+        findViewById<MaterialButton>(R.id.btn_chrono).setOnClickListener {
+            startActivity(Intent(this, ChronoActivity::class.java))
+        }
 
         // Map theme (Maps day/night) — applies live to any running AA session.
         findViewById<MaterialButton>(R.id.theme_auto).setOnClickListener { setMapTheme(MapTheme.AUTO) }
@@ -402,6 +405,10 @@ class ControlsActivity : AppCompatActivity() {
                     DashboardMode.Design.SPORT -> R.string.dash_design_sport
                     DashboardMode.Design.RACING -> R.string.dash_design_racing
                     DashboardMode.Design.TOURING -> R.string.dash_design_touring
+                    DashboardMode.Design.CLEAN -> R.string.dash_design_clean
+                    DashboardMode.Design.PIT -> R.string.dash_design_pit
+                    DashboardMode.Design.CLASSIC -> R.string.dash_design_classic
+                    DashboardMode.Design.FOCUS -> R.string.dash_design_focus
                 }
                 val card = android.widget.LinearLayout(this).apply {
                     orientation = android.widget.LinearLayout.VERTICAL

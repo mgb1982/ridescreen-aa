@@ -797,6 +797,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/controls_customize_buttons" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_chrono"
+                    style="@style/Widget.OpenCfMoto.Segment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/chr_open" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>

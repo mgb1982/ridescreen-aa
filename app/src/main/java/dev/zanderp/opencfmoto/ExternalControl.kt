@@ -40,6 +40,9 @@ object ExternalControl {
     /** v2.4: custom dashboard switches (`…action.DASH` toggles, `DASH_ON` / `DASH_OFF` set it). */
     internal val DASH_ACTIONS = listOf("DASH", "DASH_ON", "DASH_OFF")
 
+    /** 0-100 timer: `…action.CHRONO_ARM` arms it (only while stopped; "Go" stays a manual tap). */
+    internal const val CHRONO_ARM = "CHRONO_ARM"
+
     @Volatile private var receiver: BroadcastReceiver? = null
 
     /** Called when the projection service starts; no-op when the rider hasn't turned it on. */
@@ -48,6 +51,10 @@ object ExternalControl {
         if (receiver != null || !AppSettings.externalControl(ctx)) return
         val r = object : BroadcastReceiver() {
             override fun onReceive(c: Context, intent: Intent) {
+                if (intent.action == PREFIX + CHRONO_ARM) {
+                    LogBus.log("[EXT] $CHRONO_ARM ${if (ChronoController.arm(c) == null) "armed" else "ignored — not stopped"}")
+                    return
+                }
                 if (handleDashboard(c, intent.action)) return
                 handle(intent.action)
             }
@@ -55,6 +62,7 @@ object ExternalControl {
         val filter = IntentFilter().apply {
             ACTIONS.keys.forEach { addAction(PREFIX + it) }
             DASH_ACTIONS.forEach { addAction(PREFIX + it) }
+            addAction(PREFIX + CHRONO_ARM)
         }
         // Dynamic + exported: implicit broadcasts from Key Mapper/Tasker reach it (a manifest
         // receiver wouldn't get implicit broadcasts on Android 8+).

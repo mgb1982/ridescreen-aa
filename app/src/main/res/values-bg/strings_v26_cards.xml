@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_maint_overdue">%1$s: просрочено</string>
+    <string name="cd_maint_km_left">%1$s: остават %2$s</string>
+    <plurals name="cd_maint_days_left">
+        <item quantity="one">%1$s: остава %2$d ден</item>
+        <item quantity="other">%1$s: остават %2$d дни</item>
+    </plurals>
+    <string name="cd_record_top_speed">Нов рекорд: максимална скорост %1$s</string>
+    <string name="cd_record_longest">Нов рекорд: най-дълго каране %1$s</string>
+    <string name="cd_record_best_day">Нов рекорд: най-много за ден %1$s</string>
+    <string name="cd_battery_channel">Батерия на мотора</string>
+    <string name="cd_battery_title">Слаба батерия на мотора</string>
+    <string name="cd_battery_low">Батерията на мотора е слаба: %1$s V. Може да не запали след няколко дни. Помислете да я заредите.</string>
+</resources>

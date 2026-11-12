@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">0–100-timer</string>
+    <string name="chr_open">0–100-timer</string>
+    <string name="chr_state_idle">Gereed. Zet de motor stil en activeer daarna de timer.</string>
+    <string name="chr_state_armed">KLAAR · «Start»</string>
+    <string name="chr_state_countdown">Maak u klaar…</string>
+    <string name="chr_state_waiting">GO! Wachten tot u rijdt…</string>
+    <string name="chr_state_running">Meting loopt…</string>
+    <string name="chr_state_done">Klaar</string>
+    <string name="chr_state_cancelled">Geannuleerd</string>
+    <string name="chr_warning">Alleen op een afgesloten weg. U bent zelf verantwoordelijk voor uw rijstijl.</string>
+    <string name="chr_gps_warning">GPS-snelheid: nauwkeurigheid ±0.2 s</string>
+    <string name="chr_btn_arm">Activeren</string>
+    <string name="chr_btn_go">Start</string>
+    <string name="chr_btn_cancel">Annuleren</string>
+    <string name="chr_btn_clear">Geschiedenis wissen</string>
+    <string name="chr_clear_title">Geschiedenis wissen?</string>
+    <string name="chr_clear_msg">Hiermee worden alle opgeslagen ritten en persoonlijke records verwijderd.</string>
+    <string name="chr_clear_yes">Wissen</string>
+    <string name="chr_clear_no">Bewaren</string>
+    <string name="chr_not_stopped">Zet eerst de motor stil (onder 1 km/h).</string>
+    <string name="chr_no_speed">Nog geen snelheid beschikbaar (OBD of GPS).</string>
+    <string name="chr_cancel_moved">Geannuleerd: u bewoog vóór de start.</string>
+    <string name="chr_cancel_rolling">Geannuleerd: geen start vanuit stilstand.</string>
+    <string name="chr_cancel_timeout">Geannuleerd: het doel is niet op tijd bereikt.</string>
+    <string name="chr_cancel_user">Geannuleerd.</string>
+    <string name="chr_new_record">Nieuw record!</string>
+    <string name="chr_record">Record</string>
+    <string name="chr_history">Laatste ritten</string>
+    <string name="chr_history_empty">Nog geen ritten.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">GO</string>
+    <string name="chr_dash_off_note">Het grote aftellen verschijnt alleen op het dashboard als het aan staat.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

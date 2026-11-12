@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">Таймер 0–100</string>
+    <string name="chr_open">Таймер 0–100</string>
+    <string name="chr_state_idle">Готово. Спрете мотора, после армирайте таймера.</string>
+    <string name="chr_state_armed">ГОТОВ · «Старт»</string>
+    <string name="chr_state_countdown">Пригответе се…</string>
+    <string name="chr_state_waiting">ГО! Очаква се да потеглите…</string>
+    <string name="chr_state_running">Измерване…</string>
+    <string name="chr_state_done">Готово</string>
+    <string name="chr_state_cancelled">Отменен</string>
+    <string name="chr_warning">Само на затворен път. Вие отговаряте за начина, по който карате.</string>
+    <string name="chr_gps_warning">GPS скорост: точност ±0.2 s</string>
+    <string name="chr_btn_arm">Армиране</string>
+    <string name="chr_btn_go">Старт</string>
+    <string name="chr_btn_cancel">Отказ</string>
+    <string name="chr_btn_clear">Изчисти историята</string>
+    <string name="chr_clear_title">Да изчистя ли историята?</string>
+    <string name="chr_clear_msg">Това изтрива всички запазени опити и личните рекорди.</string>
+    <string name="chr_clear_yes">Изчисти</string>
+    <string name="chr_clear_no">Запази</string>
+    <string name="chr_not_stopped">Първо спрете мотора (под 1 km/h).</string>
+    <string name="chr_no_speed">Още няма скорост (OBD или GPS).</string>
+    <string name="chr_cancel_moved">Отменено: преместихте мотора преди старта.</string>
+    <string name="chr_cancel_rolling">Отменено: не беше старт от място.</string>
+    <string name="chr_cancel_timeout">Отменено: целта не беше достигната навреме.</string>
+    <string name="chr_cancel_user">Отменено.</string>
+    <string name="chr_new_record">Нов рекорд!</string>
+    <string name="chr_record">Рекорд</string>
+    <string name="chr_history">Последни опити</string>
+    <string name="chr_history_empty">Още няма опити.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">ГО</string>
+    <string name="chr_dash_off_note">Големият обратен отброй се показва на таблото само докато е включен.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

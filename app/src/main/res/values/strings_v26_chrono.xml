@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">0–100 timer</string>
+    <string name="chr_open">0–100 timer</string>
+    <string name="chr_state_idle">Ready. Stop the bike, then arm the timer.</string>
+    <string name="chr_state_armed">READY · tap “Go”</string>
+    <string name="chr_state_countdown">Get ready…</string>
+    <string name="chr_state_waiting">GO! Waiting for you to move…</string>
+    <string name="chr_state_running">Timing…</string>
+    <string name="chr_state_done">Done</string>
+    <string name="chr_state_cancelled">Cancelled</string>
+    <string name="chr_warning">Only on a closed road. You are responsible for how you ride.</string>
+    <string name="chr_gps_warning">GPS speed: ±0.2 s precision</string>
+    <string name="chr_btn_arm">Arm</string>
+    <string name="chr_btn_go">Go</string>
+    <string name="chr_btn_cancel">Cancel</string>
+    <string name="chr_btn_clear">Clear history</string>
+    <string name="chr_clear_title">Clear history?</string>
+    <string name="chr_clear_msg">This deletes all saved runs and personal records.</string>
+    <string name="chr_clear_yes">Clear</string>
+    <string name="chr_clear_no">Keep</string>
+    <string name="chr_not_stopped">Stop the bike first (below 1 km/h).</string>
+    <string name="chr_no_speed">No speed available yet (OBD or GPS).</string>
+    <string name="chr_cancel_moved">Cancelled: you moved before the start.</string>
+    <string name="chr_cancel_rolling">Cancelled: not a standing start.</string>
+    <string name="chr_cancel_timeout">Cancelled: the target was not reached in time.</string>
+    <string name="chr_cancel_user">Cancelled.</string>
+    <string name="chr_new_record">New record!</string>
+    <string name="chr_record">Record</string>
+    <string name="chr_history">Last runs</string>
+    <string name="chr_history_empty">No runs yet.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">GO</string>
+    <string name="chr_dash_off_note">The big countdown shows on the dashboard only while it is on.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

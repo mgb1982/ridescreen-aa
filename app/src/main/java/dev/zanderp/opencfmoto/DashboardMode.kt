@@ -66,7 +66,8 @@ object DashboardMode {
     fun setTheme(ctx: Context, t: Theme) = BikeScope.putString(prefs(ctx), ctx, "theme", t.id)
 
     enum class Design(val id: String) {
-        SPORT("sport"), RACING("racing"), TOURING("touring");
+        SPORT("sport"), RACING("racing"), TOURING("touring"),
+        CLEAN("clean"), PIT("pit"), CLASSIC("classic"), FOCUS("focus");
         companion object { fun byId(id: String?): Design = entries.firstOrNull { it.id == id } ?: SPORT }
     }
     /**
@@ -277,9 +278,12 @@ object DashboardMode {
     private fun liveBuilder(app: Context): (Int, Int) -> android.graphics.Bitmap = { w, h -> render(app, w, h) }
 
     private fun render(ctx: Context, w: Int, h: Int): android.graphics.Bitmap =
-        DashboardRenderer.render(
-            ctx, w, h, collect(ctx), isLight(ctx), design(ctx), visibleFields(ctx),
-            cardOrder = cardOrder(ctx), accent = accent(ctx),
+        ChronoController.overlay(  // 0-100 timer countdown/result on top, only while it is active
+            ctx,
+            DashboardRenderer.render(
+                ctx, w, h, collect(ctx), isLight(ctx), design(ctx), visibleFields(ctx),
+                cardOrder = cardOrder(ctx), accent = accent(ctx),
+            ),
         )
 
     // ── data
@@ -314,7 +318,7 @@ object DashboardMode {
         collect(ctx), isLight(ctx), design(ctx).name,
         // Fields, card order and accent: changing any of them repaints at once.
         visibleFields(ctx).sorted().joinToString(",") + "|" + cardOrder(ctx).joinToString(",") + "|" + accent(ctx),
-        java.text.SimpleDateFormat("HH:mm", java.util.Locale.US).format(java.util.Date()),
+        java.text.SimpleDateFormat("HH:mm", java.util.Locale.US).format(java.util.Date()) + "|" + ChronoController.signature(),
     )
 
     // ── pure helpers (unit tested)

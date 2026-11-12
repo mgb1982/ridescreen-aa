@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_maint_overdue">%1$s: verlopen</string>
+    <string name="cd_maint_km_left">%1$s: nog %2$s</string>
+    <plurals name="cd_maint_days_left">
+        <item quantity="one">%1$s: nog %2$d dag</item>
+        <item quantity="other">%1$s: nog %2$d dagen</item>
+    </plurals>
+    <string name="cd_record_top_speed">Nieuw record: topsnelheid %1$s</string>
+    <string name="cd_record_longest">Nieuw record: langste rit %1$s</string>
+    <string name="cd_record_best_day">Nieuw record: meeste afstand op één dag %1$s</string>
+    <string name="cd_battery_channel">Motorbatterij</string>
+    <string name="cd_battery_title">Motorbatterij bijna leeg</string>
+    <string name="cd_battery_low">De motorbatterij is bijna leeg: %1$s V. Hij start misschien over een paar dagen niet meer. Overweeg hem op te laden.</string>
+</resources>

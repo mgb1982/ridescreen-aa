@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_maint_overdue">%1$s: po termínu</string>
+    <string name="cd_maint_km_left">%1$s: zbývá %2$s</string>
+    <plurals name="cd_maint_days_left">
+        <item quantity="one">%1$s: zbývá %2$d den</item>
+        <item quantity="few">%1$s: zbývají %2$d dny</item>
+        <item quantity="many">%1$s: zbývá %2$d dní</item>
+        <item quantity="other">%1$s: zbývá %2$d dní</item>
+    </plurals>
+    <string name="cd_record_top_speed">Nový rekord: nejvyšší rychlost %1$s</string>
+    <string name="cd_record_longest">Nový rekord: nejdelší jízda %1$s</string>
+    <string name="cd_record_best_day">Nový rekord: nejvíc za den %1$s</string>
+    <string name="cd_battery_channel">Baterie motorky</string>
+    <string name="cd_battery_title">Slabá baterie motorky</string>
+    <string name="cd_battery_low">Baterie motorky je slabá: %1$s V. Po několika dnech nemusí nastartovat. Zvažte nabití.</string>
+</resources>

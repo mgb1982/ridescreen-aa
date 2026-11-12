@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">Cronòmetre 0–100</string>
+    <string name="chr_open">Cronòmetre 0–100</string>
+    <string name="chr_state_idle">A punt. Atureu la moto i després armeu el cronòmetre.</string>
+    <string name="chr_state_armed">A PUNT · «Començar»</string>
+    <string name="chr_state_countdown">Prepareu-vos…</string>
+    <string name="chr_state_waiting">GO! Esperant que us mogueu…</string>
+    <string name="chr_state_running">Cronometrant…</string>
+    <string name="chr_state_done">Fet</string>
+    <string name="chr_state_cancelled">Cancel·lat</string>
+    <string name="chr_warning">Només en carretera tancada. Sou responsables de com conduïu.</string>
+    <string name="chr_gps_warning">Velocitat GPS: precisió de ±0.2 s</string>
+    <string name="chr_btn_arm">Armar</string>
+    <string name="chr_btn_go">Començar</string>
+    <string name="chr_btn_cancel">Cancel·la</string>
+    <string name="chr_btn_clear">Esborra l\'historial</string>
+    <string name="chr_clear_title">Esborrar l\'historial?</string>
+    <string name="chr_clear_msg">Això esborra totes les curses desades i els rècords personals.</string>
+    <string name="chr_clear_yes">Esborra</string>
+    <string name="chr_clear_no">Conserva</string>
+    <string name="chr_not_stopped">Atureu primer la moto (per sota d\'1 km/h).</string>
+    <string name="chr_no_speed">Encara no hi ha velocitat (OBD o GPS).</string>
+    <string name="chr_cancel_moved">Cancel·lat: us heu mogut abans de la sortida.</string>
+    <string name="chr_cancel_rolling">Cancel·lat: no era una sortida parada.</string>
+    <string name="chr_cancel_timeout">Cancel·lat: no s\'ha arribat a l\'objectiu a temps.</string>
+    <string name="chr_cancel_user">Cancel·lat.</string>
+    <string name="chr_new_record">Nou rècord!</string>
+    <string name="chr_record">Rècord</string>
+    <string name="chr_history">Últimes curses</string>
+    <string name="chr_history_empty">Encara no hi ha cap cursa.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">ARA</string>
+    <string name="chr_dash_off_note">El compte enrere gran es mostra al quadre només mentre està activat.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

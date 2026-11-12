@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">Таймер 0–100</string>
+    <string name="chr_open">Таймер 0–100</string>
+    <string name="chr_state_idle">Готово. Остановите мотоцикл и затем включите таймер.</string>
+    <string name="chr_state_armed">ГОТОВ · «Старт»</string>
+    <string name="chr_state_countdown">Приготовьтесь…</string>
+    <string name="chr_state_waiting">GO! Ожидание начала движения…</string>
+    <string name="chr_state_running">Идёт замер…</string>
+    <string name="chr_state_done">Готово</string>
+    <string name="chr_state_cancelled">Отменено</string>
+    <string name="chr_warning">Только на закрытой дороге. Вы отвечаете за свою манеру езды.</string>
+    <string name="chr_gps_warning">Скорость GPS: точность ±0.2 s</string>
+    <string name="chr_btn_arm">Включить</string>
+    <string name="chr_btn_go">Старт</string>
+    <string name="chr_btn_cancel">Отмена</string>
+    <string name="chr_btn_clear">Очистить историю</string>
+    <string name="chr_clear_title">Очистить историю?</string>
+    <string name="chr_clear_msg">Будут удалены все сохранённые заезды и личные рекорды.</string>
+    <string name="chr_clear_yes">Очистить</string>
+    <string name="chr_clear_no">Оставить</string>
+    <string name="chr_not_stopped">Сначала остановите мотоцикл (меньше 1 km/h).</string>
+    <string name="chr_no_speed">Скорость пока недоступна (OBD или GPS).</string>
+    <string name="chr_cancel_moved">Отменено: вы сдвинулись до старта.</string>
+    <string name="chr_cancel_rolling">Отменено: старт был не с места.</string>
+    <string name="chr_cancel_timeout">Отменено: цель не достигнута вовремя.</string>
+    <string name="chr_cancel_user">Отменено.</string>
+    <string name="chr_new_record">Новый рекорд!</string>
+    <string name="chr_record">Рекорд</string>
+    <string name="chr_history">Последние заезды</string>
+    <string name="chr_history_empty">Заездов пока нет.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">ГО</string>
+    <string name="chr_dash_off_note">Большой обратный отсчёт отображается на приборной панели только при включённой функции.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

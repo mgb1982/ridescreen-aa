@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">Cronómetro 0–100</string>
+    <string name="chr_open">Cronómetro 0–100</string>
+    <string name="chr_state_idle">Listo. Para la moto y luego arma el cronómetro.</string>
+    <string name="chr_state_armed">LISTO · «Empezar»</string>
+    <string name="chr_state_countdown">Prepárate…</string>
+    <string name="chr_state_waiting">¡YA! Esperando a que te muevas…</string>
+    <string name="chr_state_running">Midiendo…</string>
+    <string name="chr_state_done">Hecho</string>
+    <string name="chr_state_cancelled">Cancelado</string>
+    <string name="chr_warning">Solo en carretera cerrada. Tú eres responsable de cómo conduces.</string>
+    <string name="chr_gps_warning">Velocidad GPS: precisión de ±0.2 s</string>
+    <string name="chr_btn_arm">Armar</string>
+    <string name="chr_btn_go">Empezar</string>
+    <string name="chr_btn_cancel">Cancelar</string>
+    <string name="chr_btn_clear">Borrar historial</string>
+    <string name="chr_clear_title">¿Borrar historial?</string>
+    <string name="chr_clear_msg">Esto borra todas las pruebas guardadas y los récords personales.</string>
+    <string name="chr_clear_yes">Borrar</string>
+    <string name="chr_clear_no">Conservar</string>
+    <string name="chr_not_stopped">Para primero la moto (por debajo de 1 km/h).</string>
+    <string name="chr_no_speed">Todavía no hay velocidad (OBD o GPS).</string>
+    <string name="chr_cancel_moved">Cancelado: te moviste antes del inicio.</string>
+    <string name="chr_cancel_rolling">Cancelado: no era una salida parada.</string>
+    <string name="chr_cancel_timeout">Cancelado: no se alcanzó el objetivo a tiempo.</string>
+    <string name="chr_cancel_user">Cancelado.</string>
+    <string name="chr_new_record">¡Nuevo récord!</string>
+    <string name="chr_record">Récord</string>
+    <string name="chr_history">Últimas pruebas</string>
+    <string name="chr_history_empty">Aún no hay pruebas.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">YA</string>
+    <string name="chr_dash_off_note">La cuenta atrás grande solo se muestra en el cuadro mientras está activada.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

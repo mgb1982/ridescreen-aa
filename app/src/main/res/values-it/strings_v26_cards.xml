@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_maint_overdue">%1$s: scaduto</string>
+    <string name="cd_maint_km_left">%1$s: mancano %2$s</string>
+    <plurals name="cd_maint_days_left">
+        <item quantity="one">%1$s: manca %2$d giorno</item>
+        <item quantity="many">%1$s: mancano %2$d giorni</item>
+        <item quantity="other">%1$s: mancano %2$d giorni</item>
+    </plurals>
+    <string name="cd_record_top_speed">Nuovo record: velocità massima %1$s</string>
+    <string name="cd_record_longest">Nuovo record: percorso più lungo %1$s</string>
+    <string name="cd_record_best_day">Nuovo record: più distanza in un giorno %1$s</string>
+    <string name="cd_battery_channel">Batteria della moto</string>
+    <string name="cd_battery_title">Batteria della moto scarica</string>
+    <string name="cd_battery_low">La batteria della moto è scarica: %1$s V. Potrebbe non avviarsi tra qualche giorno. Conviene ricaricarla.</string>
+</resources>

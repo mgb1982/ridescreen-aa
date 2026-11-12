@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_maint_overdue">%1$s: po terminie</string>
+    <string name="cd_maint_km_left">%1$s: zostało %2$s</string>
+    <plurals name="cd_maint_days_left">
+        <item quantity="one">%1$s: zostało %2$d dzień</item>
+        <item quantity="few">%1$s: zostały %2$d dni</item>
+        <item quantity="many">%1$s: zostało %2$d dni</item>
+        <item quantity="other">%1$s: zostały %2$d dni</item>
+    </plurals>
+    <string name="cd_record_top_speed">Nowy rekord: najwyższa prędkość %1$s</string>
+    <string name="cd_record_longest">Nowy rekord: najdłuższa jazda %1$s</string>
+    <string name="cd_record_best_day">Nowy rekord: najwięcej w jeden dzień %1$s</string>
+    <string name="cd_battery_channel">Bateria motocykla</string>
+    <string name="cd_battery_title">Słaba bateria motocykla</string>
+    <string name="cd_battery_low">Bateria motocykla jest słaba: %1$s V. Po kilku dniach może nie odpalić. Warto ją naładować.</string>
+</resources>

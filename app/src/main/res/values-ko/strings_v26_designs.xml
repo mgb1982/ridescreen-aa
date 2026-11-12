@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_design_clean">클린</string>
+    <string name="dash_design_pit">피트</string>
+    <string name="dash_design_classic">클래식</string>
+    <string name="dash_design_focus">포커스</string>
+</resources>

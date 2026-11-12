@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_maint_overdue">%1$s: เกินกำหนดแล้ว</string>
+    <string name="cd_maint_km_left">%1$s: เหลืออีก %2$s</string>
+    <plurals name="cd_maint_days_left">
+        <item quantity="other">%1$s: เหลืออีก %2$d วัน</item>
+    </plurals>
+    <string name="cd_record_top_speed">สถิติใหม่: ความเร็วสูงสุด %1$s</string>
+    <string name="cd_record_longest">สถิติใหม่: การขับขี่ระยะไกลที่สุด %1$s</string>
+    <string name="cd_record_best_day">สถิติใหม่: ระยะทางมากที่สุดในหนึ่งวัน %1$s</string>
+    <string name="cd_battery_channel">แบตเตอรี่มอเตอร์ไซค์</string>
+    <string name="cd_battery_title">แบตเตอรี่มอเตอร์ไซค์ต่ำ</string>
+    <string name="cd_battery_low">แบตเตอรี่มอเตอร์ไซค์ต่ำ: %1$s V อาจสตาร์ทไม่ติดในอีกไม่กี่วัน ควรชาร์จ</string>
+</resources>

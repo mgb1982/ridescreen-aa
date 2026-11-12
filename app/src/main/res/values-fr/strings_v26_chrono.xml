@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">Chrono 0–100</string>
+    <string name="chr_open">Chrono 0–100</string>
+    <string name="chr_state_idle">Prêt. Arrête la moto, puis arme le chrono.</string>
+    <string name="chr_state_armed">PRÊT · «Lancer»</string>
+    <string name="chr_state_countdown">Prépare-toi…</string>
+    <string name="chr_state_waiting">GO ! En attente de ton départ…</string>
+    <string name="chr_state_running">Chrono en cours…</string>
+    <string name="chr_state_done">Terminé</string>
+    <string name="chr_state_cancelled">Annulé</string>
+    <string name="chr_warning">Uniquement sur route fermée. Tu es responsable de ta conduite.</string>
+    <string name="chr_gps_warning">Vitesse GPS : précision ±0.2 s</string>
+    <string name="chr_btn_arm">Armer</string>
+    <string name="chr_btn_go">Lancer</string>
+    <string name="chr_btn_cancel">Annuler</string>
+    <string name="chr_btn_clear">Effacer l\'historique</string>
+    <string name="chr_clear_title">Effacer l\'historique ?</string>
+    <string name="chr_clear_msg">Cela supprime toutes les courses enregistrées et les records personnels.</string>
+    <string name="chr_clear_yes">Effacer</string>
+    <string name="chr_clear_no">Garder</string>
+    <string name="chr_not_stopped">Arrête d\'abord la moto (sous 1 km/h).</string>
+    <string name="chr_no_speed">Pas encore de vitesse disponible (OBD ou GPS).</string>
+    <string name="chr_cancel_moved">Annulé : tu as bougé avant le départ.</string>
+    <string name="chr_cancel_rolling">Annulé : ce n\'était pas un départ arrêté.</string>
+    <string name="chr_cancel_timeout">Annulé : l\'objectif n\'a pas été atteint à temps.</string>
+    <string name="chr_cancel_user">Annulé.</string>
+    <string name="chr_new_record">Nouveau record !</string>
+    <string name="chr_record">Record</string>
+    <string name="chr_history">Dernières courses</string>
+    <string name="chr_history_empty">Aucune course pour l\'instant.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">GO</string>
+    <string name="chr_dash_off_note">Le grand compte à rebours s\'affiche sur le tableau de bord uniquement lorsqu\'il est activé.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

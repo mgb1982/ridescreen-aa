@@ -107,6 +107,10 @@ internal object DashboardRenderer {
     /** RPM scale in thousands (10, 12 or 14): one tach segment per 1,000 rpm, a label every 2,000. */
     private val rpmK get() = rpmMax / 1000
 
+    /** v2.6 · Focus hero for the frame being drawn, and the state that keeps it from flickering. */
+    private var hero = FocusHero.Hero.SPEED
+    private val focusState = FocusHeroState(DashboardMode.COOLANT_AMBER)
+
     private var bitmap: Bitmap? = null
     private var canvas: Canvas? = null
     private var layer: Bitmap? = null
@@ -201,13 +205,21 @@ internal object DashboardRenderer {
         }
         night = !light
         val base = when (design) {
-            DashboardMode.Design.SPORT -> if (light) sportDay else sportNight
+            // The four v2.6 designs share the Sport palettes (orange accent, or the rider's own).
+            DashboardMode.Design.SPORT, DashboardMode.Design.CLEAN, DashboardMode.Design.PIT,
+            DashboardMode.Design.CLASSIC, DashboardMode.Design.FOCUS -> if (light) sportDay else sportNight
             DashboardMode.Design.RACING -> if (light) racingDay else racingNight
             DashboardMode.Design.TOURING -> if (light) touringDay else touringNight
         }
         val p = if (accent == 0) base else base.withAccent(accent, design)
         speedMax = DashboardMode.speedMax(ctx)
         rpmMax = DashboardMode.rpmMax(ctx)
+        // Focus: which reading is the hero. The live dash keeps the 3 degree hysteresis; a preview doesn't touch it.
+        hero = if (design != DashboardMode.Design.FOCUS) FocusHero.Hero.SPEED else {
+            val volt = if ("volt" in visible) d.volt else null
+            if (standalone) FocusHero.pick(d.coolant, d.rpm, volt, false, DashboardMode.COOLANT_AMBER)
+            else focusState.update(d.coolant, d.rpm, volt)
+        }
         val all = metrics(d).filter { it.id in visible }.associateBy { it.id }
         val cards = DashLayout.orderedCards(cardOrder, visible).mapNotNull(all::get)
         val scale = minOf(w / W, h / H)
@@ -242,11 +254,16 @@ internal object DashboardRenderer {
     ) {
         still { drawBackground(c, p, design) }
         // No header: the dash's own clock bar sits right above the frame.
-        live { drawShiftLights(c, d.rpm, p, design) }
+        // Pit has its own wide RPM bar instead of the shift lights.
+        if (design != DashboardMode.Design.PIT) live { drawShiftLights(c, d.rpm, p, design) }
         when (design) {
             DashboardMode.Design.SPORT -> drawSport(c, d, p, all, cards)
             DashboardMode.Design.RACING -> drawRacing(c, d, p, all, cards)
             DashboardMode.Design.TOURING -> drawTouring(c, d, p, all, cards)
+            DashboardMode.Design.CLEAN -> drawClean(c, d, p, all)
+            DashboardMode.Design.PIT -> drawPit(c, d, p, all, cards)
+            DashboardMode.Design.CLASSIC -> drawClassic(c, d, p, all)
+            DashboardMode.Design.FOCUS -> drawFocus(c, d, p, all)
         }
         live {
             if (!d.obdLive) txt(c, ctx.getString(R.string.dash_no_obd), 24f, 22f, 13f, p.muted, fLabel)
@@ -425,7 +442,7 @@ internal object DashboardRenderer {
                     else -> GREEN
                 }
                 DashboardMode.Design.RACING -> if (i >= 8) p.red else p.fg
-                DashboardMode.Design.TOURING -> if (i >= 8) p.red else p.accent
+                else -> if (i >= 8) p.red else p.accent // Touring and the v2.6 designs
             }
             box.set(x0 + i * (width + gap), 5f, x0 + i * (width + gap) + width, 10f)
             if (active) {
@@ -876,6 +893,213 @@ internal object DashboardRenderer {
             valueWithUnit(c, value(m), "%", cx, cy + 6f, 34f, p.fg, p.muted)
         }
     }
+
+    // ── v2.6 designs: CLEAN / PIT / CLASSIC / FOCUS ───────────────────────────────────────
+
+    private const val AMBER = 0xFFFFB020.toInt()
+
+    private fun whole(v: Double?) = v?.let { String.format(Locale.US, "%.0f", it) } ?: "—"
+
+    /** Small cards at fixed spots, stacked from the first spot for the fields that are visible. */
+    private fun smallCards(c: Canvas, p: Palette, ms: List<Metric?>, x: Float, y: Float, w: Float, h: Float, gap: Float) {
+        ms.filterNotNull().forEachIndexed { i, m ->
+            drawCard(c, m, DashLayout.Box(x, y + i * (h + gap), w, h), p, CardLook.SPORT)
+        }
+    }
+
+    // CLEAN: huge speed, thin 270 degree RPM arc, three small readings.
+    private fun drawClean(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>) {
+        val cx = 400f; val cy = 172f; val r = 150f
+        val redFrom = DashDesignMath.redFraction(DashboardMode.RPM_RED, rpmMax.toDouble())
+        box.set(cx - r, cy - r, cx + r, cy + r)
+        val oval = RectF(box)
+        val rpm = a["rpm"]
+        if (rpm != null) {
+            still {
+                stroke.shader = null
+                stroke.strokeWidth = 16f
+                stroke.color = p.track
+                c.drawArc(oval, DashDesignMath.ARC_START, DashDesignMath.ARC_SWEEP, false, stroke)
+                stroke.color = alpha(p.red, 0x59)
+                c.drawArc(oval, DashDesignMath.ARC_START + DashDesignMath.ARC_SWEEP * redFrom,
+                    DashDesignMath.sweep(redFrom, 1f), false, stroke)
+            }
+            live {
+                val f = DashDesignMath.fill(DashDesignMath.fraction(rpm.value, rpm.max), redFrom)
+                stroke.shader = null
+                stroke.strokeWidth = 16f
+                val accentSweep = DashDesignMath.sweep(0f, f.accentTo)
+                glowArc(c, oval, DashDesignMath.ARC_START, accentSweep, p.accent, 16f, 10f)
+                stroke.color = p.accent
+                if (accentSweep > 0f) c.drawArc(oval, DashDesignMath.ARC_START, accentSweep, false, stroke)
+                if (f.hasRed) {
+                    val start = DashDesignMath.ARC_START + DashDesignMath.ARC_SWEEP * f.redFrom
+                    val sweep = DashDesignMath.sweep(f.redFrom, f.redTo)
+                    glowArc(c, oval, start, sweep, p.red, 16f, 10f)
+                    stroke.color = p.red
+                    c.drawArc(oval, start, sweep, false, stroke)
+                }
+                val k = (rpm.value ?: 0.0) / 1000.0
+                val label = if (rpm.value == null) "— ×1000 rpm" else String.format(Locale.US, "%.1f ×1000 rpm", k)
+                centerText(c, label, cx, 300f, 20f, if ((rpm.value ?: 0.0) >= DashboardMode.RPM_RED) p.red else p.accent, fSemi)
+            }
+        }
+        val speed = a["speed"]
+        if (speed != null) {
+            still { centerText(c, "KM/H", cx, 262f, 24f, p.muted, fLabel) }
+            live { textWithGlow(c, value(speed), cx, 222f, 170f, p.fg, fValue, if (night) p.accent else null, center = true) }
+        }
+        smallCards(c, p, listOf(a["coolant"], a["volt"]), 26f, 96f, 150f, 70f, 14f)
+        smallCards(c, p, listOf(a["throttle"]), 624f, 120f, 150f, 70f, 14f)
+    }
+
+    // PIT: wide 24 segment RPM bar with a scale, big speed on the left, up to four cards in a grid.
+    private fun drawPit(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>, cards: List<Metric>) {
+        val n = 24; val gap = 4f
+        val x0 = 30f; val bw = 740f; val y0 = 26f; val bh = 36f
+        val sw = (bw - gap * (n - 1)) / n
+        val redFrom = DashDesignMath.redFraction(DashboardMode.RPM_RED, rpmMax.toDouble())
+        val firstRed = DashDesignMath.firstRedSegment(n, redFrom)
+        val rpm = a["rpm"]
+        if (rpm != null) {
+            still {
+                for (i in 0 until n) {
+                    box.set(x0 + i * (sw + gap), y0, x0 + i * (sw + gap) + sw, y0 + bh)
+                    fill.shader = null
+                    fill.color = if (i >= firstRed) alpha(p.red, 0x40) else p.track
+                    c.drawRoundRect(box, 3f, 3f, fill)
+                }
+                for ((f, label) in DashDesignMath.barLabels(rpmK)) centerText(c, label, x0 + bw * f, 84f, 15f, p.muted, fSemi)
+                txt(c, "rpm ×1000", x0, 108f, 14f, p.muted, fLabel)
+            }
+            live {
+                val lit = DashDesignMath.litSegments(DashDesignMath.fraction(rpm.value, rpm.max), n)
+                for (i in 0 until lit) {
+                    val color = if (i >= firstRed) p.red else p.accent
+                    box.set(x0 + i * (sw + gap), y0, x0 + i * (sw + gap) + sw, y0 + bh)
+                    if (night) {
+                        resetFx()
+                        fx.color = alpha(color, 0x90)
+                        fx.maskFilter = BlurMaskFilter(6f, BlurMaskFilter.Blur.NORMAL)
+                        c.drawRoundRect(box, 3f, 3f, fx)
+                    }
+                    fill.shader = null
+                    fill.color = color
+                    c.drawRoundRect(box, 3f, 3f, fill)
+                }
+            }
+        }
+        val speed = a["speed"]
+        if (speed != null) {
+            still { txt(c, "KM/H", 52f, 296f, 24f, p.muted, fLabel) }
+            live { textWithGlow(c, value(speed), 40f, 262f, 210f, p.fg, fValue, if (night) p.accent else null) }
+        }
+        val shown = cards.take(4)
+        DashLayout.cards(DashLayout.PIT, shown.size).forEachIndexed { i, b -> drawCard(c, shown[i], b, p, CardLook.SPORT) }
+    }
+
+    // CLASSIC: two round dials with needles, a small centre panel with coolant and voltage.
+    private fun drawClassic(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>) {
+        a["speed"]?.let { drawClassicDial(c, it, 200f, 165f, p, DashDesignMath.speedScale(speedMax), false, "KM/H") }
+        a["rpm"]?.let { drawClassicDial(c, it, 600f, 165f, p, DashDesignMath.rpmScale(rpmK), true, "×1000 RPM") }
+        smallCards(c, p, listOf(a["coolant"], a["volt"]), 340f, 96f, 120f, 66f, 10f)
+    }
+
+    private fun drawClassicDial(
+        c: Canvas, m: Metric, cx: Float, cy: Float, p: Palette,
+        scale: DashDesignMath.DialScale, rpm: Boolean, caption: String,
+    ) {
+        val r = 124f
+        val redFrom = DashDesignMath.redFraction(DashboardMode.RPM_RED, m.max)
+        still {
+            shadowCircle(c, cx, cy, r + 10f, 12f)
+            face(c, cx, cy, r + 10f, p)
+            rim(c, cx, cy, r + 10f, 6f)
+            for (i in 0..scale.ticks) {
+                val angle = Math.toRadians(DashDesignMath.tickAngle(i, scale.ticks).toDouble())
+                val major = scale.isMajor(i)
+                val inner = r - if (major) 16f else 9f
+                stroke.shader = null
+                stroke.color = if (major) p.fg else p.muted
+                stroke.strokeWidth = if (major) 3f else 1.5f
+                c.drawLine(cx + cos(angle).toFloat() * inner, cy + sin(angle).toFloat() * inner,
+                    cx + cos(angle).toFloat() * (r - 2f), cy + sin(angle).toFloat() * (r - 2f), stroke)
+            }
+            val labelSize = if (scale.labels().size > 9) 15f else 17f
+            for ((i, v) in scale.labels()) {
+                val angle = Math.toRadians(DashDesignMath.tickAngle(i, scale.ticks).toDouble())
+                centerText(c, v.toString(), cx + cos(angle).toFloat() * (r - 34f),
+                    cy + sin(angle).toFloat() * (r - 34f) + 6f, labelSize, p.muted, fSemi)
+            }
+            if (rpm) {
+                box.set(cx - (r - 8f), cy - (r - 8f), cx + (r - 8f), cy + (r - 8f))
+                stroke.shader = null
+                stroke.color = p.red
+                stroke.strokeWidth = 7f
+                c.drawArc(box, DashDesignMath.ARC_START + DashDesignMath.ARC_SWEEP * redFrom,
+                    DashDesignMath.sweep(redFrom, 1f), false, stroke)
+            }
+            centerText(c, caption, cx, cy + if (rpm) 70f else 86f, 14f, p.muted, fSemi)
+            glass(c, cx, cy, r + 2f)
+        }
+        live {
+            val f = DashDesignMath.fraction(m.value, m.max)
+            val color = if (rpm && (m.value ?: 0.0) >= DashboardMode.RPM_RED) p.red else p.accent
+            drawNeedle(c, cx, cy, 0f, r - 22f, DashDesignMath.ARC_START + DashDesignMath.ARC_SWEEP * f, color, 6f)
+            if (!rpm) textWithGlow(c, value(m), cx, cy + 62f, 44f, p.fg, fValue, null, center = true)
+        }
+    }
+
+    // FOCUS: one huge reading; the hero follows the situation (see FocusHero), the rest is dimmed.
+    private fun drawFocus(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>) {
+        val dim = alpha(p.muted, 0xCC)
+        val redFrom = DashDesignMath.redFraction(DashboardMode.RPM_RED, rpmMax.toDouble())
+        val bx = 170f; val bw = 460f; val by = 306f; val bh = 6f
+        still {
+            box.set(bx, by, bx + bw, by + bh)
+            fill.shader = null
+            fill.color = p.track
+            c.drawRoundRect(box, 3f, 3f, fill)
+        }
+        live {
+            val (label, v, unit, color) = when (hero) {
+                FocusHero.Hero.COOLANT -> HeroView("COOLANT", whole(d.coolant), "°C", when (DashboardMode.coolantLevel(d.coolant ?: 0.0)) {
+                    DashboardMode.Level.ALERT -> p.red
+                    DashboardMode.Level.WARN -> AMBER
+                    DashboardMode.Level.NORMAL -> p.fg
+                })
+                FocusHero.Hero.VOLT -> HeroView("VOLTAGE", d.volt?.let { String.format(Locale.US, "%.1f", it) } ?: "—", "V", p.fg)
+                FocusHero.Hero.SPEED -> HeroView("SPEED", if ("speed" in a) value(a["speed"]) else "—", "km/h", p.fg)
+            }
+            centerText(c, label, 400f, 36f, 20f, p.muted, fSemi)
+            for (i in 0..2) {
+                fill.shader = null
+                fill.color = if (i == hero.ordinal) p.fg else alpha(p.muted, 0x70)
+                c.drawCircle(372f + 28f * i, 54f, 5f, fill)
+            }
+            textWithGlow(c, v, 400f, 262f, 232f, color, fValue, if (night) color else null, center = true)
+            centerText(c, unit, 400f, 292f, 24f, p.muted, fLabel)
+            // Dimmed corners: RPM left, coolant right (the speed instead while coolant is the hero).
+            if ("rpm" in a) txt(c, whole(d.rpm) + " rpm", 40f, 60f, 22f, dim, fSemi)
+            if (hero == FocusHero.Hero.COOLANT) {
+                if ("speed" in a) rightText(c, whole(d.speedKmh) + " km/h", 760f, 60f, 22f, dim, fSemi)
+            } else if ("coolant" in a) {
+                rightText(c, whole(d.coolant) + " °C", 760f, 60f, 22f, dim, fSemi)
+            }
+            if ("rpm" in a) {
+                val f = DashDesignMath.fill(DashDesignMath.fraction(d.rpm, rpmMax.toDouble()), redFrom)
+                fun seg(from: Float, to: Float, color: Int) {
+                    box.set(bx + bw * from, by, bx + bw * to, by + bh)
+                    fill.color = color
+                    c.drawRoundRect(box, 3f, 3f, fill)
+                }
+                if (f.accentTo > 0f) seg(0f, f.accentTo, p.accent)
+                if (f.hasRed) seg(f.redFrom, f.redTo, p.red)
+            }
+        }
+    }
+
+    private data class HeroView(val label: String, val value: String, val unit: String, val color: Int)
 
     // ── cards ─────────────────────────────────────────────────────────────────────────────
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_maint_overdue">%1$s: lejárt</string>
+    <string name="cd_maint_km_left">%1$s: még %2$s</string>
+    <plurals name="cd_maint_days_left">
+        <item quantity="one">%1$s: %2$d nap van hátra</item>
+        <item quantity="other">%1$s: %2$d nap van hátra</item>
+    </plurals>
+    <string name="cd_record_top_speed">Új rekord: legnagyobb sebesség %1$s</string>
+    <string name="cd_record_longest">Új rekord: leghosszabb út %1$s</string>
+    <string name="cd_record_best_day">Új rekord: legtöbb távolság egy nap alatt %1$s</string>
+    <string name="cd_battery_channel">Motor akkumulátora</string>
+    <string name="cd_battery_title">Gyenge a motor akkumulátora</string>
+    <string name="cd_battery_low">A motor akkumulátora gyenge: %1$s V. Néhány nap múlva lehet, hogy nem indul el. Érdemes feltölteni.</string>
+</resources>

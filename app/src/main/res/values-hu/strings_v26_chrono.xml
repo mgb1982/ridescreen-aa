@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">0–100 időmérő</string>
+    <string name="chr_open">0–100 időmérő</string>
+    <string name="chr_state_idle">Kész. Állítsd le a motort, aztán aktiváld az időmérőt.</string>
+    <string name="chr_state_armed">KÉSZ · «Indítás»</string>
+    <string name="chr_state_countdown">Készülj…</string>
+    <string name="chr_state_waiting">INDULJ! Várakozás a mozgásodra…</string>
+    <string name="chr_state_running">Mérés…</string>
+    <string name="chr_state_done">Kész</string>
+    <string name="chr_state_cancelled">Megszakítva</string>
+    <string name="chr_warning">Csak lezárt úton. A vezetésedért te vagy felelős.</string>
+    <string name="chr_gps_warning">GPS-sebesség: ±0.2 s pontosság</string>
+    <string name="chr_btn_arm">Aktiválás</string>
+    <string name="chr_btn_go">Indítás</string>
+    <string name="chr_btn_cancel">Mégse</string>
+    <string name="chr_btn_clear">Előzmények törlése</string>
+    <string name="chr_clear_title">Törlöd az előzményeket?</string>
+    <string name="chr_clear_msg">Ez törli az összes mentett futást és a személyes rekordokat.</string>
+    <string name="chr_clear_yes">Törlés</string>
+    <string name="chr_clear_no">Megtartás</string>
+    <string name="chr_not_stopped">Előbb állítsd le a motort (1 km/h alatt).</string>
+    <string name="chr_no_speed">Még nincs sebesség (OBD vagy GPS).</string>
+    <string name="chr_cancel_moved">Megszakítva: mozogtál a start előtt.</string>
+    <string name="chr_cancel_rolling">Megszakítva: nem álló helyzetből indult.</string>
+    <string name="chr_cancel_timeout">Megszakítva: a célt nem értük el időben.</string>
+    <string name="chr_cancel_user">Megszakítva.</string>
+    <string name="chr_new_record">Új rekord!</string>
+    <string name="chr_record">Rekord</string>
+    <string name="chr_history">Legutóbbi futások</string>
+    <string name="chr_history_empty">Még nincs futás.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">RAJT</string>
+    <string name="chr_dash_off_note">A nagy visszaszámlálás csak bekapcsolt állapotban jelenik meg a műszerfalon.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

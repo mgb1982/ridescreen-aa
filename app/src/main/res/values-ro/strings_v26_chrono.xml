@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">Cronometru 0–100</string>
+    <string name="chr_open">Cronometru 0–100</string>
+    <string name="chr_state_idle">Gata. Oprește motocicleta, apoi armează cronometrul.</string>
+    <string name="chr_state_armed">GATA · «Pornește»</string>
+    <string name="chr_state_countdown">Pregătește-te…</string>
+    <string name="chr_state_waiting">GO! Se așteaptă să pornești…</string>
+    <string name="chr_state_running">Se cronometrează…</string>
+    <string name="chr_state_done">Gata</string>
+    <string name="chr_state_cancelled">Anulat</string>
+    <string name="chr_warning">Doar pe drum închis. Ești responsabil de felul în care conduci.</string>
+    <string name="chr_gps_warning">Viteză GPS: precizie ±0.2 s</string>
+    <string name="chr_btn_arm">Armează</string>
+    <string name="chr_btn_go">Pornește</string>
+    <string name="chr_btn_cancel">Anulează</string>
+    <string name="chr_btn_clear">Șterge istoricul</string>
+    <string name="chr_clear_title">Ștergi istoricul?</string>
+    <string name="chr_clear_msg">Se șterg toate cursele salvate și recordurile personale.</string>
+    <string name="chr_clear_yes">Șterge</string>
+    <string name="chr_clear_no">Păstrează</string>
+    <string name="chr_not_stopped">Oprește mai întâi motocicleta (sub 1 km/h).</string>
+    <string name="chr_no_speed">Încă nu există viteză (OBD sau GPS).</string>
+    <string name="chr_cancel_moved">Anulat: te-ai mișcat înainte de start.</string>
+    <string name="chr_cancel_rolling">Anulat: nu a fost un start din repaus.</string>
+    <string name="chr_cancel_timeout">Anulat: ținta nu a fost atinsă la timp.</string>
+    <string name="chr_cancel_user">Anulat.</string>
+    <string name="chr_new_record">Record nou!</string>
+    <string name="chr_record">Record</string>
+    <string name="chr_history">Ultimele curse</string>
+    <string name="chr_history_empty">Încă nu există curse.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">PLEC</string>
+    <string name="chr_dash_off_note">Numărătoarea mare apare pe bord doar cât timp este activată.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">Cronometro 0–100</string>
+    <string name="chr_open">Cronometro 0–100</string>
+    <string name="chr_state_idle">Pronto. Ferma la moto, poi arma il cronometro.</string>
+    <string name="chr_state_armed">PRONTO · «Via»</string>
+    <string name="chr_state_countdown">Preparati…</string>
+    <string name="chr_state_waiting">VIA! In attesa che ti muovi…</string>
+    <string name="chr_state_running">Cronometraggio…</string>
+    <string name="chr_state_done">Completato</string>
+    <string name="chr_state_cancelled">Annullato</string>
+    <string name="chr_warning">Solo su strada chiusa. Sei responsabile del modo in cui guidi.</string>
+    <string name="chr_gps_warning">Velocità GPS: precisione ±0.2 s</string>
+    <string name="chr_btn_arm">Arma</string>
+    <string name="chr_btn_go">Via</string>
+    <string name="chr_btn_cancel">Annulla</string>
+    <string name="chr_btn_clear">Cancella cronologia</string>
+    <string name="chr_clear_title">Cancellare la cronologia?</string>
+    <string name="chr_clear_msg">Verranno eliminate tutte le prove salvate e i record personali.</string>
+    <string name="chr_clear_yes">Cancella</string>
+    <string name="chr_clear_no">Mantieni</string>
+    <string name="chr_not_stopped">Ferma prima la moto (sotto 1 km/h).</string>
+    <string name="chr_no_speed">Nessuna velocità disponibile (OBD o GPS).</string>
+    <string name="chr_cancel_moved">Annullato: ti sei mosso prima della partenza.</string>
+    <string name="chr_cancel_rolling">Annullato: non era una partenza da fermo.</string>
+    <string name="chr_cancel_timeout">Annullato: obiettivo non raggiunto in tempo.</string>
+    <string name="chr_cancel_user">Annullato.</string>
+    <string name="chr_new_record">Nuovo record!</string>
+    <string name="chr_record">Record</string>
+    <string name="chr_history">Ultime prove</string>
+    <string name="chr_history_empty">Nessuna prova ancora.</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">VIA</string>
+    <string name="chr_dash_off_note">Il grande conto alla rovescia appare sul cruscotto solo quando è attivo.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

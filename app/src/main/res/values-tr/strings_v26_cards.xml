@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_maint_overdue">%1$s: gecikti</string>
+    <string name="cd_maint_km_left">%1$s: %2$s kaldı</string>
+    <plurals name="cd_maint_days_left">
+        <item quantity="one">%1$s: %2$d gün kaldı</item>
+        <item quantity="other">%1$s: %2$d gün kaldı</item>
+    </plurals>
+    <string name="cd_record_top_speed">Yeni rekor: en yüksek hız %1$s</string>
+    <string name="cd_record_longest">Yeni rekor: en uzun sürüş %1$s</string>
+    <string name="cd_record_best_day">Yeni rekor: bir günde en fazla mesafe %1$s</string>
+    <string name="cd_battery_channel">Motosiklet bataryası</string>
+    <string name="cd_battery_title">Motosiklet bataryası zayıf</string>
+    <string name="cd_battery_low">Motosiklet bataryası zayıf: %1$s V. Birkaç gün içinde çalışmayabilir. Şarj etmeyi düşün.</string>
+</resources>

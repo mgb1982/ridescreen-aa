@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chr_title">จับเวลา 0–100</string>
+    <string name="chr_open">จับเวลา 0–100</string>
+    <string name="chr_state_idle">พร้อมแล้ว หยุดรถก่อน จากนั้นตั้งค่าการจับเวลา</string>
+    <string name="chr_state_armed">พร้อม · «เริ่ม»</string>
+    <string name="chr_state_countdown">เตรียมตัว…</string>
+    <string name="chr_state_waiting">GO! รอให้เคลื่อนที่…</string>
+    <string name="chr_state_running">กำลังจับเวลา…</string>
+    <string name="chr_state_done">เสร็จสิ้น</string>
+    <string name="chr_state_cancelled">ยกเลิกแล้ว</string>
+    <string name="chr_warning">ใช้ได้เฉพาะบนถนนที่ปิดแล้วเท่านั้น คุณรับผิดชอบการขับขี่ของตัวเอง</string>
+    <string name="chr_gps_warning">ความเร็ว GPS: ความแม่นยำ ±0.2 s</string>
+    <string name="chr_btn_arm">ตั้งค่า</string>
+    <string name="chr_btn_go">เริ่ม</string>
+    <string name="chr_btn_cancel">ยกเลิก</string>
+    <string name="chr_btn_clear">ล้างประวัติ</string>
+    <string name="chr_clear_title">ล้างประวัติใช่ไหม</string>
+    <string name="chr_clear_msg">การดำเนินการนี้จะลบการจับเวลาที่บันทึกไว้และสถิติส่วนตัวทั้งหมด</string>
+    <string name="chr_clear_yes">ล้าง</string>
+    <string name="chr_clear_no">เก็บไว้</string>
+    <string name="chr_not_stopped">หยุดรถก่อน (ต่ำกว่า 1 km/h)</string>
+    <string name="chr_no_speed">ยังไม่มีความเร็ว (OBD หรือ GPS)</string>
+    <string name="chr_cancel_moved">ยกเลิก: คุณขยับรถก่อนเริ่ม</string>
+    <string name="chr_cancel_rolling">ยกเลิก: ไม่ได้เริ่มจากการหยุดนิ่ง</string>
+    <string name="chr_cancel_timeout">ยกเลิก: ไม่ถึงเป้าหมายตามเวลาที่กำหนด</string>
+    <string name="chr_cancel_user">ยกเลิกแล้ว</string>
+    <string name="chr_new_record">สถิติใหม่!</string>
+    <string name="chr_record">สถิติ</string>
+    <string name="chr_history">รายการล่าสุด</string>
+    <string name="chr_history_empty">ยังไม่มีรายการ</string>
+    <string name="chr_source_obd">OBD</string>
+    <string name="chr_source_gps">GPS</string>
+    <string name="chr_dash_go">GO</string>
+    <string name="chr_dash_off_note">The big countdown shows on the dashboard only while it is on.</string>
+    <string name="chr_seconds_fmt">%1$s s</string>
+</resources>

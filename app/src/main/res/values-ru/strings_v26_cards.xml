@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_maint_overdue">%1$s: просрочено</string>
+    <string name="cd_maint_km_left">%1$s: осталось %2$s</string>
+    <plurals name="cd_maint_days_left">
+        <item quantity="one">%1$s: осталось %2$d день</item>
+        <item quantity="few">%1$s: осталось %2$d дня</item>
+        <item quantity="many">%1$s: осталось %2$d дней</item>
+        <item quantity="other">%1$s: осталось %2$d дня</item>
+    </plurals>
+    <string name="cd_record_top_speed">Новый рекорд: максимальная скорость %1$s</string>
+    <string name="cd_record_longest">Новый рекорд: самая длинная поездка %1$s</string>
+    <string name="cd_record_best_day">Новый рекорд: больше всего за день %1$s</string>
+    <string name="cd_battery_channel">Батарея мотоцикла</string>
+    <string name="cd_battery_title">Низкий заряд батареи мотоцикла</string>
+    <string name="cd_battery_low">Батарея мотоцикла разряжена: %1$s В. Через несколько дней может не завестись. Лучше зарядить её.</string>
+</resources>
