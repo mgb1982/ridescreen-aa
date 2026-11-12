@@ -17,6 +17,13 @@
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_racing">Racing</string>
     <string name="dash_design_touring">Touring</string>
+    <string name="controls_dash_card_order">Card order</string>
+    <string name="controls_dash_card_order_title">Card order</string>
+    <string name="controls_dash_card_up">Move up</string>
+    <string name="controls_dash_card_down">Move down</string>
+    <string name="controls_dash_accent">Accent colour</string>
+    <string name="controls_dash_accent_title">Accent colour</string>
+    <string name="controls_dash_accent_style">Style colour</string>
 <string-array name="dash_obd_field_names">
         <item>RPM</item><item>Speed</item><item>Coolant</item><item>Voltage</item>
         <item>Calculated load</item><item>Intake temperature</item><item>Barometric pressure</item><item>Absolute load</item><item>Throttle</item>

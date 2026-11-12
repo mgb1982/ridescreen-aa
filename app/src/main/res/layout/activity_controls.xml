@@ -250,6 +250,22 @@
                     android:text="@string/controls_dash_fields" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_dash_card_order"
+                    style="@style/Widget.OpenCfMoto.Segment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/controls_dash_card_order" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_dash_accent"
+                    style="@style/Widget.OpenCfMoto.Segment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/controls_dash_accent" />
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_dash_scale"
                     style="@style/Widget.OpenCfMoto.Segment"
                     android:layout_width="match_parent"

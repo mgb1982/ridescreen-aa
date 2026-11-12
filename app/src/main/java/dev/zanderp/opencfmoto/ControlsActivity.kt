@@ -480,6 +480,8 @@ class ControlsActivity : AppCompatActivity() {
                 .setNegativeButton(android.R.string.cancel, null)
                 .show()
         }
+        findViewById<MaterialButton>(R.id.btn_dash_card_order).setOnClickListener { showCardOrderDialog() }
+        findViewById<MaterialButton>(R.id.btn_dash_accent).setOnClickListener { showAccentDialog() }
         findViewById<MaterialButton>(R.id.btn_dash_toggle).setOnClickListener {
             if (DashboardMode.toggle(this) == null) {
                 Toast.makeText(this, R.string.dash_need_stream, Toast.LENGTH_SHORT).show()
@@ -595,5 +597,126 @@ class ControlsActivity : AppCompatActivity() {
             R.id.btn_dpad_down,
             R.id.btn_back, R.id.btn_home, R.id.btn_assistant,
         )
+    }
+
+    private fun showCardOrderDialog() {
+        val ids = DashboardMode.fieldIds()
+        val names = resources.getStringArray(R.array.dash_obd_field_names)
+        val dp = resources.displayMetrics.density
+        val list = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding((24 * dp).toInt(), (8 * dp).toInt(), (24 * dp).toInt(), 0)
+        }
+        fun arrow(glyph: String, desc: Int, enabled: Boolean, onTap: () -> Unit) = TextView(this).apply {
+            text = glyph
+            textSize = 22f
+            gravity = android.view.Gravity.CENTER
+            minWidth = (48 * dp).toInt()
+            minHeight = (48 * dp).toInt()
+            contentDescription = getString(desc)
+            isEnabled = enabled
+            alpha = if (enabled) 1f else 0.3f
+            isClickable = enabled
+            if (enabled) setOnClickListener { onTap() }
+        }
+        fun render() {
+            list.removeAllViews()
+            val order = DashboardMode.cardOrder(this).filter { it in DashboardMode.cardFields() }
+            order.forEachIndexed { i, id ->
+                val row = LinearLayout(this).apply {
+                    orientation = LinearLayout.HORIZONTAL
+                    gravity = android.view.Gravity.CENTER_VERTICAL
+                }
+                row.addView(TextView(this).apply {
+                    text = names.getOrElse(ids.indexOf(id)) { id }
+                    textSize = 16f
+                }, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+                row.addView(arrow("\u25B2", R.string.controls_dash_card_up, i > 0) {
+                    DashboardMode.moveCard(this, id, -1); render()
+                })
+                row.addView(arrow("\u25BC", R.string.controls_dash_card_down, i < order.lastIndex) {
+                    DashboardMode.moveCard(this, id, +1); render()
+                })
+                list.addView(row)
+            }
+        }
+        render()
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(R.string.controls_dash_card_order_title)
+            .setView(list)
+            .setPositiveButton(android.R.string.ok, null)
+            .show()
+    }
+
+    private fun showAccentDialog() {
+        val dp = resources.displayMetrics.density
+        val size = (44 * dp).toInt()
+        val gap = (6 * dp).toInt()
+        val current = DashboardMode.accent(this)
+        var dialog: androidx.appcompat.app.AlertDialog? = null
+        val grid = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding((20 * dp).toInt(), (12 * dp).toInt(), (20 * dp).toInt(), 0)
+        }
+        val ink = androidx.core.content.res.ResourcesCompat.getColor(resources, android.R.color.darker_gray, theme)
+        DashLayout.ACCENT_PRESETS.chunked(4).forEach { chunk ->
+            val row = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+            chunk.forEach { color ->
+                val selected = color == current
+                val swatch = object : View(this) {
+                    override fun onDraw(canvas: android.graphics.Canvas) {
+                        super.onDraw(canvas)
+                        val p = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+                            style = android.graphics.Paint.Style.STROKE
+                            strokeWidth = 2 * dp
+                        }
+                        if (color == 0) { // style colour: diagonal across the circle
+                            p.color = ink
+                            val m = width * 0.22f
+                            canvas.drawLine(m, height - m, width - m, m, p)
+                        }
+                        if (selected) { // check mark
+                            p.color = if (color == 0) ink else android.graphics.Color.WHITE
+                            p.strokeWidth = 3 * dp
+                            p.strokeCap = android.graphics.Paint.Cap.ROUND
+                            val w = width.toFloat(); val h = height.toFloat()
+                            canvas.drawLine(w * .30f, h * .52f, w * .45f, h * .66f, p)
+                            canvas.drawLine(w * .45f, h * .66f, w * .72f, h * .34f, p)
+                        }
+                    }
+                }.apply {
+                    background = android.graphics.drawable.GradientDrawable().apply {
+                        shape = android.graphics.drawable.GradientDrawable.OVAL
+                        if (color == 0) setColor(android.graphics.Color.TRANSPARENT) else setColor(color)
+                        setStroke(((if (selected) 3 else 1) * dp).toInt(), ink)
+                    }
+                    contentDescription = if (color == 0) getString(R.string.controls_dash_accent_style) else null
+                    isClickable = true
+                    setOnClickListener {
+                        DashboardMode.setAccent(this@ControlsActivity, color)
+                        dialog?.dismiss()
+                    }
+                }
+                val cell = LinearLayout(this).apply {
+                    orientation = LinearLayout.VERTICAL
+                    gravity = android.view.Gravity.CENTER_HORIZONTAL
+                    setPadding(gap, gap, gap, gap)
+                }
+                cell.addView(swatch, LinearLayout.LayoutParams(size, size))
+                if (color == 0) cell.addView(TextView(this).apply {
+                    text = getString(R.string.controls_dash_accent_style)
+                    textSize = 11f
+                    gravity = android.view.Gravity.CENTER
+                    maxWidth = size + 2 * gap
+                })
+                row.addView(cell)
+            }
+            grid.addView(row)
+        }
+        dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(R.string.controls_dash_accent_title)
+            .setView(grid)
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 }
