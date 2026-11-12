@@ -123,6 +123,8 @@ SCREENS = {
              lambda l: [(DOCS_M + "23_tu_ano_en_moto.png", PHONE_DOCS)] if l == "es" else []),
     "share": (lambda l: phone.share_card(l), "share",
               lambda l: [(DOCS_I + "01_compartir_viaje.png", 720)] if l == "es" else []),
+    "promo_125": (lambda l: promo_125.card(l), "promo",
+                  lambda l: [(DOCS_I + "02_ridescreen_125x_125v.png", None)] if l == "es" else []),
     # Watch
     "w_find": (lambda l: watch.find_bike(l), "watch",
                lambda l: ([(DOCS_W + "01_brujula_hacia_tu_moto.png", WATCH_DOCS)] if l == "es" else [])
