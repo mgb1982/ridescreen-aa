@@ -12,6 +12,13 @@
     <string name="controls_dash_hide">Vissza az Android Autóhoz</string>
     <string name="controls_dash_start">Indítás az irányítópulton, amikor a motor csatlakozik</string>
     <string name="controls_dash_fields">Látható mezők</string>
+    <string name="controls_dash_card_order">Kártyák sorrendje</string>
+    <string name="controls_dash_card_order_title">Kártyák sorrendje</string>
+    <string name="controls_dash_card_up">Fel</string>
+    <string name="controls_dash_card_down">Le</string>
+    <string name="controls_dash_accent">Fő szín</string>
+    <string name="controls_dash_accent_title">Fő szín</string>
+    <string name="controls_dash_accent_style">Stílus színe</string>
     <string name="controls_dash_design">Irányítópult stílusa</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_racing">Verseny</string>

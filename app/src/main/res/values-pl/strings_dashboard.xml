@@ -12,6 +12,13 @@
     <string name="controls_dash_hide">Powrót do Android Auto</string>
     <string name="controls_dash_start">Uruchamiaj od pulpitu, gdy motocykl się połączy</string>
     <string name="controls_dash_fields">Widoczne pola</string>
+    <string name="controls_dash_card_order">Kolejność kart</string>
+    <string name="controls_dash_card_order_title">Kolejność kart</string>
+    <string name="controls_dash_card_up">Przesuń w górę</string>
+    <string name="controls_dash_card_down">Przesuń w dół</string>
+    <string name="controls_dash_accent">Kolor główny</string>
+    <string name="controls_dash_accent_title">Kolor główny</string>
+    <string name="controls_dash_accent_style">Kolor stylu</string>
     <string name="controls_dash_design">Styl pulpitu</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_racing">Wyścigowy</string>

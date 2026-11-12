@@ -3,6 +3,13 @@
 <resources>
     <string name="controls_dash_design">Стиль приборной панели</string>
     <string name="controls_dash_fields">Видимые поля</string>
+    <string name="controls_dash_card_order">Порядок карточек</string>
+    <string name="controls_dash_card_order_title">Порядок карточек</string>
+    <string name="controls_dash_card_up">Вверх</string>
+    <string name="controls_dash_card_down">Вниз</string>
+    <string name="controls_dash_accent">Основной цвет</string>
+    <string name="controls_dash_accent_title">Основной цвет</string>
+    <string name="controls_dash_accent_style">Цвет стиля</string>
     <string name="dash_design_racing">Racing</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_touring">Touring</string>

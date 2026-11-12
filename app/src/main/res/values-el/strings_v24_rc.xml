@@ -3,6 +3,13 @@
 <resources>
     <string name="controls_dash_design">Στυλ ταμπλό</string>
     <string name="controls_dash_fields">Ορατά πεδία</string>
+    <string name="controls_dash_card_order">Σειρά καρτών</string>
+    <string name="controls_dash_card_order_title">Σειρά καρτών</string>
+    <string name="controls_dash_card_up">Πάνω</string>
+    <string name="controls_dash_card_down">Κάτω</string>
+    <string name="controls_dash_accent">Κύριο χρώμα</string>
+    <string name="controls_dash_accent_title">Κύριο χρώμα</string>
+    <string name="controls_dash_accent_style">Χρώμα στυλ</string>
     <string name="dash_design_racing">Racing</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_touring">Touring</string>

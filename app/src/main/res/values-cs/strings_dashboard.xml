@@ -12,6 +12,13 @@
     <string name="controls_dash_hide">Zpět na Android Auto</string>
     <string name="controls_dash_start">Spustit v přehledu, když se motocykl připojí</string>
     <string name="controls_dash_fields">Viditelná pole</string>
+    <string name="controls_dash_card_order">Pořadí karet</string>
+    <string name="controls_dash_card_order_title">Pořadí karet</string>
+    <string name="controls_dash_card_up">Nahoru</string>
+    <string name="controls_dash_card_down">Dolů</string>
+    <string name="controls_dash_accent">Hlavní barva</string>
+    <string name="controls_dash_accent_title">Hlavní barva</string>
+    <string name="controls_dash_accent_style">Barva stylu</string>
     <string name="controls_dash_design">Styl přehledu</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_racing">Závodní</string>

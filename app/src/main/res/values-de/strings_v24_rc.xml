@@ -3,6 +3,13 @@
 <resources>
     <string name="controls_dash_design">Dashboard-Stil</string>
     <string name="controls_dash_fields">Sichtbare Felder</string>
+    <string name="controls_dash_card_order">Kartenreihenfolge</string>
+    <string name="controls_dash_card_order_title">Kartenreihenfolge</string>
+    <string name="controls_dash_card_up">Nach oben</string>
+    <string name="controls_dash_card_down">Nach unten</string>
+    <string name="controls_dash_accent">Hauptfarbe</string>
+    <string name="controls_dash_accent_title">Hauptfarbe</string>
+    <string name="controls_dash_accent_style">Stilfarbe</string>
     <string name="dash_design_racing">Racing</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_touring">Touring</string>

@@ -3,6 +3,13 @@
 <resources>
     <string name="controls_dash_design">สไตล์แดชบอร์ด</string>
     <string name="controls_dash_fields">ช่องที่แสดง</string>
+    <string name="controls_dash_card_order">ลำดับการ์ด</string>
+    <string name="controls_dash_card_order_title">ลำดับการ์ด</string>
+    <string name="controls_dash_card_up">ขึ้น</string>
+    <string name="controls_dash_card_down">ลง</string>
+    <string name="controls_dash_accent">สีหลัก</string>
+    <string name="controls_dash_accent_title">สีหลัก</string>
+    <string name="controls_dash_accent_style">สีของสไตล์</string>
     <string name="dash_design_racing">Racing</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_touring">Touring</string>

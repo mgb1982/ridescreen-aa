@@ -12,6 +12,13 @@
     <string name="controls_dash_hide">Обратно към Android Auto</string>
     <string name="controls_dash_start">Стартиране с таблото, когато мотора се свърже</string>
     <string name="controls_dash_fields">Видими полета</string>
+    <string name="controls_dash_card_order">Ред на картите</string>
+    <string name="controls_dash_card_order_title">Ред на картите</string>
+    <string name="controls_dash_card_up">Нагоре</string>
+    <string name="controls_dash_card_down">Надолу</string>
+    <string name="controls_dash_accent">Основен цвят</string>
+    <string name="controls_dash_accent_title">Основен цвят</string>
+    <string name="controls_dash_accent_style">Цвят на стила</string>
     <string name="controls_dash_design">Стил на таблото</string>
     <string name="dash_design_sport">Спорт</string>
     <string name="dash_design_racing">Състезателен</string>

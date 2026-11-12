@@ -12,6 +12,13 @@
     <string name="controls_dash_hide">Android Auto\'ya dön</string>
     <string name="controls_dash_start">Motor bağlandığında göstergede başla</string>
     <string name="controls_dash_fields">Görünen alanlar</string>
+    <string name="controls_dash_card_order">Kart sırası</string>
+    <string name="controls_dash_card_order_title">Kart sırası</string>
+    <string name="controls_dash_card_up">Yukarı</string>
+    <string name="controls_dash_card_down">Aşağı</string>
+    <string name="controls_dash_accent">Ana renk</string>
+    <string name="controls_dash_accent_title">Ana renk</string>
+    <string name="controls_dash_accent_style">Stil rengi</string>
     <string name="controls_dash_design">Gösterge stili</string>
     <string name="dash_design_sport">Spor</string>
     <string name="dash_design_racing">Yarış</string>

@@ -12,6 +12,13 @@
     <string name="controls_dash_hide">Terug naar Android Auto</string>
     <string name="controls_dash_start">Starten met het dashboard wanneer de motor verbindt</string>
     <string name="controls_dash_fields">Zichtbare velden</string>
+    <string name="controls_dash_card_order">Kaartvolgorde</string>
+    <string name="controls_dash_card_order_title">Kaartvolgorde</string>
+    <string name="controls_dash_card_up">Omhoog</string>
+    <string name="controls_dash_card_down">Omlaag</string>
+    <string name="controls_dash_accent">Hoofdkleur</string>
+    <string name="controls_dash_accent_title">Hoofdkleur</string>
+    <string name="controls_dash_accent_style">Stijlkleur</string>
     <string name="controls_dash_design">Dashboardstijl</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_racing">Racing</string>

@@ -3,6 +3,13 @@
 <resources>
     <string name="controls_dash_design">Estilo do painel</string>
     <string name="controls_dash_fields">Campos visíveis</string>
+    <string name="controls_dash_card_order">Ordem dos cartões</string>
+    <string name="controls_dash_card_order_title">Ordem dos cartões</string>
+    <string name="controls_dash_card_up">Subir</string>
+    <string name="controls_dash_card_down">Descer</string>
+    <string name="controls_dash_accent">Cor principal</string>
+    <string name="controls_dash_accent_title">Cor principal</string>
+    <string name="controls_dash_accent_style">Cor do estilo</string>
     <string name="dash_design_racing">Racing</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_touring">Touring</string>

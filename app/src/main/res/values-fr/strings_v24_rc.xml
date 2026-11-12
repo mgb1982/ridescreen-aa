@@ -3,6 +3,13 @@
 <resources>
     <string name="controls_dash_design">Style du tableau de bord</string>
     <string name="controls_dash_fields">Champs visibles</string>
+    <string name="controls_dash_card_order">Ordre des cartes</string>
+    <string name="controls_dash_card_order_title">Ordre des cartes</string>
+    <string name="controls_dash_card_up">Monter</string>
+    <string name="controls_dash_card_down">Descendre</string>
+    <string name="controls_dash_accent">Couleur principale</string>
+    <string name="controls_dash_accent_title">Couleur principale</string>
+    <string name="controls_dash_accent_style">Couleur du style</string>
     <string name="dash_design_racing">Racing</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_touring">Touring</string>

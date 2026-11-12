@@ -3,6 +3,13 @@
 <resources>
     <string name="controls_dash_design">Estil del dashboard</string>
     <string name="controls_dash_fields">Camps visibles</string>
+    <string name="controls_dash_card_order">Ordre de les targetes</string>
+    <string name="controls_dash_card_order_title">Ordre de les targetes</string>
+    <string name="controls_dash_card_up">Amunt</string>
+    <string name="controls_dash_card_down">Avall</string>
+    <string name="controls_dash_accent">Color principal</string>
+    <string name="controls_dash_accent_title">Color principal</string>
+    <string name="controls_dash_accent_style">Color de l\'estil</string>
     <string name="dash_design_racing">Racing</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_touring">Touring</string>

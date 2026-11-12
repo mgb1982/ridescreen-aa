@@ -3,6 +3,13 @@
 <resources>
     <string name="controls_dash_design">Stile della dashboard</string>
     <string name="controls_dash_fields">Campi visibili</string>
+    <string name="controls_dash_card_order">Ordine delle schede</string>
+    <string name="controls_dash_card_order_title">Ordine delle schede</string>
+    <string name="controls_dash_card_up">Sposta su</string>
+    <string name="controls_dash_card_down">Sposta giù</string>
+    <string name="controls_dash_accent">Colore principale</string>
+    <string name="controls_dash_accent_title">Colore principale</string>
+    <string name="controls_dash_accent_style">Colore dello stile</string>
     <string name="dash_design_racing">Racing</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_touring">Touring</string>

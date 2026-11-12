@@ -12,6 +12,13 @@
     <string name="controls_dash_hide">Android Auto로 돌아가기</string>
     <string name="controls_dash_start">오토바이가 연결되면 대시보드로 시작</string>
     <string name="controls_dash_fields">표시할 항목</string>
+    <string name="controls_dash_card_order">카드 순서</string>
+    <string name="controls_dash_card_order_title">카드 순서</string>
+    <string name="controls_dash_card_up">위로</string>
+    <string name="controls_dash_card_down">아래로</string>
+    <string name="controls_dash_accent">주요 색상</string>
+    <string name="controls_dash_accent_title">주요 색상</string>
+    <string name="controls_dash_accent_style">스타일 색상</string>
     <string name="controls_dash_design">대시보드 스타일</string>
     <string name="dash_design_sport">스포츠</string>
     <string name="dash_design_racing">레이싱</string>

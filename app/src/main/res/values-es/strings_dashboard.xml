@@ -13,6 +13,13 @@
     <string name="controls_dash_hide">Volver a Android Auto</string>
     <string name="controls_dash_start">Empezar en el dashboard al conectar la moto</string>
     <string name="controls_dash_fields">Campos visibles</string>
+    <string name="controls_dash_card_order">Orden de las tarjetas</string>
+    <string name="controls_dash_card_order_title">Orden de las tarjetas</string>
+    <string name="controls_dash_card_up">Subir</string>
+    <string name="controls_dash_card_down">Bajar</string>
+    <string name="controls_dash_accent">Color principal</string>
+    <string name="controls_dash_accent_title">Color principal</string>
+    <string name="controls_dash_accent_style">Color del estilo</string>
     <string name="controls_dash_design">Estilo del dashboard</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_racing">Racing</string>

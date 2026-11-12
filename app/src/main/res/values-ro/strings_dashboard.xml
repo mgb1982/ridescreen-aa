@@ -12,6 +12,13 @@
     <string name="controls_dash_hide">Înapoi la Android Auto</string>
     <string name="controls_dash_start">Pornește în tabloul de bord când se conectează moto</string>
     <string name="controls_dash_fields">Câmpuri vizibile</string>
+    <string name="controls_dash_card_order">Ordinea cardurilor</string>
+    <string name="controls_dash_card_order_title">Ordinea cardurilor</string>
+    <string name="controls_dash_card_up">Mută sus</string>
+    <string name="controls_dash_card_down">Mută jos</string>
+    <string name="controls_dash_accent">Culoare principală</string>
+    <string name="controls_dash_accent_title">Culoare principală</string>
+    <string name="controls_dash_accent_style">Culoarea stilului</string>
     <string name="controls_dash_design">Stil tablou de bord</string>
     <string name="dash_design_sport">Sport</string>
     <string name="dash_design_racing">Racing</string>
