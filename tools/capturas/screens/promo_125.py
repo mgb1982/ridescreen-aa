@@ -17,7 +17,7 @@ def card(lang):
     .models{margin-top:18px;background:#C7F000;color:#101510;border-radius:15px;padding:12px 24px;
       font-size:39px;font-weight:800;letter-spacing:1px;text-align:center}
     .sub{font-size:30px;text-align:center;margin:16px 0 26px;color:#E3E9DD}
-    .hero{height:420px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+    .hero{height:390px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
     .bike{border:2px solid #71805E;border-radius:26px;background:linear-gradient(145deg,#34412E,#182019);
       padding:22px;position:relative;overflow:hidden}
     .bike .tag{font-size:24px;color:#C7F000;font-weight:800;letter-spacing:2px}
@@ -25,15 +25,15 @@ def card(lang):
     .bike svg{width:100%;height:100%}
     .bike .caption{font-size:21px;color:#E0E7D9;text-align:center}
     .features{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
-    .feature{min-height:170px;border:1.5px solid #71805E;border-radius:22px;background:#202A21;padding:18px 20px;
+    .feature{min-height:155px;border:1.5px solid #71805E;border-radius:22px;background:#202A21;padding:18px 20px;
       display:flex;gap:18px;align-items:center}
     .ico{width:70px;height:70px;flex:none;border-radius:18px;background:#C7F000;color:#172014;
       display:flex;align-items:center;justify-content:center;font-size:39px;font-weight:800}
     .feature h3{font-size:25px;margin:0 0 7px;color:#C7F000}
     .feature p{font-size:19px;line-height:1.28;margin:0;color:#E7EDE3}
-    .foot{margin-top:24px;background:#C7F000;color:#11180E;border-radius:18px;padding:17px 20px;text-align:center;
+    .foot{margin-top:18px;background:#C7F000;color:#11180E;border-radius:18px;padding:17px 20px;text-align:center;
       font-size:29px;font-weight:800;letter-spacing:1px}
-    .note{text-align:center;font-size:17px;color:#C4CCBE;margin-top:12px}
+    .note{text-align:center;font-size:15px;color:#C4CCBE;margin-top:9px}
     .mini{display:flex;gap:10px;margin-top:10px}
     .chip{border:1px solid #708064;border-radius:999px;padding:6px 12px;font-size:16px;color:#DCE5D5}
     """
