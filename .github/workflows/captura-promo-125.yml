@@ -1,0 +1,47 @@
+name: Renderizar collage RideScreen AA 125X y 125V
+on:
+  push:
+    branches: [capturas/promo-125x-125v]
+    paths:
+      - tools/capturas/screens/promo_125.py
+      - tools/capturas/capturas.py
+      - .github/workflows/captura-promo-125.yml
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del generador oficial
+        uses: actions/checkout@v4
+        with:
+          ref: capturas/promo-125x-125v
+          path: generador
+      - name: Checkout de recursos de RideScreen AA 2.4.1
+        uses: actions/checkout@v4
+        with:
+          ref: v2.4.1
+          path: recursos
+          sparse-checkout: app/src/main/res
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar dependencias y Chromium
+        run: |
+          python -m pip install playwright pillow babel
+          python -m playwright install --with-deps chromium
+      - name: Validar salida
+        working-directory: generador
+        run: python3 tools/capturas/capturas.py --list promo_125 --lang=es
+      - name: Renderizar con el generador oficial
+        working-directory: generador
+        env:
+          RS_APP_RES: ${{ github.workspace }}/recursos/app/src/main/res
+        run: python3 tools/capturas/capturas.py promo_125 --lang=es --dry
+      - name: Subir collage PNG
+        uses: actions/upload-artifact@v4
+        with:
+          name: ridescreen-aa-125x-125v-collage-es
+          path: generador/tools/capturas/out/dry/docs/screenshots/ridescreen/imagenes/02_ridescreen_125x_125v.png
+          if-no-files-found: error
