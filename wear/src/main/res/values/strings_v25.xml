@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · lock the bike from the watch (parking page). -->
+<resources>
+    <string name="lock_bike">🔒 Lock</string>
+    <string name="lock_confirm">Tap again to lock</string>
+    <string name="lock_sending">Locking…</string>
+    <string name="lock_no_answer">No answer from the phone. Check the bike.</string>
+</resources>

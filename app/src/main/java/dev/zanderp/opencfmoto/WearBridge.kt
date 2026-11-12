@@ -144,6 +144,7 @@ object WearBridge {
             PATH_SCROLL -> text.toIntOrNull()?.let { d -> main.post { sendScroll(d) } }
             WearTrips.PATH_TRIPS -> WearTrips.sendList(ctx.applicationContext, event.sourceNodeId, text)
             WearTrips.PATH_TRIPMAP -> WearTrips.sendMap(ctx.applicationContext, text, event.sourceNodeId)
+            WearLock.PATH_LOCK -> WearLock.handle(ctx.applicationContext, event.sourceNodeId, text)
         }
     }
 
@@ -211,6 +212,8 @@ object WearBridge {
             // Parking spot in every idle snapshot ("" = none): the watch stays in sync even if the
             // one-off /ocm/parked message got lost.
             o.put("park", Parking.json(Parking.get(ctx)))
+            // v2.5: the watch shows "Lock" on its parking page only if the keyless lock is set up.
+            o.put("lock", WearLock.available(ctx))
         }
         putInfo(ctx, o)
         return o.toString()

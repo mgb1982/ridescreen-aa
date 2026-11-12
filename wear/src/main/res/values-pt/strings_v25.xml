@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · lock the bike from the watch (parking page). -->
+<resources>
+    <string name="lock_bike">🔒 Trancar</string>
+    <string name="lock_confirm">Toca outra vez para trancar</string>
+    <string name="lock_sending">A trancar…</string>
+    <string name="lock_no_answer">O telemóvel não responde. Verifica a mota.</string>
+</resources>

@@ -68,6 +68,18 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
     private var parkPage: View? = null
     private var parkAgo: TextView? = null
     private var parkFind: View? = null
+    private var parkLock: TextView? = null
+
+    // v2.5 · lock from the watch: first tap arms, a second tap within LOCK_CONFIRM_MS sends.
+    private enum class LockStep { IDLE, CONFIRM, SENDING }
+    private var lockStep = LockStep.IDLE
+    private val lockReset = Runnable { setLockStep(LockStep.IDLE) }
+    private val lockTimeout = Runnable {
+        if (lockStep == LockStep.SENDING) {
+            setLockStep(LockStep.IDLE)
+            android.widget.Toast.makeText(this, R.string.lock_no_answer, android.widget.Toast.LENGTH_LONG).show()
+        }
+    }
 
     private var stats: RideStats? = null
     private var statsAt = 0L
@@ -203,6 +215,11 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
             runOnUiThread { showTrips(list) }
             return
         }
+        if (event.path == PhoneLink.PATH_LOCK_RESULT) {
+            val o = try { org.json.JSONObject(String(event.data, Charsets.UTF_8)) } catch (_: Exception) { return }
+            runOnUiThread { onLockResult(o.optBoolean("ok"), o.optString("text")) }
+            return
+        }
         if (event.path != PhoneLink.PATH_STATS) return
         PhoneLink.rememberPhone(event.sourceNodeId)
         val raw = String(event.data, Charsets.UTF_8)
@@ -210,6 +227,14 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
         // one-off /ocm/parked message was missed.
         try {
             val o = org.json.JSONObject(raw)
+            // Only idle snapshots say whether the phone has the keyless lock set up; keep the last answer.
+            if (o.has("lock")) {
+                val avail = o.optBoolean("lock")
+                if (avail != lockAvailable()) {
+                    getSharedPreferences(LOCK_PREFS, MODE_PRIVATE).edit().putBoolean("available", avail).apply()
+                    runOnUiThread { render() }
+                }
+            }
             if (o.has("park")) {
                 val park = o.optString("park")
                 if (park != (PhoneLink.parkedRaw(this))) {
@@ -265,6 +290,7 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
             ),
         )
         parkFind?.visibility = if (spot == null) View.GONE else View.VISIBLE
+        parkLock?.visibility = if (!connected && lockAvailable()) View.VISIBLE else View.GONE
         // The main page has no room for one more line on a round screen (it was centred and
         // clipped off the bottom): when idle, the parking pill takes the max/avg row's place.
         rowMaxAvg?.visibility = if (show) View.GONE else View.VISIBLE
@@ -516,6 +542,9 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
         val openCompass = View.OnClickListener { startActivity(android.content.Intent(this, FindBikeActivity::class.java)) }
         parkPage?.setOnClickListener(openCompass)
         parkFind?.setOnClickListener(openCompass)
+        parkLock = v.findViewById<TextView>(R.id.park_lock).also { b ->
+            b.setOnClickListener { onLockTap() }
+        }
         // ▲ / ▼ turn the Android Auto knob (that's what moves through lists and menus): watches with
         // no bezel or crown had no way to scroll. A long press still sends the old D-pad nudge.
         for ((id, step, code) in listOf(
@@ -555,6 +584,47 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
         render()
     }
 
+    // ---- Lock from the watch (v2.5) ----
+
+    private fun lockAvailable(): Boolean = getSharedPreferences(LOCK_PREFS, MODE_PRIVATE).getBoolean("available", false)
+
+    private fun onLockTap() {
+        when (lockStep) {
+            LockStep.IDLE -> {
+                parkLock?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                setLockStep(LockStep.CONFIRM)
+                handler.removeCallbacks(lockReset)
+                handler.postDelayed(lockReset, LOCK_CONFIRM_MS)
+            }
+            LockStep.CONFIRM -> {
+                handler.removeCallbacks(lockReset)
+                parkLock?.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                setLockStep(LockStep.SENDING)
+                PhoneLink.send(this, PhoneLink.PATH_LOCK, "lock")
+                handler.removeCallbacks(lockTimeout)
+                handler.postDelayed(lockTimeout, LOCK_ANSWER_MS)
+            }
+            LockStep.SENDING -> Unit   // one at a time
+        }
+    }
+
+    private fun setLockStep(step: LockStep) {
+        lockStep = step
+        val b = parkLock ?: return
+        when (step) {
+            LockStep.IDLE -> { b.setText(R.string.lock_bike); b.setTextColor(0xFFF1F4EC.toInt()); b.isEnabled = true }
+            LockStep.CONFIRM -> { b.setText(R.string.lock_confirm); b.setTextColor(0xFFFF6B5E.toInt()); b.isEnabled = true }
+            LockStep.SENDING -> { b.setText(R.string.lock_sending); b.setTextColor(0xFF9E9E9E.toInt()); b.isEnabled = false }
+        }
+    }
+
+    private fun onLockResult(ok: Boolean, text: String) {
+        handler.removeCallbacks(lockTimeout)
+        setLockStep(LockStep.IDLE)
+        parkLock?.performHapticFeedback(if (ok) HapticFeedbackConstants.CONFIRM else HapticFeedbackConstants.REJECT)
+        if (text.isNotBlank()) android.widget.Toast.makeText(this, text, android.widget.Toast.LENGTH_LONG).show()
+    }
+
     private inner class PagesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val layouts = intArrayOf(R.layout.page_trip, R.layout.page_pad, R.layout.page_info, R.layout.page_trips)
         override fun getItemCount() = layouts.size
@@ -576,6 +646,11 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
     companion object {
         private const val PAGES = 4
         private const val PAGE_TRIPS = 3
+        private const val LOCK_PREFS = "wear_lock"
+        /** Second tap must come within this, or the Lock button goes back to normal. */
+        private const val LOCK_CONFIRM_MS = 3_000L
+        /** The phone needs up to ~15 s to find the box and confirm the lock. */
+        private const val LOCK_ANSWER_MS = 25_000L
         /** How long the last-ride card stays up after the ride ended. */
         private const val SUMMARY_MAX_AGE_MS = 3 * 3_600_000L
         private const val SUBSCRIBE_EVERY_MS = 4_000L

@@ -30,6 +30,9 @@ object PhoneLink {
     const val PATH_TILE = "/ocm/tile"
     const val PATH_BIKEPHOTO = "/ocm/bikephoto"
     const val PATH_HEART = "/ocm/heart"
+    /** v2.5: ask the phone to lock the bike ("lock"); the answer comes back on [PATH_LOCK_RESULT]. */
+    const val PATH_LOCK = "/ocm/lock"
+    const val PATH_LOCK_RESULT = "/ocm/lockres"
 
     fun bikePhotoFile(ctx: Context) = java.io.File(ctx.filesDir, "bike_photo.jpg")
 
