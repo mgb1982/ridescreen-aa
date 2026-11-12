@@ -3,6 +3,7 @@
 package dev.zanderp.opencfmoto
 
 import android.content.Context
+import android.os.SystemClock
 import org.json.JSONObject
 
 /**
@@ -43,6 +44,11 @@ object TurnHaptics {
     @Volatile var lastDistance = -1
         private set
 
+    /** elapsedRealtime of the last manoeuvre or distance update (for NavFeed freshness). */
+    @Volatile var lastUpdateMs = 0L
+        private set
+    private var lastSummaryMs = 0L
+
     fun load(ctx: Context) {
         appCtx = ctx.applicationContext
         enabled = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_ON, false)
@@ -61,6 +67,10 @@ object TurnHaptics {
         return JSONObject().put("k", kind.id).put("n", exit).put("d", lastDistance).put("r", road)
     }
 
+    /** Consistent (kind, exit, road) for NavFeed; distance is [lastDistance]. */
+    @Synchronized
+    fun snapshot(): Triple<Kind, Int, String> = Triple(kind, exit, road)
+
     @Synchronized
     fun onNavActive(active: Boolean) {
         LogBus.log("[NAV] guidance ${if (active) "active" else "stopped"}")
@@ -69,6 +79,7 @@ object TurnHaptics {
 
     @Synchronized
     fun onManeuver(k: Kind, exitNumber: Int, roadName: String) {
+        lastUpdateMs = SystemClock.elapsedRealtime()
         if (k == kind && exitNumber == exit && roadName == road) return
         LogBus.log("[NAV] next: ${k.name}${if (exitNumber > 0) " exit $exitNumber" else ""} ${roadName.take(40)}")
         kind = k
@@ -89,6 +100,12 @@ object TurnHaptics {
             firstDistance = -1
         }
         lastDistance = meters
+        val now = SystemClock.elapsedRealtime()
+        lastUpdateMs = now
+        if (kind != Kind.NONE && now - lastSummaryMs >= 5_000L) {
+            lastSummaryMs = now
+            LogBus.log("[NAV] arrow feed: ${kind.name} $meters m road=${road.take(30)}")
+        }
         if (firstDistance < 0) firstDistance = meters
         if (kind == Kind.NONE) return
         val nowDue = meters <= NOW_METERS || (seconds in 0..NOW_SECONDS)

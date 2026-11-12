@@ -28,4 +28,6 @@
         <item>RPM</item><item>Speed</item><item>Coolant</item><item>Voltage</item>
         <item>Calculated load</item><item>Intake temperature</item><item>Barometric pressure</item><item>Absolute load</item><item>Throttle</item>
     </string-array>
+    <string name="controls_dash_nav_arrow">Next-turn arrow</string>
+    <string name="controls_dash_nav_arrow_hint">Reads the next turn from Android Auto so the dashboard can show it. Takes effect the next time you connect.</string>
 </resources>

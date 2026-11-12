@@ -26,6 +26,7 @@ class OpenCfMotoApp : Application() {
         try {
             AppSettings.applyToHolder(this)
             TurnHaptics.load(this)
+            NavFeed.load(this)
             RideStop.install()
             // Watch: make sure it has the current bike photo (no-op if already sent).
             WearBikePhoto.push(this)

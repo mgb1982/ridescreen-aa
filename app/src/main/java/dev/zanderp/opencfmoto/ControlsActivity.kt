@@ -503,6 +503,9 @@ class ControlsActivity : AppCompatActivity() {
         val saver = findViewById<MaterialSwitch>(R.id.switch_dash_saver)
         saver.isChecked = DashboardMode.saver(this)
         saver.setOnCheckedChangeListener { _, on -> DashboardMode.setSaver(this, on) }
+        val navArrow = findViewById<MaterialSwitch>(R.id.switch_dash_nav_arrow)
+        navArrow.isChecked = NavFeed.arrowOn
+        navArrow.setOnCheckedChangeListener { _, on -> NavFeed.setArrow(this, on) }
         syncDashboardUi()
     }
 
