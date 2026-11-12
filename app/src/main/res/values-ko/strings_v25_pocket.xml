@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">주머니 속에서 화면 어둡게 하기</string>
+    <string name="pocket_dim_hint">지도가 바이크 계기판에 표시되고 앱이 백그라운드에 있는 동안에는, 배터리를 아끼기 위해 휴대폰 화면이 최소 밝기의 검은 화면으로 가려집니다. 두 번 빠르게 탭하면 깨어납니다.</string>
+    <string name="pocket_dim_needs_permission">“다른 앱 위에 표시” 권한이 필요합니다(설정).</string>
+    <string name="pocket_hint">두 번 빠르게 탭하여 깨우기</string>
+</resources>

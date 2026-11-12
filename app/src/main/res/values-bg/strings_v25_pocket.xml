@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">Затъмняване на екрана в джоба</string>
+    <string name="pocket_dim_hint">Докато картата е на таблото и приложението работи на заден план, екранът на телефона се покрива с черно при минимална яркост, за да се спести батерия. Докоснете два пъти, за да го събудите.</string>
+    <string name="pocket_dim_needs_permission">Нужно е разрешение “Показване върху други приложения” (Настройка).</string>
+    <string name="pocket_hint">Докоснете два пъти, за да събудите</string>
+</resources>

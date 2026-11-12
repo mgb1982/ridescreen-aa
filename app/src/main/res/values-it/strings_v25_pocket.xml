@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">Oscura lo schermo in tasca</string>
+    <string name="pocket_dim_hint">Mentre la mappa è sul cruscotto e l’app è in background, lo schermo del telefono viene coperto di nero alla luminosità minima per risparmiare batteria. Tocca due volte per riattivarlo.</string>
+    <string name="pocket_dim_needs_permission">Richiede l’autorizzazione “Mostra sopra altre app” (Configurazione).</string>
+    <string name="pocket_hint">Tocca due volte per riattivare</string>
+</resources>

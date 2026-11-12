@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">Przyciemnij ekran w kieszeni</string>
+    <string name="pocket_dim_hint">Gdy mapa jest na desce rozdzielczej motocykla, a aplikacja działa w tle, ekran telefonu jest zasłaniany czernią przy minimalnej jasności, by oszczędzać baterię. Stuknij dwukrotnie, aby go obudzić.</string>
+    <string name="pocket_dim_needs_permission">Wymaga uprawnienia „Wyświetlaj nad innymi aplikacjami” (Konfiguracja).</string>
+    <string name="pocket_hint">Stuknij dwukrotnie, aby obudzić</string>
+</resources>

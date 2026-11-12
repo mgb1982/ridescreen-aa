@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">Ztmavit obrazovku v kapse</string>
+    <string name="pocket_dim_hint">Když je mapa na palubní desce a aplikace běží na pozadí, obrazovka telefonu se při nejnižším jasu zakryje černou, aby se šetřila baterie. Pro probuzení klepněte dvakrát.</string>
+    <string name="pocket_dim_needs_permission">Vyžaduje oprávnění “Zobrazit přes jiné aplikace” (Nastavení).</string>
+    <string name="pocket_hint">Klepněte dvakrát pro probuzení</string>
+</resources>

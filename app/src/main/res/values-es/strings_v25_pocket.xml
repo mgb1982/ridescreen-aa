@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">Atenuar la pantalla en el bolsillo</string>
+    <string name="pocket_dim_hint">Mientras el mapa se ve en el cuadro de la moto y la app está en segundo plano, la pantalla del móvil se tapa de negro a brillo mínimo para ahorrar batería. Toca dos veces rápido para despertarla.</string>
+    <string name="pocket_dim_needs_permission">Necesita el permiso “Mostrar sobre otras aplicaciones” (Configuración).</string>
+    <string name="pocket_hint">Toca dos veces para despertar</string>
+</resources>

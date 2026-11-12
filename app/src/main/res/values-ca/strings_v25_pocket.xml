@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">Enfosqueix la pantalla a la butxaca</string>
+    <string name="pocket_dim_hint">Mentre el mapa es veu al tauler de la moto i l\'aplicació és en segon pla, la pantalla del mòbil es cobreix de negre a la brillantor mínima per estalviar bateria. Toca dos cops per despertar-la.</string>
+    <string name="pocket_dim_needs_permission">Cal el permís “Mostra sobre altres aplicacions” (Configuració).</string>
+    <string name="pocket_hint">Toca dos cops per despertar</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">Képernyő elsötétítése zsebben</string>
+    <string name="pocket_dim_hint">Amíg a térkép a műszerfalon látszik, az alkalmazás pedig a háttérben fut, a telefon képernyőjét minimális fényerőnél fekete réteg fedi az akkumulátor kímélése érdekében. Koppints kétszer a felébresztéshez.</string>
+    <string name="pocket_dim_needs_permission">Szükséges a „Megjelenítés más alkalmazások fölött” engedély (Beállítás).</string>
+    <string name="pocket_hint">Koppints kétszer a felébresztéshez</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">Затемнять экран в кармане</string>
+    <string name="pocket_dim_hint">Пока карта выведена на приборную панель мотоцикла, а приложение работает в фоне, экран телефона закрывается черным при минимальной яркости, чтобы экономить батарею. Дважды коснитесь экрана, чтобы разбудить его.</string>
+    <string name="pocket_dim_needs_permission">Нужно разрешение “Показ поверх других приложений” (Настройка).</string>
+    <string name="pocket_hint">Дважды коснитесь, чтобы разбудить</string>
+</resources>

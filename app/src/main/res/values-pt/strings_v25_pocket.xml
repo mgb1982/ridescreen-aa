@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">Escurecer o ecrã no bolso</string>
+    <string name="pocket_dim_hint">Enquanto o mapa está no painel da mota e a app está em segundo plano, o ecrã do telemóvel fica coberto a preto com o brilho mínimo para poupar bateria. Toca duas vezes para o acordar.</string>
+    <string name="pocket_dim_needs_permission">Precisa da permissão “Mostrar sobre outras aplicações” (Configuração).</string>
+    <string name="pocket_hint">Toca duas vezes para acordar</string>
+</resources>

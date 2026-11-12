@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">หรี่หน้าจอขณะอยู่ในกระเป๋า</string>
+    <string name="pocket_dim_hint">ขณะที่แผนที่แสดงอยู่บนแดชบอร์ดของมอเตอร์ไซค์และแอปทำงานอยู่เบื้องหลัง หน้าจอโทรศัพท์จะถูกปิดทับด้วยสีดำที่ความสว่างต่ำสุดเพื่อประหยัดแบตเตอรี่ แตะสองครั้งเพื่อปลุกหน้าจอ</string>
+    <string name="pocket_dim_needs_permission">ต้องใช้สิทธิ์ “แสดงทับแอปอื่น” (การตั้งค่า)</string>
+    <string name="pocket_hint">แตะสองครั้งเพื่อปลุก</string>
+</resources>

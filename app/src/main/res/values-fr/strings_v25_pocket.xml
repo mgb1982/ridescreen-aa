@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">Assombrir l’écran dans la poche</string>
+    <string name="pocket_dim_hint">Pendant que la carte s’affiche sur le tableau de bord et que l’application tourne en arrière-plan, l’écran du téléphone est recouvert de noir à luminosité minimale pour économiser la batterie. Touche deux fois pour le réveiller.</string>
+    <string name="pocket_dim_needs_permission">Nécessite l’autorisation « Afficher sur d’autres applications » (Configuration).</string>
+    <string name="pocket_hint">Touche deux fois pour réveiller</string>
+</resources>

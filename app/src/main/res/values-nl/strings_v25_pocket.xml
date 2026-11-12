@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">Scherm in de zak dimmen</string>
+    <string name="pocket_dim_hint">Terwijl de kaart op het dashboard van de motor staat en de app op de achtergrond draait, wordt het telefoonscherm op de laagste helderheid zwart afgedekt om batterij te sparen. Tikt u twee keer om het weer wakker te maken.</string>
+    <string name="pocket_dim_needs_permission">Vereist de toestemming “Weergeven boven andere apps” (Installatie).</string>
+    <string name="pocket_hint">Tik twee keer om te wekken</string>
+</resources>

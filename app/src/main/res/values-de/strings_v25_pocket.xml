@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">Bildschirm in der Tasche abdunkeln</string>
+    <string name="pocket_dim_hint">Solange die Karte auf dem Motorrad-Display läuft und die App im Hintergrund ist, wird der Telefonbildschirm bei minimaler Helligkeit schwarz abgedeckt, um Akku zu sparen. Tippe zweimal, um ihn aufzuwecken.</string>
+    <string name="pocket_dim_needs_permission">Benötigt die Berechtigung “Über anderen Apps anzeigen” (Einrichtung).</string>
+    <string name="pocket_hint">Zweimal tippen zum Aufwecken</string>
+</resources>

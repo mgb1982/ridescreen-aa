@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">Estompează ecranul în buzunar</string>
+    <string name="pocket_dim_hint">Cât timp harta este afișată pe bordul motocicletei și aplicația rulează în fundal, ecranul telefonului este acoperit cu negru la luminozitate minimă, pentru a economisi bateria. Atinge de două ori pentru a-l trezi.</string>
+    <string name="pocket_dim_needs_permission">Necesită permisiunea „Afișare peste alte aplicații” (Configurare).</string>
+    <string name="pocket_hint">Atinge de două ori pentru a trezi</string>
+</resources>

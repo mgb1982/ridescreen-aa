@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">Cepteyken ekranı karart</string>
+    <string name="pocket_dim_hint">Harita motosiklet panelinde görünürken ve uygulama arka planda çalışırken telefon ekranı pil tasarrufu için en düşük parlaklıkta siyahla kaplanır. Uyandırmak için iki kez hızlıca dokun.</string>
+    <string name="pocket_dim_needs_permission">“Diğer uygulamaların üzerinde göster” izni gerekir (Kurulum).</string>
+    <string name="pocket_hint">Uyandırmak için iki kez dokun</string>
+</resources>
