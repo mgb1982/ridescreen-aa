@@ -77,7 +77,7 @@ Riders have projected Android Auto with these (US + international as noted):
 | **Zontes 125M** | Confirmed (2026-10-24) — dash joins the phone's hotspot (Carbit + BLE); works on RideScreen AA 2.3 |
 | **Zontes 703F** | Confirmed (2026-10-23) — QR modelId 21334; works on RideScreen AA 2.3 (panel 1024×425) |
 | **Zontes 703T** | Confirmed (2026-10-23) — QR modelId 21334; works on RideScreen AA 2.3 (panel 1280×534; first connection may need a second try) |
-| **Zontes T350X** (also sold as X350) | Confirmed (Inky, 2026-10-22; X350 2024 from Argentina, 2026-11, QR modelId 34808, works on RideScreen AA 2.4.1 with the screen learned as 800×480) — Wi‑Fi Direct-only QR (ssid + password); connection fixes included from RideScreen AA 2.4 |
+| **Zontes T350X** (also sold as X350) | Confirmed (Inky, 2026-10-22; X350 2024 from Argentina, 2026-11, same QR modelId 34808, works on RideScreen AA 2.4.1 with the screen learned as 800×480) — Wi‑Fi Direct-only QR (ssid + password); connection fixes included from RideScreen AA 2.4 |
 | **Zontes 703RR** | Confirmed (2026-10-24) — works on RideScreen AA 2.3 with Google Maps full screen; same screen as the 703 range (maintainer's check, not measured); Carbit / EasyConnect QR |
 | **Zontes 350E** | Confirmed (Ricky, 2026-11) — Wi‑Fi Direct-only QR (`action=8`, modelId 21313); waits up to 2 min for the dash and paces video to the dash, from RideScreen AA 2.4 |
 | **Zontes 350D** | Confirmed (2026-11) — same modelId 21313 and Wi‑Fi Direct fixes as the 350E, from RideScreen AA 2.4 |
