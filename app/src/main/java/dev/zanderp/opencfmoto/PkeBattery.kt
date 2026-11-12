@@ -158,6 +158,7 @@ object PkeBattery {
             val r = Reading(volts, locked, System.currentTimeMillis())
             save(ctx, r)
             volts?.let { noteVolts(it, verbose = true) }
+            if (volts != null) BatteryAlertNotifier.onBoxReading(ctx)
             log("battery ${volts?.let { "%.1f V".format(it) } ?: "?"} · ${when (locked) { true -> "locked"; false -> "unlocked"; null -> "lock state ?" }}")
             return Result(r, null)
         } finally {

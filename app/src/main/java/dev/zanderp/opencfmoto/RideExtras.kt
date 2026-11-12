@@ -42,6 +42,7 @@ object RideExtras {
         if (active) {
             try { Maintenance.checkDue(app) } catch (_: Exception) {}
             Parking.clear(app)
+            BatteryAlertNotifier.onRideStart(app)
             if (rain(app)) RainCheck.runSoon(app)
             try { DashCards.refreshWeather(app) } catch (_: Exception) {}
         } else if (parking(app)) {
