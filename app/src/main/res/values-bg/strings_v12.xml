@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 Всички</string>
     <string name="all_rides_title">Всичко, с което съм карал</string>
     <string name="trips_loading_all">Зареждане на всички ваши карания…</string>
-    <string name="all_rides_stats">%1$d карания · %2$s км</string>
+    <string name="all_rides_stats">%1$d карания · %2$s</string>
     <string name="live_pill_start">📍 Споделяне на карането на живо</string>
     <string name="live_pill_active">📍 Споделя се на живо · докоснете за спиране</string>
     <string name="live_title">Споделяне на карането на живо</string>

@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 Alles</string>
     <string name="all_rides_title">Alles wat ik heb gereden</string>
     <string name="trips_loading_all">Al uw ritten laden…</string>
-    <string name="all_rides_stats">%1$d ritten · %2$s km</string>
+    <string name="all_rides_stats">%1$d ritten · %2$s</string>
     <string name="live_pill_start">📍 Mijn rit live delen</string>
     <string name="live_pill_active">📍 Live delen · tik om te stoppen</string>
     <string name="live_title">Mijn rit live delen</string>

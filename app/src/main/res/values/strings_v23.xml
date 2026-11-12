@@ -15,7 +15,7 @@
 Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="cmp_detail_still">Stopped: %1$d min in %2$d stops (usual %3$d min, %4$d stops)</string>
     <string name="cmp_detail_pace">Average while moving: %1$d km/h (usual %2$d)</string>
-    <string name="cmp_detail_km">Distance: %1$s km (usual %2$s)</string>
+    <string name="cmp_detail_km">Distance: %1$s (usual %2$s)</string>
     <string name="cmp_detail_main">Main reason: %1$s.</string>
     <string name="cmp_detail_mixed">No single reason: a bit of everything.</string>
     <string name="week_channel">Weekly summary</string>

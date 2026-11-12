@@ -14,7 +14,7 @@
     <string name="cmp_detail_head">Същото начало и край като при %1$d други карания. Днес: %2$d мин от врата до врата · обичайно: %3$d мин.</string>
     <string name="cmp_detail_still">Спиране: %1$d мин в %2$d спирания (обичайно %3$d мин, %4$d спирания)</string>
     <string name="cmp_detail_pace">Средна скорост в движение: %1$d км/ч (обичайно %2$d)</string>
-    <string name="cmp_detail_km">Разстояние: %1$s км (обичайно %2$s)</string>
+    <string name="cmp_detail_km">Разстояние: %1$s (обичайно %2$s)</string>
     <string name="cmp_detail_main">Основна причина: %1$s.</string>
     <string name="cmp_detail_mixed">Няма една причина: малко от всичко.</string>
     <string name="week_channel">Седмично обобщение</string>

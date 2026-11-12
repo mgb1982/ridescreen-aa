@@ -663,7 +663,7 @@
     <string name="trips_merge_action">Слей %1$d пътувания</string>
     <string name="trips_merge_cancel">Отмени избора</string>
     <string name="trips_merge_title">Да слеем ли пътуванията?</string>
-    <string name="trips_merge_confirm">Ще обединим %1$d пътувания (%2$s км) в един маршрут. Първоначалните пътувания остават запазени и могат да бъдат възстановени.</string>
+    <string name="trips_merge_confirm">Ще обединим %1$d пътувания (%2$s) в един маршрут. Първоначалните пътувания остават запазени и могат да бъдат възстановени.</string>
     <string name="trips_merge_restore">Възстанови първоначалните пътувания</string>
     <string name="trips_merge_restore_confirm">Да възстановим ли първоначалните сегменти на пътуванията?</string>
     <string name="trips_merge_failed">Пътуванията не можаха да бъдат слети.</string>

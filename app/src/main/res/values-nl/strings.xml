@@ -654,7 +654,7 @@
     <string name="trips_merge_action">%1$d ritten samenvoegen</string>
     <string name="trips_merge_cancel">Selectie annuleren</string>
     <string name="trips_merge_title">Ritten samenvoegen?</string>
-    <string name="trips_merge_confirm">Hiermee worden %1$d ritten (%2$s km) tot één route gecombineerd. De oorspronkelijke ritten blijven opgeslagen en kunnen worden hersteld.</string>
+    <string name="trips_merge_confirm">Hiermee worden %1$d ritten (%2$s) tot één route gecombineerd. De oorspronkelijke ritten blijven opgeslagen en kunnen worden hersteld.</string>
     <string name="trips_merge_restore">Oorspronkelijke ritten herstellen</string>
     <string name="trips_merge_restore_confirm">De oorspronkelijke ritsegmenten herstellen?</string>
     <string name="trips_merge_failed">Deze ritten konden niet worden samengevoegd.</string>

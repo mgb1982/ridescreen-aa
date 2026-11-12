@@ -15,7 +15,7 @@
 Avui: %2$d min de porta a porta · l\'habitual: %3$d min.</string>
     <string name="cmp_detail_still">Aturat: %1$d min en %2$d parades (habitual %3$d min, %4$d parades)</string>
     <string name="cmp_detail_pace">Mitjana en marxa: %1$d km/h (habitual %2$d)</string>
-    <string name="cmp_detail_km">Distància: %1$s km (habitual %2$s)</string>
+    <string name="cmp_detail_km">Distància: %1$s (habitual %2$s)</string>
     <string name="cmp_detail_main">Motiu principal: %1$s.</string>
     <string name="cmp_detail_mixed">No hi ha un motiu clar: una mica de tot.</string>
     <string name="week_channel">Resum setmanal</string>

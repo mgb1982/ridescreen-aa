@@ -658,7 +658,7 @@
     <string name="trips_merge_action">주행 %1$d개 병합</string>
     <string name="trips_merge_cancel">선택 취소</string>
     <string name="trips_merge_title">주행을 병합할까요?</string>
-    <string name="trips_merge_confirm">주행 %1$d개(%2$s km)를 하나의 경로로 합칩니다. 원래 주행은 저장된 상태로 남으며 복원할 수 있습니다.</string>
+    <string name="trips_merge_confirm">주행 %1$d개(%2$s)를 하나의 경로로 합칩니다. 원래 주행은 저장된 상태로 남으며 복원할 수 있습니다.</string>
     <string name="trips_merge_restore">원래 주행 복원</string>
     <string name="trips_merge_restore_confirm">원래 주행 구간을 복원할까요?</string>
     <string name="trips_merge_failed">이 주행들을 병합할 수 없습니다.</string>

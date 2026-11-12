@@ -14,7 +14,7 @@
     <string name="cmp_detail_head">Те же точки отправления и назначения, что у других %1$d поездок.\nСегодня: %2$d мин от двери до двери · обычно: %3$d мин.</string>
     <string name="cmp_detail_still">В неподвижном состоянии: %1$d мин за %2$d остановок (обычно %3$d мин, %4$d остановок)</string>
     <string name="cmp_detail_pace">Средняя скорость в движении: %1$d км/ч (обычно %2$d)</string>
-    <string name="cmp_detail_km">Расстояние: %1$s км (обычно %2$s)</string>
+    <string name="cmp_detail_km">Расстояние: %1$s (обычно %2$s)</string>
     <string name="cmp_detail_main">Основная причина: %1$s.</string>
     <string name="cmp_detail_mixed">Нет одной главной причины: всего понемногу.</string>
     <string name="week_channel">Итоги недели</string>

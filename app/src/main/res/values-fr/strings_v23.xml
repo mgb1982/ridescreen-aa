@@ -14,7 +14,7 @@
     <string name="cmp_detail_head">Même départ et arrivée que %1$d autres trajets.\nAujourd’hui : %2$d min porte à porte · d’habitude : %3$d min.</string>
     <string name="cmp_detail_still">À l’arrêt : %1$d min sur %2$d arrêts (d’habitude %3$d min, %4$d arrêts)</string>
     <string name="cmp_detail_pace">Moyenne en mouvement : %1$d km/h (d’habitude %2$d)</string>
-    <string name="cmp_detail_km">Distance : %1$s km (d’habitude %2$s)</string>
+    <string name="cmp_detail_km">Distance : %1$s (d’habitude %2$s)</string>
     <string name="cmp_detail_main">Raison principale : %1$s.</string>
     <string name="cmp_detail_mixed">Pas de raison unique : un peu de tout.</string>
     <string name="week_channel">Bilan hebdomadaire</string>

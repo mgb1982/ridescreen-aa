@@ -15,7 +15,7 @@
 Hoy: %2$d min de puerta a puerta · lo habitual: %3$d min.</string>
     <string name="cmp_detail_still">Parado: %1$d min en %2$d paradas (habitual %3$d min, %4$d paradas)</string>
     <string name="cmp_detail_pace">Media en marcha: %1$d km/h (habitual %2$d)</string>
-    <string name="cmp_detail_km">Distancia: %1$s km (habitual %2$s)</string>
+    <string name="cmp_detail_km">Distancia: %1$s (habitual %2$s)</string>
     <string name="cmp_detail_main">Motivo principal: %1$s.</string>
     <string name="cmp_detail_mixed">No hay un motivo claro: un poco de todo.</string>
     <string name="week_channel">Resumen semanal</string>

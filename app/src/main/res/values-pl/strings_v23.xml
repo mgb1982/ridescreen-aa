@@ -14,7 +14,7 @@
     <string name="cmp_detail_head">Ten sam start i koniec co %1$d innych jazd. Dziś: %2$d min od drzwi do drzwi · zwykle: %3$d min.</string>
     <string name="cmp_detail_still">Postój: %1$d min w %2$d postojach (zwykle %3$d min, %4$d postojów)</string>
     <string name="cmp_detail_pace">Średnio w ruchu: %1$d km/h (zwykle %2$d)</string>
-    <string name="cmp_detail_km">Dystans: %1$s km (zwykle %2$s)</string>
+    <string name="cmp_detail_km">Dystans: %1$s (zwykle %2$s)</string>
     <string name="cmp_detail_main">Główny powód: %1$s.</string>
     <string name="cmp_detail_mixed">Bez jednego powodu: trochę wszystkiego.</string>
     <string name="week_channel">Podsumowanie tygodnia</string>

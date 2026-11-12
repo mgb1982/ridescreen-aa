@@ -657,7 +657,7 @@
     <string name="trips_merge_action">Ένωση %1$d διαδρομών</string>
     <string name="trips_merge_cancel">Ακύρωση επιλογής</string>
     <string name="trips_merge_title">Ένωση διαδρομών;</string>
-    <string name="trips_merge_confirm">Οι %1$d διαδρομές (%2$s km) θα ενωθούν σε μία. Οι αρχικές παραμένουν αποθηκευμένες και μπορούν να επαναφερθούν.</string>
+    <string name="trips_merge_confirm">Οι %1$d διαδρομές (%2$s) θα ενωθούν σε μία. Οι αρχικές παραμένουν αποθηκευμένες και μπορούν να επαναφερθούν.</string>
     <string name="trips_merge_restore">Επαναφορά αρχικών διαδρομών</string>
     <string name="trips_merge_restore_confirm">Επαναφορά αρχικών τμημάτων;</string>
     <string name="trips_merge_failed">Δεν ήταν δυνατή η ένωση αυτών των διαδρομών.</string>

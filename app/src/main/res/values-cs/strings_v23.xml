@@ -14,7 +14,7 @@
     <string name="cmp_detail_head">Stejný začátek a konec jako u %1$d dalších jízd.\nDnes: %2$d min ode dveří ke dveřím · obvykle: %3$d min.</string>
     <string name="cmp_detail_still">Stání: %1$d min v %2$d zastaveních (obvykle %3$d min, %4$d zastavení)</string>
     <string name="cmp_detail_pace">Průměr za jízdy: %1$d km/h (obvykle %2$d)</string>
-    <string name="cmp_detail_km">Vzdálenost: %1$s km (obvykle %2$s)</string>
+    <string name="cmp_detail_km">Vzdálenost: %1$s (obvykle %2$s)</string>
     <string name="cmp_detail_main">Hlavní důvod: %1$s.</string>
     <string name="cmp_detail_mixed">Žádný hlavní důvod: trochu od všeho.</string>
     <string name="week_channel">Týdenní souhrn</string>

@@ -14,7 +14,7 @@
     <string name="cmp_detail_head">Ίδια αφετηρία και προορισμός με άλλες %1$d διαδρομές.\nΣήμερα: %2$d λεπτά από πόρτα σε πόρτα · συνήθως: %3$d λεπτά.</string>
     <string name="cmp_detail_still">Σε στάση: %1$d λεπτά σε %2$d στάσεις (συνήθως %3$d λεπτά, %4$d στάσεις)</string>
     <string name="cmp_detail_pace">Μέση ταχύτητα εν κινήσει: %1$d km/h (συνήθως %2$d)</string>
-    <string name="cmp_detail_km">Απόσταση: %1$s km (συνήθως %2$s)</string>
+    <string name="cmp_detail_km">Απόσταση: %1$s (συνήθως %2$s)</string>
     <string name="cmp_detail_main">Κύριος λόγος: %1$s.</string>
     <string name="cmp_detail_mixed">Δεν υπάρχει ένας συγκεκριμένος λόγος: λίγο απ’ όλα.</string>
     <string name="week_channel">Εβδομαδιαία σύνοψη</string>

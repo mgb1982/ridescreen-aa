@@ -663,7 +663,7 @@
     <string name="trips_merge_action">%1$d út összevonása</string>
     <string name="trips_merge_cancel">Kijelölés megszakítása</string>
     <string name="trips_merge_title">Összevonod az utakat?</string>
-    <string name="trips_merge_confirm">Ez %1$d utat (%2$s km) egyetlen útvonallá von össze. Az eredeti utak mentve maradnak, és visszaállíthatók.</string>
+    <string name="trips_merge_confirm">Ez %1$d utat (%2$s) egyetlen útvonallá von össze. Az eredeti utak mentve maradnak, és visszaállíthatók.</string>
     <string name="trips_merge_restore">Eredeti utak visszaállítása</string>
     <string name="trips_merge_restore_confirm">Visszaállítod az eredeti útszakaszokat?</string>
     <string name="trips_merge_failed">Nem sikerült összevonni ezeket az utakat.</string>

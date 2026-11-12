@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 Todos</string>
     <string name="all_rides_title">Tudo o que conduzi</string>
     <string name="trips_loading_all">A carregar todos os teus percursos…</string>
-    <string name="all_rides_stats">%1$d percursos · %2$s km</string>
+    <string name="all_rides_stats">%1$d percursos · %2$s</string>
     <string name="live_pill_start">📍 Partilhar o meu percurso em direto</string>
     <string name="live_pill_active">📍 A partilhar em direto · toca para parar</string>
     <string name="live_title">Partilhar o meu percurso em direto</string>

@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 ทั้งหมด</string>
     <string name="all_rides_title">ทุกเส้นทางที่ฉันขับขี่</string>
     <string name="trips_loading_all">กำลังโหลดทริปทั้งหมด…</string>
-    <string name="all_rides_stats">%1$d ทริป · %2$s km</string>
+    <string name="all_rides_stats">%1$d ทริป · %2$s</string>
     <string name="live_pill_start">📍 แชร์ตำแหน่งการขับขี่แบบเรียลไทม์</string>
     <string name="live_pill_active">📍 กำลังแชร์แบบเรียลไทม์ · แตะเพื่อหยุด</string>
     <string name="live_title">แชร์ตำแหน่งการขับขี่แบบเรียลไทม์</string>

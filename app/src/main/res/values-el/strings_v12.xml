@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 Όλα</string>
     <string name="all_rides_title">Όσα έχω οδηγήσει</string>
     <string name="trips_loading_all">Φόρτωση όλων των διαδρομών σου…</string>
-    <string name="all_rides_stats">%1$d διαδρομές · %2$s km</string>
+    <string name="all_rides_stats">%1$d διαδρομές · %2$s</string>
     <string name="live_pill_start">📍 Κοινοποίηση ζωντανής διαδρομής</string>
     <string name="live_pill_active">📍 Κοινοποίηση σε πραγματικό χρόνο · πάτησε για διακοπή</string>
     <string name="live_title">Κοινοποίηση ζωντανής διαδρομής</string>

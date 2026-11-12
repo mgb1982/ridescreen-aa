@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 All</string>
     <string name="all_rides_title">Everything I\'ve ridden</string>
     <string name="trips_loading_all">Loading all your rides…</string>
-    <string name="all_rides_stats">%1$d rides · %2$s km</string>
+    <string name="all_rides_stats">%1$d rides · %2$s</string>
     <string name="live_pill_start">📍 Share my ride live</string>
     <string name="live_pill_active">📍 Sharing live · tap to stop</string>
     <string name="live_title">Share my ride live</string>

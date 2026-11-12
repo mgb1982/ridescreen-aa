@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 전체</string>
     <string name="all_rides_title">전체 주행 기록</string>
     <string name="trips_loading_all">전체 주행 기록을 불러오는 중…</string>
-    <string name="all_rides_stats">주행 %1$d회 · %2$s km</string>
+    <string name="all_rides_stats">주행 %1$d회 · %2$s</string>
     <string name="live_pill_start">📍 주행 실시간 공유</string>
     <string name="live_pill_active">📍 실시간 공유 중 · 눌러서 중지</string>
     <string name="live_title">주행 실시간 공유</string>

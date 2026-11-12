@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 Vše</string>
     <string name="all_rides_title">Vše, co jsem najel</string>
     <string name="trips_loading_all">Načítání všech vašich jízd…</string>
-    <string name="all_rides_stats">%1$d jízd · %2$s km</string>
+    <string name="all_rides_stats">%1$d jízd · %2$s</string>
     <string name="live_pill_start">📍 Sdílet jízdu živě</string>
     <string name="live_pill_active">📍 Živé sdílení · klepnutím zastavíte</string>
     <string name="live_title">Sdílet jízdu živě</string>

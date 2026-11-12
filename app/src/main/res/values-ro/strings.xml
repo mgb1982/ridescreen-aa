@@ -655,7 +655,7 @@
     <string name="trips_merge_action">Îmbină %1$d trasee</string>
     <string name="trips_merge_cancel">Anulează selecția</string>
     <string name="trips_merge_title">Îmbini traseele?</string>
-    <string name="trips_merge_confirm">Vor fi combinate %1$d trasee (%2$s km) într-un singur traseu. Traseele originale rămân salvate și pot fi restaurate.</string>
+    <string name="trips_merge_confirm">Vor fi combinate %1$d trasee (%2$s) într-un singur traseu. Traseele originale rămân salvate și pot fi restaurate.</string>
     <string name="trips_merge_restore">Restaurează traseele originale</string>
     <string name="trips_merge_restore_confirm">Restaurezi segmentele originale ale traseelor?</string>
     <string name="trips_merge_failed">Nu s-au putut îmbina aceste trasee.</string>

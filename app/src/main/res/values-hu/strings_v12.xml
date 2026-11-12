@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 Mind</string>
     <string name="all_rides_title">Mindent, amivel motoroztam</string>
     <string name="trips_loading_all">Összes utad betöltése…</string>
-    <string name="all_rides_stats">%1$d út · %2$s km</string>
+    <string name="all_rides_stats">%1$d út · %2$s</string>
     <string name="live_pill_start">📍 Út megosztása élőben</string>
     <string name="live_pill_active">📍 Élő megosztás · koppints a leállításhoz</string>
     <string name="live_title">Út megosztása élőben</string>

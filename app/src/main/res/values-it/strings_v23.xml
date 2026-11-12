@@ -15,7 +15,7 @@
 Oggi: %2$d min porta a porta · di solito: %3$d min.</string>
     <string name="cmp_detail_still">Da fermo: %1$d min in %2$d fermate (di solito %3$d min, %4$d fermate)</string>
     <string name="cmp_detail_pace">Media in movimento: %1$d km/h (di solito %2$d)</string>
-    <string name="cmp_detail_km">Distanza: %1$s km (di solito %2$s)</string>
+    <string name="cmp_detail_km">Distanza: %1$s (di solito %2$s)</string>
     <string name="cmp_detail_main">Motivo principale: %1$s.</string>
     <string name="cmp_detail_mixed">Nessun motivo unico: un po\' di tutto.</string>
     <string name="week_channel">Riepilogo settimanale</string>

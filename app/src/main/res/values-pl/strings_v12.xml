@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 Wszystkie</string>
     <string name="all_rides_title">Wszystko, czym jeździłem</string>
     <string name="trips_loading_all">Wczytuję wszystkie twoje jazdy…</string>
-    <string name="all_rides_stats">Jazdy: %1$d · %2$s km</string>
+    <string name="all_rides_stats">Jazdy: %1$d · %2$s</string>
     <string name="live_pill_start">📍 Udostępnij moją jazdę na żywo</string>
     <string name="live_pill_active">📍 Udostępniam na żywo · dotknij, aby zatrzymać</string>
     <string name="live_title">Udostępnij moją jazdę na żywo</string>

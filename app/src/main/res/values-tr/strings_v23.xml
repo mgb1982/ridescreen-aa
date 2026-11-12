@@ -14,7 +14,7 @@
     <string name="cmp_detail_head">Başladığın ve bittiğin yer %1$d başka sürüşle aynı.\nBugün: kapıdan kapıya %2$d dk · olağan: %3$d dk.</string>
     <string name="cmp_detail_still">Durarak: %2$d durakta %1$d dk (olağan %3$d dk, %4$d durak)</string>
     <string name="cmp_detail_pace">Hareketteyken ortalama: %1$d km/sa (olağan %2$d)</string>
-    <string name="cmp_detail_km">Mesafe: %1$s km (olağan %2$s)</string>
+    <string name="cmp_detail_km">Mesafe: %1$s (olağan %2$s)</string>
     <string name="cmp_detail_main">Ana neden: %1$s.</string>
     <string name="cmp_detail_mixed">Tek bir neden yok: biraz her şey.</string>
     <string name="week_channel">Haftalık özet</string>

@@ -14,7 +14,7 @@
     <string name="cmp_detail_head">Mesmo ponto de partida e chegada de outras %1$d voltas.\nHoje: %2$d min porta a porta · habitual: %3$d min.</string>
     <string name="cmp_detail_still">Parado: %1$d min em %2$d paragens (habitual %3$d min, %4$d paragens)</string>
     <string name="cmp_detail_pace">Média em andamento: %1$d km/h (habitual %2$d)</string>
-    <string name="cmp_detail_km">Distância: %1$s km (habitual %2$s)</string>
+    <string name="cmp_detail_km">Distância: %1$s (habitual %2$s)</string>
     <string name="cmp_detail_main">Motivo principal: %1$s.</string>
     <string name="cmp_detail_mixed">Sem um motivo único: um pouco de tudo.</string>
     <string name="week_channel">Resumo semanal</string>

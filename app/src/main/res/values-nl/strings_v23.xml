@@ -15,7 +15,7 @@
 Vandaag: %2$d min van deur tot deur · gebruikelijk: %3$d min.</string>
     <string name="cmp_detail_still">Stilstaand: %1$d min in %2$d stops (gebruikelijk %3$d min, %4$d stops)</string>
     <string name="cmp_detail_pace">Gemiddeld tijdens het rijden: %1$d km/u (gebruikelijk %2$d)</string>
-    <string name="cmp_detail_km">Afstand: %1$s km (gebruikelijk %2$s)</string>
+    <string name="cmp_detail_km">Afstand: %1$s (gebruikelijk %2$s)</string>
     <string name="cmp_detail_main">Hoofdreden: %1$s.</string>
     <string name="cmp_detail_mixed">Geen enkele hoofdreden: een beetje van alles.</string>
     <string name="week_channel">Weekoverzicht</string>

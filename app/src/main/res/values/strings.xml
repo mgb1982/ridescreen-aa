@@ -657,7 +657,7 @@
     <string name="trips_merge_action">Merge %1$d trips</string>
     <string name="trips_merge_cancel">Cancel selection</string>
     <string name="trips_merge_title">Merge trips?</string>
-    <string name="trips_merge_confirm">This will combine %1$d trips (%2$s km) into one route. The original trips stay saved and can be restored.</string>
+    <string name="trips_merge_confirm">This will combine %1$d trips (%2$s) into one route. The original trips stay saved and can be restored.</string>
     <string name="trips_merge_restore">Restore original trips</string>
     <string name="trips_merge_restore_confirm">Restore the original trip segments?</string>
     <string name="trips_merge_failed">Could not merge these trips.</string>

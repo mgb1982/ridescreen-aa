@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 Tümü</string>
     <string name="all_rides_title">Sürdüğüm her şey</string>
     <string name="trips_loading_all">Tüm sürüşlerin yükleniyor…</string>
-    <string name="all_rides_stats">%1$d sürüş · %2$s km</string>
+    <string name="all_rides_stats">%1$d sürüş · %2$s</string>
     <string name="live_pill_start">📍 Sürüşümü canlı paylaş</string>
     <string name="live_pill_active">📍 Canlı paylaşılıyor · durdurmak için dokun</string>
     <string name="live_title">Sürüşümü canlı paylaş</string>

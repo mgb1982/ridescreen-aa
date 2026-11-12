@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 Все</string>
     <string name="all_rides_title">Всё, что я проехал</string>
     <string name="trips_loading_all">Загрузка всех поездок…</string>
-    <string name="all_rides_stats">%1$d поездок · %2$s км</string>
+    <string name="all_rides_stats">%1$d поездок · %2$s</string>
     <string name="live_pill_start">📍 Делиться поездкой в реальном времени</string>
     <string name="live_pill_active">📍 Геопозиция передаётся · нажми, чтобы остановить</string>
     <string name="live_title">Делиться поездкой в реальном времени</string>

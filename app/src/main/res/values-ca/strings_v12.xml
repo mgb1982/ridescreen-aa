@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 Tot</string>
     <string name="all_rides_title">Tot el que he rodat</string>
     <string name="trips_loading_all">Carregant tots els teus viatges…</string>
-    <string name="all_rides_stats">%1$d viatges · %2$s km</string>
+    <string name="all_rides_stats">%1$d viatges · %2$s</string>
     <string name="live_pill_start">📍 Comparteix la meva ruta en directe</string>
     <string name="live_pill_active">📍 Compartint en directe · toca per aturar</string>
     <string name="live_title">Comparteix la ruta en directe</string>

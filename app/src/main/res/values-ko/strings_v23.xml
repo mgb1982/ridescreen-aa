@@ -14,7 +14,7 @@
     <string name="cmp_detail_head">다른 주행 %1$d회와 출발지와 도착지가 같습니다.\n오늘: 출발부터 도착까지 %2$d분 · 평소: %3$d분.</string>
     <string name="cmp_detail_still">정지: %2$d번 동안 총 %1$d분 (평소 %3$d분, %4$d번)</string>
     <string name="cmp_detail_pace">움직이는 동안 평균: %1$d km/h (평소 %2$d)</string>
-    <string name="cmp_detail_km">거리: %1$s km (평소 %2$s)</string>
+    <string name="cmp_detail_km">거리: %1$s (평소 %2$s)</string>
     <string name="cmp_detail_main">주된 이유: %1$s.</string>
     <string name="cmp_detail_mixed">한 가지 이유가 아니라 여러 요인이 섞여 있습니다.</string>
     <string name="week_channel">주간 요약</string>

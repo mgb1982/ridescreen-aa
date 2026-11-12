@@ -661,7 +661,7 @@
     <string name="trips_merge_action">%1$d sürüşü birleştir</string>
     <string name="trips_merge_cancel">Seçimi iptal et</string>
     <string name="trips_merge_title">Sürüşler birleştirilsin mi?</string>
-    <string name="trips_merge_confirm">Bu işlem %1$d sürüşü (%2$s km) tek bir rotada birleştirecek. Özgün sürüşler kayıtlı kalır ve geri yüklenebilir.</string>
+    <string name="trips_merge_confirm">Bu işlem %1$d sürüşü (%2$s) tek bir rotada birleştirecek. Özgün sürüşler kayıtlı kalır ve geri yüklenebilir.</string>
     <string name="trips_merge_restore">Özgün sürüşleri geri yükle</string>
     <string name="trips_merge_restore_confirm">Özgün sürüş parçaları geri yüklensin mi?</string>
     <string name="trips_merge_failed">Bu sürüşler birleştirilemedi.</string>

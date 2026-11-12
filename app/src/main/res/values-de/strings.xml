@@ -650,7 +650,7 @@
     <string name="trips_merge_action">%1$d Fahrten zusammenführen</string>
     <string name="trips_merge_cancel">Auswahl abbrechen</string>
     <string name="trips_merge_title">Fahrten zusammenführen?</string>
-    <string name="trips_merge_confirm">%1$d Fahrten (%2$s km) werden zu einer Route verbunden. Die Originalfahrten bleiben gespeichert und können wiederhergestellt werden.</string>
+    <string name="trips_merge_confirm">%1$d Fahrten (%2$s) werden zu einer Route verbunden. Die Originalfahrten bleiben gespeichert und können wiederhergestellt werden.</string>
     <string name="trips_merge_restore">Originalfahrten wiederherstellen</string>
     <string name="trips_merge_restore_confirm">Originalsegmente wiederherstellen?</string>
     <string name="trips_merge_failed">Diese Fahrten konnten nicht zusammengeführt werden.</string>

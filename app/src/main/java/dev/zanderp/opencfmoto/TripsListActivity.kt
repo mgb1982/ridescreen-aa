@@ -481,7 +481,7 @@ class TripsListActivity : AppCompatActivity() {
                             dayStartMs = startOfDay(t.start)
                             renderDay()
                         }
-                        getString(R.string.trips_import_done, t.distanceText())
+                        getString(R.string.trips_import_done, t.distanceText(Fmt.imperial(this)))
                     }
                 }
             } catch (e: Exception) {
@@ -498,7 +498,7 @@ class TripsListActivity : AppCompatActivity() {
     private fun confirmDelete(trip: Trip) {
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.trips_delete_trip_title)
-            .setMessage("${trip.dateText()} · ${trip.distanceText()}")
+            .setMessage("${trip.dateText()} · ${trip.distanceText(Fmt.imperial(this))}")
             .setPositiveButton(R.string.trips_delete) { _, _ ->
                 TripStore.delete(this, trip.id)
                 allTrips = TripStore.summaries(this)
@@ -514,7 +514,7 @@ class TripsListActivity : AppCompatActivity() {
         val km = chosen.sumOf { it.distanceKm }
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.trips_merge_title)
-            .setMessage(getString(R.string.trips_merge_confirm, chosen.size, String.format(Locale.getDefault(), "%.2f", km)))
+            .setMessage(getString(R.string.trips_merge_confirm, chosen.size, Fmt.distance(this, km * 1000.0, 2)))
             .setPositiveButton(getString(R.string.trips_merge_action, chosen.size), null)
             .setNegativeButton(R.string.dash_cancel, null)
             .create().also { dialog ->

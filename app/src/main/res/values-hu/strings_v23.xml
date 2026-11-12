@@ -15,7 +15,7 @@
 Ma: %2$d perc ajtótól ajtóig · szokásos: %3$d perc.</string>
     <string name="cmp_detail_still">Állás: %1$d perc %2$d megállásban (szokásos %3$d perc, %4$d megállás)</string>
     <string name="cmp_detail_pace">Átlagsebesség haladás közben: %1$d km/h (szokásos %2$d)</string>
-    <string name="cmp_detail_km">Távolság: %1$s km (szokásos %2$s)</string>
+    <string name="cmp_detail_km">Távolság: %1$s (szokásos %2$s)</string>
     <string name="cmp_detail_main">Fő ok: %1$s.</string>
     <string name="cmp_detail_mixed">Nincs egyetlen ok: egy kicsit minden.</string>
     <string name="week_channel">Heti összefoglaló</string>

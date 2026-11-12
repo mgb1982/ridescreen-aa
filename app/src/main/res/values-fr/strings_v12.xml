@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 Tout</string>
     <string name="all_rides_title">Tous mes trajets</string>
     <string name="trips_loading_all">Chargement de tous tes trajets…</string>
-    <string name="all_rides_stats">%1$d trajets · %2$s km</string>
+    <string name="all_rides_stats">%1$d trajets · %2$s</string>
     <string name="live_pill_start">📍 Partager mon trajet en direct</string>
     <string name="live_pill_active">📍 Partage en direct · toucher pour arrêter</string>
     <string name="live_title">Partager mon trajet en direct</string>

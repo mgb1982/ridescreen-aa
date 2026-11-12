@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 Alle</string>
     <string name="all_rides_title">Alles, was ich gefahren bin</string>
     <string name="trips_loading_all">Alle Fahrten werden geladen …</string>
-    <string name="all_rides_stats">%1$d Fahrten · %2$s km</string>
+    <string name="all_rides_stats">%1$d Fahrten · %2$s</string>
     <string name="live_pill_start">📍 Meine Fahrt live teilen</string>
     <string name="live_pill_active">📍 Live-Standort wird geteilt · zum Stoppen tippen</string>
     <string name="live_title">Meine Fahrt live teilen</string>

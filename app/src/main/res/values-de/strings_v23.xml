@@ -14,7 +14,7 @@
     <string name="cmp_detail_head">Gleicher Start und Ziel wie bei %1$d anderen Fahrten.\nHeute: %2$d Min. von Tür zu Tür · üblich: %3$d Min.</string>
     <string name="cmp_detail_still">Im Stand: %1$d Min. bei %2$d Stopps (üblich %3$d Min., %4$d Stopps)</string>
     <string name="cmp_detail_pace">Durchschnitt während der Fahrt: %1$d km/h (üblich %2$d)</string>
-    <string name="cmp_detail_km">Entfernung: %1$s km (üblich %2$s)</string>
+    <string name="cmp_detail_km">Entfernung: %1$s (üblich %2$s)</string>
     <string name="cmp_detail_main">Hauptgrund: %1$s.</string>
     <string name="cmp_detail_mixed">Kein einzelner Grund: von allem etwas.</string>
     <string name="week_channel">Wochenübersicht</string>

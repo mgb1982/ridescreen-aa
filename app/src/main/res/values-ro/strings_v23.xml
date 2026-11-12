@@ -15,7 +15,7 @@
 Azi: %2$d min de la plecare la sosire · de obicei: %3$d min.</string>
     <string name="cmp_detail_still">Oprit: %1$d min în %2$d opriri (de obicei %3$d min, %4$d opriri)</string>
     <string name="cmp_detail_pace">Media în mers: %1$d km/h (de obicei %2$d)</string>
-    <string name="cmp_detail_km">Distanța: %1$s km (de obicei %2$s)</string>
+    <string name="cmp_detail_km">Distanța: %1$s (de obicei %2$s)</string>
     <string name="cmp_detail_main">Motivul principal: %1$s.</string>
     <string name="cmp_detail_mixed">Niciun motiv anume: un pic din toate.</string>
     <string name="week_channel">Rezumat săptămânal</string>

@@ -284,7 +284,7 @@ class TripMapActivity : AppCompatActivity() {
         sb.append("\n\n").append(getString(R.string.cmp_detail_still, mins(t.stillS), t.stops, mins(u.stillS), u.stops))
         sb.append("\n").append(getString(R.string.cmp_detail_pace, t.movingKmh.roundToInt(), u.movingKmh.roundToInt()))
         sb.append("\n").append(getString(R.string.cmp_detail_km,
-            String.format(Locale.getDefault(), "%.1f", t.km), String.format(Locale.getDefault(), "%.1f", u.km)))
+            Fmt.distance(this, t.km * 1000.0, 1), Fmt.decimal(Fmt.distanceValue(this, u.km * 1000.0), 1)))
         if (TripCompare.significant(r.diffS)) {
             val slower = r.diffS > 0
             sb.append("\n\n").append(r.main?.let { getString(R.string.cmp_detail_main, factorText(it, slower)) }
@@ -383,7 +383,7 @@ class TripMapActivity : AppCompatActivity() {
         val trips = filtered()
         val km = trips.sumOf { it.distanceKm }
         findViewById<TextView>(R.id.map_stats).text =
-            getString(R.string.all_rides_stats, trips.size, String.format(Locale.getDefault(), "%.0f", km))
+            getString(R.string.all_rides_stats, trips.size, Fmt.distance(this, km * 1000.0, 0))
 
         map.overlays.clear()
         val all = ArrayList<GeoPoint>()

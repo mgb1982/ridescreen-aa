@@ -657,7 +657,7 @@
     <string name="trips_merge_action">Uneix %1$d viatges</string>
     <string name="trips_merge_cancel">Cancel·la la selecció</string>
     <string name="trips_merge_title">Uneix els viatges</string>
-    <string name="trips_merge_confirm">Es combinaran %1$d viatges (%2$s km) en una ruta. Els originals es conserven i es poden restaurar.</string>
+    <string name="trips_merge_confirm">Es combinaran %1$d viatges (%2$s) en una ruta. Els originals es conserven i es poden restaurar.</string>
     <string name="trips_merge_restore">Restaura els viatges originals</string>
     <string name="trips_merge_restore_confirm">Vols restaurar els trams originals?</string>
     <string name="trips_merge_failed">No s’han pogut unir els viatges.</string>

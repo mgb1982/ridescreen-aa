@@ -657,7 +657,7 @@
     <string name="trips_merge_action">Scal podróże (%1$d)</string>
     <string name="trips_merge_cancel">Anuluj wybór</string>
     <string name="trips_merge_title">Scalić podróże?</string>
-    <string name="trips_merge_confirm">To połączy podróże (%1$d, %2$s km) w jedną trasę. Oryginalne podróże pozostaną zapisane i można je przywrócić.</string>
+    <string name="trips_merge_confirm">To połączy podróże (%1$d, %2$s) w jedną trasę. Oryginalne podróże pozostaną zapisane i można je przywrócić.</string>
     <string name="trips_merge_restore">Przywróć oryginalne podróże</string>
     <string name="trips_merge_restore_confirm">Przywrócić oryginalne odcinki podróży?</string>
     <string name="trips_merge_failed">Nie udało się scalić tych podróży.</string>

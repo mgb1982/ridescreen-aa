@@ -656,7 +656,7 @@
     <string name="trips_merge_action">รวม %1$d ทริป</string>
     <string name="trips_merge_cancel">ยกเลิกการเลือก</string>
     <string name="trips_merge_title">รวมทริปหรือไม่</string>
-    <string name="trips_merge_confirm">จะรวม %1$d ทริป (%2$s กม.) เป็นเส้นทางเดียว โดยยังเก็บทริปเดิมและกู้คืนได้</string>
+    <string name="trips_merge_confirm">จะรวม %1$d ทริป (%2$s) เป็นเส้นทางเดียว โดยยังเก็บทริปเดิมและกู้คืนได้</string>
     <string name="trips_merge_restore">กู้คืนทริปเดิม</string>
     <string name="trips_merge_restore_confirm">กู้คืนช่วงเส้นทางเดิมหรือไม่</string>
     <string name="trips_merge_failed">รวมทริปเหล่านี้ไม่ได้</string>

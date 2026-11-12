@@ -14,7 +14,7 @@
     <string name="cmp_detail_head">จุดเริ่มต้นและปลายทางเดียวกับอีก %1$d ทริป\nวันนี้: %2$d นาทีจากต้นทางถึงปลายทาง · ปกติ: %3$d นาที</string>
     <string name="cmp_detail_still">หยุดรถ: %1$d นาที จากการหยุด %2$d ครั้ง (ปกติ %3$d นาที, %4$d ครั้ง)</string>
     <string name="cmp_detail_pace">ความเร็วเฉลี่ยขณะเคลื่อนที่: %1$d km/h (ปกติ %2$d)</string>
-    <string name="cmp_detail_km">ระยะทาง: %1$s km (ปกติ %2$s)</string>
+    <string name="cmp_detail_km">ระยะทาง: %1$s (ปกติ %2$s)</string>
     <string name="cmp_detail_main">สาเหตุหลัก: %1$s</string>
     <string name="cmp_detail_mixed">ไม่มีสาเหตุเดียว มีหลายปัจจัยร่วมกัน</string>
     <string name="week_channel">สรุปรายสัปดาห์</string>

@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 Toate</string>
     <string name="all_rides_title">Tot ce am condus</string>
     <string name="trips_loading_all">Se încarcă toate turele tale…</string>
-    <string name="all_rides_stats">%1$d ture · %2$s km</string>
+    <string name="all_rides_stats">%1$d ture · %2$s</string>
     <string name="live_pill_start">📍 Partajează turul meu în direct</string>
     <string name="live_pill_active">📍 Partajez în direct · atinge pentru oprire</string>
     <string name="live_title">Partajează turul meu în direct</string>

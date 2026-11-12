@@ -647,7 +647,7 @@
     <string name="trips_merge_action">Unisci %1$d viaggi</string>
     <string name="trips_merge_cancel">Annulla selezione</string>
     <string name="trips_merge_title">Unire i viaggi?</string>
-    <string name="trips_merge_confirm">Unirai %1$d viaggi (%2$s km) in un unico percorso. Gli originali restano salvati e ripristinabili.</string>
+    <string name="trips_merge_confirm">Unirai %1$d viaggi (%2$s) in un unico percorso. Gli originali restano salvati e ripristinabili.</string>
     <string name="trips_merge_restore">Ripristina i viaggi originali</string>
     <string name="trips_merge_restore_confirm">Ripristinare i segmenti originali?</string>
     <string name="trips_merge_failed">Impossibile unire questi viaggi.</string>

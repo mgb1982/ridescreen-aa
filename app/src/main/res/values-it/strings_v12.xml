@@ -39,7 +39,7 @@
     <string name="all_rides_button">🗺 Tutti</string>
     <string name="all_rides_title">Tutto quello che ho percorso</string>
     <string name="trips_loading_all">Caricamento di tutti i tuoi viaggi…</string>
-    <string name="all_rides_stats">%1$d viaggi · %2$s km</string>
+    <string name="all_rides_stats">%1$d viaggi · %2$s</string>
     <string name="live_pill_start">📍 Condividi il viaggio in diretta</string>
     <string name="live_pill_active">📍 Condivisione in diretta · tocca per fermare</string>
     <string name="live_title">Condividi il viaggio in diretta</string>

@@ -659,7 +659,7 @@
     <string name="trips_merge_action">Объединить: %1$d</string>
     <string name="trips_merge_cancel">Отменить выбор</string>
     <string name="trips_merge_title">Объединить поездки?</string>
-    <string name="trips_merge_confirm">%1$d поездок (%2$s км) будут объединены в один маршрут. Исходные поездки сохранятся и их можно восстановить.</string>
+    <string name="trips_merge_confirm">%1$d поездок (%2$s) будут объединены в один маршрут. Исходные поездки сохранятся и их можно восстановить.</string>
     <string name="trips_merge_restore">Восстановить исходные поездки</string>
     <string name="trips_merge_restore_confirm">Восстановить исходные сегменты?</string>
     <string name="trips_merge_failed">Не удалось объединить эти поездки.</string>
