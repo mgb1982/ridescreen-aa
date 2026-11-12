@@ -20,4 +20,8 @@ class ObdBackoffTest {
         while (t < 17 * 60_000L) { n++; t += 13_000L + ObdBackoff.waitAfter(n) }
         assertTrue("tries=$n", n <= 10)   // was ~25 with the 30 s cap
     }
+    @Test fun whileProjectingTheOld30sCapStays() {
+        assertEquals(30_000L, ObdBackoff.waitAfter(50, projecting = true))
+        assertEquals(10_000L, ObdBackoff.waitAfter(2, projecting = true))
+    }
 }

@@ -122,10 +122,9 @@ object ObdLive {
             setEngine(null)
             if (yieldedToPke) continue
             failures = if (ok) 0 else failures + 1
-            val wait = if (ok) RETRY_MIN_MS else ObdBackoff.waitAfter(failures)
+            val wait = if (ok) RETRY_MIN_MS else ObdBackoff.waitAfter(failures, projecting())
             if (failures == 5) log("live reader: adapter not reachable 5 times in a row (bike off?) · trying less often")
-            // Sleep in steps so a stop() or a keyless-box command is not held up by a long wait.
-            if (!idle(wait) && stopping()) break
+            if (!backoff(wait) && stopping()) break
         }
         log("live reader off")
     }
@@ -140,6 +139,24 @@ object ObdLive {
         }
         try { Thread.sleep(1_000) } catch (_: InterruptedException) { return }
         if (!stopping()) log("live reader: resuming")
+    }
+
+    private fun projecting(): Boolean = ConnectionState.phase == Phase.STREAMING
+
+    /**
+     * Waits [ms] before the next try, in small steps, so a stop() or a keyless-box command is not
+     * held up. A long wait (bike was off) is cut to [ObdBackoff.PROJECTING_MAX_MS] once projection
+     * starts: the bike is on again and the adapter should have power. False like [idle].
+     */
+    private fun backoff(ms: Long): Boolean {
+        val start = SystemClock.elapsedRealtime()
+        while (SystemClock.elapsedRealtime() - start < ms) {
+            if (stopping()) return false
+            if (pkeBusy()) { yieldedToPke = true; return false }
+            if (projecting() && SystemClock.elapsedRealtime() - start >= ObdBackoff.PROJECTING_MAX_MS) return true
+            try { Thread.sleep(250) } catch (_: InterruptedException) { return false }
+        }
+        return true
     }
 
     /** Sleeps [ms] in small steps; false if the reader is stopping or the keyless box needs the radio. */
