@@ -171,21 +171,18 @@ object LiveShare {
             PackageManager.PERMISSION_GRANTED
         ) return
         val lm = ctx.getSystemService(Context.LOCATION_SERVICE) as? LocationManager ?: return
-        try {
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5_000L, 10f, gps, Looper.getMainLooper())
-            listening = true
-        } catch (_: Exception) {
-        }
+        listening = LocationHub.subscribe(
+            ctx, this,
+            listOf(LocationFanout.Spec(LocationManager.GPS_PROVIDER, 5_000L, 10f)),
+            gps, Looper.getMainLooper(),
+        )
     }
 
     private fun stopGps() {
-        val ctx = appCtx ?: return
+        if (appCtx == null) return
         if (!listening) return
         listening = false
-        try {
-            (ctx.getSystemService(Context.LOCATION_SERVICE) as? LocationManager)?.removeUpdates(gps)
-        } catch (_: Exception) {
-        }
+        LocationHub.unsubscribe(this)
     }
 
     private class HttpGone : Exception()

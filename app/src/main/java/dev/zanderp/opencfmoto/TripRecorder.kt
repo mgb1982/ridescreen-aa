@@ -68,9 +68,11 @@ class TripRecorder(private val appContext: Context) : LocationListener {
         if (!hasPermission() || lm == null || !gpsAvailable()) return false
         resetLeg()
         recording = true
-        try {
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 0f, this)
-        } catch (_: SecurityException) {
+        val ok = LocationHub.subscribe(
+            appContext, this,
+            listOf(LocationFanout.Spec(LocationManager.GPS_PROVIDER, 1000L, 0f)), this,
+        )
+        if (!ok) {
             recording = false
             return false
         }
@@ -81,7 +83,7 @@ class TripRecorder(private val appContext: Context) : LocationListener {
     /** Stop recording and save the current leg if it's meaningful. */
     fun stopAndSave() {
         if (!recording) return
-        try { lm?.removeUpdates(this) } catch (_: Exception) {}
+        LocationHub.unsubscribe(this)
         recording = false
         finalizeLeg(save = true)
         curSpeedKmh = 0
@@ -91,7 +93,7 @@ class TripRecorder(private val appContext: Context) : LocationListener {
 
     /** Stop and throw away the current leg (the HUD "Reset"). */
     fun discard() {
-        try { lm?.removeUpdates(this) } catch (_: Exception) {}
+        LocationHub.unsubscribe(this)
         recording = false
         checkpointIo.execute { TripStore.clearCheckpoint(appContext) }
         resetLeg()

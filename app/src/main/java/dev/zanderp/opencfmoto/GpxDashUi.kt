@@ -2418,18 +2418,18 @@ class GpxDashUi(
                     lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER) -> LocationManager.NETWORK_PROVIDER
                     else -> null
                 }
-                var subscribed = false
+                val specs = ArrayList<LocationFanout.Spec>()
                 if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    lm.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER, 800L, 1.5f, listener, Looper.getMainLooper(),
-                    )
-                    subscribed = true
+                    specs.add(LocationFanout.Spec(LocationManager.GPS_PROVIDER, 800L, 1.5f))
                 }
                 if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                    lm.requestLocationUpdates(
-                        LocationManager.NETWORK_PROVIDER, 2_000L, 5f, listener,
-                        Looper.getMainLooper(),
-                    )
+                    specs.add(LocationFanout.Spec(LocationManager.NETWORK_PROVIDER, 2_000L, 5f))
+                }
+                var subscribed = false
+                if (specs.isNotEmpty()) {
+                    if (!LocationHub.subscribe(context, this, specs, listener, Looper.getMainLooper())) {
+                        throw IllegalStateException("location subscribe failed")
+                    }
                     subscribed = true
                 }
                 if (subscribed) {
@@ -2782,9 +2782,7 @@ class GpxDashUi(
         MapInputBridge.clear()
         DashRemote.setHandler(null)
         main.removeCallbacksAndMessages(null)
-        locationListener?.let { listener ->
-            try { locationManager?.removeUpdates(listener) } catch (_: Exception) {}
-        }
+        if (locationListener != null) LocationHub.unsubscribe(this)
         locationListener = null
         compassListener?.let { cl ->
             try { sensorManager?.unregisterListener(cl) } catch (_: Exception) {}

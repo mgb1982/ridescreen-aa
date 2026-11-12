@@ -180,13 +180,13 @@ object SpeedVolume {
         }
         audio = am
         lm = loc
-        try {
-            loc.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 0f, listener, Looper.getMainLooper())
-        } catch (e: SecurityException) {
-            LogBus.log("[SPDVOL] location permission missing — not starting")
-            return
-        } catch (e: Exception) {
-            LogBus.log("[SPDVOL] GPS unavailable ($e) — not starting")
+        val subscribed = LocationHub.subscribe(
+            ctx, this,
+            listOf(LocationFanout.Spec(LocationManager.GPS_PROVIDER, 1000L, 0f)),
+            listener, Looper.getMainLooper(),
+        )
+        if (!subscribed) {
+            LogBus.log("[SPDVOL] GPS unavailable (location permission missing or GPS error) — not starting")
             return
         }
         running = true
@@ -209,7 +209,7 @@ object SpeedVolume {
 
     private fun stop(reason: String) {
         handler.removeCallbacks(tick)
-        try { lm?.removeUpdates(listener) } catch (_: Exception) {}
+        LocationHub.unsubscribe(this)
         val am = audio
         // Give the rider their own level back — but only if nobody touched the volume since our write.
         if (am != null && lastSet >= 0 && boostSteps > 0 && baseVolume >= 0) {
