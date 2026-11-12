@@ -676,7 +676,10 @@ class ControlsActivity : AppCompatActivity() {
                             canvas.drawLine(m, height - m, width - m, m, p)
                         }
                         if (selected) { // check mark
-                            p.color = if (color == 0) ink else android.graphics.Color.WHITE
+                            // Dark tick on light swatches (yellow, green), white on the rest.
+                            val lum = (0.299 * android.graphics.Color.red(color) + 0.587 * android.graphics.Color.green(color) +
+                                0.114 * android.graphics.Color.blue(color)) / 255.0
+                            p.color = if (color == 0) ink else if (lum > 0.6) 0xFF202020.toInt() else android.graphics.Color.WHITE
                             p.strokeWidth = 3 * dp
                             p.strokeCap = android.graphics.Paint.Cap.ROUND
                             val w = width.toFloat(); val h = height.toFloat()
