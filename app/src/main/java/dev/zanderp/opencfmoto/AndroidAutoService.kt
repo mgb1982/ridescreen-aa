@@ -117,6 +117,17 @@ class AndroidAutoService : Service() {
         return START_STICKY
     }
 
+    private val tickFailLogAt = HashMap<String, Long>()
+
+    /** Logs a watchdog tick failure, at most once per 30 s per tick name. */
+    private fun logTickFailure(name: String, e: Exception) {
+        val now = android.os.SystemClock.elapsedRealtime()
+        val last = tickFailLogAt[name]
+        if (last != null && now - last < 30_000L) return
+        tickFailLogAt[name] = now
+        LogBus.log("[WD] tick$name failed: $e")
+    }
+
     /**
      * Auto-recovery watchdog. Every [WATCHDOG_TICK_MS] it checks the bike link and, if enabled:
      *  - STREAMING but no frames for [STALL_MS] → the dash stopped pulling (half-open link / stall):
@@ -130,10 +141,10 @@ class AndroidAutoService : Service() {
         watchdogHandler.postDelayed(object : Runnable {
             override fun run() {
                 if (!isRunning) return
-                try { tickReconnectSupervisor() } catch (_: Exception) {}
-                try { tickWatchdog() } catch (_: Exception) {}
-                try { adaptive.onTick(pipeline) } catch (_: Exception) {}
-                try { tickTripLogging() } catch (_: Exception) {}
+                try { tickReconnectSupervisor() } catch (e: Exception) { logTickFailure("ReconnectSupervisor", e) }
+                try { tickWatchdog() } catch (e: Exception) { logTickFailure("Watchdog", e) }
+                try { adaptive.onTick(pipeline) } catch (e: Exception) { logTickFailure("Adaptive", e) }
+                try { tickTripLogging() } catch (e: Exception) { logTickFailure("TripLogging", e) }
                 watchdogHandler.postDelayed(this, WATCHDOG_TICK_MS)
             }
         }, WATCHDOG_TICK_MS)
@@ -330,7 +341,7 @@ class AndroidAutoService : Service() {
                     .apply { setReferenceCounted(false) }
             }
             if (wakeLock?.isHeld != true) wakeLock?.acquire(4 * 60 * 60 * 1000L)
-        } catch (_: Exception) {}
+        } catch (e: Exception) { LogBus.log("[AA] wake lock failed: $e") }
         acquireWifiLocks()
     }
 
@@ -398,7 +409,7 @@ class AndroidAutoService : Service() {
             if (wifiLockLowLatency?.isHeld != true) { wifiLockLowLatency?.acquire(); acquired = true }
             if (wifiLockHighPerf?.isHeld != true) { wifiLockHighPerf?.acquire(); acquired = true }
             if (acquired) LogBus.log("[AA] Wi-Fi locks held (high-perf + low-latency) — keeping the bike link hot")
-        } catch (_: Exception) {}
+        } catch (e: Exception) { LogBus.log("[AA] Wi-Fi lock failed: $e") }
     }
 
     private fun releaseWifiLocks() {

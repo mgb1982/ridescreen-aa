@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="safe_delete_task_title">Delete task?</string>
+    <string name="safe_delete_task_msg">\"%1$s\" and its whole history will be deleted. This can\'t be undone.</string>
+    <string name="safe_delete_place_title">Delete place?</string>
+    <string name="safe_delete_offline_title">Delete offline map?</string>
+    <string name="safe_delete_confirm_msg">\"%1$s\" will be deleted. This can\'t be undone.</string>
+</resources>

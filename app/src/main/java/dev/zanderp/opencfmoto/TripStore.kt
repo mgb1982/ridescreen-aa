@@ -43,16 +43,21 @@ object TripStore {
 
     @Synchronized
     private fun updateIndex(ctx: Context, change: (MutableList<Trip>) -> Unit) {
-        val current = summaryCache ?: runCatching { readIndex(indexFile(ctx)) }.getOrNull()
-        if (current == null) {
-            summaryCache = null // rebuilt lazily by summaries()
-            return
+        try {
+            val current = summaryCache ?: runCatching { readIndex(indexFile(ctx)) }.getOrNull()
+            if (current == null) {
+                summaryCache = null // rebuilt lazily by summaries()
+                return
+            }
+            val list = current.toMutableList()
+            change(list)
+            val sorted = list.sortedByDescending { it.start }
+            writeIndex(ctx, sorted)
+            summaryCache = sorted
+        } catch (e: Exception) {
+            summaryCache = null // force a rebuild from the trip files next time
+            LogBus.log("[trip] index update failed: $e")
         }
-        val list = current.toMutableList()
-        change(list)
-        val sorted = list.sortedByDescending { it.start }
-        writeIndex(ctx, sorted)
-        summaryCache = sorted
     }
 
     private fun readIndex(f: File): List<Trip>? {
@@ -84,7 +89,8 @@ object TripStore {
         runCatching { indexFile(ctx).writeText(a.toString()) }
     }
 
-    fun save(ctx: Context, trip: Trip) {
+    /** Returns true when the trip file was written (the index is then updated best-effort). */
+    fun save(ctx: Context, trip: Trip): Boolean {
         val obj = JSONObject()
             .put("id", trip.id)
             .put("start", trip.start)
@@ -100,8 +106,14 @@ object TripStore {
         }
         obj.put("points", pts)
         obj.put("obdSamples", encodeObd(trip.obdSamples))
-        runCatching { File(dir(ctx), "${trip.id}.json").writeText(obj.toString()) }
+        try {
+            File(dir(ctx), "${trip.id}.json").writeText(obj.toString())
+        } catch (e: Exception) {
+            LogBus.log("[trip] write failed: $e")
+            return false
+        }
         updateIndex(ctx) { l -> l.removeAll { it.id == trip.id }; l.add(trip.copy(points = emptyList(), obdSamples = emptyList())) }
+        return true
     }
 
     /** All saved trips, most recent first. */

@@ -258,8 +258,15 @@ class MaintenanceActivity : AppCompatActivity() {
             }
             .setNegativeButton(android.R.string.cancel, null)
         if (t != null) dlg.setNeutralButton(R.string.maint_delete) { _, _ ->
-            Maintenance.deleteTask(this, t.id)
-            render()
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.safe_delete_task_title)
+                .setMessage(getString(R.string.safe_delete_task_msg, t.name))
+                .setPositiveButton(R.string.maint_delete) { _, _ ->
+                    Maintenance.deleteTask(this, t.id)
+                    render()
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
         }
         dlg.show()
     }

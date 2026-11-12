@@ -229,14 +229,21 @@ class TripRecorder(private val appContext: Context) : LocationListener {
         val cb = onTripSaved
         val main = android.os.Handler(android.os.Looper.getMainLooper())
         Thread({
-            TripStore.save(appContext, trip)
-            LogBus.log("[trip] saved ride ${trip.distanceText()} in ${trip.durationText()}")
-            // RideScreen AA v2: name it ("Sants → Zona Franca"), check records, add the km to the bike.
-            try { TripNames.ensure(appContext, listOf(trip)) } catch (_: Exception) {}
-            try { Records.onTripSaved(appContext, trip) } catch (_: Exception) {}
-            try { Trophies.onTripSaved(appContext) } catch (_: Exception) {}
-            try { Maintenance.onTripSaved(appContext, trip) } catch (_: Exception) {}
-            try { ParkingWidget.updateAll(appContext) } catch (_: Exception) {}
+            try {
+                if (TripStore.save(appContext, trip)) {
+                    LogBus.log("[trip] saved ride ${trip.distanceText()} in ${trip.durationText()}")
+                } else {
+                    LogBus.log("[trip] ride NOT saved")
+                }
+                // RideScreen AA v2: name it ("Sants → Zona Franca"), check records, add the km to the bike.
+                try { TripNames.ensure(appContext, listOf(trip)) } catch (e: Exception) { LogBus.log("[trip] names failed: $e") }
+                try { Records.onTripSaved(appContext, trip) } catch (e: Exception) { LogBus.log("[trip] records failed: $e") }
+                try { Trophies.onTripSaved(appContext) } catch (e: Exception) { LogBus.log("[trip] trophies failed: $e") }
+                try { Maintenance.onTripSaved(appContext, trip) } catch (e: Exception) { LogBus.log("[trip] maintenance failed: $e") }
+                try { ParkingWidget.updateAll(appContext) } catch (e: Exception) { LogBus.log("[trip] parking widget failed: $e") }
+            } catch (e: Throwable) {
+                LogBus.log("[trip] save thread failed: $e")
+            }
             main.post { try { cb?.invoke(trip) } catch (_: Exception) {} }
         }, "trip-save").start()
     }
@@ -265,12 +272,15 @@ class TripRecorder(private val appContext: Context) : LocationListener {
                         return@execute
                     }
                     if (TripStore.get(app, t.id) != null) return@execute
-                    TripStore.save(app, t)
+                    if (!TripStore.save(app, t)) {
+                        LogBus.log("[trip] recovered ride NOT saved")
+                        return@execute
+                    }
                     LogBus.log("[trip] RECOVERED ride ${t.distanceText()} in ${t.durationText()} — the app had closed mid-ride")
-                    try { TripNames.ensure(app, listOf(t)) } catch (_: Exception) {}
-                    try { Records.onTripSaved(app, t) } catch (_: Exception) {}
-                    try { Trophies.onTripSaved(app) } catch (_: Exception) {}
-                    try { Maintenance.onTripSaved(app, t) } catch (_: Exception) {}
+                    try { TripNames.ensure(app, listOf(t)) } catch (e: Exception) { LogBus.log("[trip] names failed: $e") }
+                    try { Records.onTripSaved(app, t) } catch (e: Exception) { LogBus.log("[trip] records failed: $e") }
+                    try { Trophies.onTripSaved(app) } catch (e: Exception) { LogBus.log("[trip] trophies failed: $e") }
+                    try { Maintenance.onTripSaved(app, t) } catch (e: Exception) { LogBus.log("[trip] maintenance failed: $e") }
                 } catch (e: Exception) {
                     LogBus.log("[trip] recovery failed: ${e.message}")
                 }

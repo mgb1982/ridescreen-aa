@@ -2699,13 +2699,12 @@ class MainActivity : AppCompatActivity() {
         try { AaVideoBridge.onSteadyVideo = null } catch (_: Exception) {}
         try { AndroidAutoService.stop(this) } catch (e: Exception) { log("AA stop: $e") }
         try { if (::prober.isInitialized) prober.stop() } catch (e: Exception) { log("prober stop: $e") }
-        try { bleWakeUp?.stop() } catch (_: Exception) {}
-        bleWakeUp = null
+        try { bleWakeUp?.stop() } catch (e: Exception) { LogBus.log("[BLE] wake-up stop failed: $e") } finally { bleWakeUp = null }
         ProjectionHolder.projection?.let { try { it.stop() } catch (_: Exception) {} }
         ProjectionHolder.projection = null
         try { GpxSession.clear() } catch (_: Exception) {}
         try { ProjectionService.stop(this) } catch (e: Exception) { log("projection stop: $e") }
-        try { DashClockBle.stop() } catch (_: Exception) {}
+        try { DashClockBle.stop() } catch (e: Exception) { LogBus.log("[BLE] dash clock stop failed: $e") }
         try { BikeWifi.releaseSession(this, ::log) } catch (e: Exception) { log("wifi leave: $e") }
         ConnectionState.set(Phase.STOPPED, "")
     }
