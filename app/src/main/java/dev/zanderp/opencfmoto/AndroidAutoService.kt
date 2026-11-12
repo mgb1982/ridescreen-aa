@@ -586,6 +586,9 @@ class AndroidAutoService : Service() {
         }
         reacquireLocks()
         LogBus.log("[AA] foreground service up (wake + Wi-Fi locks held)")
+        // Ask for the weather now: the welcome card is drawn as soon as the dash attaches, before
+        // RideExtras.onSession runs (12 Nov log: card at 19:13:11, weather cached at 19:13:21).
+        try { DashCards.refreshWeather(applicationContext) } catch (_: Exception) {}
         return true
     }
 
