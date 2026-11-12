@@ -18,7 +18,7 @@ import android.os.SystemClock
  * single registration per provider with the combined plan and hands each subscriber only the
  * fixes its own spec would have produced. Fix delivery happens on the subscriber's looper.
  */
-object LocationHub {
+internal object LocationHub {
     private class Sub(
         val specs: List<LocationFanout.Spec>,
         val listener: LocationListener,
