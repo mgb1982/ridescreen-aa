@@ -176,7 +176,8 @@ for _n, _slug in enumerate(pills.slugs(), 1):
 CANVAS = {
     "phone": (PHONE_W, PHONE_H, PHONE_DPR),
     "watch": (WATCH_W, WATCH_W, WATCH_DPR),
-    "share": (phone.SHARE_W, phone.SHARE_H, 1),\n    "promo": (promo_125.W, promo_125.H, 1),
+    "share": (phone.SHARE_W, phone.SHARE_H, 1),
+    "promo": (promo_125.W, promo_125.H, 1),
     "widget": (phone.WIDGET_W, phone.WIDGET_H, PHONE_DPR),
     "whats_new": (PHONE_W, phone.WHATS_NEW_H, PHONE_DPR),
     "pill": (pills.W, None, 1),
