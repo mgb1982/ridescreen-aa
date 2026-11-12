@@ -478,6 +478,15 @@ class GpxActivity : AppCompatActivity() {
             R.id.gpx_circuit_60 to 60,
             R.id.gpx_circuit_100 to 100,
         )
+        findViewById<com.google.android.material.materialswitch.MaterialSwitch>(R.id.switch_pocket_dim).apply {
+            setOnCheckedChangeListener(null)
+            isChecked = AppSettings.pocketDim(this@GpxActivity)
+            setOnCheckedChangeListener { _, on -> AppSettings.setPocketDim(this@GpxActivity, on) }
+        }
+        findViewById<TextView>(R.id.pocket_dim_hint).setText(
+            if (android.provider.Settings.canDrawOverlays(this)) R.string.pocket_dim_hint
+            else R.string.pocket_dim_needs_permission,
+        )
         refreshOfflineControls()
         refreshOfflineList()
         corridorBtn.text = if (corridorPois.isEmpty()) {

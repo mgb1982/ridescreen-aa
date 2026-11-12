@@ -150,6 +150,7 @@ class AndroidAutoService : Service() {
                 try { adaptive.onTick(pipeline) } catch (e: Exception) { logTickFailure("Adaptive", e) }
                 try { tickTripLogging() } catch (e: Exception) { logTickFailure("TripLogging", e) }
                 try { renewExpiredLocks() } catch (e: Exception) { logTickFailure("LockRenewal", e) }
+                try { tickPocketDim() } catch (e: Exception) { logTickFailure("PocketDim", e) }
                 watchdogHandler.postDelayed(this, WATCHDOG_TICK_MS)
             }
         }, WATCHDOG_TICK_MS)
@@ -359,6 +360,27 @@ class AndroidAutoService : Service() {
         }
     }
 
+    /** A1 · cover the (still lit) phone screen with a minimum-brightness black overlay while pocketed in map mode. */
+    private fun tickPocketDim() {
+        val canDraw = android.provider.Settings.canDrawOverlays(this)
+        val enabled = AppSettings.pocketDim(this)
+        val gpx = GpxSession.active
+        val bg = AppVisibility.backgroundForMs()
+        if (PocketCover.covering) {
+            if (PocketDim.shouldUncover(enabled, gpx, canDraw, AppVisibility.inForeground, true)) {
+                val why = when {
+                    !enabled -> "disabled"
+                    !gpx -> "no-map"
+                    !canDraw -> "no-permission"
+                    else -> "app-foreground"
+                }
+                PocketCover.hide(why)
+            }
+        } else if (PocketDim.shouldCover(enabled, gpx, canDraw, bg, PocketCover.sinceDismissMs(), false)) {
+            PocketCover.show(this)
+        }
+    }
+
     private fun reacquireLocks() {
         try {
             if (wakeLock == null) {
@@ -403,6 +425,7 @@ class AndroidAutoService : Service() {
     }
 
     private fun releaseScreenWake() {
+        PocketCover.hide("map mode ended")
         try {
             screenWakeLock?.let { if (it.isHeld) it.release() }
         } catch (_: Exception) {
@@ -767,6 +790,7 @@ class AndroidAutoService : Service() {
         wakeLockWanted = false
         try { if (wakeLock?.isHeld == true) wakeLock?.release() } catch (_: Exception) {}
         wakeLock = null
+        PocketCover.hide("service stopping")
         releaseScreenWake()
         releaseWifiLocks()
         wifiLockLowLatency = null

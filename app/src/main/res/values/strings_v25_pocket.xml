@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pocket_dim">Dim the screen in the pocket</string>
+    <string name="pocket_dim_hint">While the map is on the dash and the app is in the background, the phone screen is covered in black at minimum brightness to save battery. Double-tap to wake it.</string>
+    <string name="pocket_dim_needs_permission">Needs the “Display over other apps” permission (Setup).</string>
+    <string name="pocket_hint">Double-tap to wake</string>
+</resources>

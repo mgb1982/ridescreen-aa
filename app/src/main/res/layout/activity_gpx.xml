@@ -509,6 +509,23 @@
                     android:layout_height="0dp"
                     android:visibility="gone" />
 
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switch_pocket_dim"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="@string/pocket_dim"
+                    android:textColor="@color/text_primary" />
+
+                <TextView
+                    android:id="@+id/pocket_dim_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/pocket_dim_hint"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
