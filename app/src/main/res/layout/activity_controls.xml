@@ -643,7 +643,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
-                        android:text="OK" />
+                        android:text="@android:string/ok" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_dpad_right"

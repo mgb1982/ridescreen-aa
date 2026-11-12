@@ -59,7 +59,7 @@ class BlackBoxActivity : AppCompatActivity() {
         val fmt = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
         for (f in files) {
             val s = BlackBox.load(f) ?: continue
-            val speed = s.kmhAtImpact?.let { "${it.toInt()} km/h" } ?: "? km/h"
+            val speed = s.kmhAtImpact?.let { Fmt.speed(this, it.toDouble()) } ?: "? ${FmtCore.speedUnit(Fmt.imperial(this))}"
             root.addView(MaterialButton(this, null, com.google.android.material.R.attr.materialButtonOutlinedStyle).apply {
                 isAllCaps = false
                 textAlignment = View.TEXT_ALIGNMENT_VIEW_START
@@ -78,9 +78,9 @@ class BlackBoxActivity : AppCompatActivity() {
         root.addView(ChartView(this, s), LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(220)).apply { topMargin = dp(14) })
         root.addView(body(getString(R.string.bb_chart_legend)))
         root.addView(header(getString(R.string.bb_figures)))
-        root.addView(fact(R.string.bb_speed_impact, s.kmhAtImpact?.let { "${it.toInt()} km/h" }))
-        root.addView(fact(R.string.bb_speed_5s, s.kmh5sBefore?.let { "${it.toInt()} km/h" }))
-        root.addView(fact(R.string.bb_braking, s.maxDecel?.let { "%.0f km/h/s".format(it) }))
+        root.addView(fact(R.string.bb_speed_impact, s.kmhAtImpact?.let { Fmt.speed(this, it.toDouble()) }))
+        root.addView(fact(R.string.bb_speed_5s, s.kmh5sBefore?.let { Fmt.speed(this, it.toDouble()) }))
+        root.addView(fact(R.string.bb_braking, s.maxDecel?.let { Fmt.speed(this, it.toDouble()) + "/s" }))
         root.addView(fact(R.string.bb_peak_g, "%.1f g".format(s.peakG)))
         root.addView(fact(R.string.bb_tilt_impact, s.tiltAtImpact?.let { "${it.toInt()}°" }))
         root.addView(fact(R.string.bb_tilt_after, s.tiltAfter?.let { "${it.toInt()}°" }))
@@ -107,9 +107,9 @@ class BlackBoxActivity : AppCompatActivity() {
             appendLine("RideScreen AA · ${getString(R.string.bb_event)}")
             appendLine(fmt.format(Date(s.impact)))
             appendLine()
-            appendLine("${getString(R.string.bb_speed_impact)}: ${s.kmhAtImpact?.let { "${it.toInt()} km/h" } ?: dash}")
-            appendLine("${getString(R.string.bb_speed_5s)}: ${s.kmh5sBefore?.let { "${it.toInt()} km/h" } ?: dash}")
-            appendLine("${getString(R.string.bb_braking)}: ${s.maxDecel?.let { "%.0f km/h/s".format(it) } ?: dash}")
+            appendLine("${getString(R.string.bb_speed_impact)}: ${s.kmhAtImpact?.let { Fmt.speed(this@BlackBoxActivity, it.toDouble()) } ?: dash}")
+            appendLine("${getString(R.string.bb_speed_5s)}: ${s.kmh5sBefore?.let { Fmt.speed(this@BlackBoxActivity, it.toDouble()) } ?: dash}")
+            appendLine("${getString(R.string.bb_braking)}: ${s.maxDecel?.let { Fmt.speed(this@BlackBoxActivity, it.toDouble()) + "/s" } ?: dash}")
             appendLine("${getString(R.string.bb_peak_g)}: ${"%.1f g".format(s.peakG)}")
             appendLine("${getString(R.string.bb_tilt_impact)}: ${s.tiltAtImpact?.let { "${it.toInt()}°" } ?: dash}")
             appendLine("${getString(R.string.bb_heading)}: ${s.bearing?.let { compass(it) } ?: dash}")
@@ -188,7 +188,7 @@ class BlackBoxActivity : AppCompatActivity() {
             }
             c.drawPath(path, gold)
             c.drawLine(x(0), 0f, x(0), bottom, red)
-            c.drawText("${maxKmh.toInt()} km/h", 6f, 30f, txt)
+            c.drawText(Fmt.speed(context, maxKmh.toDouble()), 6f, 30f, txt)
         }
     }
 

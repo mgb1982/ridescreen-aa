@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Locale
 
 /**
@@ -62,7 +63,7 @@ class TripActivity : AppCompatActivity() {
         recorder = TripLogger.get(this)
 
         startBtn.setOnClickListener { if (recorder.recording) recorder.stopAndSave() else tryStart() }
-        resetBtn.setOnClickListener { recorder.discard() }
+        resetBtn.setOnClickListener { confirmDiscard() }
         findViewById<MaterialButton>(R.id.trip_saved_btn).setOnClickListener { TripsListActivity.start(this) }
 
         render(recorder.snapshot())
@@ -82,6 +83,21 @@ class TripActivity : AppCompatActivity() {
         recorder.onStats = null
     }
 
+    /** Asks before throwing away a ride in progress; with nothing recorded it discards straight away. */
+    private fun confirmDiscard() {
+        val s = recorder.snapshot()
+        if (!recorder.recording && s.distanceMeters <= 0.0 && s.movingTimeMs <= 0L) {
+            recorder.discard()
+            return
+        }
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.fmt_discard_title)
+            .setMessage(R.string.fmt_discard_message)
+            .setPositiveButton(R.string.fmt_discard_confirm) { _, _ -> recorder.discard() }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
     private fun tryStart(silent: Boolean = false) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED
@@ -92,27 +108,28 @@ class TripActivity : AppCompatActivity() {
             return
         }
         if (!recorder.gpsAvailable()) {
-            gpsView.text = "GPS is off"
-            if (!silent) Toast.makeText(this, "Turn on GPS/Location to record", Toast.LENGTH_LONG).show()
+            gpsView.text = getString(R.string.fmt_gps_off)
+            if (!silent) Toast.makeText(this, R.string.fmt_gps_turn_on, Toast.LENGTH_LONG).show()
             return
         }
         if (!recorder.start() && !silent) {
-            Toast.makeText(this, "Couldn't start GPS", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.fmt_gps_start_failed, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun render(s: TripRecorder.Stats) {
         speedView.text = s.speedKmh.toString()
         gpsView.text = when {
-            !s.recording -> "Stopped"
-            !s.hasFix -> "Acquiring GPS…"
-            else -> "GPS fix" + if (s.accuracyM > 0) " ±${s.accuracyM}m" else ""
+            !s.recording -> getString(R.string.conn_stopped)
+            !s.hasFix -> getString(R.string.fmt_gps_acquiring)
+            s.accuracyM > 0 -> getString(R.string.fmt_gps_fix_accuracy, s.accuracyM)
+            else -> getString(R.string.fmt_gps_fix)
         }
-        distanceView.text = String.format(Locale.US, "%.2f km", s.distanceMeters / 1000.0)
+        distanceView.text = Fmt.distance(this, s.distanceMeters)
         durationView.text = formatDuration(s.movingTimeMs)
-        maxView.text = "${(s.maxSpeedMs * 3.6f).toInt()} km/h"
+        maxView.text = Fmt.speed(this, (s.maxSpeedMs * 3.6f).toInt())
         val avgKmh = if (s.movingTimeMs > 0) (s.distanceMeters / (s.movingTimeMs / 1000.0)) * 3.6 else 0.0
-        avgView.text = "${avgKmh.toInt()} km/h"
+        avgView.text = Fmt.speed(this, avgKmh.toInt())
         startBtn.text = if (s.recording) getString(R.string.trip_pause) else getString(R.string.trip_start)
     }
 
@@ -127,7 +144,7 @@ class TripActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQ_LOCATION) {
             if (grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) tryStart()
-            else Toast.makeText(this, "Location permission is required for the trip HUD", Toast.LENGTH_LONG).show()
+            else Toast.makeText(this, R.string.fmt_location_required, Toast.LENGTH_LONG).show()
         }
     }
 

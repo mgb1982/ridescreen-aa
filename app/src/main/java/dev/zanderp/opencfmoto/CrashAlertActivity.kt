@@ -59,7 +59,7 @@ class CrashAlertActivity : AppCompatActivity() {
         }
         root.addView(count)
         info = TextView(this).apply {
-            text = getString(R.string.crash_alert_info, CrashDetector.contacts(this@CrashAlertActivity).size)
+            text = CrashDetector.contacts(this@CrashAlertActivity).size.let { resources.getQuantityString(R.plurals.crash_alert_info, it, it) }
             textSize = 16f; setTextColor(Color.WHITE); gravity = Gravity.CENTER
             setPadding(0, 0, 0, (24 * dp).toInt())
         }
@@ -108,7 +108,7 @@ class CrashAlertActivity : AppCompatActivity() {
         ticker.removeCallbacks(tick)
         count.textSize = 28f
         count.text = when {
-            test -> getString(R.string.crash_sim_done, sentTo.size)
+            test -> resources.getQuantityString(R.plurals.crash_sim_done, sentTo.size, sentTo.size)
             sentTo.isEmpty() -> getString(R.string.crash_sent_none)
             else -> getString(R.string.crash_sent_to, sentTo.joinToString(", "))
         }

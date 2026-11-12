@@ -82,7 +82,12 @@ data class Trip(
         return String.format(Locale.US, "%02d:%02d:%02d", sec / 3600, (sec % 3600) / 60, sec % 60)
     }
 
+    /** Log/share text: fixed English format. Screens use [distanceText] with units + locale. */
     fun distanceText(): String = String.format(Locale.US, "%.2f km", distanceKm)
+
+    /** User-facing distance: locale decimal separator and km or mi. */
+    fun distanceText(imperial: Boolean, locale: Locale = Locale.getDefault()): String =
+        FmtCore.distance(distanceMeters, imperial, locale)
 
     fun dateText(): String = DATE_FMT.format(Date(start))
 

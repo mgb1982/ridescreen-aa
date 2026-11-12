@@ -56,6 +56,12 @@ class TripMapActivity : AppCompatActivity() {
     private var framed = false
     private var renderGen = 0
     private var shownTrip: Trip? = null
+    private var routeTrips: List<Trip> = emptyList()
+    private var routeLines: List<List<GeoPoint>> = emptyList()
+    private var selectedRoute = -1
+    private var routeCard: View? = null
+    private val idRouteText = View.generateViewId()
+    private val idRouteOpen = View.generateViewId()
     private var playbackMarker: Marker? = null
     private var playbackPlaying = false
     private var playbackStartTripMs = 0L
@@ -109,7 +115,7 @@ class TripMapActivity : AppCompatActivity() {
         val id = intent.getStringExtra(EXTRA_ID)
         val trip = id?.let { TripStore.get(this, it) }
         if (trip == null) {
-            Toast.makeText(this, "Trip not found", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.fmt_trip_not_found, Toast.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -120,7 +126,7 @@ class TripMapActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.map_title).text = TripNames.title(this, trip)
         findViewById<TextView>(R.id.map_stats).text = buildString {
-            append("${trip.distanceText()} · ${trip.durationText()} · avg ${trip.avgKmh} · max ${trip.maxKmh} km/h\n")
+            append("${trip.distanceText(Fmt.imperial(this@TripMapActivity))} · ${trip.durationText()} · ${getString(R.string.fmt_avg_max, Fmt.speed(this@TripMapActivity, trip.avgKmh), Fmt.speed(this@TripMapActivity, trip.maxKmh))}\n")
             append(getString(R.string.map_speed_legend))
             trip.obdSummary()?.let { s ->
                 append('\n')
@@ -318,8 +324,8 @@ class TripMapActivity : AppCompatActivity() {
         }
         flush()
 
-        addMarker(geo.first(), "Start", Color.GREEN)
-        if (geo.size > 1) addMarker(geo.last(), "End", Color.RED)
+        addMarker(geo.first(), getString(R.string.trip_start), Color.GREEN)
+        if (geo.size > 1) addMarker(geo.last(), getString(R.string.dash_end), Color.RED)
         frame(geo, 1.4f)
     }
 
@@ -398,15 +404,17 @@ class TripMapActivity : AppCompatActivity() {
             return
         } else {
             renderGen++
-            val gold = ContextCompat.getColor(this, R.color.brand_orange)
             val lines = trips.map { t ->
                 val step = maxOf(1, t.points.size / 500)
                 t.points.filterIndexed { i, _ -> i % step == 0 || i == t.points.lastIndex }
                     .map { GeoPoint(it.lat, it.lon) }
             }
             lines.forEach { all.addAll(it) }
-            lines.forEach { map.overlays.add(casing(it)) } // all casings first so lines sit on top
-            lines.forEach { map.overlays.add(line(it, gold, LINE_DP)) }
+            routeTrips = trips
+            routeLines = lines
+            selectedRoute = -1
+            hideRouteCard()
+            drawRoutes()
         }
         map.invalidate()
         if (all.isEmpty()) {
@@ -415,6 +423,105 @@ class TripMapActivity : AppCompatActivity() {
             framed = true
             frame(all, 1.2f)
         }
+    }
+
+    /** Routes of the "all rides" map. With no selection this draws exactly as before. */
+    private fun drawRoutes() {
+        map.overlays.clear()
+        val gold = ContextCompat.getColor(this, R.color.brand_orange)
+        val sel = selectedRoute
+        if (sel < 0) {
+            routeLines.forEach { map.overlays.add(casing(it)) } // all casings first so lines sit on top
+            routeLines.forEach { map.overlays.add(line(it, gold, LINE_DP)) }
+        } else {
+            val dim = Color.argb(70, Color.red(gold), Color.green(gold), Color.blue(gold))
+            routeLines.forEachIndexed { i, l -> if (i != sel) map.overlays.add(line(l, dim, LINE_DP * 0.75f)) }
+            routeLines.getOrNull(sel)?.let {
+                map.overlays.add(line(it, Color.WHITE, LINE_DP + 6f))   // halo
+                map.overlays.add(line(it, gold, LINE_DP + 2f))
+            }
+        }
+        map.overlays.add(RouteTapOverlay())
+        map.invalidate()
+    }
+
+    /** Taps on a route select it; taps on a gap clear the selection. */
+    private inner class RouteTapOverlay : Overlay() {
+        override fun draw(c: Canvas, mapView: MapView, shadow: Boolean) {}
+
+        override fun onSingleTapConfirmed(e: android.view.MotionEvent, mapView: MapView): Boolean {
+            if (routeLines.isEmpty()) return false
+            val proj = mapView.projection
+            val pt = Point()
+            val px = routeLines.map { l ->
+                val arr = FloatArray(l.size * 2)
+                l.forEachIndexed { i, g ->
+                    proj.toPixels(g, pt)
+                    arr[2 * i] = pt.x.toFloat(); arr[2 * i + 1] = pt.y.toFloat()
+                }
+                arr
+            }
+            val hit = RouteHit.nearest(px, e.x, e.y, 24f * density)
+            if (hit == selectedRoute) return hit >= 0
+            selectedRoute = hit
+            if (hit >= 0) showRouteCard(routeTrips[hit]) else hideRouteCard()
+            drawRoutes()
+            return hit >= 0
+        }
+    }
+
+    private fun hideRouteCard() {
+        routeCard?.visibility = View.GONE
+    }
+
+    private fun showRouteCard(trip: Trip) {
+        val card = routeCard ?: buildRouteCard().also { routeCard = it }
+        val name = TripNames.cached(this, trip)
+        val head = if (name.isNullOrBlank()) trip.dateText() else "$name · ${trip.dateText()}"
+        card.findViewById<TextView>(idRouteText).text =
+            head + "\n" + Fmt.distance(this, trip.distanceKm * 1000.0)
+        card.findViewById<View>(idRouteOpen).setOnClickListener { start(this, trip.id) }
+        card.visibility = View.VISIBLE
+    }
+
+    /** Pill over the bottom of the map: trip name/date, distance and an Open button. */
+    private fun buildRouteCard(): View {
+        val d = density
+        val frame = map.parent as? android.widget.FrameLayout ?: run {
+            val parent = map.parent as android.view.ViewGroup
+            val idx = parent.indexOfChild(map)
+            val lp = map.layoutParams
+            parent.removeView(map)
+            val f = android.widget.FrameLayout(this)
+            f.addView(map, android.widget.FrameLayout.LayoutParams(-1, -1))
+            parent.addView(f, idx, lp)
+            f
+        }
+        val row = android.widget.LinearLayout(this).apply {
+            orientation = android.widget.LinearLayout.HORIZONTAL
+            gravity = android.view.Gravity.CENTER_VERTICAL
+            setPadding((16 * d).toInt(), (10 * d).toInt(), (10 * d).toInt(), (10 * d).toInt())
+            background = android.graphics.drawable.GradientDrawable().apply {
+                cornerRadius = 24 * d
+                setColor(ContextCompat.getColor(this@TripMapActivity, R.color.surface))
+            }
+            elevation = 6 * d
+            visibility = View.GONE
+        }
+        row.addView(TextView(this).apply {
+            id = idRouteText
+            setTextColor(ContextCompat.getColor(this@TripMapActivity, R.color.text_primary))
+            textSize = 14f
+        }, android.widget.LinearLayout.LayoutParams(0, -2, 1f))
+        row.addView(MaterialButton(this).apply {
+            id = idRouteOpen
+            setText(R.string.tr_open)
+        })
+        frame.addView(row, android.widget.FrameLayout.LayoutParams(-1, -2).apply {
+            gravity = android.view.Gravity.BOTTOM
+            setMargins((12 * d).toInt(), 0, (12 * d).toInt(), (16 * d).toInt())
+        })
+        return row
     }
 
     private fun highlight(id: Int, on: Boolean) {

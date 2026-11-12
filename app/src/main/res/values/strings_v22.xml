@@ -10,11 +10,9 @@
     <string name="crash_alert_text">Your contacts will be alerted in %1$d s unless you tap I\'m OK</string>
     <string name="crash_im_ok">I\'M OK</string>
     <string name="crash_send_now">Send the alert now</string>
-    <string name="crash_alert_info">If you don\'t answer, an SMS with your location goes to %1$d contact(s).</string>
     <string name="crash_sent_title">Crash alert sent</string>
     <string name="crash_sent_none">No SMS could be sent (no contacts or no permission). Call for help if you need it.</string>
     <string name="crash_sent_to">SMS sent to: %1$s</string>
-    <string name="crash_sim_done">Simulation: this would have gone to %1$d contact(s). Nothing was sent.</string>
     <string name="crash_close">Close</string>
     <string name="crash_sms_someone">The rider</string>
     <string name="crash_sms_no_location">location unknown</string>
@@ -75,7 +73,6 @@
     <string name="tv_searching">Looking for clips filmed during the trip…</string>
     <string name="tv_none">No clips found from this trip\'s time. Import them to the gallery first (Meta AI app → your media → save/import) and come back.</string>
     <string name="tv_no_permission">Allow access to your videos so the app can find the clips.</string>
-    <string name="tv_found">%1$d clip(s) · %2$d min %3$d s</string>
     <string name="tv_speed_normal">Normal speed</string>
     <string name="tv_speed_fast">Fast ×4 (no sound)</string>
     <string name="tv_make">Make the video</string>
@@ -94,7 +91,6 @@
     <string name="crash_restricted_title">Android blocks SMS for apps installed from an APK</string>
     <string name="crash_restricted_steps">It\'s an Android protection (\"restricted settings\") for apps that don\'t come from a store. It\'s unlocked once:\n\n1. Tap \"Open app settings\".\n2. Tap ⋮ (top right) → \"Allow restricted settings\" and confirm.\n3. Go to Permissions → SMS → Allow.\n4. Come back here.\n\nIf you don\'t see \"Allow restricted settings\", first try to turn on SMS in Permissions once, then the option appears.</string>
     <string name="crash_restricted_open">Open app settings</string>
-    <string name="tv_button_clips">🎬 Video · %1$d clip(s)</string>
     <string name="park_cam_hint">Take a photo of where you leave the bike (floor, bay number…)</string>
     <string name="park_photo_failed">Couldn\'t take the photo. Try again.</string>
     <string name="tv_sync">Shift: %1$s s</string>

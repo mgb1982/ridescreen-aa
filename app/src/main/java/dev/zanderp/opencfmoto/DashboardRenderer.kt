@@ -149,7 +149,7 @@ internal object DashboardRenderer {
 
 
     private fun value(m: Metric?): String = m?.value?.let {
-        if (m.unit == "V") String.format(Locale.US, "%.1f", it)
+        if (m.unit == "V") String.format(Locale.getDefault(), "%.1f", it)
         else String.format(Locale.US, "%.0f", it)
     } ?: "—"
 

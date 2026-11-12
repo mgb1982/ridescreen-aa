@@ -12,6 +12,7 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -772,7 +773,14 @@ class GpxActivity : AppCompatActivity() {
             text = getString(R.string.gpx_delete)
             textSize = 12f
             isEnabled = !offlineBusy
-            setOnClickListener { deleteOfflineArea(a) }
+            setOnClickListener {
+                com.google.android.material.dialog.MaterialAlertDialogBuilder(this@GpxActivity)
+                    .setTitle(R.string.safe_delete_offline_title)
+                    .setMessage(getString(R.string.safe_delete_confirm_msg, a.name))
+                    .setPositiveButton(R.string.gpx_delete) { _, _ -> deleteOfflineArea(a) }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show()
+            }
         })
         row.addView(actions)
         return row
@@ -967,8 +975,7 @@ class GpxActivity : AppCompatActivity() {
                 if (offline.isNotEmpty()) {
                     showResults(offline)
                 } else {
-                    resultsBox.removeAllViews()
-                    Toast.makeText(this, err, Toast.LENGTH_LONG).show()
+                    showSearchError(err) { runSearch() }
                 }
             } },
         )
@@ -1005,10 +1012,7 @@ class GpxActivity : AppCompatActivity() {
         OverpassClient.nearbyByTagAsync(
             chip.query, near.first, near.second,
             onResult = { list -> runOnUiThread { showResults(withDistance(list)) } },
-            onError = { err -> runOnUiThread {
-                resultsBox.removeAllViews()
-                Toast.makeText(this, err, Toast.LENGTH_LONG).show()
-            } },
+            onError = { err -> runOnUiThread { showSearchError(err) { runPoi(chip) } } },
         )
     }
 
@@ -1021,9 +1025,39 @@ class GpxActivity : AppCompatActivity() {
             })
             return
         }
+        selectedResultRow = null
         for (p in list) {
-            resultsBox.addView(placeRow(p, showFav = true, showMarker = true, showGo = true))
+            resultsBox.addView(placeRow(p, showFav = true, showMarker = true, showGo = true, selectable = true))
         }
+    }
+
+    /** This screen has no map view (the map lives in the dash/MapLibre screen), so selecting only highlights the row. */
+    private var selectedResultRow: View? = null
+
+    private fun selectResultRow(row: View) {
+        selectedResultRow?.background = null
+        val d = resources.displayMetrics.density
+        row.background = android.graphics.drawable.GradientDrawable().apply {
+            cornerRadius = 10 * d
+            setColor(0x33D1A955)
+            setStroke((2 * d).toInt(), ContextCompat.getColor(this@GpxActivity, R.color.brand_gold))
+        }
+        selectedResultRow = row
+    }
+
+    /** Persistent, translatable error in the results list with a Retry button. Raw error goes to LogBus only. */
+    private fun showSearchError(err: String, retry: () -> Unit) {
+        LogBus.log("[search] failed: $err")
+        selectedResultRow = null
+        resultsBox.removeAllViews()
+        resultsBox.addView(TextView(this).apply {
+            text = getString(R.string.ux_search_no_results_connection)
+            setTextColor(ContextCompat.getColor(this@GpxActivity, R.color.text_secondary))
+        })
+        resultsBox.addView(MaterialButton(this, null, com.google.android.material.R.attr.materialButtonOutlinedStyle).apply {
+            text = getString(R.string.ux_retry)
+            setOnClickListener { retry() }
+        })
     }
 
     private fun refreshLists() {
@@ -1067,10 +1101,24 @@ class GpxActivity : AppCompatActivity() {
         unfav: Boolean = false,
         unmark: Boolean = false,
         place: MapPlace = display,
+        selectable: Boolean = false,
     ): LinearLayout {
+        val d = resources.displayMetrics.density
         val row = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(0, 8, 0, 8)
+            if (selectable) {
+                val pad = (8 * d).toInt()
+                setPadding(pad, pad, pad, pad)
+                (layoutParams ?: LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,
+                )).also { lp ->
+                    (lp as? LinearLayout.LayoutParams)?.bottomMargin = (4 * d).toInt()
+                    layoutParams = lp
+                }
+                setOnClickListener { selectResultRow(this) }
+            } else {
+                setPadding(0, 8, 0, 8)
+            }
         }
         row.addView(TextView(this).apply {
             text = display.name
@@ -1129,10 +1177,17 @@ class GpxActivity : AppCompatActivity() {
                 text = getString(R.string.gpx_delete)
                 textSize = 12f
                 setOnClickListener {
-                    MapPlaces.deletePlace(this@GpxActivity, place)
-                    Toast.makeText(this@GpxActivity, getString(R.string.gpx_deleted), Toast.LENGTH_SHORT).show()
-                    refreshSettingsUi()
-                    refreshLists()
+                    com.google.android.material.dialog.MaterialAlertDialogBuilder(this@GpxActivity)
+                        .setTitle(R.string.safe_delete_place_title)
+                        .setMessage(getString(R.string.safe_delete_confirm_msg, place.name))
+                        .setPositiveButton(R.string.gpx_delete) { _, _ ->
+                            MapPlaces.deletePlace(this@GpxActivity, place)
+                            Toast.makeText(this@GpxActivity, getString(R.string.gpx_deleted), Toast.LENGTH_SHORT).show()
+                            refreshSettingsUi()
+                            refreshLists()
+                        }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show()
                 }
             })
         }

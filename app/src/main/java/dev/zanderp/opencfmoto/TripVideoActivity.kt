@@ -447,7 +447,7 @@ class TripVideoActivity : AppCompatActivity() {
     private fun onSelectionChanged() {
         val sel = clips
         val total = sel.sumOf { it.durationMs } / 1000
-        status.text = if (sel.isEmpty()) getString(R.string.tv_clips_none) else getString(R.string.tv_found, sel.size, total / 60, total % 60)
+        status.text = if (sel.isEmpty()) getString(R.string.tv_clips_none) else resources.getQuantityString(R.plurals.tv_found, sel.size, sel.size, total / 60, total % 60)
         val overlap = sel.zipWithNext().any { (a, b) -> b.startMs < a.startMs + a.durationMs - 1000 }
         list.text = if (overlap) getString(R.string.tv_clips_overlap) else ""
         renderJob()
@@ -577,9 +577,9 @@ class TripVideoActivity : AppCompatActivity() {
                 previewPlaced.clear(); previewPlaced.putAll(placed)
                 preview.setImageBitmap(out); preview.visibility = View.VISIBLE
                 if (wantStreets) status.text = if (selectedStreets == null) getString(R.string.tv_map_failed)
-                    else getString(R.string.tv_found, clips.size, clips.sumOf { it.durationMs } / 60000, clips.sumOf { it.durationMs } / 1000 % 60)
-                else if (selectedMap != VideoMap.STREETS) status.text = getString(
-                    R.string.tv_found, clips.size, clips.sumOf { it.durationMs } / 60000, clips.sumOf { it.durationMs } / 1000 % 60)
+                    else resources.getQuantityString(R.plurals.tv_found, clips.size, clips.size, clips.sumOf { it.durationMs } / 60000, clips.sumOf { it.durationMs } / 1000 % 60)
+                else if (selectedMap != VideoMap.STREETS) status.text = resources.getQuantityString(
+                    R.plurals.tv_found, clips.size, clips.size, clips.sumOf { it.durationMs } / 60000, clips.sumOf { it.durationMs } / 1000 % 60)
             }
         }
     }

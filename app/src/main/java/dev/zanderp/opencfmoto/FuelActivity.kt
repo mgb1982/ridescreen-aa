@@ -7,10 +7,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +42,9 @@ class FuelActivity : AppCompatActivity() {
     private lateinit var progress: ProgressBar
     private lateinit var btnCheap: MaterialButton
     private lateinit var btnNear: MaterialButton
+    private lateinit var errBox: LinearLayout
+    private lateinit var errMsg: TextView
+    private lateinit var btnSettings: MaterialButton
     private var result: FuelStations.Result? = null
     private var byDistance = false
     private val io = Executors.newSingleThreadExecutor()
@@ -67,7 +73,39 @@ class FuelActivity : AppCompatActivity() {
         bar.addView(btnCheap, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply { marginEnd = dp(6) })
         bar.addView(btnNear, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
         root.addView(bar)
-        progress = ProgressBar(this)
+        styleSortButtons()
+        errBox = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            visibility = View.GONE
+            setPadding(0, dp(24), 0, 0)
+        }
+        errMsg = TextView(this).apply {
+            textSize = 16f
+            gravity = Gravity.CENTER
+            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+        }
+        errBox.addView(errMsg)
+        val retryBtn = MaterialButton(this).apply {
+            text = getString(R.string.ux_retry)
+            isAllCaps = false
+            setOnClickListener { load() }
+        }
+        errBox.addView(retryBtn, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(12) })
+        btnSettings = MaterialButton(this, null, com.google.android.material.R.attr.materialButtonOutlinedStyle).apply {
+            text = getString(R.string.home_settings_short)
+            isAllCaps = false
+            visibility = View.GONE
+            setOnClickListener {
+                try {
+                    startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null)))
+                } catch (_: Exception) {
+                    Toast.makeText(this@FuelActivity, R.string.open_failed, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        errBox.addView(btnSettings, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(8) })
+        root.addView(errBox)
+        progress =ProgressBar(this)
         root.addView(progress, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
             gravity = Gravity.CENTER_HORIZONTAL; topMargin = dp(30)
         })
@@ -89,6 +127,7 @@ class FuelActivity : AppCompatActivity() {
 
     @SuppressLint("MissingPermission")
     private fun load() {
+        errBox.visibility = View.GONE
         sub.setText(R.string.fuel_locating)
         progress.visibility = View.VISIBLE
         val recent = RideExtras.lastLocation(this, 5 * 60_000L)
@@ -128,13 +167,34 @@ class FuelActivity : AppCompatActivity() {
     private fun fail(msg: String) {
         progress.visibility = View.GONE
         sub.text = msg
+        list.removeAllViews()
+        errMsg.text = msg
+        val noPerm = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        btnSettings.visibility = if (noPerm) View.VISIBLE else View.GONE
+        errBox.visibility = View.VISIBLE
+    }
+
+    /** Selected sort = filled gold button; the other = outlined (clear contrast on the dark theme). */
+    private fun styleSortButtons() {
+        val gold = ContextCompat.getColor(this, R.color.brand_gold)
+        val dark = ContextCompat.getColor(this, R.color.bg)
+        fun style(b: MaterialButton, selected: Boolean) {
+            b.alpha = 1f
+            b.backgroundTintList = ColorStateList.valueOf(if (selected) gold else Color.TRANSPARENT)
+            b.setTextColor(if (selected) dark else gold)
+            b.strokeColor = ColorStateList.valueOf(gold)
+            b.strokeWidth = if (selected) 0 else dp(1)
+        }
+        style(btnCheap, !byDistance)
+        style(btnNear, byDistance)
     }
 
     private fun render() {
         val r = result ?: return
         progress.visibility = View.GONE
-        btnCheap.alpha = if (byDistance) 0.55f else 1f
-        btnNear.alpha = if (byDistance) 1f else 0.55f
+        errBox.visibility = View.GONE
+        styleSortButtons()
         list.removeAllViews()
         if (r.outsideSpain) { sub.setText(R.string.fuel_only_spain); return }
         if (r.stations.isEmpty()) { sub.text = getString(R.string.fuel_none, r.radiusKm); return }

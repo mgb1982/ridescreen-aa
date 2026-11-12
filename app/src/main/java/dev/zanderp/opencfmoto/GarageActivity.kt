@@ -40,6 +40,10 @@ class GarageActivity : AppCompatActivity() {
     /** The bike a pending photo pick is for (photo picker is async). */
     private var photoTargetRaw: String? = null
 
+    /** Rename dialog state, kept so a rotation reopens it with the typed text. */
+    private var renamingRaw: String? = null
+    private var renameInput: EditText? = null
+
     private val scanLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -83,6 +87,13 @@ class GarageActivity : AppCompatActivity() {
         }
         container = findViewById(R.id.garage_container)
         empty = findViewById(R.id.garage_empty)
+        // The photo picker result can arrive after a recreate; restore the target before it is delivered.
+        photoTargetRaw = savedInstanceState?.getString(KEY_PHOTO_TARGET)
+        savedInstanceState?.getString(KEY_RENAMING_RAW)?.let { raw ->
+            BikeMemory.devices(this).firstOrNull { it.raw == raw }?.let { bike ->
+                promptRename(bike, savedInstanceState.getString(KEY_RENAME_TEXT) ?: bike.name)
+            }
+        }
         findViewById<View>(R.id.garage_scan).setOnClickListener {
             scanLauncher.launch(Intent(this, QrScanActivity::class.java))
         }
@@ -204,12 +215,14 @@ class GarageActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun promptRename(bike: SavedBike) {
+    private fun promptRename(bike: SavedBike, initialText: String = bike.name) {
         val input = EditText(this).apply {
-            setText(bike.name)
+            setText(initialText)
             setSelection(text.length)
             hint = getString(R.string.garage_bike_name_hint)
         }
+        renamingRaw = bike.raw
+        renameInput = input
         val pad = dp(20)
         val wrap = LinearLayout(this).apply {
             setPadding(pad, dp(8), pad, 0)
@@ -223,7 +236,24 @@ class GarageActivity : AppCompatActivity() {
                 refresh()
             }
             .setNegativeButton(R.string.dash_cancel, null)
+            .setOnDismissListener {
+                // Only clear when the user closed it; a rotation destroys the activity after saving state.
+                if (!isChangingConfigurations && renameInput === input) {
+                    renamingRaw = null
+                    renameInput = null
+                }
+            }
             .show()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        photoTargetRaw?.let { outState.putString(KEY_PHOTO_TARGET, it) }
+        val raw = renamingRaw
+        if (raw != null) {
+            outState.putString(KEY_RENAMING_RAW, raw)
+            outState.putString(KEY_RENAME_TEXT, renameInput?.text?.toString().orEmpty())
+        }
     }
 
     private fun confirmRemove(bike: SavedBike) {
@@ -295,6 +325,10 @@ class GarageActivity : AppCompatActivity() {
     private fun dp(v: Int): Int = (v * resources.displayMetrics.density).toInt()
 
     companion object {
+        private const val KEY_PHOTO_TARGET = "garage_photo_target_raw"
+        private const val KEY_RENAMING_RAW = "garage_renaming_raw"
+        private const val KEY_RENAME_TEXT = "garage_rename_text"
+
         fun start(ctx: Context) {
             ctx.startActivity(Intent(ctx, GarageActivity::class.java))
         }

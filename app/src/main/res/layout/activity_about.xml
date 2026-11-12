@@ -126,6 +126,10 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_thanks_github"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="11sp"
+                        app:autoSizeMaxTextSize="@dimen/btn_segment_text"
+                        app:autoSizeStepGranularity="1sp"
                         style="@style/Widget.OpenCfMoto.Segment"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -135,6 +139,10 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_thanks_discord"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="11sp"
+                        app:autoSizeMaxTextSize="@dimen/btn_segment_text"
+                        app:autoSizeStepGranularity="1sp"
                         style="@style/Widget.OpenCfMoto.Segment"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

@@ -60,8 +60,10 @@ object FullBackup {
             }
         }
         LogBus.log("[BACKUP] full backup written: $files files, ${bytes / 1024} KB" + if (skipped > 0) ", $skipped large file(s) skipped" else "")
-        val mb = String.format(Locale.US, "%.1f", bytes / 1048576.0)
-        return Result(true, "Backup saved: $files files, $mb MB" + if (skipped > 0) " ($skipped offline map file(s) over 100 MB not included)" else "")
+        val mb = String.format(Locale.getDefault(), "%.1f", bytes / 1048576.0)
+        val res = ctx.resources
+        return Result(true, res.getQuantityString(R.plurals.fmt_backup_saved, files, files, mb) +
+            if (skipped > 0) " " + res.getQuantityString(R.plurals.fmt_backup_skipped, skipped, skipped) else "")
     }
 
     /** Checks the zip is one of ours and returns its manifest (or an error). */

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="one">If you don\'t answer, an SMS with your location goes to %1$d contact.</item>
+        <item quantity="other">If you don\'t answer, an SMS with your location goes to %1$d contacts.</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="one">Simulation: this would have gone to %1$d contact. Nothing was sent.</item>
+        <item quantity="other">Simulation: this would have gone to %1$d contacts. Nothing was sent.</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="one">%1$d clip · %2$d min %3$d s</item>
+        <item quantity="other">%1$d clips · %2$d min %3$d s</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="one">🎬 Video · %1$d clip</item>
+        <item quantity="other">🎬 Video · %1$d clips</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="one">Backup saved: %1$d file, %2$s MB</item>
+        <item quantity="other">Backup saved: %1$d files, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="one">(%1$d offline map file over 100 MB not included)</item>
+        <item quantity="other">(%1$d offline map files over 100 MB not included)</item>
+    </plurals>
+    <string name="fmt_gps_off">GPS is off</string>
+    <string name="fmt_gps_acquiring">Acquiring GPS…</string>
+    <string name="fmt_gps_fix">GPS fix</string>
+    <string name="fmt_gps_fix_accuracy">GPS fix ±%1$d m</string>
+    <string name="fmt_gps_turn_on">Turn on GPS/Location to record</string>
+    <string name="fmt_gps_start_failed">Couldn\'t start GPS</string>
+    <string name="fmt_location_required">Location permission is required for the trip HUD</string>
+    <string name="fmt_trip_not_found">Trip not found</string>
+    <string name="fmt_avg_max">avg %1$s · max %2$s</string>
+    <string name="fmt_discard_title">Discard this ride?</string>
+    <string name="fmt_discard_message">What has been recorded so far will be lost. This can\'t be undone.</string>
+    <string name="fmt_discard_confirm">Discard</string>
+    <string name="fmt_yir_miles">miles ridden</string>
+    <string name="fmt_yir_longest_short_mi">miles longest ride</string>
+</resources>

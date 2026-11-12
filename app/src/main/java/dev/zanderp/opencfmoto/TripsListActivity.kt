@@ -113,6 +113,21 @@ class TripsListActivity : AppCompatActivity() {
         }
 
         dayStartMs = startOfDay(System.currentTimeMillis())
+        // Rotation: restore the merge selection and the day on screen (onResume renders them).
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_DAY)) {
+            dayStartMs = savedInstanceState.getLong(KEY_DAY)
+            didInitialDayPick = true
+            mergeSelectionMode = savedInstanceState.getBoolean(KEY_MERGE_MODE, false)
+            selectedForMerge.clear()
+            savedInstanceState.getStringArray(KEY_MERGE_IDS)?.let { selectedForMerge.addAll(it) }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putLong(KEY_DAY, dayStartMs)
+        outState.putBoolean(KEY_MERGE_MODE, mergeSelectionMode)
+        outState.putStringArray(KEY_MERGE_IDS, selectedForMerge.toTypedArray())
     }
 
     override fun onResume() {
@@ -287,10 +302,10 @@ class TripsListActivity : AppCompatActivity() {
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
             ).apply { topMargin = dp(10) }
         }
-        stats.addView(stat(getString(R.string.trip_distance), trip.distanceText()))
+        stats.addView(stat(getString(R.string.trip_distance), trip.distanceText(Fmt.imperial(this))))
         stats.addView(stat(getString(R.string.trips_stat_time), trip.durationText()))
-        stats.addView(stat(getString(R.string.trips_stat_avg), "${trip.avgKmh} km/h"))
-        stats.addView(stat(getString(R.string.trips_stat_max), "${trip.maxKmh} km/h"))
+        stats.addView(stat(getString(R.string.trips_stat_avg), Fmt.speed(this, trip.avgKmh)))
+        stats.addView(stat(getString(R.string.trips_stat_max), Fmt.speed(this, trip.maxKmh)))
         col.addView(stats)
 
         val actions = LinearLayout(this).apply {
@@ -364,7 +379,7 @@ class TripsListActivity : AppCompatActivity() {
             else if (TripVideo.hasVideoAccess(this)) {
                 val n = TripVideo.quickClipCount(this, trip)
                 if (n > 0) runOnUiThread {
-                    videoBtn.text = getString(R.string.tv_button_clips, n)
+                    videoBtn.text = resources.getQuantityString(R.plurals.tv_button_clips, n, n)
                     videoBtn.strokeColor = android.content.res.ColorStateList.valueOf(ContextCompat.getColor(this, R.color.brand_gold))
                     videoBtn.setTextColor(ContextCompat.getColor(this, R.color.brand_gold))
                 }
@@ -545,6 +560,9 @@ class TripsListActivity : AppCompatActivity() {
     companion object {
         /** Largest GPX we import in one piece (~30 MB ≈ a few hundred thousand points). */
         private const val MAX_IMPORT_BYTES = 30L * 1_048_576
+        private const val KEY_DAY = "trips_day_start"
+        private const val KEY_MERGE_MODE = "trips_merge_mode"
+        private const val KEY_MERGE_IDS = "trips_merge_ids"
         private val DAY_FMT = SimpleDateFormat("EEE d MMM yyyy", Locale.getDefault())
 
         fun start(ctx: Context) {

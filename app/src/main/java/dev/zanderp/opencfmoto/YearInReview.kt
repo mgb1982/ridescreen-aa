@@ -91,18 +91,19 @@ object YearInReview {
         val comp = if (s.km >= BCN_MADRID_KM)
             ctx.getString(R.string.yir_km_times, String.format(loc, "%.1f", s.km / BCN_MADRID_KM))
         else ctx.getString(R.string.yir_km_percent, (s.km / BCN_MADRID_KM * 100).toInt())
-        out += Card("🏍️", String.format(loc, "%,.0f", s.km), ctx.getString(R.string.yir_km), comp)
+        out += Card("🏍️", String.format(loc, "%,.0f", Fmt.distanceValue(ctx, s.km * 1000.0)),
+            ctx.getString(if (Fmt.imperial(ctx)) R.string.fmt_yir_miles else R.string.yir_km), comp)
         out += Card("📅", s.days.toString(), ctx.getString(R.string.yir_days),
             ctx.getString(R.string.yir_days_sub, s.trips.size, String.format(loc, "%.0f", s.hours)))
         if (s.streak >= 2) out += Card("🔥", s.streak.toString(), ctx.getString(R.string.yir_streak), ctx.getString(R.string.yir_streak_sub))
         s.longest?.let { t ->
-            out += Card("🛣️", String.format(loc, "%.1f km", t.distanceKm), ctx.getString(R.string.yir_longest),
+            out += Card("🛣️", Fmt.distance(ctx, t.distanceMeters, 1), ctx.getString(R.string.yir_longest),
                 TripNames.title(ctx, t))
         }
-        if (s.topKmh > 0) out += Card("⚡", "${s.topKmh} km/h", ctx.getString(R.string.yir_top), ctx.getString(R.string.yir_top_sub))
+        if (s.topKmh > 0) out += Card("⚡", Fmt.speed(ctx, s.topKmh), ctx.getString(R.string.yir_top), ctx.getString(R.string.yir_top_sub))
         s.bestMonth?.let { m ->
             out += Card("🗓️", DateFormatSymbols.getInstance().months[m].replaceFirstChar { it.titlecase(loc) },
-                ctx.getString(R.string.yir_best_month), String.format(loc, "%.0f km", s.bestMonthKm))
+                ctx.getString(R.string.yir_best_month), Fmt.distance(ctx, s.bestMonthKm * 1000.0, 0))
         }
         val tod = arrayOf(R.string.yir_tod_morning, R.string.yir_tod_afternoon, R.string.yir_tod_night)[s.timeOfDay]
         out += Card(arrayOf("🌅", "☀️", "🌙")[s.timeOfDay], ctx.getString(tod), ctx.getString(R.string.yir_tod), "")
@@ -165,11 +166,13 @@ object YearInReview {
 
         val loc = Locale.getDefault()
         val rows = listOfNotNull(
-            String.format(loc, "%,.0f", s.km) to ctx.getString(R.string.yir_km),
+            String.format(loc, "%,.0f", Fmt.distanceValue(ctx, s.km * 1000.0)) to
+                ctx.getString(if (Fmt.imperial(ctx)) R.string.fmt_yir_miles else R.string.yir_km),
             s.days.toString() to ctx.getString(R.string.yir_days),
             String.format(loc, "%.0f", s.hours) to ctx.getString(R.string.share_hours),
-            s.longest?.let { String.format(loc, "%.0f", it.distanceKm) to ctx.getString(R.string.yir_longest_short) },
-            (if (s.topKmh > 0) s.topKmh.toString() to ctx.getString(R.string.share_max) else null),
+            s.longest?.let { String.format(loc, "%.0f", Fmt.distanceValue(ctx, it.distanceMeters)) to
+                ctx.getString(if (Fmt.imperial(ctx)) R.string.fmt_yir_longest_short_mi else R.string.yir_longest_short) },
+            (if (s.topKmh > 0) FmtCore.speedValue(s.topKmh.toDouble(), Fmt.imperial(ctx)).toString() to ctx.getString(R.string.share_max) else null),
             (if (s.streak >= 2) s.streak.toString() to ctx.getString(R.string.yir_streak) else null),
         ).take(6)
         rows.forEachIndexed { i, (v, l) ->

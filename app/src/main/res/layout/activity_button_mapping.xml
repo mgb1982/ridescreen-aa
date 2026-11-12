@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mapping_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -93,6 +94,10 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/remote_pad_on"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="11sp"
+                        app:autoSizeMaxTextSize="@dimen/btn_segment_text"
+                        app:autoSizeStepGranularity="1sp"
                         style="@style/Widget.OpenCfMoto.Segment"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -102,6 +107,10 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/remote_pad_off"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="11sp"
+                        app:autoSizeMaxTextSize="@dimen/btn_segment_text"
+                        app:autoSizeStepGranularity="1sp"
                         style="@style/Widget.OpenCfMoto.Segment"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -241,6 +250,10 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_cluster_preset"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="11sp"
+                        app:autoSizeMaxTextSize="@dimen/btn_segment_text"
+                        app:autoSizeStepGranularity="1sp"
                         style="@style/Widget.OpenCfMoto.Segment"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -249,6 +262,10 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_cluster_clear"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="11sp"
+                        app:autoSizeMaxTextSize="@dimen/btn_segment_text"
+                        app:autoSizeStepGranularity="1sp"
                         style="@style/Widget.OpenCfMoto.Segment"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

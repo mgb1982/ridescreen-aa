@@ -266,6 +266,7 @@ class SetupActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.clockresync_once).setOnClickListener { setClockResync(ClockResyncMode.ONCE) }
         findViewById<MaterialButton>(R.id.clockresync_off).setOnClickListener { setClockResync(ClockResyncMode.OFF) }
         for ((id, ms) in smartThresholdButtons) {
+            findViewById<MaterialButton>(id).text = Fmt.grouped(ms.toInt())
             findViewById<MaterialButton>(id).setOnClickListener {
                 AppSettings.setSmartThresholdMs(this, ms)
                 refreshOptions()

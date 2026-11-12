@@ -448,12 +448,12 @@ class ControlsActivity : AppCompatActivity() {
             val rpms = DashboardMode.RPM_MAX_OPTIONS
             androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle(R.string.controls_dash_scale_speed)
-                .setSingleChoiceItems(speeds.map { "$it km/h" }.toTypedArray(), speeds.indexOf(DashboardMode.speedMax(this))) { d, i ->
+                .setSingleChoiceItems(speeds.map { Fmt.speed(this, it) }.toTypedArray(), speeds.indexOf(DashboardMode.speedMax(this))) { d, i ->
                     DashboardMode.setSpeedMax(this, speeds[i])
                     d.dismiss()
                     androidx.appcompat.app.AlertDialog.Builder(this)
                         .setTitle(R.string.controls_dash_scale_rpm)
-                        .setSingleChoiceItems(rpms.map { String.format(java.util.Locale.US, "%,d rpm", it) }.toTypedArray(),
+                        .setSingleChoiceItems(rpms.map { Fmt.rpm(it) }.toTypedArray(),
                             rpms.indexOf(DashboardMode.rpmMax(this))) { d2, j ->
                             DashboardMode.setRpmMax(this, rpms[j])
                             LogBus.log("→ dashboard scale ${speeds[i]} km/h · ${rpms[j]} rpm")

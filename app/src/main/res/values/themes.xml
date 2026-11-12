@@ -207,6 +207,10 @@
         <item name="fontFamily">@font/archivo_semibold</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="autoSizeMinTextSize">11sp</item>
+        <item name="autoSizeMaxTextSize">15sp</item>
+        <item name="autoSizeStepGranularity">1sp</item>
         <item name="backgroundTint">@color/surface</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="iconGravity">textStart</item>
