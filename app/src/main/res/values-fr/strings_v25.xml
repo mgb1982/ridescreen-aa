@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_gps_off">Le GPS est désactivé</string>
+    <string name="fmt_gps_acquiring">Acquisition du GPS…</string>
+    <string name="fmt_gps_fix">Signal GPS</string>
+    <string name="fmt_gps_fix_accuracy">Signal GPS ±%1$d m</string>
+    <string name="fmt_gps_turn_on">Activer le GPS/la localisation pour enregistrer</string>
+    <string name="fmt_gps_start_failed">Impossible de démarrer le GPS</string>
+    <string name="fmt_location_required">L\'autorisation de localisation est requise pour le HUD du trajet</string>
+    <string name="fmt_trip_not_found">Trajet introuvable</string>
+    <string name="fmt_avg_max">moy. %1$s · max %2$s</string>
+    <string name="fmt_discard_title">Abandonner cette sortie ?</string>
+    <string name="fmt_discard_message">Ce qui a été enregistré jusqu\'ici sera perdu. Cette action est irréversible.</string>
+    <string name="fmt_discard_confirm">Abandonner</string>
+    <string name="fmt_yir_miles">miles parcourus</string>
+    <string name="fmt_yir_longest_short_mi">miles, ta plus longue sortie</string>
+    <string name="safe_delete_task_title">Supprimer la tâche ?</string>
+    <string name="safe_delete_task_msg">\"%1$s\" et tout son historique seront supprimés. Cette action est irréversible.</string>
+    <string name="safe_delete_place_title">Supprimer le lieu ?</string>
+    <string name="safe_delete_offline_title">Supprimer la carte hors ligne ?</string>
+    <string name="safe_delete_confirm_msg">\"%1$s\" sera supprimé. Cette action est irréversible.</string>
+    <string name="ux_retry">Réessayer</string>
+    <string name="ux_search_no_results_connection">Aucun résultat – vérifie ta connexion</string>
+</resources>

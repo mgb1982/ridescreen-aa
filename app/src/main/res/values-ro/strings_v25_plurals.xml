@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="one">Dacă nu răspunzi, un SMS cu locația ta ajunge la %1$d contact.</item>
+        <item quantity="few">Dacă nu răspunzi, un SMS cu locația ta ajunge la %1$d contacte.</item>
+        <item quantity="other">Dacă nu răspunzi, un SMS cu locația ta ajunge la %1$d de contacte.</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="one">Simulare: asta ar fi ajuns la %1$d contact. Nu s-a trimis nimic.</item>
+        <item quantity="few">Simulare: asta ar fi ajuns la %1$d contacte. Nu s-a trimis nimic.</item>
+        <item quantity="other">Simulare: asta ar fi ajuns la %1$d de contacte. Nu s-a trimis nimic.</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="one">%1$d clip · %2$d min %3$d s</item>
+        <item quantity="few">%1$d clipuri · %2$d min %3$d s</item>
+        <item quantity="other">%1$d de clipuri · %2$d min %3$d s</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="one">🎬 Video · %1$d clip</item>
+        <item quantity="few">🎬 Video · %1$d clipuri</item>
+        <item quantity="other">🎬 Video · %1$d de clipuri</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="one">Backup salvat: %1$d fișier, %2$s MB</item>
+        <item quantity="few">Backup salvat: %1$d fișiere, %2$s MB</item>
+        <item quantity="other">Backup salvat: %1$d de fișiere, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="one">(%1$d fișier de hartă offline de peste 100 MB nu a fost inclus)</item>
+        <item quantity="few">(%1$d fișiere de hartă offline de peste 100 MB nu au fost incluse)</item>
+        <item quantity="other">(%1$d de fișiere de hartă offline de peste 100 MB nu au fost incluse)</item>
+    </plurals>
+</resources>

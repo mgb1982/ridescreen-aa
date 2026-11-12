@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="other">응답이 없으면 위치가 포함된 문자 메시지가 연락처 %1$d명에게 전송됩니다.</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="other">시뮬레이션: 연락처 %1$d명에게 전송되었을 것입니다. 실제로는 아무것도 보내지 않았습니다.</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="other">클립 %1$d개 · %2$d분 %3$d초</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="other">🎬 영상 · 클립 %1$d개</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="other">백업이 저장되었습니다: 파일 %1$d개, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="other">(100 MB를 넘는 오프라인 지도 파일 %1$d개는 포함되지 않았습니다)</item>
+    </plurals>
+</resources>

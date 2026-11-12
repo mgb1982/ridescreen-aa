@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_gps_off">Το GPS είναι απενεργοποιημένο</string>
+    <string name="fmt_gps_acquiring">Λήψη GPS…</string>
+    <string name="fmt_gps_fix">Σήμα GPS</string>
+    <string name="fmt_gps_fix_accuracy">Σήμα GPS ±%1$d m</string>
+    <string name="fmt_gps_turn_on">Ενεργοποιήστε το GPS/την τοποθεσία για εγγραφή</string>
+    <string name="fmt_gps_start_failed">Δεν ήταν δυνατή η εκκίνηση του GPS</string>
+    <string name="fmt_location_required">Απαιτείται άδεια τοποθεσίας για το HUD διαδρομής</string>
+    <string name="fmt_trip_not_found">Η διαδρομή δεν βρέθηκε</string>
+    <string name="fmt_avg_max">μέση %1$s · μέγιστη %2$s</string>
+    <string name="fmt_discard_title">Απόρριψη αυτής της βόλτας;</string>
+    <string name="fmt_discard_message">Όσα έχουν καταγραφεί μέχρι τώρα θα χαθούν. Δεν είναι δυνατή η αναίρεση.</string>
+    <string name="fmt_discard_confirm">Απόρριψη</string>
+    <string name="fmt_yir_miles">μίλια που διανύθηκαν</string>
+    <string name="fmt_yir_longest_short_mi">μίλια, η μεγαλύτερη βόλτα</string>
+    <string name="safe_delete_task_title">Διαγραφή εργασίας;</string>
+    <string name="safe_delete_task_msg">Η εργασία \"%1$s\" και όλο το ιστορικό της θα διαγραφούν. Δεν είναι δυνατή η αναίρεση.</string>
+    <string name="safe_delete_place_title">Διαγραφή θέσης;</string>
+    <string name="safe_delete_offline_title">Διαγραφή χάρτη εκτός σύνδεσης;</string>
+    <string name="safe_delete_confirm_msg">Το \"%1$s\" θα διαγραφεί. Δεν είναι δυνατή η αναίρεση.</string>
+    <string name="ux_retry">Επανάληψη</string>
+    <string name="ux_search_no_results_connection">Δεν υπάρχουν αποτελέσματα – ελέγξτε τη σύνδεση</string>
+</resources>

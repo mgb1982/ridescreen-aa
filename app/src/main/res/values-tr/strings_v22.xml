@@ -10,11 +10,9 @@
     <string name="crash_alert_text">\"İYİYİM\"e dokunmazsan kişilerin %1$d sn içinde uyarılacak</string>
     <string name="crash_im_ok">İYİYİM</string>
     <string name="crash_send_now">Uyarıyı hemen gönder</string>
-    <string name="crash_alert_info">Yanıt vermezsen konumunla birlikte %1$d kişiye SMS gider.</string>
     <string name="crash_sent_title">Kaza uyarısı gönderildi</string>
     <string name="crash_sent_none">SMS gönderilemedi (kişi yok veya izin yok). Gerekirse yardım iste.</string>
     <string name="crash_sent_to">SMS gönderilen: %1$s</string>
-    <string name="crash_sim_done">Simülasyon: bu, %1$d kişiye gidecekti. Hiçbir şey gönderilmedi.</string>
     <string name="crash_close">Kapat</string>
     <string name="crash_sms_someone">Sürücü</string>
     <string name="crash_sms_no_location">konum bilinmiyor</string>
@@ -75,7 +73,6 @@
     <string name="tv_searching">Sürüş sırasında çekilen klipler aranıyor…</string>
     <string name="tv_none">Bu sürüşün zamanına ait klip bulunamadı. Önce galeriye aktar (Meta AI uygulaması → medyan → kaydet/içe aktar) ve tekrar gel.</string>
     <string name="tv_no_permission">Uygulamanın klipleri bulabilmesi için videolarına erişim ver.</string>
-    <string name="tv_found">%1$d klip · %2$d dk %3$d sn</string>
     <string name="tv_speed_normal">Normal hız</string>
     <string name="tv_speed_fast">Hızlı ×4 (sessiz)</string>
     <string name="tv_make">Videoyu oluştur</string>
@@ -94,7 +91,6 @@
     <string name="crash_restricted_title">Android, APK ile kurulan uygulamaların SMS göndermesini engelliyor</string>
     <string name="crash_restricted_steps">Mağazadan gelmeyen uygulamalar için bir Android korumasıdır (\"kısıtlı ayarlar\"). Bir kez açılır:\n\n1. \"Uygulama ayarlarını aç\"a dokun.\n2. ⋮ (sağ üst) → \"Kısıtlı ayarlara izin ver\"e dokun ve onayla.\n3. İzinler → SMS → İzin ver\'e git.\n4. Buraya geri dön.\n\n\"Kısıtlı ayarlara izin ver\"i görmüyorsan önce İzinler\'de SMS\'i bir kez açmayı dene; seçenek belirir.</string>
     <string name="crash_restricted_open">Uygulama ayarlarını aç</string>
-    <string name="tv_button_clips">🎬 Video · %1$d klip</string>
     <string name="park_cam_hint">Motoru bıraktığın yerin fotoğrafını çek (zemin, park yeri numarası…)</string>
     <string name="park_photo_failed">Fotoğraf çekilemedi. Tekrar dene.</string>
     <string name="tv_sync">Kaydırma: %1$s sn</string>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_gps_off">GPS kapalı</string>
+    <string name="fmt_gps_acquiring">GPS alınıyor…</string>
+    <string name="fmt_gps_fix">GPS sinyali</string>
+    <string name="fmt_gps_fix_accuracy">GPS sinyali ±%1$d m</string>
+    <string name="fmt_gps_turn_on">Kaydetmek için GPS/konumu açın</string>
+    <string name="fmt_gps_start_failed">GPS başlatılamadı</string>
+    <string name="fmt_location_required">Yolculuk HUD’u için konum izni gerekli</string>
+    <string name="fmt_trip_not_found">Yolculuk bulunamadı</string>
+    <string name="fmt_avg_max">ort. %1$s · maks. %2$s</string>
+    <string name="fmt_discard_title">Bu sürüş atılsın mı?</string>
+    <string name="fmt_discard_message">Şimdiye kadar kaydedilenler kaybolacak. Bu işlem geri alınamaz.</string>
+    <string name="fmt_discard_confirm">At</string>
+    <string name="fmt_yir_miles">sürülen mil</string>
+    <string name="fmt_yir_longest_short_mi">en uzun sürüş, mil</string>
+    <string name="safe_delete_task_title">Görev silinsin mi?</string>
+    <string name="safe_delete_task_msg">\"%1$s\" ve tüm geçmişi silinecek. Bu işlem geri alınamaz.</string>
+    <string name="safe_delete_place_title">Yer silinsin mi?</string>
+    <string name="safe_delete_offline_title">Çevrimdışı harita silinsin mi?</string>
+    <string name="safe_delete_confirm_msg">\"%1$s\" silinecek. Bu işlem geri alınamaz.</string>
+    <string name="ux_retry">Yeniden dene</string>
+    <string name="ux_search_no_results_connection">Sonuç yok – bağlantınızı kontrol edin</string>
+</resources>

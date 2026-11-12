@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="one">Αν δεν απαντήσεις, θα σταλεί SMS με την τοποθεσία σου σε %1$d επαφή.</item>
+        <item quantity="other">Αν δεν απαντήσεις, θα σταλεί SMS με την τοποθεσία σου σε %1$d επαφές.</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="one">Προσομοίωση: το μήνυμα θα είχε σταλεί σε %1$d επαφή. Δεν στάλθηκε τίποτα.</item>
+        <item quantity="other">Προσομοίωση: το μήνυμα θα είχε σταλεί σε %1$d επαφές. Δεν στάλθηκε τίποτα.</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="one">%1$d κλιπ · %2$d λεπτά %3$d δευτ.</item>
+        <item quantity="other">%1$d κλιπ · %2$d λεπτά %3$d δευτ.</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="one">🎬 Βίντεο · %1$d κλιπ</item>
+        <item quantity="other">🎬 Βίντεο · %1$d κλιπ</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="one">Το αντίγραφο ασφαλείας αποθηκεύτηκε: %1$d αρχείο, %2$s MB</item>
+        <item quantity="other">Το αντίγραφο ασφαλείας αποθηκεύτηκε: %1$d αρχεία, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="one">(%1$d αρχείο χάρτη εκτός σύνδεσης άνω των 100 MB δεν συμπεριλήφθηκε)</item>
+        <item quantity="other">(%1$d αρχεία χαρτών εκτός σύνδεσης άνω των 100 MB δεν συμπεριλήφθηκαν)</item>
+    </plurals>
+</resources>

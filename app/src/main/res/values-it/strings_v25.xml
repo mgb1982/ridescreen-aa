@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_gps_off">Il GPS è disattivato</string>
+    <string name="fmt_gps_acquiring">Acquisizione GPS…</string>
+    <string name="fmt_gps_fix">Segnale GPS</string>
+    <string name="fmt_gps_fix_accuracy">Segnale GPS ±%1$d m</string>
+    <string name="fmt_gps_turn_on">Attiva GPS/posizione per registrare</string>
+    <string name="fmt_gps_start_failed">Impossibile avviare il GPS</string>
+    <string name="fmt_location_required">Per l\'HUD del viaggio serve l\'autorizzazione alla posizione</string>
+    <string name="fmt_trip_not_found">Viaggio non trovato</string>
+    <string name="fmt_avg_max">media %1$s · max %2$s</string>
+    <string name="fmt_discard_title">Scartare questa corsa?</string>
+    <string name="fmt_discard_message">Quanto registrato finora andrà perso. L\'operazione non può essere annullata.</string>
+    <string name="fmt_discard_confirm">Scarta</string>
+    <string name="fmt_yir_miles">miglia percorse</string>
+    <string name="fmt_yir_longest_short_mi">miglia, la corsa più lunga</string>
+    <string name="safe_delete_task_title">Eliminare l\'attività?</string>
+    <string name="safe_delete_task_msg">\"%1$s\" e tutta la sua cronologia verranno eliminati. L\'operazione non può essere annullata.</string>
+    <string name="safe_delete_place_title">Eliminare il luogo?</string>
+    <string name="safe_delete_offline_title">Eliminare la mappa offline?</string>
+    <string name="safe_delete_confirm_msg">\"%1$s\" verrà eliminato. L\'operazione non può essere annullata.</string>
+    <string name="ux_retry">Riprova</string>
+    <string name="ux_search_no_results_connection">Nessun risultato – controlla la connessione</string>
+</resources>

@@ -10,11 +10,9 @@
     <string name="crash_alert_text">Kontakty zostaną powiadomione za %1$d s, chyba że dotkniesz „Jestem OK”</string>
     <string name="crash_im_ok">JESTEM OK</string>
     <string name="crash_send_now">Wyślij alert teraz</string>
-    <string name="crash_alert_info">Jeśli nie odpowiesz, SMS z twoją lokalizacją zostanie wysłany do kontaktów: %1$d.</string>
     <string name="crash_sent_title">Wysłano alert o upadku</string>
     <string name="crash_sent_none">Nie udało się wysłać SMS (brak kontaktów lub uprawnienia). W razie potrzeby zadzwoń po pomoc.</string>
     <string name="crash_sent_to">Wysłano SMS do: %1$s</string>
-    <string name="crash_sim_done">Symulacja: w tym przypadku wysłano by wiadomość do kontaktów: %1$d. Nic nie zostało wysłane.</string>
     <string name="crash_close">Zamknij</string>
     <string name="crash_sms_someone">Kierowca</string>
     <string name="crash_sms_no_location">lokalizacja nieznana</string>
@@ -75,7 +73,6 @@
     <string name="tv_searching">Szukam nagrań z czasu podróży…</string>
     <string name="tv_none">Nie znaleziono nagrań z czasu tej podróży. Najpierw zaimportuj je do galerii (aplikacja Meta AI → twoje media → zapisz/importuj) i wróć.</string>
     <string name="tv_no_permission">Zezwól na dostęp do filmów, aby aplikacja mogła znaleźć nagrania.</string>
-    <string name="tv_found">Nagrania: %1$d · %2$d min %3$d s</string>
     <string name="tv_speed_normal">Zwykła prędkość</string>
     <string name="tv_speed_fast">Szybko ×4 (bez dźwięku)</string>
     <string name="tv_make">Utwórz wideo</string>
@@ -94,7 +91,6 @@
     <string name="crash_restricted_title">Android blokuje SMS-y w aplikacjach zainstalowanych z APK</string>
     <string name="crash_restricted_steps">To zabezpieczenie Androida („ograniczone ustawienia”) dla aplikacji spoza sklepu. Odblokowuje się je raz:\n\n1. Dotknij „Otwórz ustawienia aplikacji”.\n2. Dotknij ⋮ (u góry po prawej) → „Zezwól na ograniczone ustawienia” i potwierdź.\n3. Przejdź do Uprawnienia → SMS → Zezwól.\n4. Wróć tutaj.\n\nJeśli nie widzisz „Zezwól na ograniczone ustawienia”, najpierw włącz SMS w Uprawnieniach raz — wtedy opcja się pojawi.</string>
     <string name="crash_restricted_open">Otwórz ustawienia aplikacji</string>
-    <string name="tv_button_clips">🎬 Wideo · nagrania: %1$d</string>
     <string name="park_cam_hint">Zrób zdjęcie miejsca, w którym zostawiasz motocykl (podłoga, numer miejsca…)</string>
     <string name="park_photo_failed">Nie udało się zrobić zdjęcia. Spróbuj ponownie.</string>
     <string name="tv_sync">Przesunięcie: %1$s s</string>

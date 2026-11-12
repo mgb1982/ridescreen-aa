@@ -7,11 +7,9 @@
     <string name="crash_alert_text">Οι επαφές σου θα ειδοποιηθούν σε %1$d δευτ. αν δεν πατήσεις «Είμαι καλά»</string>
     <string name="crash_im_ok">ΕΙΜΑΙ ΚΑΛΑ</string>
     <string name="crash_send_now">Αποστολή ειδοποίησης τώρα</string>
-    <string name="crash_alert_info">Αν δεν απαντήσεις, θα σταλεί SMS με την τοποθεσία σου σε %1$d επαφή/ές.</string>
     <string name="crash_sent_title">Η ειδοποίηση ατυχήματος στάλθηκε</string>
     <string name="crash_sent_none">Δεν ήταν δυνατή η αποστολή SMS (δεν υπάρχουν επαφές ή άδεια). Κάλεσε βοήθεια αν τη χρειάζεσαι.</string>
     <string name="crash_sent_to">SMS στάλθηκε στους: %1$s</string>
-    <string name="crash_sim_done">Προσομοίωση: το μήνυμα θα είχε σταλεί σε %1$d επαφή/ές. Δεν στάλθηκε τίποτα.</string>
     <string name="crash_close">Κλείσιμο</string>
     <string name="crash_sms_someone">Ο οδηγός</string>
     <string name="crash_sms_no_location">άγνωστη τοποθεσία</string>
@@ -66,7 +64,6 @@
     <string name="tv_searching">Αναζήτηση κλιπ από αυτή τη διαδρομή…</string>
     <string name="tv_none">Δεν βρέθηκαν κλιπ από αυτή τη χρονική περίοδο. Εισήγαγέ τα πρώτα στη συλλογή (Meta AI → Τα πολυμέσα σου → αποθήκευση/εισαγωγή) και επέστρεψε.</string>
     <string name="tv_no_permission">Επίτρεψε πρόσβαση στα βίντεο ώστε η εφαρμογή να βρει τα κλιπ.</string>
-    <string name="tv_found">%1$d κλιπ · %2$d λεπτά %3$d δευτ.</string>
     <string name="tv_speed_normal">Κανονική ταχύτητα</string>
     <string name="tv_speed_fast">Γρήγορα ×4 (χωρίς ήχο)</string>
     <string name="tv_make">Δημιουργία βίντεο</string>
@@ -85,7 +82,6 @@
     <string name="crash_restricted_title">Το Android αποκλείει τα SMS για εφαρμογές που εγκαθίστανται από APK</string>
     <string name="crash_restricted_steps">Πρόκειται για προστασία του Android («περιορισμένες ρυθμίσεις») για εφαρμογές που δεν προέρχονται από κατάστημα. Ξεκλειδώνει μία φορά:\n\n1. Πάτησε «Άνοιγμα ρυθμίσεων εφαρμογής».\n2. Πάτησε ⋮ επάνω δεξιά → «Να επιτρέπονται οι περιορισμένες ρυθμίσεις» και επιβεβαίωσε.\n3. Πήγαινε Δικαιώματα → SMS → Να επιτρέπεται.\n4. Επέστρεψε εδώ.\n\nΑν δεν βλέπεις την επιλογή «Να επιτρέπονται οι περιορισμένες ρυθμίσεις», ενεργοποίησε πρώτα μία φορά τα SMS στα Δικαιώματα· μετά θα εμφανιστεί.</string>
     <string name="crash_restricted_open">Άνοιγμα ρυθμίσεων εφαρμογής</string>
-    <string name="tv_button_clips">🎬 Βίντεο · %1$d κλιπ</string>
     <string name="park_cam_hint">Βγάλε φωτογραφία του σημείου όπου αφήνεις τη μοτοσικλέτα (έδαφος, αριθμός θέσης…)</string>
     <string name="park_photo_failed">Δεν ήταν δυνατή η λήψη φωτογραφίας. Δοκίμασε ξανά.</string>
     <string name="tv_sync">Μετατόπιση: %1$s δευτ.</string>

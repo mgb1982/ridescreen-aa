@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_gps_off">GPS je vypnuto</string>
+    <string name="fmt_gps_acquiring">Získávání GPS…</string>
+    <string name="fmt_gps_fix">Signál GPS</string>
+    <string name="fmt_gps_fix_accuracy">Signál GPS ±%1$d m</string>
+    <string name="fmt_gps_turn_on">Pro záznam zapněte GPS/polohu</string>
+    <string name="fmt_gps_start_failed">GPS se nepodařilo spustit</string>
+    <string name="fmt_location_required">Pro HUD jízdy je vyžadováno oprávnění k poloze</string>
+    <string name="fmt_trip_not_found">Jízda nebyla nalezena</string>
+    <string name="fmt_avg_max">průměr %1$s · max. %2$s</string>
+    <string name="fmt_discard_title">Zahodit tuto jízdu?</string>
+    <string name="fmt_discard_message">Dosud zaznamenaná data budou ztracena. Tuto akci nelze vrátit zpět.</string>
+    <string name="fmt_discard_confirm">Zahodit</string>
+    <string name="fmt_yir_miles">najeté míle</string>
+    <string name="fmt_yir_longest_short_mi">nejdelší jízda v mílích</string>
+    <string name="safe_delete_task_title">Smazat úkol?</string>
+    <string name="safe_delete_task_msg">\"%1$s\" a celá jeho historie budou smazány. Tuto akci nelze vrátit zpět.</string>
+    <string name="safe_delete_place_title">Smazat místo?</string>
+    <string name="safe_delete_offline_title">Smazat offline mapu?</string>
+    <string name="safe_delete_confirm_msg">\"%1$s\" bude smazáno. Tuto akci nelze vrátit zpět.</string>
+    <string name="ux_retry">Zkusit znovu</string>
+    <string name="ux_search_no_results_connection">Žádné výsledky – zkontrolujte připojení</string>
+</resources>

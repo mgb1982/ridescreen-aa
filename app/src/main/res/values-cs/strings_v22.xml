@@ -10,11 +10,9 @@
     <string name="crash_alert_text">Kontakty budou upozorněny za %1$d s, pokud neklepnete na „JSEM V POHODĚ“</string>
     <string name="crash_im_ok">JSEM V POHODĚ</string>
     <string name="crash_send_now">Odeslat upozornění hned</string>
-    <string name="crash_alert_info">Pokud neodpovíte, odejde SMS s vaší polohou na %1$d kontakt(y).</string>
     <string name="crash_sent_title">Upozornění na pád odesláno</string>
     <string name="crash_sent_none">Žádná SMS nemohla být odeslána (žádné kontakty nebo chybí oprávnění). Pokud potřebujete pomoc, zavolejte.</string>
     <string name="crash_sent_to">SMS odeslána: %1$s</string>
-    <string name="crash_sim_done">Simulace: toto by odešlo na %1$d kontakt(y). Nic nebylo odesláno.</string>
     <string name="crash_close">Zavřít</string>
     <string name="crash_sms_someone">Jezdec</string>
     <string name="crash_sms_no_location">poloha neznámá</string>
@@ -75,7 +73,6 @@
     <string name="tv_searching">Hledání klipů natočených během jízdy…</string>
     <string name="tv_none">Pro čas této jízdy nebyly nalezeny žádné klipy. Nejprve je importujte do galerie (aplikace Meta AI → vaše média → uložit/importovat) a vraťte se.</string>
     <string name="tv_no_permission">Povolte přístup k videím, aby aplikace mohla klipy najít.</string>
-    <string name="tv_found">%1$d klip(ů) · %2$d min %3$d s</string>
     <string name="tv_speed_normal">Normální rychlost</string>
     <string name="tv_speed_fast">Rychle ×4 (bez zvuku)</string>
     <string name="tv_make">Vytvořit video</string>
@@ -94,7 +91,6 @@
     <string name="crash_restricted_title">Android blokuje SMS pro aplikace nainstalované z APK</string>
     <string name="crash_restricted_steps">Je to ochrana Androidu („omezená nastavení“) pro aplikace, které nepocházejí z obchodu. Odemkne se jednorázově:\n\n1. Klepněte na „Otevřít nastavení aplikace“.\n2. Klepněte na ⋮ (vpravo nahoře) → „Povolit omezená nastavení“ a potvrďte.\n3. Přejděte na Oprávnění → SMS → Povolit.\n4. Vraťte se sem.\n\nPokud nevidíte „Povolit omezená nastavení“, nejprve zkuste jednou zapnout SMS v Oprávněních, pak se možnost objeví.</string>
     <string name="crash_restricted_open">Otevřít nastavení aplikace</string>
-    <string name="tv_button_clips">🎬 Video · %1$d klip(ů)</string>
     <string name="park_cam_hint">Vyfotografujte místo, kam motocykl necháte (podlaha, číslo stání…)</string>
     <string name="park_photo_failed">Fotografii se nepodařilo pořídit. Zkuste to znovu.</string>
     <string name="tv_sync">Posun: %1$s s</string>

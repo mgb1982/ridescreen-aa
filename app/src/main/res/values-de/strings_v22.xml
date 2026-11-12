@@ -7,11 +7,9 @@
     <string name="crash_alert_text">Deine Kontakte werden in %1$d s benachrichtigt, wenn du nicht auf „Mir geht es gut“ tippst</string>
     <string name="crash_im_ok">MIR GEHT ES GUT</string>
     <string name="crash_send_now">Alarm jetzt senden</string>
-    <string name="crash_alert_info">Wenn du nicht antwortest, wird eine SMS mit deinem Standort an %1$d Kontakt(e) gesendet.</string>
     <string name="crash_sent_title">Unfallalarm gesendet</string>
     <string name="crash_sent_none">Es konnte keine SMS gesendet werden (keine Kontakte oder keine Berechtigung). Rufe Hilfe, wenn du sie brauchst.</string>
     <string name="crash_sent_to">SMS gesendet an: %1$s</string>
-    <string name="crash_sim_done">Simulation: Diese Nachricht wäre an %1$d Kontakt(e) gesendet worden. Es wurde nichts gesendet.</string>
     <string name="crash_close">Schließen</string>
     <string name="crash_sms_someone">Der Fahrer</string>
     <string name="crash_sms_no_location">Standort unbekannt</string>
@@ -66,7 +64,6 @@
     <string name="tv_searching">Suche nach Clips aus dieser Fahrt …</string>
     <string name="tv_none">Keine Clips aus diesem Zeitraum gefunden. Importiere sie zuerst in die Galerie (Meta AI → Deine Medien → Speichern/Importieren) und komm dann zurück.</string>
     <string name="tv_no_permission">Erlaube den Zugriff auf deine Videos, damit die App die Clips finden kann.</string>
-    <string name="tv_found">%1$d Clip(s) · %2$d Min. %3$d s</string>
     <string name="tv_speed_normal">Normale Geschwindigkeit</string>
     <string name="tv_speed_fast">Schnell ×4 (ohne Ton)</string>
     <string name="tv_make">Video erstellen</string>
@@ -85,7 +82,6 @@
     <string name="crash_restricted_title">Android blockiert SMS für Apps, die per APK installiert wurden</string>
     <string name="crash_restricted_steps">Das ist ein Android-Schutz („Eingeschränkte Einstellungen“) für Apps, die nicht aus einem Store stammen. Er wird einmalig freigeschaltet:\n\n1. Tippe auf „App-Einstellungen öffnen“.\n2. Tippe oben rechts auf ⋮ → „Eingeschränkte Einstellungen erlauben“ und bestätige.\n3. Öffne Berechtigungen → SMS → Erlauben.\n4. Komm hierher zurück.\n\nWenn „Eingeschränkte Einstellungen erlauben“ nicht angezeigt wird, aktiviere zuerst einmal SMS unter Berechtigungen. Danach erscheint die Option.</string>
     <string name="crash_restricted_open">App-Einstellungen öffnen</string>
-    <string name="tv_button_clips">🎬 Video · %1$d Clip(s)</string>
     <string name="park_cam_hint">Fotografiere den Ort, an dem du das Motorrad abstellst (Boden, Stellplatznummer …)</string>
     <string name="park_photo_failed">Foto konnte nicht aufgenommen werden. Versuch es erneut.</string>
     <string name="tv_sync">Versatz: %1$s s</string>

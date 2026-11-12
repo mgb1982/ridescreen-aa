@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="one">Pokud neodpovíte, odejde SMS s vaší polohou na %1$d kontakt.</item>
+        <item quantity="few">Pokud neodpovíte, odejde SMS s vaší polohou na %1$d kontakty.</item>
+        <item quantity="many">Pokud neodpovíte, odejde SMS s vaší polohou na %1$d kontaktů.</item>
+        <item quantity="other">Pokud neodpovíte, odejde SMS s vaší polohou na %1$d kontaktů.</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="one">Simulace: toto by odešlo na %1$d kontakt. Nic nebylo odesláno.</item>
+        <item quantity="few">Simulace: toto by odešlo na %1$d kontakty. Nic nebylo odesláno.</item>
+        <item quantity="many">Simulace: toto by odešlo na %1$d kontaktů. Nic nebylo odesláno.</item>
+        <item quantity="other">Simulace: toto by odešlo na %1$d kontaktů. Nic nebylo odesláno.</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="one">%1$d klip · %2$d min %3$d s</item>
+        <item quantity="few">%1$d klipy · %2$d min %3$d s</item>
+        <item quantity="many">%1$d klipů · %2$d min %3$d s</item>
+        <item quantity="other">%1$d klipů · %2$d min %3$d s</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="one">🎬 Video · %1$d klip</item>
+        <item quantity="few">🎬 Video · %1$d klipy</item>
+        <item quantity="many">🎬 Video · %1$d klipů</item>
+        <item quantity="other">🎬 Video · %1$d klipů</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="one">Záloha uložena: %1$d soubor, %2$s MB</item>
+        <item quantity="few">Záloha uložena: %1$d soubory, %2$s MB</item>
+        <item quantity="many">Záloha uložena: %1$d souborů, %2$s MB</item>
+        <item quantity="other">Záloha uložena: %1$d souborů, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="one">(%1$d offline mapový soubor přes 100 MB nebyl zahrnut)</item>
+        <item quantity="few">(%1$d offline mapové soubory přes 100 MB nebyly zahrnuty)</item>
+        <item quantity="many">(%1$d offline mapových souborů přes 100 MB nebylo zahrnuto)</item>
+        <item quantity="other">(%1$d offline mapových souborů přes 100 MB nebylo zahrnuto)</item>
+    </plurals>
+</resources>

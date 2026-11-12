@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="one">Se non rispondi, un SMS con la tua posizione va a %1$d contatto.</item>
+        <item quantity="many">Se non rispondi, un SMS con la tua posizione va a %1$d contatti.</item>
+        <item quantity="other">Se non rispondi, un SMS con la tua posizione va a %1$d contatti.</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="one">Simulazione: sarebbe andato a %1$d contatto. Non è stato inviato nulla.</item>
+        <item quantity="many">Simulazione: sarebbe andato a %1$d contatti. Non è stato inviato nulla.</item>
+        <item quantity="other">Simulazione: sarebbe andato a %1$d contatti. Non è stato inviato nulla.</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="one">%1$d clip · %2$d min %3$d s</item>
+        <item quantity="many">%1$d clip · %2$d min %3$d s</item>
+        <item quantity="other">%1$d clip · %2$d min %3$d s</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="one">🎬 Video · %1$d clip</item>
+        <item quantity="many">🎬 Video · %1$d clip</item>
+        <item quantity="other">🎬 Video · %1$d clip</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="one">Backup salvato: %1$d file, %2$s MB</item>
+        <item quantity="many">Backup salvato: %1$d file, %2$s MB</item>
+        <item quantity="other">Backup salvato: %1$d file, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="one">(%1$d file di mappa offline oltre 100 MB non incluso)</item>
+        <item quantity="many">(%1$d file di mappe offline oltre 100 MB non inclusi)</item>
+        <item quantity="other">(%1$d file di mappe offline oltre 100 MB non inclusi)</item>
+    </plurals>
+</resources>

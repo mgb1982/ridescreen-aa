@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="one">Se não responderes, será enviado um SMS com a tua localização a %1$d contacto.</item>
+        <item quantity="many">Se não responderes, será enviado um SMS com a tua localização a %1$d contactos.</item>
+        <item quantity="other">Se não responderes, será enviado um SMS com a tua localização a %1$d contactos.</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="one">Simulação: a mensagem teria sido enviada a %1$d contacto. Não foi enviada nenhuma mensagem.</item>
+        <item quantity="many">Simulação: a mensagem teria sido enviada a %1$d contactos. Não foi enviada nenhuma mensagem.</item>
+        <item quantity="other">Simulação: a mensagem teria sido enviada a %1$d contactos. Não foi enviada nenhuma mensagem.</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="one">%1$d clip · %2$d min %3$d s</item>
+        <item quantity="many">%1$d clips · %2$d min %3$d s</item>
+        <item quantity="other">%1$d clips · %2$d min %3$d s</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="one">🎬 Vídeo · %1$d clip</item>
+        <item quantity="many">🎬 Vídeo · %1$d clips</item>
+        <item quantity="other">🎬 Vídeo · %1$d clips</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="one">Cópia de segurança guardada: %1$d ficheiro, %2$s MB</item>
+        <item quantity="many">Cópia de segurança guardada: %1$d ficheiros, %2$s MB</item>
+        <item quantity="other">Cópia de segurança guardada: %1$d ficheiros, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="one">(%1$d ficheiro de mapa offline com mais de 100 MB não incluído)</item>
+        <item quantity="many">(%1$d ficheiros de mapas offline com mais de 100 MB não incluídos)</item>
+        <item quantity="other">(%1$d ficheiros de mapas offline com mais de 100 MB não incluídos)</item>
+    </plurals>
+</resources>

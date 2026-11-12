@@ -7,11 +7,9 @@
     <string name="crash_alert_text">Os teus contactos serão alertados dentro de %1$d s se não tocares em «Estou bem»</string>
     <string name="crash_im_ok">ESTOU BEM</string>
     <string name="crash_send_now">Enviar alerta agora</string>
-    <string name="crash_alert_info">Se não responderes, será enviado um SMS com a tua localização a %1$d contacto(s).</string>
     <string name="crash_sent_title">Alerta de acidente enviado</string>
     <string name="crash_sent_none">Não foi possível enviar SMS (sem contactos ou sem permissão). Liga a pedir ajuda se precisares.</string>
     <string name="crash_sent_to">SMS enviado para: %1$s</string>
-    <string name="crash_sim_done">Simulação: a mensagem teria sido enviada a %1$d contacto(s). Não foi enviada nenhuma mensagem.</string>
     <string name="crash_close">Fechar</string>
     <string name="crash_sms_someone">O condutor</string>
     <string name="crash_sms_no_location">localização desconhecida</string>
@@ -66,7 +64,6 @@
     <string name="tv_searching">À procura de clips gravados durante o percurso…</string>
     <string name="tv_none">Não foram encontrados clips desta altura. Importa-os primeiro para a galeria (Meta AI → Os teus conteúdos → guardar/importar) e volta aqui.</string>
     <string name="tv_no_permission">Permite o acesso aos teus vídeos para a aplicação encontrar os clips.</string>
-    <string name="tv_found">%1$d clip(s) · %2$d min %3$d s</string>
     <string name="tv_speed_normal">Velocidade normal</string>
     <string name="tv_speed_fast">Rápido ×4 (sem som)</string>
     <string name="tv_make">Criar vídeo</string>
@@ -85,7 +82,6 @@
     <string name="crash_restricted_title">O Android bloqueia SMS em aplicações instaladas por APK</string>
     <string name="crash_restricted_steps">Esta é uma proteção do Android («definições restritas») para aplicações que não vêm de uma loja. Só precisas de a desbloquear uma vez:\n\n1. Toca em «Abrir definições da aplicação».\n2. Toca em ⋮ no canto superior direito → «Permitir definições restritas» e confirma.\n3. Vai a Permissões → SMS → Permitir.\n4. Volta aqui.\n\nSe não vires «Permitir definições restritas», ativa primeiro o SMS nas Permissões; depois a opção aparecerá.</string>
     <string name="crash_restricted_open">Abrir definições da aplicação</string>
-    <string name="tv_button_clips">🎬 Vídeo · %1$d clip(s)</string>
     <string name="park_cam_hint">Tira uma fotografia do local onde deixas a mota (piso, número do lugar…)</string>
     <string name="park_photo_failed">Não foi possível tirar a fotografia. Tenta novamente.</string>
     <string name="tv_sync">Desfasamento: %1$s s</string>

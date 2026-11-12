@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_gps_off">A GPS ki van kapcsolva</string>
+    <string name="fmt_gps_acquiring">GPS keresése…</string>
+    <string name="fmt_gps_fix">GPS-jel</string>
+    <string name="fmt_gps_fix_accuracy">GPS-jel ±%1$d m</string>
+    <string name="fmt_gps_turn_on">Kapcsold be a GPS-t/helymeghatározást a rögzítéshez</string>
+    <string name="fmt_gps_start_failed">A GPS nem indítható</string>
+    <string name="fmt_location_required">A túra HUD-hoz helyhozzáférés szükséges</string>
+    <string name="fmt_trip_not_found">A túra nem található</string>
+    <string name="fmt_avg_max">átl. %1$s · max. %2$s</string>
+    <string name="fmt_discard_title">Elveted ezt a menetet?</string>
+    <string name="fmt_discard_message">A mostanáig rögzített adatok elvesznek. Ez nem vonható vissza.</string>
+    <string name="fmt_discard_confirm">Elvetés</string>
+    <string name="fmt_yir_miles">megtett mérföld</string>
+    <string name="fmt_yir_longest_short_mi">mérföld, a leghosszabb menet</string>
+    <string name="safe_delete_task_title">Törlöd a feladatot?</string>
+    <string name="safe_delete_task_msg">A(z) \"%1$s\" feladat és teljes előzménye törlődik. Ez nem vonható vissza.</string>
+    <string name="safe_delete_place_title">Törlöd a helyet?</string>
+    <string name="safe_delete_offline_title">Törlöd az offline térképet?</string>
+    <string name="safe_delete_confirm_msg">A(z) \"%1$s\" törlődik. Ez nem vonható vissza.</string>
+    <string name="ux_retry">Újrapróbálás</string>
+    <string name="ux_search_no_results_connection">Nincs találat – ellenőrizd a kapcsolatot</string>
+</resources>

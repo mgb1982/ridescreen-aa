@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_gps_off">GPS выключен</string>
+    <string name="fmt_gps_acquiring">Поиск GPS…</string>
+    <string name="fmt_gps_fix">GPS-сигнал</string>
+    <string name="fmt_gps_fix_accuracy">GPS-сигнал ±%1$d м</string>
+    <string name="fmt_gps_turn_on">Включите GPS/геолокацию, чтобы записывать</string>
+    <string name="fmt_gps_start_failed">Не удалось запустить GPS</string>
+    <string name="fmt_location_required">Для HUD поездки нужно разрешение на определение местоположения</string>
+    <string name="fmt_trip_not_found">Поездка не найдена</string>
+    <string name="fmt_avg_max">среднее %1$s · макс. %2$s</string>
+    <string name="fmt_discard_title">Отбросить эту поездку?</string>
+    <string name="fmt_discard_message">Записанное до сих пор будет потеряно. Это нельзя отменить.</string>
+    <string name="fmt_discard_confirm">Отбросить</string>
+    <string name="fmt_yir_miles">проехано миль</string>
+    <string name="fmt_yir_longest_short_mi">миль, самая длинная поездка</string>
+    <string name="safe_delete_task_title">Удалить задачу?</string>
+    <string name="safe_delete_task_msg">\"%1$s\" и вся история будут удалены. Это нельзя отменить.</string>
+    <string name="safe_delete_place_title">Удалить место?</string>
+    <string name="safe_delete_offline_title">Удалить офлайн-карту?</string>
+    <string name="safe_delete_confirm_msg">\"%1$s\" будет удалено. Это нельзя отменить.</string>
+    <string name="ux_retry">Повторить</string>
+    <string name="ux_search_no_results_connection">Нет результатов – проверьте подключение</string>
+</resources>

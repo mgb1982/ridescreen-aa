@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_gps_off">GPS-ul este dezactivat</string>
+    <string name="fmt_gps_acquiring">Se obține GPS-ul…</string>
+    <string name="fmt_gps_fix">Semnal GPS</string>
+    <string name="fmt_gps_fix_accuracy">Semnal GPS ±%1$d m</string>
+    <string name="fmt_gps_turn_on">Activează GPS-ul/locația pentru a înregistra</string>
+    <string name="fmt_gps_start_failed">GPS-ul nu a putut porni</string>
+    <string name="fmt_location_required">Pentru HUD-ul traseului este necesară permisiunea de locație</string>
+    <string name="fmt_trip_not_found">Traseul nu a fost găsit</string>
+    <string name="fmt_avg_max">medie %1$s · max. %2$s</string>
+    <string name="fmt_discard_title">Renunți la această tură?</string>
+    <string name="fmt_discard_message">Datele înregistrate până acum se vor pierde. Acțiunea nu poate fi anulată.</string>
+    <string name="fmt_discard_confirm">Renunță</string>
+    <string name="fmt_yir_miles">mile parcurse</string>
+    <string name="fmt_yir_longest_short_mi">mile, cea mai lungă tură</string>
+    <string name="safe_delete_task_title">Ștergi sarcina?</string>
+    <string name="safe_delete_task_msg">\"%1$s\" și tot istoricul său vor fi șterse. Acțiunea nu poate fi anulată.</string>
+    <string name="safe_delete_place_title">Ștergi locul?</string>
+    <string name="safe_delete_offline_title">Ștergi harta offline?</string>
+    <string name="safe_delete_confirm_msg">\"%1$s\" va fi șters. Acțiunea nu poate fi anulată.</string>
+    <string name="ux_retry">Reîncearcă</string>
+    <string name="ux_search_no_results_connection">Niciun rezultat – verifică-ți conexiunea</string>
+</resources>

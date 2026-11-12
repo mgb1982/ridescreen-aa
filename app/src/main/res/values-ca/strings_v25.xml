@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_gps_off">El GPS està desactivat</string>
+    <string name="fmt_gps_acquiring">S\'està obtenint el GPS…</string>
+    <string name="fmt_gps_fix">Senyal GPS</string>
+    <string name="fmt_gps_fix_accuracy">Senyal GPS ±%1$d m</string>
+    <string name="fmt_gps_turn_on">Activeu el GPS/la ubicació per gravar</string>
+    <string name="fmt_gps_start_failed">No s\'ha pogut iniciar el GPS</string>
+    <string name="fmt_location_required">Cal el permís d\'ubicació per al HUD del viatge</string>
+    <string name="fmt_trip_not_found">No s\'ha trobat el viatge</string>
+    <string name="fmt_avg_max">mitjana %1$s · màxim %2$s</string>
+    <string name="fmt_discard_title">Voleu descartar aquesta sortida?</string>
+    <string name="fmt_discard_message">Es perdrà el que s\'ha enregistrat fins ara. No es pot desfer.</string>
+    <string name="fmt_discard_confirm">Descarta</string>
+    <string name="fmt_yir_miles">milles recorregudes</string>
+    <string name="fmt_yir_longest_short_mi">milles, la sortida més llarga</string>
+    <string name="safe_delete_task_title">Voleu suprimir la tasca?</string>
+    <string name="safe_delete_task_msg">\"%1$s\" i tot el seu historial se suprimiran. No es pot desfer.</string>
+    <string name="safe_delete_place_title">Voleu suprimir el lloc?</string>
+    <string name="safe_delete_offline_title">Voleu suprimir el mapa sense connexió?</string>
+    <string name="safe_delete_confirm_msg">\"%1$s\" se suprimirà. No es pot desfer.</string>
+    <string name="ux_retry">Torna-ho a provar</string>
+    <string name="ux_search_no_results_connection">Sense resultats: comproveu la connexió</string>
+</resources>

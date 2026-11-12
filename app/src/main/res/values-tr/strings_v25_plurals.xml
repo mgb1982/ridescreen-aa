@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="one">Yanıt vermezsen konumunla birlikte %1$d kişiye SMS gider.</item>
+        <item quantity="other">Yanıt vermezsen konumunla birlikte %1$d kişiye SMS gider.</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="one">Simülasyon: bu, %1$d kişiye gidecekti. Hiçbir şey gönderilmedi.</item>
+        <item quantity="other">Simülasyon: bu, %1$d kişiye gidecekti. Hiçbir şey gönderilmedi.</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="one">%1$d klip · %2$d dk %3$d sn</item>
+        <item quantity="other">%1$d klip · %2$d dk %3$d sn</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="one">🎬 Video · %1$d klip</item>
+        <item quantity="other">🎬 Video · %1$d klip</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="one">Yedek kaydedildi: %1$d dosya, %2$s MB</item>
+        <item quantity="other">Yedek kaydedildi: %1$d dosya, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="one">(100 MB üzerindeki %1$d çevrimdışı harita dosyası dahil edilmedi)</item>
+        <item quantity="other">(100 MB üzerindeki %1$d çevrimdışı harita dosyası dahil edilmedi)</item>
+    </plurals>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_gps_off">GPS ปิดอยู่</string>
+    <string name="fmt_gps_acquiring">กำลังรับสัญญาณ GPS…</string>
+    <string name="fmt_gps_fix">สัญญาณ GPS</string>
+    <string name="fmt_gps_fix_accuracy">สัญญาณ GPS ±%1$d m</string>
+    <string name="fmt_gps_turn_on">เปิด GPS/ตำแหน่งเพื่อบันทึก</string>
+    <string name="fmt_gps_start_failed">เริ่ม GPS ไม่ได้</string>
+    <string name="fmt_location_required">ต้องอนุญาตตำแหน่งสำหรับ HUD ของทริป</string>
+    <string name="fmt_trip_not_found">ไม่พบทริป</string>
+    <string name="fmt_avg_max">เฉลี่ย %1$s · สูงสุด %2$s</string>
+    <string name="fmt_discard_title">ทิ้งการขับขี่นี้หรือไม่?</string>
+    <string name="fmt_discard_message">ข้อมูลที่บันทึกไว้จนถึงตอนนี้จะหายไป และไม่สามารถยกเลิกได้</string>
+    <string name="fmt_discard_confirm">ทิ้ง</string>
+    <string name="fmt_yir_miles">ไมล์ที่ขับไป</string>
+    <string name="fmt_yir_longest_short_mi">ไมล์ การขับขี่ไกลที่สุด</string>
+    <string name="safe_delete_task_title">ลบงานหรือไม่?</string>
+    <string name="safe_delete_task_msg">\"%1$s\" และประวัติทั้งหมดจะถูกลบ ไม่สามารถยกเลิกได้</string>
+    <string name="safe_delete_place_title">ลบสถานที่หรือไม่?</string>
+    <string name="safe_delete_offline_title">ลบแผนที่ออฟไลน์หรือไม่?</string>
+    <string name="safe_delete_confirm_msg">\"%1$s\" จะถูกลบ ไม่สามารถยกเลิกได้</string>
+    <string name="ux_retry">ลองอีกครั้ง</string>
+    <string name="ux_search_no_results_connection">ไม่มีผลลัพธ์ – ตรวจสอบการเชื่อมต่อ</string>
+</resources>

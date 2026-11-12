@@ -10,11 +10,9 @@
     <string name="crash_alert_text">Contactele tale vor fi alertate în %1$d s dacă nu atingi Sunt OK</string>
     <string name="crash_im_ok">SUNT OK</string>
     <string name="crash_send_now">Trimite alerta acum</string>
-    <string name="crash_alert_info">Dacă nu răspunzi, un SMS cu locația ta ajunge la %1$d contact(e).</string>
     <string name="crash_sent_title">Alertă de accident trimisă</string>
     <string name="crash_sent_none">Niciun SMS nu a putut fi trimis (fără contacte sau fără permisiune). Sună la 112 dacă ai nevoie.</string>
     <string name="crash_sent_to">SMS trimis către: %1$s</string>
-    <string name="crash_sim_done">Simulare: asta ar fi ajuns la %1$d contact(e). Nu s-a trimis nimic.</string>
     <string name="crash_close">Închide</string>
     <string name="crash_sms_someone">Motociclistul</string>
     <string name="crash_sms_no_location">locație necunoscută</string>
@@ -75,7 +73,6 @@
     <string name="tv_searching">Se caută clipuri filmate în timpul turului…</string>
     <string name="tv_none">Nu s-au găsit clipuri din perioada turului. Importă-le mai întâi în galerie (aplicația Meta AI → media ta → salvează/importă) și revino.</string>
     <string name="tv_no_permission">Permite accesul la videoclipurile tale ca aplicația să găsească clipurile.</string>
-    <string name="tv_found">%1$d clip(uri) · %2$d min %3$d s</string>
     <string name="tv_speed_normal">Viteză normală</string>
     <string name="tv_speed_fast">Rapid ×4 (fără sunet)</string>
     <string name="tv_make">Creează videoclipul</string>
@@ -94,7 +91,6 @@
     <string name="crash_restricted_title">Android blochează SMS-urile pentru aplicațiile instalate din APK</string>
     <string name="crash_restricted_steps">E o protecție Android („setări restricționate”) pentru aplicațiile care nu vin dintr-un magazin. Se deblochează o singură dată:\n\n1. Atinge „Deschide setările aplicației”.\n2. Atinge ⋮ (sus dreapta) → „Permite setări restricționate” și confirmă.\n3. Mergi la Permisiuni → SMS → Permite.\n4. Revino aici.\n\nDacă nu vezi „Permite setări restricționate”, activează întâi SMS-ul în Permisiuni o dată, și atunci apare opțiunea.</string>
     <string name="crash_restricted_open">Deschide setările aplicației</string>
-    <string name="tv_button_clips">🎬 Video · %1$d clip(uri)</string>
     <string name="park_cam_hint">Fă o poză cu locul unde lași moto (pe jos, numărul locului…)</string>
     <string name="park_photo_failed">Nu s-a putut face poza. Încearcă din nou.</string>
     <string name="tv_sync">Decalaj: %1$s s</string>

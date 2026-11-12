@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_gps_off">GPS가 꺼져 있습니다</string>
+    <string name="fmt_gps_acquiring">GPS 확인 중…</string>
+    <string name="fmt_gps_fix">GPS 신호 확보</string>
+    <string name="fmt_gps_fix_accuracy">GPS 신호 ±%1$d m</string>
+    <string name="fmt_gps_turn_on">기록하려면 GPS/위치를 켜십시오</string>
+    <string name="fmt_gps_start_failed">GPS를 시작할 수 없습니다</string>
+    <string name="fmt_location_required">주행 HUD에는 위치 권한이 필요합니다</string>
+    <string name="fmt_trip_not_found">주행을 찾을 수 없습니다</string>
+    <string name="fmt_avg_max">평균 %1$s · 최고 %2$s</string>
+    <string name="fmt_discard_title">이번 주행을 버리시겠습니까?</string>
+    <string name="fmt_discard_message">지금까지 기록된 내용이 사라집니다. 이 작업은 되돌릴 수 없습니다.</string>
+    <string name="fmt_discard_confirm">버리기</string>
+    <string name="fmt_yir_miles">주행한 마일</string>
+    <string name="fmt_yir_longest_short_mi">가장 긴 주행(마일)</string>
+    <string name="safe_delete_task_title">작업을 삭제하시겠습니까?</string>
+    <string name="safe_delete_task_msg">\"%1$s\" 및 전체 기록이 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</string>
+    <string name="safe_delete_place_title">장소를 삭제하시겠습니까?</string>
+    <string name="safe_delete_offline_title">오프라인 지도를 삭제하시겠습니까?</string>
+    <string name="safe_delete_confirm_msg">\"%1$s\"이(가) 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</string>
+    <string name="ux_retry">다시 시도</string>
+    <string name="ux_search_no_results_connection">결과 없음 – 연결을 확인하십시오</string>
+</resources>

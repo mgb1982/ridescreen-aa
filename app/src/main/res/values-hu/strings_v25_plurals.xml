@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="one">Ha nem válaszolsz, a helyzeteddel együtt SMS megy %1$d kapcsolattartónak.</item>
+        <item quantity="other">Ha nem válaszolsz, a helyzeteddel együtt SMS megy %1$d kapcsolattartónak.</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="one">Szimuláció: ez %1$d kapcsolattartónak ment volna. Semmi nem lett elküldve.</item>
+        <item quantity="other">Szimuláció: ez %1$d kapcsolattartónak ment volna. Semmi nem lett elküldve.</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="one">%1$d klip · %2$d perc %3$d s</item>
+        <item quantity="other">%1$d klip · %2$d perc %3$d s</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="one">🎬 Videó · %1$d klip</item>
+        <item quantity="other">🎬 Videó · %1$d klip</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="one">Biztonsági mentés elmentve: %1$d fájl, %2$s MB</item>
+        <item quantity="other">Biztonsági mentés elmentve: %1$d fájl, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="one">(%1$d 100 MB-nál nagyobb offline térképfájl nincs belefoglalva)</item>
+        <item quantity="other">(%1$d 100 MB-nál nagyobb offline térképfájl nincs belefoglalva)</item>
+    </plurals>
+</resources>

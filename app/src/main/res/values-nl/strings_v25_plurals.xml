@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="one">Als u niet antwoordt, gaat er een sms met uw locatie naar %1$d contactpersoon.</item>
+        <item quantity="other">Als u niet antwoordt, gaat er een sms met uw locatie naar %1$d contactpersonen.</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="one">Simulatie: dit zou naar %1$d contactpersoon zijn gegaan. Er is niets verzonden.</item>
+        <item quantity="other">Simulatie: dit zou naar %1$d contactpersonen zijn gegaan. Er is niets verzonden.</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="one">%1$d clip · %2$d min %3$d s</item>
+        <item quantity="other">%1$d clips · %2$d min %3$d s</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="one">🎬 Video · %1$d clip</item>
+        <item quantity="other">🎬 Video · %1$d clips</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="one">Back-up opgeslagen: %1$d bestand, %2$s MB</item>
+        <item quantity="other">Back-up opgeslagen: %1$d bestanden, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="one">(%1$d offlinekaartbestand van meer dan 100 MB niet opgenomen)</item>
+        <item quantity="other">(%1$d offlinekaartbestanden van meer dan 100 MB niet opgenomen)</item>
+    </plurals>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_gps_off">El GPS está desactivado</string>
+    <string name="fmt_gps_acquiring">Obteniendo GPS…</string>
+    <string name="fmt_gps_fix">Señal GPS</string>
+    <string name="fmt_gps_fix_accuracy">Señal GPS ±%1$d m</string>
+    <string name="fmt_gps_turn_on">Activar el GPS/la ubicación para grabar</string>
+    <string name="fmt_gps_start_failed">No se pudo iniciar el GPS</string>
+    <string name="fmt_location_required">Se necesita permiso de ubicación para el HUD del viaje</string>
+    <string name="fmt_trip_not_found">Viaje no encontrado</string>
+    <string name="fmt_avg_max">media %1$s · máx. %2$s</string>
+    <string name="fmt_discard_title">¿Descartar esta salida?</string>
+    <string name="fmt_discard_message">Lo registrado hasta ahora se perderá. No se puede deshacer.</string>
+    <string name="fmt_discard_confirm">Descartar</string>
+    <string name="fmt_yir_miles">millas recorridas</string>
+    <string name="fmt_yir_longest_short_mi">millas, la salida más larga</string>
+    <string name="safe_delete_task_title">¿Eliminar la tarea?</string>
+    <string name="safe_delete_task_msg">\"%1$s\" y todo su historial se eliminarán. No se puede deshacer.</string>
+    <string name="safe_delete_place_title">¿Eliminar el lugar?</string>
+    <string name="safe_delete_offline_title">¿Eliminar el mapa sin conexión?</string>
+    <string name="safe_delete_confirm_msg">\"%1$s\" se eliminará. No se puede deshacer.</string>
+    <string name="ux_retry">Reintentar</string>
+    <string name="ux_search_no_results_connection">Sin resultados: revisar la conexión</string>
+</resources>

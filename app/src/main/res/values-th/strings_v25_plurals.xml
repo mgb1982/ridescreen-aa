@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="other">หากคุณไม่ตอบกลับ ระบบจะส่ง SMS พร้อมตำแหน่งของคุณไปยังผู้ติดต่อ %1$d คน</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="other">การจำลอง: ข้อความนี้จะถูกส่งไปยังผู้ติดต่อ %1$d คน ไม่มีการส่งข้อความใด ๆ</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="other">%1$d คลิป · %2$d นาที %3$d วินาที</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="other">🎬 วิดีโอ · %1$d คลิป</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="other">สำรองข้อมูลแล้ว: %1$d ไฟล์, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="other">(ไม่ได้รวมไฟล์แผนที่ออฟไลน์ที่มีขนาดเกิน 100 MB จำนวน %1$d ไฟล์)</item>
+    </plurals>
+</resources>

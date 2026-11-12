@@ -7,11 +7,9 @@
     <string name="crash_alert_text">Avisarem els teus contactes d\'aquí a %1$d s si no prems Estic bé</string>
     <string name="crash_im_ok">ESTIC BÉ</string>
     <string name="crash_send_now">Envia l\'avís ara</string>
-    <string name="crash_alert_info">Si no respons, s\'enviarà un SMS amb la teva ubicació a %1$d contacte(s).</string>
     <string name="crash_sent_title">Avís de caiguda enviat</string>
     <string name="crash_sent_none">No s\'ha pogut enviar cap SMS (sense contactes o sense permís). Demana ajuda si la necessites.</string>
     <string name="crash_sent_to">SMS enviat a: %1$s</string>
-    <string name="crash_sim_done">Simulació: s\'hauria enviat a %1$d contacte(s). No s\'ha enviat res.</string>
     <string name="crash_close">Tanca</string>
     <string name="crash_sms_someone">El motorista</string>
     <string name="crash_sms_no_location">ubicació desconeguda</string>
@@ -72,7 +70,6 @@
     <string name="tv_searching">Buscant clips gravats durant el viatge…</string>
     <string name="tv_none">No hi ha clips de l\'hora d\'aquest viatge. Passa\'ls abans a la galeria (app Meta AI → els teus continguts → desa/importa) i torna.</string>
     <string name="tv_no_permission">Permet l\'accés als teus vídeos perquè l\'app pugui trobar els clips.</string>
-    <string name="tv_found">%1$d clip(s) · %2$d min %3$d s</string>
     <string name="tv_speed_normal">Velocitat normal</string>
     <string name="tv_speed_fast">Ràpid ×4 (sense so)</string>
     <string name="tv_make">Crea el vídeo</string>
@@ -91,7 +88,6 @@
     <string name="crash_restricted_title">Android bloqueja els SMS a les apps instal·lades des d\'un APK</string>
     <string name="crash_restricted_steps">És una protecció d\'Android («configuració restringida») per a les apps que no vénen d\'una botiga. Es desbloqueja un sol cop:\n\n1. Prem «Obre la configuració de l\'app».\n2. Toca ⋮ (a dalt a la dreta) → «Permet la configuració restringida» i confirma.\n3. Ves a Permisos → SMS → Permet.\n4. Torna aquí.\n\nSi no veus «Permet la configuració restringida», prova primer d\'activar els SMS a Permisos un cop; després apareix l\'opció.</string>
     <string name="crash_restricted_open">Obre la configuració de l\'app</string>
-    <string name="tv_button_clips">🎬 Vídeo · %1$d clip(s)</string>
     <string name="park_cam_hint">Fes una foto d\'on deixes la moto (planta, número de plaça…)</string>
     <string name="park_photo_failed">No s\'ha pogut fer la foto. Torna-ho a provar.</string>
     <string name="tv_sync">Desfasament: %1$s s</string>

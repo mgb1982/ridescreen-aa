@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_gps_off">GPS staat uit</string>
+    <string name="fmt_gps_acquiring">GPS zoeken…</string>
+    <string name="fmt_gps_fix">GPS-fix</string>
+    <string name="fmt_gps_fix_accuracy">GPS-fix ±%1$d m</string>
+    <string name="fmt_gps_turn_on">Zet GPS/locatie aan om op te nemen</string>
+    <string name="fmt_gps_start_failed">GPS kon niet worden gestart</string>
+    <string name="fmt_location_required">Locatietoestemming is vereist voor de rit-HUD</string>
+    <string name="fmt_trip_not_found">Rit niet gevonden</string>
+    <string name="fmt_avg_max">gem. %1$s · max. %2$s</string>
+    <string name="fmt_discard_title">Deze rit weggooien?</string>
+    <string name="fmt_discard_message">Wat tot nu toe is opgenomen, gaat verloren. Dit kan niet ongedaan worden gemaakt.</string>
+    <string name="fmt_discard_confirm">Weggooien</string>
+    <string name="fmt_yir_miles">mijl gereden</string>
+    <string name="fmt_yir_longest_short_mi">mijl, langste rit</string>
+    <string name="safe_delete_task_title">Taak verwijderen?</string>
+    <string name="safe_delete_task_msg">\"%1$s\" en de volledige geschiedenis worden verwijderd. Dit kan niet ongedaan worden gemaakt.</string>
+    <string name="safe_delete_place_title">Plek verwijderen?</string>
+    <string name="safe_delete_offline_title">Offline kaart verwijderen?</string>
+    <string name="safe_delete_confirm_msg">\"%1$s\" wordt verwijderd. Dit kan niet ongedaan worden gemaakt.</string>
+    <string name="ux_retry">Opnieuw proberen</string>
+    <string name="ux_search_no_results_connection">Geen resultaten – controleer uw verbinding</string>
+</resources>

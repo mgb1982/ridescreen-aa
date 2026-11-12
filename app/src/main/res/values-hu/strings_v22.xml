@@ -10,11 +10,9 @@
     <string name="crash_alert_text">A kapcsolattartóid %1$d másodperc múlva riasztást kapnak, hacsak nem koppintasz a JÓL VAGYOK gombra</string>
     <string name="crash_im_ok">JÓL VAGYOK</string>
     <string name="crash_send_now">Riasztás küldése most</string>
-    <string name="crash_alert_info">Ha nem válaszolsz, a helyzeteddel együtt SMS megy %1$d kapcsolattartónak.</string>
     <string name="crash_sent_title">Balesetriasztás elküldve</string>
     <string name="crash_sent_none">Nem sikerült SMS-t küldeni (nincs kapcsolattartó vagy engedély). Ha segítségre van szükséged, hívj.</string>
     <string name="crash_sent_to">SMS elküldve neki: %1$s</string>
-    <string name="crash_sim_done">Szimuláció: ez %1$d kapcsolattartónak ment volna. Semmi nem lett elküldve.</string>
     <string name="crash_close">Bezárás</string>
     <string name="crash_sms_someone">A motoros</string>
     <string name="crash_sms_no_location">ismeretlen hely</string>
@@ -75,7 +73,6 @@
     <string name="tv_searching">Az út alatt készült klipek keresése…</string>
     <string name="tv_none">Ennek az útnak az idejéből nincs klip. Előbb importáld őket a galériába (Meta AI alkalmazás → a médiád → mentés/importálás), és gyere vissza.</string>
     <string name="tv_no_permission">Engedélyezd a videóidhoz való hozzáférést, hogy az alkalmazás megtalálja a klipeket.</string>
-    <string name="tv_found">%1$d klip · %2$d perc %3$d s</string>
     <string name="tv_speed_normal">Normál sebesség</string>
     <string name="tv_speed_fast">Gyors ×4 (hang nélkül)</string>
     <string name="tv_make">Videó készítése</string>
@@ -94,7 +91,6 @@
     <string name="crash_restricted_title">Az Android letiltja az SMS-t az APK-ból telepített alkalmazásoknál</string>
     <string name="crash_restricted_steps">Ez egy Android-védelem (\"korlátozott beállítások\") az áruházon kívülről származó alkalmazásoknál. Egyszer kell feloldani:\n\n1. Koppints az \"Alkalmazásbeállítások megnyitása\" gombra.\n2. Koppints a ⋮ menüre (jobb felül) → \"Korlátozott beállítások engedélyezése\", és erősítsd meg.\n3. Menj az Engedélyek → SMS → Engedélyezés menüpontra.\n4. Gyere vissza ide.\n\nHa nem látod a \"Korlátozott beállítások engedélyezése\" lehetőséget, előbb egyszer kapcsold be az SMS-engedélyt az Engedélyekben, és utána megjelenik.</string>
     <string name="crash_restricted_open">Alkalmazásbeállítások megnyitása</string>
-    <string name="tv_button_clips">🎬 Videó · %1$d klip</string>
     <string name="park_cam_hint">Fotózd le, hol hagyod a motort (padló, parkolóhely száma…)</string>
     <string name="park_photo_failed">Nem sikerült a fotó. Próbáld újra.</string>
     <string name="tv_sync">Eltolás: %1$s s</string>

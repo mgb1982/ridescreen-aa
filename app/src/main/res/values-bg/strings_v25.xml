@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_gps_off">GPS е изключен</string>
+    <string name="fmt_gps_acquiring">Търсене на GPS…</string>
+    <string name="fmt_gps_fix">GPS сигнал</string>
+    <string name="fmt_gps_fix_accuracy">GPS сигнал ±%1$d м</string>
+    <string name="fmt_gps_turn_on">Включете GPS/местоположението, за да записвате</string>
+    <string name="fmt_gps_start_failed">GPS не можа да се стартира</string>
+    <string name="fmt_location_required">За HUD на пътуването е нужно разрешение за местоположение</string>
+    <string name="fmt_trip_not_found">Пътуването не е намерено</string>
+    <string name="fmt_avg_max">ср. %1$s · макс. %2$s</string>
+    <string name="fmt_discard_title">Да се отхвърли ли това каране?</string>
+    <string name="fmt_discard_message">Записаното досега ще бъде загубено. Това не може да бъде отменено.</string>
+    <string name="fmt_discard_confirm">Отхвърли</string>
+    <string name="fmt_yir_miles">изминати мили</string>
+    <string name="fmt_yir_longest_short_mi">мили – най-дълго каране</string>
+    <string name="safe_delete_task_title">Изтриване на задачата?</string>
+    <string name="safe_delete_task_msg">\"%1$s\" и цялата й история ще бъдат изтрити. Това не може да бъде отменено.</string>
+    <string name="safe_delete_place_title">Изтриване на мястото?</string>
+    <string name="safe_delete_offline_title">Изтриване на офлайн картата?</string>
+    <string name="safe_delete_confirm_msg">\"%1$s\" ще бъде изтрит. Това не може да бъде отменено.</string>
+    <string name="ux_retry">Опитайте отново</string>
+    <string name="ux_search_no_results_connection">Няма резултати – проверете връзката си</string>
+</resources>

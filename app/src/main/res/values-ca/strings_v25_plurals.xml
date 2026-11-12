@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="one">Si no respons, s\'enviarà un SMS amb la teva ubicació a %1$d contacte.</item>
+        <item quantity="many">Si no respons, s\'enviarà un SMS amb la teva ubicació a %1$d contactes.</item>
+        <item quantity="other">Si no respons, s\'enviarà un SMS amb la teva ubicació a %1$d contactes.</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="one">Simulació: s\'hauria enviat a %1$d contacte. No s\'ha enviat res.</item>
+        <item quantity="many">Simulació: s\'hauria enviat a %1$d contactes. No s\'ha enviat res.</item>
+        <item quantity="other">Simulació: s\'hauria enviat a %1$d contactes. No s\'ha enviat res.</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="one">%1$d clip · %2$d min %3$d s</item>
+        <item quantity="many">%1$d clips · %2$d min %3$d s</item>
+        <item quantity="other">%1$d clips · %2$d min %3$d s</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="one">🎬 Vídeo · %1$d clip</item>
+        <item quantity="many">🎬 Vídeo · %1$d clips</item>
+        <item quantity="other">🎬 Vídeo · %1$d clips</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="one">Còpia de seguretat desada: %1$d fitxer, %2$s MB</item>
+        <item quantity="many">Còpia de seguretat desada: %1$d fitxers, %2$s MB</item>
+        <item quantity="other">Còpia de seguretat desada: %1$d fitxers, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="one">(%1$d fitxer de mapa offline de més de 100 MB no inclòs)</item>
+        <item quantity="many">(%1$d fitxers de mapes offline de més de 100 MB no inclosos)</item>
+        <item quantity="other">(%1$d fitxers de mapes offline de més de 100 MB no inclosos)</item>
+    </plurals>
+</resources>

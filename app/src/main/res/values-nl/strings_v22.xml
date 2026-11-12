@@ -10,11 +10,9 @@
     <string name="crash_alert_text">Uw contactpersonen worden over %1$d s gewaarschuwd, tenzij u op Ik ben OK tikt</string>
     <string name="crash_im_ok">IK BEN OK</string>
     <string name="crash_send_now">Waarschuwing nu verzenden</string>
-    <string name="crash_alert_info">Als u niet antwoordt, gaat er een sms met uw locatie naar %1$d contactpersoon(en).</string>
     <string name="crash_sent_title">Botsingsmelding verzonden</string>
     <string name="crash_sent_none">Er kon geen sms worden verzonden (geen contactpersonen of geen toestemming). Bel om hulp als u die nodig hebt.</string>
     <string name="crash_sent_to">Sms verzonden naar: %1$s</string>
-    <string name="crash_sim_done">Simulatie: dit zou naar %1$d contactpersoon(en) zijn gegaan. Er is niets verzonden.</string>
     <string name="crash_close">Sluiten</string>
     <string name="crash_sms_someone">De rijder</string>
     <string name="crash_sms_no_location">locatie onbekend</string>
@@ -75,7 +73,6 @@
     <string name="tv_searching">Clips zoeken die tijdens de rit zijn gefilmd…</string>
     <string name="tv_none">Geen clips gevonden van het tijdstip van deze rit. Importeer ze eerst in de galerij (Meta AI-app → uw media → opslaan/importeren) en kom daarna terug.</string>
     <string name="tv_no_permission">Sta toegang tot uw video\'s toe, zodat de app de clips kan vinden.</string>
-    <string name="tv_found">%1$d clip(s) · %2$d min %3$d s</string>
     <string name="tv_speed_normal">Normale snelheid</string>
     <string name="tv_speed_fast">Snel ×4 (geen geluid)</string>
     <string name="tv_make">Video maken</string>
@@ -94,7 +91,6 @@
     <string name="crash_restricted_title">Android blokkeert sms voor apps die vanaf een APK zijn geïnstalleerd</string>
     <string name="crash_restricted_steps">Dit is een beveiliging van Android (\"beperkte instellingen\") voor apps die niet uit een winkel komen. Die wordt eenmalig ontgrendeld:\n\n1. Tik op \"App-instellingen openen\".\n2. Tik op ⋮ (rechtsboven) → \"Beperkte instellingen toestaan\" en bevestig.\n3. Ga naar Machtigingen → Sms → Toestaan.\n4. Kom hier terug.\n\nIf you don\'t see \"Allow restricted settings\", first try to turn on SMS in Permissions once, then the option appears.</string>
     <string name="crash_restricted_open">App-instellingen openen</string>
-    <string name="tv_button_clips">🎬 Video · %1$d clip(s)</string>
     <string name="park_cam_hint">Maak een foto van waar u de motor achterlaat (vloer, vaknummer…)</string>
     <string name="park_photo_failed">De foto kon niet worden gemaakt. Probeer het opnieuw.</string>
     <string name="tv_sync">Verschuiving: %1$s s</string>

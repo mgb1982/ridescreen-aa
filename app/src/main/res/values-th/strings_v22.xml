@@ -7,11 +7,9 @@
     <string name="crash_alert_text">ระบบจะแจ้งผู้ติดต่อของคุณในอีก %1$d วินาที หากคุณไม่แตะ “ฉันปลอดภัย”</string>
     <string name="crash_im_ok">ฉันปลอดภัย</string>
     <string name="crash_send_now">ส่งการแจ้งเตือนตอนนี้</string>
-    <string name="crash_alert_info">หากคุณไม่ตอบกลับ ระบบจะส่ง SMS พร้อมตำแหน่งของคุณไปยังผู้ติดต่อ %1$d คน</string>
     <string name="crash_sent_title">ส่งการแจ้งเตือนอุบัติเหตุแล้ว</string>
     <string name="crash_sent_none">ส่ง SMS ไม่ได้ (ไม่มีผู้ติดต่อหรือไม่ได้รับอนุญาต) โทรขอความช่วยเหลือหากจำเป็น</string>
     <string name="crash_sent_to">ส่ง SMS ไปยัง: %1$s</string>
-    <string name="crash_sim_done">การจำลอง: ข้อความนี้จะถูกส่งไปยังผู้ติดต่อ %1$d คน ไม่มีการส่งข้อความใด ๆ</string>
     <string name="crash_close">ปิด</string>
     <string name="crash_sms_someone">ผู้ขับขี่</string>
     <string name="crash_sms_no_location">ไม่ทราบตำแหน่ง</string>
@@ -72,7 +70,6 @@
     <string name="tv_searching">กำลังค้นหาคลิปที่ถ่ายระหว่างทริป…</string>
     <string name="tv_none">ไม่พบคลิปในช่วงเวลาของทริปนี้ โปรดนำเข้าคลิปไปยังแกลเลอรีก่อน (แอป Meta AI → สื่อของคุณ → บันทึก/นำเข้า) แล้วกลับมาที่นี่</string>
     <string name="tv_no_permission">อนุญาตให้เข้าถึงวิดีโอเพื่อให้แอปค้นหาคลิปได้</string>
-    <string name="tv_found">%1$d คลิป · %2$d นาที %3$d วินาที</string>
     <string name="tv_speed_normal">ความเร็วปกติ</string>
     <string name="tv_speed_fast">เร็ว ×4 (ไม่มีเสียง)</string>
     <string name="tv_make">สร้างวิดีโอ</string>
@@ -91,7 +88,6 @@
     <string name="crash_restricted_title">Android บล็อกการส่ง SMS สำหรับแอปที่ติดตั้งจาก APK</string>
     <string name="crash_restricted_steps">นี่คือการป้องกันของ Android (“การตั้งค่าที่ถูกจำกัด”) สำหรับแอปที่ไม่ได้มาจากร้านค้า ต้องปลดล็อกเพียงครั้งเดียว:\n\n1. แตะ “เปิดการตั้งค่าแอป”\n2. แตะ ⋮ (มุมขวาบน) → “อนุญาตการตั้งค่าที่ถูกจำกัด” แล้วทำการยืนยัน\n3. ไปที่ สิทธิ์ → SMS → อนุญาต\n4. กลับมาที่นี่\n\nหากไม่เห็น “อนุญาตการตั้งค่าที่ถูกจำกัด” ให้ลองเปิด SMS ในหน้าสิทธิ์ก่อนหนึ่งครั้ง แล้วตัวเลือกดังกล่าวจะปรากฏ</string>
     <string name="crash_restricted_open">เปิดการตั้งค่าแอป</string>
-    <string name="tv_button_clips">🎬 วิดีโอ · %1$d คลิป</string>
     <string name="park_cam_hint">ถ่ายรูปตำแหน่งที่คุณจอดรถ (พื้น หมายเลขช่องจอด…)</string>
     <string name="park_photo_failed">ถ่ายรูปไม่ได้ โปรดลองอีกครั้ง</string>
     <string name="tv_sync">เลื่อนเวลา: %1$s วินาที</string>

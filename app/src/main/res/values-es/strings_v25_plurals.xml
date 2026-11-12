@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="one">Si no respondes, se enviará un SMS con tu ubicación a %1$d contacto.</item>
+        <item quantity="many">Si no respondes, se enviará un SMS con tu ubicación a %1$d contactos.</item>
+        <item quantity="other">Si no respondes, se enviará un SMS con tu ubicación a %1$d contactos.</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="one">Simulación: se habría enviado a %1$d contacto. No se ha enviado nada.</item>
+        <item quantity="many">Simulación: se habría enviado a %1$d contactos. No se ha enviado nada.</item>
+        <item quantity="other">Simulación: se habría enviado a %1$d contactos. No se ha enviado nada.</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="one">%1$d clip · %2$d min %3$d s</item>
+        <item quantity="many">%1$d clips · %2$d min %3$d s</item>
+        <item quantity="other">%1$d clips · %2$d min %3$d s</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="one">🎬 Vídeo · %1$d clip</item>
+        <item quantity="many">🎬 Vídeo · %1$d clips</item>
+        <item quantity="other">🎬 Vídeo · %1$d clips</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="one">Copia de seguridad guardada: %1$d archivo, %2$s MB</item>
+        <item quantity="many">Copia de seguridad guardada: %1$d archivos, %2$s MB</item>
+        <item quantity="other">Copia de seguridad guardada: %1$d archivos, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="one">(%1$d archivo de mapa sin conexión de más de 100 MB no incluido)</item>
+        <item quantity="many">(%1$d archivos de mapas sin conexión de más de 100 MB no incluidos)</item>
+        <item quantity="other">(%1$d archivos de mapas sin conexión de más de 100 MB no incluidos)</item>
+    </plurals>
+</resources>

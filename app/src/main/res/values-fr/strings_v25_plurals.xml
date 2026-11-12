@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="one">Sans réponse de ta part, un SMS indiquant ta position sera envoyé à %1$d contact.</item>
+        <item quantity="many">Sans réponse de ta part, un SMS indiquant ta position sera envoyé à %1$d contacts.</item>
+        <item quantity="other">Sans réponse de ta part, un SMS indiquant ta position sera envoyé à %1$d contacts.</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="one">Simulation : le message aurait été envoyé à %1$d contact. Aucun SMS n’a été envoyé.</item>
+        <item quantity="many">Simulation : le message aurait été envoyé à %1$d contacts. Aucun SMS n’a été envoyé.</item>
+        <item quantity="other">Simulation : le message aurait été envoyé à %1$d contacts. Aucun SMS n’a été envoyé.</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="one">%1$d clip · %2$d min %3$d s</item>
+        <item quantity="many">%1$d clips · %2$d min %3$d s</item>
+        <item quantity="other">%1$d clips · %2$d min %3$d s</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="one">🎬 Vidéo · %1$d clip</item>
+        <item quantity="many">🎬 Vidéo · %1$d clips</item>
+        <item quantity="other">🎬 Vidéo · %1$d clips</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="one">Sauvegarde enregistrée : %1$d fichier, %2$s MB</item>
+        <item quantity="many">Sauvegarde enregistrée : %1$d fichiers, %2$s MB</item>
+        <item quantity="other">Sauvegarde enregistrée : %1$d fichiers, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="one">(%1$d fichier de carte hors ligne de plus de 100 MB non inclus)</item>
+        <item quantity="many">(%1$d fichiers de cartes hors ligne de plus de 100 MB non inclus)</item>
+        <item quantity="other">(%1$d fichiers de cartes hors ligne de plus de 100 MB non inclus)</item>
+    </plurals>
+</resources>

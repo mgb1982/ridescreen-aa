@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="one">Если ты не ответишь, SMS с твоим местоположением будет отправлено на %1$d контакт.</item>
+        <item quantity="few">Если ты не ответишь, SMS с твоим местоположением будет отправлено на %1$d контакта.</item>
+        <item quantity="many">Если ты не ответишь, SMS с твоим местоположением будет отправлено на %1$d контактов.</item>
+        <item quantity="other">Если ты не ответишь, SMS с твоим местоположением будет отправлено на %1$d контакта.</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="one">Симуляция: сообщение было бы отправлено на %1$d контакт. Ничего не отправлено.</item>
+        <item quantity="few">Симуляция: сообщение было бы отправлено на %1$d контакта. Ничего не отправлено.</item>
+        <item quantity="many">Симуляция: сообщение было бы отправлено на %1$d контактов. Ничего не отправлено.</item>
+        <item quantity="other">Симуляция: сообщение было бы отправлено на %1$d контакта. Ничего не отправлено.</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="one">%1$d клип · %2$d мин %3$d с</item>
+        <item quantity="few">%1$d клипа · %2$d мин %3$d с</item>
+        <item quantity="many">%1$d клипов · %2$d мин %3$d с</item>
+        <item quantity="other">%1$d клипа · %2$d мин %3$d с</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="one">🎬 Видео · %1$d клип</item>
+        <item quantity="few">🎬 Видео · %1$d клипа</item>
+        <item quantity="many">🎬 Видео · %1$d клипов</item>
+        <item quantity="other">🎬 Видео · %1$d клипа</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="one">Резервная копия сохранена: %1$d файл, %2$s MB</item>
+        <item quantity="few">Резервная копия сохранена: %1$d файла, %2$s MB</item>
+        <item quantity="many">Резервная копия сохранена: %1$d файлов, %2$s MB</item>
+        <item quantity="other">Резервная копия сохранена: %1$d файла, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="one">(%1$d файл офлайн-карты больше 100 MB не включён)</item>
+        <item quantity="few">(%1$d файла офлайн-карт больше 100 MB не включены)</item>
+        <item quantity="many">(%1$d файлов офлайн-карт больше 100 MB не включены)</item>
+        <item quantity="other">(%1$d файла офлайн-карт больше 100 MB не включены)</item>
+    </plurals>
+</resources>

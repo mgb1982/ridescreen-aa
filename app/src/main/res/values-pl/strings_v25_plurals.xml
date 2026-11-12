@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="one">Jeśli nie odpowiesz, SMS z twoją lokalizacją zostanie wysłany do %1$d kontaktu.</item>
+        <item quantity="few">Jeśli nie odpowiesz, SMS z twoją lokalizacją zostanie wysłany do %1$d kontaktów.</item>
+        <item quantity="many">Jeśli nie odpowiesz, SMS z twoją lokalizacją zostanie wysłany do %1$d kontaktów.</item>
+        <item quantity="other">Jeśli nie odpowiesz, SMS z twoją lokalizacją zostanie wysłany do %1$d kontaktów.</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="one">Symulacja: w tym przypadku wysłano by wiadomość do %1$d kontaktu. Nic nie zostało wysłane.</item>
+        <item quantity="few">Symulacja: w tym przypadku wysłano by wiadomość do %1$d kontaktów. Nic nie zostało wysłane.</item>
+        <item quantity="many">Symulacja: w tym przypadku wysłano by wiadomość do %1$d kontaktów. Nic nie zostało wysłane.</item>
+        <item quantity="other">Symulacja: w tym przypadku wysłano by wiadomość do %1$d kontaktów. Nic nie zostało wysłane.</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="one">%1$d nagranie · %2$d min %3$d s</item>
+        <item quantity="few">%1$d nagrania · %2$d min %3$d s</item>
+        <item quantity="many">%1$d nagrań · %2$d min %3$d s</item>
+        <item quantity="other">%1$d nagrania · %2$d min %3$d s</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="one">🎬 Wideo · %1$d nagranie</item>
+        <item quantity="few">🎬 Wideo · %1$d nagrania</item>
+        <item quantity="many">🎬 Wideo · %1$d nagrań</item>
+        <item quantity="other">🎬 Wideo · %1$d nagrania</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="one">Kopia zapasowa zapisana: %1$d plik, %2$s MB</item>
+        <item quantity="few">Kopia zapasowa zapisana: %1$d pliki, %2$s MB</item>
+        <item quantity="many">Kopia zapasowa zapisana: %1$d plików, %2$s MB</item>
+        <item quantity="other">Kopia zapasowa zapisana: %1$d pliki, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="one">(%1$d plik z mapą offline powyżej 100 MB nie został uwzględniony)</item>
+        <item quantity="few">(%1$d pliki z mapami offline powyżej 100 MB nie zostały uwzględnione)</item>
+        <item quantity="many">(%1$d plików z mapami offline powyżej 100 MB nie zostało uwzględnionych)</item>
+        <item quantity="other">(%1$d pliki z mapami offline powyżej 100 MB nie zostały uwzględnione)</item>
+    </plurals>
+</resources>

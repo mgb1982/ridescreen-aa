@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_gps_off">GPS ist aus</string>
+    <string name="fmt_gps_acquiring">GPS wird ermittelt…</string>
+    <string name="fmt_gps_fix">GPS-Signal</string>
+    <string name="fmt_gps_fix_accuracy">GPS-Signal ±%1$d m</string>
+    <string name="fmt_gps_turn_on">Aktiviere GPS/Standort zum Aufzeichnen</string>
+    <string name="fmt_gps_start_failed">GPS konnte nicht gestartet werden</string>
+    <string name="fmt_location_required">Für das Fahrt-HUD ist die Standortberechtigung erforderlich</string>
+    <string name="fmt_trip_not_found">Fahrt nicht gefunden</string>
+    <string name="fmt_avg_max">Ø %1$s · Max. %2$s</string>
+    <string name="fmt_discard_title">Diese Fahrt verwerfen?</string>
+    <string name="fmt_discard_message">Was bisher aufgezeichnet wurde, geht verloren. Das kann nicht rückgängig gemacht werden.</string>
+    <string name="fmt_discard_confirm">Verwerfen</string>
+    <string name="fmt_yir_miles">gefahrene Meilen</string>
+    <string name="fmt_yir_longest_short_mi">Meilen, längste Fahrt</string>
+    <string name="safe_delete_task_title">Aufgabe löschen?</string>
+    <string name="safe_delete_task_msg">\"%1$s\" und der gesamte Verlauf werden gelöscht. Das kann nicht rückgängig gemacht werden.</string>
+    <string name="safe_delete_place_title">Ort löschen?</string>
+    <string name="safe_delete_offline_title">Offline-Karte löschen?</string>
+    <string name="safe_delete_confirm_msg">\"%1$s\" wird gelöscht. Das kann nicht rückgängig gemacht werden.</string>
+    <string name="ux_retry">Erneut versuchen</string>
+    <string name="ux_search_no_results_connection">Keine Ergebnisse – prüfe deine Verbindung</string>
+</resources>

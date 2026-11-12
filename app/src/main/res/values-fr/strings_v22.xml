@@ -7,11 +7,9 @@
     <string name="crash_alert_text">Tes contacts seront avertis dans %1$d s, sauf si tu touches « Je vais bien ».</string>
     <string name="crash_im_ok">JE VAIS BIEN</string>
     <string name="crash_send_now">Envoyer l’alerte maintenant</string>
-    <string name="crash_alert_info">Sans réponse de ta part, un SMS indiquant ta position sera envoyé à %1$d contact(s).</string>
     <string name="crash_sent_title">Alerte de chute envoyée</string>
     <string name="crash_sent_none">Aucun SMS n’a pu être envoyé (aucun contact ou autorisation manquante). Appelle les secours si nécessaire.</string>
     <string name="crash_sent_to">SMS envoyé à : %1$s</string>
-    <string name="crash_sim_done">Simulation : le message aurait été envoyé à %1$d contact(s). Aucun SMS n’a été envoyé.</string>
     <string name="crash_close">Fermer</string>
     <string name="crash_sms_someone">Le motard</string>
     <string name="crash_sms_no_location">position inconnue</string>
@@ -72,7 +70,6 @@
     <string name="tv_searching">Recherche des clips filmés pendant le trajet…</string>
     <string name="tv_none">Aucun clip trouvé à l’heure de ce trajet. Importe-les d’abord dans la galerie (application Meta AI → tes médias → enregistrer / importer), puis reviens ici.</string>
     <string name="tv_no_permission">Autorise l’accès à tes vidéos pour que l’application puisse trouver les clips.</string>
-    <string name="tv_found">%1$d clip(s) · %2$d min %3$d s</string>
     <string name="tv_speed_normal">Vitesse normale</string>
     <string name="tv_speed_fast">Rapide ×4 (sans son)</string>
     <string name="tv_make">Créer la vidéo</string>
@@ -91,7 +88,6 @@
     <string name="crash_restricted_title">Android bloque les SMS pour les applications installées depuis un APK</string>
     <string name="crash_restricted_steps">C’est une protection Android (« paramètres restreints ») pour les applications qui ne proviennent pas d’une boutique. Il suffit de la désactiver une seule fois :\n\n1. Touche « Ouvrir les paramètres de l’application ».\n2. Touche ⋮ (en haut à droite) → « Autoriser les paramètres restreints », puis confirme.\n3. Va dans Autorisations → SMS → Autoriser.\n4. Reviens ici.\n\nSi « Autoriser les paramètres restreints » n’apparaît pas, essaie d’abord d’activer les SMS dans Autorisations ; l’option devrait ensuite apparaître.</string>
     <string name="crash_restricted_open">Ouvrir les paramètres de l’application</string>
-    <string name="tv_button_clips">🎬 Vidéo · %1$d clip(s)</string>
     <string name="park_cam_hint">Prends une photo de l’endroit où tu laisses la moto (sol, numéro de place…).</string>
     <string name="park_photo_failed">Impossible de prendre la photo. Réessaie.</string>
     <string name="tv_sync">Décalage : %1$s s</string>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="crash_alert_info">
+        <item quantity="one">Ако не отговорите, SMS с местоположението ви ще отиде до %1$d контакт.</item>
+        <item quantity="other">Ако не отговорите, SMS с местоположението ви ще отиде до %1$d контакта.</item>
+    </plurals>
+    <plurals name="crash_sim_done">
+        <item quantity="one">Симулация: това щеше да отиде до %1$d контакт. Нищо не е изпратено.</item>
+        <item quantity="other">Симулация: това щеше да отиде до %1$d контакта. Нищо не е изпратено.</item>
+    </plurals>
+    <plurals name="tv_found">
+        <item quantity="one">%1$d клип · %2$d мин %3$d сек</item>
+        <item quantity="other">%1$d клипа · %2$d мин %3$d сек</item>
+    </plurals>
+    <plurals name="tv_button_clips">
+        <item quantity="one">🎬 Видео · %1$d клип</item>
+        <item quantity="other">🎬 Видео · %1$d клипа</item>
+    </plurals>
+    <plurals name="fmt_backup_saved">
+        <item quantity="one">Резервното копие е запазено: %1$d файл, %2$s MB</item>
+        <item quantity="other">Резервното копие е запазено: %1$d файла, %2$s MB</item>
+    </plurals>
+    <plurals name="fmt_backup_skipped">
+        <item quantity="one">(%1$d файл с офлайн карта над 100 MB не е включен)</item>
+        <item quantity="other">(%1$d файла с офлайн карти над 100 MB не са включени)</item>
+    </plurals>
+</resources>

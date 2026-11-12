@@ -7,11 +7,9 @@
     <string name="crash_alert_text">Твои контакты получат уведомление через %1$d с, если ты не нажмёшь «Я в порядке»</string>
     <string name="crash_im_ok">Я В ПОРЯДКЕ</string>
     <string name="crash_send_now">Отправить оповещение сейчас</string>
-    <string name="crash_alert_info">Если ты не ответишь, SMS с твоим местоположением будет отправлено %1$d контакту.</string>
     <string name="crash_sent_title">Оповещение об аварии отправлено</string>
     <string name="crash_sent_none">Не удалось отправить SMS (нет контактов или разрешения). Позвони за помощью, если она нужна.</string>
     <string name="crash_sent_to">SMS отправлено: %1$s</string>
-    <string name="crash_sim_done">Симуляция: сообщение было бы отправлено %1$d контакту. Ничего не отправлено.</string>
     <string name="crash_close">Закрыть</string>
     <string name="crash_sms_someone">Водитель</string>
     <string name="crash_sms_no_location">местоположение неизвестно</string>
@@ -66,7 +64,6 @@
     <string name="tv_searching">Поиск клипов, снятых во время поездки…</string>
     <string name="tv_none">Клипы за это время не найдены. Сначала импортируй их в галерею (Meta AI → Твои медиа → сохранить/импортировать), затем вернись.</string>
     <string name="tv_no_permission">Разреши доступ к видео, чтобы приложение могло найти клипы.</string>
-    <string name="tv_found">Клипов: %1$d · %2$d мин %3$d с</string>
     <string name="tv_speed_normal">Обычная скорость</string>
     <string name="tv_speed_fast">Быстро ×4 (без звука)</string>
     <string name="tv_make">Создать видео</string>
@@ -85,7 +82,6 @@
     <string name="crash_restricted_title">Android блокирует SMS в приложениях, установленных из APK</string>
     <string name="crash_restricted_steps">Это защита Android («ограниченные настройки») для приложений не из магазина. Её нужно снять один раз:\n\n1. Нажми «Открыть настройки приложения».\n2. Нажми ⋮ в правом верхнем углу → «Разрешить ограниченные настройки» и подтверди.\n3. Открой Разрешения → SMS → Разрешить.\n4. Вернись сюда.\n\nЕсли пункта «Разрешить ограниченные настройки» нет, сначала один раз включи SMS в разрешениях, после этого пункт появится.</string>
     <string name="crash_restricted_open">Открыть настройки приложения</string>
-    <string name="tv_button_clips">🎬 Видео · клипов: %1$d</string>
     <string name="park_cam_hint">Сфотографируй место, где оставляешь мотоцикл (покрытие, номер места…)</string>
     <string name="park_photo_failed">Не удалось сделать фото. Попробуй ещё раз.</string>
     <string name="tv_sync">Сдвиг: %1$s с</string>

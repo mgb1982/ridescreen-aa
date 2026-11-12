@@ -7,11 +7,9 @@
     <string name="crash_alert_text">I tuoi contatti verranno avvisati tra %1$d s a meno che tu non tocchi Sto bene</string>
     <string name="crash_im_ok">STO BENE</string>
     <string name="crash_send_now">Invia l\'avviso adesso</string>
-    <string name="crash_alert_info">Se non rispondi, un SMS con la tua posizione va a %1$d contatto/i.</string>
     <string name="crash_sent_title">Avviso di caduta inviato</string>
     <string name="crash_sent_none">Non è stato possibile inviare nessun SMS (nessun contatto o nessun permesso). Chiama aiuto se ne hai bisogno.</string>
     <string name="crash_sent_to">SMS inviato a: %1$s</string>
-    <string name="crash_sim_done">Simulazione: sarebbe andato a %1$d contatto/i. Non è stato inviato nulla.</string>
     <string name="crash_close">Chiudi</string>
     <string name="crash_sms_someone">Il motociclista</string>
     <string name="crash_sms_no_location">posizione sconosciuta</string>
@@ -72,7 +70,6 @@
     <string name="tv_searching">Ricerca delle clip girate durante il viaggio…</string>
     <string name="tv_none">Nessuna clip trovata nell\'orario di questo viaggio. Importale prima nella galleria (app Meta AI → i tuoi contenuti → salva/importa) e torna qui.</string>
     <string name="tv_no_permission">Consenti l\'accesso ai tuoi video così l\'app può trovare le clip.</string>
-    <string name="tv_found">%1$d clip · %2$d min %3$d s</string>
     <string name="tv_speed_normal">Velocità normale</string>
     <string name="tv_speed_fast">Veloce ×4 (senza audio)</string>
     <string name="tv_make">Crea il video</string>
@@ -91,7 +88,6 @@
     <string name="crash_restricted_title">Android blocca gli SMS per le app installate da un APK</string>
     <string name="crash_restricted_steps">È una protezione di Android (\"impostazioni limitate\") per le app che non arrivano da uno store. Si sblocca una volta sola:\n\n1. Tocca \"Apri le impostazioni dell\'app\".\n2. Tocca ⋮ (in alto a destra) → \"Consenti impostazioni limitate\" e conferma.\n3. Vai in Autorizzazioni → SMS → Consenti.\n4. Torna qui.\n\nSe non vedi \"Consenti impostazioni limitate\", prova prima una volta ad attivare gli SMS in Autorizzazioni, poi l\'opzione compare.</string>
     <string name="crash_restricted_open">Apri le impostazioni dell\'app</string>
-    <string name="tv_button_clips">🎬 Video · %1$d clip</string>
     <string name="park_cam_hint">Scatta una foto di dove lasci la moto (piano, numero del posto…)</string>
     <string name="park_photo_failed">Impossibile scattare la foto. Riprova.</string>
     <string name="tv_sync">Spostamento: %1$s s</string>
