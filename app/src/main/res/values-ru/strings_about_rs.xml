@@ -14,5 +14,5 @@
     <string name="rs_thanks_github">OpenCfMoto на GitHub</string>
     <string name="rs_thanks_discord">OpenCfMoto в Discord</string>
     <string name="rs_bikes_tested_title">Проверено с RideScreen AA</string>
-    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: работает всё, включая точные часы на дисплее, приложение Wear OS и дополнения для поездок. Тот же дисплей, другой обтекатель.\nZontes 368 G / 368 K / 368 E: работа подтверждена; изображение подходит для большого экрана уже при первом подключении.\nТестируются: Zontes 125M (подключение через точку доступа телефона) и Zontes 350D (QR Wi-Fi Direct). У тебя одна из них? Твой журнал поможет.</string>
+    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: работает всё, включая точные часы на дисплее, приложение Wear OS и дополнения для поездок. Тот же дисплей, другой обтекатель.\nZontes 368 G / 368 K / 368 E: работа подтверждена; изображение подходит для большого экрана уже при первом подключении.\nТестируются: Zontes 125M (подключение через точку доступа телефона) и Zontes 350D (QR Wi-Fi Direct). У тебя одна из них? Твой журнал поможет.\nGPX DZ2 (сообщено)</string>
 </resources>

@@ -14,5 +14,5 @@
     <string name="rs_thanks_github">GitHub의 OpenCfMoto</string>
     <string name="rs_thanks_discord">OpenCfMoto Discord</string>
     <string name="rs_bikes_tested_title">RideScreen AA로 테스트한 오토바이</string>
-    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: 모든 기능 동작 확인 — 계기판 시계 항상 정확, Wear OS 앱, 주행 기능 포함. 계기판은 같고 카울만 다릅니다.\nZontes 368 G / 368 K / 368 E: 동작 확인됨. 첫 연결부터 큰 화면에 영상이 맞습니다.\n테스트 중: Zontes 125M (휴대폰 핫스팟으로 연결) 및 Zontes 350D (Wi‑Fi Direct QR). 해당 모델이 있다면 로그를 보내 주세요.</string>
+    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: 모든 기능 동작 확인 — 계기판 시계 항상 정확, Wear OS 앱, 주행 기능 포함. 계기판은 같고 카울만 다릅니다.\nZontes 368 G / 368 K / 368 E: 동작 확인됨. 첫 연결부터 큰 화면에 영상이 맞습니다.\n테스트 중: Zontes 125M (휴대폰 핫스팟으로 연결) 및 Zontes 350D (Wi‑Fi Direct QR). 해당 모델이 있다면 로그를 보내 주세요.\nGPX DZ2 (보고됨)</string>
 </resources>
