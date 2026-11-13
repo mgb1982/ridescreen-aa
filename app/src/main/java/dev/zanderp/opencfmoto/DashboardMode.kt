@@ -93,7 +93,14 @@ object DashboardMode {
         prefs(ctx).edit().putInt("rpm_max" + (BikeScope.suffix(ctx)?.let { "#$it" } ?: ""), v).apply()
 
     fun design(ctx: Context): Design = Design.byId(BikeScope.getString(prefs(ctx), ctx, "design", null))
-    fun setDesign(ctx: Context, value: Design) = BikeScope.putString(prefs(ctx), ctx, "design", value.id)
+    fun setDesign(ctx: Context, value: Design) {
+        BikeScope.putString(prefs(ctx), ctx, "design", value.id)
+        // The window design needs Android Auto's video: the saver (video focus LOSS) can't apply there.
+        if (wanted) { val app = ctx.applicationContext; applySaver(app, saver(app) && !aaWindow(app)) }
+    }
+
+    /** 2.5 · the dashboard shows Android Auto in a window ([AaWindowLayout]). */
+    fun aaWindow(ctx: Context): Boolean = design(ctx) == Design.WINDOW
 
     /** Sample snapshot for the style picker; copied because the renderer reuses its live bitmap. */
     fun preview(ctx: Context, design: Design, width: Int, height: Int): android.graphics.Bitmap {
@@ -158,7 +165,7 @@ object DashboardMode {
     fun saver(ctx: Context) = BikeScope.getBoolean(prefs(ctx), ctx, "saver", false)
     fun setSaver(ctx: Context, on: Boolean) {
         BikeScope.putBoolean(prefs(ctx), ctx, "saver", on)
-        if (wanted) applySaver(ctx.applicationContext, on)   // takes effect now if the dashboard is up
+        if (wanted) applySaver(ctx.applicationContext, on && !aaWindow(ctx))   // now, if the dashboard is up (never with the AA window)
     }
 
     /** Open straight into the dashboard when the dash connects, instead of Android Auto. */
@@ -226,7 +233,7 @@ object DashboardMode {
     /** F1 · the AA session reached steady video: apply a LOSS the dashboard already asked for. */
     fun onAaSteadyVideo() {
         val app = saverApp ?: return
-        if (lossPending && SaverFocus.shouldApplyLoss(wanted, saver(app), AaVideoBridge.aaSteady)) {
+        if (lossPending && SaverFocus.shouldApplyLoss(wanted, saver(app) && !aaWindow(app), AaVideoBridge.aaSteady)) {
             LogBus.log("[DASHBOARD] saver: Android Auto video is steady and the dashboard is up — applying LOSS")
             applySaver(app, true)
         }
@@ -236,7 +243,7 @@ object DashboardMode {
     fun onAaSessionReset(why: String) {
         // The dashboard may still be on the dash (same pipeline, Android Auto restarted): owe a LOSS for
         // when the new session is steady. If the pipeline is rebuilt, onDashReady re-engages anyway.
-        lossPending = wanted && saverApp?.let { saver(it) } == true
+        lossPending = wanted && saverApp?.let { saver(it) && !aaWindow(it) } == true
         if (!AaVideoBridge.videoFocusHeld) return
         AaVideoBridge.videoFocusHeld = false
         LogBus.log("[DASHBOARD] saver: $why — focus back to GAIN; LOSS again once the dashboard is up")
@@ -270,8 +277,12 @@ object DashboardMode {
     private fun engage(ctx: Context, vp: VideoPipeline?, on: Boolean) {
         wanted = on
         val app = ctx.applicationContext
-        if (on && saver(app)) applySaver(app, true) else if (!on) applySaver(app, false)
-        vp?.setLiveLayer(if (on) liveBuilder(app) else null, if (on) { { signature(app) } } else null)
+        if (on && saver(app) && !aaWindow(app)) applySaver(app, true) else if (!on || aaWindow(app)) applySaver(app, false)
+        vp?.setLiveLayer(
+            if (on) liveBuilder(app) else null,
+            if (on) { { signature(app) } } else null,
+            if (on) { { aaWindow(app) } } else null,
+        )
         LogBus.log("[DASHBOARD] ${if (on) "on" else "off"} (theme ${theme(app).id})")
     }
 
