@@ -25,7 +25,7 @@ Community reports welcome in [Discord](https://discord.gg/KNTjJhmFZ6) so we can 
 | | |
 | --- | --- |
 | **Confirmed** | **CFMoto** · **Voge** · **Zontes** · **Moto Morini** · **Morbidelli** · **QJ Motor** · **Benelli** · **Rieju** · **GOES** / **Gladiator** (CFORCE rebadges) · **UM** (DSR 250 Rally) |
-| **Same Carbit / EasyConnect path — try Connect** | **Longjia** · **GPX** DZ2 (reported, not yet registered) · other TFT dashes with a pairing QR |
+| **Same Carbit / EasyConnect path — try Connect** | **Longjia** · **GPX** DZ2 (reported, no connection log yet) · other TFT dashes with a pairing QR |
 | **Experimental (SoftAP join only)** | **Kove** (Thinkerride SoftAP — phone AA may start; dash video not yet) |
 
 **📸 Dash showcase:** **[SHOWCASE.md](SHOWCASE.md)** — curated Android Auto photos from the community
@@ -90,7 +90,7 @@ Riders have projected Android Auto with these (US + international as noted):
 | **QJ Motor SRK250RD** (2026) | Community-confirmed — AA works; dash uses half-screen layout (unlike 800RR); buttons untested |
 | **QJ Motor SRK450RR** (2026) | Community-confirmed — AA works; dash uses half-screen layout (unlike 800RR); buttons untested |
 | **QJ Motor SRT 600** / **SRV600** | Community-confirmed (2026-08) — AA on dash (HW `SS655-L7` class); tune margins/fit for rounded panels |
-| **GPX DZ2** | Reported working by one user in Thailand (Nov 2026); not yet registered — dash with Carbit/EasyConnect pairing QR; reported full-screen, no side bars, auto-connect after the first QR scan; also reported: higher phone battery use than Carbit Ride |
+| **GPX DZ2** | Reported working by one user in Thailand (Nov 2026); no connection log yet — dash with Carbit/EasyConnect pairing QR; reported full-screen, no side bars, auto-connect after the first QR scan; also reported: higher phone battery use than Carbit Ride |
 | **QJ Motor 600SX / 550SX** (2026) | In progress — QR works (`qj-5G-*`, modelId 37501); use Setup → Wi‑Fi **AP** if Auto mis-picks P2P; clock reset → retest **2.0.10** (echo bike stamp) |
 
 ---
@@ -113,7 +113,7 @@ promote models to “confirmed.”
 | **Morbidelli** (formerly MBP) | **T1002VX** + **T352X** confirmed; other Carbit dashes welcome |
 | **Longjia** | e.g. **V-Bob 650** — Europe often uses **MotoFUN** / **Carbit Ride**. Unconfirmed; try Connect (or Mirror) if the dash shows a pairing QR. Close the official companion app first so it does not hold the link ports. |
 | **UM** | **DSR 250 Rally 2026** confirmed (Nicaragua) — same Carbit / EasyConnect QR path |
-| **GPX** | **DZ2** reported working by one user in Thailand (Nov 2026); not yet registered. Other Carbit dashes welcome |
+| **GPX** | **DZ2** reported working by one user in Thailand (Nov 2026); no connection log yet. Other Carbit dashes welcome |
 
 ### Experimental — not Carbit (Thinkerride)
 
