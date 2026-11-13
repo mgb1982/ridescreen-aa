@@ -11,6 +11,8 @@ import android.app.Service
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.os.BatteryManager
 import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import android.graphics.drawable.Icon
@@ -89,6 +91,7 @@ class AndroidAutoService : Service() {
                 ensureMediaButtons()
                 startWatchdog()
                 isRunning = true
+                pwrSessionStart()
                 ObdLive.start(this)
                 applyGpxScreenWake(true)
                 reacquireLocks()
@@ -117,6 +120,7 @@ class AndroidAutoService : Service() {
         startReceiver()
         startWatchdog()
         isRunning = true
+        pwrSessionStart()
         ObdLive.start(this)   // no-op unless the rider turned on continuous OBD reading
         return START_STICKY
     }
@@ -151,6 +155,7 @@ class AndroidAutoService : Service() {
                 try { tickTripLogging() } catch (e: Exception) { logTickFailure("TripLogging", e) }
                 try { renewExpiredLocks() } catch (e: Exception) { logTickFailure("LockRenewal", e) }
                 try { tickPocketDim() } catch (e: Exception) { logTickFailure("PocketDim", e) }
+                try { tickBatteryLog() } catch (e: Exception) { logTickFailure("BatteryLog", e) }
                 watchdogHandler.postDelayed(this, WATCHDOG_TICK_MS)
             }
         }, WATCHDOG_TICK_MS)
@@ -169,6 +174,73 @@ class AndroidAutoService : Service() {
         if (++persistTicks % 6 == 0) try { CrashGuard.persistSessionAsync(this) } catch (_: Exception) {}
     }
     private var persistTicks = 0
+
+    // Battery MEASUREMENT logs (log only, no behaviour): see [BatteryLog].
+    private var pwrStartAt = 0L
+    private var pwrStartLevel = -1
+    private var pwrLastAt = 0L
+    private var pwrParkedAt = 0L
+    private var pwrParkedLevel = -1
+    private var pwrParkedLogged25 = false
+    private var vidLastAt = 0L
+    private var vidLastFrames = -1L
+
+    /** Sticky ACTION_BATTERY_CHANGED: no permission, no receiver. Returns (percent or -1, charging). */
+    private fun readBattery(): Pair<Int, Boolean> {
+        val i = try { registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED)) } catch (_: Exception) { null }
+            ?: return Pair(-1, false)
+        val pct = BatteryLog.percent(i.getIntExtra(BatteryManager.EXTRA_LEVEL, -1), i.getIntExtra(BatteryManager.EXTRA_SCALE, -1))
+        val st = i.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
+        val charging = st == BatteryManager.BATTERY_STATUS_CHARGING || st == BatteryManager.BATTERY_STATUS_FULL ||
+            i.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) != 0
+        return Pair(pct, charging)
+    }
+
+    private fun pwrSessionStart() {
+        if (pwrStartAt != 0L) return
+        val now = android.os.SystemClock.elapsedRealtime()
+        val (lv, ch) = readBattery()
+        pwrStartAt = now; pwrStartLevel = lv; pwrLastAt = now
+        LogBus.log(BatteryLog.pwrLine("start", 0L, lv, lv, ch))
+    }
+
+    private fun pwrLog(label: String) {
+        if (pwrStartAt == 0L) return
+        val (lv, ch) = readBattery()
+        LogBus.log(BatteryLog.pwrLine(label, android.os.SystemClock.elapsedRealtime() - pwrStartAt, pwrStartLevel, lv, ch))
+    }
+
+    /** Parked-wait lines count from the moment of parking and give the change since then. */
+    private fun pwrParkedLog(label: String) {
+        if (pwrParkedAt == 0L) return
+        val (lv, ch) = readBattery()
+        LogBus.log(BatteryLog.pwrLine(label, android.os.SystemClock.elapsedRealtime() - pwrParkedAt, pwrParkedLevel, lv, ch))
+    }
+
+    private fun tickBatteryLog() {
+        val now = android.os.SystemClock.elapsedRealtime()
+        if (aaParked) {
+            if (!pwrParkedLogged25 && pwrParkedAt != 0L && now - pwrParkedAt >= BatteryLog.PARKED_AT_MS) {
+                pwrParkedLogged25 = true
+                pwrParkedLog("parked-wait")
+            }
+            return
+        }
+        if (pwrStartAt != 0L && BatteryLog.due(pwrLastAt, now, BatteryLog.PROJECTING_EVERY_MS)) {
+            pwrLastAt = now
+            pwrLog("projecting")
+        }
+        val p = pipeline
+        if (ConnectionState.phase != Phase.STREAMING || p == null) { vidLastFrames = -1L; return }
+        if (vidLastFrames < 0L) { vidLastFrames = p.pullStats()[0]; vidLastAt = now; return }
+        if (!BatteryLog.due(vidLastAt, now, BatteryLog.VIDEO_EVERY_MS)) return
+        val frames = p.pullStats()[0]
+        val power = VideoPrefs.power(this)
+        if (frames >= vidLastFrames) {
+            LogBus.log(BatteryLog.videoLine(BatteryLog.fps(frames - vidLastFrames, now - vidLastAt), power.fps, power.name))
+        }
+        vidLastFrames = frames; vidLastAt = now
+    }
 
     private fun tickWatchdog() {
         if (!AppSettings.autoRecovery(this)) return
@@ -276,6 +348,10 @@ class AndroidAutoService : Service() {
     private fun parkAa() {
         if (aaParked) return
         aaParked = true
+        pwrLog("parked")
+        pwrParkedAt = android.os.SystemClock.elapsedRealtime()
+        pwrParkedLevel = readBattery().first
+        pwrParkedLogged25 = false
         LogBus.log(
             if (sawStream) "[AA] bike Wi-Fi gone > ${GRACE_MS / 1000}s — parking Android Auto to save battery; watching for the bike"
             else "[AA] bike never linked in ${ParkPolicy.NEVER_LINKED_MS / 1000}s — parking Android Auto to save battery; watching for the bike",
@@ -297,6 +373,8 @@ class AndroidAutoService : Service() {
     private fun doResume() {
         if (!aaParked) return
         aaParked = false
+        pwrParkedLog("parked-wait resumed")
+        pwrParkedAt = 0L
         wifiDownSince = 0L
         resumeSteadyReached = false
         LogBus.log("[AA] bike Wi-Fi back — resuming Android Auto (auto attempt)")
@@ -778,6 +856,9 @@ class AndroidAutoService : Service() {
     }
 
     override fun onDestroy() {
+        if (aaParked) pwrParkedLog("parked-wait abandoned")
+        pwrLog("ended")
+        pwrStartAt = 0L; pwrParkedAt = 0L
         try { ObdLive.stop() } catch (_: Exception) {}
         isRunning = false
         aaParked = false
