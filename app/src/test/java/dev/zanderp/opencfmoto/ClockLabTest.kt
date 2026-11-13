@@ -87,18 +87,30 @@ class ClockLabTest {
     @Test
     fun clockWrongLineCarriesDelayThresholdAndResyncs() {
         val before = Triple(ClockLab.lastQueryTimeAfterMs, ClockLab.smartThresholdMs, ClockLab.resyncsThisBoot)
+        val beforeDash = ClockLab.lastDashBootEpochMs to ClockLab.connsThisBoot
         try {
             ClockLab.lastQueryTimeAfterMs = 2_050L
             ClockLab.smartThresholdMs = 2_200L
             ClockLab.resyncsThisBoot = 1
+            ClockLab.lastDashBootEpochMs = 0L
+            ClockLab.connsThisBoot = 0
             assertEquals(
-                "[RESYNC] rider fixed clock by hand (button) — last QUERY_TIME after 2050ms, threshold 2200ms, resyncs this boot 1",
+                "[RESYNC] rider fixed clock by hand (button) — last QUERY_TIME after 2050ms, threshold 2200ms, resyncs this boot 1, dash up ?, connection 0 of this boot",
                 ClockLab.clockWrongLine("button"),
+            )
+            // The dash booted 85 s before "now": the line says how long it has been up when the button is pressed.
+            ClockLab.lastDashBootEpochMs = 1_000_000L
+            ClockLab.connsThisBoot = 2
+            assertEquals(
+                "[RESYNC] rider fixed clock by hand (button) — last QUERY_TIME after 2050ms, threshold 2200ms, resyncs this boot 1, dash up ~85 s, connection 2 of this boot",
+                ClockLab.clockWrongLine("button", nowMs = 1_000_000L + 85_400L),
             )
         } finally {
             ClockLab.lastQueryTimeAfterMs = before.first
             ClockLab.smartThresholdMs = before.second
             ClockLab.resyncsThisBoot = before.third
+            ClockLab.lastDashBootEpochMs = beforeDash.first
+            ClockLab.connsThisBoot = beforeDash.second
         }
     }
 }

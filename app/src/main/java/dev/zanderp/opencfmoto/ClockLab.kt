@@ -64,10 +64,18 @@ object ClockLab {
     @Volatile var lastQueryTimeAfterMs: Long = -1L
     @Volatile var resyncsThisBoot: Int = 0
 
+    /** Estimated phone-clock time (epoch ms) when the dash booted (0 unknown) and connections this dash boot (log only). */
+    @Volatile var lastDashBootEpochMs: Long = 0L
+    @Volatile var connsThisBoot: Int = 0
+
     /** The line support looks for when the rider fixes the dash clock by hand ([source]: e.g. "button"). */
-    fun clockWrongLine(source: String): String =
-        "[RESYNC] rider fixed clock by hand ($source) — last QUERY_TIME after ${lastQueryTimeAfterMs}ms, " +
-            "threshold ${smartThresholdMs}ms, resyncs this boot $resyncsThisBoot"
+    fun clockWrongLine(source: String, nowMs: Long = System.currentTimeMillis()): String {
+        // Dash uptime *now* (the button is pressed long after the CLIENT_INFO that gave the boot time).
+        val up = if (lastDashBootEpochMs > 0L && nowMs >= lastDashBootEpochMs) "~${(nowMs - lastDashBootEpochMs) / 1000L} s" else "?"
+        return "[RESYNC] rider fixed clock by hand ($source) — last QUERY_TIME after ${lastQueryTimeAfterMs}ms, " +
+            "threshold ${smartThresholdMs}ms, resyncs this boot $resyncsThisBoot, " +
+            "dash up $up, connection $connsThisBoot of this boot"
+    }
 
     /** elapsedRealtime deadline while a dash-clock resync is pending or reconnecting (UI hint). */
     @Volatile var resyncBusyUntil: Long = 0L
