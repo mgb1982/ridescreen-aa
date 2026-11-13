@@ -21,6 +21,8 @@ object DashNight {
 
     fun note(body: String, nowMs: Long, log: (String) -> Unit) {
         val n = parse(body)
+        // Only changes are logged (and kept in the trace): a dash that repeats it must not flood either.
+        if (n != null && n == lastNight) { lastAtMs = nowMs; return }
         log("[NIGHT] dash says ${when (n) { true -> "NIGHT"; false -> "DAY"; null -> "? (unreadable: ${body.take(60)})" }}")
         if (n != null) { lastNight = n; lastAtMs = nowMs }
     }

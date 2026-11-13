@@ -19,11 +19,22 @@ class DashNightTest {
     }
 
     @Test fun noteLogsAndRemembers() {
+        DashNight.lastNight = null
         val lines = mutableListOf<String>()
         DashNight.note("{\"night\":true}", 1234L) { lines += it }
         assertEquals(listOf("[NIGHT] dash says NIGHT"), lines)
         assertEquals(true, DashNight.lastNight)
         assertEquals(1234L, DashNight.lastAtMs)
+    }
+
+    @Test fun aRepeatIsNotLoggedAgain() {
+        DashNight.lastNight = null
+        val lines = mutableListOf<String>()
+        DashNight.note("{\"night\":false}", 1L) { lines += it }
+        DashNight.note("{\"night\":false}", 2L) { lines += it }
+        DashNight.note("{\"night\":true}", 3L) { lines += it }
+        assertEquals(listOf("[NIGHT] dash says DAY", "[NIGHT] dash says NIGHT"), lines)
+        assertEquals(3L, DashNight.lastAtMs)
     }
 
     @Test fun traceKeepsNightLines() {
