@@ -748,6 +748,9 @@ class VideoPipeline(
     /** Compositor mode: attach an in-app phone preview surface (HudViewActivity). No-op otherwise. */
     fun setPreviewSurface(surface: Surface, w: Int, h: Int) = aaCompositor?.setPreview(surface, w, h)
 
+    /** Phone preview touch while it mirrors the dash; null when it does not (see AaCompositor.previewHit). */
+    fun previewHit(vx: Float, vy: Float, viewW: Int, viewH: Int): AaCompositor.MirrorHit? = aaCompositor?.previewHit(vx, vy, viewW, viewH)
+
     /** Compositor mode: the preview SurfaceView changed size (rotation / relayout). */
     fun updatePreviewSize(w: Int, h: Int) = aaCompositor?.updatePreviewSize(w, h)
 

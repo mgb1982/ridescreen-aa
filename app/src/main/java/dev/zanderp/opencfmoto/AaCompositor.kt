@@ -207,7 +207,10 @@ class AaCompositor(private val log: (String) -> Unit) {
         }
     }
 
-    private fun drawCard() {
+    /** Draws the card / live dashboard bitmap into the rect ([rx],[ry],[rw],[rh]) of the current target
+     *  (GL pixels, bottom-left origin). The bike canvas is (0,0,canvasW,canvasH); the phone preview
+     *  mirrors the same picture scaled into its own rect. */
+    private fun drawCard(rx: Int, ry: Int, rw: Int, rh: Int) {
         if (cardProg == 0) {
             cardProg = linkProgram(
                 "attribute vec4 aPos; attribute vec2 aTc; varying vec2 vTc; void main(){ gl_Position=aPos; vTc=aTc; }",
@@ -234,7 +237,9 @@ class AaCompositor(private val log: (String) -> Unit) {
         val h = if (inArea) areaHpx else canvasH
         val x = if (inArea) areaX else 0
         val y = if (inArea) canvasH - areaY - areaHpx else 0
-        GLES20.glViewport(x, y, w, h)
+        val sx = rw.toFloat() / canvasW
+        val sy = rh.toFloat() / canvasH
+        GLES20.glViewport(rx + (x * sx).toInt(), ry + (y * sy).toInt(), maxOf(1, (w * sx).toInt()), maxOf(1, (h * sy).toInt()))
         GLES20.glUseProgram(cardProg)
         cardQuad.position(0)
         GLES20.glVertexAttribPointer(cardPos, 2, GLES20.GL_FLOAT, false, 16, cardQuad)
@@ -653,11 +658,29 @@ class AaCompositor(private val log: (String) -> Unit) {
 
         // Welcome / goodbye card: replaces the AA frame on the bike output while it lasts.
         if (target === windowSurface && (cardUntil > android.os.SystemClock.uptimeMillis() || liveBuild != null)) {
-            drawCard()
-            if (cardUntil <= android.os.SystemClock.uptimeMillis() && liveBuild != null && hasContent && windowOn()) drawAaWindow()
+            drawCard(0, 0, canvasW, canvasH)
+            if (cardUntil <= android.os.SystemClock.uptimeMillis() && liveBuild != null && hasContent && windowOn()) drawAaWindow(0, 0, canvasW, canvasH)
             EGLExt.eglPresentationTimeANDROID(eglDisplay, target, System.nanoTime())
             EGL14.eglSwapBuffers(eglDisplay, target)
             return
+        }
+
+        // 2.6 · the phone preview mirrors what the dash shows (dashboard, AA window, welcome cards) instead of
+        // raw Android Auto. Same bitmap/texture, scaled into the canvas-aspect rect of the preview.
+        if (target === previewSurface) {
+            val now = android.os.SystemClock.uptimeMillis()
+            val mirror = previewW > 0 && previewH > 0 && canvasW > 0 && canvasH > 0 && cardTex != 0 && cardProg != 0 &&
+                (cardUntil > now || liveBuild != null)
+            previewMirror = mirror
+            if (mirror) {
+                val r = AaWindowLayout.fit(AaWindowLayout.Box(0, 0, previewW, previewH), canvasW, canvasH)
+                val ry = previewH - r.y - r.h
+                drawCard(r.x, ry, r.w, r.h)
+                if (cardUntil <= now && liveBuild != null && hasContent && windowOn()) drawAaWindow(r.x, ry, r.w, r.h)
+                EGLExt.eglPresentationTimeANDROID(eglDisplay, target, System.nanoTime())
+                EGL14.eglSwapBuffers(eglDisplay, target)
+                return
+            }
         }
 
         // FILL may compute a viewport taller/wider than the canvas (center-crop). Scissor so we
@@ -697,19 +720,49 @@ class AaCompositor(private val log: (String) -> Unit) {
         EGL14.eglSwapBuffers(eglDisplay, target)
     }
 
+    /** The preview drew the dash mirror on its last frame (set on the GL thread). */
+    @Volatile private var previewMirror = false
+
+    /** Result of a touch on the phone preview while it mirrors the dash. */
+    class MirrorHit(val onAndroidAuto: Boolean, val x: Int, val y: Int)
+
+    /**
+     * A touch at ([vx],[vy]) on a preview view of [viewW]x[viewH] that mirrors the dash. Null: the preview is
+     * not mirroring (use the plain Android Auto mapping). Else: where it lands, either on Android Auto (source
+     * coords) or on the dashboard / a bar (x,y = canvas point). Outside the picture is also a dashboard hit
+     * with negative x.
+     */
+    fun previewHit(vx: Float, vy: Float, viewW: Int, viewH: Int): MirrorHit? {
+        if (!previewMirror || canvasW <= 0 || canvasH <= 0 || viewW <= 0 || viewH <= 0) return null
+        val r = AaWindowLayout.fit(AaWindowLayout.Box(0, 0, viewW, viewH), canvasW, canvasH)
+        val rx = vx - r.x
+        val ry = vy - r.y
+        if (rx < 0f || ry < 0f || rx >= r.w || ry >= r.h) return MirrorHit(false, -1, -1)
+        val cx = (rx * canvasW / r.w).toInt()
+        val cy = (ry * canvasH / r.h).toInt()
+        val src = mapCanvasToSource(cx, cy)
+        return if (src != null) MirrorHit(true, src.first, src.second) else MirrorHit(false, cx, cy)
+    }
+
     private fun windowOn(): Boolean = windowCached && liveBuild != null
 
     /** The latched Android Auto frame, aspect-fit into the dashboard's window (GL thread, target current). */
-    private fun drawAaWindow() {
+    private fun drawAaWindow(rx: Int, ry: Int, rw: Int, rh: Int) {
         if (canvasW <= 0 || canvasH <= 0) return
         val win = AaWindowLayout.window(canvasW, canvasH)
         val contentW = if (bufW > 0) (bufW * cropU).toInt() else win.w
         val contentH = if (bufH > 0) (bufH * cropV).toInt() else win.h
         val f = AaWindowLayout.fit(win, contentW, contentH)
-        val glY = canvasH - f.y - f.h   // layout is top-left origin, GL viewports bottom-left
+        // layout is top-left origin, GL viewports bottom-left; the rect is the canvas (or its scaled mirror)
+        val sx = rw.toFloat() / canvasW
+        val sy = rh.toFloat() / canvasH
+        val gx = rx + (f.x * sx).toInt()
+        val gy = ry + ((canvasH - f.y - f.h) * sy).toInt()
+        val gw = maxOf(1, (f.w * sx).toInt())
+        val gh = maxOf(1, (f.h * sy).toInt())
         GLES20.glEnable(GLES20.GL_SCISSOR_TEST)
-        GLES20.glScissor(f.x, glY, f.w, f.h)
-        GLES20.glViewport(f.x, glY, f.w, f.h)
+        GLES20.glScissor(gx, gy, gw, gh)
+        GLES20.glViewport(gx, gy, gw, gh)
         GLES20.glUseProgram(program)
         quad.position(0)
         GLES20.glVertexAttribPointer(aPosition, 2, GLES20.GL_FLOAT, false, 16, quad)
