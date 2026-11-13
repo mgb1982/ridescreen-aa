@@ -393,6 +393,7 @@ class ControlsActivity : AppCompatActivity() {
         findViewById<View>(R.id.card_handlebar).visibility = hide
         findViewById<View>(R.id.pad_intro).visibility = hide
         findViewById<View>(R.id.tv_volume_hint).visibility = hide
+        if (!on) applySection()   // back from fullscreen: only the cards of this section (not all of them)
 
         val content = findViewById<LinearLayout>(R.id.controls_content)
         val pad = findViewById<View>(R.id.card_pad)

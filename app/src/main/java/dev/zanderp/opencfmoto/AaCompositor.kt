@@ -418,6 +418,7 @@ class AaCompositor(private val log: (String) -> Unit) {
             } finally {
                 previewSurface = EGL14.EGL_NO_SURFACE
                 previewW = 0; previewH = 0
+                previewMirror = false
                 latch.countDown()
             }
         }
@@ -734,6 +735,8 @@ class AaCompositor(private val log: (String) -> Unit) {
      */
     fun previewHit(vx: Float, vy: Float, viewW: Int, viewH: Int): MirrorHit? {
         if (!previewMirror || canvasW <= 0 || canvasH <= 0 || viewW <= 0 || viewH <= 0) return null
+        // A welcome / goodbye card is showing on the dash: touches do nothing (not Android Auto behind it).
+        if (cardUntil > android.os.SystemClock.uptimeMillis()) return MirrorHit(false, -1, -1)
         val r = AaWindowLayout.fit(AaWindowLayout.Box(0, 0, viewW, viewH), canvasW, canvasH)
         val rx = vx - r.x
         val ry = vy - r.y

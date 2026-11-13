@@ -16,15 +16,16 @@ object CuadroLogic {
     fun modeButtonsEnabled(connected: Boolean): Boolean = connected
 
     /** Where a touch gesture goes, decided at finger down and kept until it ends. */
-    enum class Target { ANDROID_AUTO, DASHBOARD, LEGACY }
+    enum class Target { ANDROID_AUTO, DASHBOARD, LEGACY, NONE }
 
     /**
      * [hitKnown]: the compositor says the preview mirrors the dash. [onAndroidAuto]: the touch is on the
      * Android Auto window. Unknown mirror: the plain Android Auto mapping (LEGACY).
      */
-    fun target(hitKnown: Boolean, onAndroidAuto: Boolean): Target = when {
+    fun target(hitKnown: Boolean, onAndroidAuto: Boolean, insideDash: Boolean = true): Target = when {
         !hitKnown -> Target.LEGACY
         onAndroidAuto -> Target.ANDROID_AUTO
+        !insideDash -> Target.NONE      // black bars around the picture, or a welcome card: nothing happens
         else -> Target.DASHBOARD
     }
 

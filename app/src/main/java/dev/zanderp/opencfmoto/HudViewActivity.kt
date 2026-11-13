@@ -364,12 +364,14 @@ class HudViewActivity : AppCompatActivity() {
         if (gpxPreview) return
         if (e.actionMasked == MotionEvent.ACTION_DOWN) {
             val hit = AaVideoBridge.pipeline?.previewHit(e.x, e.y, surface.width, surface.height)
-            gestureTarget = CuadroLogic.target(hit != null, hit?.onAndroidAuto == true)
+            // Taps on the black bars around the picture (x < 0) or on a card do nothing.
+            gestureTarget = CuadroLogic.target(hit != null, hit?.onAndroidAuto == true, insideDash = hit == null || hit.x >= 0)
             downX = e.x
             downY = e.y
             dashMoved = false
             lastSrc.clear()
         }
+        if (gestureTarget == CuadroLogic.Target.NONE) return
         if (gestureTarget == CuadroLogic.Target.DASHBOARD) {
             onDashboardTouch(e)
             return

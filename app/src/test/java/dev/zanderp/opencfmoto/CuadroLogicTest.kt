@@ -23,6 +23,8 @@ class CuadroLogicTest {
         assertEquals(CuadroLogic.Target.LEGACY, CuadroLogic.target(false, true))
         assertEquals(CuadroLogic.Target.ANDROID_AUTO, CuadroLogic.target(true, true))
         assertEquals(CuadroLogic.Target.DASHBOARD, CuadroLogic.target(true, false))
+        assertEquals(CuadroLogic.Target.NONE, CuadroLogic.target(true, false, insideDash = false))
+        assertEquals(CuadroLogic.Target.ANDROID_AUTO, CuadroLogic.target(true, true, insideDash = false))
     }
 
     @Test fun tapVersusDrag() {

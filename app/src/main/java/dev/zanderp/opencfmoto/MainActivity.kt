@@ -1262,6 +1262,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        HubHooks.stopEverything = null
         DashRemote.setTypeOnPhoneHandler(null)
         LogBus.listener = null
         ConnectionState.listener = null
