@@ -41,13 +41,9 @@ class SetupActivity : AppCompatActivity() {
     private lateinit var resDesc: TextView
     private lateinit var dpiDesc: TextView
     private lateinit var themeDesc: TextView
-    private lateinit var dblTapDesc: TextView
-    private lateinit var holdsDesc: TextView
-    private lateinit var holdDesc: TextView
     private lateinit var nonTouchDesc: TextView
     private lateinit var forceTouchDesc: TextView
     private lateinit var profileDesc: TextView
-    private lateinit var btStatus: TextView
     private lateinit var resumeBtn: MaterialButton
 
     private val importSettingsLauncher = registerForActivityResult(
@@ -78,11 +74,10 @@ class SetupActivity : AppCompatActivity() {
         if (manifest == null) { Toast.makeText(this, error, Toast.LENGTH_LONG).show(); return@registerForActivityResult }
         val made = java.text.DateFormat.getDateTimeInstance().format(java.util.Date(manifest.optLong("exportedAt")))
         AlertDialog.Builder(this)
-            .setTitle("Restore full backup?")
-            .setMessage("Backup from $made (RideScreen AA ${manifest.optString("appVersion")}).\n\n" +
-                "It replaces this phone's settings, trips, places and bikes with the backup's. The app restarts afterwards.")
+            .setTitle(R.string.backup_restore_title)
+            .setMessage(getString(R.string.backup_restore_message, made, manifest.optString("appVersion")))
             .setNegativeButton(android.R.string.cancel, null)
-            .setPositiveButton("Restore") { _, _ ->
+            .setPositiveButton(R.string.backup_restore_confirm) { _, _ ->
                 val result = try { FullBackup.restore(this, uri) } catch (e: Exception) { FullBackup.Result(false, "Restore failed: ${e.message}") }
                 Toast.makeText(this, result.message, Toast.LENGTH_LONG).show()
                 if (result.ok) window.decorView.postDelayed({ FullBackup.restart(this) }, 1_500)
@@ -112,13 +107,9 @@ class SetupActivity : AppCompatActivity() {
         resDesc = findViewById(R.id.res_desc)
         dpiDesc = findViewById(R.id.dpi_desc)
         themeDesc = findViewById(R.id.theme_desc)
-        dblTapDesc = findViewById(R.id.dbltap_desc)
-        holdsDesc = findViewById(R.id.holds_desc)
-        holdDesc = findViewById(R.id.hold_desc)
         nonTouchDesc = findViewById(R.id.nontouch_desc)
         forceTouchDesc = findViewById(R.id.forcetouch_desc)
         profileDesc = findViewById(R.id.profile_desc)
-        btStatus = findViewById(R.id.bt_status)
         resumeBtn = findViewById(R.id.resume_perm_btn)
 
         step1Btn.setOnClickListener { openAndroidAuto() }
@@ -200,17 +191,6 @@ class SetupActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.theme_auto).setOnClickListener { setMapTheme(MapTheme.AUTO) }
         findViewById<MaterialButton>(R.id.theme_day).setOnClickListener { setMapTheme(MapTheme.DAY) }
         findViewById<MaterialButton>(R.id.theme_night).setOnClickListener { setMapTheme(MapTheme.NIGHT) }
-        findViewById<MaterialButton>(R.id.dbltap_fast).setOnClickListener { setDoubleTap(DoubleTapDelay.FAST) }
-        findViewById<MaterialButton>(R.id.dbltap_normal).setOnClickListener { setDoubleTap(DoubleTapDelay.NORMAL) }
-        findViewById<MaterialButton>(R.id.dbltap_slow).setOnClickListener { setDoubleTap(DoubleTapDelay.SLOW) }
-        findViewById<MaterialButton>(R.id.dbltap_very_slow).setOnClickListener {
-            setDoubleTap(DoubleTapDelay.VERY_SLOW)
-        }
-        findViewById<MaterialButton>(R.id.holds_on).setOnClickListener { setHoldsEnabled(true) }
-        findViewById<MaterialButton>(R.id.holds_off).setOnClickListener { setHoldsEnabled(false) }
-        findViewById<MaterialButton>(R.id.hold_short).setOnClickListener { setLongPress(LongPressDelay.SHORT) }
-        findViewById<MaterialButton>(R.id.hold_normal).setOnClickListener { setLongPress(LongPressDelay.NORMAL) }
-        findViewById<MaterialButton>(R.id.hold_long).setOnClickListener { setLongPress(LongPressDelay.LONG) }
         findViewById<MaterialButton>(R.id.autoconnect_on).setOnClickListener { setAutoConnect(true) }
         findViewById<MaterialButton>(R.id.autoconnect_off).setOnClickListener { setAutoConnect(false) }
         findViewById<MaterialButton>(R.id.recovery_on).setOnClickListener { setAutoRecovery(true) }
@@ -306,12 +286,103 @@ class SetupActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.full_backup_restore).setOnClickListener {
             fullBackupRestoreLauncher.launch(arrayOf("application/zip", "application/octet-stream", "*/*"))
         }
-        findViewById<MaterialButton>(R.id.bt_settings_btn).setOnClickListener { BluetoothHelper.openBluetoothSettings(this) }
         resumeBtn.setOnClickListener { requestOverlayPermission() }
 
         findViewById<MaterialButton>(R.id.setup_done_btn).setOnClickListener {
             markSeen(this)
             finish()
+        }
+
+        wireResets()
+        wireWatch()
+        applySection()
+    }
+
+    // ── Settings hub (SettingsHubActivity opens this screen with a `section` extra) ───────────────
+
+    /** Watch (Wear OS) card: guide link. The watch-app updater stays in Help (needs MainActivity's launcher). */
+    private fun wireWatch() {
+        findViewById<MaterialButton>(R.id.btn_watch_guide).setOnClickListener {
+            HelpMenu.openUrl(this, HelpMenu.WATCH_GUIDE_URL)
+        }
+        findViewById<MaterialButton>(R.id.btn_dvr_probe).setOnClickListener { DvrProbe.show(this) }
+    }
+
+    /** Show only the cards of the requested section; no extra = the old full screen. */
+    private fun applySection() {
+        val section = SettingsSection.fromKey(intent.getStringExtra(SettingsSection.EXTRA))
+        val cards = listOf(
+            SettingsBlock.START to R.id.card_start,
+            SettingsBlock.CONNECTION_OPTIONS to R.id.card_connection,
+            SettingsBlock.RESUME to R.id.card_resume,
+            SettingsBlock.DISPLAY_MAIN to R.id.card_display,
+            SettingsBlock.THEME to R.id.card_theme,
+            SettingsBlock.POWER to R.id.card_power,
+            SettingsBlock.ROUTE_EXTRAS to R.id.card_route,
+            SettingsBlock.WATCH to R.id.card_watch,
+            SettingsBlock.PRIVACY to R.id.card_privacy,
+            SettingsBlock.ADV_PROFILE to R.id.card_adv_profile,
+            SettingsBlock.ADV_LAYOUT to R.id.card_adv_layout,
+            SettingsBlock.ADV_RESOLUTION to R.id.card_adv_res,
+            SettingsBlock.ADV_TOUCH to R.id.card_adv_touch,
+            SettingsBlock.ADV_TRANSPORT to R.id.card_adv_transport,
+            SettingsBlock.ADV_RECOVERY to R.id.card_adv_recovery,
+            SettingsBlock.ADV_CLOCKLAB to R.id.card_adv_clocklab,
+            SettingsBlock.ADV_DIAGNOSTICS to R.id.card_adv_diag,
+            SettingsBlock.ADV_BIKES to R.id.card_adv_bikes,
+        )
+        for ((block, id) in cards) {
+            findViewById<android.view.View>(id).visibility =
+                if (SettingsSections.visible(block, section)) android.view.View.VISIBLE else android.view.View.GONE
+        }
+        // The reset buttons only make sense inside Advanced (or the legacy full screen).
+        if (section == null) return
+        findViewById<TextView>(R.id.setup_title).setText(section.titleRes)
+        findViewById<android.view.View>(R.id.setup_subtitle).visibility = android.view.View.GONE
+        findViewById<android.view.View>(R.id.setup_done_btn).visibility = android.view.View.GONE
+        findViewById<android.view.View>(R.id.adv_notice).visibility =
+            if (section == SettingsSection.ADVANCED) android.view.View.VISIBLE else android.view.View.GONE
+    }
+
+    /**
+     * "Back to defaults" per Advanced block: uses the same setters as the buttons above, with each
+     * pref's own default, so only that block's keys change. Asks first.
+     */
+    private fun wireResets() {
+        fun reset(buttonId: Int, action: () -> Unit) {
+            findViewById<MaterialButton>(buttonId).setOnClickListener {
+                AlertDialog.Builder(this)
+                    .setMessage(R.string.settings_reset_confirm)
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .setPositiveButton(android.R.string.ok) { _, _ ->
+                        action()
+                        refreshOptions()
+                        toast(getString(R.string.settings_reset_done))
+                    }
+                    .show()
+            }
+        }
+        reset(R.id.reset_profile) { ProfilePrefs.set(this, ProfileOverride.AUTO) }
+        reset(R.id.reset_layout) {
+            VideoPrefs.setFit(this, ScreenFit.FILL)
+            VideoPrefs.setMirrorOrientation(this, MirrorOrientation.MATCH_DASH)
+            ScreenMargins.reset(this)
+        }
+        reset(R.id.reset_res) {
+            VideoPrefs.setResolution(this, ResolutionMode.AUTO)
+            VideoPrefs.setDpiOverride(this, null)
+        }
+        reset(R.id.reset_touch) {
+            AppSettings.setForceNonTouch(this, false)
+            AppSettings.setForceTouch(this, false)
+        }
+        reset(R.id.reset_transport) { AppSettings.setTransport(this, WifiTransport.AUTO) }
+        reset(R.id.reset_recovery) { AppSettings.setAutoRecovery(this, true) }
+        reset(R.id.reset_clocklab) {
+            AppSettings.applyClockLabPreset(this, ClockLabPreset.LATEST)
+            AppSettings.setKeepWifiAfterDisconnect(this, false)
+            AppSettings.setClockResyncMode(this, ClockResyncMode.SMART)
+            AppSettings.setSmartThresholdMs(this, ClockLab.DEFAULT_SMART_THRESHOLD_MS)
         }
     }
 
@@ -442,30 +513,6 @@ class SetupActivity : AppCompatActivity() {
         Toast.makeText(this, getString(R.string.setup_toast_map_theme, getString(theme.labelRes)), Toast.LENGTH_SHORT).show()
     }
 
-    /** Button timing applies live — the next press uses the new window. */
-    private fun setDoubleTap(delay: DoubleTapDelay) {
-        ButtonTimingPrefs.setDoubleTap(this, delay)
-        refreshOptions()
-        Toast.makeText(this, getString(R.string.setup_toast_dbl_tap, getString(delay.labelRes)), Toast.LENGTH_SHORT).show()
-    }
-
-    private fun setLongPress(delay: LongPressDelay) {
-        ButtonTimingPrefs.setLongPress(this, delay)
-        refreshOptions()
-        Toast.makeText(this, getString(R.string.setup_toast_hold, getString(delay.labelRes)), Toast.LENGTH_SHORT).show()
-    }
-
-    private fun setHoldsEnabled(on: Boolean) {
-        ButtonTimingPrefs.setHoldsEnabled(this, on)
-        refreshOptions()
-        Toast.makeText(
-            this,
-            if (on) "Hold detection on"
-            else "Hold detection off — long presses count as taps / ×2",
-            Toast.LENGTH_SHORT,
-        ).show()
-    }
-
     private fun setAutoConnect(on: Boolean) {
         AppSettings.setAutoConnect(this, on)
         refreshOptions()
@@ -584,9 +631,6 @@ class SetupActivity : AppCompatActivity() {
         val power = VideoPrefs.power(this)
         val res = VideoPrefs.resolution(this)
         val theme = NightPrefs.theme(this)
-        val dbl = ButtonTimingPrefs.doubleTap(this)
-        val holdsOn = ButtonTimingPrefs.holdsEnabled(this)
-        val hold = ButtonTimingPrefs.longPress(this)
         qualityDesc.text = getString(quality.labelRes)
         fitDesc.text = getString(fit.labelRes)
         mirrorOrientDesc.text = getString(R.string.setup_mirror_orientation_desc) +
@@ -601,13 +645,6 @@ class SetupActivity : AppCompatActivity() {
             if (trigName != null) getString(R.string.setup_bt_trigger_set, trigName)
             else getString(R.string.setup_bt_trigger_none)
         themeDesc.text = getString(theme.labelRes)
-        dblTapDesc.text = getString(dbl.labelRes)
-        holdsDesc.text = if (holdsOn) {
-            getString(R.string.setup_on_press_and_hold_can_fire_hold_gestures)
-        } else {
-            getString(R.string.setup_holds_off_desc)
-        }
-        holdDesc.text = if (holdsOn) getString(hold.labelRes) else getString(R.string.pref_hold_ignored)
         nonTouchDesc.text = if (AppSettings.forceNonTouch(this))
             getString(R.string.setup_nontouch_on_desc)
         else
@@ -655,18 +692,6 @@ class SetupActivity : AppCompatActivity() {
             R.id.theme_auto to MapTheme.AUTO,
             R.id.theme_day to MapTheme.DAY,
             R.id.theme_night to MapTheme.NIGHT)
-        highlight(dbl,
-            R.id.dbltap_fast to DoubleTapDelay.FAST,
-            R.id.dbltap_normal to DoubleTapDelay.NORMAL,
-            R.id.dbltap_slow to DoubleTapDelay.SLOW,
-            R.id.dbltap_very_slow to DoubleTapDelay.VERY_SLOW)
-        highlight(holdsOn,
-            R.id.holds_on to true,
-            R.id.holds_off to false)
-        highlight(hold,
-            R.id.hold_short to LongPressDelay.SHORT,
-            R.id.hold_normal to LongPressDelay.NORMAL,
-            R.id.hold_long to LongPressDelay.LONG)
 
         highlight(AppSettings.autoConnect(this),
             R.id.autoconnect_on to true,
@@ -738,11 +763,6 @@ class SetupActivity : AppCompatActivity() {
         highlight(telemetry, R.id.telemetry_on to true, R.id.telemetry_off to false)
     }
 
-    /** Refresh the Bluetooth pairing status line shown in the helper card. */
-    private fun refreshBluetooth() {
-        btStatus.text = BluetoothHelper.status(this).describe(this)
-    }
-
     /** Paint the segment matching [selected] in brand color; the rest stay neutral tonal. */
     private fun <T> highlight(selected: T, vararg pairs: Pair<Int, T>) {
         val onColor = ContextCompat.getColor(this, R.color.brand_orange)
@@ -761,7 +781,6 @@ class SetupActivity : AppCompatActivity() {
         super.onResume()
         refresh()
         refreshOptions()
-        refreshBluetooth()
     }
 
     private fun refresh() {
