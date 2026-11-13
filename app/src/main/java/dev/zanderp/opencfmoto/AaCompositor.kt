@@ -140,11 +140,14 @@ class AaCompositor(private val log: (String) -> Unit) {
     // latest Android Auto frame, aspect-fit (nothing cropped) into [AaWindowLayout.window]. Asked each
     // frame, so switching the dashboard design takes effect at once.
     @Volatile private var aaWindow: () -> Boolean = { false }
+    /** [aaWindow] as of the last live tick (8 Hz): read every frame without touching the prefs. */
+    @Volatile private var windowCached = false
 
     /** Turn the live layer on ([build] runs on the GL thread each tick) or off (null: back to Android Auto). */
     fun setLiveLayer(build: ((Int, Int) -> Bitmap?)?, sig: (() -> Any?)? = null, window: (() -> Boolean)? = null) {
         handler.post {
             aaWindow = window ?: { false }
+            windowCached = try { window?.invoke() ?: false } catch (_: Exception) { false }
             handler.removeCallbacks(liveTick)
             liveSig = sig
             liveForce = true
@@ -163,6 +166,7 @@ class AaCompositor(private val log: (String) -> Unit) {
     private val liveTick = object : Runnable {
         override fun run() {
             val build = liveBuild ?: return
+            windowCached = try { aaWindow() } catch (_: Exception) { false }
             if (!linkIdle && canvasW > 0 && canvasH > 0 && windowSurface != EGL14.EGL_NO_SURFACE &&
                 cardUntil <= android.os.SystemClock.uptimeMillis()) {
                 // The dashboard fills the whole bike canvas: rider margins are for Android Auto, and
@@ -444,6 +448,16 @@ class AaCompositor(private val log: (String) -> Unit) {
      */
     fun mapCanvasToSource(cx: Int, cy: Int): Pair<Int, Int>? {
         if (vpW == 0 || vpH == 0 || srcW == 0 || srcH == 0) return null
+        if (liveBuild != null && cardUntil <= android.os.SystemClock.uptimeMillis()) {
+            // Custom dashboard on the dash: only a touch inside the Android Auto window goes to Android Auto.
+            if (!windowOn() || canvasW <= 0 || canvasH <= 0) return null
+            val win = AaWindowLayout.window(canvasW, canvasH)
+            val f = AaWindowLayout.fit(win, if (bufW > 0) (bufW * cropU).toInt() else win.w, if (bufH > 0) (bufH * cropV).toInt() else win.h)
+            val wx = cx - f.x
+            val wy = cy - f.y
+            if (wx < 0 || wy < 0 || wx >= f.w || wy >= f.h) return null
+            return (wx.toLong() * srcW / f.w).toInt().coerceIn(0, srcW - 1) to (wy.toLong() * srcH / f.h).toInt().coerceIn(0, srcH - 1)
+        }
         val rx = cx - vpX
         val ry = cy - vpY
         if (rx < 0 || ry < 0 || rx >= vpW || ry >= vpH) return null
@@ -683,7 +697,7 @@ class AaCompositor(private val log: (String) -> Unit) {
         EGL14.eglSwapBuffers(eglDisplay, target)
     }
 
-    private fun windowOn(): Boolean = try { aaWindow() } catch (_: Exception) { false }
+    private fun windowOn(): Boolean = windowCached && liveBuild != null
 
     /** The latched Android Auto frame, aspect-fit into the dashboard's window (GL thread, target current). */
     private fun drawAaWindow() {
