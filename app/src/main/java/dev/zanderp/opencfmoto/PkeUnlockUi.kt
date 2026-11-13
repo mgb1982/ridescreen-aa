@@ -231,7 +231,10 @@ object PkeUnlockUi {
     internal fun toastLength(res: PkeUnlock.Result) = if (res.ok && !res.mismatch) Toast.LENGTH_SHORT else Toast.LENGTH_LONG
 
     internal fun message(ctx: Context, res: PkeUnlock.Result): String {
-        if (res.mismatch) return ctx.getString(if (res.lockedAfter == true) R.string.pke_state_left_locked else R.string.pke_state_left_unlocked)
+        if (res.mismatch) {
+            val left = PkeReply.leftLocked(res.action?.let { PkeUnlock.expectedLocked(it) }, res.lockedAfter)
+            return ctx.getString(if (left) R.string.pke_state_left_locked else R.string.pke_state_left_unlocked)
+        }
         if (res.ok) return ctx.getString(R.string.pke_unlock_sent)
         return ctx.getString(
             when (res.failure) {

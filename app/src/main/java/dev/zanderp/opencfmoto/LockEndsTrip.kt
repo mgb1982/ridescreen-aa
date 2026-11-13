@@ -58,6 +58,11 @@ object LockEndsTrip {
     fun after(ctx: Context, action: PkeUnlock.Action, res: PkeUnlock.Result) {
         if (action == PkeUnlock.Action.UNLOCK && res.ok) LockHold.release(ctx, "unlocked from the app")
         if (action != PkeUnlock.Action.LOCK) return
+        if (res.pending) {
+            // Case 20261113: a write is not a lock. Wait for the box's state before saving or stopping anything.
+            LogBus.log("[PKE] lock sent, waiting for the box to confirm before saving the parking spot")
+            return
+        }
         val app = ctx.applicationContext
         val speed = speedKmh(app)
         val engine = PkeBattery.engineState(app)

@@ -94,11 +94,15 @@ object PkeUnlock {
      * [mismatch] means the box confirmed the command but the bike ended up the other way round
      * (case 20261029: a confirmed 'lock' read back as unlocked). Never retried automatically.
      */
-    class Result(val ok: Boolean, val failure: Failure?, val action: Action? = null, val lockedAfter: Boolean? = null) {
-        val mismatch: Boolean get() {
-            val want = PkeUnlock.expectedLocked(action ?: return false) ?: return false
-            return lockedAfter != null && lockedAfter != want
-        }
+    class Result(
+        val ok: Boolean, val failure: Failure?, val action: Action? = null, val lockedAfter: Boolean? = null,
+        /** The box answered `0` to the order (see [PkeReply]). */
+        val rejected: Boolean = false,
+        /** The state is still being re-checked in the background (4 s / 8 s); nothing confirmed yet. */
+        val pending: Boolean = false,
+    ) {
+        val mismatch: Boolean get() =
+            PkeReply.mismatch(action?.let { PkeUnlock.expectedLocked(it) }, lockedAfter, rejected)
     }
 
     internal fun expectedLocked(a: Action): Boolean? = when (a) { Action.LOCK -> true; Action.UNLOCK -> false; else -> null }
@@ -350,6 +354,9 @@ object PkeUnlock {
             val reply = link.replies.poll(1_500, TimeUnit.MILLISECONDS)
             if (reply == null) log("no reply to '${action.label}' within 1.5 s (the box may still have acted — check the bike)")
             else log("timing: action reply after ${SystemClock.elapsedRealtime() - tWrite} ms")
+            val rejected = PkeReply.rejected(reply, action.code)
+            if (rejected) log("the box REJECTED '${action.label}' (answer 0)" +
+                if (btPassword(ctx).isEmpty()) " — no Bluetooth password set: this bike may need it" else " — check the Bluetooth password")
             log("timing: total ${SystemClock.elapsedRealtime() - t0} ms")
             val want = expectedLocked(action)
             var after: Boolean? = null
@@ -357,7 +364,10 @@ object PkeUnlock {
                 after = readStateAt(link, pke, tWrite, STATE_CHECKS_MS[0])
                 logState(action, after, want, STATE_CHECKS_MS[0])
                 if (after != null && after == want) PkeBattery.noteLocked(ctx, after)
-                else if (after != null && link.alive) {
+                else if (rejected) {
+                    // Answer 0: nothing to wait for. Keep the read-back as the truth and tell the rider now.
+                    if (after != null) PkeBattery.noteLocked(ctx, after)
+                } else if (after != null && link.alive) {
                     // The box can take more than 1.5 s to report the new state (case 20261030: a lock
                     // confirmed by the box read back "unlocked", the bike was locked). Re-check on the same
                     // link in the background; the rider sees the result now, a warning only if it holds.
@@ -369,7 +379,7 @@ object PkeUnlock {
                     after = null
                 }
             }
-            return Result(ok, if (ok) null else Failure.NO_ANSWER, action, after)
+            return Result(ok, if (ok) null else Failure.NO_ANSWER, action, after, rejected = rejected, pending = handedOff)
         } finally {
             if (!handedOff) {
                 runCatching { link.gatt.disconnect() }; runCatching { link.gatt.close() }
@@ -417,7 +427,13 @@ object PkeUnlock {
                 for (at in STATE_CHECKS_MS.drop(1)) {
                     val got = readStateAt(link, pke, tWrite, at)
                     if (got != null) last = got
-                    if (got == want) { logState(action, got, want, at, " — confirmed late"); PkeBattery.noteLocked(app, got); return@Thread }
+                    if (got == want) {
+                        logState(action, got, want, at, " — confirmed late")
+                        PkeBattery.noteLocked(app, got)
+                        // The parking spot / end of ride waited for this confirmation (LockEndsTrip).
+                        try { LockEndsTrip.after(app, action, Result(true, null, action, got)) } catch (e: Exception) { log("after-lock step failed: $e") }
+                        return@Thread
+                    }
                     logState(action, got, want, at)
                 }
                 val final = last
