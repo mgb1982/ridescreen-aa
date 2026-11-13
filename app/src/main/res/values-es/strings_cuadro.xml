@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cuadro_title">Cuadro</string>
+    <string name="cuadro_back_desc">Volver</string>
+    <string name="cuadro_fullscreen_desc">Pantalla completa</string>
+    <string name="cuadro_mode_aa">Android Auto</string>
+    <string name="cuadro_mode_dashboard">Dashboard</string>
+    <string name="cuadro_mode_map">Mapa</string>
+    <string name="cuadro_connect_first">Conecta la moto primero</string>
+    <string name="cuadro_hint_disconnected">Conecta la moto para ver aquí lo mismo que ve el cuadro. O abre el mapa para una vista previa sin la moto.</string>
+    <string name="cuadro_pad_handle_open">Mando ▾</string>
+    <string name="cuadro_pad_handle_closed">Mando ▴</string>
+    <string name="cuadro_pad_voice">🎙 Voz</string>
+    <string name="cuadro_knob_back_desc">Rueda atrás</string>
+    <string name="cuadro_knob_fwd_desc">Rueda adelante</string>
+    <string name="cuadro_up_desc">Arriba</string>
+    <string name="cuadro_down_desc">Abajo</string>
+    <string name="cuadro_left_desc">Izquierda</string>
+    <string name="cuadro_right_desc">Derecha</string>
+    <string name="cuadro_ok_desc">OK</string>
+    <string name="cuadro_bike_back_desc">Atrás</string>
+    <string name="cuadro_bike_home_desc">Inicio</string>
+    <string name="cuadro_voice_desc">Asistente de voz</string>
+    <string name="cuadro_fullscreen_toast">Pantalla completa — pulsa Atrás para salir</string>
+    <string name="cuadro_aa_needs_bike">Los controles de Android Auto necesitan la moto conectada</string>
+    <string name="cuadro_map_preview">Vista previa del mapa</string>
+    <string name="cuadro_map_ui_failed">No se pudo abrir el mapa</string>
+    <string name="cuadro_map_load_failed">No se pudo cargar el mapa — inténtalo de nuevo desde el centro de mapas</string>
+</resources>

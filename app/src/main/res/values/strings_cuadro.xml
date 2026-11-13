@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cuadro_title">Dash view</string>
+    <string name="cuadro_back_glyph" translatable="false">←</string>
+    <string name="cuadro_back_desc">Back</string>
+    <string name="cuadro_fullscreen_desc">Full screen</string>
+    <string name="cuadro_mode_aa">Android Auto</string>
+    <string name="cuadro_mode_dashboard">Dashboard</string>
+    <string name="cuadro_mode_map">Map</string>
+    <string name="cuadro_connect_first">Connect the bike first</string>
+    <string name="cuadro_hint_disconnected">Connect the bike to see here the same as the dash. Or open the map for a preview without the bike.</string>
+    <string name="cuadro_pad_handle_open">Pad ▾</string>
+    <string name="cuadro_pad_handle_closed">Pad ▴</string>
+    <string name="cuadro_pad_voice">🎙 Voice</string>
+    <string name="cuadro_knob_back_desc">Knob back</string>
+    <string name="cuadro_knob_fwd_desc">Knob forward</string>
+    <string name="cuadro_up_desc">Up</string>
+    <string name="cuadro_down_desc">Down</string>
+    <string name="cuadro_left_desc">Left</string>
+    <string name="cuadro_right_desc">Right</string>
+    <string name="cuadro_ok_desc">OK</string>
+    <string name="cuadro_bike_back_desc">Back</string>
+    <string name="cuadro_bike_home_desc">Home</string>
+    <string name="cuadro_voice_desc">Voice assistant</string>
+    <string name="cuadro_fullscreen_toast">Fullscreen — press Back to exit</string>
+    <string name="cuadro_aa_needs_bike">AA controls need a bike connection</string>
+    <string name="cuadro_map_preview">Map preview</string>
+    <string name="cuadro_map_ui_failed">Map UI failed to open</string>
+    <string name="cuadro_map_load_failed">Could not load map — try again from Map hub</string>
+</resources>
