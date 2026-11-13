@@ -216,6 +216,12 @@
             android:name=".AboutActivity"
             android:exported="false" />
         <activity
+            android:name=".TripsHubActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BikeHubActivity"
+            android:exported="false" />
+        <activity
             android:name=".ChronoActivity"
             android:exported="false" />
         <service

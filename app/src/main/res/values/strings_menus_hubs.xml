@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">Home</string>
+    <string name="tab_trips">Trips</string>
+    <string name="tab_bike">Bike</string>
+    <string name="tab_settings">Settings</string>
+    <string name="hub_map">Map and routes</string>
+    <string name="hub_sub_map">Free ride, routes and GPX</string>
+    <string name="hub_year">Year in review</string>
+    <string name="hub_sub_year">Your km, best ride and zone</string>
+    <string name="hub_sub_trips_list">All your rides</string>
+    <string name="hub_sub_garage">Your bikes and QR</string>
+    <string name="hub_key_sub">Keyless key (PKE)</string>
+    <string name="hub_sub_obd">Live reading and reader test</string>
+    <string name="hub_sub_crash">and black box</string>
+</resources>
