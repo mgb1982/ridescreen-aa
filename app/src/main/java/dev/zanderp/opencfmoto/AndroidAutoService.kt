@@ -783,6 +783,7 @@ class AndroidAutoService : Service() {
     }
 
     override fun onDestroy() {
+        ObdLive.linkLost = false   // static: must not carry the grace state into the next service start
         try { ObdLive.stop() } catch (_: Exception) {}
         isRunning = false
         aaParked = false
