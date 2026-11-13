@@ -164,15 +164,10 @@ class ControlsActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.btn_customize).setOnClickListener {
             startActivity(Intent(this, ButtonMappingActivity::class.java))
         }
-        findViewById<MaterialButton>(R.id.btn_chrono).setOnClickListener {
-            startActivity(Intent(this, ChronoActivity::class.java))
-        }
-
-        // Map theme (Maps day/night) — applies live to any running AA session.
-        findViewById<MaterialButton>(R.id.theme_auto).setOnClickListener { setMapTheme(MapTheme.AUTO) }
-        findViewById<MaterialButton>(R.id.theme_day).setOnClickListener { setMapTheme(MapTheme.DAY) }
-        findViewById<MaterialButton>(R.id.theme_night).setOnClickListener { setMapTheme(MapTheme.NIGHT) }
-        highlightTheme(NightPrefs.theme(this))
+        // The chronometer moved out of this screen (it lives with the bike); day/night theme is set in
+        // Settings > Dash screen only, so card_theme stays hidden and has no listeners any more.
+        setupPressDelays()
+        applySection()
 
         setupDashboard()
         setupSpeedVolume()
@@ -182,12 +177,106 @@ class ControlsActivity : AppCompatActivity() {
         super.onResume()
         syncVolumeUi()
         syncDashboardUi()
+        refreshPressDelays()
         statusHandler.post(statusTick)
     }
 
     override fun onPause() {
         super.onPause()
         statusHandler.removeCallbacks(statusTick)
+    }
+
+    // ── Settings > Handlebar and controls (moved here from Setup; same prefs, same behaviour) ─────
+
+    /** With a `section` extra (from [SettingsHubActivity]) show only that section's cards; without it, "Mando": search + D-pad. */
+    private fun applySection() {
+        val section = SettingsSection.fromKey(intent.getStringExtra(SettingsSection.EXTRA))
+        val cards = listOf(
+            SettingsBlock.NAV to R.id.card_nav,
+            SettingsBlock.DASHBOARD to R.id.card_dashboard,
+            SettingsBlock.SPEED_VOLUME to R.id.card_speed_volume,
+            SettingsBlock.PAD to R.id.card_pad,
+            SettingsBlock.HANDLEBAR_BUTTONS to R.id.card_handlebar,
+            SettingsBlock.PRESS_DELAYS to R.id.card_press_delays,
+            SettingsBlock.BT_HELPER to R.id.card_bt_helper,
+        )
+        for ((block, id) in cards) {
+            findViewById<View>(id).visibility = if (SettingsSections.visible(block, section)) View.VISIBLE else View.GONE
+        }
+        if (section == null) return // "Mando": search + D-pad only
+        findViewById<TextView>(R.id.controls_title).setText(section.titleRes)
+        findViewById<View>(R.id.controls_subtitle).visibility = View.GONE
+    }
+
+    private fun setupPressDelays() {
+        fun tap(id: Int, d: DoubleTapDelay) = findViewById<MaterialButton>(id).setOnClickListener {
+            ButtonTimingPrefs.setDoubleTap(this, d)
+            refreshPressDelays()
+            Toast.makeText(this, getString(R.string.setup_toast_dbl_tap, getString(d.labelRes)), Toast.LENGTH_SHORT).show()
+        }
+        tap(R.id.dbltap_fast, DoubleTapDelay.FAST)
+        tap(R.id.dbltap_normal, DoubleTapDelay.NORMAL)
+        tap(R.id.dbltap_slow, DoubleTapDelay.SLOW)
+        tap(R.id.dbltap_very_slow, DoubleTapDelay.VERY_SLOW)
+        fun holds(id: Int, on: Boolean) = findViewById<MaterialButton>(id).setOnClickListener {
+            ButtonTimingPrefs.setHoldsEnabled(this, on)
+            refreshPressDelays()
+            Toast.makeText(
+                this,
+                if (on) "Hold detection on"
+                else "Hold detection off — long presses count as taps / ×2",
+                Toast.LENGTH_SHORT,
+            ).show()
+        }
+        holds(R.id.holds_on, true)
+        holds(R.id.holds_off, false)
+        fun hold(id: Int, d: LongPressDelay) = findViewById<MaterialButton>(id).setOnClickListener {
+            ButtonTimingPrefs.setLongPress(this, d)
+            refreshPressDelays()
+            Toast.makeText(this, getString(R.string.setup_toast_hold, getString(d.labelRes)), Toast.LENGTH_SHORT).show()
+        }
+        hold(R.id.hold_short, LongPressDelay.SHORT)
+        hold(R.id.hold_normal, LongPressDelay.NORMAL)
+        hold(R.id.hold_long, LongPressDelay.LONG)
+        findViewById<MaterialButton>(R.id.bt_settings_btn).setOnClickListener { BluetoothHelper.openBluetoothSettings(this) }
+    }
+
+    private fun refreshPressDelays() {
+        val dbl = ButtonTimingPrefs.doubleTap(this)
+        val holdsOn = ButtonTimingPrefs.holdsEnabled(this)
+        val hold = ButtonTimingPrefs.longPress(this)
+        findViewById<TextView>(R.id.dbltap_desc).text = getString(dbl.labelRes)
+        findViewById<TextView>(R.id.holds_desc).text = if (holdsOn) {
+            getString(R.string.setup_on_press_and_hold_can_fire_hold_gestures)
+        } else {
+            getString(R.string.setup_holds_off_desc)
+        }
+        findViewById<TextView>(R.id.hold_desc).text =
+            if (holdsOn) getString(hold.labelRes) else getString(R.string.pref_hold_ignored)
+        highlightSegments(dbl,
+            R.id.dbltap_fast to DoubleTapDelay.FAST,
+            R.id.dbltap_normal to DoubleTapDelay.NORMAL,
+            R.id.dbltap_slow to DoubleTapDelay.SLOW,
+            R.id.dbltap_very_slow to DoubleTapDelay.VERY_SLOW)
+        highlightSegments(holdsOn, R.id.holds_on to true, R.id.holds_off to false)
+        highlightSegments(hold,
+            R.id.hold_short to LongPressDelay.SHORT,
+            R.id.hold_normal to LongPressDelay.NORMAL,
+            R.id.hold_long to LongPressDelay.LONG)
+        findViewById<TextView>(R.id.bt_status).text = BluetoothHelper.status(this).describe(this)
+    }
+
+    private fun <T> highlightSegments(selected: T, vararg pairs: Pair<Int, T>) {
+        val onColor = ContextCompat.getColor(this, R.color.brand_orange)
+        val onText = ContextCompat.getColor(this, R.color.on_brand)
+        val offColor = ContextCompat.getColor(this, R.color.surface_high)
+        val offText = ContextCompat.getColor(this, R.color.text_primary)
+        for ((id, value) in pairs) {
+            val btn = findViewById<MaterialButton>(id)
+            val on = value == selected
+            btn.backgroundTintList = android.content.res.ColorStateList.valueOf(if (on) onColor else offColor)
+            btn.setTextColor(if (on) onText else offText)
+        }
     }
 
     // ── Speed-compensated volume ([SpeedVolume]) ─────────────────────────────────────────────────
@@ -300,7 +389,6 @@ class ControlsActivity : AppCompatActivity() {
         val hide = if (on) View.GONE else View.VISIBLE
         findViewById<View>(R.id.controls_header).visibility = hide
         findViewById<View>(R.id.card_nav).visibility = hide
-        findViewById<View>(R.id.card_theme).visibility = hide
         findViewById<View>(R.id.card_speed_volume).visibility = hide
         findViewById<View>(R.id.card_handlebar).visibility = hide
         findViewById<View>(R.id.pad_intro).visibility = hide
@@ -532,32 +620,6 @@ class ControlsActivity : AppCompatActivity() {
         )) {
             val btn = findViewById<MaterialButton>(id)
             val on = t == current
-            btn.backgroundTintList = android.content.res.ColorStateList.valueOf(if (on) onColor else offColor)
-            btn.setTextColor(if (on) onText else offText)
-        }
-    }
-
-    private fun setMapTheme(theme: MapTheme) {
-        NightPrefs.setTheme(this, theme)
-        AaVideoBridge.nightSink?.invoke(NightPrefs.isNightNow(this))
-        highlightTheme(theme)
-        Toast.makeText(this, getString(R.string.setup_toast_map_theme, getString(theme.labelRes)), Toast.LENGTH_SHORT).show()
-    }
-
-    /** Paint the selected segment in brand color; the rest stay neutral tonal. */
-    private fun highlightTheme(selected: MapTheme) {
-        val onColor = ContextCompat.getColor(this, R.color.brand_orange)
-        val onText = ContextCompat.getColor(this, R.color.on_brand)
-        val offColor = ContextCompat.getColor(this, R.color.surface_high)
-        val offText = ContextCompat.getColor(this, R.color.text_primary)
-        val pairs = listOf(
-            R.id.theme_auto to MapTheme.AUTO,
-            R.id.theme_day to MapTheme.DAY,
-            R.id.theme_night to MapTheme.NIGHT,
-        )
-        for ((id, theme) in pairs) {
-            val btn = findViewById<MaterialButton>(id)
-            val on = theme == selected
             btn.backgroundTintList = android.content.res.ColorStateList.valueOf(if (on) onColor else offColor)
             btn.setTextColor(if (on) onText else offText)
         }

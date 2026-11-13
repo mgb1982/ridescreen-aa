@@ -118,6 +118,9 @@
             android:name=".SetupActivity"
             android:exported="false" />
         <activity
+            android:name=".SettingsHubActivity"
+            android:exported="false" />
+        <activity
             android:name=".TripActivity"
             android:exported="false" />
         <activity
