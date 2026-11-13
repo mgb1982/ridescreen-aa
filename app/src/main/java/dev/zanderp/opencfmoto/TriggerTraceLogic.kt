@@ -7,7 +7,7 @@ internal object TriggerTraceLogic {
     /** Which log lines are kept: the Bluetooth trigger and the Wi-Fi wait. */
     internal fun wants(msg: String): Boolean =
         msg.startsWith("[BT-TRIG]") || msg.startsWith("[WATCH]") || msg.startsWith("→ BT trigger") ||
-            msg.startsWith("[LOCK-HOLD]")
+            msg.startsWith("[LOCK-HOLD]") || msg.startsWith("[CLOCK]") || msg.startsWith("[RESYNC]")
 
     /** One stored entry: `epochMs<TAB>text`. */
     internal fun encode(epochMs: Long, text: String): String = "$epochMs\t${text.replace('\n', ' ')}"

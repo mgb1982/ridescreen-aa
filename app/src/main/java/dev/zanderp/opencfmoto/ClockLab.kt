@@ -64,10 +64,15 @@ object ClockLab {
     @Volatile var lastQueryTimeAfterMs: Long = -1L
     @Volatile var resyncsThisBoot: Int = 0
 
+    /** Dash uptime in s at the last CLIENT_INFO (-1 unknown) and connection count this dash boot (log only). */
+    @Volatile var lastDashUptimeS: Long = -1L
+    @Volatile var connsThisBoot: Int = 0
+
     /** The line support looks for when the rider fixes the dash clock by hand ([source]: e.g. "button"). */
     fun clockWrongLine(source: String): String =
         "[RESYNC] rider fixed clock by hand ($source) — last QUERY_TIME after ${lastQueryTimeAfterMs}ms, " +
-            "threshold ${smartThresholdMs}ms, resyncs this boot $resyncsThisBoot"
+            "threshold ${smartThresholdMs}ms, resyncs this boot $resyncsThisBoot, " +
+            "dash up ${if (lastDashUptimeS >= 0) "~$lastDashUptimeS s" else "?"}, connection $connsThisBoot of this boot"
 
     /** elapsedRealtime deadline while a dash-clock resync is pending or reconnecting (UI hint). */
     @Volatile var resyncBusyUntil: Long = 0L

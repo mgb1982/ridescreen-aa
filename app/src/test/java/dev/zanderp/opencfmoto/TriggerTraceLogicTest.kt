@@ -14,6 +14,8 @@ class TriggerTraceLogicTest {
         assertTrue(TriggerTraceLogic.wants("[WATCH] waiting for 'ZT…' in low-power mode (LONG)"))
         assertTrue(TriggerTraceLogic.wants("→ BT trigger: **:**:**:**:10:66 connected and the bike's Wi-Fi is up — starting Connect"))
         assertTrue(TriggerTraceLogic.wants("[LOCK-HOLD] wifi_seen ignored"))
+        assertTrue(TriggerTraceLogic.wants("[CLOCK] new dash boot"))
+        assertTrue(TriggerTraceLogic.wants("[RESYNC] smart: QUERY_TIME after 2050ms"))
         assertFalse(TriggerTraceLogic.wants("[AA] decode fps=30"))
         assertFalse(TriggerTraceLogic.wants("[PKE] battery 12,8 V · locked"))
         assertFalse(TriggerTraceLogic.wants("hb#12 probed=true"))

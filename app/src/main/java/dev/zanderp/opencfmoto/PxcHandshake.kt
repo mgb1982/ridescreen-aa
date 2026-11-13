@@ -255,6 +255,11 @@ class PxcHandshake(
         val threshold = ClockLab.smartThresholdMs
         val slow = askedAfterMs >= threshold
         ClockLab.lastQueryTimeAfterMs = askedAfterMs
+        val upNow = if (dashInfoAtEpochMs > 0L) {
+            DashBoot.fmtSeconds(DashBoot.uptimeNowMs(dashUptimeAtInfoMs, dashInfoAtEpochMs, System.currentTimeMillis()))
+        } else null
+        log("[CLOCK] QUERY_TIME after ${askedAfterMs} ms from CAR_CTRL · dash up ${if (upNow != null) "~$upNow" else "?"} · " +
+            "connection $connsThisBoot of this boot · resyncs this boot $resyncsThisBoot/$MAX_RESYNCS_PER_BOOT")
         val reason: String = when (mode) {
             ClockResyncMode.ONCE -> {
                 if (!checkSnThisSession) {
@@ -296,6 +301,25 @@ class PxcHandshake(
         }, "pxc-resync").apply { isDaemon = true }.start()
     }
 
+    /** Log-only: place this connection on the dash's own boot timeline (`currentHUTime` = ms since dash boot). */
+    private fun recordDashUptime(json: JSONObject) {
+        val up = json.opt("currentHUTime") as? Number ?: return
+        val uptimeMs = up.toLong()
+        val now = System.currentTimeMillis()
+        val bootMs = DashBoot.bootEpochMs(now, uptimeMs)
+        val newBoot = DashBoot.isNewBoot(if (lastBootEpochMs > 0L) lastBootEpochMs else null, bootMs)
+        lastBootEpochMs = bootMs
+        dashUptimeAtInfoMs = uptimeMs
+        dashInfoAtEpochMs = now
+        connsThisBoot = if (newBoot) 1 else connsThisBoot + 1
+        connsThisProcess++
+        ClockLab.lastDashUptimeS = uptimeMs / 1000L
+        ClockLab.connsThisBoot = connsThisBoot
+        log("[CLOCK] dash up ${DashBoot.fmtSeconds(uptimeMs)} at CLIENT_INFO · connection $connsThisBoot of this dash boot " +
+            "($connsThisProcess since the app started)")
+        if (newBoot) log("[CLOCK] new dash boot")
+    }
+
     private fun onClientInfo(tag: String, frame: PxcFrame, out: java.io.OutputStream) {
         val text = frame.payload.asText()
         log("[$tag] *** CLIENT_INFO from bike *** $text")
@@ -303,6 +327,7 @@ class PxcHandshake(
             log("[$tag] CLIENT_INFO parse failed: $e"); return
         }
         lastClientInfo = json
+        recordDashUptime(json)
         carHuid = json.optString("HUID").ifEmpty { json.optString("huid") }.ifEmpty { null }
         log("[$tag] carHuid=$carHuid HUName=${json.optString("HUName")} channel=${json.optString("channel")}")
         // TEST (368G DVR): EasyConn ECP_SUPPORT_FUNCTION_WEB_CAR_DVR = bit 262144 of supportFunction.
@@ -425,6 +450,13 @@ class PxcHandshake(
          * no resync at all and could stay at 00:00 — field log 8 Oct 2026).
          */
         @Volatile private var resyncsThisBoot = 0
+
+        // Log-only dash boot tracking (CLIENT_INFO currentHUTime = ms since the dash booted).
+        @Volatile private var dashUptimeAtInfoMs = 0L
+        @Volatile private var dashInfoAtEpochMs = 0L
+        @Volatile private var lastBootEpochMs = 0L
+        @Volatile private var connsThisBoot = 0
+        @Volatile private var connsThisProcess = 0
 
         /** The rider pressed Connect: give the clock fix its full budget again. */
         fun resetResyncBudget() {
