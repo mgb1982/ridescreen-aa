@@ -913,8 +913,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        findViewById<View>(R.id.btn_hud_view).setOnClickListener { startActivity(Intent(this, HudViewActivity::class.java)) }
-        findViewById<View>(R.id.btn_controls).setOnClickListener { startActivity(Intent(this, ControlsActivity::class.java)) }
+        // 2.6 menus: "Cuadro" (picture of the dash) and "Mando" (D-pad) are the same screen, Mando unfolded or not.
+        findViewById<View>(R.id.btn_hud_view).setOnClickListener { HudViewActivity.start(this, openControls = false) }
+        findViewById<View>(R.id.btn_controls).setOnClickListener { HudViewActivity.start(this, openControls = true) }
         findViewById<Button>(R.id.btn_navigate).setOnClickListener { navigateToTyped() }
         val destField = findViewById<android.widget.EditText>(R.id.et_destination)
         destField?.setOnEditorActionListener { _, _, _ ->
@@ -1507,7 +1508,7 @@ class MainActivity : AppCompatActivity() {
         buildTile(R.id.btn_help, R.drawable.ic_line_help, 0xFFA98BE0.toInt(), getString(R.string.home_tile_help), getString(R.string.home_tile_help_sub))
         buildTile(R.id.btn_park_photo, R.drawable.ic_line_camera, 0xFFD1A955.toInt(), getString(R.string.home_big_park), getString(R.string.home_big_park_sub), big = true)
         buildTile(R.id.btn_controls, R.drawable.ic_line_pad, 0xFF5B8DEF.toInt(), getString(R.string.home_big_pad), getString(R.string.home_big_controls_sub), big = true)
-        buildTile(R.id.btn_hud_view, R.drawable.ic_line_dash, 0xFF4FB6A6.toInt(), getString(R.string.hud_dash_view), getString(R.string.home_big_hud_sub), big = true)
+        buildTile(R.id.btn_hud_view, R.drawable.ic_line_dash, 0xFF4FB6A6.toInt(), getString(R.string.cuadro_title), getString(R.string.home_big_hud_sub), big = true)
         buildTile(R.id.btn_trip, R.drawable.ic_line_watch, 0xFF5FD07A.toInt(), getString(R.string.home_big_trip), getString(R.string.home_big_trip_sub), big = true)
         findViewById<View>(R.id.btn_traffic_lights)?.setOnClickListener { startActivity(Intent(this, TrafficLightsActivity::class.java)) }
         findViewById<View>(R.id.parked_walk)?.setOnClickListener {
@@ -1558,7 +1559,12 @@ class MainActivity : AppCompatActivity() {
      * Manel (14 oct): while connected, "Ruta en directo" belongs among the big riding tiles and
      * "Controles" can drop into the grid. Swap the two views (and their layout params) in place.
      */
+    private val TILE_SWAP = false
+
     private fun placeLiveShare(big: Boolean) {
+        // 2.6 menus: the small tiles are hidden (Live route lives in the Trips tab) and "Mando" stays in the big row,
+        // so the swap between the two tiles no longer applies.
+        if (!TILE_SWAP) return
         val liveTile = findViewById<android.widget.LinearLayout?>(R.id.btn_live) ?: return
         val controls = findViewById<android.widget.LinearLayout?>(R.id.btn_controls) ?: return
         val liveIsBig = liveTile.parent === (findViewById<View>(R.id.btn_park_photo)?.parent)
