@@ -207,7 +207,7 @@ internal object DashboardRenderer {
         val base = when (design) {
             // The four v2.6 designs share the Sport palettes (orange accent, or the rider's own).
             DashboardMode.Design.SPORT, DashboardMode.Design.CLEAN, DashboardMode.Design.PIT,
-            DashboardMode.Design.CLASSIC, DashboardMode.Design.FOCUS -> if (light) sportDay else sportNight
+            DashboardMode.Design.CLASSIC, DashboardMode.Design.FOCUS, DashboardMode.Design.WINDOW -> if (light) sportDay else sportNight
             DashboardMode.Design.RACING -> if (light) racingDay else racingNight
             DashboardMode.Design.TOURING -> if (light) touringDay else touringNight
         }
@@ -222,9 +222,11 @@ internal object DashboardRenderer {
         }
         val all = metrics(d).filter { it.id in visible }.associateBy { it.id }
         val cards = DashLayout.orderedCards(cardOrder, visible).mapNotNull(all::get)
-        val scale = minOf(w / W, h / H)
-        val dx = (w - W * scale) / 2f
-        val dy = (h - H * scale) / 2f
+        // WINDOW draws in real canvas pixels (AaWindowLayout); the others in the virtual 800x416 space.
+        val real = design == DashboardMode.Design.WINDOW
+        val scale = if (real) 1f else minOf(w / W, h / H)
+        val dx = if (real) 0f else (w - W * scale) / 2f
+        val dy = if (real) 0f else (h - H * scale) / 2f
 
         val key = "${design.id}|$light|${w}x$h|$speedMax|$rpmMax|${visible.sorted().joinToString(",")}|" +
             "${cards.joinToString(",") { it.id }}|$accent"
@@ -252,6 +254,7 @@ internal object DashboardRenderer {
         ctx: Context, c: Canvas, d: DashboardMode.Data, p: Palette,
         design: DashboardMode.Design, all: Map<String, Metric>, cards: List<Metric>,
     ) {
+        if (design == DashboardMode.Design.WINDOW) { drawWindow(ctx, c, d, p, all, cards); return }
         still { drawBackground(c, p, design) }
         // No header: the dash's own clock bar sits right above the frame.
         // Pit has its own wide RPM bar instead of the shift lights.
@@ -904,6 +907,86 @@ internal object DashboardRenderer {
     private fun smallCards(c: Canvas, p: Palette, ms: List<Metric?>, x: Float, y: Float, w: Float, h: Float, gap: Float) {
         ms.filterNotNull().forEachIndexed { i, m ->
             drawCard(c, m, DashLayout.Box(x, y + i * (h + gap), w, h), p, CardLook.SPORT)
+        }
+    }
+
+    // WINDOW: Android Auto goes in AaWindowLayout.window (the compositor draws it over a bare frame);
+    // the data column beside it is laid out by AaColumnLayout. Real canvas pixels, no virtual scale.
+    private fun drawWindow(
+        ctx: Context, c: Canvas, d: DashboardMode.Data, p: Palette,
+        a: Map<String, Metric>, cards: List<Metric>,
+    ) {
+        val w = c.width; val h = c.height
+        val win = AaWindowLayout.window(w, h)
+        val col = AaWindowLayout.column(w, h)
+        val rows = AaColumnLayout.rows(col, cards.size.coerceAtMost(AaColumnLayout.MAX_CARDS))
+        val k = h / H // text scale: the other designs are tuned for 416 px of height
+        still {
+            // Background is already p.bg; a thin frame marks where Android Auto goes.
+            stroke.shader = null
+            stroke.color = p.edge
+            stroke.strokeWidth = maxOf(1.5f, 2f * k)
+            box.set(win.x.toFloat(), win.y.toFloat(), (win.x + win.w).toFloat(), (win.y + win.h).toFloat())
+            c.drawRoundRect(box, 8f * k, 8f * k, stroke)
+        }
+        val cx = rows.speed.x + rows.speed.w / 2f
+        val speed = a["speed"]
+        if (speed != null) {
+            val size0 = rows.speed.h * .85f
+            text.typeface = fValue; text.textSize = size0
+            val vw = text.measureText("888")
+            text.typeface = fLabel; text.textSize = size0 * .3f
+            val fit = DashLayout.fitScale(rows.speed.w, vw + 6f + text.measureText("km/h"))
+            val size = size0 * fit
+            val base = rows.speed.bottom - rows.speed.h * .08f
+            live {
+                text.typeface = fValue; text.textSize = size
+                val v = value(speed)
+                val vwNow = text.measureText(v)
+                text.typeface = fLabel; text.textSize = size * .3f
+                val uw = text.measureText(speed.unit)
+                val x0 = cx - (vwNow + 6f + uw) / 2f
+                textWithGlow(c, v, x0, base, size, p.fg, fValue, if (night) p.accent else null)
+                txt(c, speed.unit, x0 + vwNow + 6f, base, size * .3f, p.muted, fLabel)
+            }
+        }
+        val rpm = a["rpm"]
+        if (rpm != null) {
+            val redFrom = DashDesignMath.redFraction(DashboardMode.RPM_RED, rpmMax.toDouble())
+            val b = rows.bar
+            val rad = b.h / 2f
+            still {
+                fill.shader = null
+                fill.color = p.track
+                box.set(b.x, b.y, b.right, b.bottom)
+                c.drawRoundRect(box, rad, rad, fill)
+                fill.color = alpha(p.red, 0x59)
+                box.set(b.x + b.w * redFrom, b.y, b.right, b.bottom)
+                c.drawRoundRect(box, rad, rad, fill)
+            }
+            live {
+                val f = DashDesignMath.fraction(rpm.value, rpm.max)
+                val red = (rpm.value ?: 0.0) >= DashboardMode.RPM_RED
+                val label = if (rpm.value == null) "— ×1000 rpm"
+                    else String.format(Locale.US, "%.1f ×1000 rpm", (rpm.value ?: 0.0) / 1000.0)
+                rightText(c, label, b.right, rows.rpmLabelY, rows.rpmLabelSize, if (red) p.red else p.muted, fSemi)
+                if (f > 0f) {
+                    fill.shader = null
+                    fill.color = p.accent
+                    val end = b.x + b.w * f
+                    box.set(b.x, b.y, minOf(end, b.x + b.w * redFrom).coerceAtLeast(b.x + b.h), b.bottom)
+                    c.drawRoundRect(box, rad, rad, fill)
+                    if (f > redFrom) {
+                        fill.color = p.red
+                        box.set(b.x + b.w * redFrom, b.y, end, b.bottom)
+                        c.drawRoundRect(box, rad, rad, fill)
+                    }
+                }
+            }
+        }
+        cards.take(rows.cards.size).forEachIndexed { i, m -> drawCard(c, m, rows.cards[i], p, CardLook.SPORT) }
+        live {
+            if (!d.obdLive) txt(c, ctx.getString(R.string.dash_no_obd), col.x.toFloat(), col.y + 14f * k, 13f * k, p.muted, fLabel)
         }
     }
 

@@ -409,6 +409,7 @@ class ControlsActivity : AppCompatActivity() {
                     DashboardMode.Design.PIT -> R.string.dash_design_pit
                     DashboardMode.Design.CLASSIC -> R.string.dash_design_classic
                     DashboardMode.Design.FOCUS -> R.string.dash_design_focus
+                    DashboardMode.Design.WINDOW -> R.string.dash_design_window
                 }
                 val card = android.widget.LinearLayout(this).apply {
                     orientation = android.widget.LinearLayout.VERTICAL

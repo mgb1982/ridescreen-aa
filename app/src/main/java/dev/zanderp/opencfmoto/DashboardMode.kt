@@ -67,7 +67,9 @@ object DashboardMode {
 
     enum class Design(val id: String) {
         SPORT("sport"), RACING("racing"), TOURING("touring"),
-        CLEAN("clean"), PIT("pit"), CLASSIC("classic"), FOCUS("focus");
+        CLEAN("clean"), PIT("pit"), CLASSIC("classic"), FOCUS("focus"),
+        /** Android Auto window on the left, data column on the right (see [AaWindowLayout]). */
+        WINDOW("window");
         companion object { fun byId(id: String?): Design = entries.firstOrNull { it.id == id } ?: SPORT }
     }
     /**
