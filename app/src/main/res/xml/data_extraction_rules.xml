@@ -12,6 +12,7 @@
         <exclude domain="sharedpref" path="pke_box.xml" />
         <exclude domain="sharedpref" path="pke_unlock.xml" />
         <exclude domain="file" path="blackbox/" />
+        <exclude domain="file" path="trigger_trace.txt" />
     </cloud-backup>
     <device-transfer>
         <exclude domain="sharedpref" path="opencfmoto_bike.xml" />
@@ -22,5 +23,6 @@
         <exclude domain="sharedpref" path="pke_box.xml" />
         <exclude domain="sharedpref" path="pke_unlock.xml" />
         <exclude domain="file" path="blackbox/" />
+        <exclude domain="file" path="trigger_trace.txt" />
     </device-transfer>
 </data-extraction-rules>
