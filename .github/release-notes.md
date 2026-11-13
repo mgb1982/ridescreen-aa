@@ -18,7 +18,7 @@ Basada en [OpenCfMoto](https://github.com/zanderp/open-cfmoto) de Alexandru (zan
 
 **Más motos**
 - **🏍️ «¿Qué moto es?»**: elige tu Zontes (125X, 125V, 368 G/K/E) y la app aplica la configuración de pantalla que sabemos que funciona. **Toda la gama 368 es compatible**.
-- **En pruebas con la comunidad**: Zontes 125M, 350D y T350X (conexión por punto de acceso del móvil y Wi-Fi Direct).
+- **En pruebas con la comunidad**: Zontes 125M, 350D y T350X (conexión por punto de acceso del móvil y Wi-Fi Direct). GPX DZ2 (Tailandia, reportada por un usuario).
 - **Wi-Fi Direct y Android 17**: la app pide los permisos que hacen falta antes de hablar con el cuadro.
 
 **Conexión**

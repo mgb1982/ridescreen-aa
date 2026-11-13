@@ -7,7 +7,7 @@
 ### Wireless Android Auto on Carbit / EasyConnect dashes (CFMoto MotoPlay and siblings) — no root, no PC.
 
 **CFMoto** · **Voge** · **Moto Morini** · **Morbidelli** · **Zontes** · **Benelli** · **QJ Motor** ·
-**Rieju** · **UM** · **Wmoto** · **Longjia** · **GOES** / **Gladiator** · and other brands with a pairing QR
+**Rieju** · **UM** · **Wmoto** · **Longjia** · **GPX** (DZ2) · **GOES** / **Gladiator** · and other brands with a pairing QR
 
 [Supported bikes](SUPPORTED-BIKES.md) · [Dash showcase](SHOWCASE.md) — real Android Auto photos from the community
 
@@ -98,7 +98,7 @@ CFMoto · Voge · Morini · Morbidelli · QJ Motor · Rieju · UM · Wmoto · GO
 ## 📋 What you need
 
 - **A bike / ATV whose dash can show a MotoPlay / EasyConnect QR** (CFMoto, Voge, Morini, Morbidelli,
-  Zontes, Benelli, QJ Motor, Rieju, UM, Wmoto, GOES/Gladiator, and siblings). **No T‑BOX required.**
+  Zontes, Benelli, QJ Motor, Rieju, UM, Wmoto, GPX (DZ2), GOES/Gladiator, and siblings). **No T‑BOX required.**
   Works on **US and international** units. See **[Supported bikes](SUPPORTED-BIKES.md)** and
   **[Dash showcase](SHOWCASE.md)**. Touch dashes use the screen; non‑touch / focus-mode bikes
   use **Controls** + handlebar buttons. Unknown dashes are learned after the first connect.
@@ -151,6 +151,7 @@ required. Latest ride build is **2.0.18**.
 - **QJ Motor** SRK800RR · SRK450RR · SRK250RD · **SRT 600** / **SRV600**
 - **UM** DSR 250 Rally
 - **Wmoto** Griffin
+- **GPX** DZ2 — reported working by one user in Thailand (Nov 2026); not yet registered
 
 ### In progress (joins or paints — not Latest daily)
 
