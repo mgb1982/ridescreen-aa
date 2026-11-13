@@ -35,6 +35,12 @@ object BottomNav {
         }
     }
 
+    /** Settings hub (SetupActivity until the hub exists in this build). Also used by the home gear icon. */
+    fun settingsIntent(activity: Activity): Intent =
+        Intent().setClassName(activity.packageName, SETTINGS_HUB).let { i ->
+            if (i.resolveActivity(activity.packageManager) != null) i else Intent(activity, SetupActivity::class.java)
+        }
+
     @Suppress("DEPRECATION")
     private fun open(activity: Activity, current: NavTab, target: NavTab) {
         val intent = when (target) {
@@ -42,9 +48,7 @@ object BottomNav {
             NavTab.TRIPS -> Intent(activity, TripsHubActivity::class.java)
             NavTab.BIKE -> Intent(activity, BikeHubActivity::class.java)
             // SettingsHubActivity lives in another branch: by name, and SetupActivity until it exists.
-            NavTab.SETTINGS -> Intent().setClassName(activity.packageName, SETTINGS_HUB).let { i ->
-                if (i.resolveActivity(activity.packageManager) != null) i else Intent(activity, SetupActivity::class.java)
-            }
+            NavTab.SETTINGS -> settingsIntent(activity)
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_NO_ANIMATION)
         activity.startActivity(intent)

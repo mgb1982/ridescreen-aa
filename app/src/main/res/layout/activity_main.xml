@@ -98,6 +98,18 @@
                     </LinearLayout>
 
                     <ImageButton
+                        android:id="@+id/btn_hero_help"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_round_glass"
+                        android:contentDescription="@string/home_tile_help"
+                        android:padding="12dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_line_help"
+                        app:tint="@color/text_primary" />
+
+                    <ImageButton
                         android:id="@+id/btn_hero_menu"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
@@ -612,8 +624,9 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- Six shortcuts, each with a live detail line (both states). -->
+                <!-- Six shortcuts, each with a live detail line (both states). 2.6: hidden, they live in the tabs. -->
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -626,6 +639,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -659,9 +673,9 @@
                     <com.google.android.material.button.MaterialButton android:id="@+id/btn_gpx" style="@style/HomeMore" android:text="@string/gpx_map" />
                     <com.google.android.material.button.MaterialButton android:id="@+id/btn_mirror_start" style="@style/HomeMore" android:text="@string/main_mirror" />
                     <com.google.android.material.button.MaterialButton android:id="@+id/btn_aa_start" style="@style/HomeMore" android:text="@string/main_scan" />
-                    <com.google.android.material.button.MaterialButton android:id="@+id/btn_devices" style="@style/HomeMore" android:text="@string/garage_garage" />
-                    <com.google.android.material.button.MaterialButton android:id="@+id/btn_controls_more" style="@style/HomeMore" android:text="@string/controls_controls" />
-                    <com.google.android.material.button.MaterialButton android:id="@+id/btn_setup" style="@style/HomeMore" android:text="@string/home_settings_short" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/btn_devices" android:visibility="gone" style="@style/HomeMore" android:text="@string/garage_garage" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/btn_controls_more" android:visibility="gone" style="@style/HomeMore" android:text="@string/controls_controls" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/btn_setup" android:visibility="gone" style="@style/HomeMore" android:text="@string/home_settings_short" />
                 </LinearLayout>
 
                 <!-- Hidden since v2.2 (kept for code refs): Stop merged into Connect; logs/tips live in Help. -->
@@ -828,4 +842,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="14dp"
         android:text="@string/main_connect" />
+
+    <include layout="@layout/include_bottom_nav" />
 </LinearLayout>

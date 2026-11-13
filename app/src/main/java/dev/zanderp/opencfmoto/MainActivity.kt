@@ -990,7 +990,13 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_share_log).setOnClickListener { shareLog() }
 
         findViewById<Button>(R.id.btn_setup).setOnClickListener { SetupActivity.start(this) }
-        findViewById<View>(R.id.btn_hero_menu).setOnClickListener { SetupActivity.start(this) }
+        // 2.6 menus: the gear opens the Settings hub, "?" opens Help (always visible), tabs at the bottom.
+        findViewById<View>(R.id.btn_hero_menu).setOnClickListener { startActivity(BottomNav.settingsIntent(this)) }
+        findViewById<View>(R.id.btn_hero_help)?.setOnClickListener {
+            HelpMenu.show(this, shareLogs = { shareLog() }, reportProblem = { reportProblem() }, extras = helpExtras())
+        }
+        BottomNav.bind(this, NavTab.HOME)
+        HubHooks.stopEverything = { stopEverything() }
         findViewById<View>(R.id.btn_trips_list).setOnClickListener { TripsListActivity.start(this) }
         findViewById<View>(R.id.brand_title).setOnClickListener { AboutActivity.start(this) }
         findViewById<View>(R.id.btn_about_page).setOnClickListener { AboutActivity.start(this) }
@@ -1500,7 +1506,7 @@ class MainActivity : AppCompatActivity() {
         buildTile(R.id.btn_live, R.drawable.ic_line_live, 0xFF5FD07A.toInt(), getString(R.string.home_tile_live))
         buildTile(R.id.btn_help, R.drawable.ic_line_help, 0xFFA98BE0.toInt(), getString(R.string.home_tile_help), getString(R.string.home_tile_help_sub))
         buildTile(R.id.btn_park_photo, R.drawable.ic_line_camera, 0xFFD1A955.toInt(), getString(R.string.home_big_park), getString(R.string.home_big_park_sub), big = true)
-        buildTile(R.id.btn_controls, R.drawable.ic_line_pad, 0xFF5B8DEF.toInt(), getString(R.string.controls_controls), getString(R.string.home_big_controls_sub), big = true)
+        buildTile(R.id.btn_controls, R.drawable.ic_line_pad, 0xFF5B8DEF.toInt(), getString(R.string.home_big_pad), getString(R.string.home_big_controls_sub), big = true)
         buildTile(R.id.btn_hud_view, R.drawable.ic_line_dash, 0xFF4FB6A6.toInt(), getString(R.string.hud_dash_view), getString(R.string.home_big_hud_sub), big = true)
         buildTile(R.id.btn_trip, R.drawable.ic_line_watch, 0xFF5FD07A.toInt(), getString(R.string.home_big_trip), getString(R.string.home_big_trip_sub), big = true)
         findViewById<View>(R.id.btn_traffic_lights)?.setOnClickListener { startActivity(Intent(this, TrafficLightsActivity::class.java)) }
@@ -1526,13 +1532,8 @@ class MainActivity : AppCompatActivity() {
                 catch (_: Exception) { Toast.makeText(this@MainActivity, R.string.open_failed, Toast.LENGTH_SHORT).show() }
             }; Unit
         })
-        add(getString(R.string.pax_entry) to { CompanionActivity.start(this@MainActivity); Unit })
-        add(getString(R.string.pke_entry) to { PkeBatteryUi.show(this@MainActivity); Unit })
-        add(getString(R.string.pke_unlock_entry) to { PkeUnlockUi.show(this@MainActivity); Unit })
-        add(getString(R.string.obd_entry) to { ObdProbeUi.show(this@MainActivity); Unit })
-        add("DVR probe (test)" to { DvrProbe.show(this@MainActivity); Unit })
-        add(getString(R.string.dashcam_entry) to { DashcamImport.showForTrips(this@MainActivity) { stopEverything() }; Unit })
-        add(getString(R.string.help_heart_rate) to { HeartRateStore.show(this@MainActivity); Unit })
+        // 2.6 menus: passenger mode, keyless box, OBD, camera clips and heart rate moved to the Trips / Bike
+        // tabs; the DVR probe to Settings ▸ Advanced. Help only holds help.
         add(getString(R.string.help_support) to { Support.open(this@MainActivity); Unit })
     }
 
