@@ -35,7 +35,9 @@ object LogBus {
         val safe = if (includeSecrets) msg else LogRedactor.redact(msg)
         val line = "${ts.format(Date())}  $safe"
         sb.append(line).append('\n')
-        TriggerTrace.onLog(safe)   // trigger / wait lines also go to disk at once (see TriggerTrace)
+        // Trigger / wait lines also go to disk at once (see TriggerTrace), always redacted: even with
+        // "include secrets in logs" on, a file that lives on may not hold a full MAC.
+        TriggerTrace.onLog(if (includeSecrets) LogRedactor.redact(msg) else safe)
         if (sb.length > 512 * 1024) sb.delete(0, sb.length - 256 * 1024)
         // Mirror to logcat so the full diagnostic stream is capturable over adb (`adb logcat -s
         // OpenCfMoto:*`) during on-hardware debugging, not just in the in-app log view.
