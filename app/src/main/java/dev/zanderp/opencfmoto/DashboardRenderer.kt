@@ -267,6 +267,7 @@ internal object DashboardRenderer {
             DashboardMode.Design.PIT -> drawPit(c, d, p, all, cards)
             DashboardMode.Design.CLASSIC -> drawClassic(c, d, p, all)
             DashboardMode.Design.FOCUS -> drawFocus(c, d, p, all)
+            DashboardMode.Design.WINDOW -> Unit   // drawn by drawWindow (early return above)
         }
         live {
             if (!d.obdLive) txt(c, ctx.getString(R.string.dash_no_obd), 24f, 22f, 13f, p.muted, fLabel)
