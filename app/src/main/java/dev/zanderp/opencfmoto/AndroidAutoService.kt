@@ -229,7 +229,7 @@ class AndroidAutoService : Service() {
                 wifiDownSince = now
                 LogBus.log("[AA] bike transport unavailable (ap=$apConnected p2p=$p2pConnected) — starting grace")
             }
-            else if (now - wifiDownSince > parkGraceMs(sawStream)) parkAa()
+            else if (now - wifiDownSince > ParkPolicy.graceMs(sawStream)) parkAa()
         } else {
             if (wifiDownSince != 0L) {
                 LogBus.log("[AA] bike transport recovered (ap=$apConnected p2p=$p2pConnected)")
@@ -278,7 +278,7 @@ class AndroidAutoService : Service() {
         aaParked = true
         LogBus.log(
             if (sawStream) "[AA] bike Wi-Fi gone > ${GRACE_MS / 1000}s — parking Android Auto to save battery; watching for the bike"
-            else "[AA] bike never linked in ${NEVER_LINKED_GRACE_MS / 1000}s — parking Android Auto to save battery; watching for the bike",
+            else "[AA] bike never linked in ${ParkPolicy.NEVER_LINKED_MS / 1000}s — parking Android Auto to save battery; watching for the bike",
         )
         ConnectionState.set(Phase.WAITING_FOR_BIKE, "will resume when the bike is back")
         tearDownAaKeepService()
@@ -814,16 +814,7 @@ class AndroidAutoService : Service() {
         private const val STALL_MS = 8_000L            // no frames this long while STREAMING = stalled
         private const val ACTION_COOLDOWN_MS = 20_000L // min gap between forced reconnects
         private const val ERROR_COOLDOWN_MS = 20_000L  // min gap between re-arm attempts after ERROR
-        private const val GRACE_MS = 180_000L          // SoftAP blinks; 60s was parking mid-ride
-        /**
-         * Connect tapped but the bike never linked (bike off): park after this long. Before, the
-         * supervisor only parked after a first stream, so Android Auto, the Wi-Fi locks and the 90 s
-         * join retries ran until Stop (12 Nov log: 13 min). Longer than the slowest first links seen
-         * (Wi-Fi Direct dashes up to ~2.5 min).
-         */
-        internal const val NEVER_LINKED_GRACE_MS = 300_000L
-
-        internal fun parkGraceMs(sawStream: Boolean): Long = if (sawStream) GRACE_MS else NEVER_LINKED_GRACE_MS
+        private const val GRACE_MS = ParkPolicy.AFTER_STREAM_MS   // SoftAP blinks; 60s was parking mid-ride
         private const val RESUME_STEADY_TIMEOUT_MS = 12_000L // wait for AA video before falling back
 
         internal fun bikeTransportConnected(apConnected: Boolean, p2pConnected: Boolean, liveLink: Boolean = false): Boolean =
