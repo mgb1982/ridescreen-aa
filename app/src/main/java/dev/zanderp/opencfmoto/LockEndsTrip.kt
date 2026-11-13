@@ -56,7 +56,7 @@ object LockEndsTrip {
 
     /** Called by [PkeUnlock.send] with every result; does nothing unless it was a confirmed lock. */
     fun after(ctx: Context, action: PkeUnlock.Action, res: PkeUnlock.Result) {
-        if (action == PkeUnlock.Action.UNLOCK && res.ok) LockHold.release(ctx, "unlocked from the app")
+        if (action == PkeUnlock.Action.UNLOCK && res.ok && !res.mismatch && !res.pending) LockHold.release(ctx, "unlocked from the app")
         if (action != PkeUnlock.Action.LOCK) return
         if (res.pending) {
             // Case 20261113: a write is not a lock. Wait for the box's state before saving or stopping anything.

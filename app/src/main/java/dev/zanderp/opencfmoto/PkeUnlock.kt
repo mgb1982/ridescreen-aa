@@ -360,6 +360,7 @@ object PkeUnlock {
             log("timing: total ${SystemClock.elapsedRealtime() - t0} ms")
             val want = expectedLocked(action)
             var after: Boolean? = null
+            var unconfirmed = false
             if (ok && want != null) {
                 after = readStateAt(link, pke, tWrite, STATE_CHECKS_MS[0])
                 logState(action, after, want, STATE_CHECKS_MS[0])
@@ -377,9 +378,10 @@ object PkeUnlock {
                 } else if (after != null) {
                     log("state after '${action.label}': link gone, can't re-check — not warning on one early read")
                     after = null
+                    unconfirmed = true   // not a confirmed lock either: LockEndsTrip must not act on it
                 }
             }
-            return Result(ok, if (ok) null else Failure.NO_ANSWER, action, after, rejected = rejected, pending = handedOff)
+            return Result(ok, if (ok) null else Failure.NO_ANSWER, action, after, rejected = rejected, pending = handedOff || unconfirmed)
         } finally {
             if (!handedOff) {
                 runCatching { link.gatt.disconnect() }; runCatching { link.gatt.close() }
