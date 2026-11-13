@@ -24,4 +24,19 @@ class ObdBackoffTest {
         assertEquals(30_000L, ObdBackoff.waitAfter(50, projecting = true))
         assertEquals(10_000L, ObdBackoff.waitAfter(2, projecting = true))
     }
+    @Test fun duringGraceAtMostOneTryPerMinute() {
+        for (n in 0..20) assertTrue("n=$n", ObdBackoff.waitAfter(n, projecting = true, linkLost = true) >= 60_000L)
+        assertEquals(60_000L, ObdBackoff.waitAfter(1, projecting = true, linkLost = true))
+        assertEquals(300_000L, ObdBackoff.waitAfter(50, projecting = true, linkLost = true))
+    }
+    @Test fun graceDoesNotChangeTheDefaults() {
+        assertEquals(30_000L, ObdBackoff.waitAfter(50, projecting = true, linkLost = false))
+        assertEquals(300_000L, ObdBackoff.waitAfter(50))
+    }
+    @Test fun aLongWaitIsCutShortOnlyWhenProjectingWithTheLinkUp() {
+        assertTrue(ObdBackoff.cutShort(30_000L, projecting = true, linkLost = false))
+        assertTrue(!ObdBackoff.cutShort(29_999L, projecting = true, linkLost = false))
+        assertTrue(!ObdBackoff.cutShort(120_000L, projecting = true, linkLost = true))
+        assertTrue(!ObdBackoff.cutShort(120_000L, projecting = false, linkLost = false))
+    }
 }

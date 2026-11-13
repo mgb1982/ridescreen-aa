@@ -146,6 +146,7 @@ class AndroidAutoService : Service() {
             override fun run() {
                 if (!isRunning) return
                 try { tickReconnectSupervisor() } catch (e: Exception) { logTickFailure("ReconnectSupervisor", e) }
+                ObdLive.linkLost = wifiDownSince != 0L && !aaParked
                 try { tickWatchdog() } catch (e: Exception) { logTickFailure("Watchdog", e) }
                 try { adaptive.onTick(pipeline) } catch (e: Exception) { logTickFailure("Adaptive", e) }
                 try { tickTripLogging() } catch (e: Exception) { logTickFailure("TripLogging", e) }
@@ -270,6 +271,9 @@ class AndroidAutoService : Service() {
             try { if (wakeLock?.isHeld == true) wakeLock?.release() } catch (_: Exception) {}
             releaseScreenWake()
             releaseWifiLocks()   // parked: let the radio idle again while we wait for the bike
+            ObdLive.linkLost = false
+            try { ObdLive.stop() } catch (_: Exception) {}   // no classic-BT searching for an unpowered adapter; restarted on resume
+            LogBus.log("[OBD] live reader paused while parked")
         }
     }
 
@@ -300,6 +304,7 @@ class AndroidAutoService : Service() {
         wifiDownSince = 0L
         resumeSteadyReached = false
         LogBus.log("[AA] bike Wi-Fi back — resuming Android Auto (auto attempt)")
+        try { ObdLive.start(this) } catch (_: Exception) {}   // no-op unless continuous OBD reading is on
         // Reset the trailing detail (the park set it to "will resume…") back to the bike name so it
         // doesn't linger onto STREAMING as "Connected … — will resume when the bike is back".
         ConnectionState.set(Phase.STARTING_AA, BikeMemory.lastBikeName(applicationContext) ?: "")
@@ -854,7 +859,7 @@ class AndroidAutoService : Service() {
          * the foreground path.
          */
         fun notifyForegroundResuming() {
-            active?.let { it.aaParked = false; it.wifiDownSince = 0L; it.reacquireLocks() }
+            active?.let { it.aaParked = false; it.wifiDownSince = 0L; it.reacquireLocks(); try { ObdLive.start(it) } catch (_: Exception) {} }
         }
 
         fun updateForegroundType() {

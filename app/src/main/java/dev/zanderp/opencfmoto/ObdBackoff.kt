@@ -15,8 +15,16 @@ internal object ObdBackoff {
     /** While projecting the bike is on, so the adapter should have power: keep the old 30 s cap. */
     const val PROJECTING_MAX_MS = 30_000L
 
-    fun waitAfter(consecutiveFailures: Int, projecting: Boolean = false): Long {
+    /** Bike Wi-Fi lost but not parked yet (grace): the bike is probably off, at most one try a minute. */
+    const val GRACE_MIN_MS = 60_000L
+
+    fun waitAfter(consecutiveFailures: Int, projecting: Boolean = false, linkLost: Boolean = false): Long {
         val w = if (consecutiveFailures <= 0) STEPS_MS[0] else STEPS_MS[minOf(consecutiveFailures, STEPS_MS.size) - 1]
+        if (linkLost) return maxOf(w, GRACE_MIN_MS)
         return if (projecting) minOf(w, PROJECTING_MAX_MS) else w
     }
+
+    /** True when a long wait should be cut short: projection is live again and the link is not lost. */
+    fun cutShort(waitedMs: Long, projecting: Boolean, linkLost: Boolean): Boolean =
+        projecting && !linkLost && waitedMs >= PROJECTING_MAX_MS
 }
