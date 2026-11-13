@@ -57,6 +57,8 @@ object ObdLive {
     private fun stopping(): Boolean = stopFlag || worker !== Thread.currentThread()
     @Volatile private var engine: Boolean? = null
     @Volatile private var yieldedToPke = false
+    /** Set by AndroidAutoService while the bike's link is lost but Android Auto is not parked yet (grace). */
+    @Volatile var linkLost = false
 
     private fun log(s: String) = LogBus.log("[OBD] $s")
 
@@ -122,7 +124,7 @@ object ObdLive {
             setEngine(null)
             if (yieldedToPke) continue
             failures = if (ok) 0 else failures + 1
-            val wait = if (ok) RETRY_MIN_MS else ObdBackoff.waitAfter(failures, projecting())
+            val wait = if (ok) RETRY_MIN_MS else ObdBackoff.waitAfter(failures, projecting(), linkLost)
             if (failures == 5) log("live reader: adapter not reachable 5 times in a row (bike off?) · trying less often")
             if (!backoff(wait) && stopping()) break
         }
@@ -153,7 +155,7 @@ object ObdLive {
         while (SystemClock.elapsedRealtime() - start < ms) {
             if (stopping()) return false
             if (pkeBusy()) { yieldedToPke = true; return false }
-            if (projecting() && SystemClock.elapsedRealtime() - start >= ObdBackoff.PROJECTING_MAX_MS) return true
+            if (ObdBackoff.cutShort(SystemClock.elapsedRealtime() - start, projecting(), linkLost)) return true
             try { Thread.sleep(250) } catch (_: InterruptedException) { return false }
         }
         return true
