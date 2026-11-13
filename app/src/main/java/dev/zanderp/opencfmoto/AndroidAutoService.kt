@@ -869,6 +869,7 @@ class AndroidAutoService : Service() {
         if (aaParked) pwrParkedLog("parked-wait abandoned")
         pwrLog("ended")
         pwrStartAt = 0L; pwrParkedAt = 0L
+        ObdLive.linkLost = false   // static: must not carry the grace state into the next service start
         try { ObdLive.stop() } catch (_: Exception) {}
         isRunning = false
         aaParked = false
