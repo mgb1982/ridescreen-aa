@@ -14,5 +14,5 @@
     <string name="rs_thanks_github">OpenCfMoto no GitHub</string>
     <string name="rs_thanks_discord">OpenCfMoto no Discord</string>
     <string name="rs_bikes_tested_title">Testado com o RideScreen AA</string>
-    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: tudo funciona, incluindo o relógio do painel sempre certo, a aplicação Wear OS e os extras de condução. Mesmo painel, carenagem diferente.\nZontes 368 G / 368 K / 368 E: funcionamento confirmado; a imagem adapta-se ao ecrã grande logo na primeira ligação.\nEm testes: Zontes 125M (liga através do ponto de acesso do telemóvel) e Zontes 350D (QR Wi-Fi Direct). Tens uma? O teu registo ajuda.</string>
+    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: tudo funciona, incluindo o relógio do painel sempre certo, a aplicação Wear OS e os extras de condução. Mesmo painel, carenagem diferente.\nZontes 368 G / 368 K / 368 E: funcionamento confirmado; a imagem adapta-se ao ecrã grande logo na primeira ligação.\nEm testes: Zontes 125M (liga através do ponto de acesso do telemóvel) e Zontes 350D (QR Wi-Fi Direct). Tens uma? O teu registo ajuda.\nGPX DZ2 (reportada)</string>
 </resources>

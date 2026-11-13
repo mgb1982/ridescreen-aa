@@ -14,5 +14,5 @@
     <string name="rs_thanks_github">OpenCfMoto pe GitHub</string>
     <string name="rs_thanks_discord">Discord OpenCfMoto</string>
     <string name="rs_bikes_tested_title">Testat cu RideScreen AA</string>
-    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: totul funcționează, inclusiv ceasul bordului mereu la oră, aplicația Wear OS și extra-urile de tur. Același bord, alt carenaj.\nZontes 368 G / 368 K / 368 E: confirmat că funcționează; imaginea se potrivește pe ecranul mare de la prima conectare.\nÎn testare: Zontes 125M (se conectează prin hotspotul telefonului) și Zontes 350D (QR Wi‑Fi Direct). Ai una? Logul tău ajută.</string>
+    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: totul funcționează, inclusiv ceasul bordului mereu la oră, aplicația Wear OS și extra-urile de tur. Același bord, alt carenaj.\nZontes 368 G / 368 K / 368 E: confirmat că funcționează; imaginea se potrivește pe ecranul mare de la prima conectare.\nÎn testare: Zontes 125M (se conectează prin hotspotul telefonului) și Zontes 350D (QR Wi‑Fi Direct). Ai una? Logul tău ajută.\nGPX DZ2 (raportată)</string>
 </resources>

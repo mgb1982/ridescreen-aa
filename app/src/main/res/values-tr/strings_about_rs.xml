@@ -14,5 +14,5 @@
     <string name="rs_thanks_github">GitHub\'da OpenCfMoto</string>
     <string name="rs_thanks_discord">OpenCfMoto Discord</string>
     <string name="rs_bikes_tested_title">RideScreen AA ile test edilenler</string>
-    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: her şey çalışıyor; ekran saati her zaman doğru, Wear OS uygulaması ve sürüş ekstraları dahil. Aynı ekran, farklı kaporta.\nZontes 368 G / 368 K / 368 E: çalıştığı doğrulandı; görüntü ilk bağlantıdan itibaren büyük ekrana sığıyor.\nTestte: Zontes 125M (telefon erişim noktası üzerinden bağlanır) ve Zontes 350D (Wi‑Fi Direct QR). Bir tane sende varsa logun yardımcı olur.</string>
+    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: her şey çalışıyor; ekran saati her zaman doğru, Wear OS uygulaması ve sürüş ekstraları dahil. Aynı ekran, farklı kaporta.\nZontes 368 G / 368 K / 368 E: çalıştığı doğrulandı; görüntü ilk bağlantıdan itibaren büyük ekrana sığıyor.\nTestte: Zontes 125M (telefon erişim noktası üzerinden bağlanır) ve Zontes 350D (Wi‑Fi Direct QR). Bir tane sende varsa logun yardımcı olur.\nGPX DZ2 (bildirildi)</string>
 </resources>

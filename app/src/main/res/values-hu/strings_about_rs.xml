@@ -14,5 +14,5 @@
     <string name="rs_thanks_github">OpenCfMoto a GitHubon</string>
     <string name="rs_thanks_discord">OpenCfMoto Discord</string>
     <string name="rs_bikes_tested_title">RideScreen AA-val tesztelve</string>
-    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: minden működik, beleértve a mindig pontos műszerfali órát, a Wear OS-alkalmazást és az útextrákat. Ugyanaz a műszerfal, más burkolat.\nZontes 368 G / 368 K / 368 E: működését megerősítettük; a kép az első csatlakozástól kitölti a nagy kijelzőt.\nTesztelés alatt: Zontes 125M (a telefon hotspotján keresztül csatlakozik) és Zontes 350D (Wi‑Fi Direct QR). Van ilyened? A naplód segít.</string>
+    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: minden működik, beleértve a mindig pontos műszerfali órát, a Wear OS-alkalmazást és az útextrákat. Ugyanaz a műszerfal, más burkolat.\nZontes 368 G / 368 K / 368 E: működését megerősítettük; a kép az első csatlakozástól kitölti a nagy kijelzőt.\nTesztelés alatt: Zontes 125M (a telefon hotspotján keresztül csatlakozik) és Zontes 350D (Wi‑Fi Direct QR). Van ilyened? A naplód segít.\nGPX DZ2 (jelentve)</string>
 </resources>

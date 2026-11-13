@@ -14,5 +14,5 @@
     <string name="rs_thanks_github">OpenCfMoto na GitHubu</string>
     <string name="rs_thanks_discord">OpenCfMoto Discord</string>
     <string name="rs_bikes_tested_title">Otestováno s RideScreen AA</string>
-    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: funguje vše, včetně hodin na desce, které jsou vždy přesné, aplikace pro Wear OS a doplňků k jízdě. Stejná deska, jiná kapotáž.\nZontes 368 G / 368 K / 368 E: potvrzeno, funguje; obraz se od prvního připojení vejde na velký displej.\nV testování: Zontes 125M (připojuje se přes hotspot telefonu) a Zontes 350D (Wi‑Fi Direct QR). Máte jeden? Váš záznam pomůže.</string>
+    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: funguje vše, včetně hodin na desce, které jsou vždy přesné, aplikace pro Wear OS a doplňků k jízdě. Stejná deska, jiná kapotáž.\nZontes 368 G / 368 K / 368 E: potvrzeno, funguje; obraz se od prvního připojení vejde na velký displej.\nV testování: Zontes 125M (připojuje se přes hotspot telefonu) a Zontes 350D (Wi‑Fi Direct QR). Máte jeden? Váš záznam pomůže.\nGPX DZ2 (nahlášena)</string>
 </resources>
