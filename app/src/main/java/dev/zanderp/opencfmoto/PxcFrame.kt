@@ -62,6 +62,7 @@ data class PxcFrame(val cmd: Int, val payload: ByteArray) {
         const val CMD_HEARTBEAT           = 0x70000000 // ↔  ack = 0x70000001
         const val CMD_HEARTBEAT_ACK       = 0x70000001
         const val CMD_CLIENT_INFO_RLY     = 0x10011    // phone→bike reply to CLIENT_INFO (0x10010)
+        const val CMD_CARINFO_NIGHTMODE   = 0x10200    // bike→phone {"night":bool}, dash light sensor (official app; not seen yet)
         const val CMD_QUERY_SPEED         = 0x10690    // bike→phone {usbSpeed,wifiSpeed}; reply 0x10691
         const val CMD_QUERY_SPEED_RLY     = 0x10691
         const val CMD_CHECK_SN            = 0x103e0    // bike→phone {client_set,sn}; reply 0x103e1 + result
@@ -110,6 +111,7 @@ data class PxcFrame(val cmd: Int, val payload: ByteArray) {
             CMD_HU_TIME_SYNC           -> "HU_TIME_SYNC"
             CMD_HU_TIME_SYNC_ACK       -> "HU_TIME_SYNC_ACK"
             CMD_HU_QUERY_TIME          -> "HU_QUERY_TIME"
+            CMD_CARINFO_NIGHTMODE      -> "CARINFO_NIGHTMODE"
             CMD_HU_QUERY_TIME_ACK      -> "HU_QUERY_TIME_ACK"
             CMD_CLIENT_INFO            -> "CLIENT_INFO (PXC)"
             CMD_REMOTE_AUTH_RESULT     -> "REMOTE_AUTH_RESULT"
