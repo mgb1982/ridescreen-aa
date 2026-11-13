@@ -1,42 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/hud_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="#000000">
 
-    <SurfaceView
-        android:id="@+id/hud_surface"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center" />
-
-    <!-- Phone Map / GPX preview when no bike / AA pipeline (debug + offline) -->
-    <FrameLayout
-        android:id="@+id/hud_gpx_host"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
-    <!-- Shown when Android Auto isn't live yet and no Map preview -->
-    <TextView
-        android:id="@+id/hud_hint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:padding="24dp"
-        android:text="@string/hud_start_android_auto_and_connect_to_your_bike_to_s"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:visibility="gone" />
-
-    <!-- Top bar: close + title + controls toggle -->
+    <!-- Top bar: back, title, Android Auto / Dashboard / Map selector, fullscreen -->
     <LinearLayout
         android:id="@+id/hud_topbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:background="#66000000"
@@ -48,43 +23,65 @@
             android:layout_width="wrap_content"
             android:layout_height="44dp"
             android:minWidth="44dp"
-            android:text="@string/hud_str"
+            android:contentDescription="@string/cuadro_back_desc"
+            android:text="@string/cuadro_back_glyph"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/hud_title"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="8dp"
-            android:text="@string/hud_dash_view"
+            android:layout_marginEnd="8dp"
+            android:text="@string/cuadro_title"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/hud_map_hub"
-            android:layout_width="wrap_content"
-            android:layout_height="44dp"
-            android:minWidth="44dp"
-            android:text="@string/hud_hub"
-            android:visibility="gone" />
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/hud_mode_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:singleSelection="true"
+            app:selectionRequired="true">
 
-        <Button
-            android:id="@+id/hud_theme"
-            android:layout_width="wrap_content"
-            android:layout_height="44dp"
-            android:layout_marginStart="4dp"
-            android:minWidth="44dp"
-            android:text="@string/hud_str_2"
-            android:textSize="16sp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/hud_mode_aa"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingHorizontal="4dp"
+                android:text="@string/cuadro_mode_aa"
+                android:textSize="12sp" />
 
-        <Button
-            android:id="@+id/hud_toggle_controls"
-            android:layout_width="wrap_content"
-            android:layout_height="44dp"
-            android:layout_marginStart="4dp"
-            android:text="@string/controls_controls" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/hud_mode_dash"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingHorizontal="4dp"
+                android:text="@string/cuadro_mode_dashboard"
+                android:textSize="12sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/hud_mode_map"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingHorizontal="4dp"
+                android:text="@string/cuadro_mode_map"
+                android:textSize="12sp" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <Button
             android:id="@+id/hud_fullscreen"
@@ -92,37 +89,106 @@
             android:layout_height="44dp"
             android:minWidth="44dp"
             android:layout_marginStart="4dp"
+            android:contentDescription="@string/cuadro_fullscreen_desc"
             android:text="@string/hud_str_3"
             android:textSize="18sp" />
     </LinearLayout>
 
-    <!-- Bottom control bar (works on every dash via the AAP INPUT channel) -->
-    <HorizontalScrollView
-        android:id="@+id/hud_controls"
+    <!-- Portrait: picture above, Mando below. Landscape: orientation is switched to horizontal in code. -->
+    <LinearLayout
+        android:id="@+id/hud_body"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="#66000000"
-        android:paddingHorizontal="6dp"
-        android:paddingVertical="6dp"
-        android:scrollbars="none">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:id="@+id/hud_stage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <SurfaceView
+                android:id="@+id/hud_surface"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center" />
+
+            <!-- Phone Map / GPX preview when no bike / AA pipeline (debug + offline) -->
+            <FrameLayout
+                android:id="@+id/hud_gpx_host"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+            <!-- Shown when there is no bike connection and no Map preview -->
+            <TextView
+                android:id="@+id/hud_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="24dp"
+                android:text="@string/cuadro_hint_disconnected"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <!-- Mando: handle + pad (works on every dash via the AAP INPUT channel) -->
+        <ScrollView
+            android:id="@+id/hud_controls"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:divider="@null">
+            android:background="#99000000"
+            android:scrollbars="none">
 
-            <Button android:id="@+id/hud_knob_back" android:layout_width="wrap_content" android:layout_height="48dp" android:minWidth="52dp" android:text="@string/hud_str_4" android:textSize="18sp" />
-            <Button android:id="@+id/hud_left" android:layout_width="wrap_content" android:layout_height="48dp" android:minWidth="52dp" android:text="@string/controls_str_2" />
-            <Button android:id="@+id/hud_up" android:layout_width="wrap_content" android:layout_height="48dp" android:minWidth="52dp" android:text="@string/controls_str" />
-            <Button android:id="@+id/hud_ok" android:layout_width="wrap_content" android:layout_height="48dp" android:minWidth="60dp" android:text="@android:string/ok" />
-            <Button android:id="@+id/hud_down" android:layout_width="wrap_content" android:layout_height="48dp" android:minWidth="52dp" android:text="@string/controls_str_4" />
-            <Button android:id="@+id/hud_right" android:layout_width="wrap_content" android:layout_height="48dp" android:minWidth="52dp" android:text="@string/controls_str_3" />
-            <Button android:id="@+id/hud_knob_fwd" android:layout_width="wrap_content" android:layout_height="48dp" android:minWidth="52dp" android:text="@string/hud_str_5" android:textSize="18sp" />
-            <Button android:id="@+id/hud_back" android:layout_width="wrap_content" android:layout_height="48dp" android:minWidth="64dp" android:text="@string/controls_back" />
-            <Button android:id="@+id/hud_home" android:layout_width="wrap_content" android:layout_height="48dp" android:minWidth="64dp" android:text="@string/controls_home" />
-            <Button android:id="@+id/hud_voice" android:layout_width="wrap_content" android:layout_height="48dp" android:minWidth="64dp" android:text="@string/hud_str_6" android:textSize="16sp" />
-        </LinearLayout>
-    </HorizontalScrollView>
-</FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="8dp"
+                android:paddingBottom="8dp">
+
+                <Button
+                    android:id="@+id/hud_pad_handle"
+                    style="?attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:text="@string/cuadro_pad_handle_open"
+                    android:textColor="#FFFFFF" />
+
+                <LinearLayout
+                    android:id="@+id/hud_pad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout style="@style/CuadroPadRow">
+                        <Button android:id="@+id/hud_knob_back" style="@style/CuadroPadKey" android:contentDescription="@string/cuadro_knob_back_desc" android:text="@string/hud_str_4" />
+                        <Button android:id="@+id/hud_up" style="@style/CuadroPadKey" android:contentDescription="@string/cuadro_up_desc" android:text="@string/controls_str" />
+                        <Button android:id="@+id/hud_knob_fwd" style="@style/CuadroPadKey" android:contentDescription="@string/cuadro_knob_fwd_desc" android:text="@string/hud_str_5" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/CuadroPadRow">
+                        <Button android:id="@+id/hud_left" style="@style/CuadroPadKey" android:contentDescription="@string/cuadro_left_desc" android:text="@string/controls_str_2" />
+                        <Button android:id="@+id/hud_ok" style="@style/CuadroPadKey" android:contentDescription="@string/cuadro_ok_desc" android:text="@android:string/ok" />
+                        <Button android:id="@+id/hud_right" style="@style/CuadroPadKey" android:contentDescription="@string/cuadro_right_desc" android:text="@string/controls_str_3" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/CuadroPadRow">
+                        <Space android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1" />
+                        <Button android:id="@+id/hud_down" style="@style/CuadroPadKey" android:contentDescription="@string/cuadro_down_desc" android:text="@string/controls_str_4" />
+                        <Space android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/CuadroPadRow">
+                        <Button android:id="@+id/hud_back" style="@style/CuadroPadKey" android:contentDescription="@string/cuadro_bike_back_desc" android:text="@string/controls_back" android:textSize="14sp" />
+                        <Button android:id="@+id/hud_home" style="@style/CuadroPadKey" android:contentDescription="@string/cuadro_bike_home_desc" android:text="@string/controls_home" android:textSize="14sp" />
+                        <Button android:id="@+id/hud_voice" style="@style/CuadroPadKey" android:contentDescription="@string/cuadro_voice_desc" android:text="@string/cuadro_pad_voice" android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>
