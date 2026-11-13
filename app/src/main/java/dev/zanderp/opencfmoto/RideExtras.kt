@@ -93,24 +93,47 @@ object Parking {
         )
     }
 
+    // The last position seen while the bike link was up (see [ParkSpot]).
+    @Volatile private var linkedFix: ParkSpot.Fix? = null
+    @Volatile private var linkedFixNotedAt = 0L
+
+    /** Called every few seconds while the link to the dash is up: remembers where the bike is. */
+    fun noteWhileLinked(ctx: Context) {
+        val nowMs = android.os.SystemClock.elapsedRealtime()
+        if (nowMs - linkedFixNotedAt < 2_000L) return
+        linkedFixNotedAt = nowMs
+        val loc = RideExtras.lastLocation(ctx, ParkSpot.MAX_NOTE_AGE_MS) ?: return
+        linkedFix = ParkSpot.Fix(loc.latitude, loc.longitude, if (loc.hasAccuracy()) loc.accuracy.toInt() else 0, loc.time)
+    }
+
     fun saveNow(ctx: Context) {
         BatteryAlertNotifier.onParked(ctx)
-        val loc = RideExtras.lastLocation(ctx, MAX_FIX_AGE_MS)
-        if (loc == null) {
+        val nowMs = System.currentTimeMillis()
+        val now = RideExtras.lastLocation(ctx, MAX_FIX_AGE_MS)?.let {
+            ParkSpot.Fix(it.latitude, it.longitude, if (it.hasAccuracy()) it.accuracy.toInt() else 0, it.time)
+        }
+        val linked = linkedFix
+        val spot = ParkSpot.pick(linked, now, nowMs)
+        if (spot == null) {
             LogBus.log("[PARK] no recent GPS fix — parking spot not saved")
             return
         }
         ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
-            .putLong("lat", java.lang.Double.doubleToRawLongBits(loc.latitude))
-            .putLong("lon", java.lang.Double.doubleToRawLongBits(loc.longitude))
-            .putInt("acc", if (loc.hasAccuracy()) loc.accuracy.toInt() else 0)
-            .putLong("t", System.currentTimeMillis())
+            .putLong("lat", java.lang.Double.doubleToRawLongBits(spot.lat))
+            .putLong("lon", java.lang.Double.doubleToRawLongBits(spot.lon))
+            .putInt("acc", spot.accuracyM)
+            .putLong("t", nowMs)
             .apply()
-        LogBus.log("[PARK] saved (±${if (loc.hasAccuracy()) loc.accuracy.toInt() else -1} m)")
+        linkedFix = null
+        LogBus.log(
+            "[PARK] saved (±${if (spot.accuracyM > 0) spot.accuracyM else -1} m)" +
+                if (spot === linked) " at the last position with the bike link up (${(nowMs - spot.timeMs) / 1000} s before)" else "",
+        )
         changed(ctx)
     }
 
     fun clear(ctx: Context) {
+        linkedFix = null
         val p = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         deletePhoto(ctx)
         if (!p.contains("lat")) return

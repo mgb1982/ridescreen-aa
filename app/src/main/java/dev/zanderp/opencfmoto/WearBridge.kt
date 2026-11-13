@@ -91,6 +91,9 @@ object WearBridge {
         }
         val dropTooLong = phase == Phase.WAITING_FOR_BIKE ||
             (reconnectingSince > 0L && now - reconnectingSince > RIDE_END_AFTER_DROP_MS)
+        // While the dash link is up, remember where the bike is: the ride is only declared over
+        // 45 s after the link drops, and by then the rider has walked away from the bike.
+        if (phase == Phase.STREAMING) try { Parking.noteWhileLinked(ctx) } catch (_: Exception) {}
         val active = phase == Phase.STREAMING || (sessionActive && phase.busy && !dropTooLong)
         if (active && sessionActive) rememberRide()
         // Tile / complication on the watch: a summary about once a minute while riding.
