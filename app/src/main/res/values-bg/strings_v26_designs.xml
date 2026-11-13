@@ -4,4 +4,5 @@
     <string name="dash_design_pit">Пит</string>
     <string name="dash_design_classic">Класически</string>
     <string name="dash_design_focus">Фокус</string>
+    <string name="dash_design_window">Android Auto + данни</string>
 </resources>

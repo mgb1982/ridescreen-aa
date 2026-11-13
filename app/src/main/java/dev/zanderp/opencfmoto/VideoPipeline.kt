@@ -353,7 +353,9 @@ class VideoPipeline(
     fun showCard(ms: Long, build: (Int, Int) -> android.graphics.Bitmap?) { aaCompositor?.showCard(ms, build) }
 
     /** v2.4: custom dashboard instead of Android Auto until switched off with null. */
-    fun setLiveLayer(build: ((Int, Int) -> android.graphics.Bitmap?)?, sig: (() -> Any?)? = null) { aaCompositor?.setLiveLayer(build, sig) }
+    fun setLiveLayer(build: ((Int, Int) -> android.graphics.Bitmap?)?, sig: (() -> Any?)? = null, window: (() -> Boolean)? = null) {
+        aaCompositor?.setLiveLayer(build, sig, window)
+    }
 
     /**
      * Mirror the phone (whole display or a single app on Android 14+) into the bike encoder.

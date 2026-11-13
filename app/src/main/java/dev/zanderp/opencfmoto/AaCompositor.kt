@@ -136,9 +136,15 @@ class AaCompositor(private val log: (String) -> Unit) {
     private var liveForce = true
     private val LIVE_FORCE_MS = 2_000L
 
+    // 2.5 · Android Auto window inside the custom dashboard: the live layer is drawn first, then the
+    // latest Android Auto frame, aspect-fit (nothing cropped) into [AaWindowLayout.window]. Asked each
+    // frame, so switching the dashboard design takes effect at once.
+    @Volatile private var aaWindow: () -> Boolean = { false }
+
     /** Turn the live layer on ([build] runs on the GL thread each tick) or off (null: back to Android Auto). */
-    fun setLiveLayer(build: ((Int, Int) -> Bitmap?)?, sig: (() -> Any?)? = null) {
+    fun setLiveLayer(build: ((Int, Int) -> Bitmap?)?, sig: (() -> Any?)? = null, window: (() -> Boolean)? = null) {
         handler.post {
+            aaWindow = window ?: { false }
             handler.removeCallbacks(liveTick)
             liveSig = sig
             liveForce = true
@@ -574,8 +580,9 @@ class AaCompositor(private val log: (String) -> Unit) {
             return
         }
         hasContent = true
-        // Custom dashboard on the dash: the frame stays latched (decoder keeps flowing) but isn't drawn.
-        if (liveBuild != null && cardUntil <= android.os.SystemClock.uptimeMillis()) return
+        // Custom dashboard on the dash: the frame stays latched (decoder keeps flowing) but isn't drawn,
+        // unless the dashboard has an Android Auto window (then it is drawn at the usual frame cap).
+        if (liveBuild != null && cardUntil <= android.os.SystemClock.uptimeMillis() && !windowOn()) return
         // Throttle live frames to the power-mode cap. A too-soon frame is kept (texture already
         // latched above) and drawn by the keep-alive tick, so we cap the rate without losing motion.
         val idleMs = android.os.SystemClock.uptimeMillis() - lastDrawMs
@@ -633,6 +640,7 @@ class AaCompositor(private val log: (String) -> Unit) {
         // Welcome / goodbye card: replaces the AA frame on the bike output while it lasts.
         if (target === windowSurface && (cardUntil > android.os.SystemClock.uptimeMillis() || liveBuild != null)) {
             drawCard()
+            if (cardUntil <= android.os.SystemClock.uptimeMillis() && liveBuild != null && hasContent && windowOn()) drawAaWindow()
             EGLExt.eglPresentationTimeANDROID(eglDisplay, target, System.nanoTime())
             EGL14.eglSwapBuffers(eglDisplay, target)
             return
@@ -673,6 +681,36 @@ class AaCompositor(private val log: (String) -> Unit) {
         // Monotonic presentation time so repeated (keep-alive) frames aren't dropped as duplicate PTS.
         EGLExt.eglPresentationTimeANDROID(eglDisplay, target, System.nanoTime())
         EGL14.eglSwapBuffers(eglDisplay, target)
+    }
+
+    private fun windowOn(): Boolean = try { aaWindow() } catch (_: Exception) { false }
+
+    /** The latched Android Auto frame, aspect-fit into the dashboard's window (GL thread, target current). */
+    private fun drawAaWindow() {
+        if (canvasW <= 0 || canvasH <= 0) return
+        val win = AaWindowLayout.window(canvasW, canvasH)
+        val contentW = if (bufW > 0) (bufW * cropU).toInt() else win.w
+        val contentH = if (bufH > 0) (bufH * cropV).toInt() else win.h
+        val f = AaWindowLayout.fit(win, contentW, contentH)
+        val glY = canvasH - f.y - f.h   // layout is top-left origin, GL viewports bottom-left
+        GLES20.glEnable(GLES20.GL_SCISSOR_TEST)
+        GLES20.glScissor(f.x, glY, f.w, f.h)
+        GLES20.glViewport(f.x, glY, f.w, f.h)
+        GLES20.glUseProgram(program)
+        quad.position(0)
+        GLES20.glVertexAttribPointer(aPosition, 2, GLES20.GL_FLOAT, false, 16, quad)
+        GLES20.glEnableVertexAttribArray(aPosition)
+        quad.position(2)
+        GLES20.glVertexAttribPointer(aTexCoord, 2, GLES20.GL_FLOAT, false, 16, quad)
+        GLES20.glEnableVertexAttribArray(aTexCoord)
+        GLES20.glUniformMatrix4fv(uTexMatrix, 1, false, texMatrix, 0)
+        GLES20.glUniform2f(uCrop, cropU, cropV)
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
+        GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, textureId)
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4)
+        GLES20.glDisableVertexAttribArray(aPosition)
+        GLES20.glDisableVertexAttribArray(aTexCoord)
+        GLES20.glDisable(GLES20.GL_SCISSOR_TEST)
     }
 
     fun release() {
