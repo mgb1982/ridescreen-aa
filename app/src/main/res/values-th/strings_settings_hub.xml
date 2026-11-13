@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_hub_title">การตั้งค่า</string>
+    <string name="settings_sec_connection">การเชื่อมต่อ</string>
+    <string name="settings_sec_connection_sub">เชื่อมต่ออัตโนมัติ รอรถ เสียง ตัวช่วยตั้งค่า</string>
+    <string name="settings_sec_display">หน้าจอหน้าปัด</string>
+    <string name="settings_sec_display_sub">ปรับหน้าจอให้พอดีกับหน้าปัด ธีมกลางวัน/กลางคืน โหมดพลังงาน</string>
+    <string name="settings_sec_dashboard">Dashboard</string>
+    <string name="settings_sec_dashboard_sub">สไตล์ ช่องข้อมูล ลำดับการ์ด สี ขนาด</string>
+    <string name="settings_sec_handlebar">แฮนด์และปุ่มควบคุม</string>
+    <string name="settings_sec_handlebar_sub">ปุ่ม ความหน่วงการกด ระดับเสียงตามความเร็ว</string>
+    <string name="settings_sec_route">ระหว่างเดินทาง</string>
+    <string name="settings_sec_route_sub">บันทึกการเดินทาง การจอด แจ้งเตือนฝน การสั่นเมื่อเลี้ยว</string>
+    <string name="settings_sec_watch">นาฬิกา (Wear OS)</string>
+    <string name="settings_sec_watch_sub">คู่มือนาฬิกา</string>
+    <string name="settings_sec_privacy">ความเป็นส่วนตัวและการสำรองข้อมูล</string>
+    <string name="settings_sec_privacy_sub">รายงานแบบไม่ระบุตัวตน บันทึก ส่งออก สำรองข้อมูลทั้งหมด</string>
+    <string name="settings_sec_advanced">ขั้นสูง</string>
+    <string name="settings_sec_advanced_sub">สืบทอดจาก OpenCfMoto: โปรไฟล์รถ ความละเอียด Wi‑Fi แล็บนาฬิกา</string>
+    <string name="settings_adv_notice">การตั้งค่าที่สืบทอดจาก OpenCfMoto: โดยปกติไม่จำเป็นต้องแตะต้อง</string>
+    <string name="settings_reset_defaults">กลับเป็นค่าเริ่มต้น</string>
+    <string name="settings_reset_confirm">คืนค่าเริ่มต้นเฉพาะส่วนนี้ใช่ไหม</string>
+    <string name="settings_reset_done">คืนค่าเริ่มต้นแล้ว</string>
+    <string name="settings_initial_assistant">ตัวช่วยตั้งค่า</string>
+    <string name="settings_watch_desc">ติดตั้งและใช้ RideScreen บนนาฬิกา Wear OS คู่มือจะอธิบายแต่ละขั้นตอน</string>
+    <string name="settings_diag_title">การวินิจฉัย</string>
+    <string name="dvr_probe_entry">ทดสอบกล้องหน้าปัดรถ (ทดสอบ)</string>
+    <string name="backup_full_desc">สำรองข้อมูลทั้งหมด: การตั้งค่า ทริป สถานที่ และรถทั้งหมดในโทรศัพท์นี้ในไฟล์ .zip เดียว — เก็บเป็นความลับ เพราะมีรหัส Wi‑Fi และรหัสกุญแจ</string>
+    <string name="backup_full_save">บันทึกการสำรองข้อมูลทั้งหมด</string>
+    <string name="backup_full_restore">กู้คืนข้อมูลสำรอง</string>
+    <string name="backup_restore_title">กู้คืนข้อมูลสำรองทั้งหมดใช่ไหม</string>
+    <string name="backup_restore_message">ข้อมูลสำรองจาก %1$s (RideScreen AA %2$s)\n\nจะแทนที่การตั้งค่า ทริป สถานที่ และรถในโทรศัพท์นี้ด้วยข้อมูลจากไฟล์สำรอง จากนั้นแอปจะรีสตาร์ท</string>
+    <string name="backup_restore_confirm">กู้คืน</string>
+</resources>

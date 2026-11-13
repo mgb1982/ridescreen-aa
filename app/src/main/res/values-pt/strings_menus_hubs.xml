@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">Início</string>
+    <string name="tab_trips">Viagens</string>
+    <string name="tab_bike">Mota</string>
+    <string name="tab_settings">Definições</string>
+    <string name="hub_map">Mapa e percursos</string>
+    <string name="hub_sub_map">Viagem livre, percursos e GPX</string>
+    <string name="hub_year">Resumo do ano</string>
+    <string name="hub_sub_year">Os teus km, o teu melhor percurso e a tua zona</string>
+    <string name="hub_sub_trips_list">Todas as tuas viagens</string>
+    <string name="hub_sub_garage">As tuas motas e o QR</string>
+    <string name="hub_key_sub">Chave da mota (PKE)</string>
+    <string name="hub_sub_obd">Leitura em direto e teste do leitor</string>
+    <string name="hub_sub_crash">e caixa negra</string>
+</resources>

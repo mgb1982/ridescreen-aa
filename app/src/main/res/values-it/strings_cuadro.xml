@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cuadro_title">Vista del cruscotto</string>
+    <string name="cuadro_back_desc">Indietro</string>
+    <string name="cuadro_fullscreen_desc">Schermo intero</string>
+    <string name="cuadro_mode_aa">Android Auto</string>
+    <string name="cuadro_mode_dashboard">Dashboard</string>
+    <string name="cuadro_mode_map">Mappa</string>
+    <string name="cuadro_connect_first">Collega prima la moto</string>
+    <string name="cuadro_hint_disconnected">Collega la moto per vedere qui la stessa cosa del cruscotto. Oppure apri la mappa per un’anteprima senza moto.</string>
+    <string name="cuadro_pad_handle_open">Pad ▾</string>
+    <string name="cuadro_pad_handle_closed">Pad ▴</string>
+    <string name="cuadro_pad_voice">🎙 Voce</string>
+    <string name="cuadro_knob_back_desc">Manopola indietro</string>
+    <string name="cuadro_knob_fwd_desc">Manopola avanti</string>
+    <string name="cuadro_up_desc">Su</string>
+    <string name="cuadro_down_desc">Giù</string>
+    <string name="cuadro_left_desc">Sinistra</string>
+    <string name="cuadro_right_desc">Destra</string>
+    <string name="cuadro_ok_desc">OK</string>
+    <string name="cuadro_bike_back_desc">Indietro</string>
+    <string name="cuadro_bike_home_desc">Home</string>
+    <string name="cuadro_voice_desc">Assistente vocale</string>
+    <string name="cuadro_fullscreen_toast">Schermo intero — premi Indietro per uscire</string>
+    <string name="cuadro_aa_needs_bike">I comandi di Android Auto richiedono la moto collegata</string>
+    <string name="cuadro_map_preview">Anteprima mappa</string>
+    <string name="cuadro_map_ui_failed">Impossibile aprire l’interfaccia della mappa</string>
+    <string name="cuadro_map_load_failed">Impossibile caricare la mappa — riprova dal centro Mappa</string>
+</resources>

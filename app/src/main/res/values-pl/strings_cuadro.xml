@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cuadro_title">Widok ekranu</string>
+    <string name="cuadro_back_desc">Wstecz</string>
+    <string name="cuadro_fullscreen_desc">Pełny ekran</string>
+    <string name="cuadro_mode_aa">Android Auto</string>
+    <string name="cuadro_mode_dashboard">Dashboard</string>
+    <string name="cuadro_mode_map">Mapa</string>
+    <string name="cuadro_connect_first">Najpierw połącz motocykl</string>
+    <string name="cuadro_hint_disconnected">Połącz motocykl, aby zobaczyć tutaj to samo co na wyświetlaczu. Albo otwórz mapę, by zobaczyć podgląd bez motocykla.</string>
+    <string name="cuadro_pad_handle_open">Pad ▾</string>
+    <string name="cuadro_pad_handle_closed">Pad ▴</string>
+    <string name="cuadro_pad_voice">🎙 Głos</string>
+    <string name="cuadro_knob_back_desc">Pokrętło wstecz</string>
+    <string name="cuadro_knob_fwd_desc">Pokrętło do przodu</string>
+    <string name="cuadro_up_desc">Góra</string>
+    <string name="cuadro_down_desc">Dół</string>
+    <string name="cuadro_left_desc">Lewo</string>
+    <string name="cuadro_right_desc">Prawo</string>
+    <string name="cuadro_ok_desc">OK</string>
+    <string name="cuadro_bike_back_desc">Wstecz</string>
+    <string name="cuadro_bike_home_desc">Start</string>
+    <string name="cuadro_voice_desc">Asystent głosowy</string>
+    <string name="cuadro_fullscreen_toast">Pełny ekran — naciśnij Wstecz, aby wyjść</string>
+    <string name="cuadro_aa_needs_bike">Sterowanie Android Auto wymaga połączenia z motocyklem</string>
+    <string name="cuadro_map_preview">Podgląd mapy</string>
+    <string name="cuadro_map_ui_failed">Nie udało się otworzyć interfejsu mapy</string>
+    <string name="cuadro_map_load_failed">Nie udało się wczytać mapy — spróbuj ponownie z centrum map</string>
+</resources>

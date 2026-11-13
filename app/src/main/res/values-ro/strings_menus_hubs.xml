@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">Acasă</string>
+    <string name="tab_trips">Trasee</string>
+    <string name="tab_bike">Moto</string>
+    <string name="tab_settings">Setări</string>
+    <string name="hub_map">Hartă și trasee</string>
+    <string name="hub_sub_map">Traseu liber, trasee și GPX</string>
+    <string name="hub_year">Anul în revistă</string>
+    <string name="hub_sub_year">Kilometrii tăi, cel mai bun traseu și zona ta</string>
+    <string name="hub_sub_trips_list">Toate traseele tale</string>
+    <string name="hub_sub_garage">Motocicletele tale și codul QR</string>
+    <string name="hub_key_sub">Cheia motocicletei (PKE)</string>
+    <string name="hub_sub_obd">Citire în timp real și test al cititorului</string>
+    <string name="hub_sub_crash">și cutia neagră</string>
+</resources>

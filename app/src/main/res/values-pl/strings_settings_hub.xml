@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_hub_title">Ustawienia</string>
+    <string name="settings_sec_connection">Połączenie</string>
+    <string name="settings_sec_connection_sub">Automatyczne połączenie, oczekiwanie na motocykl, dźwięk, asystent konfiguracji</string>
+    <string name="settings_sec_display">Ekran wyświetlacza</string>
+    <string name="settings_sec_display_sub">Dopasowanie ekranu do wyświetlacza, motyw dzienny/nocny, tryb zasilania</string>
+    <string name="settings_sec_dashboard">Dashboard</string>
+    <string name="settings_sec_dashboard_sub">Styl, pola, kolejność kart, kolor, skala</string>
+    <string name="settings_sec_handlebar">Kierownica i przyciski</string>
+    <string name="settings_sec_handlebar_sub">Przyciski, opóźnienia naciśnięcia, głośność zależna od prędkości</string>
+    <string name="settings_sec_route">W trasie</string>
+    <string name="settings_sec_route_sub">Dziennik jazdy, parkowanie, ostrzeżenie o deszczu, wibracje na zakrętach</string>
+    <string name="settings_sec_watch">Zegarek (Wear OS)</string>
+    <string name="settings_sec_watch_sub">Przewodnik po zegarku</string>
+    <string name="settings_sec_privacy">Prywatność i kopie zapasowe</string>
+    <string name="settings_sec_privacy_sub">Anonimowe raporty, logi, eksport, pełna kopia zapasowa</string>
+    <string name="settings_sec_advanced">Zaawansowane</string>
+    <string name="settings_sec_advanced_sub">Odziedziczone z OpenCfMoto: profil motocykla, rozdzielczość, Wi‑Fi, laboratorium zegara</string>
+    <string name="settings_adv_notice">Ustawienia odziedziczone z OpenCfMoto: zwykle nie musisz ich zmieniać.</string>
+    <string name="settings_reset_defaults">Przywróć wartości domyślne</string>
+    <string name="settings_reset_confirm">Przywrócić wartości domyślne tylko tego bloku?</string>
+    <string name="settings_reset_done">Przywrócono wartości domyślne</string>
+    <string name="settings_initial_assistant">Asystent konfiguracji</string>
+    <string name="settings_watch_desc">Zainstaluj i używaj RideScreen na zegarku Wear OS. Przewodnik wyjaśnia każdy krok.</string>
+    <string name="settings_diag_title">Diagnostyka</string>
+    <string name="dvr_probe_entry">Test kamery motocykla (test)</string>
+    <string name="backup_full_desc">Pełna kopia zapasowa: wszystkie ustawienia, wycieczki, miejsca i motocykle z tego telefonu w jednym pliku .zip — trzymaj ją prywatnie, zawiera kody Wi‑Fi i kluczyka.</string>
+    <string name="backup_full_save">Zapisz pełną kopię zapasową</string>
+    <string name="backup_full_restore">Przywróć kopię zapasową</string>
+    <string name="backup_restore_title">Przywrócić pełną kopię zapasową?</string>
+    <string name="backup_restore_message">Kopia z %1$s (RideScreen AA %2$s).\n\nZastąpi ustawienia, wycieczki, miejsca i motocykle w tym telefonie danymi z kopii. Potem aplikacja uruchomi się ponownie.</string>
+    <string name="backup_restore_confirm">Przywróć</string>
+</resources>

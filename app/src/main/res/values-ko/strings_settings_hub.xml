@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_hub_title">설정</string>
+    <string name="settings_sec_connection">연결</string>
+    <string name="settings_sec_connection_sub">자동 연결, 바이크 대기, 소리, 설정 도우미</string>
+    <string name="settings_sec_display">계기판 화면</string>
+    <string name="settings_sec_display_sub">계기판에 맞춘 화면, 주간/야간 테마, 전원 모드</string>
+    <string name="settings_sec_dashboard">Dashboard</string>
+    <string name="settings_sec_dashboard_sub">스타일, 항목, 카드 순서, 색상, 배율</string>
+    <string name="settings_sec_handlebar">핸들바와 버튼</string>
+    <string name="settings_sec_handlebar_sub">버튼, 누르기 지연, 속도별 음량</string>
+    <string name="settings_sec_route">주행 중</string>
+    <string name="settings_sec_route_sub">주행 기록, 주차, 비 알림, 회전 진동</string>
+    <string name="settings_sec_watch">워치 (Wear OS)</string>
+    <string name="settings_sec_watch_sub">워치 가이드</string>
+    <string name="settings_sec_privacy">개인정보와 백업</string>
+    <string name="settings_sec_privacy_sub">익명 보고, 로그, 내보내기, 전체 백업</string>
+    <string name="settings_sec_advanced">고급</string>
+    <string name="settings_sec_advanced_sub">OpenCfMoto에서 상속: 바이크 프로필, 해상도, Wi‑Fi, 시계 실험실</string>
+    <string name="settings_adv_notice">OpenCfMoto에서 상속된 설정입니다. 보통은 건드릴 필요가 없습니다.</string>
+    <string name="settings_reset_defaults">기본값으로 되돌리기</string>
+    <string name="settings_reset_confirm">이 블록의 기본값만 복원할까요?</string>
+    <string name="settings_reset_done">기본값을 복원했습니다</string>
+    <string name="settings_initial_assistant">설정 도우미</string>
+    <string name="settings_watch_desc">Wear OS 워치에 RideScreen을 설치하고 사용하세요. 가이드에서 각 단계를 설명합니다.</string>
+    <string name="settings_diag_title">진단</string>
+    <string name="dvr_probe_entry">바이크 카메라 프로브 (테스트)</string>
+    <string name="backup_full_desc">전체 백업: 이 휴대폰의 모든 설정, 주행 기록, 장소, 바이크를 .zip 파일 하나에 담습니다. Wi‑Fi와 키 코드가 포함되니 개인적으로 보관하세요.</string>
+    <string name="backup_full_save">전체 백업 저장</string>
+    <string name="backup_full_restore">백업 복원</string>
+    <string name="backup_restore_title">전체 백업을 복원할까요?</string>
+    <string name="backup_restore_message">%1$s 백업 (RideScreen AA %2$s).\n\n이 휴대폰의 설정, 주행 기록, 장소, 바이크를 백업 내용으로 바꿉니다. 이후 앱이 다시 시작됩니다.</string>
+    <string name="backup_restore_confirm">복원</string>
+</resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cuadro_title">มุมมองหน้าปัด</string>
+    <string name="cuadro_back_desc">กลับ</string>
+    <string name="cuadro_fullscreen_desc">เต็มหน้าจอ</string>
+    <string name="cuadro_mode_aa">Android Auto</string>
+    <string name="cuadro_mode_dashboard">Dashboard</string>
+    <string name="cuadro_mode_map">แผนที่</string>
+    <string name="cuadro_connect_first">เชื่อมต่อรถก่อน</string>
+    <string name="cuadro_hint_disconnected">เชื่อมต่อรถเพื่อดูเหมือนหน้าปัดที่นี่ หรือเปิดแผนที่เพื่อดูตัวอย่างโดยไม่ต้องมีรถ</string>
+    <string name="cuadro_pad_handle_open">แป้น ▾</string>
+    <string name="cuadro_pad_handle_closed">แป้น ▴</string>
+    <string name="cuadro_pad_voice">🎙 เสียง</string>
+    <string name="cuadro_knob_back_desc">ปุ่มหมุนย้อนกลับ</string>
+    <string name="cuadro_knob_fwd_desc">ปุ่มหมุนไปข้างหน้า</string>
+    <string name="cuadro_up_desc">ขึ้น</string>
+    <string name="cuadro_down_desc">ลง</string>
+    <string name="cuadro_left_desc">ซ้าย</string>
+    <string name="cuadro_right_desc">ขวา</string>
+    <string name="cuadro_ok_desc">OK</string>
+    <string name="cuadro_bike_back_desc">กลับ</string>
+    <string name="cuadro_bike_home_desc">หน้าแรก</string>
+    <string name="cuadro_voice_desc">ผู้ช่วยเสียง</string>
+    <string name="cuadro_fullscreen_toast">เต็มหน้าจอ — กดกลับเพื่อออก</string>
+    <string name="cuadro_aa_needs_bike">การควบคุม Android Auto ต้องเชื่อมต่อกับรถ</string>
+    <string name="cuadro_map_preview">ตัวอย่างแผนที่</string>
+    <string name="cuadro_map_ui_failed">เปิดหน้าแผนที่ไม่สำเร็จ</string>
+    <string name="cuadro_map_load_failed">โหลดแผนที่ไม่ได้ — ลองอีกครั้งจากศูนย์แผนที่</string>
+</resources>

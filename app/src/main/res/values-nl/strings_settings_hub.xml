@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_hub_title">Instellingen</string>
+    <string name="settings_sec_connection">Verbinding</string>
+    <string name="settings_sec_connection_sub">Automatisch verbinden, wachten op de motor, geluid, installatie-assistent</string>
+    <string name="settings_sec_display">Dashboardscherm</string>
+    <string name="settings_sec_display_sub">Scherm passend maken voor het dashboard, dag-/nachtthema, energiemodus</string>
+    <string name="settings_sec_dashboard">Dashboard</string>
+    <string name="settings_sec_dashboard_sub">Stijl, velden, kaartvolgorde, kleur, schaal</string>
+    <string name="settings_sec_handlebar">Stuur en knoppen</string>
+    <string name="settings_sec_handlebar_sub">Knoppen, indrukvertragingen, volume op snelheid</string>
+    <string name="settings_sec_route">Onderweg</string>
+    <string name="settings_sec_route_sub">Ritlogboek, parkeren, regenwaarschuwing, trillingen bij afslaan</string>
+    <string name="settings_sec_watch">Horloge (Wear OS)</string>
+    <string name="settings_sec_watch_sub">Horlogegids</string>
+    <string name="settings_sec_privacy">Privacy en back-ups</string>
+    <string name="settings_sec_privacy_sub">Anonieme meldingen, logboeken, exporteren, volledige back-up</string>
+    <string name="settings_sec_advanced">Geavanceerd</string>
+    <string name="settings_sec_advanced_sub">Overgenomen van OpenCfMoto: motorprofiel, resolutie, Wi‑Fi, horlogelab</string>
+    <string name="settings_adv_notice">Instellingen overgenomen van OpenCfMoto: je hoeft ze meestal niet aan te passen.</string>
+    <string name="settings_reset_defaults">Terug naar standaardwaarden</string>
+    <string name="settings_reset_confirm">Alleen de standaardwaarden van dit blok herstellen?</string>
+    <string name="settings_reset_done">Standaardwaarden hersteld</string>
+    <string name="settings_initial_assistant">Installatie-assistent</string>
+    <string name="settings_watch_desc">Installeer en gebruik RideScreen op je Wear OS-horloge. De gids legt elke stap uit.</string>
+    <string name="settings_diag_title">Diagnose</string>
+    <string name="dvr_probe_entry">Dashcamtest op de motor (test)</string>
+    <string name="backup_full_desc">Volledige back-up: alle instellingen, ritten, plaatsen en motoren van deze telefoon in één .zip — houd hem privé, hij bevat Wi‑Fi- en sleutelcodes.</string>
+    <string name="backup_full_save">Volledige back-up opslaan</string>
+    <string name="backup_full_restore">Back-up herstellen</string>
+    <string name="backup_restore_title">Volledige back-up herstellen?</string>
+    <string name="backup_restore_message">Back-up van %1$s (RideScreen AA %2$s).\n\nDit vervangt de instellingen, ritten, plaatsen en motoren van deze telefoon door die uit de back-up. Daarna start de app opnieuw.</string>
+    <string name="backup_restore_confirm">Herstellen</string>
+</resources>

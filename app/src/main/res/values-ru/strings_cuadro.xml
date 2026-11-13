@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cuadro_title">Вид дисплея</string>
+    <string name="cuadro_back_desc">Назад</string>
+    <string name="cuadro_fullscreen_desc">Полный экран</string>
+    <string name="cuadro_mode_aa">Android Auto</string>
+    <string name="cuadro_mode_dashboard">Dashboard</string>
+    <string name="cuadro_mode_map">Карта</string>
+    <string name="cuadro_connect_first">Сначала подключи мотоцикл</string>
+    <string name="cuadro_hint_disconnected">Подключи мотоцикл, чтобы видеть здесь то же, что на дисплее. Или открой карту для предпросмотра без мотоцикла.</string>
+    <string name="cuadro_pad_handle_open">Панель ▾</string>
+    <string name="cuadro_pad_handle_closed">Панель ▴</string>
+    <string name="cuadro_pad_voice">🎙 Голос</string>
+    <string name="cuadro_knob_back_desc">Ручка назад</string>
+    <string name="cuadro_knob_fwd_desc">Ручка вперёд</string>
+    <string name="cuadro_up_desc">Вверх</string>
+    <string name="cuadro_down_desc">Вниз</string>
+    <string name="cuadro_left_desc">Влево</string>
+    <string name="cuadro_right_desc">Вправо</string>
+    <string name="cuadro_ok_desc">OK</string>
+    <string name="cuadro_bike_back_desc">Назад</string>
+    <string name="cuadro_bike_home_desc">Главная</string>
+    <string name="cuadro_voice_desc">Голосовой помощник</string>
+    <string name="cuadro_fullscreen_toast">Полный экран — нажми «Назад», чтобы выйти</string>
+    <string name="cuadro_aa_needs_bike">Управление Android Auto требует подключения мотоцикла</string>
+    <string name="cuadro_map_preview">Предпросмотр карты</string>
+    <string name="cuadro_map_ui_failed">Не удалось открыть интерфейс карты</string>
+    <string name="cuadro_map_load_failed">Не удалось загрузить карту — попробуй снова из раздела «Карта»</string>
+</resources>

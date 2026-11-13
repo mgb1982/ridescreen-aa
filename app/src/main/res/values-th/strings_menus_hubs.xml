@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">หน้าแรก</string>
+    <string name="tab_trips">ทริป</string>
+    <string name="tab_bike">รถ</string>
+    <string name="tab_settings">การตั้งค่า</string>
+    <string name="hub_map">แผนที่และเส้นทาง</string>
+    <string name="hub_sub_map">ขับอิสระ เส้นทาง และ GPX</string>
+    <string name="hub_year">สรุปปีนี้</string>
+    <string name="hub_sub_year">ระยะทางของคุณ เส้นทางที่ดีที่สุด และโซนของคุณ</string>
+    <string name="hub_sub_trips_list">ทริปทั้งหมดของคุณ</string>
+    <string name="hub_sub_garage">รถของคุณและ QR</string>
+    <string name="hub_key_sub">กุญแจรถ (PKE)</string>
+    <string name="hub_sub_obd">ค่าสดและการทดสอบเครื่องอ่าน</string>
+    <string name="hub_sub_crash">และกล่องดำ</string>
+</resources>

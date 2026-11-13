@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cuadro_title">Pohled přístroje</string>
+    <string name="cuadro_back_desc">Zpět</string>
+    <string name="cuadro_fullscreen_desc">Celá obrazovka</string>
+    <string name="cuadro_mode_aa">Android Auto</string>
+    <string name="cuadro_mode_dashboard">Dashboard</string>
+    <string name="cuadro_mode_map">Mapa</string>
+    <string name="cuadro_connect_first">Nejdřív připoj motorku</string>
+    <string name="cuadro_hint_disconnected">Připoj motorku a uvidíš zde totéž co na přístroji. Nebo otevři mapu pro náhled bez motorky.</string>
+    <string name="cuadro_pad_handle_open">Ovladač ▾</string>
+    <string name="cuadro_pad_handle_closed">Ovladač ▴</string>
+    <string name="cuadro_pad_voice">🎙 Hlas</string>
+    <string name="cuadro_knob_back_desc">Otočný knoflík zpět</string>
+    <string name="cuadro_knob_fwd_desc">Otočný knoflík vpřed</string>
+    <string name="cuadro_up_desc">Nahoru</string>
+    <string name="cuadro_down_desc">Dolů</string>
+    <string name="cuadro_left_desc">Vlevo</string>
+    <string name="cuadro_right_desc">Vpravo</string>
+    <string name="cuadro_ok_desc">OK</string>
+    <string name="cuadro_bike_back_desc">Zpět</string>
+    <string name="cuadro_bike_home_desc">Domů</string>
+    <string name="cuadro_voice_desc">Hlasový asistent</string>
+    <string name="cuadro_fullscreen_toast">Celá obrazovka — pro ukončení stiskni Zpět</string>
+    <string name="cuadro_aa_needs_bike">Ovládání Android Auto vyžaduje připojenou motorku</string>
+    <string name="cuadro_map_preview">Náhled mapy</string>
+    <string name="cuadro_map_ui_failed">Rozhraní mapy se nepodařilo otevřít</string>
+    <string name="cuadro_map_load_failed">Mapu nelze načíst — zkus to znovu z centra map</string>
+</resources>

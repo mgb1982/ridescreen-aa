@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cuadro_title">Dashboardweergave</string>
+    <string name="cuadro_back_desc">Terug</string>
+    <string name="cuadro_fullscreen_desc">Volledig scherm</string>
+    <string name="cuadro_mode_aa">Android Auto</string>
+    <string name="cuadro_mode_dashboard">Dashboard</string>
+    <string name="cuadro_mode_map">Kaart</string>
+    <string name="cuadro_connect_first">Verbind eerst de motor</string>
+    <string name="cuadro_hint_disconnected">Verbind de motor om hier hetzelfde te zien als op het dashboard. Of open de kaart voor een voorbeeld zonder motor.</string>
+    <string name="cuadro_pad_handle_open">Pad ▾</string>
+    <string name="cuadro_pad_handle_closed">Pad ▴</string>
+    <string name="cuadro_pad_voice">🎙 Spraak</string>
+    <string name="cuadro_knob_back_desc">Draaiknop terug</string>
+    <string name="cuadro_knob_fwd_desc">Draaiknop vooruit</string>
+    <string name="cuadro_up_desc">Omhoog</string>
+    <string name="cuadro_down_desc">Omlaag</string>
+    <string name="cuadro_left_desc">Links</string>
+    <string name="cuadro_right_desc">Rechts</string>
+    <string name="cuadro_ok_desc">OK</string>
+    <string name="cuadro_bike_back_desc">Terug</string>
+    <string name="cuadro_bike_home_desc">Start</string>
+    <string name="cuadro_voice_desc">Spraakassistent</string>
+    <string name="cuadro_fullscreen_toast">Volledig scherm — druk op Terug om af te sluiten</string>
+    <string name="cuadro_aa_needs_bike">Android Auto-bediening vereist een verbinding met de motor</string>
+    <string name="cuadro_map_preview">Kaartvoorbeeld</string>
+    <string name="cuadro_map_ui_failed">Kaartinterface kon niet worden geopend</string>
+    <string name="cuadro_map_load_failed">Kaart kon niet worden geladen — probeer het opnieuw via de kaarthub</string>
+</resources>

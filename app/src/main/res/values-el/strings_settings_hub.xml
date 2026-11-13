@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_hub_title">Ρυθμίσεις</string>
+    <string name="settings_sec_connection">Σύνδεση</string>
+    <string name="settings_sec_connection_sub">Αυτόματη σύνδεση, αναμονή για τη μοτοσικλέτα, ήχος, βοηθός ρύθμισης</string>
+    <string name="settings_sec_display">Οθόνη ταμπλό</string>
+    <string name="settings_sec_display_sub">Προσαρμογή οθόνης στο ταμπλό, θέμα ημέρας/νύχτας, λειτουργία ενέργειας</string>
+    <string name="settings_sec_dashboard">Dashboard</string>
+    <string name="settings_sec_dashboard_sub">Στυλ, πεδία, σειρά καρτών, χρώμα, κλίμακα</string>
+    <string name="settings_sec_handlebar">Τιμόνι και χειριστήρια</string>
+    <string name="settings_sec_handlebar_sub">Κουμπιά, καθυστερήσεις πατήματος, ένταση ανά ταχύτητα</string>
+    <string name="settings_sec_route">Στον δρόμο</string>
+    <string name="settings_sec_route_sub">Ημερολόγιο διαδρομών, στάθμευση, προειδοποίηση βροχής, δονήσεις στροφών</string>
+    <string name="settings_sec_watch">Ρολόι (Wear OS)</string>
+    <string name="settings_sec_watch_sub">Οδηγός ρολογιού</string>
+    <string name="settings_sec_privacy">Απόρρητο και αντίγραφα</string>
+    <string name="settings_sec_privacy_sub">Ανώνυμες αναφορές, αρχεία καταγραφής, εξαγωγή, πλήρες αντίγραφο</string>
+    <string name="settings_sec_advanced">Για προχωρημένους</string>
+    <string name="settings_sec_advanced_sub">Κληρονομήθηκαν από το OpenCfMoto: προφίλ μοτοσικλέτας, ανάλυση, Wi‑Fi, εργαστήριο ρολογιού</string>
+    <string name="settings_adv_notice">Ρυθμίσεις που κληρονομήθηκαν από το OpenCfMoto: συνήθως δεν χρειάζεται να τις αγγίζεις.</string>
+    <string name="settings_reset_defaults">Επαναφορά προεπιλεγμένων τιμών</string>
+    <string name="settings_reset_confirm">Να επαναφερθούν μόνο οι προεπιλεγμένες τιμές αυτού του τμήματος;</string>
+    <string name="settings_reset_done">Οι προεπιλεγμένες τιμές επαναφέρθηκαν</string>
+    <string name="settings_initial_assistant">Βοηθός ρύθμισης</string>
+    <string name="settings_watch_desc">Εγκατάστησε και χρησιμοποίησε το RideScreen στο ρολόι σου Wear OS. Ο οδηγός εξηγεί κάθε βήμα.</string>
+    <string name="settings_diag_title">Διαγνωστικά</string>
+    <string name="dvr_probe_entry">Δοκιμή κάμερας μοτοσικλέτας (δοκιμή)</string>
+    <string name="backup_full_desc">Πλήρες αντίγραφο: όλες οι ρυθμίσεις, διαδρομές, τοποθεσίες και μοτοσικλέτες αυτού του τηλεφώνου σε ένα .zip — κράτα το ιδιωτικό, περιέχει κωδικούς Wi‑Fi και κλειδιών.</string>
+    <string name="backup_full_save">Αποθήκευση πλήρους αντιγράφου</string>
+    <string name="backup_full_restore">Επαναφορά αντιγράφου</string>
+    <string name="backup_restore_title">Επαναφορά πλήρους αντιγράφου;</string>
+    <string name="backup_restore_message">Αντίγραφο από %1$s (RideScreen AA %2$s).\n\nΑντικαθιστά τις ρυθμίσεις, διαδρομές, τοποθεσίες και μοτοσικλέτες αυτού του τηλεφώνου με εκείνες του αντιγράφου. Μετά η εφαρμογή επανεκκινείται.</string>
+    <string name="backup_restore_confirm">Επαναφορά</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_hub_title">Setări</string>
+    <string name="settings_sec_connection">Conexiune</string>
+    <string name="settings_sec_connection_sub">Conectare automată, așteptare motocicletă, sunet, asistent de configurare</string>
+    <string name="settings_sec_display">Ecranul bordului</string>
+    <string name="settings_sec_display_sub">Potrivire ecran cu bordul, temă zi/noapte, mod de alimentare</string>
+    <string name="settings_sec_dashboard">Dashboard</string>
+    <string name="settings_sec_dashboard_sub">Stil, câmpuri, ordinea cardurilor, culoare, scară</string>
+    <string name="settings_sec_handlebar">Ghidon și comenzi</string>
+    <string name="settings_sec_handlebar_sub">Butoane, întârzieri la apăsare, volum după viteză</string>
+    <string name="settings_sec_route">Pe drum</string>
+    <string name="settings_sec_route_sub">Jurnal de trasee, parcare, avertizare ploaie, vibrații la viraje</string>
+    <string name="settings_sec_watch">Ceas (Wear OS)</string>
+    <string name="settings_sec_watch_sub">Ghidul ceasului</string>
+    <string name="settings_sec_privacy">Confidențialitate și copii de rezervă</string>
+    <string name="settings_sec_privacy_sub">Rapoarte anonime, jurnale, export, copie completă</string>
+    <string name="settings_sec_advanced">Avansate</string>
+    <string name="settings_sec_advanced_sub">Moștenit din OpenCfMoto: profil motocicletă, rezoluție, Wi‑Fi, laborator ceas</string>
+    <string name="settings_adv_notice">Setări moștenite din OpenCfMoto: de obicei nu trebuie să le modifici.</string>
+    <string name="settings_reset_defaults">Revino la valorile implicite</string>
+    <string name="settings_reset_confirm">Restabilești doar valorile implicite ale acestui bloc?</string>
+    <string name="settings_reset_done">Valorile implicite au fost restabilite</string>
+    <string name="settings_initial_assistant">Asistent de configurare</string>
+    <string name="settings_watch_desc">Instalează și folosește RideScreen pe ceasul tău Wear OS. Ghidul explică fiecare pas.</string>
+    <string name="settings_diag_title">Diagnostice</string>
+    <string name="dvr_probe_entry">Test sondă camera motocicletei (test)</string>
+    <string name="backup_full_desc">Copie completă: toate setările, traseele, locurile și motocicletele de pe acest telefon, într-un singur .zip — păstreaz-o privat, conține coduri Wi‑Fi și ale cheii.</string>
+    <string name="backup_full_save">Salvează copia completă</string>
+    <string name="backup_full_restore">Restabilește copia</string>
+    <string name="backup_restore_title">Restabilești copia completă?</string>
+    <string name="backup_restore_message">Copie din %1$s (RideScreen AA %2$s).\n\nÎnlocuiește setările, traseele, locurile și motocicletele de pe acest telefon cu cele din copie. Apoi aplicația repornește.</string>
+    <string name="backup_restore_confirm">Restabilește</string>
+</resources>

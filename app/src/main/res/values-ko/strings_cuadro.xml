@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cuadro_title">계기판 보기</string>
+    <string name="cuadro_back_desc">뒤로</string>
+    <string name="cuadro_fullscreen_desc">전체 화면</string>
+    <string name="cuadro_mode_aa">Android Auto</string>
+    <string name="cuadro_mode_dashboard">Dashboard</string>
+    <string name="cuadro_mode_map">지도</string>
+    <string name="cuadro_connect_first">먼저 바이크를 연결하세요</string>
+    <string name="cuadro_hint_disconnected">바이크를 연결하면 계기판과 같은 화면을 여기서 볼 수 있습니다. 또는 바이크 없이 미리 보기로 지도를 여세요.</string>
+    <string name="cuadro_pad_handle_open">패드 ▾</string>
+    <string name="cuadro_pad_handle_closed">패드 ▴</string>
+    <string name="cuadro_pad_voice">🎙 음성</string>
+    <string name="cuadro_knob_back_desc">다이얼 뒤로</string>
+    <string name="cuadro_knob_fwd_desc">다이얼 앞으로</string>
+    <string name="cuadro_up_desc">위</string>
+    <string name="cuadro_down_desc">아래</string>
+    <string name="cuadro_left_desc">왼쪽</string>
+    <string name="cuadro_right_desc">오른쪽</string>
+    <string name="cuadro_ok_desc">OK</string>
+    <string name="cuadro_bike_back_desc">뒤로</string>
+    <string name="cuadro_bike_home_desc">홈</string>
+    <string name="cuadro_voice_desc">음성 도우미</string>
+    <string name="cuadro_fullscreen_toast">전체 화면 — 나가려면 뒤로 버튼을 누르세요</string>
+    <string name="cuadro_aa_needs_bike">Android Auto 조작에는 바이크 연결이 필요합니다</string>
+    <string name="cuadro_map_preview">지도 미리 보기</string>
+    <string name="cuadro_map_ui_failed">지도 화면을 열지 못했습니다</string>
+    <string name="cuadro_map_load_failed">지도를 불러올 수 없습니다 — 지도 허브에서 다시 시도하세요</string>
+</resources>

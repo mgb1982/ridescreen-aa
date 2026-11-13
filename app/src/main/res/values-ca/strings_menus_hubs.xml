@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">Inici</string>
+    <string name="tab_trips">Viatges</string>
+    <string name="tab_bike">Moto</string>
+    <string name="tab_settings">Configuració</string>
+    <string name="hub_map">Mapa i rutes</string>
+    <string name="hub_sub_map">Ruta lliure, rutes i GPX</string>
+    <string name="hub_year">Resum de l\'any</string>
+    <string name="hub_sub_year">Els teus km, la teva millor ruta i la teva zona</string>
+    <string name="hub_sub_trips_list">Tots els teus viatges</string>
+    <string name="hub_sub_garage">Les teves motos i el QR</string>
+    <string name="hub_key_sub">Clau de la moto (PKE)</string>
+    <string name="hub_sub_obd">Lectura en directe i prova del lector</string>
+    <string name="hub_sub_crash">i caixa negra</string>
+</resources>

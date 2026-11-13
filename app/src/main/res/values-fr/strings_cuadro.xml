@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cuadro_title">Vue du tableau de bord</string>
+    <string name="cuadro_back_desc">Retour</string>
+    <string name="cuadro_fullscreen_desc">Plein écran</string>
+    <string name="cuadro_mode_aa">Android Auto</string>
+    <string name="cuadro_mode_dashboard">Dashboard</string>
+    <string name="cuadro_mode_map">Carte</string>
+    <string name="cuadro_connect_first">Connecte d’abord la moto</string>
+    <string name="cuadro_hint_disconnected">Connecte la moto pour voir ici la même chose que sur le tableau de bord. Ou ouvre la carte pour un aperçu sans la moto.</string>
+    <string name="cuadro_pad_handle_open">Pad ▾</string>
+    <string name="cuadro_pad_handle_closed">Pad ▴</string>
+    <string name="cuadro_pad_voice">🎙 Voix</string>
+    <string name="cuadro_knob_back_desc">Bouton rotatif arrière</string>
+    <string name="cuadro_knob_fwd_desc">Bouton rotatif avant</string>
+    <string name="cuadro_up_desc">Haut</string>
+    <string name="cuadro_down_desc">Bas</string>
+    <string name="cuadro_left_desc">Gauche</string>
+    <string name="cuadro_right_desc">Droite</string>
+    <string name="cuadro_ok_desc">OK</string>
+    <string name="cuadro_bike_back_desc">Retour</string>
+    <string name="cuadro_bike_home_desc">Accueil</string>
+    <string name="cuadro_voice_desc">Assistant vocal</string>
+    <string name="cuadro_fullscreen_toast">Plein écran — appuie sur Retour pour quitter</string>
+    <string name="cuadro_aa_needs_bike">Les commandes Android Auto nécessitent une connexion à la moto</string>
+    <string name="cuadro_map_preview">Aperçu de la carte</string>
+    <string name="cuadro_map_ui_failed">Impossible d’ouvrir l’interface de la carte</string>
+    <string name="cuadro_map_load_failed">Impossible de charger la carte — réessaie depuis le hub Carte</string>
+</resources>

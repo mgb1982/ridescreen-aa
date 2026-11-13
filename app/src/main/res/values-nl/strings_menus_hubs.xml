@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">Start</string>
+    <string name="tab_trips">Reizen</string>
+    <string name="tab_bike">Motor</string>
+    <string name="tab_settings">Instellingen</string>
+    <string name="hub_map">Kaart en routes</string>
+    <string name="hub_sub_map">Vrij rijden, routes en GPX</string>
+    <string name="hub_year">Jaaroverzicht</string>
+    <string name="hub_sub_year">Je km’s, je beste rit en je zone</string>
+    <string name="hub_sub_trips_list">Al je ritten</string>
+    <string name="hub_sub_garage">Je motoren en de QR</string>
+    <string name="hub_key_sub">Motorsleutel (PKE)</string>
+    <string name="hub_sub_obd">Live uitlezing en lezertest</string>
+    <string name="hub_sub_crash">en black box</string>
+</resources>

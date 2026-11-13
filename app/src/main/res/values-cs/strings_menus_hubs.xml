@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">Domů</string>
+    <string name="tab_trips">Záznamy</string>
+    <string name="tab_bike">Motorka</string>
+    <string name="tab_settings">Nastavení</string>
+    <string name="hub_map">Mapa a trasy</string>
+    <string name="hub_sub_map">Volná jízda, trasy a GPX</string>
+    <string name="hub_year">Rok v přehledu</string>
+    <string name="hub_sub_year">Tvoje km, nejlepší jízda a tvoje zóna</string>
+    <string name="hub_sub_trips_list">Všechny tvé jízdy</string>
+    <string name="hub_sub_garage">Tvoje motorky a QR</string>
+    <string name="hub_key_sub">Klíč od motorky (PKE)</string>
+    <string name="hub_sub_obd">Živé čtení a test čtečky</string>
+    <string name="hub_sub_crash">a černá skříňka</string>
+</resources>

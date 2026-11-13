@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cuadro_title">Gösterge görünümü</string>
+    <string name="cuadro_back_desc">Geri</string>
+    <string name="cuadro_fullscreen_desc">Tam ekran</string>
+    <string name="cuadro_mode_aa">Android Auto</string>
+    <string name="cuadro_mode_dashboard">Dashboard</string>
+    <string name="cuadro_mode_map">Harita</string>
+    <string name="cuadro_connect_first">Önce motoru bağla</string>
+    <string name="cuadro_hint_disconnected">Göstergedekiyle aynı görüntüyü burada görmek için motoru bağla. Ya da motor olmadan önizleme için haritayı aç.</string>
+    <string name="cuadro_pad_handle_open">Tuş takımı ▾</string>
+    <string name="cuadro_pad_handle_closed">Tuş takımı ▴</string>
+    <string name="cuadro_pad_voice">🎙 Ses</string>
+    <string name="cuadro_knob_back_desc">Döner düğme geri</string>
+    <string name="cuadro_knob_fwd_desc">Döner düğme ileri</string>
+    <string name="cuadro_up_desc">Yukarı</string>
+    <string name="cuadro_down_desc">Aşağı</string>
+    <string name="cuadro_left_desc">Sol</string>
+    <string name="cuadro_right_desc">Sağ</string>
+    <string name="cuadro_ok_desc">OK</string>
+    <string name="cuadro_bike_back_desc">Geri</string>
+    <string name="cuadro_bike_home_desc">Ana sayfa</string>
+    <string name="cuadro_voice_desc">Sesli asistan</string>
+    <string name="cuadro_fullscreen_toast">Tam ekran — çıkmak için Geri\'ye bas</string>
+    <string name="cuadro_aa_needs_bike">Android Auto kontrolleri motor bağlantısı gerektirir</string>
+    <string name="cuadro_map_preview">Harita önizlemesi</string>
+    <string name="cuadro_map_ui_failed">Harita arayüzü açılamadı</string>
+    <string name="cuadro_map_load_failed">Harita yüklenemedi — Harita merkezinden tekrar dene</string>
+</resources>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 2.6 menus: the on-screen D-pad / knob on Home -->
+    <string name="home_big_pad">แป้น</string>
+</resources>

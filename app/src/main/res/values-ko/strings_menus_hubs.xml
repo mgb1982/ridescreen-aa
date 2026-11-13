@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">홈</string>
+    <string name="tab_trips">주행 기록</string>
+    <string name="tab_bike">바이크</string>
+    <string name="tab_settings">설정</string>
+    <string name="hub_map">지도와 경로</string>
+    <string name="hub_sub_map">자유 주행, 경로, GPX</string>
+    <string name="hub_year">올해 돌아보기</string>
+    <string name="hub_sub_year">내 주행 거리, 최고의 주행, 내 지역</string>
+    <string name="hub_sub_trips_list">모든 주행 기록</string>
+    <string name="hub_sub_garage">내 바이크와 QR</string>
+    <string name="hub_key_sub">바이크 키 (PKE)</string>
+    <string name="hub_sub_obd">실시간 데이터와 리더기 테스트</string>
+    <string name="hub_sub_crash">및 블랙박스</string>
+</resources>

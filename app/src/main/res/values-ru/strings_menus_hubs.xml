@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">Главная</string>
+    <string name="tab_trips">Поездки</string>
+    <string name="tab_bike">Мотоцикл</string>
+    <string name="tab_settings">Настройки</string>
+    <string name="hub_map">Карта и маршруты</string>
+    <string name="hub_sub_map">Свободная поездка, маршруты и GPX</string>
+    <string name="hub_year">Итоги года</string>
+    <string name="hub_sub_year">Твои км, лучшая поездка и твоя зона</string>
+    <string name="hub_sub_trips_list">Все твои поездки</string>
+    <string name="hub_sub_garage">Твои мотоциклы и QR</string>
+    <string name="hub_key_sub">Ключ от мотоцикла (PKE)</string>
+    <string name="hub_sub_obd">Данные в реальном времени и тест считывателя</string>
+    <string name="hub_sub_crash">и чёрный ящик</string>
+</resources>

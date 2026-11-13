@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">Ana sayfa</string>
+    <string name="tab_trips">Seyahatler</string>
+    <string name="tab_bike">Motor</string>
+    <string name="tab_settings">Ayarlar</string>
+    <string name="hub_map">Harita ve rotalar</string>
+    <string name="hub_sub_map">Serbest sürüş, rotalar ve GPX</string>
+    <string name="hub_year">Yılın özeti</string>
+    <string name="hub_sub_year">Kilometrelerin, en iyi sürüşün ve bölgen</string>
+    <string name="hub_sub_trips_list">Tüm sürüşlerin</string>
+    <string name="hub_sub_garage">Motorların ve QR</string>
+    <string name="hub_key_sub">Motor anahtarı (PKE)</string>
+    <string name="hub_sub_obd">Canlı okuma ve okuyucu testi</string>
+    <string name="hub_sub_crash">ve kara kutu</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">Főoldal</string>
+    <string name="tab_trips">Túrák</string>
+    <string name="tab_bike">Motor</string>
+    <string name="tab_settings">Beállítások</string>
+    <string name="hub_map">Térkép és útvonalak</string>
+    <string name="hub_sub_map">Szabad túra, útvonalak és GPX</string>
+    <string name="hub_year">Az év áttekintése</string>
+    <string name="hub_sub_year">A km-eid, a legjobb túrád és a zónád</string>
+    <string name="hub_sub_trips_list">Összes túrád</string>
+    <string name="hub_sub_garage">A motorjaid és a QR-kód</string>
+    <string name="hub_key_sub">Kulcs nélküli kulcs (PKE)</string>
+    <string name="hub_sub_obd">Élő adatok és olvasóteszt</string>
+    <string name="hub_sub_crash">és fekete doboz</string>
+</resources>

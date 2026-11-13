@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">Accueil</string>
+    <string name="tab_trips">Voyages</string>
+    <string name="tab_bike">Moto</string>
+    <string name="tab_settings">Réglages</string>
+    <string name="hub_map">Carte et itinéraires</string>
+    <string name="hub_sub_map">Balade libre, itinéraires et GPX</string>
+    <string name="hub_year">Bilan de l’année</string>
+    <string name="hub_sub_year">Tes km, ton meilleur trajet et ta zone</string>
+    <string name="hub_sub_trips_list">Tous tes trajets</string>
+    <string name="hub_sub_garage">Tes motos et le QR</string>
+    <string name="hub_key_sub">Clé de la moto (PKE)</string>
+    <string name="hub_sub_obd">Lecture en direct et test du lecteur</string>
+    <string name="hub_sub_crash">et boîte noire</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_hub_title">Beállítások</string>
+    <string name="settings_sec_connection">Kapcsolat</string>
+    <string name="settings_sec_connection_sub">Automatikus csatlakozás, várakozás a motorra, hang, beállítási segéd</string>
+    <string name="settings_sec_display">Műszerfal-képernyő</string>
+    <string name="settings_sec_display_sub">Képernyő illesztése a műszerfalhoz, nappali/éjszakai téma, energiamód</string>
+    <string name="settings_sec_dashboard">Dashboard</string>
+    <string name="settings_sec_dashboard_sub">Stílus, mezők, kártyák sorrendje, szín, méretarány</string>
+    <string name="settings_sec_handlebar">Kormány és vezérlés</string>
+    <string name="settings_sec_handlebar_sub">Gombok, nyomva tartási késleltetés, hangerő sebesség szerint</string>
+    <string name="settings_sec_route">Úton</string>
+    <string name="settings_sec_route_sub">Túranapló, parkolás, esőjelzés, kanyarrezgés</string>
+    <string name="settings_sec_watch">Óra (Wear OS)</string>
+    <string name="settings_sec_watch_sub">Óraútmutató</string>
+    <string name="settings_sec_privacy">Adatvédelem és mentések</string>
+    <string name="settings_sec_privacy_sub">Névtelen jelentések, naplók, exportálás, teljes mentés</string>
+    <string name="settings_sec_advanced">Speciális</string>
+    <string name="settings_sec_advanced_sub">Az OpenCfMoto-tól örökölt: motorprofil, felbontás, Wi‑Fi, óra-labor</string>
+    <string name="settings_adv_notice">Az OpenCfMoto-tól örökölt beállítások: általában nem kell hozzájuk nyúlnod.</string>
+    <string name="settings_reset_defaults">Vissza az alapértékekre</string>
+    <string name="settings_reset_confirm">Csak ennek a blokknak az alapértékeit állítsuk vissza?</string>
+    <string name="settings_reset_done">Az alapértékek visszaállítva</string>
+    <string name="settings_initial_assistant">Beállítási segéd</string>
+    <string name="settings_watch_desc">Telepítsd és használd a RideScreen-t a Wear OS-es órádon. Az útmutató minden lépést elmagyaráz.</string>
+    <string name="settings_diag_title">Diagnosztika</string>
+    <string name="dvr_probe_entry">Motorkamera-szonda (teszt)</string>
+    <string name="backup_full_desc">Teljes mentés: ezen a telefonon lévő összes beállítás, túra, hely és motor egyetlen .zip fájlban — tartsd privátan, Wi‑Fi- és kulcskódokat is tartalmaz.</string>
+    <string name="backup_full_save">Teljes mentés mentése</string>
+    <string name="backup_full_restore">Mentés visszaállítása</string>
+    <string name="backup_restore_title">Visszaállítod a teljes mentést?</string>
+    <string name="backup_restore_message">Mentés innen: %1$s (RideScreen AA %2$s).\n\nA mentés beállításaival, túráival, helyeivel és motorjaival felülírja ennek a telefonnak az adatait. Utána az app újraindul.</string>
+    <string name="backup_restore_confirm">Visszaállítás</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_hub_title">Nastavení</string>
+    <string name="settings_sec_connection">Připojení</string>
+    <string name="settings_sec_connection_sub">Automatické připojení, čekání na motorku, zvuk, průvodce nastavením</string>
+    <string name="settings_sec_display">Obrazovka přístroje</string>
+    <string name="settings_sec_display_sub">Přizpůsobit obrazovku přístroji, denní/noční motiv, režim napájení</string>
+    <string name="settings_sec_dashboard">Dashboard</string>
+    <string name="settings_sec_dashboard_sub">Styl, pole, pořadí karet, barva, měřítko</string>
+    <string name="settings_sec_handlebar">Řídítka a ovládání</string>
+    <string name="settings_sec_handlebar_sub">Tlačítka, prodlevy stisku, hlasitost podle rychlosti</string>
+    <string name="settings_sec_route">Na cestě</string>
+    <string name="settings_sec_route_sub">Záznam jízd, parkování, upozornění na déšť, vibrace při odbočení</string>
+    <string name="settings_sec_watch">Hodinky (Wear OS)</string>
+    <string name="settings_sec_watch_sub">Průvodce hodinkami</string>
+    <string name="settings_sec_privacy">Soukromí a zálohy</string>
+    <string name="settings_sec_privacy_sub">Anonymní hlášení, záznamy, export, úplná záloha</string>
+    <string name="settings_sec_advanced">Pokročilé</string>
+    <string name="settings_sec_advanced_sub">Zděděno z OpenCfMoto: profil motorky, rozlišení, Wi-Fi, laboratoř hodin</string>
+    <string name="settings_adv_notice">Nastavení zděděná z OpenCfMoto: obvykle je není třeba měnit.</string>
+    <string name="settings_reset_defaults">Vrátit výchozí hodnoty</string>
+    <string name="settings_reset_confirm">Obnovit výchozí hodnoty pouze tohoto bloku?</string>
+    <string name="settings_reset_done">Výchozí hodnoty obnoveny</string>
+    <string name="settings_initial_assistant">Průvodce nastavením</string>
+    <string name="settings_watch_desc">Nainstaluj a používej RideScreen na hodinkách s Wear OS. Průvodce vysvětlí každý krok.</string>
+    <string name="settings_diag_title">Diagnostika</string>
+    <string name="dvr_probe_entry">Test kamery motorky (test)</string>
+    <string name="backup_full_desc">Úplná záloha: všechna nastavení, jízdy, místa a motorky z tohoto telefonu v jednom .zip — uchovej ji v soukromí, obsahuje kódy Wi‑Fi a klíče.</string>
+    <string name="backup_full_save">Uložit úplnou zálohu</string>
+    <string name="backup_full_restore">Obnovit zálohu</string>
+    <string name="backup_restore_title">Obnovit úplnou zálohu?</string>
+    <string name="backup_restore_message">Záloha z %1$s (RideScreen AA %2$s).\n\nNahradí nastavení, jízdy, místa a motorky v tomto telefonu těmi ze zálohy. Poté se aplikace restartuje.</string>
+    <string name="backup_restore_confirm">Obnovit</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">Αρχική</string>
+    <string name="tab_trips">Διαδρομές</string>
+    <string name="tab_bike">Μοτοσικλέτα</string>
+    <string name="tab_settings">Ρυθμίσεις</string>
+    <string name="hub_map">Χάρτης και διαδρομές</string>
+    <string name="hub_sub_map">Ελεύθερη διαδρομή, διαδρομές και GPX</string>
+    <string name="hub_year">Η χρονιά σε συνοπτική μορφή</string>
+    <string name="hub_sub_year">Τα χιλιόμετρά σου, η καλύτερη διαδρομή σου και η ζώνη σου</string>
+    <string name="hub_sub_trips_list">Όλες οι διαδρομές σου</string>
+    <string name="hub_sub_garage">Οι μοτοσικλέτες σου και το QR</string>
+    <string name="hub_key_sub">Κλειδί μοτοσικλέτας (PKE)</string>
+    <string name="hub_sub_obd">Ζωντανή ανάγνωση και δοκιμή αναγνώστη</string>
+    <string name="hub_sub_crash">και μαύρο κουτί</string>
+</resources>

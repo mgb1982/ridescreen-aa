@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cuadro_title">Dash-Ansicht</string>
+    <string name="cuadro_back_desc">Zurück</string>
+    <string name="cuadro_fullscreen_desc">Vollbild</string>
+    <string name="cuadro_mode_aa">Android Auto</string>
+    <string name="cuadro_mode_dashboard">Dashboard</string>
+    <string name="cuadro_mode_map">Karte</string>
+    <string name="cuadro_connect_first">Verbinde zuerst das Motorrad</string>
+    <string name="cuadro_hint_disconnected">Verbinde das Motorrad, um hier dasselbe wie am Display zu sehen. Oder öffne die Karte für eine Vorschau ohne Motorrad.</string>
+    <string name="cuadro_pad_handle_open">Pad ▾</string>
+    <string name="cuadro_pad_handle_closed">Pad ▴</string>
+    <string name="cuadro_pad_voice">🎙 Sprache</string>
+    <string name="cuadro_knob_back_desc">Drehknopf zurück</string>
+    <string name="cuadro_knob_fwd_desc">Drehknopf vor</string>
+    <string name="cuadro_up_desc">Oben</string>
+    <string name="cuadro_down_desc">Unten</string>
+    <string name="cuadro_left_desc">Links</string>
+    <string name="cuadro_right_desc">Rechts</string>
+    <string name="cuadro_ok_desc">OK</string>
+    <string name="cuadro_bike_back_desc">Zurück</string>
+    <string name="cuadro_bike_home_desc">Start</string>
+    <string name="cuadro_voice_desc">Sprachassistent</string>
+    <string name="cuadro_fullscreen_toast">Vollbild — zum Beenden Zurück drücken</string>
+    <string name="cuadro_aa_needs_bike">Die Android-Auto-Steuerung braucht eine Verbindung zum Motorrad</string>
+    <string name="cuadro_map_preview">Kartenvorschau</string>
+    <string name="cuadro_map_ui_failed">Kartenoberfläche konnte nicht geöffnet werden</string>
+    <string name="cuadro_map_load_failed">Karte konnte nicht geladen werden — versuch es erneut über den Kartenbereich</string>
+</resources>

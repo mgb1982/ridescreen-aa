@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_hub_title">Настройки</string>
+    <string name="settings_sec_connection">Връзка</string>
+    <string name="settings_sec_connection_sub">Автоматично свързване, изчакване на мотора, звук, помощник за настройка</string>
+    <string name="settings_sec_display">Екран на таблото</string>
+    <string name="settings_sec_display_sub">Нагласяне на екрана към таблото, дневна/нощна тема, режим на захранване</string>
+    <string name="settings_sec_dashboard">Dashboard</string>
+    <string name="settings_sec_dashboard_sub">Стил, полета, ред на картите, цвят, мащаб</string>
+    <string name="settings_sec_handlebar">Кормило и бутони</string>
+    <string name="settings_sec_handlebar_sub">Бутони, забавяне при натискане, сила на звука според скоростта</string>
+    <string name="settings_sec_route">По пътя</string>
+    <string name="settings_sec_route_sub">Дневник на пътуванията, паркиране, предупреждение за дъжд, вибрации при завой</string>
+    <string name="settings_sec_watch">Часовник (Wear OS)</string>
+    <string name="settings_sec_watch_sub">Ръководство за часовника</string>
+    <string name="settings_sec_privacy">Поверителност и копия</string>
+    <string name="settings_sec_privacy_sub">Анонимни доклади, дневници, експорт, пълно копие</string>
+    <string name="settings_sec_advanced">Разширени</string>
+    <string name="settings_sec_advanced_sub">Наследено от OpenCfMoto: профил на мотора, резолюция, Wi‑Fi, лаборатория на часовника</string>
+    <string name="settings_adv_notice">Настройки, наследени от OpenCfMoto: обикновено не е нужно да ги пипате.</string>
+    <string name="settings_reset_defaults">Връщане към стандартните стойности</string>
+    <string name="settings_reset_confirm">Да се възстановят ли стандартните стойности само на този блок?</string>
+    <string name="settings_reset_done">Стандартните стойности са възстановени</string>
+    <string name="settings_initial_assistant">Помощник за настройка</string>
+    <string name="settings_watch_desc">Инсталирай и използвай RideScreen на часовника си с Wear OS. Ръководството обяснява всяка стъпка.</string>
+    <string name="settings_diag_title">Диагностика</string>
+    <string name="dvr_probe_entry">Проверка на камерата на мотора (тест)</string>
+    <string name="backup_full_desc">Пълно копие: всички настройки, пътувания, места и мотори от този телефон в един .zip — пази го поверително, включва кодове за Wi‑Fi и за ключа.</string>
+    <string name="backup_full_save">Запази пълно копие</string>
+    <string name="backup_full_restore">Възстанови копие</string>
+    <string name="backup_restore_title">Да се възстанови ли пълното копие?</string>
+    <string name="backup_restore_message">Копие от %1$s (RideScreen AA %2$s).\n\nЗаменя настройките, пътуванията, местата и моторите на този телефон с тези от копието. После приложението се рестартира.</string>
+    <string name="backup_restore_confirm">Възстанови</string>
+</resources>

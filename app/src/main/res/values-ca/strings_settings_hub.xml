@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_hub_title">Configuració</string>
+    <string name="settings_sec_connection">Connexió</string>
+    <string name="settings_sec_connection_sub">Connexió automàtica, espera de la moto, so, assistent inicial</string>
+    <string name="settings_sec_display">Pantalla del quadre</string>
+    <string name="settings_sec_display_sub">Ajustar la pantalla al quadre, tema de dia/nit, mode d\'energia</string>
+    <string name="settings_sec_dashboard">Dashboard</string>
+    <string name="settings_sec_dashboard_sub">Estil, camps, ordre de targetes, color, escala</string>
+    <string name="settings_sec_handlebar">Manillar i controls</string>
+    <string name="settings_sec_handlebar_sub">Botons, retards de pulsació, volum segons la velocitat</string>
+    <string name="settings_sec_route">En ruta</string>
+    <string name="settings_sec_route_sub">Registre de viatges, aparcament, avís de pluja, vibracions de gir</string>
+    <string name="settings_sec_watch">Rellotge (Wear OS)</string>
+    <string name="settings_sec_watch_sub">Guia del rellotge</string>
+    <string name="settings_sec_privacy">Privadesa i còpies</string>
+    <string name="settings_sec_privacy_sub">Informes anònims, registres, exportar, còpia completa</string>
+    <string name="settings_sec_advanced">Avançat</string>
+    <string name="settings_sec_advanced_sub">Heretat d\'OpenCfMoto: perfil de la moto, resolució, Wi-Fi, laboratori del rellotge</string>
+    <string name="settings_adv_notice">Ajustaments heretats d\'OpenCfMoto: normalment no cal tocar-los.</string>
+    <string name="settings_reset_defaults">Tornar als valors per defecte</string>
+    <string name="settings_reset_confirm">Restaurar només els valors per defecte d\'aquest bloc?</string>
+    <string name="settings_reset_done">Valors per defecte restaurats</string>
+    <string name="settings_initial_assistant">Assistent inicial</string>
+    <string name="settings_watch_desc">Instal·la i fes servir RideScreen al teu rellotge Wear OS. La guia explica cada pas.</string>
+    <string name="settings_diag_title">Diagnòstic</string>
+    <string name="dvr_probe_entry">Sonda de la càmera de la moto (prova)</string>
+    <string name="backup_full_desc">Còpia completa: tots els ajustaments, viatges, llocs i motos d\'aquest telèfon en un .zip. Guarda-la en privat: inclou codis de Wi-Fi i de la clau.</string>
+    <string name="backup_full_save">Desa la còpia completa</string>
+    <string name="backup_full_restore">Restaura la còpia</string>
+    <string name="backup_restore_title">Restaurar la còpia completa?</string>
+    <string name="backup_restore_message">Còpia del %1$s (RideScreen AA %2$s).\n\nSubstitueix els ajustaments, viatges, llocs i motos d\'aquest telèfon pels de la còpia. Després l\'app es reinicia.</string>
+    <string name="backup_restore_confirm">Restaura</string>
+</resources>

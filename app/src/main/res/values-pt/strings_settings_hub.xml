@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_hub_title">Definições</string>
+    <string name="settings_sec_connection">Ligação</string>
+    <string name="settings_sec_connection_sub">Ligação automática, espera pela mota, som, assistente de configuração</string>
+    <string name="settings_sec_display">Ecrã do painel</string>
+    <string name="settings_sec_display_sub">Ajustar o ecrã ao painel, tema dia/noite, modo de energia</string>
+    <string name="settings_sec_dashboard">Dashboard</string>
+    <string name="settings_sec_dashboard_sub">Estilo, campos, ordem dos cartões, cor, escala</string>
+    <string name="settings_sec_handlebar">Guiador e controlos</string>
+    <string name="settings_sec_handlebar_sub">Botões, atrasos de premir, volume por velocidade</string>
+    <string name="settings_sec_route">Na estrada</string>
+    <string name="settings_sec_route_sub">Registo de viagens, estacionamento, aviso de chuva, vibrações nas curvas</string>
+    <string name="settings_sec_watch">Relógio (Wear OS)</string>
+    <string name="settings_sec_watch_sub">Guia do relógio</string>
+    <string name="settings_sec_privacy">Privacidade e cópias</string>
+    <string name="settings_sec_privacy_sub">Relatórios anónimos, registos, exportar, cópia completa</string>
+    <string name="settings_sec_advanced">Avançadas</string>
+    <string name="settings_sec_advanced_sub">Herdado do OpenCfMoto: perfil da mota, resolução, Wi‑Fi, laboratório do relógio</string>
+    <string name="settings_adv_notice">Definições herdadas do OpenCfMoto: normalmente não precisas de lhes tocar.</string>
+    <string name="settings_reset_defaults">Repor valores predefinidos</string>
+    <string name="settings_reset_confirm">Repor apenas os valores predefinidos deste bloco?</string>
+    <string name="settings_reset_done">Valores predefinidos repostos</string>
+    <string name="settings_initial_assistant">Assistente de configuração</string>
+    <string name="settings_watch_desc">Instala e usa o RideScreen no teu relógio Wear OS. O guia explica cada passo.</string>
+    <string name="settings_diag_title">Diagnóstico</string>
+    <string name="dvr_probe_entry">Teste da câmara da mota (teste)</string>
+    <string name="backup_full_desc">Cópia completa: todas as definições, viagens, locais e motas deste telemóvel num único .zip — mantém-na privada, inclui códigos de Wi‑Fi e da chave.</string>
+    <string name="backup_full_save">Guardar cópia completa</string>
+    <string name="backup_full_restore">Restaurar cópia</string>
+    <string name="backup_restore_title">Restaurar a cópia completa?</string>
+    <string name="backup_restore_message">Cópia de %1$s (RideScreen AA %2$s).\n\nSubstitui as definições, viagens, locais e motas deste telemóvel pelas da cópia. Depois a app reinicia.</string>
+    <string name="backup_restore_confirm">Restaurar</string>
+</resources>

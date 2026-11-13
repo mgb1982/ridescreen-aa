@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">Start</string>
+    <string name="tab_trips">Ausflüge</string>
+    <string name="tab_bike">Motorrad</string>
+    <string name="tab_settings">Einstellungen</string>
+    <string name="hub_map">Karte und Routen</string>
+    <string name="hub_sub_map">Freie Fahrt, Routen und GPX</string>
+    <string name="hub_year">Jahresrückblick</string>
+    <string name="hub_sub_year">Deine km, deine beste Fahrt und deine Zone</string>
+    <string name="hub_sub_trips_list">Alle deine Fahrten</string>
+    <string name="hub_sub_garage">Deine Motorräder und der QR-Code</string>
+    <string name="hub_key_sub">Schlüssellos-Schlüssel (PKE)</string>
+    <string name="hub_sub_obd">Live-Werte und Lesegerät-Test</string>
+    <string name="hub_sub_crash">und Blackbox</string>
+</resources>

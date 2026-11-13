@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">Начало</string>
+    <string name="tab_trips">Пътувания</string>
+    <string name="tab_bike">Мотор</string>
+    <string name="tab_settings">Настройки</string>
+    <string name="hub_map">Карта и маршрути</string>
+    <string name="hub_sub_map">Свободно каране, маршрути и GPX</string>
+    <string name="hub_year">Годината в преглед</string>
+    <string name="hub_sub_year">Твоите км, най-добрият ти маршрут и зоната ти</string>
+    <string name="hub_sub_trips_list">Всичките ти карания</string>
+    <string name="hub_sub_garage">Моторите ти и QR</string>
+    <string name="hub_key_sub">Ключ за мотора (PKE)</string>
+    <string name="hub_sub_obd">Четене на живо и тест на четеца</string>
+    <string name="hub_sub_crash">и черна кутия</string>
+</resources>
