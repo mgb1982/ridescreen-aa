@@ -68,9 +68,7 @@ object BikeWifi {
     // network the moment the bike's AP blips, and if we don't re-grab the bike AP fast the dash's
     // EasyConn times out ("device is not on the network") and needs a manual restart. Grabbing it back
     // immediately keeps us on the bike's network long enough for the dash to reconnect on its own.
-    private const val REJOIN_FAST_MS = 300L
-    private const val REJOIN_BASE_MS = 2500L
-    private const val REJOIN_MAX_MS = 15000L
+    // Pause values (300 ms / 2.5 s steps / 15 s cap, then ~63 s after 3 min down) live in RejoinSchedule.
     /** After a failed *first* join (picker canceled / timed out), wait before re-prompting. */
     private const val FIRST_JOIN_RETRY_MS = 4_000L
     /**
@@ -311,14 +309,14 @@ object BikeWifi {
         // Before the first successful join, never use the near-instant retry — that cancels the
         // system device picker mid-tap ("app canceled the request to choose a device").
         // After firstDelivered, first attempt is near-instant to beat home-Wi‑Fi / dash timeout.
-        val delay = when {
-            !firstDelivered -> FIRST_JOIN_RETRY_MS
-            rejoinAttempts <= 1 -> REJOIN_FAST_MS
-            else -> minOf(REJOIN_BASE_MS * (rejoinAttempts - 1), REJOIN_MAX_MS)
-        }
+        // After the first 3 min down, space the requests out (RejoinSchedule).
+        val sinceLossMs = if (down > 0L) android.os.SystemClock.elapsedRealtime() - down else 0L
+        val delay = if (!firstDelivered) FIRST_JOIN_RETRY_MS
+        else RejoinSchedule.pauseAfterAttempt(sinceLossMs, rejoinAttempts)
         handler.postDelayed({
             if (!active) return@postDelayed
-            logCb?.invoke("re-requesting bike Wi-Fi (attempt $rejoinAttempts) …")
+            val lostForS = if (down > 0L) (android.os.SystemClock.elapsedRealtime() - down) / 1000 else 0L
+            logCb?.invoke("re-requesting bike Wi-Fi (attempt $rejoinAttempts) … [down ${lostForS}s]")
             // Don't stomp the WAITING_FOR_BIKE state the service sets once AA is parked.
             if (ConnectionState.phase != Phase.WAITING_FOR_BIKE) {
                 ConnectionState.set(Phase.RECONNECTING, "waiting for bike Wi-Fi")
