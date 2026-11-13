@@ -313,7 +313,7 @@ class PxcHandshake(
         dashInfoAtEpochMs = now
         connsThisBoot = if (newBoot) 1 else connsThisBoot + 1
         connsThisProcess++
-        ClockLab.lastDashUptimeS = uptimeMs / 1000L
+        ClockLab.lastDashBootEpochMs = bootMs
         ClockLab.connsThisBoot = connsThisBoot
         log("[CLOCK] dash up ${DashBoot.fmtSeconds(uptimeMs)} at CLIENT_INFO · connection $connsThisBoot of this dash boot " +
             "($connsThisProcess since the app started)")
