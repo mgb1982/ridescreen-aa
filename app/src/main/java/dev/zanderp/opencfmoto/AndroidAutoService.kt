@@ -716,6 +716,11 @@ class AndroidAutoService : Service() {
      */
     private fun onAaSessionEnded(userExit: Boolean) {
         if (!userExit) {
+            if (!AaDropPolicy.mayRelaunch(aaParked, ConnectionState.phase == Phase.STOPPED)) {
+                // parkAa()/resumeFailedFallback() stop the receiver themselves: not a drop.
+                LogBus.log("[AA] Android Auto session ended while parked — not relaunching")
+                return
+            }
             LogBus.log("[AA] session dropped — receiver still listening for reconnect")
             if (BikeLink.takeAaDropRetry()) {
                 LogBus.log("[AA] re-triggering self-mode after handshake drop")
@@ -730,7 +735,7 @@ class AndroidAutoService : Service() {
             if (n > 0) {
                 LogBus.log("[AA] Android Auto dropped while the dash is linked — bringing it back (try $n/3)")
                 watchdogHandler.postDelayed({
-                    if (ConnectionState.phase == Phase.STOPPED) return@postDelayed
+                    if (!AaDropPolicy.mayRelaunch(aaParked, ConnectionState.phase == Phase.STOPPED)) return@postDelayed
                     try {
                         dev.zanderp.opencfmoto.aa.AaSelfMode.trigger(this, log = LogBus::log)
                     } catch (e: Exception) {
