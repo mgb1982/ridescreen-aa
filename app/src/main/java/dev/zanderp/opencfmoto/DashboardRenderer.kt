@@ -125,6 +125,9 @@ internal object DashboardRenderer {
     private val fx = Paint(Paint.ANTI_ALIAS_FLAG)
     private val text = Paint(Paint.ANTI_ALIAS_FLAG)
     private val box = RectF()
+    private val mapPath = Path()
+    /** True while rendering a style-picker preview (WINDOW then draws a sample map in its window). Set in [render]. */
+    private var previewMap = false
     private val matrix = Matrix()
 
     private var fValue: Typeface = Typeface.create("sans-serif-condensed", Typeface.BOLD_ITALIC)
@@ -204,6 +207,7 @@ internal object DashboardRenderer {
             c = canvas!!
         }
         night = !light
+        previewMap = standalone
         val base = when (design) {
             // The four v2.6 designs share the Sport palettes (orange accent, or the rider's own).
             DashboardMode.Design.SPORT, DashboardMode.Design.CLEAN, DashboardMode.Design.PIT,
@@ -229,7 +233,7 @@ internal object DashboardRenderer {
         val dy = if (real) 0f else (h - H * scale) / 2f
 
         val key = "${design.id}|$light|${w}x$h|$speedMax|$rpmMax|${visible.sorted().joinToString(",")}|" +
-            "${cards.joinToString(",") { it.id }}|$accent"
+            "${cards.joinToString(",") { it.id }}|$accent|$standalone"
         if (key != layerKey || layer == null) {
             layer?.recycle()
             val bg = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
@@ -929,6 +933,7 @@ internal object DashboardRenderer {
             stroke.strokeWidth = maxOf(1.5f, 2f * k)
             box.set(win.x.toFloat(), win.y.toFloat(), (win.x + win.w).toFloat(), (win.y + win.h).toFloat())
             c.drawRoundRect(box, 8f * k, 8f * k, stroke)
+            if (previewMap) drawPreviewMap(c, win, p, k)
         }
         val cx = rows.speed.x + rows.speed.w / 2f
         val speed = a["speed"]
@@ -989,6 +994,84 @@ internal object DashboardRenderer {
         live {
             if (!d.obdLive) txt(c, ctx.getString(R.string.dash_no_obd), col.x.toFloat(), col.y + 14f * k, 13f * k, p.muted, fLabel)
         }
+    }
+
+    /** Preview only: a schematic map in the window so the style makes sense. Geometry in [WindowPreviewMap]. */
+    private fun drawPreviewMap(c: Canvas, win: AaWindowLayout.Box, p: Palette, k: Float) {
+        val x = win.x.toFloat(); val y = win.y.toFloat(); val w = win.w.toFloat(); val h = win.h.toFloat()
+        val radius = 8f * k
+        c.save()
+        mapPath.reset()
+        box.set(x, y, x + w, y + h)
+        mapPath.addRoundRect(box, radius, radius, Path.Direction.CW)
+        c.clipPath(mapPath)
+        fill.shader = null
+        fill.color = p.tile
+        c.drawRect(box, fill)
+        fun rects(src: FloatArray, color: Int) {
+            fill.color = color
+            val r = WindowPreviewMap.scale(src, x, y, w, h)
+            for (i in r.indices step 4) c.drawRoundRect(r[i], r[i + 1], r[i + 2], r[i + 3], 4f * k, 4f * k, fill)
+        }
+        rects(WindowPreviewMap.BLOCKS, blend(p.tile, p.edge, .45f))
+        rects(WindowPreviewMap.PARKS, blend(p.tile, GREEN, .22f))
+        rects(WindowPreviewMap.WATER, blend(p.tile, 0xFF3A7BD5.toInt(), .30f))
+        stroke.shader = null
+        stroke.style = Paint.Style.STROKE
+        stroke.strokeWidth = 3f * k
+        stroke.color = alpha(p.edge, 0xB0)
+        c.drawLines(WindowPreviewMap.scale(WindowPreviewMap.MINOR, x, y, w, h), stroke)
+        stroke.strokeWidth = 7f * k
+        stroke.color = p.edge
+        c.drawLines(WindowPreviewMap.scale(WindowPreviewMap.MAJOR, x, y, w, h), stroke)
+        stroke.strokeWidth = 5f * k
+        c.drawLines(WindowPreviewMap.scale(WindowPreviewMap.DIAGONAL, x, y, w, h), stroke)
+        // Route: dark casing, then the accent line.
+        val route = WindowPreviewMap.scale(WindowPreviewMap.ROUTE, x, y, w, h)
+        mapPath.reset()
+        mapPath.moveTo(route[0], route[1])
+        for (i in 2 until route.size step 2) mapPath.lineTo(route[i], route[i + 1])
+        stroke.strokeWidth = 13f * k
+        stroke.color = alpha(BLACK, 0x66)
+        c.drawPath(mapPath, stroke)
+        stroke.strokeWidth = 9f * k
+        stroke.color = p.accent
+        c.drawPath(mapPath, stroke)
+        // Position dot with halo.
+        val px = x + WindowPreviewMap.POS_X * w; val py = y + WindowPreviewMap.POS_Y * h
+        fill.color = alpha(p.accent, 0x44)
+        c.drawCircle(px, py, 22f * k, fill)
+        fill.color = WHITE
+        c.drawCircle(px, py, 11f * k, fill)
+        fill.color = p.accent
+        c.drawCircle(px, py, 7.5f * k, fill)
+        c.restore()
+        // Manoeuvre card: right-turn arrow and a fixed distance.
+        val cw = 138f * k; val ch = 58f * k
+        val cx0 = x + 14f * k; val cy0 = y + 14f * k
+        fill.color = alpha(p.bg, 0xE8)
+        box.set(cx0, cy0, cx0 + cw, cy0 + ch)
+        c.drawRoundRect(box, 10f * k, 10f * k, fill)
+        stroke.strokeWidth = maxOf(1f, 1.5f * k)
+        stroke.color = p.edge
+        c.drawRoundRect(box, 10f * k, 10f * k, stroke)
+        val ax = cx0 + 24f * k; val ay = cy0 + ch / 2f
+        mapPath.reset()
+        mapPath.moveTo(ax - 8f * k, ay + 16f * k)
+        mapPath.lineTo(ax - 8f * k, ay - 2f * k)
+        mapPath.lineTo(ax + 8f * k, ay - 2f * k)
+        stroke.strokeWidth = 6f * k
+        stroke.color = p.fg
+        c.drawPath(mapPath, stroke)
+        mapPath.reset()
+        mapPath.moveTo(ax + 6f * k, ay - 16f * k)
+        mapPath.lineTo(ax + 20f * k, ay - 2f * k)
+        mapPath.lineTo(ax + 6f * k, ay + 12f * k)
+        mapPath.close()
+        fill.color = p.fg
+        c.drawPath(mapPath, fill)
+        txt(c, "300 m", cx0 + 52f * k, ay + 8f * k, 24f * k, p.fg, fValue)
+        stroke.style = Paint.Style.STROKE
     }
 
     // CLEAN: huge speed, thin 270 degree RPM arc, three small readings.
