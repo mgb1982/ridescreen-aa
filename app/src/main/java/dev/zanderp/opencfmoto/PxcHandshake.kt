@@ -104,6 +104,10 @@ class PxcHandshake(
             PxcFrame.CMD_HU_TIME_SYNC -> onHuTimeSync(tag, frame, out)
             PxcFrame.CMD_HU_QUERY_TIME -> onHuQueryTime(tag, frame, out)
             else -> {
+                if (frame.cmd == PxcFrame.CMD_CARINFO_NIGHTMODE) {
+                    // Log only: the reply stays whatever the profile does for unknown frames (cmd+1 ack).
+                    DashNight.note(String(frame.payload, Charsets.UTF_8), System.currentTimeMillis(), log)
+                }
                 if (!profile.handleUnknownControl(tag, frame, out, log)) {
                     log("[$tag] cmd=0x${frame.cmd.toUInt().toString(16)} (${PxcFrame.nameOf(frame.cmd)}) " +
                         "len=${frame.payload.size} ${frame.payload.asText()}")
