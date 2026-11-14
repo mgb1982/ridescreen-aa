@@ -216,7 +216,10 @@ object WearBridge {
             // one-off /ocm/parked message got lost.
             o.put("park", Parking.json(Parking.get(ctx)))
             // v2.5: the watch shows "Lock" on its parking page only if the keyless lock is set up.
-            o.put("lock", WearLock.available(ctx))
+            val lockOk = WearLock.available(ctx)
+            o.put("lock", lockOk)
+            // Diagnosis (14 Nov: no Lock button on the watch): one line per 10 min says what the watch was told.
+            LogBus.logThrottled("wear-lock-flag", "[WEAR] idle snapshot to the watch: keyless lock available=$lockOk", 10 * 60_000L)
         }
         putInfo(ctx, o)
         return o.toString()
