@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Diàleg «alguna cosa ocupa els ports d\'enllaç de la moto» (app oficial de Zontes / CFMoto / Carbit Ride en execució) -->
+    <string name="main_rival_msg_installed">L\'app %1$s està instal·lada i pot estar oberta en segon pla, ocupant els ports d\'enllaç de la moto (10920–10922), i per això el quadre es queda en blanc. Tanca-la i torna a connectar.\n\n\"Tanca i torna a provar\" intenta aturar-la per tu; si el quadre continua en blanc, fes servir \"Configuració de l\'aplicació\" i prem Forçar aturada.</string>
+    <string name="main_rival_msg_unknown">Alguna cosa ocupa els ports d\'enllaç de la moto (10920–10922). Tanca l\'app oficial de la teva moto (Zontes, CFMoto, Carbit Ride…) o qualsevol altra app EasyConnect: Configuració → Aplicacions → Forçar aturada. Després torna-ho a provar.</string>
+    <string name="main_rival_close_retry">Tanca i torna a provar</string>
+</resources>

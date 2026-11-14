@@ -581,7 +581,7 @@
     <string name="main_up_to_date">Esteu actualitzat (o sense connexió)</string>
     <string name="main_crash_title">Recuperat després d\'una fallada</string>
     <string name="main_mirror_ready_title">Mirall llest</string>
-    <string name="main_rival_title">L\'aplicació oficial de CFMoto està interferint</string>
+    <string name="main_rival_title">Una altra app bloqueja la connexió</string>
     <string name="main_bike_search_hint">Cerca al quadre de la moto: escriviu aquí</string>
 
     <!-- Notifications -->

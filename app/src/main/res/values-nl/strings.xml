@@ -370,7 +370,7 @@
     <string name="main_up_to_date">Je bent op de hoogte (of offline)</string>
     <string name="main_crash_title">Hersteld na een crash</string>
     <string name="main_mirror_ready_title">Spiegel klaar</string>
-    <string name="main_rival_title">De officiële CFMoto-app staat in de weg</string>
+    <string name="main_rival_title">Een andere app blokkeert de verbinding</string>
     <string name="main_bike_search_hint">Zoektocht naar motordash — typ hier</string>
     <string name="notif_aa_channel">Android Auto-ontvanger</string>
     <string name="notif_aa_title">RideScreen AA — Android Auto</string>

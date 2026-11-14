@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dialog „něco obsazuje spojovací porty motorky“ (běží oficiální aplikace Zontes / CFMoto / Carbit Ride) -->
+    <string name="main_rival_msg_installed">Aplikace %1$s je nainstalována a může běžet na pozadí, kde obsazuje spojovací porty motorky (10920–10922), takže displej zůstává prázdný. Zavřete ji a znovu se připojte.\n\n\"Zavřít a zkusit znovu\" se ji pokusí zastavit za vás; pokud displej zůstane prázdný, použijte \"Nastavení aplikace\" a klepněte na Vynucené zastavení.</string>
+    <string name="main_rival_msg_unknown">Něco obsazuje spojovací porty motorky (10920–10922). Zavřete oficiální aplikaci vaší motorky (Zontes, CFMoto, Carbit Ride…) nebo jakoukoli jinou aplikaci EasyConnect: Nastavení → Aplikace → Vynucené zastavení. Potom to zkuste znovu.</string>
+    <string name="main_rival_close_retry">Zavřít a zkusit znovu</string>
+</resources>

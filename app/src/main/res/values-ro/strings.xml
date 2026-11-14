@@ -370,7 +370,7 @@
     <string name="main_up_to_date">Ești la zi (sau ești offline)</string>
     <string name="main_crash_title">Recuperat după un crash</string>
     <string name="main_mirror_ready_title">Oglinda e gata</string>
-    <string name="main_rival_title">Aplicația oficială CFMoto blochează conexiunea</string>
+    <string name="main_rival_title">O altă aplicație blochează conexiunea</string>
     <string name="main_bike_search_hint">Căutare pe bord — tastează aici</string>
     <string name="notif_aa_channel">Receptor Android Auto</string>
     <string name="notif_aa_title">RideScreen AA — Android Auto</string>

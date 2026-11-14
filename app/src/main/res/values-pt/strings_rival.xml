@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Diálogo «algo ocupa as portas de ligação da mota» (aplicação oficial Zontes / CFMoto / Carbit Ride em execução) -->
+    <string name="main_rival_msg_installed">A aplicação %1$s está instalada e pode estar em execução em segundo plano, a ocupar as portas de ligação da mota (10920–10922), e por isso o painel fica em branco. Feche-a e volte a ligar.\n\n\"Fechar e tentar novamente\" tenta parar a aplicação por si; se o painel continuar em branco, use \"Definições da aplicação\" e toque em Forçar paragem.</string>
+    <string name="main_rival_msg_unknown">Algo está a ocupar as portas de ligação da mota (10920–10922). Feche a aplicação oficial da sua mota (Zontes, CFMoto, Carbit Ride…) ou qualquer outra aplicação EasyConnect: Definições → Aplicações → Forçar paragem. Depois, tente de novo.</string>
+    <string name="main_rival_close_retry">Fechar e tentar novamente</string>
+</resources>

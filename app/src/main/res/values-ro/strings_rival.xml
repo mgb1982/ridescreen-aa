@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dialog „ceva ocupă porturile de conectare ale motocicletei” (rulează aplicația oficială Zontes / CFMoto / Carbit Ride) -->
+    <string name="main_rival_msg_installed">Aplicația %1$s este instalată și poate rula în fundal, ocupând porturile de conectare ale motocicletei (10920–10922), așa că afișajul rămâne gol. Închide-o, apoi reconectează-te.\n\n\"Închide și reîncearcă\" încearcă să o oprească pentru tine; dacă afișajul rămâne gol, folosește \"Setări aplicație\" și apasă Forțează oprirea.</string>
+    <string name="main_rival_msg_unknown">Ceva ocupă porturile de conectare ale motocicletei (10920–10922). Închide aplicația oficială a motocicletei tale (Zontes, CFMoto, Carbit Ride…) sau orice altă aplicație EasyConnect: Setări → Aplicații → Forțează oprirea. Apoi încearcă din nou.</string>
+    <string name="main_rival_close_retry">Închide și reîncearcă</string>
+</resources>

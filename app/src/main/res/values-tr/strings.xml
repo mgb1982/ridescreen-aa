@@ -394,7 +394,7 @@
     <string name="main_up_to_date">Güncelsin (veya çevrimdışısın)</string>
     <string name="main_crash_title">Çökme sonrası kurtarıldı</string>
     <string name="main_mirror_ready_title">Yansıtma hazır</string>
-    <string name="main_rival_title">Resmi CFMoto uygulaması çakışıyor</string>
+    <string name="main_rival_title">Başka bir uygulama bağlantıyı engelliyor</string>
     <string name="main_bike_search_hint">Motor ekranında ara — buraya yazın</string>
 
     <!-- Notifications -->

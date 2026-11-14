@@ -370,7 +370,7 @@
     <string name="main_up_to_date">Tu as la dernière version (ou tu es hors ligne)</string>
     <string name="main_crash_title">Récupéré après un crash</string>
     <string name="main_mirror_ready_title">Miroir prêt</string>
-    <string name="main_rival_title">L\'application officielle CFMoto gêne</string>
+    <string name="main_rival_title">Une autre application bloque la connexion</string>
     <string name="main_bike_search_hint">Recherche de tableau de bord de moto : toucher ici pour saisir</string>
     <string name="notif_aa_channel">Récepteur Android Auto</string>
     <string name="notif_aa_title">RideScreen AA — Android Auto</string>

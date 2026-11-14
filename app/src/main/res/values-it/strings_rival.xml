@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dialogo «qualcosa occupa le porte di collegamento della moto» (app ufficiale Zontes / CFMoto / Carbit Ride in esecuzione) -->
+    <string name="main_rival_msg_installed">L\'app %1$s è installata e potrebbe essere in esecuzione in background, occupando le porte di collegamento della moto (10920–10922), per questo il cruscotto resta vuoto. Chiudila, poi riconnettiti.\n\n\"Chiudi e riprova\" prova a fermarla per te; se il cruscotto resta vuoto, usa \"Impostazioni dell\'app\" e tocca Forza arresto.</string>
+    <string name="main_rival_msg_unknown">Qualcosa occupa le porte di collegamento della moto (10920–10922). Chiudi l\'app ufficiale della tua moto (Zontes, CFMoto, Carbit Ride…) o qualsiasi altra app EasyConnect: Impostazioni → App → Forza arresto. Poi riprova.</string>
+    <string name="main_rival_close_retry">Chiudi e riprova</string>
+</resources>

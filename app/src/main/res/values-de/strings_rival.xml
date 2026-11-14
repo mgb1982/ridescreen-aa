@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dialog „etwas belegt die Verbindungsports des Motorrads“ (offizielle Zontes / CFMoto / Carbit Ride App läuft) -->
+    <string name="main_rival_msg_installed">%1$s ist installiert und läuft womöglich im Hintergrund und belegt die Verbindungsports des Motorrads (10920–10922), deshalb bleibt das Display leer. Schließ sie und verbinde dich dann neu.\n\n\"Schließen und erneut versuchen\" versucht, sie für dich zu beenden; bleibt das Display leer, öffne \"App-Einstellungen\" und tippe auf Erzwungen beenden.</string>
+    <string name="main_rival_msg_unknown">Etwas belegt die Verbindungsports des Motorrads (10920–10922). Schließ die offizielle App deines Motorrads (Zontes, CFMoto, Carbit Ride…) oder eine andere EasyConnect-App: Einstellungen → Apps → Erzwungen beenden. Versuch es dann erneut.</string>
+    <string name="main_rival_close_retry">Schließen und erneut versuchen</string>
+</resources>

@@ -577,7 +577,7 @@
     <string name="main_up_to_date">Sei aggiornato (o offline)</string>
     <string name="main_crash_title">Ripristinata dopo un arresto anomalo</string>
     <string name="main_mirror_ready_title">Specchio pronto</string>
-    <string name="main_rival_title">L\'app ufficiale CFMoto è d\'intralcio</string>
+    <string name="main_rival_title">Un\'altra app blocca la connessione</string>
     <string name="main_bike_search_hint">Ricerca sul cruscotto — scrivi qui</string>
     <string name="notif_aa_channel">Ricevitore Android Auto</string>
     <string name="notif_aa_title">RideScreen AA — Android Auto</string>

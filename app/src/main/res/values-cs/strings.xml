@@ -370,7 +370,7 @@
     <string name="main_up_to_date">Aplikace je aktuální (nebo offline)</string>
     <string name="main_crash_title">Obnoveno po pádu</string>
     <string name="main_mirror_ready_title">Zrcadlení připraveno</string>
-    <string name="main_rival_title">Oficiální aplikace CFMoto je v cestě</string>
+    <string name="main_rival_title">Jiná aplikace blokuje připojení</string>
     <string name="main_bike_search_hint">Bike Dash search – zadejte zde</string>
     <string name="notif_aa_channel">Přijímač Android Auto</string>
     <string name="notif_aa_title">RideScreen AA — Android Auto</string>

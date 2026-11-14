@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Párbeszédablak: valami foglalja a motor kapcsolati portjait (hivatalos Zontes / CFMoto / Carbit Ride alkalmazás fut) -->
+    <string name="main_rival_msg_installed">Az alkalmazás (%1$s) telepítve van, és lehet, hogy a háttérben fut, a motor kapcsolati portjait (10920–10922) foglalva, ezért marad üres a kijelző. Zárd be, majd csatlakozz újra.\n\n\"Bezárás és újrapróbálkozás\" megpróbálja helyetted leállítani; ha a kijelző üres marad, nyisd meg az \"Alkalmazás beállítások\" menüt, és koppints a Kényszerített leállítás gombra.</string>
+    <string name="main_rival_msg_unknown">Valami foglalja a motor kapcsolati portjait (10920–10922). Zárd be a motorod hivatalos alkalmazását (Zontes, CFMoto, Carbit Ride…) vagy bármely más EasyConnect alkalmazást: Beállítások → Alkalmazások → Kényszerített leállítás. Utána próbáld újra.</string>
+    <string name="main_rival_close_retry">Bezárás és újrapróbálkozás</string>
+</resources>

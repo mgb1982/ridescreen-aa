@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 연결 포트를 무언가 점유하고 있는 대화상자 (공식 Zontes / CFMoto / Carbit Ride 앱 실행 중) -->
+    <string name="main_rival_msg_installed">%1$s 앱이 설치되어 있으며 백그라운드에서 실행 중일 수 있습니다. 이 앱이 오토바이의 연결 포트(10920–10922)를 점유하고 있어 계기판이 비어 있습니다. 앱을 종료한 뒤 다시 연결하세요.\n\n\"닫고 다시 시도\"는 앱을 대신 중지하려고 합니다. 계기판이 여전히 비어 있으면 \"App settings\"를 열고 강제 종료를 누르세요.</string>
+    <string name="main_rival_msg_unknown">연결 포트(10920–10922)를 다른 앱이 점유하고 있습니다. 오토바이의 공식 앱(Zontes, CFMoto, Carbit Ride…) 또는 다른 EasyConnect 앱을 종료하세요: 설정 → 앱 → 강제 종료. 그런 다음 다시 시도하세요.</string>
+    <string name="main_rival_close_retry">닫고 다시 시도</string>
+</resources>
