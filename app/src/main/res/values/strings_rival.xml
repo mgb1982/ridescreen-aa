@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- "Something is holding the bike's link ports" dialog (official Zontes / CFMoto / Carbit Ride app running) -->
+    <string name="main_rival_msg_installed">%1$s is installed and may be running in the background, holding the bike\'s link ports (10920–10922), so the dash stays blank. Close it, then reconnect.\n\n\"Close &amp; retry\" tries to stop it for you; if the dash is still blank, use \"App settings\" and tap Force stop.</string>
+    <string name="main_rival_msg_unknown">Something is holding the bike\'s link ports (10920–10922). Close the official app of your bike (Zontes, CFMoto, Carbit Ride…) or any other EasyConnect app: Settings → Apps → Force stop. Then try again.</string>
+    <string name="main_rival_close_retry">Close &amp; retry</string>
+</resources>

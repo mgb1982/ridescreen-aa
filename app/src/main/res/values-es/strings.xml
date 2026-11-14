@@ -538,7 +538,7 @@
     <string name="main_up_to_date">Estás actualizado (o desconectado)</string>
     <string name="main_crash_title">Recuperado tras un fallo de la aplicación</string>
     <string name="main_mirror_ready_title">Espejo listo</string>
-    <string name="main_rival_title">La aplicación oficial CFMoto está en camino</string>
+    <string name="main_rival_title">Otra app bloquea la conexión</string>
     <string name="main_bike_search_hint">Búsqueda en el tablero de la moto: escribe aquí</string>
     <string name="notif_aa_channel">Receptor de Android Auto</string>
     <string name="notif_aa_title">RideScreen AA - Android Auto</string>
