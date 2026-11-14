@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 2.6: dashboard card on Home -->
+    <string name="home_dash_title">Dashboard</string>
+    <string name="home_dash_style">Stil</string>
+    <string name="home_dash_sub_on">Afișează %1$s pe bord</string>
+    <string name="home_dash_sub_ready">%1$s · gata de afișat pe bord</string>
+    <string name="home_dash_sub_off">%1$s · conectează motocicleta pentru a-l afișa</string>
+    <string name="home_dash_at_connect_on">Se deschide pe bord la conectare: da</string>
+    <string name="home_dash_at_connect_off">Se deschide pe bord la conectare: nu</string>
+</resources>

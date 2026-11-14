@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 2.6: dashboard card on Home -->
+    <string name="home_dash_title">Dashboard</string>
+    <string name="home_dash_style">Styl</string>
+    <string name="home_dash_sub_on">Zobrazuje %1$s na Dash</string>
+    <string name="home_dash_sub_ready">%1$s · připraveno k zobrazení na Dash</string>
+    <string name="home_dash_sub_off">%1$s · pro zobrazení připojte motorku</string>
+    <string name="home_dash_at_connect_on">Při připojení se otevře na Dash: zapnuto</string>
+    <string name="home_dash_at_connect_off">Při připojení se otevře na Dash: vypnuto</string>
+</resources>

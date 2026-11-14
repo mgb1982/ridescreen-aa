@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 2.6: dashboard card on Home -->
+    <string name="home_dash_title">Dashboard</string>
+    <string name="home_dash_style">Stílus</string>
+    <string name="home_dash_sub_on">%1$s megjelenítve a műszerfalon</string>
+    <string name="home_dash_sub_ready">%1$s · kész a megjelenítésre a műszerfalon</string>
+    <string name="home_dash_sub_off">%1$s · csatlakoztasd a motort a megjelenítéshez</string>
+    <string name="home_dash_at_connect_on">Csatlakozáskor a műszerfalon nyílik meg: be</string>
+    <string name="home_dash_at_connect_off">Csatlakozáskor a műszerfalon nyílik meg: ki</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 2.6: dashboard card on Home -->
+    <string name="home_dash_title">Dashboard</string>
+    <string name="home_dash_style">Estil</string>
+    <string name="home_dash_sub_on">Mostrant %1$s al quadre</string>
+    <string name="home_dash_sub_ready">%1$s · a punt per mostrar al quadre</string>
+    <string name="home_dash_sub_off">%1$s · connecta la moto per mostrar-lo</string>
+    <string name="home_dash_at_connect_on">Obre al quadre en connectar: sí</string>
+    <string name="home_dash_at_connect_off">Obre al quadre en connectar: no</string>
+</resources>

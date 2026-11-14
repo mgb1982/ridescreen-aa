@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 2.6: dashboard card on Home -->
+    <string name="home_dash_title">Dashboard</string>
+    <string name="home_dash_style">Estilo</string>
+    <string name="home_dash_sub_on">A mostrar %1$s no painel</string>
+    <string name="home_dash_sub_ready">%1$s · pronto para mostrar no painel</string>
+    <string name="home_dash_sub_off">%1$s · liga a mota para o mostrar</string>
+    <string name="home_dash_at_connect_on">Abre no painel ao ligar: sim</string>
+    <string name="home_dash_at_connect_off">Abre no painel ao ligar: não</string>
+</resources>

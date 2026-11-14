@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 2.6: dashboard card on Home -->
+    <string name="home_dash_title">Dashboard</string>
+    <string name="home_dash_style">스타일</string>
+    <string name="home_dash_sub_on">Dash에 %1$s 표시 중</string>
+    <string name="home_dash_sub_ready">%1$s · Dash에 표시할 준비 완료</string>
+    <string name="home_dash_sub_off">%1$s · 표시하려면 오토바이를 연결하세요</string>
+    <string name="home_dash_at_connect_on">연결 시 Dash에서 열기: 켜짐</string>
+    <string name="home_dash_at_connect_off">연결 시 Dash에서 열기: 꺼짐</string>
+</resources>

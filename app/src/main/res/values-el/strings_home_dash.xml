@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 2.6: dashboard card on Home -->
+    <string name="home_dash_title">Dashboard</string>
+    <string name="home_dash_style">Στυλ</string>
+    <string name="home_dash_sub_on">Εμφάνιση %1$s στο ταμπλό</string>
+    <string name="home_dash_sub_ready">%1$s · έτοιμο για εμφάνιση στο ταμπλό</string>
+    <string name="home_dash_sub_off">%1$s · συνδέστε τη μοτοσικλέτα για εμφάνιση</string>
+    <string name="home_dash_at_connect_on">Ανοίγει στο ταμπλό κατά τη σύνδεση: ενεργό</string>
+    <string name="home_dash_at_connect_off">Ανοίγει στο ταμπλό κατά τη σύνδεση: ανενεργό</string>
+</resources>

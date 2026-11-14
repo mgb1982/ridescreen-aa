@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 2.6: dashboard card on Home -->
+    <string name="home_dash_title">Dashboard</string>
+    <string name="home_dash_style">สไตล์</string>
+    <string name="home_dash_sub_on">กำลังแสดง %1$s บนหน้าปัด</string>
+    <string name="home_dash_sub_ready">%1$s · พร้อมแสดงบนหน้าปัด</string>
+    <string name="home_dash_sub_off">%1$s · เชื่อมต่อมอเตอร์ไซค์เพื่อแสดง</string>
+    <string name="home_dash_at_connect_on">เปิดบนหน้าปัดเมื่อเชื่อมต่อ: เปิด</string>
+    <string name="home_dash_at_connect_off">เปิดบนหน้าปัดเมื่อเชื่อมต่อ: ปิด</string>
+</resources>

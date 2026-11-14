@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 2.6: dashboard card on Home -->
+    <string name="home_dash_title">Dashboard</string>
+    <string name="home_dash_style">Stile</string>
+    <string name="home_dash_sub_on">Mostrando %1$s sul cruscotto</string>
+    <string name="home_dash_sub_ready">%1$s · pronto per essere mostrato sul cruscotto</string>
+    <string name="home_dash_sub_off">%1$s · collega la moto per mostrarlo</string>
+    <string name="home_dash_at_connect_on">Si apre nel cruscotto al collegamento: sì</string>
+    <string name="home_dash_at_connect_off">Si apre nel cruscotto al collegamento: no</string>
+</resources>

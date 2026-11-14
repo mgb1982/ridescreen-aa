@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 2.6: dashboard card on Home -->
+    <string name="home_dash_title">Dashboard</string>
+    <string name="home_dash_style">Style</string>
+    <string name="home_dash_sub_on">Affiche %1$s sur le tableau de bord</string>
+    <string name="home_dash_sub_ready">%1$s · prêt à être affiché sur le tableau de bord</string>
+    <string name="home_dash_sub_off">%1$s · connecte la moto pour l\'afficher</string>
+    <string name="home_dash_at_connect_on">Ouvre sur le tableau de bord à la connexion : oui</string>
+    <string name="home_dash_at_connect_off">Ouvre sur le tableau de bord à la connexion : non</string>
+</resources>

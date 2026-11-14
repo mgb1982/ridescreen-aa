@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 2.6: dashboard card on Home -->
+    <string name="home_dash_title">Dashboard</string>
+    <string name="home_dash_style">Стиль</string>
+    <string name="home_dash_sub_on">Показывается %1$s на дисплее</string>
+    <string name="home_dash_sub_ready">%1$s · готово к показу на дисплее</string>
+    <string name="home_dash_sub_off">%1$s · подключите мотоцикл, чтобы показать</string>
+    <string name="home_dash_at_connect_on">Открывается на дисплее при подключении: вкл.</string>
+    <string name="home_dash_at_connect_off">Открывается на дисплее при подключении: выкл.</string>
+</resources>
