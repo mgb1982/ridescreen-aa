@@ -18,6 +18,7 @@ import android.text.method.ScrollingMovementMethod
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -1071,6 +1072,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         Support.onResume(this)
         renderQuickDestinations()
+        renderDashCard(redrawPreview = true)
         // Back from the app's permission page / Bluetooth / Wi‑Fi settings: carry on with Connect.
         if (pendingAaQr != null && dev.zanderp.opencfmoto.aa.AaSelfMode.canAttemptHur(this) &&
             WifiGate.isWifiEnabled(this)
@@ -1543,7 +1545,73 @@ class MainActivity : AppCompatActivity() {
      * Parked vs connected: the hero shrinks and the riding shortcuts (park with photo, controls, dash
      * view, current trip, destination search) appear; the parking card only shows when parked.
      */
+    // ── 2.6: dashboard card on Home
+
+    private var dashCardKey = ""
+
+    /**
+     * The Home dashboard card: preview of the chosen style (drawn offline with sample data, so it works with
+     * the bike off), a button to show / hide it on the dash, and one to pick the style. Disconnected, the
+     * button turns "Open in the dashboard when connecting" on/off instead.
+     */
+    private fun renderDashCard(redrawPreview: Boolean = false) {
+        val card = findViewById<View?>(R.id.dash_card) ?: return
+        val connected = AaVideoBridge.pipeline != null && ConnectionState.phase == Phase.STREAMING
+        val design = DashboardMode.design(this)
+        val key = "${design.id}|${DashboardMode.isLight(this)}|${DashboardMode.accent(this)}|${DashboardMode.visibleFields(this).sorted()}|${DashboardMode.cardOrder(this)}"
+        val img = findViewById<ImageView>(R.id.dash_card_preview)
+        if (redrawPreview && key != dashCardKey) {
+            dashCardKey = key
+            val app = applicationContext
+            Thread({
+                val bmp = try { DashboardMode.preview(app, design, 480, 250) } catch (_: Exception) { null }
+                runOnUiThread { if (bmp != null && dashCardKey == key) img.setImageBitmap(bmp) }
+            }, "dash-card-preview").start()
+        }
+        val on = DashboardMode.wanted && connected
+        val atConnect = DashboardMode.startInDashboard(this)
+        val designName = getString(when (design) {
+            DashboardMode.Design.SPORT -> R.string.dash_design_sport
+            DashboardMode.Design.RACING -> R.string.dash_design_racing
+            DashboardMode.Design.TOURING -> R.string.dash_design_touring
+            DashboardMode.Design.CLEAN -> R.string.dash_design_clean
+            DashboardMode.Design.PIT -> R.string.dash_design_pit
+            DashboardMode.Design.CLASSIC -> R.string.dash_design_classic
+            DashboardMode.Design.FOCUS -> R.string.dash_design_focus
+            DashboardMode.Design.WINDOW -> R.string.dash_design_window
+        })
+        findViewById<TextView>(R.id.dash_card_sub).text = when {
+            on -> getString(R.string.home_dash_sub_on, designName)
+            connected -> getString(R.string.home_dash_sub_ready, designName)
+            else -> getString(R.string.home_dash_sub_off, designName)
+        }
+        val toggle = findViewById<com.google.android.material.button.MaterialButton>(R.id.dash_card_toggle)
+        toggle.setText(when {
+            connected -> if (on) R.string.controls_dash_hide else R.string.controls_dash_show
+            else -> if (atConnect) R.string.home_dash_at_connect_on else R.string.home_dash_at_connect_off
+        })
+        toggle.setOnClickListener {
+            if (connected) {
+                if (DashboardMode.toggle(this) == null) Toast.makeText(this, R.string.dash_need_stream, Toast.LENGTH_SHORT).show()
+            } else {
+                DashboardMode.setStartInDashboard(this, !DashboardMode.startInDashboard(this))
+            }
+            renderDashCard()
+        }
+        val open = View.OnClickListener {
+            startActivity(
+                Intent(this, ControlsActivity::class.java)
+                    .putExtra(SettingsSection.EXTRA, SettingsSection.DASHBOARD.key)
+                    .putExtra(ControlsActivity.EXTRA_OPEN_STYLE_PICKER, true),
+            )
+        }
+        findViewById<View>(R.id.dash_card_style).setOnClickListener(open)
+        img.setOnClickListener(open)
+        card.visibility = View.VISIBLE
+    }
+
     private fun renderHomeMode(phase: Phase) {
+        renderDashCard()
         val live = sessionAlive(phase)
         findViewById<View?>(R.id.live_section)?.visibility = if (live) View.VISIBLE else View.GONE
         findViewById<View?>(R.id.hero_card)?.let { hero ->

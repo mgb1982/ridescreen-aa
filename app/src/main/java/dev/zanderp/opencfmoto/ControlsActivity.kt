@@ -171,6 +171,10 @@ class ControlsActivity : AppCompatActivity() {
 
         setupDashboard()
         setupSpeedVolume()
+        // From the Home dashboard card: open the style picker straight away.
+        if (intent.getBooleanExtra(EXTRA_OPEN_STYLE_PICKER, false)) {
+            findViewById<View>(R.id.btn_dash_design).post { findViewById<View>(R.id.btn_dash_design).performClick() }
+        }
     }
 
     override fun onResume() {
@@ -664,6 +668,8 @@ class ControlsActivity : AppCompatActivity() {
     }
 
     companion object {
+        /** Boolean extra: open the dashboard style picker on arrival (Home dashboard card). */
+        const val EXTRA_OPEN_STYLE_PICKER = "open_style_picker"
         private const val REQ_MIC = 71
         private val PAD_BUTTON_IDS = intArrayOf(
             R.id.btn_knob_back, R.id.btn_dpad_up, R.id.btn_knob_fwd,

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 2.6: dashboard card on Home -->
+    <string name="home_dash_title">Dashboard</string>
+    <string name="home_dash_style">Style</string>
+    <string name="home_dash_sub_on">Showing %1$s on the dash</string>
+    <string name="home_dash_sub_ready">%1$s · ready to show on the dash</string>
+    <string name="home_dash_sub_off">%1$s · connect the bike to show it</string>
+    <string name="home_dash_at_connect_on">Opens in the dashboard when connecting: on</string>
+    <string name="home_dash_at_connect_off">Opens in the dashboard when connecting: off</string>
+</resources>
