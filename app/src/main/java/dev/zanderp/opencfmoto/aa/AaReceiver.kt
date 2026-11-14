@@ -10,6 +10,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import dev.zanderp.opencfmoto.AaVideoBridge
 import dev.zanderp.opencfmoto.BikeWifi
+import dev.zanderp.opencfmoto.DashNight
 import dev.zanderp.opencfmoto.NightPrefs
 import android.net.nsd.NsdManager
 import android.net.nsd.NsdServiceInfo
