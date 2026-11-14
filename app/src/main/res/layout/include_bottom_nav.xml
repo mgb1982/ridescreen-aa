@@ -23,7 +23,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:importantForAccessibility="no"
-            android:src="@drawable/ic_line_dash" />
+            android:src="@drawable/ic_line_home" />
         <TextView
             android:id="@+id/nav_home_label"
             android:layout_width="wrap_content"
@@ -104,7 +104,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:importantForAccessibility="no"
-            android:src="@drawable/ic_line_pad" />
+            android:src="@drawable/ic_line_gear" />
         <TextView
             android:id="@+id/nav_settings_label"
             android:layout_width="wrap_content"
