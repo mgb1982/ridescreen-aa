@@ -167,6 +167,7 @@ class AaReceiver(
         AaVideoBridge.scrollSink = null
         AaVideoBridge.previewTouchSink = null
         AaVideoBridge.nightSink = null
+        DashNight.onChange = null
         try { transport?.quit() } catch (_: Exception) {}
         transport = null
         try { connection?.disconnect() } catch (_: Exception) {}
@@ -217,6 +218,7 @@ class AaReceiver(
             AaVideoBridge.scrollSink = null
             AaVideoBridge.previewTouchSink = null
             AaVideoBridge.nightSink = null
+            DashNight.onChange = null
             try { t.microphone?.stop("transport quit") } catch (_: Exception) {}
             transport = null
             releaseSession()
@@ -267,6 +269,14 @@ class AaReceiver(
         // a timer so the dash follows nightfall mid-ride without any interaction.
         t.nightMode = NightPrefs.isNightNow(context)
         AaVideoBridge.nightSink = { on -> t.sendNightMode(on) }
+        // The dash (its own light sensor) can tell day/night after we started: follow it now, not at the next minute tick.
+        DashNight.onChange = {
+            val want = NightPrefs.isNightNow(context)
+            if (want != t.nightMode) {
+                log("[AA] map theme → ${if (want) "night" else "day"} (the dash's light sensor)")
+                t.sendNightMode(want)
+            }
+        }
         startNightAutoLoop(t)
 
         // Microphone: AA requests it (MICROPHONE_REQUEST) when the Assistant starts; AaMicrophone then
