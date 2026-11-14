@@ -211,20 +211,5 @@
         android:textColor="#D1A955"
         android:textSize="14sp"
         android:textStyle="bold" />
-
-    <!-- v2.5: lock the bike through the phone (two taps). Shown only if the phone has the keyless lock set up. -->
-    <TextView
-        android:id="@+id/park_lock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:background="@drawable/bg_pill"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="7dp"
-        android:text="@string/lock_bike"
-        android:textColor="#F1F4EC"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:visibility="gone" />
   </LinearLayout>
 </FrameLayout>

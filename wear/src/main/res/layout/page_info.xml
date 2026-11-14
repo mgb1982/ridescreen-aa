@@ -192,4 +192,22 @@
         android:textSize="12sp"
         android:textStyle="bold"
         android:visibility="gone" />
+
+    <!-- v2.5: lock the bike through the phone (two taps) during a ride; locking ends the trip.
+         Shown only while riding and if the phone has the keyless lock set up. It takes the place of
+         tv_parked, which is idle-only, so the two never compete for the bottom of the round screen. -->
+    <TextView
+        android:id="@+id/info_lock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_pill"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="5dp"
+        android:text="@string/lock_bike"
+        android:textColor="#F1F4EC"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 </LinearLayout>

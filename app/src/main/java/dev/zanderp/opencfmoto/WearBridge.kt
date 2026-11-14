@@ -215,12 +215,13 @@ object WearBridge {
             // Parking spot in every idle snapshot ("" = none): the watch stays in sync even if the
             // one-off /ocm/parked message got lost.
             o.put("park", Parking.json(Parking.get(ctx)))
-            // v2.5: the watch shows "Lock" on its parking page only if the keyless lock is set up.
-            val lockOk = WearLock.available(ctx)
-            o.put("lock", lockOk)
-            // Diagnosis (14 Nov: no Lock button on the watch): one line per 10 min says what the watch was told.
-            LogBus.logThrottled("wear-lock-flag", "[WEAR] idle snapshot to the watch: keyless lock available=$lockOk", 10 * 60_000L)
         }
+        // v2.5: the watch shows "Lock" during a ride (lock ends the trip), only if the keyless lock is set up.
+        // Sent in every snapshot, ride or idle, so the watch always has the current answer.
+        val lockOk = WearLock.available(ctx)
+        o.put("lock", lockOk)
+        // Diagnosis (14 Nov: no Lock button on the watch): one line per 10 min says what the watch was told.
+        LogBus.logThrottled("wear-lock-flag", "[WEAR] snapshot to the watch: keyless lock available=$lockOk", 10 * 60_000L)
         putInfo(ctx, o)
         return o.toString()
     }

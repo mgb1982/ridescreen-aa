@@ -227,7 +227,7 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
         // one-off /ocm/parked message was missed.
         try {
             val o = org.json.JSONObject(raw)
-            // Only idle snapshots say whether the phone has the keyless lock set up; keep the last answer.
+            // Every snapshot (ride or idle) says whether the phone has the keyless lock set up; keep the last answer.
             if (o.has("lock")) {
                 val avail = o.optBoolean("lock")
                 if (avail != lockAvailable()) {
@@ -290,7 +290,8 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
             ),
         )
         parkFind?.visibility = if (spot == null) View.GONE else View.VISIBLE
-        parkLock?.visibility = if (!connected && lockAvailable()) View.VISIBLE else View.GONE
+        // Lock ends the trip, so the button is for the ride only (info page); hidden when there is no ride.
+        parkLock?.visibility = if (riding && lockAvailable()) View.VISIBLE else View.GONE
         // The main page has no room for one more line on a round screen (it was centred and
         // clipped off the bottom): when idle, the parking pill takes the max/avg row's place.
         rowMaxAvg?.visibility = if (show) View.GONE else View.VISIBLE
@@ -489,6 +490,10 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
         tvBattery = v.findViewById(R.id.tv_battery)
         tvVolume = v.findViewById(R.id.tv_volume)
         tvParked = v.findViewById(R.id.tv_parked)
+        parkLock = v.findViewById<TextView>(R.id.info_lock).also { b ->
+            b.setOnClickListener { onLockTap() }
+        }
+        setLockStep(lockStep)
         render()
     }
 
@@ -542,9 +547,6 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
         val openCompass = View.OnClickListener { startActivity(android.content.Intent(this, FindBikeActivity::class.java)) }
         parkPage?.setOnClickListener(openCompass)
         parkFind?.setOnClickListener(openCompass)
-        parkLock = v.findViewById<TextView>(R.id.park_lock).also { b ->
-            b.setOnClickListener { onLockTap() }
-        }
         // ▲ / ▼ turn the Android Auto knob (that's what moves through lists and menus): watches with
         // no bezel or crown had no way to scroll. A long press still sends the old D-pad nudge.
         for ((id, step, code) in listOf(
