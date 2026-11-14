@@ -14,17 +14,17 @@ class TripsHubActivity : HubActivity() {
     override fun describe(item: HubItem): HubRow = when (item) {
         HubItem.TRIPS_LIST -> HubRow(R.drawable.ic_line_trips, 0xFF5B8DEF.toInt(), getString(R.string.home_tile_trips), getString(R.string.hub_sub_trips_list))
         HubItem.TRIP_NOW -> HubRow(R.drawable.ic_line_watch, 0xFF5FD07A.toInt(), getString(R.string.home_big_trip), getString(R.string.home_big_trip_sub))
-        HubItem.MAP -> HubRow(R.drawable.ic_line_dash, 0xFF4FB6A6.toInt(), getString(R.string.hub_map), getString(R.string.hub_sub_map))
+        HubItem.MAP -> HubRow(R.drawable.ic_line_map, 0xFF4FB6A6.toInt(), getString(R.string.hub_map), getString(R.string.hub_sub_map))
         HubItem.TRAFFIC_LIGHTS -> HubRow(R.drawable.ic_line_traffic, 0xFFE05A5A.toInt(), getString(R.string.home_tile_tl))
-        HubItem.YEAR -> HubRow(R.drawable.ic_line_check, 0xFFD1A955.toInt(), getString(R.string.hub_year), getString(R.string.hub_sub_year))
-        HubItem.TROPHIES -> HubRow(R.drawable.ic_line_check, 0xFFD1A955.toInt(), getString(R.string.tr_screen_title))
+        HubItem.YEAR -> HubRow(R.drawable.ic_line_calendar, 0xFFD1A955.toInt(), getString(R.string.hub_year), getString(R.string.hub_sub_year))
+        HubItem.TROPHIES -> HubRow(R.drawable.ic_line_trophy, 0xFFD1A955.toInt(), getString(R.string.tr_screen_title))
         HubItem.LIVE -> HubRow(
             R.drawable.ic_line_live, 0xFF5FD07A.toInt(), getString(R.string.home_tile_live),
             getString(if (LiveShare.active) R.string.home_tile_live_on else R.string.live_title),
         )
-        HubItem.PASSENGER -> HubRow(R.drawable.ic_line_pad, 0xFFA98BE0.toInt(), clean(R.string.pax_entry))
+        HubItem.PASSENGER -> HubRow(R.drawable.ic_line_people, 0xFFA98BE0.toInt(), clean(R.string.pax_entry))
         HubItem.DASHCAM -> HubRow(R.drawable.ic_line_camera, 0xFFD1A955.toInt(), clean(R.string.dashcam_entry))
-        HubItem.HEART_RATE -> HubRow(R.drawable.ic_line_watch, 0xFFE05A5A.toInt(), clean(R.string.help_heart_rate))
+        HubItem.HEART_RATE -> HubRow(R.drawable.ic_line_heart, 0xFFE05A5A.toInt(), clean(R.string.help_heart_rate))
         else -> HubRow(R.drawable.ic_line_check, 0xFF5B8DEF.toInt(), item.name)
     }
 

@@ -14,10 +14,10 @@ class BikeHubActivity : HubActivity() {
         HubItem.PKE_BATTERY -> HubRow(R.drawable.ic_line_power, 0xFF5FD07A.toInt(), clean(R.string.pke_entry), getString(R.string.hub_key_sub))
         HubItem.PKE_LOCK -> HubRow(R.drawable.ic_line_lock, 0xFFD1A955.toInt(), clean(R.string.pke_unlock_entry), getString(R.string.hub_key_sub))
         HubItem.OBD -> HubRow(R.drawable.ic_line_dash, 0xFF4FB6A6.toInt(), clean(R.string.obd_entry), getString(R.string.hub_sub_obd))
-        HubItem.CHRONO -> HubRow(R.drawable.ic_line_check, 0xFFE5774E.toInt(), getString(R.string.chr_open))
+        HubItem.CHRONO -> HubRow(R.drawable.ic_line_gauge, 0xFFE5774E.toInt(), getString(R.string.chr_open))
         HubItem.MAINTENANCE -> HubRow(R.drawable.ic_line_maint, 0xFF4FB6A6.toInt(), getString(R.string.home_tile_maint))
         HubItem.FUEL -> HubRow(R.drawable.ic_line_fuel, 0xFFE5774E.toInt(), getString(R.string.home_tile_fuel), getString(R.string.home_tile_fuel_sub))
-        HubItem.CRASH -> HubRow(R.drawable.ic_line_help, 0xFFE05A5A.toInt(), getString(R.string.crash_title), getString(R.string.hub_sub_crash))
+        HubItem.CRASH -> HubRow(R.drawable.ic_line_alert, 0xFFE05A5A.toInt(), getString(R.string.crash_title), getString(R.string.hub_sub_crash))
         else -> HubRow(R.drawable.ic_line_check, 0xFF5B8DEF.toInt(), item.name)
     }
 
