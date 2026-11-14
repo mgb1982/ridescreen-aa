@@ -336,6 +336,11 @@ class PxcHandshake(
         log("[$tag] *** BikeProfile selected: ${profile.name} ***")
 
         val reply = profile.buildClientInfoReply(json, carHuid, phoneUuid)
+        // 14 Nov (GPX DZ2: "touch doesn't work"): one line says what the dash declared and what we told it, so a log
+        // alone tells "no touch panel / not enabled" from "we never asked for touch". Touch frames log as [..] TOUCH DOWN/UP.
+        log("[TOUCH] dash declares supportScreenTouch=${json.optBoolean("supportScreenTouch", false)} " +
+            "supportHID=${json.optBoolean("supportHID", false)} · phone replies supportScreenTouch=${reply.optBoolean("supportScreenTouch", false)} " +
+            "(force touch ${if (BikeProfileHolder.forceTouch) "on" else "off"}, no-touch ${if (BikeProfileHolder.forceNonTouch) "on" else "off"})")
         log("[$tag] → CLIENT_INFO reply ${reply.toString().take(180)}…")
         PxcFrame(PxcFrame.CMD_CLIENT_INFO_RLY, reply.toString().toByteArray(Charsets.UTF_8)).write(out)
     }
