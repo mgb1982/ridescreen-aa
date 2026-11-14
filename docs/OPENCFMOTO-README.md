@@ -151,7 +151,7 @@ required. Latest ride build is **2.0.18**.
 - **QJ Motor** SRK800RR · SRK450RR · SRK250RD · **SRT 600** / **SRV600**
 - **UM** DSR 250 Rally
 - **Wmoto** Griffin
-- **GPX** DZ2 — reported working by one user in Thailand (Nov 2026); no connection log yet
+- **GPX** DZ2 — reported working by one user in Thailand (Nov 2026); connection log received 14 Nov 2026: projection and auto-connect work; touch not confirmed
 
 ### In progress (joins or paints — not Latest daily)
 
