@@ -62,6 +62,7 @@ class PxcHandshake(
             PxcFrame.CMD_CHANNEL_CAR_CTRL -> {
                 log("[$tag] bike selected CAR_CTRL (0x10000) → ack 0x10001 ${sockId(socket)}")
                 carCtrlSocket = socket
+                DashNight.reset()   // a new connection: the dash tells day/night again right after CLIENT_INFO
                 checkSnThisSession = false
                 ctrlSelectedAt = System.currentTimeMillis()
                 PxcFrame(PxcFrame.CMD_CHANNEL_CAR_CTRL + 1, ByteArray(0)).write(out)

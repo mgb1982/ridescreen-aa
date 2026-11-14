@@ -50,12 +50,13 @@ object NightPrefs {
      * The night value to report to Android Auto right now. In [MapTheme.AUTO] it's night when either
      * the phone is in its own dark (night) UI mode — so a phone set to switch at sunset carries the
      * dash with it — or it's simply evening/early-morning by the clock (a self-contained fallback for
-     * phones left on a fixed light theme).
+     * phones left on a fixed light theme). When the dash itself reports day/night from its light sensor
+     * ([DashNight], recent answer only), that wins in Auto: it is the light the rider actually sees.
      */
     fun isNightNow(ctx: Context): Boolean = when (theme(ctx)) {
         MapTheme.DAY -> false
         MapTheme.NIGHT -> true
-        MapTheme.AUTO -> phoneInNightMode(ctx) || clockSaysNight()
+        MapTheme.AUTO -> DashNight.current() ?: (phoneInNightMode(ctx) || clockSaysNight())
     }
 
     private fun phoneInNightMode(ctx: Context): Boolean =

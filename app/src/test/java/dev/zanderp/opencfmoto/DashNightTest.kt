@@ -37,6 +37,31 @@ class DashNightTest {
         assertEquals(3L, DashNight.lastAtMs)
     }
 
+    @Test fun recentAnswerWinsOldAnswerFallsBack() {
+        assertEquals(true, DashNight.effective(true, atMs = 1_000L, nowMs = 1_000L + DashNight.VALID_MS))
+        assertNull(DashNight.effective(true, atMs = 1_000L, nowMs = 1_001L + DashNight.VALID_MS))
+        assertNull(DashNight.effective(null, atMs = 0L, nowMs = 5L))
+        assertNull(DashNight.effective(false, atMs = 10_000L, nowMs = 5_000L))   // clock went backwards: not trusted
+    }
+
+    @Test fun resetForgetsThePreviousConnection() {
+        DashNight.note("{\"night\":true}", 1L) {}
+        assertEquals(true, DashNight.lastNight)
+        DashNight.reset()
+        assertNull(DashNight.lastNight)
+        assertNull(DashNight.current(2L))
+    }
+
+    @Test fun changeCallbackFiresOnEveryAnswer() {
+        var calls = 0
+        DashNight.reset()
+        DashNight.onChange = { calls++ }
+        DashNight.note("{\"night\":false}", 1L) {}
+        DashNight.note("{\"night\":true}", 2L) {}
+        DashNight.onChange = null
+        assertEquals(2, calls)
+    }
+
     @Test fun traceKeepsNightLines() {
         assertTrue(TriggerTraceLogic.wants("[NIGHT] dash says DAY"))
     }
