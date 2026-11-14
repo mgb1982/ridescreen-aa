@@ -583,7 +583,7 @@
     <string name="main_up_to_date">У тебя последняя версия (или нет подключения)</string>
     <string name="main_crash_title">Восстановлено после сбоя</string>
     <string name="main_mirror_ready_title">Зеркалирование готово</string>
-    <string name="main_rival_title">Мешает официальное приложение CFMoto</string>
+    <string name="main_rival_title">Другое приложение блокирует подключение</string>
     <string name="main_bike_search_hint">Поиск на дисплее мотоцикла — введи запрос здесь</string>
 
     <!-- Notifications -->

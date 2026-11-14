@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dialoog „iets bezet de verbindingspoorten van de motor“ (officiële Zontes / CFMoto / Carbit Ride-app draait) -->
+    <string name="main_rival_msg_installed">De app %1$s is geïnstalleerd en draait mogelijk op de achtergrond, waarbij de verbindingspoorten van de motor (10920–10922) worden bezet, daarom blijft het dashboard leeg. Sluit hem af en maak dan opnieuw verbinding.\n\n\"Sluiten en opnieuw proberen\" probeert hem voor je te stoppen; blijft het dashboard leeg, ga dan naar \"App-instellingen\" en tik op Geforceerd stoppen.</string>
+    <string name="main_rival_msg_unknown">Iets bezet de verbindingspoorten van de motor (10920–10922). Sluit de officiële app van je motor (Zontes, CFMoto, Carbit Ride…) of een andere EasyConnect-app: Instellingen → Apps → Geforceerd stoppen. Probeer het daarna opnieuw.</string>
+    <string name="main_rival_close_retry">Sluiten en opnieuw proberen</string>
+</resources>

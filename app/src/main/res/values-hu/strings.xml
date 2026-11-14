@@ -508,7 +508,7 @@
     <string name="main_up_to_date">Naprakész vagy (vagy offline)</string>
     <string name="main_crash_title">Összeomlás után helyreállítva</string>
     <string name="main_mirror_ready_title">Tükrözés kész</string>
-    <string name="main_rival_title">A hivatalos CFMoto alkalmazás útban van</string>
+    <string name="main_rival_title">Egy másik alkalmazás blokkolja a kapcsolatot</string>
     <string name="main_bike_search_hint">Motor műszerfal keresés — írj ide</string>
 
     <!-- Notifications -->

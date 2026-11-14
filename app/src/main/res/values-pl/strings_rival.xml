@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Okno dialogowe „coś zajmuje porty połączeniowe motocykla” (działa oficjalna aplikacja Zontes / CFMoto / Carbit Ride) -->
+    <string name="main_rival_msg_installed">Aplikacja %1$s jest zainstalowana i może działać w tle, zajmując porty połączeniowe motocykla (10920–10922), przez co ekran pozostaje pusty. Zamknij ją, a potem połącz się ponownie.\n\n\"Zamknij i spróbuj ponownie\" próbuje ją zatrzymać za Ciebie; jeśli ekran dalej jest pusty, otwórz \"Ustawienia aplikacji\" i dotknij Wymuś zatrzymanie.</string>
+    <string name="main_rival_msg_unknown">Coś zajmuje porty połączeniowe motocykla (10920–10922). Zamknij oficjalną aplikację swojego motocykla (Zontes, CFMoto, Carbit Ride…) lub dowolną inną aplikację EasyConnect: Ustawienia → Aplikacje → Wymuś zatrzymanie. Następnie spróbuj ponownie.</string>
+    <string name="main_rival_close_retry">Zamknij i spróbuj ponownie</string>
+</resources>

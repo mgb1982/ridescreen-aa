@@ -402,7 +402,7 @@
     <string name="main_up_to_date">Jesteś na bieżąco (lub offline)</string>
     <string name="main_crash_title">Odzyskany po awarii</string>
     <string name="main_mirror_ready_title">Mirroring gotowy</string>
-    <string name="main_rival_title">Aplikacja CFMOTO RIDE przeszkadza w połączeniu</string>
+    <string name="main_rival_title">Inna aplikacja blokuje połączenie</string>
     <string name="main_bike_search_hint">Wyszukiwanie modelu ekranu motocykla — wpisz tutaj</string>
     <string name="notif_aa_channel">Odbiornik Android Auto</string>
     <string name="notif_aa_title">RideScreen AA — Android Auto</string>

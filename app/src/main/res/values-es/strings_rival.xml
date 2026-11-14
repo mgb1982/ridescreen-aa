@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Diálogo «algo ocupa los puertos de enlace de la moto» (app oficial de Zontes / CFMoto / Carbit Ride abierta) -->
+    <string name="main_rival_msg_installed">%1$s está instalada y puede estar abierta en segundo plano, ocupando los puertos de enlace de la moto (10920–10922), y por eso el cuadro se queda en blanco. Ciérrala y vuelve a conectar.\n\n\"Cerrar y reintentar\" intenta pararla por ti; si el cuadro sigue en blanco, usa \"Configuración de la aplicación\" y pulsa Forzar detención.</string>
+    <string name="main_rival_msg_unknown">Algo ocupa los puertos de enlace de la moto (10920–10922). Cierra la app oficial de tu moto (Zontes, CFMoto, Carbit Ride…) o cualquier otra app EasyConnect: Ajustes → Aplicaciones → Forzar detención. Luego vuelve a intentarlo.</string>
+    <string name="main_rival_close_retry">Cerrar y reintentar</string>
+</resources>

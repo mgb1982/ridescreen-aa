@@ -2100,30 +2100,31 @@ class MainActivity : AppCompatActivity() {
      * App-info screen (guaranteed Force stop), then reconnect.
      */
     private fun promptCloseRival() {
-        val installed = RivalClient.isInstalled(this)
-        com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+        val appName = RivalClient.firstLabel(this)
+        val builder = com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
             .setTitle(R.string.main_rival_title)
-            .setMessage(
-                "The official CFMoto/EasyConnect app is running and holding the bike's link ports, so " +
-                    "the dash stays blank. Close it, then reconnect.\n\n" +
-                    "\"Close & retry\" tries to stop it for you; if the dash is still blank, use " +
-                    "\"App settings\" and tap Force stop."
-            )
-            .setPositiveButton("Close & retry") { _, _ ->
-                val killed = RivalClient.closeBestEffort(this)
-                log(if (killed) "→ asked Android to close the official CFMoto app; retrying…"
-                    else "→ couldn't auto-close the official CFMoto app — open its settings to Force stop.")
-                connectBtn.postDelayed({ reconnectSavedBike() }, 1500)
-            }
-            .setNeutralButton("App settings") { _, _ ->
-                if (!RivalClient.openAppInfo(this)) {
-                    Toast.makeText(this, R.string.main_settings_failed, Toast.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton("Dismiss", null)
+            .setNegativeButton(R.string.crash_dialog_dismiss, null)
             .setCancelable(true)
-            .apply { if (!installed) setMessage("Something is holding the bike's link ports (10920-10922). Close any other CFMoto/EasyConnect app and reconnect.") }
-            .show()
+        if (appName != null) {
+            // An official bike app (Zontes, CFMoto, Carbit Ride) is installed: offer to close it, or its App-info page.
+            builder.setMessage(getString(R.string.main_rival_msg_installed, appName))
+                .setPositiveButton(R.string.main_rival_close_retry) { _, _ ->
+                    val killed = RivalClient.closeBestEffort(this)
+                    log(if (killed) "→ asked Android to close the official bike app ($appName); retrying…"
+                        else "→ couldn't auto-close the official bike app ($appName) — open its settings to Force stop.")
+                    connectBtn.postDelayed({ reconnectSavedBike() }, 1500)
+                }
+                .setNeutralButton(R.string.setup_app_settings) { _, _ ->
+                    if (!RivalClient.openAppInfo(this)) {
+                        Toast.makeText(this, R.string.main_settings_failed, Toast.LENGTH_SHORT).show()
+                    }
+                }
+        } else {
+            // None of the known apps is installed: say what to look for, and just offer to retry.
+            builder.setMessage(R.string.main_rival_msg_unknown)
+                .setPositiveButton(R.string.ux_retry) { _, _ -> reconnectSavedBike() }
+        }
+        builder.show()
     }
 
     /**

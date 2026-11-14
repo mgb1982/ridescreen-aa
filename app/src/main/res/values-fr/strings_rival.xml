@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dialogue « quelque chose occupe les ports de liaison de la moto » (application officielle Zontes / CFMoto / Carbit Ride en cours) -->
+    <string name="main_rival_msg_installed">L\'application %1$s est installée et tourne peut-être en arrière-plan, en occupant les ports de liaison de la moto (10920–10922) : c\'est pour ça que l\'écran reste vide. Ferme-la, puis reconnecte-toi.\n\n\"Fermer et réessayer\" essaie de l\'arrêter pour toi ; si l\'écran reste vide, ouvre \"Paramètres de l\'application\" et appuie sur Forcer l\'arrêt.</string>
+    <string name="main_rival_msg_unknown">Quelque chose occupe les ports de liaison de la moto (10920–10922). Ferme l\'application officielle de ta moto (Zontes, CFMoto, Carbit Ride…) ou toute autre appli EasyConnect : Paramètres → Applications → Forcer l\'arrêt. Réessaie ensuite.</string>
+    <string name="main_rival_close_retry">Fermer et réessayer</string>
+</resources>

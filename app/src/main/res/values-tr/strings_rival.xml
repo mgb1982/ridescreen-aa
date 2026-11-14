@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- "Motorun bağlantı portlarını bir şey tutuyor" diyaloğu (resmi Zontes / CFMoto / Carbit Ride uygulaması çalışıyor) -->
+    <string name="main_rival_msg_installed">%1$s uygulaması yüklü ve arka planda çalışıyor olabilir; motorun bağlantı portlarını (10920–10922) tutarak gösterge panelinin boş kalmasına neden oluyor. Kapatın, sonra yeniden bağlanın.\n\n\"Kapat ve yeniden dene\" uygulamayı sizin yerinize durdurmayı dener; gösterge hâlâ boşsa \"Uygulama ayarları\" menüsünü açın ve Zorla durdur seçeneğine dokunun.</string>
+    <string name="main_rival_msg_unknown">Bir şey motorun bağlantı portlarını (10920–10922) tutuyor. Motorunuzun resmi uygulamasını (Zontes, CFMoto, Carbit Ride…) ya da başka bir EasyConnect uygulamasını kapatın: Ayarlar → Uygulamalar → Zorla durdur. Sonra yeniden deneyin.</string>
+    <string name="main_rival_close_retry">Kapat ve yeniden dene</string>
+</resources>

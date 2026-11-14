@@ -581,7 +581,7 @@
     <string name="main_up_to_date">You\'re up to date (or offline)</string>
     <string name="main_crash_title">Recovered after a crash</string>
     <string name="main_mirror_ready_title">Mirror ready</string>
-    <string name="main_rival_title">Official CFMoto app is in the way</string>
+    <string name="main_rival_title">Another app is blocking the connection</string>
     <string name="main_bike_search_hint">Bike dash search — type here</string>
 
     <!-- Notifications -->

@@ -545,7 +545,7 @@
     <string name="main_up_to_date">Приложението ви е актуално (или сте офлайн)</string>
     <string name="main_crash_title">Възстановено след срив</string>
     <string name="main_mirror_ready_title">Огледален екран готов</string>
-    <string name="main_rival_title">Официалното приложение на CFMoto пречи</string>
+    <string name="main_rival_title">Друго приложение блокира връзката</string>
     <string name="main_bike_search_hint">Търсене на таблото на мотора — въведете тук</string>
 
     <!-- Notifications -->

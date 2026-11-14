@@ -581,7 +581,7 @@
     <string name="main_up_to_date">Έχεις την πιο πρόσφατη έκδοση (ή είσαι εκτός σύνδεσης)</string>
     <string name="main_crash_title">Ανάκτηση μετά από κατάρρευση</string>
     <string name="main_mirror_ready_title">Ο Κατοπτρισμός είναι έτοιμος</string>
-    <string name="main_rival_title">Η επίσημη εφαρμογή CFMoto εμποδίζει τη σύνδεση</string>
+    <string name="main_rival_title">Άλλη εφαρμογή μπλοκάρει τη σύνδεση</string>
     <string name="main_bike_search_hint">Αναζήτηση στο ταμπλό μοτοσικλέτας — πληκτρολόγησε εδώ</string>
 
     <!-- Notifications -->

@@ -580,7 +580,7 @@
     <string name="main_up_to_date">เป็นเวอร์ชันล่าสุดแล้ว (หรือออฟไลน์)</string>
     <string name="main_crash_title">กู้คืนหลังแอปขัดข้องแล้ว</string>
     <string name="main_mirror_ready_title">ฉายหน้าจอพร้อมแล้ว</string>
-    <string name="main_rival_title">แอปทางการของ CFMoto กำลังรบกวนการเชื่อมต่อ</string>
+    <string name="main_rival_title">มีแอปอื่นกำลังบล็อกการเชื่อมต่อ</string>
     <string name="main_bike_search_hint">ค้นหาบนหน้าปัดรถ พิมพ์ที่นี่</string>
 
     <!-- Notifications -->

@@ -370,7 +370,7 @@
     <string name="main_up_to_date">Du bist auf dem neuesten Stand (oder offline)</string>
     <string name="main_crash_title">Nach einem Absturz wiederhergestellt</string>
     <string name="main_mirror_ready_title">Spiegel bereit</string>
-    <string name="main_rival_title">Die offizielle CFMoto-App ist im Weg</string>
+    <string name="main_rival_title">Eine andere App blockiert die Verbindung</string>
     <string name="main_bike_search_hint">Motorrad-Dash-Suche – hier eingeben</string>
     <string name="notif_aa_channel">Android Auto-Empfänger</string>
     <string name="notif_aa_title">RideScreen AA – Android Auto</string>
