@@ -288,11 +288,22 @@ class HudViewActivity : AppCompatActivity() {
         }
     }
 
+    private val offlineWatch = object : Runnable {
+        override fun run() {
+            if (isFinishing || isDestroyed) return
+            if (AaVideoBridge.pipeline != null) refreshMode(forceReload = false)
+            else findViewById<View>(R.id.hud_offline).postDelayed(this, 1000)
+        }
+    }
+
     /** Offline: draws the chosen dashboard with sample data (off the UI thread); [on] false hides it. */
     private fun showOfflinePreview(on: Boolean) {
         val host = findViewById<View>(R.id.hud_offline)
         host.visibility = if (on) View.VISIBLE else View.GONE
+        host.removeCallbacks(offlineWatch)
         if (!on) { offlineKey = null; return }
+        // The bike can connect while this screen is open: drop the preview as soon as the video is live.
+        host.postDelayed(offlineWatch, 1000)
         val design = DashboardMode.design(this)
         val key = "${design.id}|${DashboardMode.isLight(this)}|${DashboardMode.accent(this)}|" +
             "${DashboardMode.visibleFields(this).sorted()}|${DashboardMode.cardOrder(this)}"
