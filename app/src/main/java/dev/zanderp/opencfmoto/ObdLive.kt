@@ -285,7 +285,7 @@ object ObdLive {
         }
         val out = HashMap<Int, Double>()
         for (pid in pids) {
-            if ((pid == 0x05 || pid == 0x42 || pid == 0x0F || pid == 0x33 || pid == 0x43) && round % 10 != 0) continue
+            if (!ObdPace.shouldRead(pid, round)) continue
             val cmd = "01%02X".format(pid) + if (mode == Mode.SINGLE_COUNT) "1" else ""
             ObdDecode.value(elm.cmd(cmd, 2_000), pid)?.let { out[pid] = it }
         }
@@ -315,13 +315,6 @@ object ObdLive {
         log("live reader: speed test · ${report.joinToString(" · ")} → ${best.name}")
         return best
     }
-}
-
-/** A5 · pure pacing rule (unit tested): full rate with the dashboard, else at most one round per [SLOW_ROUND_MS]. */
-internal object ObdPace {
-    const val SLOW_ROUND_MS = 700L
-    fun gapMs(dashboardVisible: Boolean, roundTookMs: Long): Long =
-        if (dashboardVisible) 0L else (SLOW_ROUND_MS - roundTookMs).coerceAtLeast(0L)
 }
 
 /** A6 · pure rules for the keyless box's live link (unit tested). */
