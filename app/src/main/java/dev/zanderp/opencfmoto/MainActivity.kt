@@ -1599,11 +1599,10 @@ class MainActivity : AppCompatActivity() {
             renderDashCard()
         }
         val open = View.OnClickListener {
-            startActivity(
-                Intent(this, ControlsActivity::class.java)
-                    .putExtra(SettingsSection.EXTRA, SettingsSection.DASHBOARD.key)
-                    .putExtra(ControlsActivity.EXTRA_OPEN_STYLE_PICKER, true),
-            )
+            if (supportFragmentManager.findFragmentByTag(DashStyleSheet.TAG) == null) {
+                DashStyleSheet.onClosed = { renderDashCard(redrawPreview = true) }
+                DashStyleSheet().show(supportFragmentManager, DashStyleSheet.TAG)
+            }
         }
         findViewById<View>(R.id.dash_card_style).setOnClickListener(open)
         img.setOnClickListener(open)
