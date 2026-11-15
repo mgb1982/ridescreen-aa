@@ -204,6 +204,11 @@ object ObdLive {
                 supported += s20
                 if (0x40 in s20) supported += ObdDecode.supported(elm.cmd("0140", 4_000), 0x40)
             }
+            // For comparing adapters: the PID list comes from the ECU (it is the same with any adapter), the protocol
+            // and the speed come from the adapter. Only a read-only AT query; no secrets in either line.
+            log("live reader: the ECU lists ${supported.count { it % 0x20 != 0 }} PIDs: " +
+                supported.filter { it % 0x20 != 0 }.sorted().joinToString(" ") { "%02X".format(it) })
+            elm.cmd("ATDP").trim().takeIf { it.isNotEmpty() }?.let { log("live reader: protocol $it") }
             val pids = WANT.filter { it in supported }
             if (0x0C !in pids) { log("live reader: the ECU doesn't offer RPM"); return false }
             val mode = pickMode(elm, pids)
