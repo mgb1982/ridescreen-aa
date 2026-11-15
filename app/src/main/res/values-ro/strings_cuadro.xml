@@ -26,4 +26,5 @@
     <string name="cuadro_map_preview">Previzualizare hartă</string>
     <string name="cuadro_map_ui_failed">Interfața hărții nu s-a putut deschide</string>
     <string name="cuadro_map_load_failed">Harta nu s-a putut încărca — încearcă din nou din centrul de hărți</string>
+    <string name="cuadro_offline_notice">Previzualizare cu date de exemplu — motocicleta nu este conectată</string>
 </resources>

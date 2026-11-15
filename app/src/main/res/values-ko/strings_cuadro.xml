@@ -26,4 +26,5 @@
     <string name="cuadro_map_preview">지도 미리 보기</string>
     <string name="cuadro_map_ui_failed">지도 화면을 열지 못했습니다</string>
     <string name="cuadro_map_load_failed">지도를 불러올 수 없습니다 — 지도 허브에서 다시 시도하세요</string>
+    <string name="cuadro_offline_notice">예시 데이터로 보는 미리보기 — 오토바이가 연결되지 않았습니다</string>
 </resources>

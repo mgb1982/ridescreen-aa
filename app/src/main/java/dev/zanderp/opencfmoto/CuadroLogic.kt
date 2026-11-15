@@ -15,6 +15,13 @@ object CuadroLogic {
     /** Android Auto / Dashboard need a live pipeline; "Map" is always available. */
     fun modeButtonsEnabled(connected: Boolean): Boolean = connected
 
+    /** Size of the dash panel the offline preview is drawn at (same ratio as the bike's screen). */
+    const val PREVIEW_W = 800
+    const val PREVIEW_H = 416
+
+    /** Without a bike and without a phone map session, the screen shows the dash preview with sample data. */
+    fun showOfflinePreview(connected: Boolean, mapPreviewActive: Boolean): Boolean = !connected && !mapPreviewActive
+
     /** Where a touch gesture goes, decided at finger down and kept until it ends. */
     enum class Target { ANDROID_AUTO, DASHBOARD, LEGACY, NONE }
 

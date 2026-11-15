@@ -26,4 +26,5 @@
     <string name="cuadro_map_preview">ตัวอย่างแผนที่</string>
     <string name="cuadro_map_ui_failed">เปิดหน้าแผนที่ไม่สำเร็จ</string>
     <string name="cuadro_map_load_failed">โหลดแผนที่ไม่ได้ — ลองอีกครั้งจากศูนย์แผนที่</string>
+    <string name="cuadro_offline_notice">ตัวอย่างพร้อมข้อมูลสมมติ — ยังไม่ได้เชื่อมต่อกับมอเตอร์ไซค์</string>
 </resources>

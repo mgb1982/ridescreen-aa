@@ -26,4 +26,5 @@
     <string name="cuadro_map_preview">Podgląd mapy</string>
     <string name="cuadro_map_ui_failed">Nie udało się otworzyć interfejsu mapy</string>
     <string name="cuadro_map_load_failed">Nie udało się wczytać mapy — spróbuj ponownie z centrum map</string>
+    <string name="cuadro_offline_notice">Podgląd z przykładowymi danymi — motocykl nie jest połączony</string>
 </resources>

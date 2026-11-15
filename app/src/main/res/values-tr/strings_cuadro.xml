@@ -26,4 +26,5 @@
     <string name="cuadro_map_preview">Harita önizlemesi</string>
     <string name="cuadro_map_ui_failed">Harita arayüzü açılamadı</string>
     <string name="cuadro_map_load_failed">Harita yüklenemedi — Harita merkezinden tekrar dene</string>
+    <string name="cuadro_offline_notice">Örnek verilerle önizleme — motosiklet bağlı değil</string>
 </resources>

@@ -26,4 +26,5 @@
     <string name="cuadro_map_preview">Náhled mapy</string>
     <string name="cuadro_map_ui_failed">Rozhraní mapy se nepodařilo otevřít</string>
     <string name="cuadro_map_load_failed">Mapu nelze načíst — zkus to znovu z centra map</string>
+    <string name="cuadro_offline_notice">Náhled s ukázkovými daty — motorka není připojena</string>
 </resources>

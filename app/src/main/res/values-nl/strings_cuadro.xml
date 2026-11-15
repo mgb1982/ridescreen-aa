@@ -26,4 +26,5 @@
     <string name="cuadro_map_preview">Kaartvoorbeeld</string>
     <string name="cuadro_map_ui_failed">Kaartinterface kon niet worden geopend</string>
     <string name="cuadro_map_load_failed">Kaart kon niet worden geladen — probeer het opnieuw via de kaarthub</string>
+    <string name="cuadro_offline_notice">Voorbeeld met voorbeeldgegevens — de motor is niet verbonden</string>
 </resources>

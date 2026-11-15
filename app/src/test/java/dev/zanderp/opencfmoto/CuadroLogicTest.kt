@@ -18,6 +18,18 @@ class CuadroLogicTest {
         assertFalse(CuadroLogic.modeButtonsEnabled(false))
     }
 
+    @Test fun offlinePreviewOnlyWithoutBikeAndMap() {
+        assertTrue(CuadroLogic.showOfflinePreview(connected = false, mapPreviewActive = false))
+        assertFalse(CuadroLogic.showOfflinePreview(connected = true, mapPreviewActive = false))
+        assertFalse(CuadroLogic.showOfflinePreview(connected = false, mapPreviewActive = true))
+        assertFalse(CuadroLogic.showOfflinePreview(connected = true, mapPreviewActive = true))
+    }
+
+    @Test fun previewKeepsDashRatio() {
+        assertEquals(800, CuadroLogic.PREVIEW_W)
+        assertEquals(416, CuadroLogic.PREVIEW_H)
+    }
+
     @Test fun targetFromHit() {
         assertEquals(CuadroLogic.Target.LEGACY, CuadroLogic.target(false, false))
         assertEquals(CuadroLogic.Target.LEGACY, CuadroLogic.target(false, true))

@@ -26,4 +26,5 @@
     <string name="cuadro_map_preview">Προεπισκόπηση χάρτη</string>
     <string name="cuadro_map_ui_failed">Η διεπαφή χάρτη δεν άνοιξε</string>
     <string name="cuadro_map_load_failed">Ο χάρτης δεν φορτώθηκε — δοκίμασε ξανά από το κέντρο χαρτών</string>
+    <string name="cuadro_offline_notice">Προεπισκόπηση με δείγμα δεδομένων — η μοτοσικλέτα δεν είναι συνδεδεμένη</string>
 </resources>

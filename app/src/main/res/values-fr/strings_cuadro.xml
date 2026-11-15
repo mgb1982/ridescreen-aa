@@ -26,4 +26,5 @@
     <string name="cuadro_map_preview">Aperçu de la carte</string>
     <string name="cuadro_map_ui_failed">Impossible d’ouvrir l’interface de la carte</string>
     <string name="cuadro_map_load_failed">Impossible de charger la carte — réessaie depuis le hub Carte</string>
+    <string name="cuadro_offline_notice">Aperçu avec des données d\'exemple — la moto n\'est pas connectée</string>
 </resources>

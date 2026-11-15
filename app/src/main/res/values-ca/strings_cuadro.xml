@@ -26,4 +26,5 @@
     <string name="cuadro_map_preview">Vista prèvia del mapa</string>
     <string name="cuadro_map_ui_failed">No s\'ha pogut obrir el mapa</string>
     <string name="cuadro_map_load_failed">No s\'ha pogut carregar el mapa — torna-ho a provar des del centre de mapes</string>
+    <string name="cuadro_offline_notice">Vista prèvia amb dades d\'exemple — la moto no està connectada</string>
 </resources>
