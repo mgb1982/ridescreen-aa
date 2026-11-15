@@ -27,4 +27,5 @@
     <string name="cuadro_map_preview">Map preview</string>
     <string name="cuadro_map_ui_failed">Map UI failed to open</string>
     <string name="cuadro_map_load_failed">Could not load map — try again from Map hub</string>
+    <string name="cuadro_offline_notice">Preview with sample data — the bike is not connected</string>
 </resources>

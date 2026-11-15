@@ -26,4 +26,5 @@
     <string name="cuadro_map_preview">Преглед на картата</string>
     <string name="cuadro_map_ui_failed">Картата не можа да се отвори</string>
     <string name="cuadro_map_load_failed">Картата не можа да се зареди — опитай пак от центъра на картите</string>
+    <string name="cuadro_offline_notice">Преглед с примерни данни — мотоциклетът не е свързан</string>
 </resources>

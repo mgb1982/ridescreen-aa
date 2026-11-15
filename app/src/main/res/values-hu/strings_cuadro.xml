@@ -26,4 +26,5 @@
     <string name="cuadro_map_preview">Térképelőnézet</string>
     <string name="cuadro_map_ui_failed">A térképfelület nem nyílt meg</string>
     <string name="cuadro_map_load_failed">A térkép nem tölthető be — próbáld újra a Térkép központból</string>
+    <string name="cuadro_offline_notice">Előnézet mintaadatokkal — a motor nincs csatlakoztatva</string>
 </resources>

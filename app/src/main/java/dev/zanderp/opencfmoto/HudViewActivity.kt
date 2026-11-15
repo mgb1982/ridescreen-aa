@@ -18,6 +18,7 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -67,6 +68,8 @@ class HudViewActivity : AppCompatActivity() {
     private var gpxUi: GpxDashUi? = null
     private var boundSessionKey: String? = null
     private lateinit var insetsController: WindowInsetsControllerCompat
+    /** Key of the offline preview being drawn or shown; a result for another key is stale and dropped. */
+    private var offlineKey: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,6 +139,15 @@ class HudViewActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.hud_close).setOnClickListener { finish() }
         findViewById<View>(R.id.hud_fullscreen).setOnClickListener { setFullscreen(!fullscreen) }
+        // Same entry the Connect widget uses: MainActivity owns the connection flow.
+        findViewById<View>(R.id.hud_offline_connect).setOnClickListener {
+            startActivity(
+                Intent(this, MainActivity::class.java)
+                    .putExtra(MainActivity.EXTRA_WIDGET_CONNECT, true)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP),
+            )
+        }
+        findViewById<View>(R.id.hud_offline_map).setOnClickListener { onModePicked(R.id.hud_mode_map) }
         padHandle.setOnClickListener { padOpen = !padOpen; applyPad() }
         modeGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (!isChecked || syncingMode) return@addOnButtonCheckedListener
@@ -258,11 +270,14 @@ class HudViewActivity : AppCompatActivity() {
                 intent.getBooleanExtra(EXTRA_FORCE_RELOAD, false) ||
                 key != boundSessionKey
             intent.removeExtra(EXTRA_FORCE_RELOAD)
+            showOfflinePreview(false)
             startGpxPreview(reload = needReload)
         } else {
             stopGpxPreview()
             val live = AaVideoBridge.pipeline != null
-            hint.visibility = if (live) View.GONE else View.VISIBLE
+            val offline = CuadroLogic.showOfflinePreview(live, mapPreviewActive = false)
+            hint.visibility = if (live || offline) View.GONE else View.VISIBLE
+            showOfflinePreview(offline)
             surface.visibility = View.VISIBLE
             gpxHost.visibility = View.GONE
             findViewById<View>(R.id.hud_topbar).visibility =
@@ -271,6 +286,40 @@ class HudViewActivity : AppCompatActivity() {
             titleView.setText(R.string.cuadro_title)
             syncModeSelector()
         }
+    }
+
+    private val offlineWatch = object : Runnable {
+        override fun run() {
+            if (isFinishing || isDestroyed) return
+            if (AaVideoBridge.pipeline != null) refreshMode(forceReload = false)
+            else findViewById<View>(R.id.hud_offline).postDelayed(this, 1000)
+        }
+    }
+
+    /** Offline: draws the chosen dashboard with sample data (off the UI thread); [on] false hides it. */
+    private fun showOfflinePreview(on: Boolean) {
+        val host = findViewById<View>(R.id.hud_offline)
+        host.visibility = if (on) View.VISIBLE else View.GONE
+        host.removeCallbacks(offlineWatch)
+        if (!on) { offlineKey = null; return }
+        // The bike can connect while this screen is open: drop the preview as soon as the video is live.
+        host.postDelayed(offlineWatch, 1000)
+        val design = DashboardMode.design(this)
+        val key = "${design.id}|${DashboardMode.isLight(this)}|${DashboardMode.accent(this)}|" +
+            "${DashboardMode.visibleFields(this).sorted()}|${DashboardMode.cardOrder(this)}"
+        if (key == offlineKey) return
+        offlineKey = key
+        val img = findViewById<ImageView>(R.id.hud_offline_img)
+        val app = applicationContext
+        Thread({
+            val bmp = try {
+                DashboardMode.preview(app, design, CuadroLogic.PREVIEW_W, CuadroLogic.PREVIEW_H)
+            } catch (_: Exception) { null }
+            runOnUiThread {
+                if (bmp != null && offlineKey == key && !isFinishing) img.setImageBitmap(bmp)
+                else if (bmp == null && offlineKey == key) offlineKey = null  // let the next resume retry
+            }
+        }, "cuadro-offline-preview").start()
     }
 
     private fun startGpxPreview(reload: Boolean) {

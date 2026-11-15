@@ -26,4 +26,5 @@
     <string name="cuadro_map_preview">Kartenvorschau</string>
     <string name="cuadro_map_ui_failed">Kartenoberfläche konnte nicht geöffnet werden</string>
     <string name="cuadro_map_load_failed">Karte konnte nicht geladen werden — versuch es erneut über den Kartenbereich</string>
+    <string name="cuadro_offline_notice">Vorschau mit Beispieldaten — das Motorrad ist nicht verbunden</string>
 </resources>

@@ -26,4 +26,5 @@
     <string name="cuadro_map_preview">Pré-visualização do mapa</string>
     <string name="cuadro_map_ui_failed">Não foi possível abrir o mapa</string>
     <string name="cuadro_map_load_failed">Não foi possível carregar o mapa — tenta de novo a partir do centro de mapas</string>
+    <string name="cuadro_offline_notice">Pré-visualização com dados de exemplo — a mota não está ligada</string>
 </resources>

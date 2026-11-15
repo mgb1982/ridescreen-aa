@@ -26,4 +26,5 @@
     <string name="cuadro_map_preview">Предпросмотр карты</string>
     <string name="cuadro_map_ui_failed">Не удалось открыть интерфейс карты</string>
     <string name="cuadro_map_load_failed">Не удалось загрузить карту — попробуй снова из раздела «Карта»</string>
+    <string name="cuadro_offline_notice">Предпросмотр с примерными данными — мотоцикл не подключён</string>
 </resources>

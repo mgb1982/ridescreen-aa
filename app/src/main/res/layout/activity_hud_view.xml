@@ -121,6 +121,58 @@
                 android:layout_height="match_parent"
                 android:visibility="gone" />
 
+            <!-- Offline: the chosen dashboard drawn with sample data, plus Connect / Map preview -->
+            <LinearLayout
+                android:id="@+id/hud_offline"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="12dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/hud_offline_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitCenter" />
+
+                <TextView
+                    android:id="@+id/hud_offline_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="@string/cuadro_offline_notice"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/hud_offline_connect"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="4dp"
+                        android:text="@string/main_connect" />
+
+                    <Button
+                        android:id="@+id/hud_offline_map"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="4dp"
+                        android:text="@string/cuadro_map_preview" />
+                </LinearLayout>
+            </LinearLayout>
+
             <!-- Shown when there is no bike connection and no Map preview -->
             <TextView
                 android:id="@+id/hud_hint"

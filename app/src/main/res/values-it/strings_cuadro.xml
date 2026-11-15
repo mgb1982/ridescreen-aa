@@ -26,4 +26,5 @@
     <string name="cuadro_map_preview">Anteprima mappa</string>
     <string name="cuadro_map_ui_failed">Impossibile aprire l’interfaccia della mappa</string>
     <string name="cuadro_map_load_failed">Impossibile caricare la mappa — riprova dal centro Mappa</string>
+    <string name="cuadro_offline_notice">Anteprima con dati di esempio — la moto non è collegata</string>
 </resources>
