@@ -150,14 +150,11 @@ class DashStyleSheet : BottomSheetDialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        onClosed?.invoke()
+        (activity as? MainActivity)?.refreshDashCard()
     }
 
     companion object {
         const val TAG = "dash_style_sheet"
-
-        /** Set by the host before [show]; called when the sheet closes so Home can redraw its card. */
-        var onClosed: (() -> Unit)? = null
 
         fun designLabelRes(design: DashboardMode.Design): Int = when (design) {
             DashboardMode.Design.SPORT -> R.string.dash_design_sport

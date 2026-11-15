@@ -1554,6 +1554,9 @@ class MainActivity : AppCompatActivity() {
      * the bike off), a button to show / hide it on the dash, and one to pick the style. Disconnected, the
      * button turns "Open in the dashboard when connecting" on/off instead.
      */
+    /** Called by the style sheet when it closes (also after a rotation: the sheet looks the live Activity up itself). */
+    fun refreshDashCard() = renderDashCard(redrawPreview = true)
+
     private fun renderDashCard(redrawPreview: Boolean = false) {
         val card = findViewById<View?>(R.id.dash_card) ?: return
         val connected = AaVideoBridge.pipeline != null && ConnectionState.phase == Phase.STREAMING
@@ -1600,7 +1603,6 @@ class MainActivity : AppCompatActivity() {
         }
         val open = View.OnClickListener {
             if (supportFragmentManager.findFragmentByTag(DashStyleSheet.TAG) == null) {
-                DashStyleSheet.onClosed = { renderDashCard(redrawPreview = true) }
                 DashStyleSheet().show(supportFragmentManager, DashStyleSheet.TAG)
             }
         }
