@@ -50,4 +50,11 @@ class OdoFromEcuTest {
         assertTrue(OdoFromEcu.decide(State.ACCEPTED, 1200, now - day, 1500, now, currentKm = 1500) is Decision.Apply)
         assertTrue(OdoFromEcu.decide(State.UNASKED, null, null, 10, now, currentKm = 1500) is Decision.Ask)
     }
+
+    @Test fun gpsEstimateSlightlyAheadOfTheEcuIsCorrectedSilently() {
+        val d = OdoFromEcu.decide(OdoFromEcu.State.ACCEPTED, 5_000, 0L, 5_100, 86_400_000L, currentKm = 5_140)
+        org.junit.Assert.assertTrue(d is OdoFromEcu.Decision.Apply)
+        val far = OdoFromEcu.decide(OdoFromEcu.State.ACCEPTED, 5_000, 0L, 5_100, 86_400_000L, currentKm = 5_400)
+        org.junit.Assert.assertTrue(far is OdoFromEcu.Decision.Reject)
+    }
 }

@@ -35,6 +35,12 @@ internal object OdoFromEcu {
     }
 
     /**
+     * The app's odometer between ECU readings is an estimate (GPS km of recorded rides), so it can run a little
+     * ahead of the ECU. An ECU value that far below it is a correction, not a reset: max(30 km, 2 %).
+     */
+    fun estimateToleranceKm(currentKm: Int): Int = maxOf(30, currentKm / 50)
+
+    /**
      * [currentKm] is the odometer the app shows now (a manual correction counts too): an accepted ECU value below it is
      * never applied silently, whatever was applied before.
      */
@@ -44,7 +50,7 @@ internal object OdoFromEcu {
             State.UNASKED -> Decision.Ask
             State.DECLINED -> Decision.Skip
             State.ACCEPTED -> when {
-                currentKm != null && newKm < currentKm -> Decision.Reject(currentKm, newKm)
+                currentKm != null && newKm < currentKm - estimateToleranceKm(currentKm) -> Decision.Reject(currentKm, newKm)
                 appliedKm == null -> Decision.Apply
                 newKm == appliedKm -> Decision.Same
                 newKm < appliedKm -> Decision.Reject(appliedKm, newKm)
