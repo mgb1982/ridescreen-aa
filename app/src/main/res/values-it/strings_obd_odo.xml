@@ -8,4 +8,6 @@
     <string name="obd_odo_dismiss">Ignora</string>
     <string name="obd_odo_last">Ultima lettura della centralina: %1$s (%2$s)</string>
     <string name="obd_odo_take">Prendi il chilometraggio dalla centralina</string>
+    <string name="obd_odo_ask_cmp">La centralina segna %1$s e l\'app ha %2$s. Usare il valore della centralina come chilometraggio di questa moto?</string>
+    <string name="obd_odo_take_confirm">La centralina segna %1$s, meno dei %2$s dell\'app. Sostituire il chilometraggio dell\'app con il valore della centralina?</string>
 </resources>

@@ -8,4 +8,6 @@
     <string name="obd_odo_dismiss">Figyelmen kívül hagyás</string>
     <string name="obd_odo_last">A motorvezérlő utolsó értéke: %1$s (%2$s)</string>
     <string name="obd_odo_take">Futásteljesítmény átvétele a motorvezérlőtől</string>
+    <string name="obd_odo_ask_cmp">A motorvezérlő %1$s értéket mutat, az alkalmazásban %2$s van. A motorvezérlő értékét használjuk a motor futásteljesítményeként?</string>
+    <string name="obd_odo_take_confirm">A motorvezérlő %1$s értéket mutat, ez kevesebb, mint az alkalmazás %2$s értéke. Lecseréljük az alkalmazás kilométerét a motorvezérlő értékére?</string>
 </resources>

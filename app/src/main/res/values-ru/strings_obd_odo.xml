@@ -8,4 +8,6 @@
     <string name="obd_odo_dismiss">Игнорировать</string>
     <string name="obd_odo_last">Последнее показание блока управления: %1$s (%2$s)</string>
     <string name="obd_odo_take">Взять пробег из блока управления</string>
+    <string name="obd_odo_ask_cmp">Блок управления показывает %1$s, а в приложении %2$s. Использовать значение блока как пробег мотоцикла?</string>
+    <string name="obd_odo_take_confirm">Блок управления показывает %1$s, это меньше, чем %2$s в приложении. Заменить пробег в приложении значением блока?</string>
 </resources>

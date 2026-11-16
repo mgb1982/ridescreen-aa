@@ -8,4 +8,6 @@
     <string name="obd_odo_dismiss">Ignorieren</string>
     <string name="obd_odo_last">Letzter Wert vom Motorsteuergerät: %1$s (%2$s)</string>
     <string name="obd_odo_take">Kilometerstand vom Motorsteuergerät übernehmen</string>
+    <string name="obd_odo_ask_cmp">Das Steuergerät zeigt %1$s, die App hat %2$s. Den Wert des Steuergeräts als Kilometerstand dieses Motorrads übernehmen?</string>
+    <string name="obd_odo_take_confirm">Das Steuergerät zeigt %1$s, weniger als die %2$s in der App. Den Kilometerstand der App durch den Wert des Steuergeräts ersetzen?</string>
 </resources>

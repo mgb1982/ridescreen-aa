@@ -8,4 +8,6 @@
     <string name="obd_odo_dismiss">Ignorer</string>
     <string name="obd_odo_last">Dernière lecture du calculateur : %1$s (%2$s)</string>
     <string name="obd_odo_take">Prendre le kilométrage du calculateur</string>
+    <string name="obd_odo_ask_cmp">Le calculateur affiche %1$s et l\'appli %2$s. Utiliser la valeur du calculateur comme kilométrage de cette moto ?</string>
+    <string name="obd_odo_take_confirm">Le calculateur affiche %1$s, moins que les %2$s de l\'appli. Remplacer le kilométrage de l\'appli par la valeur du calculateur ?</string>
 </resources>

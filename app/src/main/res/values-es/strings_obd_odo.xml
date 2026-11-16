@@ -8,4 +8,6 @@
     <string name="obd_odo_dismiss">Ignorar</string>
     <string name="obd_odo_last">Última lectura de la centralita: %1$s (%2$s)</string>
     <string name="obd_odo_take">Tomar el kilometraje de la centralita</string>
+    <string name="obd_odo_ask_cmp">La centralita marca %1$s y la app tiene %2$s. ¿Usar el valor de la centralita como kilometraje de esta moto?</string>
+    <string name="obd_odo_take_confirm">La centralita marca %1$s, menos que los %2$s de la app. ¿Sustituir el kilometraje de la app por el valor de la centralita?</string>
 </resources>

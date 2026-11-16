@@ -8,4 +8,6 @@
     <string name="obd_odo_dismiss">Negeren</string>
     <string name="obd_odo_last">Laatste meting van de motorbesturing: %1$s (%2$s)</string>
     <string name="obd_odo_take">Kilometerstand uit de motorbesturing overnemen</string>
+    <string name="obd_odo_ask_cmp">De motorbesturing toont %1$s en de app heeft %2$s. De waarde van de motorbesturing als kilometerstand van deze motor gebruiken?</string>
+    <string name="obd_odo_take_confirm">De motorbesturing toont %1$s, minder dan de %2$s in de app. De kilometerstand van de app vervangen door de waarde van de motorbesturing?</string>
 </resources>

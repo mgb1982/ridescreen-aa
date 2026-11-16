@@ -27,6 +27,8 @@ object ObdProbe {
     private val SPP: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
     private val NAME_HINTS = listOf("OBD", "ELM", "V-LINK", "VLINK", "VGATE", "KONNWEI", "ICAR", "VEEPEAK", "SCAN")
     // 01 + 1..6 PIDs (+ optional "responses expected" digit, an ELM327 speed-up) | AT setup | 03 (stored codes).
+    /** PIDs only the live reader asks for (once per connection or rotating); the Help test skips them to stay short. */
+    private val LIVE_ONLY = setOf(0x06, 0x07, 0x14, 0x15, 0x21, 0x2E, 0x30, 0x31, 0x4D)
     internal val SAFE = Regex("^(AT[A-Z0-9 ]*|01([0-9A-F]{2}){1,6}[1-9]?|03)$")
     private val LIVE = listOf(0x0C, 0x0D, 0x05, 0x45)
     private const val LIVE_SECONDS = 20
@@ -90,7 +92,7 @@ object ObdProbe {
 
             progress("PIDs…")
             for (p in ObdDecode.PIDS) {
-                if (p.pid !in supported || p.pid == 0x11) continue   // absolute throttle is not shown
+                if (p.pid !in supported || p.pid == 0x11 || p.pid in LIVE_ONLY) continue   // absolute throttle is not shown; the extras only the live reader asks
                 val v = ObdDecode.value(io.cmd("01%02X".format(p.pid)), p.pid)
                 if (v != null) out += "${p.name}: ${ObdDecode.format(v, p.unit)}"
             }

@@ -8,4 +8,6 @@
     <string name="obd_odo_dismiss">Ignoră</string>
     <string name="obd_odo_last">Ultima citire din unitatea de control: %1$s (%2$s)</string>
     <string name="obd_odo_take">Preia kilometrajul din unitatea de control</string>
+    <string name="obd_odo_ask_cmp">Unitatea de control afișează %1$s, iar aplicația are %2$s. Să folosim valoarea unității ca kilometraj al acestei motociclete?</string>
+    <string name="obd_odo_take_confirm">Unitatea de control afișează %1$s, mai puțin decât cei %2$s din aplicație. Să înlocuim kilometrajul din aplicație cu valoarea unității?</string>
 </resources>

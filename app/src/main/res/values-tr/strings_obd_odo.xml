@@ -8,4 +8,6 @@
     <string name="obd_odo_dismiss">Yoksay</string>
     <string name="obd_odo_last">Motor kontrol ünitesinden son okuma: %1$s (%2$s)</string>
     <string name="obd_odo_take">Kilometreyi motor kontrol ünitesinden al</string>
+    <string name="obd_odo_ask_cmp">Motor kontrol ünitesi %1$s gösteriyor, uygulamada ise %2$s var. Ünitenin değeri bu motosikletin kilometresi olarak kullanılsın mı?</string>
+    <string name="obd_odo_take_confirm">Motor kontrol ünitesi %1$s gösteriyor; bu, uygulamadaki %2$s değerinden az. Uygulamadaki kilometre ünitenin değeriyle değiştirilsin mi?</string>
 </resources>

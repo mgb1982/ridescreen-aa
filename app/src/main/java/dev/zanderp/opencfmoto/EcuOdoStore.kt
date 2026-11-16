@@ -21,7 +21,7 @@ internal object EcuOdoStore {
         val pr = p(ctx)
         val applied = pr.getInt(k(ctx, "applied"), -1).takeIf { it >= 0 }
         val appliedAt = pr.getLong(k(ctx, "appliedAt"), 0L).takeIf { it > 0 }
-        val d = OdoFromEcu.decide(state(ctx), applied, appliedAt, km, nowMs)
+        val d = OdoFromEcu.decide(state(ctx), applied, appliedAt, km, nowMs, Maintenance.load(ctx).odometer?.toInt())
         if (d is OdoFromEcu.Decision.Invalid) return null
         val e = pr.edit().putInt(k(ctx, "seen"), km).putLong(k(ctx, "seenAt"), nowMs)
         var line: String? = null

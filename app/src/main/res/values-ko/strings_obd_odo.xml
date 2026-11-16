@@ -8,4 +8,6 @@
     <string name="obd_odo_dismiss">무시</string>
     <string name="obd_odo_last">엔진 제어 장치의 마지막 값: %1$s (%2$s)</string>
     <string name="obd_odo_take">엔진 제어 장치에서 주행거리 가져오기</string>
+    <string name="obd_odo_ask_cmp">엔진 제어 장치는 %1$s, 앱은 %2$s입니다. 제어 장치 값을 이 오토바이의 주행거리로 사용할까요?</string>
+    <string name="obd_odo_take_confirm">엔진 제어 장치 값 %1$s이(가) 앱의 %2$s보다 작습니다. 앱의 주행거리를 제어 장치 값으로 바꿀까요?</string>
 </resources>

@@ -8,4 +8,6 @@
     <string name="obd_odo_dismiss">Ignorar</string>
     <string name="obd_odo_last">Última leitura da centralina: %1$s (%2$s)</string>
     <string name="obd_odo_take">Obter a quilometragem da centralina</string>
+    <string name="obd_odo_ask_cmp">A centralina do motor indica %1$s e a app tem %2$s. Usar o valor da centralina como quilometragem desta mota?</string>
+    <string name="obd_odo_take_confirm">A centralina do motor indica %1$s, menos do que os %2$s da app. Substituir a quilometragem da app pelo valor da centralina?</string>
 </resources>

@@ -8,4 +8,6 @@
     <string name="obd_odo_dismiss">Ignoruj</string>
     <string name="obd_odo_last">Ostatni odczyt ze sterownika: %1$s (%2$s)</string>
     <string name="obd_odo_take">Pobierz przebieg ze sterownika</string>
+    <string name="obd_odo_ask_cmp">Sterownik silnika pokazuje %1$s, a aplikacja ma %2$s. Użyć wartości ze sterownika jako przebiegu tego motocykla?</string>
+    <string name="obd_odo_take_confirm">Sterownik silnika pokazuje %1$s, czyli mniej niż %2$s w aplikacji. Zastąpić przebieg w aplikacji wartością ze sterownika?</string>
 </resources>
