@@ -63,13 +63,14 @@ object ClockLab {
     val SMART_THRESHOLD_OPTIONS = listOf(1_950L, 2_000L, 2_100L, 2_200L, 2_450L)
 
     /** Minimum time between two automatic resyncs of the same dash boot. */
-    const val MIN_RESYNC_GAP_MS = 60_000L
+    // 20 s since Manel found a minute too long (16 Nov 2026); was 60 s in the first draft.
+    const val MIN_RESYNC_GAP_MS = 20_000L
 
     /**
      * Pure: how long to wait before dropping the link for a resync. The first one of a boot goes after
      * [firstDelayMs]; later ones wait until [MIN_RESYNC_GAP_MS] has passed since the previous one. Field logs
      * (15-16 Nov 2026, 125X): three resyncs a few seconds apart all came back late, while a later attempt
-     * (a minute or more on) set the clock.
+     * set the clock.
      */
     fun resyncDelayMs(resyncsDone: Int, msSinceLastResync: Long?, firstDelayMs: Long): Long =
         if (resyncsDone <= 0 || msSinceLastResync == null) firstDelayMs
