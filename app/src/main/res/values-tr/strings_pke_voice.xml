@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App-icon shortcuts for the keyless box (Gemini / Google Assistant open them by name). -->
+    <string name="pke_voice_lock_short">Motoru kilitle</string>
+    <string name="pke_voice_lock_long">Motoru kilitle</string>
+    <string name="pke_voice_unlock_short">Motorun kilidini aç</string>
+    <string name="pke_voice_unlock_long">Motorun kilidini aç</string>
+    <string name="pke_voice_seat_short">Koltuğu aç</string>
+    <string name="pke_voice_seat_long">Koltuğu aç</string>
+    <string name="pke_voice_tank_short">Yakıt kapağını aç</string>
+    <string name="pke_voice_tank_long">Yakıt kapağını aç</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App-icon shortcuts for the keyless box (Gemini / Google Assistant open them by name). -->
+    <string name="pke_voice_lock_short">Blochează moto</string>
+    <string name="pke_voice_lock_long">Blochează moto</string>
+    <string name="pke_voice_unlock_short">Deblochează moto</string>
+    <string name="pke_voice_unlock_long">Deblochează moto</string>
+    <string name="pke_voice_seat_short">Deschide șaua</string>
+    <string name="pke_voice_seat_long">Deschide șaua</string>
+    <string name="pke_voice_tank_short">Deschide capacul</string>
+    <string name="pke_voice_tank_long">Deschide capacul rezervorului</string>
+</resources>

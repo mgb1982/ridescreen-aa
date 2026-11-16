@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App-icon shortcuts for the keyless box (Gemini / Google Assistant open them by name). -->
+    <string name="pke_voice_lock_short">Zárd le a motort</string>
+    <string name="pke_voice_lock_long">Zárd le a motort</string>
+    <string name="pke_voice_unlock_short">Oldd fel a motort</string>
+    <string name="pke_voice_unlock_long">Oldd fel a motort</string>
+    <string name="pke_voice_seat_short">Nyisd ki az ülést</string>
+    <string name="pke_voice_seat_long">Nyisd ki az ülést</string>
+    <string name="pke_voice_tank_short">Nyisd ki a tankfedelet</string>
+    <string name="pke_voice_tank_long">Nyisd ki a tankfedelet</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App-icon shortcuts for the keyless box (Gemini / Google Assistant open them by name). -->
+    <string name="pke_voice_lock_short">Заключи мотора</string>
+    <string name="pke_voice_lock_long">Заключи мотора</string>
+    <string name="pke_voice_unlock_short">Отключи мотора</string>
+    <string name="pke_voice_unlock_long">Отключи мотора</string>
+    <string name="pke_voice_seat_short">Отвори седалката</string>
+    <string name="pke_voice_seat_long">Отвори седалката</string>
+    <string name="pke_voice_tank_short">Отвори капачката</string>
+    <string name="pke_voice_tank_long">Отвори капачката на резервоара</string>
+</resources>
