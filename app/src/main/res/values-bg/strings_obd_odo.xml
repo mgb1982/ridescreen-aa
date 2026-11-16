@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_odo_ask_msg">Блокът за управление на двигателя показва %1$s. Да се използва ли като километраж на този мотоциклет?</string>
+    <string name="obd_odo_yes">Да, използвайте го</string>
+    <string name="obd_odo_no">Не</string>
+    <string name="obd_odo_warn_msg">Километрите от блока за управление се промениха от %1$s на %2$s. Това изглежда странно, затова не са приложени. Да се използва ли новата стойност?</string>
+    <string name="obd_odo_accept">Използвайте новата стойност</string>
+    <string name="obd_odo_dismiss">Игнорирайте</string>
+    <string name="obd_odo_last">Последно показание от блока за управление: %1$s (%2$s)</string>
+    <string name="obd_odo_take">Вземете километража от блока за управление</string>
+    <string name="obd_odo_ask_cmp">Блокът за управление показва %1$s, а приложението – %2$s. Да се използва ли стойността от блока като километраж на този мотоциклет?</string>
+    <string name="obd_odo_take_confirm">Блокът за управление показва %1$s, по-малко от %2$s в приложението. Да се замени ли километражът в приложението със стойността от блока?</string>
+</resources>

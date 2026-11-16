@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_odo_ask_msg">Блок управления двигателем показывает %1$s. Использовать это как пробег мотоцикла?</string>
+    <string name="obd_odo_yes">Да, использовать</string>
+    <string name="obd_odo_no">Нет</string>
+    <string name="obd_odo_warn_msg">Пробег из блока управления изменился с %1$s на %2$s. Это выглядит странно, поэтому значение не применено. Использовать новое значение?</string>
+    <string name="obd_odo_accept">Использовать новое значение</string>
+    <string name="obd_odo_dismiss">Игнорировать</string>
+    <string name="obd_odo_last">Последнее показание блока управления: %1$s (%2$s)</string>
+    <string name="obd_odo_take">Взять пробег из блока управления</string>
+    <string name="obd_odo_ask_cmp">Блок управления показывает %1$s, а в приложении %2$s. Использовать значение блока как пробег мотоцикла?</string>
+    <string name="obd_odo_take_confirm">Блок управления показывает %1$s, это меньше, чем %2$s в приложении. Заменить пробег в приложении значением блока?</string>
+</resources>

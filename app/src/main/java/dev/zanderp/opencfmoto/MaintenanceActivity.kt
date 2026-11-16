@@ -155,11 +155,14 @@ class MaintenanceActivity : AppCompatActivity() {
     /** Mileage from the ECU (PID 31): the first-time question, the warning for a value that went down or jumped, and the manual button. */
     private fun ecuOdoCards() {
         val pending = EcuOdoStore.pending(this)
+        val appKm = Maintenance.load(this).odometer
         if (pending != null) card { c ->
             val warn = pending.fromKm != null
+            val ecu = Maintenance.fmtKm(pending.km.toDouble())
             c.addView(text(
-                if (warn) getString(R.string.obd_odo_warn_msg, Maintenance.fmtKm(pending.fromKm!!.toDouble()), Maintenance.fmtKm(pending.km.toDouble()))
-                else getString(R.string.obd_odo_ask_msg, Maintenance.fmtKm(pending.km.toDouble())),
+                if (warn) getString(R.string.obd_odo_warn_msg, Maintenance.fmtKm((appKm ?: pending.fromKm!!.toDouble())), ecu)
+                else if (appKm != null) getString(R.string.obd_odo_ask_cmp, ecu, Maintenance.fmtKm(appKm))
+                else getString(R.string.obd_odo_ask_msg, ecu),
                 14f, R.color.text_primary))
             c.addView(button(getString(if (warn) R.string.obd_odo_accept else R.string.obd_odo_yes), filled = true) {
                 EcuOdoStore.accept(this, pending.km); render()
@@ -173,7 +176,16 @@ class MaintenanceActivity : AppCompatActivity() {
         if (seen != null && pending == null) card { c ->
             val date = DateFormat.getDateInstance(DateFormat.MEDIUM).format(Date(seen.second))
             c.addView(text(getString(R.string.obd_odo_last, Maintenance.fmtKm(seen.first.toDouble()), date), 12f, R.color.text_secondary))
-            c.addView(button(getString(R.string.obd_odo_take)) { EcuOdoStore.accept(this, seen.first); render() })
+            c.addView(button(getString(R.string.obd_odo_take)) {
+                if (appKm != null && seen.first < appKm.toInt()) {
+                    MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.obd_odo_take)
+                        .setMessage(getString(R.string.obd_odo_take_confirm, Maintenance.fmtKm(seen.first.toDouble()), Maintenance.fmtKm(appKm)))
+                        .setPositiveButton(android.R.string.ok) { _, _ -> EcuOdoStore.accept(this, seen.first); render() }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show()
+                } else { EcuOdoStore.accept(this, seen.first); render() }
+            })
         }
     }
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_odo_ask_msg">Sterownik silnika pokazuje %1$s. Użyć tego jako przebiegu tego motocykla?</string>
+    <string name="obd_odo_yes">Tak, użyj</string>
+    <string name="obd_odo_no">Nie</string>
+    <string name="obd_odo_warn_msg">Km ze sterownika zmieniły się z %1$s na %2$s. To wygląda dziwnie, więc nie zastosowano tego. Użyć nowej wartości?</string>
+    <string name="obd_odo_accept">Użyj nowej wartości</string>
+    <string name="obd_odo_dismiss">Ignoruj</string>
+    <string name="obd_odo_last">Ostatni odczyt ze sterownika: %1$s (%2$s)</string>
+    <string name="obd_odo_take">Pobierz przebieg ze sterownika</string>
+    <string name="obd_odo_ask_cmp">Sterownik silnika pokazuje %1$s, a aplikacja ma %2$s. Użyć wartości ze sterownika jako przebiegu tego motocykla?</string>
+    <string name="obd_odo_take_confirm">Sterownik silnika pokazuje %1$s, czyli mniej niż %2$s w aplikacji. Zastąpić przebieg w aplikacji wartością ze sterownika?</string>
+</resources>

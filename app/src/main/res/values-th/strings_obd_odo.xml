@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_odo_ask_msg">ชุดควบคุมเครื่องยนต์แสดง %1$s ใช้เป็นเลขไมล์ของมอเตอร์ไซค์คันนี้หรือไม่</string>
+    <string name="obd_odo_yes">ใช่ ใช้ค่านี้</string>
+    <string name="obd_odo_no">ไม่</string>
+    <string name="obd_odo_warn_msg">เลข km จากชุดควบคุมเครื่องยนต์เปลี่ยนจาก %1$s เป็น %2$s ซึ่งดูผิดปกติ จึงไม่ได้นำไปใช้ จะใช้ค่าใหม่หรือไม่</string>
+    <string name="obd_odo_accept">ใช้ค่าใหม่</string>
+    <string name="obd_odo_dismiss">ละเว้น</string>
+    <string name="obd_odo_last">ค่าล่าสุดจากชุดควบคุมเครื่องยนต์: %1$s (%2$s)</string>
+    <string name="obd_odo_take">รับเลขไมล์จากชุดควบคุมเครื่องยนต์</string>
+    <string name="obd_odo_ask_cmp">ชุดควบคุมเครื่องยนต์แสดง %1$s และแอปมี %2$s ใช้ค่าจากชุดควบคุมเป็นเลขไมล์ของมอเตอร์ไซค์คันนี้หรือไม่</string>
+    <string name="obd_odo_take_confirm">ชุดควบคุมเครื่องยนต์แสดง %1$s ซึ่งน้อยกว่า %2$s ในแอป เปลี่ยนเลขไมล์ในแอปเป็นค่าจากชุดควบคุมหรือไม่</string>
+</resources>

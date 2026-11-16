@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_odo_ask_msg">Řídicí jednotka motoru ukazuje %1$s. Použít to jako počet kilometrů této motorky?</string>
+    <string name="obd_odo_yes">Ano, použít</string>
+    <string name="obd_odo_no">Ne</string>
+    <string name="obd_odo_warn_msg">Km z řídicí jednotky se změnily z %1$s na %2$s. To vypadá podezřele, proto se neuplatnily. Použít novou hodnotu?</string>
+    <string name="obd_odo_accept">Použít novou hodnotu</string>
+    <string name="obd_odo_dismiss">Ignorovat</string>
+    <string name="obd_odo_last">Poslední údaj z řídicí jednotky: %1$s (%2$s)</string>
+    <string name="obd_odo_take">Převzít kilometry z řídicí jednotky</string>
+    <string name="obd_odo_ask_cmp">Řídicí jednotka ukazuje %1$s a aplikace má %2$s. Použít hodnotu z jednotky jako počet kilometrů této motorky?</string>
+    <string name="obd_odo_take_confirm">Řídicí jednotka ukazuje %1$s, což je méně než %2$s v aplikaci. Nahradit kilometry v aplikaci hodnotou z jednotky?</string>
+</resources>

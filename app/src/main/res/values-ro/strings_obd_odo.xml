@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_odo_ask_msg">Unitatea de control a motorului afișează %1$s. Să o folosim ca kilometraj al acestei motociclete?</string>
+    <string name="obd_odo_yes">Da, folosește-o</string>
+    <string name="obd_odo_no">Nu</string>
+    <string name="obd_odo_warn_msg">Km din unitatea de control au trecut de la %1$s la %2$s. Pare ciudat, așa că nu au fost aplicați. Folosim noua valoare?</string>
+    <string name="obd_odo_accept">Folosește noua valoare</string>
+    <string name="obd_odo_dismiss">Ignoră</string>
+    <string name="obd_odo_last">Ultima citire din unitatea de control: %1$s (%2$s)</string>
+    <string name="obd_odo_take">Preia kilometrajul din unitatea de control</string>
+    <string name="obd_odo_ask_cmp">Unitatea de control afișează %1$s, iar aplicația are %2$s. Să folosim valoarea unității ca kilometraj al acestei motociclete?</string>
+    <string name="obd_odo_take_confirm">Unitatea de control afișează %1$s, mai puțin decât cei %2$s din aplicație. Să înlocuim kilometrajul din aplicație cu valoarea unității?</string>
+</resources>

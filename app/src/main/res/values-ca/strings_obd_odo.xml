@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_odo_ask_msg">La centraleta marca %1$s. Vols usar-ho com a quilometratge d\'aquesta moto?</string>
+    <string name="obd_odo_yes">Sí, usa-ho</string>
+    <string name="obd_odo_no">No</string>
+    <string name="obd_odo_warn_msg">Els km de la centraleta han passat de %1$s a %2$s. Sembla estrany, així que no s\'ha aplicat. Vols usar el valor nou?</string>
+    <string name="obd_odo_accept">Usa el valor nou</string>
+    <string name="obd_odo_dismiss">Ignora-ho</string>
+    <string name="obd_odo_last">Última lectura de la centraleta: %1$s (%2$s)</string>
+    <string name="obd_odo_take">Pren el quilometratge de la centraleta</string>
+    <string name="obd_odo_ask_cmp">La centraleta marca %1$s i l\'app té %2$s. Vols usar el valor de la centraleta com a quilometratge d\'aquesta moto?</string>
+    <string name="obd_odo_take_confirm">La centraleta marca %1$s, menys que els %2$s de l\'app. Vols substituir el quilometratge de l\'app pel valor de la centraleta?</string>
+</resources>

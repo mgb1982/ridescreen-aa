@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_odo_ask_msg">엔진 제어 장치 값은 %1$s입니다. 이 오토바이의 주행거리로 사용할까요?</string>
+    <string name="obd_odo_yes">예, 사용합니다</string>
+    <string name="obd_odo_no">아니요</string>
+    <string name="obd_odo_warn_msg">엔진 제어 장치의 주행거리가 %1$s에서 %2$s(으)로 바뀌었습니다. 비정상으로 보여 적용하지 않았습니다. 새 값을 사용할까요?</string>
+    <string name="obd_odo_accept">새 값 사용</string>
+    <string name="obd_odo_dismiss">무시</string>
+    <string name="obd_odo_last">엔진 제어 장치의 마지막 값: %1$s (%2$s)</string>
+    <string name="obd_odo_take">엔진 제어 장치에서 주행거리 가져오기</string>
+    <string name="obd_odo_ask_cmp">엔진 제어 장치는 %1$s, 앱은 %2$s입니다. 제어 장치 값을 이 오토바이의 주행거리로 사용할까요?</string>
+    <string name="obd_odo_take_confirm">엔진 제어 장치 값 %1$s이(가) 앱의 %2$s보다 작습니다. 앱의 주행거리를 제어 장치 값으로 바꿀까요?</string>
+</resources>

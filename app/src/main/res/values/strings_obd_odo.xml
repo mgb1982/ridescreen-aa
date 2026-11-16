@@ -8,4 +8,6 @@
     <string name="obd_odo_dismiss">Ignore</string>
     <string name="obd_odo_last">Last ECU reading: %1$s (%2$s)</string>
     <string name="obd_odo_take">Take mileage from the ECU</string>
+    <string name="obd_odo_ask_cmp">The ECU shows %1$s and the app has %2$s. Use the ECU value as this bike\'s mileage?</string>
+    <string name="obd_odo_take_confirm">The ECU shows %1$s, lower than the %2$s in the app. Replace the app\'s mileage with the ECU value?</string>
 </resources>

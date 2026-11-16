@@ -21,7 +21,7 @@ class OdoFromEcuTest {
     }
     @Test fun hugeJumpIsRejected() = assertTrue(OdoFromEcu.decide(State.ACCEPTED, 1200, now - day, 9000, now) is Decision.Reject)
     @Test fun bigRiseAfterALongTimeIsPlausible() {
-        // 60 days at 150 km/h would allow 216,000 km, so the 2,000 km floor is what matters here; 3,000 km after 30 days is fine
+        // 30 days at 150 km/h would allow 108,000 km and 5 days 18,000 km: a 3,000 km rise is plausible after either
         assertTrue(OdoFromEcu.decide(State.ACCEPTED, 1200, now - 30 * day, 4200, now) is Decision.Apply)
         assertTrue(OdoFromEcu.decide(State.ACCEPTED, 1200, now - 5 * day, 4200, now) is Decision.Apply)
     }
@@ -39,4 +39,22 @@ class OdoFromEcuTest {
         assertTrue(OdoFromEcu.decide(State.UNASKED, null, null, -1, now) is Decision.Invalid)
     }
     @Test fun twoByteMaximumIsValid() = assertTrue(OdoFromEcu.decide(State.UNASKED, null, null, 65_535, now) is Decision.Ask)
+
+    @Test fun valueBelowTheCurrentOdometerIsNeverApplied() {
+        val d = OdoFromEcu.decide(State.ACCEPTED, 1200, now - day, 1260, now, currentKm = 1500) as Decision.Reject
+        assertEquals(1500, d.from); assertEquals(1260, d.to)
+    }
+    @Test fun manualOdometerCorrectionDownIsRespected() =
+        assertTrue(OdoFromEcu.decide(State.ACCEPTED, 5000, now - day, 5010, now, currentKm = 1000) is Decision.Apply)
+    @Test fun valueAtOrAboveCurrentStillApplies() {
+        assertTrue(OdoFromEcu.decide(State.ACCEPTED, 1200, now - day, 1500, now, currentKm = 1500) is Decision.Apply)
+        assertTrue(OdoFromEcu.decide(State.UNASKED, null, null, 10, now, currentKm = 1500) is Decision.Ask)
+    }
+
+    @Test fun gpsEstimateSlightlyAheadOfTheEcuIsCorrectedSilently() {
+        val d = OdoFromEcu.decide(OdoFromEcu.State.ACCEPTED, 5_000, 0L, 5_100, 86_400_000L, currentKm = 5_140)
+        org.junit.Assert.assertTrue(d is OdoFromEcu.Decision.Apply)
+        val far = OdoFromEcu.decide(OdoFromEcu.State.ACCEPTED, 5_000, 0L, 5_100, 86_400_000L, currentKm = 5_400)
+        org.junit.Assert.assertTrue(far is OdoFromEcu.Decision.Reject)
+    }
 }
