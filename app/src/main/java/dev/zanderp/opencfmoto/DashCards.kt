@@ -88,6 +88,9 @@ object DashCards {
         } catch (_: Exception) { null }
     }
 
+    /** Cached outside temperature in °C (at most 8 h old), or null: lets the dashboard show it without its own request. */
+    fun cachedTempC(ctx: Context): Int? = wx(ctx)?.temp
+
     fun refreshWeather(ctx: Context) {
         val now = System.currentTimeMillis()
         if (now - lastWxAt < 20 * 60_000L) return

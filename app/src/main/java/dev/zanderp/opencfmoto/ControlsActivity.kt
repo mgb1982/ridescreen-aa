@@ -569,7 +569,7 @@ class ControlsActivity : AppCompatActivity() {
 
         findViewById<MaterialButton>(R.id.btn_dash_fields).setOnClickListener {
             val keys = DashboardMode.fieldIds()
-            val labels = resources.getStringArray(R.array.dash_obd_field_names)
+            val labels = dashFieldNames()
             val selected = DashboardMode.visibleFields(this).toMutableSet()
             val checked = BooleanArray(keys.size) { keys[it] in selected }
             androidx.appcompat.app.AlertDialog.Builder(this)
@@ -679,9 +679,17 @@ class ControlsActivity : AppCompatActivity() {
         )
     }
 
+    /** Labels for [DashboardMode.fieldIds]: the OBD ones from the translated array, then the phone readings. */
+    private fun dashFieldNames(): Array<String> = resources.getStringArray(R.array.dash_obd_field_names) + arrayOf(
+        getString(R.string.dash_phone_clock), getString(R.string.dash_phone_trip), getString(R.string.dash_phone_moving),
+        getString(R.string.dash_phone_avg), getString(R.string.dash_phone_max), getString(R.string.dash_phone_battery),
+        getString(R.string.dash_phone_turn), getString(R.string.dash_phone_remaining), getString(R.string.dash_phone_alt),
+        getString(R.string.dash_phone_heading), getString(R.string.dash_phone_outside),
+    )
+
     private fun showCardOrderDialog() {
         val ids = DashboardMode.fieldIds()
-        val names = resources.getStringArray(R.array.dash_obd_field_names)
+        val names = dashFieldNames()
         val dp = resources.displayMetrics.density
         val list = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL

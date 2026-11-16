@@ -19,6 +19,7 @@ import androidx.core.content.res.ResourcesCompat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -140,6 +141,8 @@ internal object DashboardRenderer {
     private data class Metric(
         val id: String, val title: String, val value: Double?, val unit: String,
         val max: Double = 100.0,
+        /** Text to show instead of the number (clock "14:32", heading "NE"); [value] then only says there is data. */
+        val display: String? = null,
     )
 
     private fun metrics(d: DashboardMode.Data) = listOf(
@@ -155,7 +158,42 @@ internal object DashboardRenderer {
     )
 
 
-    private fun value(m: Metric?): String = m?.value?.let {
+    /** Phone readings (see [DashFallback]); their titles come from strings, the OBD ones above are fixed English. */
+    private fun phoneMetrics(ctx: Context, d: DashboardMode.Data): List<Metric> {
+        val loc = Locale.getDefault()
+        val tz = d.clockMs?.let { TimeZone.getDefault().getOffset(it) } ?: 0
+        fun one(v: Double?, fmt: String) = v?.let { String.format(loc, fmt, it) }
+        val moving = d.tripMovingMs?.let { DashPhoneMath.movingText(it) }
+        val turn = d.nextTurnM?.let { DashPhoneMath.turnText(it, loc) }
+        return listOf(
+            Metric("clock", ctx.getString(R.string.dash_phone_clock), d.clockMs?.toDouble(), "", 0.0,
+                display = d.clockMs?.let { DashPhoneMath.clockText(it, tz) }),
+            Metric("trip", ctx.getString(R.string.dash_phone_trip), d.tripKm, "km", 0.0, display = one(d.tripKm, "%.1f")),
+            Metric("moving", ctx.getString(R.string.dash_phone_moving), d.tripMovingMs?.toDouble(), moving?.second ?: "min", 0.0,
+                display = moving?.first),
+            Metric("avg", ctx.getString(R.string.dash_phone_avg), d.avgKmh, "km/h", speedMax.toDouble()),
+            Metric("max", ctx.getString(R.string.dash_phone_max), d.maxKmh, "km/h", speedMax.toDouble()),
+            Metric("battery", ctx.getString(R.string.dash_phone_battery), d.phoneBatteryPct?.toDouble(), "%", 100.0),
+            Metric("turn", ctx.getString(R.string.dash_phone_turn), d.nextTurnM?.toDouble(), turn?.second ?: "m", 0.0,
+                display = turn?.first),
+            Metric("remaining", ctx.getString(R.string.dash_phone_remaining), d.navRemainingKm, "km", 0.0,
+                display = one(d.navRemainingKm, "%.1f")),
+            Metric("alt", ctx.getString(R.string.dash_phone_alt), d.altitudeM, "m", 0.0),
+            Metric("heading", ctx.getString(R.string.dash_phone_heading), d.headingDeg,
+                d.headingDeg?.let { DashPhoneMath.degText(it) + "°" } ?: "°", 0.0,
+                display = d.headingDeg?.let { DashPhoneMath.compassPoint(it) }),
+            Metric("outside", ctx.getString(R.string.dash_phone_outside), d.outsideC, "°C", 0.0),
+        )
+    }
+
+    /** Fill of a dial/bar for [m], 0 when its scale is not a range (clock, trip…). */
+    private fun frac(m: Metric): Float =
+        if (m.max <= 0.0) 0f else ((m.value ?: 0.0) / m.max).toFloat().coerceIn(0f, 1f)
+
+    /** The phone-layout plan of the frame being drawn (null: the normal OBD layout). Set in [render]. */
+    private var fb: DashFallback.Plan? = null
+
+    private fun value(m: Metric?): String = m?.display ?: m?.value?.let {
         if (m.unit == "V") String.format(Locale.getDefault(), "%.1f", it)
         else String.format(Locale.US, "%.0f", it)
     } ?: "—"
@@ -224,8 +262,22 @@ internal object DashboardRenderer {
             if (standalone) FocusHero.pick(d.coolant, d.rpm, volt, false, DashboardMode.COOLANT_AMBER)
             else focusState.update(d.coolant, d.rpm, volt)
         }
-        val all = metrics(d).filter { it.id in visible }.associateBy { it.id }
-        val cards = DashLayout.orderedCards(cardOrder, visible).mapNotNull(all::get)
+        // Without OBD (none set up, or silent for 30 s) the OBD slots are filled with phone readings ([DashFallback]).
+        val plan = if (d.noObd) DashFallback.plan(design, visible, DashFallback.available(d)) else null
+        fb = plan
+        val phone = phoneMetrics(ctx, d).associateBy { it.id }
+        val all: Map<String, Metric> = if (plan == null) {
+            (metrics(d) + phone.values).filter { it.id in visible }.associateBy { it.id }
+        } else {
+            val m = LinkedHashMap<String, Metric>()
+            metrics(d).firstOrNull { it.id == "speed" && "speed" in visible }?.let { m["speed"] = it }
+            phone.values.filter { it.id in visible }.forEach { m[it.id] = it }
+            // A substitute sits under the OBD slot it replaces, so the designs keep asking for "coolant", "throttle"…
+            plan.subs.forEach { (slot, id) -> phone[id]?.let { m[slot] = it } }
+            m
+        }
+        val cards = DashFallback.cardIds(DashLayout.orderedCards(cardOrder, visible), visible, plan)
+            .mapNotNull { all[it] ?: phone[it] }
         // WINDOW draws in real canvas pixels (AaWindowLayout); the others in the virtual 800x416 space.
         val real = design == DashboardMode.Design.WINDOW
         val scale = if (real) 1f else minOf(w / W, h / H)
@@ -233,7 +285,7 @@ internal object DashboardRenderer {
         val dy = if (real) 0f else (h - H * scale) / 2f
 
         val key = "${design.id}|$light|${w}x$h|$speedMax|$rpmMax|${visible.sorted().joinToString(",")}|" +
-            "${cards.joinToString(",") { it.id }}|$accent|$standalone"
+            "${cards.joinToString(",") { it.id }}|$accent|$standalone|${plan?.key}"
         if (key != layerKey || layer == null) {
             layer?.recycle()
             val bg = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
@@ -262,7 +314,8 @@ internal object DashboardRenderer {
         still { drawBackground(c, p, design) }
         // No header: the dash's own clock bar sits right above the frame.
         // Pit has its own wide RPM bar instead of the shift lights.
-        if (design != DashboardMode.Design.PIT) live { drawShiftLights(c, d.rpm, p, design) }
+        // Without OBD there is no RPM to light them.
+        if (design != DashboardMode.Design.PIT && !d.noObd) live { drawShiftLights(c, d.rpm, p, design) }
         when (design) {
             DashboardMode.Design.SPORT -> drawSport(c, d, p, all, cards)
             DashboardMode.Design.RACING -> drawRacing(c, d, p, all, cards)
@@ -274,7 +327,7 @@ internal object DashboardRenderer {
             DashboardMode.Design.WINDOW -> Unit   // drawn by drawWindow (early return above)
         }
         live {
-            if (!d.obdLive) txt(c, ctx.getString(R.string.dash_no_obd), 24f, 22f, 13f, p.muted, fLabel)
+            if (DashFallback.showWarning(d.obdConfigured, d.obdLive)) txt(c, ctx.getString(R.string.dash_no_obd), 24f, 22f, 13f, p.muted, fLabel)
         }
     }
 
@@ -472,7 +525,8 @@ internal object DashboardRenderer {
         // The dials sit centred over the two columns of cards (360–785); the cards themselves are laid
         // out by DashLayout, which keeps them clear of the dash strip's step.
         val colW = 206f; val gapX = 13f; val left = 360f
-        drawSmallDial(c, a["rpm"], left + colW / 2f, 78f, 62f, p, rpm = true)
+        if (fb?.clockDial == true) drawAnalogClock(c, d, left + colW / 2f, 78f, 62f, p)
+        else drawSmallDial(c, a["rpm"], left + colW / 2f, 78f, 62f, p, rpm = true)
         drawSmallDial(c, a["throttle"], left + colW + gapX + colW / 2f, 78f, 62f, p, rpm = false)
         DashLayout.cards(DashLayout.SPORT, cards.size).forEachIndexed { i, b -> drawCard(c, cards[i], b, p, CardLook.SPORT) }
     }
@@ -586,12 +640,12 @@ internal object DashboardRenderer {
                 }
                 centerText(c, "rpm", cx, cy + 27f, 12f, p.muted, fLabel)
             } else {
-                centerText(c, "Throttle", cx, cy + 28f, 12f, p.muted, fLabel)
+                centerText(c, m.title, cx, cy + 28f, 12f, p.muted, fLabel)
             }
             glass(c, cx, cy, r - 6f)
         }
         live {
-            val fraction = ((m.value ?: 0.0) / m.max).toFloat().coerceIn(0f, 1f)
+            val fraction = frac(m)
             val hot = rpm && (m.value ?: 0.0) >= DashboardMode.RPM_RED
             val color = if (hot) p.red else p.accent
             glowArc(c, arc, 135f, 270f * fraction, color, 5f, 7f)
@@ -600,7 +654,7 @@ internal object DashboardRenderer {
             c.drawArc(arc, 135f, 270f * fraction, false, stroke)
             stroke.shader = null
             if (rpm) textWithGlow(c, value(m), cx, cy + 9f, 27f, p.fg, fValue, if (night) color else null, center = true)
-            else valueWithUnit(c, value(m), "%", cx, cy + 9f, 27f, p.fg, p.muted)
+            else valueWithUnit(c, value(m), m.unit, cx, cy + 9f, 27f, p.fg, p.muted)
             drawNeedle(c, cx, cy, r - 40f, r - 14f, 135f + 270f * fraction, color, 3f)
         }
     }
@@ -608,9 +662,14 @@ internal object DashboardRenderer {
     // ── RACING ────────────────────────────────────────────────────────────────────────────
 
     private fun drawRacing(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>, cards: List<Metric>) {
-        still { textWithGlow(c, "RPM", 30f, 30f, 16f, p.fg, fValue, null) }
-        drawRacingTach(c, a["rpm"], p, 30f, 34f, 742f, 44f)
-        drawSpeedPlate(c, a["speed"], d.speedFromGps, p, 30f, 104f, 352f, 102f)
+        if (fb == null) {
+            still { textWithGlow(c, "RPM", 30f, 30f, 16f, p.fg, fValue, null) }
+            drawRacingTach(c, a["rpm"], p, 30f, 34f, 742f, 44f)
+            drawSpeedPlate(c, a["speed"], d.speedFromGps, p, 30f, 104f, 352f, 102f)
+        } else {
+            // No RPM and no route progress to show: the speed plate takes the bar's space.
+            drawSpeedPlate(c, a["speed"], d.speedFromGps, p, 30f, 40f, 352f, 150f, 1.3f)
+        }
         drawRacingThrottle(c, a["throttle"], 528f, 204f, 98f, p)
         still { drawCheckers(c, 652f, 124f, p) }
         // Wide cards carry the racing stripes, as the second row of the reference does.
@@ -679,7 +738,7 @@ internal object DashboardRenderer {
         }
     }
 
-    private fun drawSpeedPlate(c: Canvas, m: Metric?, gps: Boolean, p: Palette, x: Float, y: Float, w: Float, h: Float) {
+    private fun drawSpeedPlate(c: Canvas, m: Metric?, gps: Boolean, p: Palette, x: Float, y: Float, w: Float, h: Float, k: Float = 1f) {
         if (m == null) return
         val cut = 22f
         val plate = Path().apply {
@@ -711,7 +770,7 @@ internal object DashboardRenderer {
             }
         }
         live {
-            textWithGlow(c, value(m), x + w * .40f, y + h * .64f, 76f, p.fg, fValue, if (night) p.accent else null, center = true)
+            textWithGlow(c, value(m), x + w * .40f, y + h * .64f, 76f * k, p.fg, fValue, if (night) p.accent else null, center = true)
             centerText(c, "km/h" + if (gps) " · GPS" else "", x + w * .40f, y + h - 10f, 17f, p.muted, fLabel)
         }
     }
@@ -733,10 +792,10 @@ internal object DashboardRenderer {
             stroke.strokeCap = Paint.Cap.BUTT
             c.drawArc(arc, 180f, 180f, false, stroke)
             stroke.strokeCap = Paint.Cap.ROUND
-            centerText(c, "Throttle", cx, cy - 2f, 16f, p.muted, fLabel)
+            centerText(c, m.title, cx, cy - 2f, 16f, p.muted, fLabel)
         }
         live {
-            val fraction = ((m.value ?: 0.0) / m.max).toFloat().coerceIn(0f, 1f)
+            val fraction = frac(m)
             glowArc(c, arc, 180f, 180f * fraction, p.accent, 11f, 9f)
             stroke.shader = sweepShader(cx, cy, p.accent2, p.accent, 180f, 180f * fraction)
             stroke.strokeWidth = 11f
@@ -744,7 +803,7 @@ internal object DashboardRenderer {
             c.drawArc(arc, 180f, 180f * fraction, false, stroke)
             stroke.strokeCap = Paint.Cap.ROUND
             stroke.shader = null
-            valueWithUnit(c, value(m), "%", cx, cy - 22f, 34f, p.fg, p.muted)
+            valueWithUnit(c, value(m), m.unit, cx, cy - 22f, 34f, p.fg, p.muted)
         }
     }
 
@@ -763,8 +822,12 @@ internal object DashboardRenderer {
     private fun drawTouring(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>, cards: List<Metric>) {
         still { drawLandscape(c, p) }
         drawTouringSpeed(c, a["speed"], 205f, 190f, 168f, p, d.speedFromGps)
-        drawTouringRpm(c, a["rpm"], p, 432f, 58f, 48f, 142f)
-        drawTouringThrottle(c, a["throttle"], 652f, 118f, 88f, p)
+        val plan = fb
+        if (plan == null) {
+            drawTouringRpm(c, a["rpm"], p, 432f, 58f, 48f, 142f)
+            drawTouringThrottle(c, a["throttle"], 652f, 118f, 88f, p)
+        } else if (plan.compass) drawCompass(c, d, 652f, 118f, 88f, p)
+        else if (plan.touringClock) drawAnalogClock(c, d, 652f, 118f, 88f, p)
         DashLayout.cards(DashLayout.TOURING, cards.size).forEachIndexed { i, b -> drawCard(c, cards[i], b, p, CardLook.TOURING) }
     }
 
@@ -889,16 +952,16 @@ internal object DashboardRenderer {
             stroke.strokeWidth = 9f
             c.drawArc(arc, 0f, 360f, false, stroke)
             glass(c, cx, cy, r - 4f)
-            centerText(c, "Throttle", cx, cy + 28f, 15f, p.muted, fLabel)
+            centerText(c, m.title, cx, cy + 28f, 15f, p.muted, fLabel)
         }
         live {
-            val fraction = ((m.value ?: 0.0) / m.max).toFloat().coerceIn(0f, 1f)
+            val fraction = frac(m)
             glowArc(c, arc, -90f, 360f * fraction, p.accent, 9f, 8f)
             stroke.shader = sweepShader(cx, cy, p.accent2, p.accent, -90f, 360f * fraction)
             stroke.strokeWidth = 9f
             c.drawArc(arc, -90f, 360f * fraction, false, stroke)
             stroke.shader = null
-            valueWithUnit(c, value(m), "%", cx, cy + 6f, 34f, p.fg, p.muted)
+            valueWithUnit(c, value(m), m.unit, cx, cy + 6f, 34f, p.fg, p.muted)
         }
     }
 
@@ -992,7 +1055,7 @@ internal object DashboardRenderer {
         }
         cards.take(rows.cards.size).forEachIndexed { i, m -> drawCard(c, m, rows.cards[i], p, CardLook.SPORT) }
         live {
-            if (!d.obdLive) txt(c, ctx.getString(R.string.dash_no_obd), col.x.toFloat(), col.y + 14f * k, 13f * k, p.muted, fLabel)
+            if (DashFallback.showWarning(d.obdConfigured, d.obdLive)) txt(c, ctx.getString(R.string.dash_no_obd), col.x.toFloat(), col.y + 14f * k, 13f * k, p.muted, fLabel)
         }
     }
 
@@ -1168,7 +1231,8 @@ internal object DashboardRenderer {
     // CLASSIC: two round dials with needles, a small centre panel with coolant and voltage.
     private fun drawClassic(c: Canvas, d: DashboardMode.Data, p: Palette, a: Map<String, Metric>) {
         a["speed"]?.let { drawClassicDial(c, it, 200f, 165f, p, DashDesignMath.speedScale(speedMax), false, "KM/H") }
-        a["rpm"]?.let { drawClassicDial(c, it, 600f, 165f, p, DashDesignMath.rpmScale(rpmK), true, "×1000 RPM") }
+        if (fb?.clockDial == true) drawAnalogClock(c, d, 600f, 165f, 134f, p)
+        else a["rpm"]?.let { drawClassicDial(c, it, 600f, 165f, p, DashDesignMath.rpmScale(rpmK), true, "×1000 RPM") }
         smallCards(c, p, listOf(a["coolant"], a["volt"]), 340f, 96f, 120f, 66f, 10f)
     }
 
@@ -1247,13 +1311,20 @@ internal object DashboardRenderer {
             textWithGlow(c, v, 400f, 262f, 232f, color, fValue, if (night) color else null, center = true)
             centerText(c, unit, 400f, 292f, 24f, p.muted, fLabel)
             // Dimmed corners: RPM left, coolant right (the speed instead while coolant is the hero).
-            if ("rpm" in a) txt(c, whole(d.rpm) + " rpm", 40f, 60f, 22f, dim, fSemi)
+            if (fb != null) {
+                // Phone layout: the time on the left, the first substitute on the right (the speed while coolant is the hero).
+                if (fb?.clockDial == true || "clock" in a) d.clockMs?.let {
+                    txt(c, DashPhoneMath.clockText(it, TimeZone.getDefault().getOffset(it)), 40f, 60f, 22f, dim, fSemi)
+                }
+            } else if ("rpm" in a) txt(c, whole(d.rpm) + " rpm", 40f, 60f, 22f, dim, fSemi)
             if (hero == FocusHero.Hero.COOLANT) {
                 if ("speed" in a) rightText(c, whole(d.speedKmh) + " km/h", 760f, 60f, 22f, dim, fSemi)
+            } else if (fb != null) {
+                a["coolant"]?.let { m -> rightText(c, value(m) + (if (m.unit.isEmpty()) "" else " " + m.unit), 760f, 60f, 22f, dim, fSemi) }
             } else if ("coolant" in a) {
                 rightText(c, whole(d.coolant) + " °C", 760f, 60f, 22f, dim, fSemi)
             }
-            if ("rpm" in a) {
+            if ("rpm" in a && fb == null) {
                 val f = DashDesignMath.fill(DashDesignMath.fraction(d.rpm, rpmMax.toDouble()), redFrom)
                 fun seg(from: Float, to: Float, color: Int) {
                     box.set(bx + bw * from, by, bx + bw * to, by + bh)
@@ -1263,6 +1334,89 @@ internal object DashboardRenderer {
                 if (f.accentTo > 0f) seg(0f, f.accentTo, p.accent)
                 if (f.hasRed) seg(f.redFrom, f.redTo, p.red)
             }
+        }
+    }
+
+    // ── phone layout: analog clock and compass (no OBD) ──────────────────────────────────
+
+    /**
+     * Analog clock in the place of an RPM dial: hour and minute hands, a thin seconds hand in the accent
+     * colour, ticks, and 12/3/6/9. [r] is the dial's outer radius, as for the dial it replaces. Face and
+     * ticks are cached in the static layer; only the hands are drawn each frame (the seconds tick once a second).
+     */
+    private fun drawAnalogClock(c: Canvas, d: DashboardMode.Data, cx: Float, cy: Float, r: Float, p: Palette) {
+        val big = r >= 100f
+        val rimW = if (big) 6f else 5f
+        still {
+            shadowCircle(c, cx, cy, r, if (big) 12f else 10f)
+            face(c, cx, cy, r, p)
+            rim(c, cx, cy, r, rimW)
+            val outer = r - rimW - 3f
+            // Small dials only get the twelve hour ticks; the big one has all sixty minutes.
+            val count = if (big) 60 else 12
+            for (i in 0 until count) {
+                val major = if (big) i % 5 == 0 else i % 3 == 0
+                val angle = Math.toRadians(360.0 * i / count - 90.0)
+                val len = if (major) r * .13f else r * .065f
+                stroke.shader = null
+                stroke.color = if (major) p.fg else p.muted
+                stroke.strokeWidth = if (major) (if (big) 3f else 1.8f) else 1.2f
+                c.drawLine(cx + cos(angle).toFloat() * (outer - len), cy + sin(angle).toFloat() * (outer - len),
+                    cx + cos(angle).toFloat() * outer, cy + sin(angle).toFloat() * outer, stroke)
+            }
+            val size = if (big) 24f else 12f
+            val nr = outer - r * .13f - size * .75f
+            for ((i, label) in listOf(0 to "12", 3 to "3", 6 to "6", 9 to "9")) {
+                val angle = Math.toRadians(30.0 * i - 90.0)
+                centerText(c, label, cx + cos(angle).toFloat() * nr, cy + sin(angle).toFloat() * nr + size * .35f, size, p.muted, fSemi)
+            }
+            glass(c, cx, cy, r - rimW)
+        }
+        live {
+            val ms = d.clockMs ?: return@live
+            val h = DashPhoneMath.hands(ms, TimeZone.getDefault().getOffset(ms))
+            drawNeedle(c, cx, cy, 0f, r * .5f, h.hour - 90f, p.fg, if (big) 9f else 5f)
+            drawNeedle(c, cx, cy, 0f, r * .76f, h.minute - 90f, p.fg, if (big) 6f else 3.5f)
+            val a = Math.toRadians(h.second - 90.0)
+            val ux = cos(a).toFloat(); val uy = sin(a).toFloat()
+            stroke.shader = null
+            stroke.color = p.accent
+            stroke.strokeWidth = if (big) 2f else 1.3f
+            c.drawLine(cx - ux * r * .16f, cy - uy * r * .16f, cx + ux * r * .84f, cy + uy * r * .84f, stroke)
+            fill.shader = null
+            fill.color = p.accent
+            c.drawCircle(cx, cy, if (big) 5f else 3.5f, fill)
+        }
+    }
+
+    /** Simple compass for Touring's round dial: N/E/S/W and a needle at the heading, with the degrees under it. */
+    private fun drawCompass(c: Canvas, d: DashboardMode.Data, cx: Float, cy: Float, r: Float, p: Palette) {
+        still {
+            shadowCircle(c, cx, cy, r, 10f)
+            face(c, cx, cy, r, p)
+            rim(c, cx, cy, r, 6f)
+            for (i in 0 until 24) {
+                val major = i % 6 == 0
+                val angle = Math.toRadians(15.0 * i - 90.0)
+                val outer = r - 12f
+                val len = if (major) 12f else 6f
+                stroke.shader = null
+                stroke.color = if (major) p.fg else p.muted
+                stroke.strokeWidth = if (major) 2.4f else 1.2f
+                c.drawLine(cx + cos(angle).toFloat() * (outer - len), cy + sin(angle).toFloat() * (outer - len),
+                    cx + cos(angle).toFloat() * outer, cy + sin(angle).toFloat() * outer, stroke)
+            }
+            for ((i, label) in listOf(0 to "N", 1 to "E", 2 to "S", 3 to "W")) {
+                val angle = Math.toRadians(90.0 * i - 90.0)
+                centerText(c, label, cx + cos(angle).toFloat() * (r - 38f), cy + sin(angle).toFloat() * (r - 38f) + 7f,
+                    if (i == 0) 22f else 18f, if (i == 0) p.red else p.muted, fSemi)
+            }
+            glass(c, cx, cy, r - 6f)
+        }
+        live {
+            val deg = d.headingDeg ?: return@live
+            drawNeedle(c, cx, cy, 0f, r - 42f, deg.toFloat() - 90f, p.accent, 8f)
+            centerText(c, DashPhoneMath.degText(deg) + "° " + DashPhoneMath.compassPoint(deg), cx, cy + r * .5f, 18f, p.fg, fBold)
         }
     }
 
@@ -1373,6 +1527,84 @@ internal object DashboardRenderer {
                 c.drawLine(cx - r * .6f, cy - r * .9f, cx, cy - r * .9f, stroke)
                 c.drawLine(cx + r * .7f, cy - 2f, cx + r, cy - 4f, stroke)
                 c.drawLine(cx + r, cy - 4f, cx + r, cy + 4f, stroke)
+            }
+            "clock" -> {
+                c.drawCircle(cx, cy, r, stroke)
+                c.drawLine(cx, cy, cx, cy - r * .6f, stroke)
+                c.drawLine(cx, cy, cx + r * .45f, cy + r * .2f, stroke)
+            }
+            "trip" -> {
+                // Two waypoints joined by a path.
+                c.drawCircle(cx - r * .7f, cy + r * .6f, 2.5f, fill)
+                c.drawCircle(cx + r * .7f, cy - r * .6f, 2.5f, stroke)
+                c.drawLine(cx - r * .7f, cy + r * .6f, cx - r * .1f, cy + r * .6f, stroke)
+                c.drawLine(cx - r * .1f, cy + r * .6f, cx - r * .1f, cy - r * .6f, stroke)
+                c.drawLine(cx - r * .1f, cy - r * .6f, cx + r * .7f, cy - r * .6f, stroke)
+            }
+            "moving" -> {
+                // Hourglass.
+                c.drawLine(cx - r * .55f, cy - r, cx + r * .55f, cy - r, stroke)
+                c.drawLine(cx - r * .55f, cy + r, cx + r * .55f, cy + r, stroke)
+                c.drawLine(cx - r * .55f, cy - r, cx + r * .55f, cy + r, stroke)
+                c.drawLine(cx + r * .55f, cy - r, cx - r * .55f, cy + r, stroke)
+            }
+            "avg" -> {
+                // Speedometer arc with a needle.
+                box.set(cx - r, cy - r * .8f, cx + r, cy + r * 1.2f)
+                c.drawArc(box, 180f, 180f, false, stroke)
+                c.drawLine(cx, cy + r * .2f, cx + r * .5f, cy - r * .4f, stroke)
+            }
+            "max" -> {
+                // Arrow up to a bar.
+                c.drawLine(cx - r * .7f, cy - r * .8f, cx + r * .7f, cy - r * .8f, stroke)
+                c.drawLine(cx, cy - r * .8f, cx, cy + r * .8f, stroke)
+                c.drawLine(cx, cy - r * .8f, cx - r * .5f, cy - r * .2f, stroke)
+                c.drawLine(cx, cy - r * .8f, cx + r * .5f, cy - r * .2f, stroke)
+            }
+            "battery" -> {
+                box.set(cx - r * .9f, cy - r * .5f, cx + r * .7f, cy + r * .5f)
+                c.drawRoundRect(box, 2f, 2f, stroke)
+                c.drawLine(cx + r * .7f, cy - r * .2f, cx + r * .95f, cy - r * .2f, stroke)
+                c.drawLine(cx + r * .95f, cy - r * .2f, cx + r * .95f, cy + r * .2f, stroke)
+                c.drawLine(cx + r * .95f, cy + r * .2f, cx + r * .7f, cy + r * .2f, stroke)
+                box.set(cx - r * .7f, cy - r * .3f, cx + r * .1f, cy + r * .3f)
+                c.drawRect(box, fill)
+            }
+            "turn" -> {
+                // Arrow turning right.
+                c.drawLine(cx - r * .4f, cy + r, cx - r * .4f, cy - r * .2f, stroke)
+                c.drawLine(cx - r * .4f, cy - r * .2f, cx + r * .6f, cy - r * .2f, stroke)
+                c.drawLine(cx + r * .6f, cy - r * .2f, cx + r * .15f, cy - r * .65f, stroke)
+                c.drawLine(cx + r * .6f, cy - r * .2f, cx + r * .15f, cy + r * .25f, stroke)
+            }
+            "remaining" -> {
+                // Flag on a pole.
+                c.drawLine(cx - r * .6f, cy - r, cx - r * .6f, cy + r, stroke)
+                c.drawLine(cx - r * .6f, cy - r, cx + r * .8f, cy - r * .5f, stroke)
+                c.drawLine(cx + r * .8f, cy - r * .5f, cx - r * .6f, cy, stroke)
+            }
+            "alt" -> {
+                // Two peaks.
+                c.drawLine(cx - r, cy + r * .7f, cx - r * .3f, cy - r * .6f, stroke)
+                c.drawLine(cx - r * .3f, cy - r * .6f, cx + r * .2f, cy + r * .2f, stroke)
+                c.drawLine(cx - r * .1f, cy - r * .1f, cx + r * .4f, cy - r * .8f, stroke)
+                c.drawLine(cx + r * .4f, cy - r * .8f, cx + r, cy + r * .7f, stroke)
+                c.drawLine(cx - r, cy + r * .7f, cx + r, cy + r * .7f, stroke)
+            }
+            "heading" -> {
+                // Compass: circle with a needle.
+                c.drawCircle(cx, cy, r, stroke)
+                c.drawLine(cx, cy + r * .6f, cx, cy - r * .6f, stroke)
+                c.drawLine(cx, cy - r * .6f, cx - r * .3f, cy - r * .1f, stroke)
+                c.drawLine(cx, cy - r * .6f, cx + r * .3f, cy - r * .1f, stroke)
+            }
+            "outside" -> {
+                // Thermometer.
+                c.drawLine(cx, cy - r, cx, cy + r * .3f, stroke)
+                c.drawLine(cx - r * .3f, cy - r, cx - r * .3f, cy + r * .3f, stroke)
+                c.drawLine(cx + r * .3f, cy - r, cx + r * .3f, cy + r * .3f, stroke)
+                c.drawLine(cx - r * .3f, cy - r, cx + r * .3f, cy - r, stroke)
+                c.drawCircle(cx, cy + r * .6f, r * .35f, fill)
             }
             "intake" -> for (i in -1..1) {
                 val yy = cy + i * 4.5f

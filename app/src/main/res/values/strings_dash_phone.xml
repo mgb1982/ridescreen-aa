@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dashboard readings from the phone, shown instead of the OBD cards when there is no OBD (DashFallback). Also the labels in Settings > Dashboard > fields. -->
+<resources>
+    <string name="dash_phone_clock">Time</string>
+    <string name="dash_phone_trip">Trip</string>
+    <string name="dash_phone_moving">Moving time</string>
+    <string name="dash_phone_avg">Average</string>
+    <string name="dash_phone_max">Max speed</string>
+    <string name="dash_phone_battery">Phone battery</string>
+    <string name="dash_phone_turn">Next turn</string>
+    <string name="dash_phone_remaining">Remaining</string>
+    <string name="dash_phone_alt">Altitude</string>
+    <string name="dash_phone_heading">Heading</string>
+    <string name="dash_phone_outside">Outside</string>
+</resources>

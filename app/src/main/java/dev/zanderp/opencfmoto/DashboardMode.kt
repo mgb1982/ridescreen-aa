@@ -37,6 +37,23 @@ object DashboardMode {
         val load: Double?, val intake: Double?, val baro: Double?, val absoluteLoad: Double?, val relativeThrottle: Double?,
         /** A fresh OBD reading exists (false: contact off, adapter away, or the radio lent to the keyless box). */
         val obdLive: Boolean,
+        // ── phone readings for the dashboard without OBD (see [DashFallback]); null = unknown, so existing callers are unchanged
+        /** Epoch milliseconds now (clock face, "Time" card). */
+        val clockMs: Long? = null,
+        /** Trip in progress ([TripLogger]): kilometres, moving time, average moving speed, top speed. */
+        val tripKm: Double? = null, val tripMovingMs: Long? = null, val avgKmh: Double? = null, val maxKmh: Double? = null,
+        /** Phone battery, percent. */
+        val phoneBatteryPct: Int? = null,
+        /** Android Auto navigation: metres to the next turn, kilometres left on the route (null when not navigating). */
+        val nextTurnM: Int? = null, val navRemainingKm: Double? = null,
+        /** From the GPS fix that also gives [speedKmh]: altitude in metres, heading in degrees. */
+        val altitudeM: Double? = null, val headingDeg: Double? = null,
+        /** Cached outside temperature from the Home weather card. */
+        val outsideC: Double? = null,
+        /** Draw the phone layout instead of the OBD one ([DashFallback.noObd]). */
+        val noObd: Boolean = false,
+        /** An OBD adapter is configured (the "No OBD data" notice is for those riders only). */
+        val obdConfigured: Boolean = true,
     )
 
     // Red zone from 9,000 rpm (confirmed by Manel for the 125X). Every RPM gauge colours red from RPM_RED.
@@ -48,8 +65,6 @@ object DashboardMode {
 
     private const val PREFS = "dash_dashboard"
     private const val OBD_FRESH_MS = 5_000L
-    private const val GPS_MAX_AGE_MS = 5_000L
-    private const val GPS_POLL_MS = 1_000L
     /** GPS speed jitters at a standstill; below this it is shown as 0. */
     private const val GPS_STILL_KMH = 2.0
 
@@ -57,8 +72,8 @@ object DashboardMode {
     @Volatile var wanted = false
         private set
 
-    @Volatile private var gpsAt = 0L
-    @Volatile private var gpsKmh: Double? = null
+    /** elapsedRealtime of the last OBD reading seen by [collect] (or of its first call): the "silent for 30 s" clock. 0 = not started. */
+    @Volatile private var obdSeenAt = 0L
 
     private fun prefs(ctx: Context) = ctx.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
 
@@ -106,7 +121,9 @@ object DashboardMode {
 
     /** Sample snapshot for the style picker; copied because the renderer reuses its live bitmap. */
     fun preview(ctx: Context, design: Design, width: Int, height: Int): android.graphics.Bitmap {
-        val sample = Data(
+        // A rider without an adapter sees the phone layout (what their bike will show); the others, the OBD one.
+        val noObd = !DashPhone.adapterConfigured(ctx)
+        val sample = if (noObd) sampleNoObd() else Data(
             rpm = 1832.0, speedKmh = 0.0, speedFromGps = false, coolant = 94.0,
             throttle = 10.0, volt = 14.1, load = 44.0, intake = 42.0,
             baro = 100.0, absoluteLoad = 32.0, relativeThrottle = 10.0, obdLive = true,
@@ -118,13 +135,16 @@ object DashboardMode {
         )
     }
 
-    private val fieldIds = listOf("rpm", "speed", "coolant", "volt", "load", "intake", "baro", "absolute", "throttle")
+    private val obdFieldIds = listOf("rpm", "speed", "coolant", "volt", "load", "intake", "baro", "absolute", "throttle")
+    /** OBD fields first (their keys and order never change), then the phone readings. */
+    private val fieldIds = obdFieldIds + DashFallback.PHONE_IDS
     fun visibleFields(ctx: Context): Set<String> {
         val p = prefs(ctx)
         val suffix = BikeScope.suffix(ctx)
         val scopedKey = suffix?.let { "fields#$it" }
         val key = if (scopedKey != null && p.contains(scopedKey)) scopedKey else "fields"
-        val saved = p.getStringSet(key, null)?.toSet() ?: return fieldIds.toSet()
+        // Nothing saved: the OBD fields, as before. The phone readings are opt-in (they appear on their own without OBD).
+        val saved = p.getStringSet(key, null)?.toSet() ?: return obdFieldIds.toSet()
         val migrationKey = "fields_throttle_migrated#$key"
         if (!p.getBoolean(migrationKey, false)) {
             // "throttle" used to mean PID 0x11 and "relative" meant PID 0x45.
@@ -144,6 +164,15 @@ object DashboardMode {
             .apply()
     }
     fun fieldIds(): List<String> = fieldIds
+
+    /** Sample phone readings for the previews and the offline "Cuadro": a trip of 12.4 km at 24 km/h average, 76 % battery, a turn in 350 m. */
+    internal fun sampleNoObd(nowMs: Long = System.currentTimeMillis()) = Data(
+        rpm = null, speedKmh = 24.0, speedFromGps = true, coolant = null, throttle = null, volt = null,
+        load = null, intake = null, baro = null, absoluteLoad = null, relativeThrottle = null, obdLive = false,
+        clockMs = nowMs, tripKm = 12.4, tripMovingMs = (12.4 / 24.0 * 3_600_000.0).toLong(), avgKmh = 24.0, maxKmh = 88.0,
+        phoneBatteryPct = 76, nextTurnM = 350, navRemainingKm = 8.4, altitudeM = 312.0, headingDeg = 48.0, outsideC = 18.0,
+        noObd = true, obdConfigured = false,
+    )
 
     // ── 2.5 · layout engine settings (per bike, like the fields)
 
@@ -280,6 +309,7 @@ object DashboardMode {
         wanted = on
         val app = ctx.applicationContext
         if (on && saver(app) && !aaWindow(app)) applySaver(app, true) else if (!on || aaWindow(app)) applySaver(app, false)
+        obdSeenAt = 0L   // each time the dashboard goes up, a configured adapter gets its 30 s before the phone layout
         vp?.setLiveLayer(
             if (on) liveBuilder(app) else null,
             if (on) { { signature(app) } } else null,
@@ -302,28 +332,30 @@ object DashboardMode {
     // ── data
 
     internal fun collect(ctx: Context): Data {
-        val snap = ObdLive.latest?.takeIf { SystemClock.elapsedRealtime() - it.atMs <= OBD_FRESH_MS }
+        val now = SystemClock.elapsedRealtime()
+        val snap = ObdLive.latest?.takeIf { now - it.atMs <= OBD_FRESH_MS }
+        if (obdSeenAt == 0L || snap != null) obdSeenAt = now
+        val configured = DashPhone.adapterConfigured(ctx)
+        val noObd = DashFallback.noObd(configured, now - obdSeenAt)
         val obdSpeed = snap?.speed
-        val gps = if (obdSpeed == null) gpsSpeed(ctx) else null
-        val speed = pickSpeed(obdSpeed, gps)
+        // One GPS fix feeds speed, altitude and heading (cached for 1 s, no extra location request).
+        val fix = if (obdSpeed == null || noObd || visibleFields(ctx).let { "alt" in it || "heading" in it }) DashPhone.gps(ctx) else null
+        val speed = pickSpeed(obdSpeed, if (obdSpeed == null) fix?.speedKmh else null)
+        // Trip stats only while a trip is being recorded.
+        val trip = TripLogger.current?.snapshot()?.takeIf { it.recording }
         return Data(
             rpm = snap?.rpm, speedKmh = speed?.first, speedFromGps = speed?.second == true,
             coolant = snap?.coolant, throttle = snap?.throttle, volt = snap?.volt,
             load = snap?.load, intake = snap?.intake, baro = snap?.baro, absoluteLoad = snap?.absoluteLoad,
             relativeThrottle = snap?.relativeThrottle, obdLive = snap != null,
+            clockMs = System.currentTimeMillis(),
+            tripKm = trip?.let { it.distanceMeters / 1000.0 }, tripMovingMs = trip?.movingTimeMs,
+            avgKmh = trip?.let { DashPhoneMath.avgKmh(it.distanceMeters, it.movingTimeMs) },
+            maxKmh = trip?.let { it.maxSpeedMs * 3.6 },
+            phoneBatteryPct = DashPhone.battery(ctx), nextTurnM = DashPhone.nextTurnM(), navRemainingKm = null,
+            altitudeM = fix?.altitudeM, headingDeg = fix?.headingDeg, outsideC = DashPhone.outsideC(ctx),
+            noObd = noObd, obdConfigured = configured,
         )
-    }
-
-    /** GPS speed in km/h from a fix under 5 s old, asked at most once a second (the dashboard redraws 8×/s). */
-    private fun gpsSpeed(ctx: Context): Double? {
-        val now = SystemClock.elapsedRealtime()
-        if (now - gpsAt >= GPS_POLL_MS) {
-            gpsAt = now
-            gpsKmh = try {
-                RideExtras.lastLocation(ctx, GPS_MAX_AGE_MS)?.takeIf { it.hasSpeed() }?.let { it.speed * 3.6 }
-            } catch (_: Exception) { null }
-        }
-        return gpsKmh
     }
 
     /** A4 · what the dashboard would paint now, rounded like the renderer (text) and fine enough for needles. */
@@ -343,6 +375,12 @@ object DashboardMode {
             r(d.rpm, 50.0), r(d.speedKmh, 1.0), d.speedFromGps, r(d.coolant, 1.0), r(d.throttle, 1.0), r(d.volt, 0.1),
             r(d.load, 1.0), r(d.intake, 1.0), r(d.baro, 1.0), r(d.absoluteLoad, 1.0), r(d.relativeThrottle, 1.0),
             d.obdLive, light, design, fields, clock,
+            // Phone readings (only matter in the phone layout or when the rider picked them; cheap to include).
+            // The clock face's seconds hand ticks once a second.
+            d.noObd, r(d.tripKm, 0.1), r(d.avgKmh, 1.0), r(d.maxKmh, 1.0), r(d.phoneBatteryPct?.toDouble(), 1.0),
+            r(d.nextTurnM?.toDouble(), 10.0), r(d.navRemainingKm, 0.1), r(d.altitudeM, 1.0), r(d.headingDeg, 4.0),
+            r(d.outsideC, 1.0), d.tripMovingMs?.div(1000L)?.div(if (d.noObd) 1L else 60L), if (d.noObd) d.clockMs?.div(1000L) else null,
+            d.obdConfigured,
         ).joinToString("|")
     }
 
