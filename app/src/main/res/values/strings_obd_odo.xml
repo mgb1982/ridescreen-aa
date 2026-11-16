@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_odo_ask_msg">The ECU shows %1$s. Use it as this bike\'s mileage?</string>
+    <string name="obd_odo_yes">Yes, use it</string>
+    <string name="obd_odo_no">No</string>
+    <string name="obd_odo_warn_msg">The ECU\'s km went from %1$s to %2$s. That looks odd, so it was not applied. Use the new value?</string>
+    <string name="obd_odo_accept">Use the new value</string>
+    <string name="obd_odo_dismiss">Ignore</string>
+    <string name="obd_odo_last">Last ECU reading: %1$s (%2$s)</string>
+    <string name="obd_odo_take">Take mileage from the ECU</string>
+</resources>

@@ -73,6 +73,7 @@ class MaintenanceActivity : AppCompatActivity() {
             c.addView(text(getString(R.string.maint_odometer_hint), 12f, R.color.text_secondary))
             c.addView(button(getString(R.string.maint_fix_km)) { askOdometer(book.odometer) })
         }
+        ecuOdoCards()
 
         // Tasks.
         body.addView(section(getString(R.string.maint_tasks)))
@@ -149,6 +150,31 @@ class MaintenanceActivity : AppCompatActivity() {
         t.lastKm?.let { last += Maintenance.fmtKm(it) }
         t.lastAt?.let { last += DateFormat.getDateInstance(DateFormat.MEDIUM).format(Date(it)) }
         return parts.joinToString(" · ") + if (last.isNotEmpty()) "\n" + getString(R.string.maint_last, last.joinToString(" · ")) else ""
+    }
+
+    /** Mileage from the ECU (PID 31): the first-time question, the warning for a value that went down or jumped, and the manual button. */
+    private fun ecuOdoCards() {
+        val pending = EcuOdoStore.pending(this)
+        if (pending != null) card { c ->
+            val warn = pending.fromKm != null
+            c.addView(text(
+                if (warn) getString(R.string.obd_odo_warn_msg, Maintenance.fmtKm(pending.fromKm!!.toDouble()), Maintenance.fmtKm(pending.km.toDouble()))
+                else getString(R.string.obd_odo_ask_msg, Maintenance.fmtKm(pending.km.toDouble())),
+                14f, R.color.text_primary))
+            c.addView(button(getString(if (warn) R.string.obd_odo_accept else R.string.obd_odo_yes), filled = true) {
+                EcuOdoStore.accept(this, pending.km); render()
+            })
+            c.addView(button(getString(if (warn) R.string.obd_odo_dismiss else R.string.obd_odo_no)) {
+                if (warn) EcuOdoStore.dismissWarning(this) else EcuOdoStore.decline(this)
+                render()
+            })
+        }
+        val seen = EcuOdoStore.seen(this)
+        if (seen != null && pending == null) card { c ->
+            val date = DateFormat.getDateInstance(DateFormat.MEDIUM).format(Date(seen.second))
+            c.addView(text(getString(R.string.obd_odo_last, Maintenance.fmtKm(seen.first.toDouble()), date), 12f, R.color.text_secondary))
+            c.addView(button(getString(R.string.obd_odo_take)) { EcuOdoStore.accept(this, seen.first); render() })
+        }
     }
 
     // ---------------------------------------------------------------- dialogs
