@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_phone_clock">Zaman</string>
+    <string name="dash_phone_trip">Yolculuk</string>
+    <string name="dash_phone_moving">Hareket süre</string>
+    <string name="dash_phone_avg">Ort. hız</string>
+    <string name="dash_phone_max">Maks. hız</string>
+    <string name="dash_phone_battery">Telefon pili</string>
+    <string name="dash_phone_turn">Sonraki dönüş</string>
+    <string name="dash_phone_remaining">Kalan</string>
+    <string name="dash_phone_alt">Yükseklik</string>
+    <string name="dash_phone_heading">Yön</string>
+    <string name="dash_phone_outside">Dış sıcaklık</string>
+</resources>

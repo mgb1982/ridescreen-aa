@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_phone_clock">Время</string>
+    <string name="dash_phone_trip">Поездка</string>
+    <string name="dash_phone_moving">Время в пути</string>
+    <string name="dash_phone_avg">Ср. скорость</string>
+    <string name="dash_phone_max">Макс. скорость</string>
+    <string name="dash_phone_battery">Батарея тел.</string>
+    <string name="dash_phone_turn">След. поворот</string>
+    <string name="dash_phone_remaining">Осталось</string>
+    <string name="dash_phone_alt">Высота</string>
+    <string name="dash_phone_heading">Курс</string>
+    <string name="dash_phone_outside">Темп. снаружи</string>
+</resources>

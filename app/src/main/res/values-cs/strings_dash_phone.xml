@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_phone_clock">Čas</string>
+    <string name="dash_phone_trip">Trasa</string>
+    <string name="dash_phone_moving">Čas jízdy</string>
+    <string name="dash_phone_avg">Prům. rychlost</string>
+    <string name="dash_phone_max">Max. rychlost</string>
+    <string name="dash_phone_battery">Baterie tel.</string>
+    <string name="dash_phone_turn">Další odbočka</string>
+    <string name="dash_phone_remaining">Zbývá</string>
+    <string name="dash_phone_alt">Výška</string>
+    <string name="dash_phone_heading">Směr</string>
+    <string name="dash_phone_outside">Teplota venku</string>
+</resources>

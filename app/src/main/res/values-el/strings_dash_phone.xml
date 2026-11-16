@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_phone_clock">Ώρα</string>
+    <string name="dash_phone_trip">Διαδρομή</string>
+    <string name="dash_phone_moving">Χρόνος κίνησης</string>
+    <string name="dash_phone_avg">Μέση ταχ.</string>
+    <string name="dash_phone_max">Μέγ. ταχύτητα</string>
+    <string name="dash_phone_battery">Μπαταρία τηλ.</string>
+    <string name="dash_phone_turn">Επόμ. στροφή</string>
+    <string name="dash_phone_remaining">Απομένουν</string>
+    <string name="dash_phone_alt">Υψόμετρο</string>
+    <string name="dash_phone_heading">Κατεύθυνση</string>
+    <string name="dash_phone_outside">Εξωτ. θερμ.</string>
+</resources>

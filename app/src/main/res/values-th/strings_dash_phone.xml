@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_phone_clock">เวลา</string>
+    <string name="dash_phone_trip">ทริป</string>
+    <string name="dash_phone_moving">เวลาเคลื่อนที่</string>
+    <string name="dash_phone_avg">ความเร็วเฉลี่ย</string>
+    <string name="dash_phone_max">ความเร็วสูงสุด</string>
+    <string name="dash_phone_battery">แบตมือถือ</string>
+    <string name="dash_phone_turn">จุดเลี้ยวถัดไป</string>
+    <string name="dash_phone_remaining">เหลือ</string>
+    <string name="dash_phone_alt">ความสูง</string>
+    <string name="dash_phone_heading">ทิศทาง</string>
+    <string name="dash_phone_outside">อุณหภูมินอก</string>
+</resources>

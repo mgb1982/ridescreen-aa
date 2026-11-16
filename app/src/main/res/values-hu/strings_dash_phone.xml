@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_phone_clock">Idő</string>
+    <string name="dash_phone_trip">Megtett út</string>
+    <string name="dash_phone_moving">Mozgási idő</string>
+    <string name="dash_phone_avg">Átlag seb.</string>
+    <string name="dash_phone_max">Max. seb.</string>
+    <string name="dash_phone_battery">Telefon akku</string>
+    <string name="dash_phone_turn">Köv. kanyar</string>
+    <string name="dash_phone_remaining">Hátralévő</string>
+    <string name="dash_phone_alt">Magasság</string>
+    <string name="dash_phone_heading">Irány</string>
+    <string name="dash_phone_outside">Külső hőm.</string>
+</resources>

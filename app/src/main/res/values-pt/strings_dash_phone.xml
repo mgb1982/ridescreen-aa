@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_phone_clock">Hora</string>
+    <string name="dash_phone_trip">Viagem</string>
+    <string name="dash_phone_moving">Tempo movim.</string>
+    <string name="dash_phone_avg">Vel. média</string>
+    <string name="dash_phone_max">Vel. máxima</string>
+    <string name="dash_phone_battery">Bateria tel.</string>
+    <string name="dash_phone_turn">Próx. manobra</string>
+    <string name="dash_phone_remaining">Restante</string>
+    <string name="dash_phone_alt">Altitude</string>
+    <string name="dash_phone_heading">Direção</string>
+    <string name="dash_phone_outside">Temp. externa</string>
+</resources>
