@@ -57,8 +57,23 @@ object ClockLab {
      * logged below say a later threshold keeps the clock right; the lab lets a rider try the others.
      */
     @Volatile var smartThresholdMs: Long = DEFAULT_SMART_THRESHOLD_MS
-    const val DEFAULT_SMART_THRESHOLD_MS = 1_950L
-    val SMART_THRESHOLD_OPTIONS = listOf(1_950L, 2_100L, 2_200L, 2_450L)
+    // 2.0 s since build 538: on 16 Nov 2026 (125X) a manual resync whose QUERY_TIME came 1,959 ms after
+    // CAR_CTRL set the clock right, so 1,950 ms was dropping good sessions.
+    const val DEFAULT_SMART_THRESHOLD_MS = 2_000L
+    val SMART_THRESHOLD_OPTIONS = listOf(1_950L, 2_000L, 2_100L, 2_200L, 2_450L)
+
+    /** Minimum time between two automatic resyncs of the same dash boot. */
+    const val MIN_RESYNC_GAP_MS = 60_000L
+
+    /**
+     * Pure: how long to wait before dropping the link for a resync. The first one of a boot goes after
+     * [firstDelayMs]; later ones wait until [MIN_RESYNC_GAP_MS] has passed since the previous one. Field logs
+     * (15-16 Nov 2026, 125X): three resyncs a few seconds apart all came back late, while a later attempt
+     * (a minute or more on) set the clock.
+     */
+    fun resyncDelayMs(resyncsDone: Int, msSinceLastResync: Long?, firstDelayMs: Long): Long =
+        if (resyncsDone <= 0 || msSinceLastResync == null) firstDelayMs
+        else maxOf(firstDelayMs, MIN_RESYNC_GAP_MS - msSinceLastResync)
 
     /** Last QUERY_TIME delay after CAR_CTRL (ms, -1 unknown) and resyncs this dash boot, for the log. */
     @Volatile var lastQueryTimeAfterMs: Long = -1L

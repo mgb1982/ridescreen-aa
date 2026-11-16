@@ -37,6 +37,7 @@ object AppSettings {
     private const val KEY_CLOCK_RESYNC = "clock_resync_once"          // legacy boolean (zontes-1)
     private const val KEY_CLOCK_RESYNC_MODE = "clock_resync_mode"
     private const val KEY_SMART_THRESHOLD = "clock_smart_threshold_ms"
+    private const val KEY_SMART_THRESHOLD_V2 = "clock_smart_threshold_v2"
     private const val KEY_BT_TRIGGER_MAC = "bt_trigger_mac"
     private const val KEY_BT_TRIGGER_NAME = "bt_trigger_name"
 
@@ -164,9 +165,18 @@ object AppSettings {
     }
 
     /** v2.4 test · SMART resync threshold ([ClockLab.smartThresholdMs]); only the lab's options are kept. */
-    fun smartThresholdMs(ctx: Context): Long =
-        prefs(ctx).getLong(KEY_SMART_THRESHOLD, ClockLab.DEFAULT_SMART_THRESHOLD_MS)
+    fun smartThresholdMs(ctx: Context): Long {
+        val p = prefs(ctx)
+        // Build 538 moved the default from 1,950 to 2,000 ms. "Reset" in the lab stored the old default, so
+        // a stored 1,950 is dropped once; picking 1,950 in the lab after that sticks.
+        if (!p.getBoolean(KEY_SMART_THRESHOLD_V2, false)) {
+            val e = p.edit().putBoolean(KEY_SMART_THRESHOLD_V2, true)
+            if (p.getLong(KEY_SMART_THRESHOLD, -1L) == 1_950L) e.remove(KEY_SMART_THRESHOLD)
+            e.apply()
+        }
+        return p.getLong(KEY_SMART_THRESHOLD, ClockLab.DEFAULT_SMART_THRESHOLD_MS)
             .takeIf { it in ClockLab.SMART_THRESHOLD_OPTIONS } ?: ClockLab.DEFAULT_SMART_THRESHOLD_MS
+    }
     fun setSmartThresholdMs(ctx: Context, ms: Long) {
         val v = ms.takeIf { it in ClockLab.SMART_THRESHOLD_OPTIONS } ?: ClockLab.DEFAULT_SMART_THRESHOLD_MS
         prefs(ctx).edit().putLong(KEY_SMART_THRESHOLD, v).apply()

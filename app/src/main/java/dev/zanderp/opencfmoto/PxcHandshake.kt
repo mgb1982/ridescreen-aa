@@ -292,17 +292,39 @@ class PxcHandshake(
             }
         }
         if (mode == ClockResyncMode.ONCE && resyncsThisBoot >= 1) return
+        val nowElapsed = android.os.SystemClock.elapsedRealtime()
+        val delayMs = ClockLab.resyncDelayMs(
+            resyncsThisBoot,
+            if (lastResyncAtElapsed > 0L) nowElapsed - lastResyncAtElapsed else null,
+            RESYNC_DELAY_MS,
+        )
         resyncsThisBoot++
         ClockLab.resyncsThisBoot = resyncsThisBoot
-        // Show "adjusting dash clock…" (phone + watch) until the reconnect answers QUERY_TIME again,
-        // so the rider doesn't Stop/Connect by hand while it happens.
-        ClockLab.resyncBusyUntil = android.os.SystemClock.elapsedRealtime() + RESYNC_DELAY_MS + RESYNC_BUSY_GRACE_MS
-        ConnectionState.refresh()
-        log("[RESYNC] $reason — dropping the link in ${RESYNC_DELAY_MS / 1000}s")
-        Thread({
-            try { Thread.sleep(RESYNC_DELAY_MS) } catch (_: InterruptedException) { return@Thread }
+        // This connection; if another one has started by the time the delay ends, the drop is stale.
+        val generation = connsThisProcess
+        log("[RESYNC] $reason — dropping the link in ${delayMs / 1000}s")
+        val dropNow = {
+            // Show "adjusting dash clock…" (phone + watch) until the reconnect answers QUERY_TIME again,
+            // so the rider doesn't Stop/Connect by hand while it happens.
+            lastResyncAtElapsed = android.os.SystemClock.elapsedRealtime()
+            ClockLab.resyncBusyUntil = lastResyncAtElapsed + RESYNC_BUSY_GRACE_MS
+            ConnectionState.refresh()
             val cb = onResyncRequested
             if (cb == null) log("[RESYNC] no prober hook — skipped") else cb("clock resync")
+        }
+        if (delayMs <= RESYNC_DELAY_MS) {
+            ClockLab.resyncBusyUntil = nowElapsed + delayMs + RESYNC_BUSY_GRACE_MS
+            ConnectionState.refresh()
+        }
+        Thread({
+            try { Thread.sleep(delayMs) } catch (_: InterruptedException) { return@Thread }
+            if (connsThisProcess != generation) {
+                log("[RESYNC] skipped: the link was rebuilt meanwhile (that connection gets its own check)")
+                resyncsThisBoot = (resyncsThisBoot - 1).coerceAtLeast(0)
+                ClockLab.resyncsThisBoot = resyncsThisBoot
+                return@Thread
+            }
+            dropNow()
         }, "pxc-resync").apply { isDaemon = true }.start()
     }
 
@@ -451,7 +473,7 @@ class PxcHandshake(
         /** How long after the drop the "adjusting clock" hint may stay up waiting for the reconnect. */
         const val RESYNC_BUSY_GRACE_MS = 12_000L
         /** 2.3's SMART threshold; the live value is [ClockLab.smartThresholdMs] (v2.4 test). */
-        const val SLOW_QUERY_TIME_MS = 1_950L
+        const val SLOW_QUERY_TIME_MS = 2_000L
         const val MAX_RESYNCS_PER_BOOT = 3
 
         /**
@@ -460,6 +482,8 @@ class PxcHandshake(
          * no resync at all and could stay at 00:00 — field log 8 Oct 2026).
          */
         @Volatile private var resyncsThisBoot = 0
+        /** elapsedRealtime of the last automatic resync drop of this boot (0 = none). */
+        @Volatile private var lastResyncAtElapsed = 0L
 
         // Log-only dash boot tracking (CLIENT_INFO currentHUTime = ms since the dash booted).
         @Volatile private var dashUptimeAtInfoMs = 0L
@@ -471,6 +495,7 @@ class PxcHandshake(
         /** The rider pressed Connect: give the clock fix its full budget again. */
         fun resetResyncBudget() {
             resyncsThisBoot = 0
+            lastResyncAtElapsed = 0L
             ClockLab.resyncsThisBoot = 0
         }
     }
@@ -488,6 +513,7 @@ class PxcHandshake(
         val out = socket.getOutputStream()
         checkSnThisSession = true
         resyncsThisBoot = 0
+        lastResyncAtElapsed = 0L
         ClockLab.resyncsThisBoot = 0
         val text = frame.payload.asText()
         log("[$tag] CHECK_SN from bike on ${chanOf(socket)} ${sockId(socket)}: $text")

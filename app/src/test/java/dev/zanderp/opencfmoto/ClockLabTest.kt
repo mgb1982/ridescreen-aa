@@ -77,8 +77,8 @@ class ClockLabTest {
 
     @Test
     fun smartThresholdDefaultsTo2_3ValueAndIsInTheLabOptions() {
-        assertEquals(1_950L, ClockLab.DEFAULT_SMART_THRESHOLD_MS)
-        assertEquals(listOf(1_950L, 2_100L, 2_200L, 2_450L), ClockLab.SMART_THRESHOLD_OPTIONS)
+        assertEquals(2_000L, ClockLab.DEFAULT_SMART_THRESHOLD_MS)
+        assertEquals(listOf(1_950L, 2_000L, 2_100L, 2_200L, 2_450L), ClockLab.SMART_THRESHOLD_OPTIONS)
         assert(ClockLab.DEFAULT_SMART_THRESHOLD_MS in ClockLab.SMART_THRESHOLD_OPTIONS)
         // Same default as 2.3's constant: no behaviour change unless the rider picks another in the lab.
         assertEquals(PxcHandshake.SLOW_QUERY_TIME_MS, ClockLab.DEFAULT_SMART_THRESHOLD_MS)
@@ -112,5 +112,19 @@ class ClockLabTest {
             ClockLab.lastDashBootEpochMs = beforeDash.first
             ClockLab.connsThisBoot = beforeDash.second
         }
+    }
+
+    @Test
+    fun firstResyncOfABootGoesAfterTheShortDelay() {
+        assertEquals(3_000L, ClockLab.resyncDelayMs(0, null, 3_000L))
+        assertEquals(3_000L, ClockLab.resyncDelayMs(0, 5_000L, 3_000L))
+    }
+
+    @Test
+    fun laterResyncsWaitAMinuteSinceThePreviousOne() {
+        // 16 Nov 2026: resyncs 4-7 s apart all came back late.
+        assertEquals(53_000L, ClockLab.resyncDelayMs(1, 7_000L, 3_000L))
+        assertEquals(3_000L, ClockLab.resyncDelayMs(2, 90_000L, 3_000L))
+        assertEquals(3_000L, ClockLab.resyncDelayMs(1, 58_500L, 3_000L))
     }
 }
