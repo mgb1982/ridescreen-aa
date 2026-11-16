@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App-icon shortcuts for the keyless box (Gemini / Google Assistant open them by name). -->
+    <string name="pke_voice_lock_short">오토바이 잠가줘</string>
+    <string name="pke_voice_lock_long">오토바이 잠가줘</string>
+    <string name="pke_voice_unlock_short">오토바이 잠금 풀어줘</string>
+    <string name="pke_voice_unlock_long">오토바이 잠금 풀어줘</string>
+    <string name="pke_voice_seat_short">시트 열어줘</string>
+    <string name="pke_voice_seat_long">시트 열어줘</string>
+    <string name="pke_voice_tank_short">연료 뚜껑 열어줘</string>
+    <string name="pke_voice_tank_long">연료 뚜껑 열어줘</string>
+</resources>

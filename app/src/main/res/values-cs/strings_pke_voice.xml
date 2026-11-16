@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App-icon shortcuts for the keyless box (Gemini / Google Assistant open them by name). -->
+    <string name="pke_voice_lock_short">Zamkni motocykl</string>
+    <string name="pke_voice_lock_long">Zamkni motocykl</string>
+    <string name="pke_voice_unlock_short">Odemkni motocykl</string>
+    <string name="pke_voice_unlock_long">Odemkni motocykl</string>
+    <string name="pke_voice_seat_short">Otevři sedadlo</string>
+    <string name="pke_voice_seat_long">Otevři sedadlo</string>
+    <string name="pke_voice_tank_short">Otevři víčko</string>
+    <string name="pke_voice_tank_long">Otevři víčko nádrže</string>
+</resources>

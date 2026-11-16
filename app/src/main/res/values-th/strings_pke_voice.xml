@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App-icon shortcuts for the keyless box (Gemini / Google Assistant open them by name). -->
+    <string name="pke_voice_lock_short">ล็อกรถ</string>
+    <string name="pke_voice_lock_long">ล็อกรถ</string>
+    <string name="pke_voice_unlock_short">ปลดล็อครถ</string>
+    <string name="pke_voice_unlock_long">ปลดล็อครถ</string>
+    <string name="pke_voice_seat_short">เปิดเบาะ</string>
+    <string name="pke_voice_seat_long">เปิดเบาะรถ</string>
+    <string name="pke_voice_tank_short">เปิดฝาถังน้ำมัน</string>
+    <string name="pke_voice_tank_long">เปิดฝาถังน้ำมัน</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App-icon shortcuts for the keyless box (Gemini / Google Assistant open them by name). -->
+    <string name="pke_voice_lock_short">Blocca la moto</string>
+    <string name="pke_voice_lock_long">Blocca la moto</string>
+    <string name="pke_voice_unlock_short">Sblocca la moto</string>
+    <string name="pke_voice_unlock_long">Sblocca la moto</string>
+    <string name="pke_voice_seat_short">Apri la sella</string>
+    <string name="pke_voice_seat_long">Apri la sella</string>
+    <string name="pke_voice_tank_short">Apri il tappo</string>
+    <string name="pke_voice_tank_long">Apri il tappo del serbatoio</string>
+</resources>

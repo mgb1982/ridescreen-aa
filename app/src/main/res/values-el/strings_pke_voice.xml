@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App-icon shortcuts for the keyless box (Gemini / Google Assistant open them by name). -->
+    <string name="pke_voice_lock_short">Κλείδωσε τη μοτοσικλέτα</string>
+    <string name="pke_voice_lock_long">Κλείδωσε τη μοτοσικλέτα</string>
+    <string name="pke_voice_unlock_short">Ξεκλείδωσε τη μοτοσικλέτα</string>
+    <string name="pke_voice_unlock_long">Ξεκλείδωσε τη μοτοσικλέτα</string>
+    <string name="pke_voice_seat_short">Άνοιξε τη σέλα</string>
+    <string name="pke_voice_seat_long">Άνοιξε τη σέλα</string>
+    <string name="pke_voice_tank_short">Άνοιξε το ντεπόζιτο</string>
+    <string name="pke_voice_tank_long">Άνοιξε το καπάκι ντεπόζιτου</string>
+</resources>

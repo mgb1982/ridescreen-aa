@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Keyless-box shortcuts (voice / long-press the app icon). targetPackage must equal this flavor's applicationId
+     (static shortcuts can't use ${applicationId}), hence one copy per store flavor. Keep both in sync. -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="pke_lock"
+        android:enabled="true"
+        android:icon="@drawable/ic_line_lock"
+        android:shortcutShortLabel="@string/pke_voice_lock_short"
+        android:shortcutLongLabel="@string/pke_voice_lock_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="dev.zanderp.opencfmoto"
+            android:targetClass="dev.zanderp.opencfmoto.PkeVoiceActivity">
+            <extra android:name="pke_action" android:value="LOCK" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="pke_unlock"
+        android:enabled="true"
+        android:icon="@drawable/ic_line_unlock"
+        android:shortcutShortLabel="@string/pke_voice_unlock_short"
+        android:shortcutLongLabel="@string/pke_voice_unlock_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="dev.zanderp.opencfmoto"
+            android:targetClass="dev.zanderp.opencfmoto.PkeVoiceActivity">
+            <extra android:name="pke_action" android:value="UNLOCK" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="pke_seat"
+        android:enabled="true"
+        android:icon="@drawable/ic_line_seat"
+        android:shortcutShortLabel="@string/pke_voice_seat_short"
+        android:shortcutLongLabel="@string/pke_voice_seat_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="dev.zanderp.opencfmoto"
+            android:targetClass="dev.zanderp.opencfmoto.PkeVoiceActivity">
+            <extra android:name="pke_action" android:value="CUSHION" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="pke_tank"
+        android:enabled="true"
+        android:icon="@drawable/ic_line_fuel"
+        android:shortcutShortLabel="@string/pke_voice_tank_short"
+        android:shortcutLongLabel="@string/pke_voice_tank_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="dev.zanderp.opencfmoto"
+            android:targetClass="dev.zanderp.opencfmoto.PkeVoiceActivity">
+            <extra android:name="pke_action" android:value="OILBOX" />
+        </intent>
+    </shortcut>
+</shortcuts>
