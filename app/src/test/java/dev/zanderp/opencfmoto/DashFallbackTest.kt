@@ -11,8 +11,8 @@ import org.junit.Test
 
 class DashFallbackTest {
     private val obdAll = setOf("rpm", "speed", "coolant", "volt", "load", "intake", "baro", "absolute", "throttle")
-    private val phoneAll = setOf("clock", "trip", "moving", "avg", "max", "battery", "turn", "remaining", "alt", "heading", "outside")
-    private val noNav = phoneAll - setOf("turn", "remaining")
+    private val phoneAll = setOf("clock", "trip", "moving", "avg", "max", "battery", "turn", "alt", "heading", "outside")
+    private val noNav = phoneAll - setOf("turn")
 
     private fun data(
         rpm: Double? = null, nextTurnM: Int? = null, headingDeg: Double? = null, tripKm: Double? = null,
@@ -136,7 +136,7 @@ class DashFallbackTest {
     }
 
     @Test fun phoneFieldsAreAfterTheObdOnesAndOptIn() {
-        assertEquals(11, DashFallback.PHONE_IDS.size)
+        assertEquals(10, DashFallback.PHONE_IDS.size)
         assertEquals(DashFallback.PHONE_IDS.toSet(), phoneAll)
     }
 
@@ -226,5 +226,40 @@ class DashFallbackTest {
         assertEquals(350, s.nextTurnM)
         assertEquals(31, (s.tripMovingMs!! / 60_000L).toInt())
         assertEquals(phoneAll, DashFallback.available(s))
+    }
+
+    @Test fun freshObdMeansNoPlan() {
+        // The renderer only asks for a plan when Data.noObd is set; a live reading never sets it.
+        assertFalse(DashFallback.noObd(true, 0))
+        assertFalse(DashFallback.noObd(true, 5_000))
+        assertFalse(DashboardMode.Data(null, null, false, null, null, null, null, null, null, null, null, true).noObd)
+    }
+
+    @Test fun compassDropsTheHeadingCard() {
+        val plan = DashFallback.plan(D.TOURING, obdAll + "heading", noNav + "heading")
+        assertTrue(plan.compass)
+        val ids = DashFallback.cardIds(listOf("coolant"), obdAll + "heading", plan)
+        assertFalse("heading" in ids)
+        val noCompass = DashFallback.cardIds(listOf("coolant"), setOf("coolant", "heading"), null)
+        assertTrue("heading" in noCompass)
+    }
+
+    @Test fun movingTimeSignatureTicksEverySecondWhenShown() {
+        fun d(ms: Long) = DashboardMode.Data(null, 24.0, true, null, null, null, null, null, null, null, null, true, tripMovingMs = ms)
+        fun sig(x: DashboardMode.Data, f: String) = DashboardMode.signatureOf(x, false, "SPORT", f, "10:00")
+        assertNotEquals(sig(d(60_000), "moving,speed"), sig(d(61_000), "moving,speed"))
+        assertEquals(sig(d(60_000), "speed"), sig(d(61_000), "speed"))
+    }
+
+    @Test fun headingSignatureIsOneDegree() {
+        fun sig(h: Double) = DashboardMode.signatureOf(data(headingDeg = h), false, "SPORT", "rpm", "10:00")
+        assertNotEquals(sig(10.0), sig(11.0))
+    }
+
+    @Test fun turnLimitRoundsUpToKm() {
+        assertEquals("1.0" to "km", DashPhoneMath.turnText(995, Locale.US))
+        assertEquals("1.0" to "km", DashPhoneMath.turnText(999, Locale.US))
+        assertEquals("990" to "m", DashPhoneMath.turnText(994, Locale.US))
+        assertEquals("1,0" to "km", DashPhoneMath.turnText(1000, Locale.GERMANY))
     }
 }

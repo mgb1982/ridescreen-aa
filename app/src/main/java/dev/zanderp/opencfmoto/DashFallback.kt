@@ -14,10 +14,10 @@ internal object DashFallback {
     const val OBD_LOST_MS = 30_000L
 
     /** Ids of the phone readings, in the order they are offered as dashboard fields (after the OBD ones). */
-    val PHONE_IDS = listOf("clock", "trip", "moving", "avg", "max", "battery", "turn", "remaining", "alt", "heading", "outside")
+    val PHONE_IDS = listOf("clock", "trip", "moving", "avg", "max", "battery", "turn", "alt", "heading", "outside")
 
     /** Which phone reading takes the place of an OBD card first. */
-    private val PREFERENCE = listOf("clock", "trip", "avg", "battery", "turn", "remaining", "max", "moving", "outside", "alt", "heading")
+    private val PREFERENCE = listOf("clock", "trip", "avg", "battery", "turn", "max", "moving", "outside", "alt", "heading")
 
     /** OBD slots that get a substitute, in the order they are replaced. RPM is handled by the design itself. */
     private val SLOT_ORDER = listOf("coolant", "volt", "throttle", "load", "intake", "baro")
@@ -29,7 +29,7 @@ internal object DashFallback {
     /** The "No OBD data" notice only makes sense for a rider who has an adapter configured. */
     fun showWarning(adapterConfigured: Boolean, obdLive: Boolean): Boolean = adapterConfigured && !obdLive
 
-    /** Phone readings that have a value now. "turn" and "remaining" exist only while navigating. */
+    /** Phone readings that have a value now. "turn" exists only while navigating. */
     fun available(d: DashboardMode.Data): Set<String> {
         val out = LinkedHashSet<String>()
         if (d.clockMs != null) out += "clock"
@@ -39,7 +39,6 @@ internal object DashFallback {
         if (d.maxKmh != null) out += "max"
         if (d.phoneBatteryPct != null) out += "battery"
         if (d.nextTurnM != null) out += "turn"
-        if (d.navRemainingKm != null) out += "remaining"
         if (d.altitudeM != null) out += "alt"
         if (d.headingDeg != null) out += "heading"
         if (d.outsideC != null) out += "outside"
@@ -99,7 +98,8 @@ internal object DashFallback {
      */
     fun cardIds(obdCards: List<String>, visible: Set<String>, plan: Plan?): List<String> {
         val head = if (plan == null) obdCards else obdCards.mapNotNull { plan.subs[it] }
-        return (head + PHONE_IDS.filter { it in visible }).distinct()
+        // A compass already shows the heading: no second card for it.
+        return (head + PHONE_IDS.filter { it in visible }).distinct().filter { !(plan?.compass == true && it == "heading") }
     }
 }
 
@@ -140,9 +140,10 @@ internal object DashPhoneMath {
     }
 
     /** Distance to the next turn as (text, unit): metres rounded to 10 under 1 km, then km with one decimal. */
-    fun turnText(meters: Int, locale: Locale): Pair<String, String> =
-        if (meters < 1000) (Math.round(meters / 10.0) * 10).toInt().toString() to "m"
-        else String.format(locale, "%.1f", meters / 1000.0) to "km"
+    fun turnText(meters: Int, locale: Locale): Pair<String, String> {
+        val rounded = (Math.round(meters / 10.0) * 10).toInt()   // 995-999 m round up to 1000: show "1.0 km", not "1000 m"
+        return if (rounded < 1000) rounded.toString() to "m" else String.format(locale, "%.1f", meters / 1000.0) to "km"
+    }
 
     private val POINTS = listOf("N", "NE", "E", "SE", "S", "SW", "W", "NW")
 

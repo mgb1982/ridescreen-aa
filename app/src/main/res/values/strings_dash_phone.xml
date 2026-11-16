@@ -8,7 +8,6 @@
     <string name="dash_phone_max">Max speed</string>
     <string name="dash_phone_battery">Phone battery</string>
     <string name="dash_phone_turn">Next turn</string>
-    <string name="dash_phone_remaining">Remaining</string>
     <string name="dash_phone_alt">Altitude</string>
     <string name="dash_phone_heading">Heading</string>
     <string name="dash_phone_outside">Outside</string>

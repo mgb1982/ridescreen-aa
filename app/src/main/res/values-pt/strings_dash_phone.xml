@@ -7,7 +7,6 @@
     <string name="dash_phone_max">Vel. máxima</string>
     <string name="dash_phone_battery">Bateria tel.</string>
     <string name="dash_phone_turn">Próx. manobra</string>
-    <string name="dash_phone_remaining">Restante</string>
     <string name="dash_phone_alt">Altitude</string>
     <string name="dash_phone_heading">Direção</string>
     <string name="dash_phone_outside">Temp. externa</string>

@@ -58,6 +58,19 @@ internal object DashPhone {
         return fix
     }
 
+    @Volatile private var wantAt = 0L
+    @Volatile private var wantFix = false
+
+    /** The rider picked altitude or heading as a field: the GPS fix is needed even with OBD speed. Cached 1 s. */
+    fun wantsFix(ctx: Context): Boolean {
+        val now = SystemClock.elapsedRealtime()
+        if (wantAt == 0L || now - wantAt >= ADAPTER_POLL_MS) {
+            wantAt = now
+            wantFix = try { DashboardMode.visibleFields(ctx).let { "alt" in it || "heading" in it } } catch (_: Exception) { false }
+        }
+        return wantFix
+    }
+
     /** A live OBD adapter is set up ([AppSettings.obdLiveAdapter]). */
     fun adapterConfigured(ctx: Context): Boolean {
         val now = SystemClock.elapsedRealtime()

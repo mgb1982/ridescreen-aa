@@ -159,30 +159,48 @@ internal object DashboardRenderer {
 
 
     /** Phone readings (see [DashFallback]); their titles come from strings, the OBD ones above are fixed English. */
+    private var titlesLocale: Locale? = null
+    private var titles: Map<String, String> = emptyMap()
+
+    /** Card titles from strings, read again only when the locale changes. */
+    private fun phoneTitles(ctx: Context): Map<String, String> {
+        val loc = Locale.getDefault()
+        if (titlesLocale != loc) {
+            titles = mapOf(
+                "clock" to ctx.getString(R.string.dash_phone_clock), "trip" to ctx.getString(R.string.dash_phone_trip),
+                "moving" to ctx.getString(R.string.dash_phone_moving), "avg" to ctx.getString(R.string.dash_phone_avg),
+                "max" to ctx.getString(R.string.dash_phone_max), "battery" to ctx.getString(R.string.dash_phone_battery),
+                "turn" to ctx.getString(R.string.dash_phone_turn), "alt" to ctx.getString(R.string.dash_phone_alt),
+                "heading" to ctx.getString(R.string.dash_phone_heading), "outside" to ctx.getString(R.string.dash_phone_outside),
+            )
+            titlesLocale = loc
+        }
+        return titles
+    }
+
     private fun phoneMetrics(ctx: Context, d: DashboardMode.Data): List<Metric> {
         val loc = Locale.getDefault()
+        val t = phoneTitles(ctx)
         val tz = d.clockMs?.let { TimeZone.getDefault().getOffset(it) } ?: 0
         fun one(v: Double?, fmt: String) = v?.let { String.format(loc, fmt, it) }
         val moving = d.tripMovingMs?.let { DashPhoneMath.movingText(it) }
         val turn = d.nextTurnM?.let { DashPhoneMath.turnText(it, loc) }
         return listOf(
-            Metric("clock", ctx.getString(R.string.dash_phone_clock), d.clockMs?.toDouble(), "", 0.0,
+            Metric("clock", t.getValue("clock"), d.clockMs?.toDouble(), "", 0.0,
                 display = d.clockMs?.let { DashPhoneMath.clockText(it, tz) }),
-            Metric("trip", ctx.getString(R.string.dash_phone_trip), d.tripKm, "km", 0.0, display = one(d.tripKm, "%.1f")),
-            Metric("moving", ctx.getString(R.string.dash_phone_moving), d.tripMovingMs?.toDouble(), moving?.second ?: "min", 0.0,
+            Metric("trip", t.getValue("trip"), d.tripKm, "km", 0.0, display = one(d.tripKm, "%.1f")),
+            Metric("moving", t.getValue("moving"), d.tripMovingMs?.toDouble(), moving?.second ?: "min", 0.0,
                 display = moving?.first),
-            Metric("avg", ctx.getString(R.string.dash_phone_avg), d.avgKmh, "km/h", speedMax.toDouble()),
-            Metric("max", ctx.getString(R.string.dash_phone_max), d.maxKmh, "km/h", speedMax.toDouble()),
-            Metric("battery", ctx.getString(R.string.dash_phone_battery), d.phoneBatteryPct?.toDouble(), "%", 100.0),
-            Metric("turn", ctx.getString(R.string.dash_phone_turn), d.nextTurnM?.toDouble(), turn?.second ?: "m", 0.0,
+            Metric("avg", t.getValue("avg"), d.avgKmh, "km/h", speedMax.toDouble()),
+            Metric("max", t.getValue("max"), d.maxKmh, "km/h", speedMax.toDouble()),
+            Metric("battery", t.getValue("battery"), d.phoneBatteryPct?.toDouble(), "%", 100.0),
+            Metric("turn", t.getValue("turn"), d.nextTurnM?.toDouble(), turn?.second ?: "m", 0.0,
                 display = turn?.first),
-            Metric("remaining", ctx.getString(R.string.dash_phone_remaining), d.navRemainingKm, "km", 0.0,
-                display = one(d.navRemainingKm, "%.1f")),
-            Metric("alt", ctx.getString(R.string.dash_phone_alt), d.altitudeM, "m", 0.0),
-            Metric("heading", ctx.getString(R.string.dash_phone_heading), d.headingDeg,
+            Metric("alt", t.getValue("alt"), d.altitudeM, "m", 0.0),
+            Metric("heading", t.getValue("heading"), d.headingDeg,
                 d.headingDeg?.let { DashPhoneMath.degText(it) + "°" } ?: "°", 0.0,
                 display = d.headingDeg?.let { DashPhoneMath.compassPoint(it) }),
-            Metric("outside", ctx.getString(R.string.dash_phone_outside), d.outsideC, "°C", 0.0),
+            Metric("outside", t.getValue("outside"), d.outsideC, "°C", 0.0),
         )
     }
 
@@ -265,7 +283,8 @@ internal object DashboardRenderer {
         // Without OBD (none set up, or silent for 30 s) the OBD slots are filled with phone readings ([DashFallback]).
         val plan = if (d.noObd) DashFallback.plan(design, visible, DashFallback.available(d)) else null
         fb = plan
-        val phone = phoneMetrics(ctx, d).associateBy { it.id }
+        // Phone readings are only built when they can be shown (phone layout, or the rider picked some).
+        val phone = if (d.noObd || visible.any { it in DashFallback.PHONE_IDS }) phoneMetrics(ctx, d).associateBy { it.id } else emptyMap()
         val all: Map<String, Metric> = if (plan == null) {
             (metrics(d) + phone.values).filter { it.id in visible }.associateBy { it.id }
         } else {
@@ -1576,12 +1595,6 @@ internal object DashboardRenderer {
                 c.drawLine(cx - r * .4f, cy - r * .2f, cx + r * .6f, cy - r * .2f, stroke)
                 c.drawLine(cx + r * .6f, cy - r * .2f, cx + r * .15f, cy - r * .65f, stroke)
                 c.drawLine(cx + r * .6f, cy - r * .2f, cx + r * .15f, cy + r * .25f, stroke)
-            }
-            "remaining" -> {
-                // Flag on a pole.
-                c.drawLine(cx - r * .6f, cy - r, cx - r * .6f, cy + r, stroke)
-                c.drawLine(cx - r * .6f, cy - r, cx + r * .8f, cy - r * .5f, stroke)
-                c.drawLine(cx + r * .8f, cy - r * .5f, cx - r * .6f, cy, stroke)
             }
             "alt" -> {
                 // Two peaks.

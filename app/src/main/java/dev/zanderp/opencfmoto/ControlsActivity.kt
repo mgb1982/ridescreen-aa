@@ -683,7 +683,7 @@ class ControlsActivity : AppCompatActivity() {
     private fun dashFieldNames(): Array<String> = resources.getStringArray(R.array.dash_obd_field_names) + arrayOf(
         getString(R.string.dash_phone_clock), getString(R.string.dash_phone_trip), getString(R.string.dash_phone_moving),
         getString(R.string.dash_phone_avg), getString(R.string.dash_phone_max), getString(R.string.dash_phone_battery),
-        getString(R.string.dash_phone_turn), getString(R.string.dash_phone_remaining), getString(R.string.dash_phone_alt),
+        getString(R.string.dash_phone_turn), getString(R.string.dash_phone_alt),
         getString(R.string.dash_phone_heading), getString(R.string.dash_phone_outside),
     )
 

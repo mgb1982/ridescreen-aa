@@ -44,8 +44,8 @@ object DashboardMode {
         val tripKm: Double? = null, val tripMovingMs: Long? = null, val avgKmh: Double? = null, val maxKmh: Double? = null,
         /** Phone battery, percent. */
         val phoneBatteryPct: Int? = null,
-        /** Android Auto navigation: metres to the next turn, kilometres left on the route (null when not navigating). */
-        val nextTurnM: Int? = null, val navRemainingKm: Double? = null,
+        /** Android Auto navigation: metres to the next turn (null when not navigating). */
+        val nextTurnM: Int? = null,
         /** From the GPS fix that also gives [speedKmh]: altitude in metres, heading in degrees. */
         val altitudeM: Double? = null, val headingDeg: Double? = null,
         /** Cached outside temperature from the Home weather card. */
@@ -170,7 +170,7 @@ object DashboardMode {
         rpm = null, speedKmh = 24.0, speedFromGps = true, coolant = null, throttle = null, volt = null,
         load = null, intake = null, baro = null, absoluteLoad = null, relativeThrottle = null, obdLive = false,
         clockMs = nowMs, tripKm = 12.4, tripMovingMs = (12.4 / 24.0 * 3_600_000.0).toLong(), avgKmh = 24.0, maxKmh = 88.0,
-        phoneBatteryPct = 76, nextTurnM = 350, navRemainingKm = 8.4, altitudeM = 312.0, headingDeg = 48.0, outsideC = 18.0,
+        phoneBatteryPct = 76, nextTurnM = 350, altitudeM = 312.0, headingDeg = 48.0, outsideC = 18.0,
         noObd = true, obdConfigured = false,
     )
 
@@ -339,7 +339,7 @@ object DashboardMode {
         val noObd = DashFallback.noObd(configured, now - obdSeenAt)
         val obdSpeed = snap?.speed
         // One GPS fix feeds speed, altitude and heading (cached for 1 s, no extra location request).
-        val fix = if (obdSpeed == null || noObd || visibleFields(ctx).let { "alt" in it || "heading" in it }) DashPhone.gps(ctx) else null
+        val fix = if (obdSpeed == null || noObd || DashPhone.wantsFix(ctx)) DashPhone.gps(ctx) else null
         val speed = pickSpeed(obdSpeed, if (obdSpeed == null) fix?.speedKmh else null)
         // Trip stats only while a trip is being recorded.
         val trip = TripLogger.current?.snapshot()?.takeIf { it.recording }
@@ -352,7 +352,7 @@ object DashboardMode {
             tripKm = trip?.let { it.distanceMeters / 1000.0 }, tripMovingMs = trip?.movingTimeMs,
             avgKmh = trip?.let { DashPhoneMath.avgKmh(it.distanceMeters, it.movingTimeMs) },
             maxKmh = trip?.let { it.maxSpeedMs * 3.6 },
-            phoneBatteryPct = DashPhone.battery(ctx), nextTurnM = DashPhone.nextTurnM(), navRemainingKm = null,
+            phoneBatteryPct = DashPhone.battery(ctx), nextTurnM = DashPhone.nextTurnM(),
             altitudeM = fix?.altitudeM, headingDeg = fix?.headingDeg, outsideC = DashPhone.outsideC(ctx),
             noObd = noObd, obdConfigured = configured,
         )
@@ -378,8 +378,8 @@ object DashboardMode {
             // Phone readings (only matter in the phone layout or when the rider picked them; cheap to include).
             // The clock face's seconds hand ticks once a second.
             d.noObd, r(d.tripKm, 0.1), r(d.avgKmh, 1.0), r(d.maxKmh, 1.0), r(d.phoneBatteryPct?.toDouble(), 1.0),
-            r(d.nextTurnM?.toDouble(), 10.0), r(d.navRemainingKm, 0.1), r(d.altitudeM, 1.0), r(d.headingDeg, 4.0),
-            r(d.outsideC, 1.0), d.tripMovingMs?.div(1000L)?.div(if (d.noObd) 1L else 60L), if (d.noObd) d.clockMs?.div(1000L) else null,
+            r(d.nextTurnM?.toDouble(), 10.0), r(d.altitudeM, 1.0), r(d.headingDeg, 1.0),
+            r(d.outsideC, 1.0), d.tripMovingMs?.div(1000L)?.div(if (d.noObd || "moving" in fields) 1L else 60L), if (d.noObd) d.clockMs?.div(1000L) else null,
             d.obdConfigured,
         ).joinToString("|")
     }

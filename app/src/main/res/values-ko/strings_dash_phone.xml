@@ -7,7 +7,6 @@
     <string name="dash_phone_max">최고 속도</string>
     <string name="dash_phone_battery">휴대폰 배터리</string>
     <string name="dash_phone_turn">다음 회전</string>
-    <string name="dash_phone_remaining">남은 거리</string>
     <string name="dash_phone_alt">고도</string>
     <string name="dash_phone_heading">방향</string>
     <string name="dash_phone_outside">외부 온도</string>
