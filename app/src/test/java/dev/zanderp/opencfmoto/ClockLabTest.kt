@@ -121,10 +121,10 @@ class ClockLabTest {
     }
 
     @Test
-    fun laterResyncsWaitAMinuteSinceThePreviousOne() {
+    fun laterResyncsWait20sSinceThePreviousOne() {
         // 16 Nov 2026: resyncs 4-7 s apart all came back late.
-        assertEquals(53_000L, ClockLab.resyncDelayMs(1, 7_000L, 3_000L))
-        assertEquals(3_000L, ClockLab.resyncDelayMs(2, 90_000L, 3_000L))
-        assertEquals(3_000L, ClockLab.resyncDelayMs(1, 58_500L, 3_000L))
+        assertEquals(13_000L, ClockLab.resyncDelayMs(1, 7_000L, 3_000L))
+        assertEquals(3_000L, ClockLab.resyncDelayMs(2, 30_000L, 3_000L))
+        assertEquals(3_000L, ClockLab.resyncDelayMs(1, 18_500L, 3_000L))
     }
 }
