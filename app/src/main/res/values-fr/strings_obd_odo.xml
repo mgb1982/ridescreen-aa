@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_odo_ask_msg">Le calculateur moteur affiche %1$s. L\'utiliser comme kilométrage de cette moto ?</string>
+    <string name="obd_odo_yes">Oui, l\'utiliser</string>
+    <string name="obd_odo_no">Non</string>
+    <string name="obd_odo_warn_msg">Le kilométrage du calculateur est passé de %1$s à %2$s. Cela semble anormal, donc il n\'a pas été appliqué. Utiliser la nouvelle valeur ?</string>
+    <string name="obd_odo_accept">Utiliser la nouvelle valeur</string>
+    <string name="obd_odo_dismiss">Ignorer</string>
+    <string name="obd_odo_last">Dernière lecture du calculateur : %1$s (%2$s)</string>
+    <string name="obd_odo_take">Prendre le kilométrage du calculateur</string>
+</resources>

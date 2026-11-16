@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_odo_ask_msg">La centralina motore segna %1$s. Usarlo come chilometraggio di questa moto?</string>
+    <string name="obd_odo_yes">Sì, usalo</string>
+    <string name="obd_odo_no">No</string>
+    <string name="obd_odo_warn_msg">I km della centralina sono passati da %1$s a %2$s. Sembra strano, quindi non sono stati applicati. Usare il nuovo valore?</string>
+    <string name="obd_odo_accept">Usa il nuovo valore</string>
+    <string name="obd_odo_dismiss">Ignora</string>
+    <string name="obd_odo_last">Ultima lettura della centralina: %1$s (%2$s)</string>
+    <string name="obd_odo_take">Prendi il chilometraggio dalla centralina</string>
+</resources>

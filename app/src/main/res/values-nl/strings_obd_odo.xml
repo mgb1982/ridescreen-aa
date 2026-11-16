@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_odo_ask_msg">De motorbesturing toont %1$s. Dit als kilometerstand van deze motor gebruiken?</string>
+    <string name="obd_odo_yes">Ja, gebruik het</string>
+    <string name="obd_odo_no">Nee</string>
+    <string name="obd_odo_warn_msg">De km van de motorbesturing ging van %1$s naar %2$s. Dat lijkt vreemd, dus het is niet toegepast. De nieuwe waarde gebruiken?</string>
+    <string name="obd_odo_accept">Nieuwe waarde gebruiken</string>
+    <string name="obd_odo_dismiss">Negeren</string>
+    <string name="obd_odo_last">Laatste meting van de motorbesturing: %1$s (%2$s)</string>
+    <string name="obd_odo_take">Kilometerstand uit de motorbesturing overnemen</string>
+</resources>

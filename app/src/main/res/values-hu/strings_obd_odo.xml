@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_odo_ask_msg">A motorvezérlő %1$s értéket mutat. Ezt használjuk a motor futásteljesítményeként?</string>
+    <string name="obd_odo_yes">Igen, használjuk</string>
+    <string name="obd_odo_no">Nem</string>
+    <string name="obd_odo_warn_msg">A motorvezérlő km-értéke %1$s-ről %2$s-re változott. Ez furcsának tűnik, ezért nem lett alkalmazva. Használjuk az új értéket?</string>
+    <string name="obd_odo_accept">Az új érték használata</string>
+    <string name="obd_odo_dismiss">Figyelmen kívül hagyás</string>
+    <string name="obd_odo_last">A motorvezérlő utolsó értéke: %1$s (%2$s)</string>
+    <string name="obd_odo_take">Futásteljesítmény átvétele a motorvezérlőtől</string>
+</resources>

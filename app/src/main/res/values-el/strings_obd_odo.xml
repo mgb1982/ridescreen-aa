@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="obd_odo_ask_msg">Η μονάδα ελέγχου κινητήρα δείχνει %1$s. Να χρησιμοποιηθεί ως χιλιόμετρα αυτής της μοτοσικλέτας;</string>
+    <string name="obd_odo_yes">Ναι, χρησιμοποίησέ το</string>
+    <string name="obd_odo_no">Όχι</string>
+    <string name="obd_odo_warn_msg">Τα χιλιόμετρα της μονάδας ελέγχου άλλαξαν από %1$s σε %2$s. Φαίνεται περίεργο, γι\' αυτό δεν εφαρμόστηκαν. Να χρησιμοποιηθεί η νέα τιμή;</string>
+    <string name="obd_odo_accept">Χρησιμοποίησε τη νέα τιμή</string>
+    <string name="obd_odo_dismiss">Αγνόησε</string>
+    <string name="obd_odo_last">Τελευταία ένδειξη μονάδας ελέγχου: %1$s (%2$s)</string>
+    <string name="obd_odo_take">Πάρε τα χιλιόμετρα από τη μονάδα ελέγχου</string>
+</resources>
