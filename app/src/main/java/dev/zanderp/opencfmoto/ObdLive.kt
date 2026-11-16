@@ -215,7 +215,8 @@ object ObdLive {
             val mode = pickMode(elm, pids)
             elm.verbose = false   // from here on only summaries: a live reader must not flood the log
             log("live reader: reading ${pids.joinToString(", ") { ObdDecode.pid(it)!!.name }} · ${mode.label}")
-            readOnceInfo(ctx, elm, supported, stats)
+            val countSuffix = if (mode == Mode.SINGLE_COUNT) "1" else ""
+            readOnceInfo(ctx, elm, supported, stats, countSuffix)
             val misses = ObdExtras.Misses()
             val rate = ObdExtras.Rate(SystemClock.elapsedRealtime())
             var extraStep = 0
@@ -248,7 +249,7 @@ object ObdLive {
                     }
                 }
                 // One extra PID per round (rotating), outside the nine dashboard PIDs: never in the snapshot.
-                ObdExtras.rotatingPid(supported, misses.dead, extraStep++)?.let { readExtra(elm, it, stats, misses) }
+                ObdExtras.rotatingPid(supported, misses.dead, extraStep++)?.let { readExtra(elm, it, stats, misses, countSuffix) }
                 rate.onRound(got.containsKey(0x0C))
                 if (rate.due(SystemClock.elapsedRealtime())) {
                     ObdExtras.extrasLine(stats)?.let { log("extras: $it") }
@@ -271,14 +272,14 @@ object ObdLive {
     }
 
     /** Once per connection: the fixed text PIDs and the counters (only those the ECU lists), one log line; PID 31 feeds [EcuOdoStore]. */
-    private fun readOnceInfo(ctx: Context, elm: ObdProbe.Elm, supported: Set<Int>, stats: ObdExtras.Stats) {
+    private fun readOnceInfo(ctx: Context, elm: ObdProbe.Elm, supported: Set<Int>, stats: ObdExtras.Stats, countSuffix: String) {
         val fixed = ObdExtras.fixedFor(supported).mapNotNull { pid ->
             if (stopping()) return
-            ObdDecode.fixedText(pid, elm.cmd("01%02X".format(pid) + "1", 2_000))?.let { pid to it }
+            ObdDecode.fixedText(pid, elm.cmd("01%02X".format(pid) + countSuffix, 2_000))?.let { pid to it }
         }
         val counters = ObdExtras.countersFor(supported).mapNotNull { pid ->
             if (stopping()) return
-            ObdDecode.value(elm.cmd("01%02X".format(pid) + "1", 2_000), pid)?.let { pid to it }
+            ObdDecode.value(elm.cmd("01%02X".format(pid) + countSuffix, 2_000), pid)?.let { pid to it }
         }
         counters.forEach { (pid, v) -> stats.record(pid, v) }
         ObdExtras.connectLine(fixed, counters)?.let { log("once: $it") }
@@ -288,8 +289,8 @@ object ObdLive {
     }
 
     /** One rotating extra PID; its value (and the O2 sensors' fuel trim) goes to [stats], a silent PID to [misses]. */
-    private fun readExtra(elm: ObdProbe.Elm, pid: Int, stats: ObdExtras.Stats, misses: ObdExtras.Misses) {
-        val reply = elm.cmd("01%02X".format(pid) + "1", 2_000)
+    private fun readExtra(elm: ObdProbe.Elm, pid: Int, stats: ObdExtras.Stats, misses: ObdExtras.Misses, countSuffix: String) {
+        val reply = elm.cmd("01%02X".format(pid) + countSuffix, 2_000)
         val v = ObdDecode.value(reply, pid)
         if (v != null) {
             stats.record(pid, v)
