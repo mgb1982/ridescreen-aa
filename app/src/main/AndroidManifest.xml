@@ -109,12 +109,24 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- Keyless-box shortcuts; the file is per store flavor (targetPackage differs). -->
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".DashboardToggleActivity"
             android:exported="false"
             android:excludeFromRecents="true"
             android:theme="@android:style/Theme.NoDisplay" />
+        <!-- Keyless-box voice shortcuts. Not exported: the launcher starts a package's own shortcuts on its behalf. -->
+        <activity
+            android:name=".PkeVoiceActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".QrScanActivity"
             android:exported="false" />

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App-icon shortcuts for the keyless box (Gemini / Google Assistant open them by name). -->
+    <string name="pke_voice_lock_short">Lock bike</string>
+    <string name="pke_voice_lock_long">Lock the bike</string>
+    <string name="pke_voice_unlock_short">Unlock bike</string>
+    <string name="pke_voice_unlock_long">Unlock the bike</string>
+    <string name="pke_voice_seat_short">Open seat</string>
+    <string name="pke_voice_seat_long">Open the seat</string>
+    <string name="pke_voice_tank_short">Open fuel cap</string>
+    <string name="pke_voice_tank_long">Open the fuel cap</string>
+</resources>
