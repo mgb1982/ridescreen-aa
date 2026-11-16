@@ -242,7 +242,7 @@ object AaSelfMode {
 
             log(
                 "[AA] SelfMode BT: bonded=${bonded.size} " +
-                    "connectedMac=${anyConnected?.mac} selected=${selected?.address} " +
+                    "connectedMac=${AaBtPick.mask(anyConnected?.mac)} selected=${AaBtPick.mask(selected?.address)} " +
                     "name=${selected?.name}",
             )
             selected?.address

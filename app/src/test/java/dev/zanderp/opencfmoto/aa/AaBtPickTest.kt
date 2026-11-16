@@ -31,4 +31,20 @@ class AaBtPickTest {
 
     @Test fun onlyTheObdAdapterMeansNothing() =
         assertEquals(null, AaBtPick.pick(listOf(obd), null, "Android-Vlink", false))
+
+    @Test fun obdNamesNeverPickedEvenWithoutTheSetting() {
+        val other = AaBtPick.Dev("OBDII", "EE:EE:EE:EE:00:02", true)
+        assertEquals(dash, AaBtPick.pick(listOf(other, obd, dash), null, null, false))
+        assertTrue(AaBtPick.isObdName("Android-Vlink"))
+    }
+
+    @Test fun aHeadsetChosenAsTriggerIsNotTheCar() {
+        val helmet = AaBtPick.Dev("Cardo PACKTALK", "FF:FF:FF:FF:00:03", false)
+        assertEquals(dash, AaBtPick.pick(listOf(helmet, dash), helmet.mac, null, false))
+    }
+
+    @Test fun macsAreMaskedInTheLog() {
+        assertEquals("**:**:**:**:10:66", AaBtPick.mask("BB:BB:BB:BB:10:66"))
+        assertEquals(null, AaBtPick.mask(null))
+    }
 }

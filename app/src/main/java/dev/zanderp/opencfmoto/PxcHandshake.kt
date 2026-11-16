@@ -301,7 +301,7 @@ class PxcHandshake(
         resyncsThisBoot++
         ClockLab.resyncsThisBoot = resyncsThisBoot
         // This connection; if another one has started by the time the delay ends, the drop is stale.
-        val generation = connsThisProcess
+        val generation = resyncGen
         log("[RESYNC] $reason — dropping the link in ${delayMs / 1000}s")
         val dropNow = {
             // Show "adjusting dash clock…" (phone + watch) until the reconnect answers QUERY_TIME again,
@@ -318,10 +318,11 @@ class PxcHandshake(
         }
         Thread({
             try { Thread.sleep(delayMs) } catch (_: InterruptedException) { return@Thread }
-            if (connsThisProcess != generation) {
+            if (resyncGen != generation) {
+                // Not refunded on purpose: a refund here could race the new connection's own count.
                 log("[RESYNC] skipped: the link was rebuilt meanwhile (that connection gets its own check)")
-                resyncsThisBoot = (resyncsThisBoot - 1).coerceAtLeast(0)
-                ClockLab.resyncsThisBoot = resyncsThisBoot
+                ClockLab.resyncBusyUntil = 0L
+                ConnectionState.refresh()
                 return@Thread
             }
             dropNow()
@@ -340,6 +341,7 @@ class PxcHandshake(
         dashInfoAtEpochMs = now
         connsThisBoot = if (newBoot) 1 else connsThisBoot + 1
         connsThisProcess++
+        resyncGen++
         ClockLab.lastDashBootEpochMs = bootMs
         ClockLab.connsThisBoot = connsThisBoot
         log("[CLOCK] dash up ${DashBoot.fmtSeconds(uptimeMs)} at CLIENT_INFO · connection $connsThisBoot of this dash boot " +
@@ -484,6 +486,8 @@ class PxcHandshake(
         @Volatile private var resyncsThisBoot = 0
         /** elapsedRealtime of the last automatic resync drop of this boot (0 = none). */
         @Volatile private var lastResyncAtElapsed = 0L
+        /** Bumped on every new dash connection and on a manual Connect: a deferred resync drop checks it. */
+        @Volatile private var resyncGen = 0
 
         // Log-only dash boot tracking (CLIENT_INFO currentHUTime = ms since the dash booted).
         @Volatile private var dashUptimeAtInfoMs = 0L
@@ -496,6 +500,7 @@ class PxcHandshake(
         fun resetResyncBudget() {
             resyncsThisBoot = 0
             lastResyncAtElapsed = 0L
+            resyncGen++
             ClockLab.resyncsThisBoot = 0
         }
     }
