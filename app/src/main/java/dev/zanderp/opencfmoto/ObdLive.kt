@@ -180,6 +180,7 @@ object ObdLive {
         if (dev == null) { log("live reader: '$adapterName' is not paired any more"); return false }
         runCatching { bt.cancelDiscovery() }
         val socket = ObdProbe.connect(dev) ?: return false
+        val stats = ObdExtras.Stats()   // every PID read on this connection, for the closing "ranges" line
         try {
             val elm = ObdProbe.Elm(socket.inputStream, socket.outputStream)
             elm.cmd("ATZ", 3_000)
@@ -214,6 +215,10 @@ object ObdLive {
             val mode = pickMode(elm, pids)
             elm.verbose = false   // from here on only summaries: a live reader must not flood the log
             log("live reader: reading ${pids.joinToString(", ") { ObdDecode.pid(it)!!.name }} · ${mode.label}")
+            readOnceInfo(ctx, elm, supported, stats)
+            val misses = ObdExtras.Misses()
+            val rate = ObdExtras.Rate(SystemClock.elapsedRealtime())
+            var extraStep = 0
             var round = 0
             var failed = 0
             while (!stopping()) {
@@ -225,6 +230,7 @@ object ObdLive {
                     if (++failed >= 5) { log("live reader: 5 empty rounds in a row — reconnecting"); return true }
                 } else {
                     failed = 0
+                    got.forEach { (pid, v) -> stats.record(pid, v) }
                     val prev = latest
                     val snapshot = Snapshot(
                         got[0x0C], got[0x0D] ?: prev?.speed, got[0x05] ?: prev?.coolant,
@@ -241,6 +247,13 @@ object ObdLive {
                         setEngine(e)
                     }
                 }
+                // One extra PID per round (rotating), outside the nine dashboard PIDs: never in the snapshot.
+                ObdExtras.rotatingPid(supported, misses.dead, extraStep++)?.let { readExtra(elm, it, stats, misses) }
+                rate.onRound(got.containsKey(0x0C))
+                if (rate.due(SystemClock.elapsedRealtime())) {
+                    ObdExtras.extrasLine(stats)?.let { log("extras: $it") }
+                    log("rate: ${rate.take(SystemClock.elapsedRealtime(), dashboardVisible())}")
+                }
                 if (round % 40 == 0) LogBus.logThrottled("obd-live", "[OBD] live: ${describe(latest)} (${now - t0} ms/round)", 60_000)
                 round++
                 // A5 · full rate only with the dashboard on the dash; otherwise one round every ~700 ms.
@@ -252,8 +265,37 @@ object ObdLive {
             }
             return true
         } finally {
+            ObdExtras.rangesLine(stats)?.let { log("ranges: $it") }
             runCatching { socket.close() }
         }
+    }
+
+    /** Once per connection: the fixed text PIDs and the counters (only those the ECU lists), one log line; PID 31 feeds [EcuOdoStore]. */
+    private fun readOnceInfo(ctx: Context, elm: ObdProbe.Elm, supported: Set<Int>, stats: ObdExtras.Stats) {
+        val fixed = ObdExtras.fixedFor(supported).mapNotNull { pid ->
+            if (stopping()) return
+            ObdDecode.fixedText(pid, elm.cmd("01%02X".format(pid) + "1", 2_000))?.let { pid to it }
+        }
+        val counters = ObdExtras.countersFor(supported).mapNotNull { pid ->
+            if (stopping()) return
+            ObdDecode.value(elm.cmd("01%02X".format(pid) + "1", 2_000), pid)?.let { pid to it }
+        }
+        counters.forEach { (pid, v) -> stats.record(pid, v) }
+        ObdExtras.connectLine(fixed, counters)?.let { log("once: $it") }
+        counters.firstOrNull { it.first == 0x31 }?.let { (_, v) ->
+            runCatching { EcuOdoStore.onReading(ctx, v.toInt()) }.getOrNull()?.let { LogBus.log(it) }
+        }
+    }
+
+    /** One rotating extra PID; its value (and the O2 sensors' fuel trim) goes to [stats], a silent PID to [misses]. */
+    private fun readExtra(elm: ObdProbe.Elm, pid: Int, stats: ObdExtras.Stats, misses: ObdExtras.Misses) {
+        val reply = elm.cmd("01%02X".format(pid) + "1", 2_000)
+        val v = ObdDecode.value(reply, pid)
+        if (v != null) {
+            stats.record(pid, v)
+            if (pid == 0x14 || pid == 0x15) ObdDecode.mode01Data(reply, pid)?.let { d -> ObdDecode.o2Trim(d)?.let { stats.record(pid + ObdExtras.TRIM_KEY, it) } }
+        }
+        if (misses.record(pid, v != null)) log("live reader: PID %02X doesn't answer · not asked again on this connection".format(pid))
     }
 
     @Volatile private var lastFull: Boolean? = null
