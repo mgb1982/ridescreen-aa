@@ -123,12 +123,14 @@ object BlackBox {
                 })
             }
         }
+        val impactOutcomeAtSave = impactOutcome
         impactWall = 0L
         try {
             val dir = dir(ctx).apply { mkdirs() }
-            File(dir, "bb_$at.json").writeText(json.toString())
-            dir.listFiles()?.sortedByDescending { it.name }?.drop(KEEP_FILES)?.forEach { it.delete() }
-            LogBus.log("[BLACKBOX] saved event ($impactOutcome)")
+            File(dir, BlackBoxPrune.fileName(at, impactOutcomeAtSave)).writeText(json.toString())
+            val names = dir.listFiles()?.map { it.name }.orEmpty()
+            BlackBoxPrune.toDelete(names, KEEP_FILES).forEach { File(dir, it).delete() }
+            LogBus.log("[BLACKBOX] saved event ($impactOutcomeAtSave)")
         } catch (e: Exception) {
             LogBus.log("[BLACKBOX] save failed: $e")
         }

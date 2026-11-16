@@ -228,20 +228,21 @@ object AaSelfMode {
                 emptyList()
             }
 
-            val connected = bonded.filter { it.isConnectedCompat() }
-            val bikeConnected = connected.firstOrNull { it.isBikeLookingName() }
-            val anyConnected = bikeConnected ?: connected.firstOrNull()
-
-            // Prefer a live connection; else bike-looking bond; never a random first bond when
-            // audio is connected but we couldn't resolve which device (use first bond only then).
-            val selected = anyConnected
-                ?: bonded.firstOrNull { it.isBikeLookingName() }
-                ?: if (audioConnected) bonded.firstOrNull() else null
-                ?: bonded.firstOrNull()
+            val devs = bonded.map { d ->
+                AaBtPick.Dev(runCatching { d.name }.getOrNull(), d.address, d.isConnectedCompat())
+            }
+            val chosen = AaBtPick.pick(
+                devs,
+                dev.zanderp.opencfmoto.AppSettings.btTriggerMac(context),
+                dev.zanderp.opencfmoto.AppSettings.obdLiveAdapter(context),
+                audioConnected,
+            )
+            val anyConnected = devs.firstOrNull { it.connected && it.mac == chosen?.mac }
+            val selected = bonded.firstOrNull { it.address == chosen?.mac }
 
             log(
                 "[AA] SelfMode BT: bonded=${bonded.size} " +
-                    "connectedMac=${anyConnected?.address} selected=${selected?.address} " +
+                    "connectedMac=${anyConnected?.mac} selected=${selected?.address} " +
                     "name=${selected?.name}",
             )
             selected?.address
@@ -256,21 +257,6 @@ object AaSelfMode {
         (m.invoke(this) as? Boolean) == true
     } catch (_: Exception) {
         false
-    }
-
-    private fun BluetoothDevice.isBikeLookingName(): Boolean {
-        val n = name ?: return false
-        return n.contains("CFMOTO", ignoreCase = true) ||
-            n.contains("CFDL", ignoreCase = true) ||
-            n.contains("Bike", ignoreCase = true) ||
-            n.contains("Moto", ignoreCase = true) ||
-            n.contains("VOGE", ignoreCase = true) ||
-            n.contains("QJ", ignoreCase = true) ||
-            n.contains("Zontes", ignoreCase = true) ||
-            n.contains("Benelli", ignoreCase = true) ||
-            n.contains("Morini", ignoreCase = true) ||
-            n.contains("Alltrhike", ignoreCase = true) ||
-            n.contains("Kove", ignoreCase = true)
     }
 
     private fun createFakeNetwork(netId: Int): Parcelable? {
