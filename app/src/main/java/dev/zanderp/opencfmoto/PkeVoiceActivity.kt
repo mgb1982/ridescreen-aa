@@ -27,9 +27,11 @@ class PkeVoiceActivity : Activity() {
             finish(); return
         }
         val km = getSystemService(KeyguardManager::class.java)
-        val locked = km != null && (km.isKeyguardLocked || km.isDeviceLocked)
+        // Fail closed: without a KeyguardManager we can't know, so treat the phone as locked.
+        val locked = km == null || km.isKeyguardLocked || km.isDeviceLocked
         if (!PkeVoicePolicy.needsAuth(action, locked)) { run(action, locked); return }
-        km!!.requestDismissKeyguard(this, object : KeyguardManager.KeyguardDismissCallback() {
+        if (km == null) { LogBus.log(PkeVoicePolicy.cancelledLine(action)); finish(); return }
+        km.requestDismissKeyguard(this, object : KeyguardManager.KeyguardDismissCallback() {
             override fun onDismissSucceeded() { run(action, true) }
             override fun onDismissCancelled() { LogBus.log(PkeVoicePolicy.cancelledLine(action)); finish() }
             override fun onDismissError() { LogBus.log(PkeVoicePolicy.cancelledLine(action)); finish() }

@@ -41,7 +41,7 @@ class PkeActionService : Service() {
         }
         val app = applicationContext
         worker.execute {
-            LogBus.log("[PKE-widget] ${action.label} requested from the widget")
+            LogBus.log("[PKE-widget] ${action.label} requested from the widget or a shortcut")
             val res = try { PkeUnlock.send(app, action) } catch (e: Exception) {
                 LogBus.log("[PKE-widget] send failed: $e"); PkeUnlock.Result(false, PkeUnlock.Failure.NO_ANSWER)
             }
