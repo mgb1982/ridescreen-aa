@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · dash clock stuck after repeated resyncs (17 Nov 2026). Non-English: AI translation, no native review. -->
+<resources>
+    <string name="stat_clock_stuck">00:00? reinicia</string>
+    <string name="clock_stuck_body">El quadre continua sense agafar l\'hora després de diversos intents i tornar a connectar ja no ajuda. El que funciona és reiniciar-lo: amb la moto aturada, bloqueja-la i desbloqueja-la (o treu i posa el contacte). Vols provar-ho un altre cop igualment?</string>
+</resources>

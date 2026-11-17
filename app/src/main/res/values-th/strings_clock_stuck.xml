@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · dash clock stuck after repeated resyncs (17 Nov 2026). Non-English: AI translation, no native review. -->
+<resources>
+    <string name="stat_clock_stuck">00:00? รีสตาร์ท</string>
+    <string name="clock_stuck_body">หน้าปัดยังไม่รับเวลาหลังจากลองหลายครั้ง และการเชื่อมต่อใหม่ไม่ช่วยแล้วในครั้งนี้ วิธีที่ได้ผลคือรีสตาร์ทหน้าปัด: จอดรถให้นิ่ง แล้วล็อกและปลดล็อก (หรือปิดและเปิดสวิตช์กุญแจ) ลองอีกครั้งเลยไหม?</string>
+</resources>

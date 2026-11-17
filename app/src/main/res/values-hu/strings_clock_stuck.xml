@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · dash clock stuck after repeated resyncs (17 Nov 2026). Non-English: AI translation, no native review. -->
+<resources>
+    <string name="stat_clock_stuck">00:00? újraindítás</string>
+    <string name="clock_stuck_body">A kijelző több próbálkozás után sem vette át az időt, és az újracsatlakozás most nem segít. Ami működik: újraindítás – álló motornál zárd le és oldd fel (vagy vedd le és add rá a gyújtást). Mégis megpróbálod újra?</string>
+</resources>

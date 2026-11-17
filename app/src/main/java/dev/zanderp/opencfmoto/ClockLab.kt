@@ -101,6 +101,17 @@ object ClockLab {
     @Volatile var resyncGaveUp: Boolean = false
 
     /**
+     * v2.5 · Resyncs stopped helping this dash boot (late again after [STUCK_AFTER_SLOW_RESYNCS] in a
+     * row): tell the rider to reboot the dash instead of dropping the link again. 17 Nov 2026 (125X):
+     * four reconnects in 40 s, automatic and by hand, all late and 00:00; a lock + unlock fixed it at once.
+     */
+    @Volatile var resyncStuck: Boolean = false
+    const val STUCK_AFTER_SLOW_RESYNCS = 2
+
+    /** Pure: resyncs in a row that came back late again → stop dropping the link this dash boot. */
+    fun dashLooksStuck(slowAfterResync: Int): Boolean = slowAfterResync >= STUCK_AFTER_SLOW_RESYNCS
+
+    /**
      * The dash joins the phone's hotspot (Carbit QR action=128, Zontes 125M). Set from the QR on
      * every connect; on channel 21322 it turns on the Zontes clock fix ([PxcHandshake.clockFixDash]).
      */

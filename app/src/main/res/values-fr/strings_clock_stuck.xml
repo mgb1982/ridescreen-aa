@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · dash clock stuck after repeated resyncs (17 Nov 2026). Non-English: AI translation, no native review. -->
+<resources>
+    <string name="stat_clock_stuck">00:00 ? redémarre</string>
+    <string name="clock_stuck_body">Le tableau de bord n\'a toujours pas pris l\'heure après plusieurs essais et se reconnecter n\'aide plus. Ce qui marche, c\'est de le redémarrer : moto à l\'arrêt, verrouille-la puis déverrouille-la (ou coupe et remets le contact). Réessayer quand même ?</string>
+</resources>

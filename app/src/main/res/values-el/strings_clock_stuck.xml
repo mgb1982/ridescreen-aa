@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · dash clock stuck after repeated resyncs (17 Nov 2026). Non-English: AI translation, no native review. -->
+<resources>
+    <string name="stat_clock_stuck">00:00; επανεκκίνηση</string>
+    <string name="clock_stuck_body">Η οθόνη ακόμα δεν πήρε την ώρα μετά από αρκετές προσπάθειες και η επανασύνδεση δεν βοηθά πια. Αυτό που δουλεύει είναι η επανεκκίνηση: με τη μοτοσικλέτα σταματημένη, κλείδωσέ την και ξεκλείδωσέ την (ή κλείσε και άνοιξε τον διακόπτη). Να δοκιμάσω ξανά παρ\' όλα αυτά;</string>
+</resources>

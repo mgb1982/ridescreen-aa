@@ -1419,6 +1419,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView?>(R.id.stat_clock_label)?.setText(
             when {
                 ClockLab.resyncInProgress() -> R.string.stat_clock_adjusting
+                ClockLab.resyncStuck && ConnectionState.phase == Phase.STREAMING -> R.string.stat_clock_stuck
                 ClockLab.resyncGaveUp && ConnectionState.phase == Phase.STREAMING -> R.string.stat_clock_fix
                 ConnectionState.phase == Phase.STREAMING -> R.string.stat_clock_ok
                 else -> R.string.stat_clock
@@ -1437,7 +1438,7 @@ class MainActivity : AppCompatActivity() {
             }
             com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.clock_fix_title)
-                .setMessage(R.string.clock_fix_body)
+                .setMessage(if (ClockLab.resyncStuck) R.string.clock_stuck_body else R.string.clock_fix_body)
                 .setPositiveButton(R.string.clock_fix_ok) { _, _ ->
                     log(ClockLab.clockWrongLine("button"))
                     val ok = BikeLink.prober?.requestClockResync() == true

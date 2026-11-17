@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · dash clock stuck after repeated resyncs (17 Nov 2026). Non-English: AI translation, no native review. -->
+<resources>
+    <string name="stat_clock_stuck">00:00? reinicia</string>
+    <string name="clock_stuck_body">O painel continua sem apanhar a hora após várias tentativas e voltar a ligar já não ajuda. O que funciona é reiniciá-lo: com a mota parada, bloqueia-a e desbloqueia-a (ou desliga e liga a ignição). Tentar outra vez mesmo assim?</string>
+</resources>

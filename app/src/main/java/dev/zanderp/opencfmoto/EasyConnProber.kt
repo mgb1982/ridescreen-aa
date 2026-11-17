@@ -87,6 +87,7 @@ class EasyConnProber(
     fun requestClockResync(): Boolean {
         if (!running || synchronized(activeClients) { activeClients.isEmpty() }) return false
         ClockLab.resyncGaveUp = false
+        PxcHandshake.onManualResync()
         ClockLab.resyncBusyUntil = android.os.SystemClock.elapsedRealtime() +
             PxcHandshake.RESYNC_BUSY_GRACE_MS
         ConnectionState.refresh()

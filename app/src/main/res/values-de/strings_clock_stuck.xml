@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · dash clock stuck after repeated resyncs (17 Nov 2026). Non-English: AI translation, no native review. -->
+<resources>
+    <string name="stat_clock_stuck">00:00? Neustart</string>
+    <string name="clock_stuck_body">Das Display hat die Uhrzeit nach mehreren Versuchen immer noch nicht übernommen, und neu verbinden hilft diesmal nicht. Was hilft: neu starten – bei stehendem Motorrad ver- und entriegeln (oder Zündung aus und wieder an). Trotzdem noch einmal versuchen?</string>
+</resources>

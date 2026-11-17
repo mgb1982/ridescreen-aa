@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · dash clock stuck after repeated resyncs (17 Nov 2026). Non-English: AI translation, no native review. -->
+<resources>
+    <string name="stat_clock_stuck">00:00? 재시작</string>
+    <string name="clock_stuck_body">여러 번 시도했지만 계기판이 아직 시간을 받지 못했고, 다시 연결해도 이번에는 소용이 없습니다. 재시작하면 해결됩니다: 오토바이를 세운 상태에서 잠갔다가 잠금 해제하세요(또는 시동 키를 껐다 켜세요). 그래도 한 번 더 시도할까요?</string>
+</resources>

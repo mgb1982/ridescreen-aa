@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · dash clock stuck after repeated resyncs (17 Nov 2026). Non-English: AI translation, no native review. -->
+<resources>
+    <string name="stat_clock_stuck">¿00:00? reinicia</string>
+    <string name="clock_stuck_body">El cuadro sigue sin coger la hora tras varios intentos y volver a conectar ya no ayuda esta vez. Lo que funciona es reiniciarlo: con la moto parada, bloquéala y desbloquéala (o quita y pon el contacto). ¿Probar otra vez de todos modos?</string>
+</resources>

@@ -127,4 +127,12 @@ class ClockLabTest {
         assertEquals(3_000L, ClockLab.resyncDelayMs(2, 30_000L, 3_000L))
         assertEquals(3_000L, ClockLab.resyncDelayMs(1, 18_500L, 3_000L))
     }
+
+    @Test fun dashLooksStuckAfterTwoLateResyncsInARow() {
+        // 17 Nov 2026 (125X): 2180 → resync → 2151 → rider's resync → 2381: stop dropping, ask for a dash reboot.
+        assertEquals(false, ClockLab.dashLooksStuck(0))
+        assertEquals(false, ClockLab.dashLooksStuck(1))
+        assertEquals(true, ClockLab.dashLooksStuck(2))
+        assertEquals(true, ClockLab.dashLooksStuck(3))
+    }
 }

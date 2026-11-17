@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · dash clock stuck after repeated resyncs (17 Nov 2026). Non-English: AI translation, no native review. -->
+<resources>
+    <string name="stat_clock_stuck">00:00? herstart</string>
+    <string name="clock_stuck_body">Het dashboard neemt de tijd na meerdere pogingen nog steeds niet over en opnieuw verbinden helpt nu niet. Wat werkt is het herstarten: met de motor stil vergrendelen en ontgrendelen (of het contact uit en aan). Toch nog eens proberen?</string>
+</resources>

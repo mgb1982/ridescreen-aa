@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · dash clock stuck after repeated resyncs (17 Nov 2026). Non-English: AI translation, no native review. -->
+<resources>
+    <string name="stat_clock_stuck">00:00? yeniden başlat</string>
+    <string name="clock_stuck_body">Gösterge birkaç denemeye rağmen saati almadı ve yeniden bağlanmak artık işe yaramıyor. İşe yarayan yeniden başlatmak: motor dururken kilitleyip kilidini aç (ya da kontağı kapatıp aç). Yine de bir kez daha denensin mi?</string>
+</resources>
