@@ -117,15 +117,20 @@ object DashboardMode {
     }
 
     // 2.5 · the rider's own picture behind the dashboards (per bike, see [DashBackground]).
-    fun bgMode(ctx: Context): DashBackground.Mode = DashBackground.Mode.byId(BikeScope.getString(prefs(ctx), ctx, "bg_mode", null))
+    /** IMAGE only when this bike's own file exists (the saved mode can be inherited from the global key). */
+    fun bgMode(ctx: Context): DashBackground.Mode = DashBackground.effectiveMode(
+        DashBackground.Mode.byId(BikeScope.getString(prefs(ctx), ctx, "bg_mode", null)),
+        DashBackgroundStore.file(ctx).isFile)
     fun bgFit(ctx: Context): DashBackground.Fit = DashBackground.Fit.byId(BikeScope.getString(prefs(ctx), ctx, "bg_fit", null))
     fun bgVeil(ctx: Context): Int = DashBackground.clampVeil(BikeScope.getInt(prefs(ctx), ctx, "bg_veil", DashBackground.VEIL_DEFAULT))
     fun setBgFit(ctx: Context, fit: DashBackground.Fit) = BikeScope.putString(prefs(ctx), ctx, "bg_fit", fit.id)
     fun setBgVeil(ctx: Context, pct: Int) = BikeScope.putInt(prefs(ctx), ctx, "bg_veil", DashBackground.clampVeil(pct))
     /** A new picture was saved: remember its timestamp so every cache sees it changed. */
-    fun setBgImage(ctx: Context, versionMs: Long) {
-        BikeScope.putString(prefs(ctx), ctx, "bg_version", versionMs.toString())
-        BikeScope.putString(prefs(ctx), ctx, "bg_mode", DashBackground.Mode.IMAGE.id)
+    fun setBgImage(ctx: Context, versionMs: Long, bikeKey: String? = BikeScope.suffix(ctx)) {
+        // [bikeKey] is the one captured when the pick started (the selected bike may have changed meanwhile).
+        fun k(base: String) = bikeKey?.let { "$base#$it" } ?: base
+        prefs(ctx).edit().putString(k("bg_version"), versionMs.toString())
+            .putString(k("bg_mode"), DashBackground.Mode.IMAGE.id).apply()
     }
     /** Back to the original background; the file goes too. */
     fun clearBgImage(ctx: Context) {

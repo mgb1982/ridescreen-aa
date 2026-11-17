@@ -46,10 +46,12 @@ class DashStyleSheet : BottomSheetDialogFragment() {
     }
 
     private fun importBackground(uri: Uri) {
+        if (DashBackgroundStore.isImporting()) return   // one at a time: ignore another choice meanwhile
         val app = requireContext().applicationContext
+        val bikeKey = BikeScope.suffix(app)   // captured before the thread: the bike can change meanwhile
         Thread({
-            val ok = DashBackgroundStore.import(app, uri)
-            if (ok) DashboardMode.setBgImage(app, System.currentTimeMillis())
+            val ok = DashBackgroundStore.import(app, uri, bikeKey)
+            if (ok) DashboardMode.setBgImage(app, System.currentTimeMillis(), bikeKey)
             LogBus.log("[DASHBOARD] background image ${if (ok) "saved" else "import failed"}")
             activity?.runOnUiThread {
                 if (!isAdded) return@runOnUiThread

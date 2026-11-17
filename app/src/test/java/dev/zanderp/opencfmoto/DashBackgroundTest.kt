@@ -94,12 +94,37 @@ class DashBackgroundTest {
         assertEquals(1, DashBackground.sampleSize(0, 0, 100, 100))
     }
 
-    @Test fun exifOrientationToDegrees() {
-        assertEquals(0, DashBackground.exifDegrees(1))
-        assertEquals(90, DashBackground.exifDegrees(6))
-        assertEquals(180, DashBackground.exifDegrees(3))
-        assertEquals(270, DashBackground.exifDegrees(8))
-        assertEquals(0, DashBackground.exifDegrees(0))
+    @Test fun exifOrientationToTransform() {
+        assertEquals(DashBackground.Orientation(0, false), DashBackground.exifTransform(1))
+        assertEquals(DashBackground.Orientation(90, false), DashBackground.exifTransform(6))
+        assertEquals(DashBackground.Orientation(180, false), DashBackground.exifTransform(3))
+        assertEquals(DashBackground.Orientation(270, false), DashBackground.exifTransform(8))
+        assertEquals(DashBackground.Orientation(0, false), DashBackground.exifTransform(0))
+    }
+
+    @Test fun mirroredExifValuesFlip() {
+        assertEquals(DashBackground.Orientation(0, true), DashBackground.exifTransform(2))
+        assertEquals(DashBackground.Orientation(180, true), DashBackground.exifTransform(4))
+        assertEquals(DashBackground.Orientation(270, true), DashBackground.exifTransform(5))
+        assertEquals(DashBackground.Orientation(90, true), DashBackground.exifTransform(7))
+    }
+
+    @Test fun transparencyChoosesPng() {
+        assertTrue(DashBackground.anyTransparent(intArrayOf(0xFFFFFFFF.toInt(), 0x80112233.toInt())))
+        assertTrue(!DashBackground.anyTransparent(intArrayOf(0xFFFFFFFF.toInt(), 0xFF000000.toInt())))
+        assertTrue(!DashBackground.anyTransparent(intArrayOf(0x00000000, 0xFF000000.toInt()), 0))
+        assertTrue(DashBackground.savesAsPng(true))
+        assertTrue(!DashBackground.savesAsPng(false))
+        assertEquals("b1.png", DashBackground.fileName("b1", true))
+        assertTrue(DashBackground.isPngName("/x/dash_bg/b1.png"))
+        assertTrue(!DashBackground.isPngName("/x/dash_bg/b1.jpg"))
+        assertTrue(!DashBackground.isPngName(null))
+    }
+
+    @Test fun missingFileMeansOriginalBackground() {
+        assertEquals(Mode.DEFAULT, DashBackground.effectiveMode(Mode.IMAGE, false))
+        assertEquals(Mode.IMAGE, DashBackground.effectiveMode(Mode.IMAGE, true))
+        assertEquals(Mode.DEFAULT, DashBackground.effectiveMode(Mode.DEFAULT, true))
     }
 
     @Test fun averageColorOfBorders() {

@@ -313,8 +313,15 @@ internal object DashboardRenderer {
             val lc = Canvas(layerBmp)
             lc.drawColor(p.bg)
             // Rider's picture (decoded to w×h once, see [bgBitmap]) + a veil of the palette's own background colour.
-            val img = if (bg.isImage) bgBitmap(w, h, bg, standalone) else null
+            val img = if (bg.isImage) bgBitmap(w, h, bg, standalone) else { releaseBg(); null }
             if (img != null) {
+                if (DashBackground.isPngName(bg.path) && design != DashboardMode.Design.WINDOW) {
+                    // A crest with transparent pixels: the original background shows through it.
+                    lc.save(); lc.translate(dx, dy); lc.scale(scale, scale)
+                    pass = Pass.STATIC
+                    drawBackground(lc, p, design)
+                    lc.restore()
+                }
                 lc.drawBitmap(img, 0f, 0f, null)
                 lc.drawColor(alpha(p.bg, DashBackground.veilAlpha(bg.veil)))
             }
@@ -342,6 +349,13 @@ internal object DashboardRenderer {
     private val liveBg = BgSlot()
     private val previewBg = BgSlot()
 
+    /** The rider went back to the original background: free the decoded pictures. */
+    private fun releaseBg() {
+        for (slot in listOf(liveBg, previewBg)) {
+            slot.bmp?.recycle(); slot.bmp = null; slot.key = ""
+        }
+    }
+
     private fun bgBitmap(w: Int, h: Int, bg: DashBackground.Setting, standalone: Boolean): Bitmap? {
         val slot = if (standalone) previewBg else liveBg
         val key = "${bg.path}|${bg.version}|${bg.fit.id}|${w}x$h"
@@ -366,9 +380,9 @@ internal object DashboardRenderer {
         val src = android.graphics.BitmapFactory.decodeFile(path, opts) ?: return null
         val out = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
         val cv = Canvas(out)
-        if (bg.fit == DashBackground.Fit.FIT) cv.drawColor(edgeColor(src))
-        val box = DashBackground.destBox(bg.fit, src.width, src.height, w, h)
-        val dst = RectF(box.left, box.top, box.right, box.bottom)
+        if (bg.fit == DashBackground.Fit.FIT && !src.hasAlpha()) cv.drawColor(edgeColor(src))
+        val target = DashBackground.destBox(bg.fit, src.width, src.height, w, h)
+        val dst = RectF(target.left, target.top, target.right, target.bottom)
         cv.drawBitmap(src, null, dst, Paint(Paint.FILTER_BITMAP_FLAG))
         src.recycle()
         return out

@@ -54,10 +54,27 @@ object DashBackground {
         if (mode == Mode.DEFAULT) "bg:default" else "bg:${mode.id}:${fit.id}:${clampVeil(veil)}:$version"
 
     /** File name per bike; [bikeKey] is [BikeScope.suffix] or null (no bike selected). Only safe characters. */
-    fun fileName(bikeKey: String?): String {
+    fun fileName(bikeKey: String?, png: Boolean = false): String {
         val safe = (bikeKey ?: "").filter { it.isLetterOrDigit() || it == '-' || it == '_' }.ifEmpty { "global" }
-        return "$safe.jpg"
+        return "$safe.${if (png) "png" else "jpg"}"
     }
+
+    /** A picture with transparent pixels (a PNG crest) is saved as PNG so it keeps them; the rest as JPEG. */
+    fun savesAsPng(anyTransparent: Boolean): Boolean = anyTransparent
+
+    fun isPngName(path: String?): Boolean = path?.endsWith(".png", ignoreCase = true) == true
+
+    /** True when any of the first [count] ARGB pixels is not fully opaque. */
+    fun anyTransparent(pixels: IntArray, count: Int = pixels.size): Boolean {
+        for (i in 0 until minOf(count, pixels.size)) if ((pixels[i] ushr 24) != 0xFF) return true
+        return false
+    }
+
+    /**
+     * Only this bike's own picture counts: a saved IMAGE mode (which may be inherited from the global
+     * setting) with no file for this bike is the original background.
+     */
+    fun effectiveMode(saved: Mode, fileExists: Boolean): Mode = if (fileExists) saved else Mode.DEFAULT
 
     /**
      * Where to draw a [srcW]x[srcH] picture on a [dstW]x[dstH] canvas. FILL: scaled to cover and centred (the
@@ -90,12 +107,19 @@ object DashBackground {
         return s
     }
 
-    /** EXIF orientation value to clockwise degrees (values of android.media.ExifInterface.ORIENTATION_*). */
-    fun exifDegrees(orientation: Int): Int = when (orientation) {
-        6, 5 -> 90      // ROTATE_90, TRANSPOSE
-        3 -> 180        // ROTATE_180
-        8, 7 -> 270     // ROTATE_270, TRANSVERSE
-        else -> 0
+    /** Flip left-right first, then rotate clockwise by [degrees]. */
+    data class Orientation(val degrees: Int, val flipH: Boolean)
+
+    /** EXIF orientation (values of android.media.ExifInterface.ORIENTATION_*, 2/4/5/7 are mirrored) to a transform. */
+    fun exifTransform(orientation: Int): Orientation = when (orientation) {
+        2 -> Orientation(0, true)      // FLIP_HORIZONTAL
+        3 -> Orientation(180, false)   // ROTATE_180
+        4 -> Orientation(180, true)    // FLIP_VERTICAL
+        5 -> Orientation(270, true)    // TRANSPOSE
+        6 -> Orientation(90, false)    // ROTATE_90
+        7 -> Orientation(90, true)     // TRANSVERSE
+        8 -> Orientation(270, false)   // ROTATE_270
+        else -> Orientation(0, false)
     }
 
     /** Average opaque colour (0xFFRRGGBB) of [pixels] (ARGB ints); black when empty. */
