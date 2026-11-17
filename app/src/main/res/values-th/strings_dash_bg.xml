@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_bg_title">พื้นหลัง</string>
+    <string name="dash_bg_original">ต้นฉบับ</string>
+    <string name="dash_bg_image">รูปภาพ…</string>
+    <string name="dash_bg_fill">เติมเต็ม</string>
+    <string name="dash_bg_fit">พอดี</string>
+    <string name="dash_bg_veil">ม่าน: %1$d%%</string>
+    <string name="dash_bg_remove">ลบรูปภาพ</string>
+    <string name="dash_bg_hint">รูปของคุณเอง เช่น ตราทีม จะอยู่ในโทรศัพท์เครื่องนี้เท่านั้น</string>
+    <string name="dash_bg_failed">ใช้รูปนั้นไม่ได้ ลองรูปอื่น</string>
+</resources>

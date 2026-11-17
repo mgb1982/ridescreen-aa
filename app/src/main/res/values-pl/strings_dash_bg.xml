@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_bg_title">Tło</string>
+    <string name="dash_bg_original">Oryginał</string>
+    <string name="dash_bg_image">Obraz…</string>
+    <string name="dash_bg_fill">Wypełnij</string>
+    <string name="dash_bg_fit">Dopasuj</string>
+    <string name="dash_bg_veil">Zasłona: %1$d%%</string>
+    <string name="dash_bg_remove">Usuń obraz</string>
+    <string name="dash_bg_hint">Własne zdjęcie, na przykład herb drużyny. Zostaje na tym telefonie.</string>
+    <string name="dash_bg_failed">Nie udało się użyć tego obrazu. Spróbuj innego.</string>
+</resources>

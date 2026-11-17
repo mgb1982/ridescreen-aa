@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_bg_title">Φόντο</string>
+    <string name="dash_bg_original">Αρχικό</string>
+    <string name="dash_bg_image">Εικόνα…</string>
+    <string name="dash_bg_fill">Γέμισμα</string>
+    <string name="dash_bg_fit">Προσαρμογή</string>
+    <string name="dash_bg_veil">Πέπλο: %1$d%%</string>
+    <string name="dash_bg_remove">Αφαίρεση εικόνας</string>
+    <string name="dash_bg_hint">Δική σου εικόνα, για παράδειγμα το έμβλημα της ομάδας σου. Μένει σε αυτό το τηλέφωνο.</string>
+    <string name="dash_bg_failed">Δεν ήταν δυνατή η χρήση αυτής της εικόνας. Δοκίμασε μια άλλη.</string>
+</resources>

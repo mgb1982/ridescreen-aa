@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_bg_title">Pozadí</string>
+    <string name="dash_bg_original">Původní</string>
+    <string name="dash_bg_image">Obrázek…</string>
+    <string name="dash_bg_fill">Vyplnit</string>
+    <string name="dash_bg_fit">Přizpůsobit</string>
+    <string name="dash_bg_veil">Závoj: %1$d%%</string>
+    <string name="dash_bg_remove">Odebrat obrázek</string>
+    <string name="dash_bg_hint">Vlastní obrázek, například znak vašeho týmu. Zůstane jen v tomto telefonu.</string>
+    <string name="dash_bg_failed">Tento obrázek nelze použít. Zkuste jiný.</string>
+</resources>

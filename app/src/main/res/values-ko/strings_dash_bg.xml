@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_bg_title">배경</string>
+    <string name="dash_bg_original">원본</string>
+    <string name="dash_bg_image">이미지…</string>
+    <string name="dash_bg_fill">채우기</string>
+    <string name="dash_bg_fit">맞춤</string>
+    <string name="dash_bg_veil">베일: %1$d%%</string>
+    <string name="dash_bg_remove">이미지 제거</string>
+    <string name="dash_bg_hint">직접 고른 사진(예: 팀 엠블럼)입니다. 이 휴대폰에만 저장됩니다.</string>
+    <string name="dash_bg_failed">이 이미지를 사용할 수 없습니다. 다른 이미지를 선택하세요.</string>
+</resources>

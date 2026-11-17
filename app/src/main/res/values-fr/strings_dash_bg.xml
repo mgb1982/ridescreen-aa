@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_bg_title">Fond</string>
+    <string name="dash_bg_original">Original</string>
+    <string name="dash_bg_image">Image…</string>
+    <string name="dash_bg_fill">Remplir</string>
+    <string name="dash_bg_fit">Ajuster</string>
+    <string name="dash_bg_veil">Voile : %1$d%%</string>
+    <string name="dash_bg_remove">Retirer l\'image</string>
+    <string name="dash_bg_hint">Ta propre image, par exemple l\'écusson de ton équipe. Elle reste sur ce téléphone.</string>
+    <string name="dash_bg_failed">Impossible d\'utiliser cette image. Essaie-en une autre.</string>
+</resources>

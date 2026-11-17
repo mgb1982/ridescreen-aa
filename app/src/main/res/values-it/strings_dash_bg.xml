@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_bg_title">Sfondo</string>
+    <string name="dash_bg_original">Originale</string>
+    <string name="dash_bg_image">Immagine…</string>
+    <string name="dash_bg_fill">Riempi</string>
+    <string name="dash_bg_fit">Adatta</string>
+    <string name="dash_bg_veil">Velo: %1$d%%</string>
+    <string name="dash_bg_remove">Rimuovi immagine</string>
+    <string name="dash_bg_hint">Un\'immagine tua, per esempio lo stemma della squadra. Resta su questo telefono.</string>
+    <string name="dash_bg_failed">Impossibile usare questa immagine. Provane un\'altra.</string>
+</resources>

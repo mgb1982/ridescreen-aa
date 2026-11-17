@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_bg_title">Fundo</string>
+    <string name="dash_bg_original">Original</string>
+    <string name="dash_bg_image">Imagem…</string>
+    <string name="dash_bg_fill">Preencher</string>
+    <string name="dash_bg_fit">Ajustar</string>
+    <string name="dash_bg_veil">Véu: %1$d%%</string>
+    <string name="dash_bg_remove">Remover imagem</string>
+    <string name="dash_bg_hint">Uma imagem sua, por exemplo o escudo da equipa. Fica só neste telemóvel.</string>
+    <string name="dash_bg_failed">Não foi possível usar essa imagem. Experimente outra.</string>
+</resources>

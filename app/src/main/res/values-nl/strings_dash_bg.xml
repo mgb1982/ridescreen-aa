@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_bg_title">Achtergrond</string>
+    <string name="dash_bg_original">Origineel</string>
+    <string name="dash_bg_image">Afbeelding…</string>
+    <string name="dash_bg_fill">Vullen</string>
+    <string name="dash_bg_fit">Passend</string>
+    <string name="dash_bg_veil">Sluier: %1$d%%</string>
+    <string name="dash_bg_remove">Afbeelding verwijderen</string>
+    <string name="dash_bg_hint">Je eigen foto, bijvoorbeeld het wapen van je team. Hij blijft op deze telefoon.</string>
+    <string name="dash_bg_failed">Die afbeelding kon niet worden gebruikt. Probeer een andere.</string>
+</resources>

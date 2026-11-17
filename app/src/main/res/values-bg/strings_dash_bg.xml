@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_bg_title">Фон</string>
+    <string name="dash_bg_original">Оригинал</string>
+    <string name="dash_bg_image">Изображение…</string>
+    <string name="dash_bg_fill">Запълни</string>
+    <string name="dash_bg_fit">Побери</string>
+    <string name="dash_bg_veil">Воал: %1$d%%</string>
+    <string name="dash_bg_remove">Премахни изображението</string>
+    <string name="dash_bg_hint">Собствена снимка, например емблемата на отбора. Остава в този телефон.</string>
+    <string name="dash_bg_failed">Изображението не можа да се използва. Опитайте с друго.</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_bg_title">Fons</string>
+    <string name="dash_bg_original">Original</string>
+    <string name="dash_bg_image">Imatge…</string>
+    <string name="dash_bg_fill">Omple</string>
+    <string name="dash_bg_fit">Ajusta</string>
+    <string name="dash_bg_veil">Vel: %1$d%%</string>
+    <string name="dash_bg_remove">Treu la imatge</string>
+    <string name="dash_bg_hint">Imatge pròpia, per exemple l\'escut de l\'equip. Es queda en aquest telèfon.</string>
+    <string name="dash_bg_failed">No s\'ha pogut usar aquesta imatge. Proveu-ne una altra.</string>
+</resources>

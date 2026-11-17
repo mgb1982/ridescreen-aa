@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_bg_title">Fundal</string>
+    <string name="dash_bg_original">Original</string>
+    <string name="dash_bg_image">Imagine…</string>
+    <string name="dash_bg_fill">Umple</string>
+    <string name="dash_bg_fit">Încadrează</string>
+    <string name="dash_bg_veil">Văl: %1$d%%</string>
+    <string name="dash_bg_remove">Elimină imaginea</string>
+    <string name="dash_bg_hint">Propria ta imagine, de exemplu stema echipei. Rămâne doar pe acest telefon.</string>
+    <string name="dash_bg_failed">Nu am putut folosi imaginea. Încearcă alta.</string>
+</resources>

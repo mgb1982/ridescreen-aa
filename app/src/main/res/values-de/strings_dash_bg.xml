@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_bg_title">Hintergrund</string>
+    <string name="dash_bg_original">Original</string>
+    <string name="dash_bg_image">Bild…</string>
+    <string name="dash_bg_fill">Füllen</string>
+    <string name="dash_bg_fit">Einpassen</string>
+    <string name="dash_bg_veil">Schleier: %1$d%%</string>
+    <string name="dash_bg_remove">Bild entfernen</string>
+    <string name="dash_bg_hint">Dein eigenes Bild, zum Beispiel das Wappen deines Teams. Es bleibt auf diesem Handy.</string>
+    <string name="dash_bg_failed">Dieses Bild konnte nicht verwendet werden. Probier ein anderes.</string>
+</resources>

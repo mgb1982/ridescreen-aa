@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_bg_title">Arka plan</string>
+    <string name="dash_bg_original">Orijinal</string>
+    <string name="dash_bg_image">Görsel…</string>
+    <string name="dash_bg_fill">Doldur</string>
+    <string name="dash_bg_fit">Sığdır</string>
+    <string name="dash_bg_veil">Perde: %1$d%%</string>
+    <string name="dash_bg_remove">Görseli kaldır</string>
+    <string name="dash_bg_hint">Kendi resmin, örneğin takım amblemin. Yalnızca bu telefonda kalır.</string>
+    <string name="dash_bg_failed">Bu görsel kullanılamadı. Başka bir tane dene.</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_bg_title">Háttér</string>
+    <string name="dash_bg_original">Eredeti</string>
+    <string name="dash_bg_image">Kép…</string>
+    <string name="dash_bg_fill">Kitöltés</string>
+    <string name="dash_bg_fit">Illesztés</string>
+    <string name="dash_bg_veil">Fátyol: %1$d%%</string>
+    <string name="dash_bg_remove">Kép eltávolítása</string>
+    <string name="dash_bg_hint">Saját kép, például a csapatod címere. Ezen a telefonon marad.</string>
+    <string name="dash_bg_failed">Ez a kép nem használható. Próbálj ki másikat.</string>
+</resources>
