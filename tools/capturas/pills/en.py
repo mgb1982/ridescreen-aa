@@ -321,4 +321,21 @@ PILLS = [
          ],
          note="If the QR does not contain the PKE code, enter it manually using the PKE code option. The Bluetooth password must be exactly 6 hexadecimal characters (0–9 and A–F): it is not the PKE code or McuID. If you don't know it, leave the field empty.",
          foot="Version 2.4.1 keeps the previous method when this field is empty"),
+
+    dict(icon="📹", tag="Test",
+         title="Test: the 368's camera videos",
+         sub="2.5 RC1 can bring to your phone what your Zontes 368's cameras recorded during a trip the app recorded.",
+         steps=[
+             "Install the 2.5 RC1 APK over your current app: your settings are kept.",
+             "Ride a short trip (10-15 min) with RideScreen AA connected and the bike's cameras recording.",
+             "Back home, with the bike and its dash on, if the app is still projecting tap [[dashcam_stop_and_continue]].",
+             "[[tab_trips]] → [[dashcam_entry]] and pick the trip of your ride. The app joins the bike's Wi‑Fi by itself.",
+             "Choose [[dashcam_camera_front]], [[dashcam_camera_rear]] or [[dashcam_camera_both]], check the free space (a 60 s clip is about 60 MB) and tap [[dashcam_import]]. "
+             "Keep the phone near the bike, screen on, until it finishes.",
+             "When done, open the trip and its **video maker**: check that the clips show up in the right place by time.",
+         ],
+         note="Send: [[help_pill]] → [[help_share_logs]] to hola@ridescreen.app and tell us: bike model (368G, 368K or 368E), "
+              "number of clips and MB the app showed, how long it took, whether any failed, whether the Wi‑Fi dropped (you can retry and it resumes) "
+              "and whether Android Auto reconnected fine afterwards.",
+         foot="Read-only on the bike"),
 ]
