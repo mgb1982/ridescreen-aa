@@ -11,6 +11,6 @@ object DashStyleRows {
     fun label(name: String, selected: Boolean): String = if (selected) "✓  $name" else name
 
     /** Cache key of the big preview: a change in any part means the picture must be redrawn. */
-    fun previewKey(designId: String, light: Boolean, accent: Int, width: Int, height: Int): String =
-        "$designId|$light|$accent|${width}x$height"
+    fun previewKey(designId: String, light: Boolean, accent: Int, width: Int, height: Int, extra: String = ""): String =
+        "$designId|$light|$accent|${width}x$height" + if (extra.isEmpty()) "" else "|$extra"
 }

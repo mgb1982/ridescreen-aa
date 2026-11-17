@@ -246,6 +246,8 @@ internal object DashboardRenderer {
         cardOrder: List<String> = DashLayout.DEFAULT_CARDS,
         /** 2.5 · accent colour, 0 = the style's own. */
         accent: Int = 0,
+        /** 2.5 · the rider's own picture behind the dash. */
+        bg: DashBackground.Setting = DashBackground.Setting.DEFAULT,
     ): Bitmap {
         loadFonts(ctx)
         var target = if (standalone) null else bitmap
@@ -304,17 +306,24 @@ internal object DashboardRenderer {
         val dy = if (real) 0f else (h - H * scale) / 2f
 
         val key = "${design.id}|$light|${w}x$h|$speedMax|$rpmMax|${visible.sorted().joinToString(",")}|" +
-            "${cards.joinToString(",") { it.id }}|$accent|$standalone|${plan?.key}"
+            "${cards.joinToString(",") { it.id }}|$accent|$standalone|${plan?.key}|${bg.key()}"
         if (key != layerKey || layer == null) {
             layer?.recycle()
-            val bg = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-            val lc = Canvas(bg)
+            val layerBmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+            val lc = Canvas(layerBmp)
             lc.drawColor(p.bg)
+            // Rider's picture (decoded to w×h once, see [bgBitmap]) + a veil of the palette's own background colour.
+            val img = if (bg.isImage) bgBitmap(w, h, bg, standalone) else null
+            if (img != null) {
+                lc.drawBitmap(img, 0f, 0f, null)
+                lc.drawColor(alpha(p.bg, DashBackground.veilAlpha(bg.veil)))
+            }
+            imageBg = img != null
             lc.save(); lc.translate(dx, dy); lc.scale(scale, scale)
             pass = Pass.STATIC
             drawFace(ctx, lc, d, p, design, all, cards)
             lc.restore()
-            layer = bg
+            layer = layerBmp
             layerKey = key
         }
         c.drawBitmap(layer!!, 0f, 0f, null)
@@ -325,12 +334,66 @@ internal object DashboardRenderer {
         return target!!
     }
 
+    /** The static layer being built has the rider's picture: skip the gradient and the carbon weave. */
+    private var imageBg = false
+
+    /** Decoded picture at the canvas size; one slot for the live dash, one for the previews. A failure is remembered under the same key, so it is not retried (or logged) every frame. */
+    private class BgSlot { var key = ""; var bmp: Bitmap? = null }
+    private val liveBg = BgSlot()
+    private val previewBg = BgSlot()
+
+    private fun bgBitmap(w: Int, h: Int, bg: DashBackground.Setting, standalone: Boolean): Bitmap? {
+        val slot = if (standalone) previewBg else liveBg
+        val key = "${bg.path}|${bg.version}|${bg.fit.id}|${w}x$h"
+        if (slot.key == key) return slot.bmp
+        slot.bmp?.recycle()   // only ever used to build a layer, under this object's lock
+        slot.bmp = null
+        slot.key = key
+        slot.bmp = try { decodeBg(w, h, bg) } catch (_: Throwable) { null }
+        if (slot.bmp == null) LogBus.log("[DASHBOARD] background image missing/failed")
+        return slot.bmp
+    }
+
+    private fun decodeBg(w: Int, h: Int, bg: DashBackground.Setting): Bitmap? {
+        val path = bg.path ?: return null
+        if (!java.io.File(path).isFile) return null
+        val bounds = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        android.graphics.BitmapFactory.decodeFile(path, bounds)
+        if (bounds.outWidth <= 0 || bounds.outHeight <= 0) return null
+        val opts = android.graphics.BitmapFactory.Options().apply {
+            inSampleSize = DashBackground.sampleSize(bounds.outWidth, bounds.outHeight, w, h)
+        }
+        val src = android.graphics.BitmapFactory.decodeFile(path, opts) ?: return null
+        val out = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val cv = Canvas(out)
+        if (bg.fit == DashBackground.Fit.FIT) cv.drawColor(edgeColor(src))
+        val box = DashBackground.destBox(bg.fit, src.width, src.height, w, h)
+        val dst = RectF(box.left, box.top, box.right, box.bottom)
+        cv.drawBitmap(src, null, dst, Paint(Paint.FILTER_BITMAP_FLAG))
+        src.recycle()
+        return out
+    }
+
+    /** Average colour of the picture's border pixels (at most about 256 samples). */
+    private fun edgeColor(src: Bitmap): Int {
+        val w = src.width; val h = src.height
+        val n = 64
+        val px = ArrayList<Int>(n * 4)
+        for (i in 0 until n) {
+            val x = (i * (w - 1)) / maxOf(1, n - 1)
+            val y = (i * (h - 1)) / maxOf(1, n - 1)
+            px.add(src.getPixel(x, 0)); px.add(src.getPixel(x, h - 1))
+            px.add(src.getPixel(0, y)); px.add(src.getPixel(w - 1, y))
+        }
+        return DashBackground.averageColor(px.toIntArray())
+    }
+
     private fun drawFace(
         ctx: Context, c: Canvas, d: DashboardMode.Data, p: Palette,
         design: DashboardMode.Design, all: Map<String, Metric>, cards: List<Metric>,
     ) {
         if (design == DashboardMode.Design.WINDOW) { drawWindow(ctx, c, d, p, all, cards); return }
-        still { drawBackground(c, p, design) }
+        if (!imageBg) still { drawBackground(c, p, design) }
         // No header: the dash's own clock bar sits right above the frame.
         // Pit has its own wide RPM bar instead of the shift lights.
         // Without OBD there is no RPM to light them.

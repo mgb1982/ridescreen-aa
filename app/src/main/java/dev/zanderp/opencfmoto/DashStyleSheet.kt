@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -12,7 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
@@ -27,13 +32,40 @@ class DashStyleSheet : BottomSheetDialogFragment() {
     private lateinit var previewView: ImageView
     private lateinit var listView: LinearLayout
     private lateinit var accentsView: LinearLayout
+    private lateinit var bgView: LinearLayout
     private var previewKey = ""
+    private lateinit var pickBackground: androidx.activity.result.ActivityResultLauncher<PickVisualMediaRequest>
+    private var rootView: View? = null
+
+    /** Registered here, not in a click: the picker's result can arrive after the sheet was recreated. */
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        pickBackground = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+            if (uri != null) importBackground(uri)
+        }
+    }
+
+    private fun importBackground(uri: Uri) {
+        val app = requireContext().applicationContext
+        Thread({
+            val ok = DashBackgroundStore.import(app, uri)
+            if (ok) DashboardMode.setBgImage(app, System.currentTimeMillis())
+            LogBus.log("[DASHBOARD] background image ${if (ok) "saved" else "import failed"}")
+            activity?.runOnUiThread {
+                if (!isAdded) return@runOnUiThread
+                if (!ok) Toast.makeText(app, R.string.dash_bg_failed, Toast.LENGTH_SHORT).show()
+                rootView?.let { render(it) }
+            }
+        }, "dash-bg-import").start()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val v = inflater.inflate(R.layout.sheet_dash_style, container, false)
         previewView = v.findViewById(R.id.style_sheet_preview)
         listView = v.findViewById(R.id.style_sheet_list)
         accentsView = v.findViewById(R.id.style_sheet_accents)
+        bgView = v.findViewById(R.id.style_sheet_bg)
+        rootView = v
         for ((id, t) in listOf(
             R.id.style_sheet_theme_auto to DashboardMode.Theme.AUTO,
             R.id.style_sheet_theme_day to DashboardMode.Theme.LIGHT,
@@ -130,13 +162,87 @@ class DashStyleSheet : BottomSheetDialogFragment() {
             btn.setTextColor(if (on) onText else offText)
         }
 
+        renderBackground(ctx) { dp(it) }
         drawPreview(ctx)
+    }
+
+    /** "Background": Original / Image…, and with a picture: Fill / Fit, the veil and Remove. */
+    private fun renderBackground(ctx: Context, dp: (Int) -> Int) {
+        bgView.removeAllViews()
+        val ink = ContextCompat.getColor(ctx, R.color.text_secondary)
+        val onColor = ContextCompat.getColor(ctx, R.color.brand_orange)
+        val onText = ContextCompat.getColor(ctx, R.color.on_brand)
+        val offColor = ContextCompat.getColor(ctx, R.color.surface_high)
+        val offText = ContextCompat.getColor(ctx, R.color.text_primary)
+        val image = DashboardMode.bgMode(ctx) == DashBackground.Mode.IMAGE
+        fun button(label: Int, on: Boolean, click: () -> Unit) = MaterialButton(ctx).apply {
+            setText(label)
+            isAllCaps = false
+            backgroundTintList = ColorStateList.valueOf(if (on) onColor else offColor)
+            setTextColor(if (on) onText else offText)
+            setOnClickListener { click() }
+        }
+        fun row(vararg views: View) = LinearLayout(ctx).apply {
+            orientation = LinearLayout.HORIZONTAL
+            views.forEachIndexed { i, v ->
+                addView(v, LinearLayout.LayoutParams(0, -2, 1f).apply { if (i > 0) marginStart = dp(8) })
+            }
+        }
+        bgView.addView(TextView(ctx).apply {
+            setText(R.string.dash_bg_title); textSize = 13f; setTextColor(ink)
+        })
+        bgView.addView(TextView(ctx).apply {
+            setText(R.string.dash_bg_hint); textSize = 11f; setTextColor(ink)
+        })
+        bgView.addView(row(
+            button(R.string.dash_bg_original, !image) {
+                DashboardMode.clearBgImage(ctx)
+                rootView?.let { render(it) }
+            },
+            button(R.string.dash_bg_image, image) {
+                pickBackground.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            },
+        ), LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(8) })
+        if (!image) return
+        val fit = DashboardMode.bgFit(ctx)
+        bgView.addView(row(
+            button(R.string.dash_bg_fill, fit == DashBackground.Fit.FILL) {
+                DashboardMode.setBgFit(ctx, DashBackground.Fit.FILL); rootView?.let { render(it) }
+            },
+            button(R.string.dash_bg_fit, fit == DashBackground.Fit.FIT) {
+                DashboardMode.setBgFit(ctx, DashBackground.Fit.FIT); rootView?.let { render(it) }
+            },
+        ), LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(8) })
+        val veil = DashboardMode.bgVeil(ctx)
+        val label = TextView(ctx).apply {
+            text = getString(R.string.dash_bg_veil, veil); textSize = 13f; setTextColor(ink)
+        }
+        bgView.addView(label, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(12) })
+        bgView.addView(SeekBar(ctx).apply {
+            max = DashBackground.VEIL_MAX
+            progress = veil
+            setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    if (fromUser) label.text = getString(R.string.dash_bg_veil, DashBackground.clampVeil(progress))
+                }
+                override fun onStartTrackingTouch(seekBar: SeekBar) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar) {
+                    DashboardMode.setBgVeil(ctx, seekBar.progress)
+                    drawPreview(ctx)
+                }
+            })
+        }, LinearLayout.LayoutParams(-1, -2))
+        bgView.addView(button(R.string.dash_bg_remove, false) {
+            DashboardMode.clearBgImage(ctx)
+            rootView?.let { render(it) }
+        }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(8) })
     }
 
     /** Big preview, drawn off the UI thread; a newer key makes an older result be dropped. */
     private fun drawPreview(ctx: Context) {
         val design = DashboardMode.design(ctx)
-        val key = DashStyleRows.previewKey(design.id, DashboardMode.isLight(ctx), DashboardMode.accent(ctx), 800, 416)
+        val key = DashStyleRows.previewKey(design.id, DashboardMode.isLight(ctx), DashboardMode.accent(ctx), 800, 416,
+            DashboardMode.background(ctx).key())
         if (key == previewKey) return
         previewKey = key
         val app = ctx.applicationContext
@@ -146,6 +252,11 @@ class DashStyleSheet : BottomSheetDialogFragment() {
                 if (bmp != null && isAdded && previewKey == key) previewView.setImageBitmap(bmp)
             }
         }, "dash-style-preview").start()
+    }
+
+    override fun onDestroyView() {
+        rootView = null
+        super.onDestroyView()
     }
 
     override fun onDismiss(dialog: DialogInterface) {

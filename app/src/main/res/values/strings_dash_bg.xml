@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dash_bg_title">Background</string>
+    <string name="dash_bg_original">Original</string>
+    <string name="dash_bg_image">Image…</string>
+    <string name="dash_bg_fill">Fill</string>
+    <string name="dash_bg_fit">Fit</string>
+    <string name="dash_bg_veil">Veil: %1$d%%</string>
+    <string name="dash_bg_remove">Remove image</string>
+    <string name="dash_bg_hint">Your own picture, for example your team\'s crest. It stays on this phone.</string>
+    <string name="dash_bg_failed">Could not use that image. Try another one.</string>
+</resources>

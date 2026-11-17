@@ -27,4 +27,10 @@ class DashStyleRowsTest {
         assertNotEquals(base, DashStyleRows.previewKey("sport", true, 0, 800, 416))
         assertNotEquals(base, DashStyleRows.previewKey("sport", false, 0xFFFF8A1E.toInt(), 800, 416))
     }
+
+    @Test fun previewKeyIncludesTheBackgroundWhenGiven() {
+        val base = DashStyleRows.previewKey("sport", false, 0, 800, 416)
+        assertEquals(base, DashStyleRows.previewKey("sport", false, 0, 800, 416, ""))
+        assertNotEquals(base, DashStyleRows.previewKey("sport", false, 0, 800, 416, "bg:image:fill:40:1"))
+    }
 }

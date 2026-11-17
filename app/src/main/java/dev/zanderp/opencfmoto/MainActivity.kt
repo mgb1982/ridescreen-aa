@@ -1561,7 +1561,7 @@ class MainActivity : AppCompatActivity() {
         val card = findViewById<View?>(R.id.dash_card) ?: return
         val connected = AaVideoBridge.pipeline != null && ConnectionState.phase == Phase.STREAMING
         val design = DashboardMode.design(this)
-        val key = "${design.id}|${DashboardMode.isLight(this)}|${DashboardMode.accent(this)}|${DashboardMode.visibleFields(this).sorted()}|${DashboardMode.cardOrder(this)}|${DashPhone.adapterConfigured(this)}"
+        val key = "${design.id}|${DashboardMode.isLight(this)}|${DashboardMode.accent(this)}|${DashboardMode.visibleFields(this).sorted()}|${DashboardMode.cardOrder(this)}|${DashPhone.adapterConfigured(this)}|${DashboardMode.background(this).key()}"
         val img = findViewById<ImageView>(R.id.dash_card_preview)
         if (redrawPreview && key != dashCardKey) {
             dashCardKey = key

@@ -306,7 +306,7 @@ class HudViewActivity : AppCompatActivity() {
         host.postDelayed(offlineWatch, 1000)
         val design = DashboardMode.design(this)
         val key = "${design.id}|${DashboardMode.isLight(this)}|${DashboardMode.accent(this)}|" +
-            "${DashboardMode.visibleFields(this).sorted()}|${DashboardMode.cardOrder(this)}|${DashPhone.adapterConfigured(this)}"
+            "${DashboardMode.visibleFields(this).sorted()}|${DashboardMode.cardOrder(this)}|${DashPhone.adapterConfigured(this)}|${DashboardMode.background(this).key()}"
         if (key == offlineKey) return
         offlineKey = key
         val img = findViewById<ImageView>(R.id.hud_offline_img)

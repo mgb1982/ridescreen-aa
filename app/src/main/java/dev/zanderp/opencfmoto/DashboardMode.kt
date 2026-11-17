@@ -116,6 +116,30 @@ object DashboardMode {
         if (wanted) { val app = ctx.applicationContext; applySaver(app, saver(app) && !aaWindow(app)) }
     }
 
+    // 2.5 · the rider's own picture behind the dashboards (per bike, see [DashBackground]).
+    fun bgMode(ctx: Context): DashBackground.Mode = DashBackground.Mode.byId(BikeScope.getString(prefs(ctx), ctx, "bg_mode", null))
+    fun bgFit(ctx: Context): DashBackground.Fit = DashBackground.Fit.byId(BikeScope.getString(prefs(ctx), ctx, "bg_fit", null))
+    fun bgVeil(ctx: Context): Int = DashBackground.clampVeil(BikeScope.getInt(prefs(ctx), ctx, "bg_veil", DashBackground.VEIL_DEFAULT))
+    fun setBgFit(ctx: Context, fit: DashBackground.Fit) = BikeScope.putString(prefs(ctx), ctx, "bg_fit", fit.id)
+    fun setBgVeil(ctx: Context, pct: Int) = BikeScope.putInt(prefs(ctx), ctx, "bg_veil", DashBackground.clampVeil(pct))
+    /** A new picture was saved: remember its timestamp so every cache sees it changed. */
+    fun setBgImage(ctx: Context, versionMs: Long) {
+        BikeScope.putString(prefs(ctx), ctx, "bg_version", versionMs.toString())
+        BikeScope.putString(prefs(ctx), ctx, "bg_mode", DashBackground.Mode.IMAGE.id)
+    }
+    /** Back to the original background; the file goes too. */
+    fun clearBgImage(ctx: Context) {
+        BikeScope.putString(prefs(ctx), ctx, "bg_mode", DashBackground.Mode.DEFAULT.id)
+        BikeScope.putString(prefs(ctx), ctx, "bg_version", "0")
+        DashBackgroundStore.remove(ctx)
+    }
+    fun background(ctx: Context): DashBackground.Setting {
+        val mode = bgMode(ctx)
+        if (mode == DashBackground.Mode.DEFAULT) return DashBackground.Setting.DEFAULT
+        val version = BikeScope.getString(prefs(ctx), ctx, "bg_version", null)?.toLongOrNull() ?: 0L
+        return DashBackground.Setting(mode, bgFit(ctx), bgVeil(ctx), version, DashBackgroundStore.file(ctx).absolutePath)
+    }
+
     /** 2.5 · the dashboard shows Android Auto in a window ([AaWindowLayout]). */
     fun aaWindow(ctx: Context): Boolean = design(ctx) == Design.WINDOW
 
@@ -131,7 +155,7 @@ object DashboardMode {
         // 2.5: the rider's own fields, order and colour, so the picker shows what the bike will.
         return DashboardRenderer.render(
             ctx, width, height, sample, isLight(ctx), design, visibleFields(ctx), standalone = true,
-            cardOrder = cardOrder(ctx), accent = accent(ctx),
+            cardOrder = cardOrder(ctx), accent = accent(ctx), bg = background(ctx),
         )
     }
 
@@ -325,7 +349,7 @@ object DashboardMode {
             ctx,
             DashboardRenderer.render(
                 ctx, w, h, collect(ctx), isLight(ctx), design(ctx), visibleFields(ctx),
-                cardOrder = cardOrder(ctx), accent = accent(ctx),
+                cardOrder = cardOrder(ctx), accent = accent(ctx), bg = background(ctx),
             ),
         )
 
@@ -362,7 +386,7 @@ object DashboardMode {
     private fun signature(ctx: Context): String = signatureOf(
         collect(ctx), isLight(ctx), design(ctx).name,
         // Fields, card order and accent: changing any of them repaints at once.
-        visibleFields(ctx).sorted().joinToString(",") + "|" + cardOrder(ctx).joinToString(",") + "|" + accent(ctx),
+        visibleFields(ctx).sorted().joinToString(",") + "|" + cardOrder(ctx).joinToString(",") + "|" + accent(ctx) + "|" + background(ctx).key(),
         java.text.SimpleDateFormat("HH:mm", java.util.Locale.US).format(java.util.Date()) + "|" + ChronoController.signature(),
     )
 
