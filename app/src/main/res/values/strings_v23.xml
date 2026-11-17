@@ -181,7 +181,7 @@ Today: %2$d min door to door · usual: %3$d min.</string>
     <string name="nearby_upfront_body">To reach the dash (its Wi‑Fi and Bluetooth), Android asks for «Nearby devices». The app doesn\'t use it for anything else.</string>
     <string name="nearby_upfront_ok">Continue</string>
     <string name="nearby_upfront_later">Later</string>
-    <string name="conn_detail_dash_no_media">The dash isn\'t asking for the picture: put it on its screen mirroring interface (screen 3 on the 125X) and tap Connect (if it still won\'t, switch the ignition off and on)</string>
+    <string name="conn_detail_dash_no_media">The dash isn\'t asking for the picture. Open the phone-link screen (MotoPlay on a Zontes 368G, screen 3 on a 125X) and tap Connect. If it still won\'t, switch the ignition off and on.</string>
     <string name="conn_detail_dash_no_media_retry">Waiting for the dash: put it on its screen mirroring interface</string>
     <string name="ext_control_title">Remote with Key Mapper or Tasker</string>
     <string name="ext_control_desc">For a handlebar remote that only drives Android Auto (the intercom keeps the music): in Key Mapper (Play Store), turn on Expert mode with Shizuku so it works with the screen off, and map each button to the action Intent → Broadcast receiver with one of these names. RideScreen only obeys them while Android Auto is on the dash. Tasker and MacroDroid work too.</string>

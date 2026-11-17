@@ -7,6 +7,7 @@ Draft locales ship for Discord community languages:
 | Folder | Language |
 |--------|----------|
 | `app/src/main/res/values/` | English (source of truth) |
+| `values-th/` | ไทย (in-app picker or the phone language) |
 | `values-de/` | Deutsch |
 | `values-it/` | Italiano |
 | `values-fr/` | Français |

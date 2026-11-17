@@ -106,3 +106,9 @@ Fonts (visual test build)
   * Archivo and Archivo Black, Copyright The Archivo Project Authors, licensed
     under the SIL Open Font License 1.1 (licenses/OFL-Archivo.txt). Bundled as
     static instances in app/src/main/res/font/.
+
+  * Noto Sans Thai, Copyright 2022 The Noto Project Authors, licensed under the
+    SIL Open Font License 1.1 (licenses/OFL-NotoSansThai.txt). Used when the
+    app language is Thai so Thai text does not fall back to missing glyphs.
+    Static weights are instantiated from the variable font and shipped as
+    app/src/main/res/font-th/ under the same file names as Archivo.

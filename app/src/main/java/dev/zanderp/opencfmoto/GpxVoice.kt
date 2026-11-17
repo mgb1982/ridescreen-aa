@@ -5,13 +5,13 @@ package dev.zanderp.opencfmoto
 
 import android.content.Context
 import android.speech.tts.TextToSpeech
-import java.util.Locale
 
 /**
  * Spoken cues for Map / GPX — turns, waypoints, off-track.
  */
 class GpxVoice(context: Context) : TextToSpeech.OnInitListener {
-    private var tts: TextToSpeech? = TextToSpeech(context.applicationContext, this)
+    private val appContext = context.applicationContext
+    private var tts: TextToSpeech? = TextToSpeech(appContext, this)
     private var ready = false
     // Google/Waze-style: one heads-up ("in 300 m, turn right onto X") then one at the
     // junction ("turn right"). Track which maneuver already got each phase so we don't spam.
@@ -24,7 +24,8 @@ class GpxVoice(context: Context) : TextToSpeech.OnInitListener {
     override fun onInit(status: Int) {
         ready = status == TextToSpeech.SUCCESS
         if (ready) {
-            tts?.language = Locale.getDefault()
+            val lang = appContext.resources.configuration.locales[0]
+            tts?.language = lang
             tts?.setSpeechRate(0.95f)
         }
     }
@@ -90,24 +91,24 @@ class GpxVoice(context: Context) : TextToSpeech.OnInitListener {
         lastJoinDir = dir
         lastOffTrackSpeakMs = now
         val dist = GpxNav.formatDistance(offTrackM, units)
-        speak("${GpxNav.joinRouteSpeak(dir).replaceFirstChar { it.uppercase() }}, $dist")
+        speak(GpxNav.joinRouteSpeak(appContext, dir) + ", " + dist)
     }
 
     private fun dirPhrase(dir: GpxNav.TurnDir): String = when (dir) {
-        GpxNav.TurnDir.LEFT -> "turn left"
-        GpxNav.TurnDir.RIGHT -> "turn right"
-        GpxNav.TurnDir.SHARP_LEFT -> "make a sharp left"
-        GpxNav.TurnDir.SHARP_RIGHT -> "make a sharp right"
-        GpxNav.TurnDir.SLIGHT_LEFT -> "keep left"
-        GpxNav.TurnDir.SLIGHT_RIGHT -> "keep right"
-        GpxNav.TurnDir.UTURN -> "make a U-turn"
-        GpxNav.TurnDir.ROUNDABOUT -> "enter the roundabout"
-        GpxNav.TurnDir.MERGE_LEFT -> "merge left"
-        GpxNav.TurnDir.MERGE_RIGHT -> "merge right"
-        GpxNav.TurnDir.FORK_LEFT -> "keep left at the fork"
-        GpxNav.TurnDir.FORK_RIGHT -> "keep right at the fork"
-        GpxNav.TurnDir.ARRIVE -> "you have arrived"
-        GpxNav.TurnDir.STRAIGHT, GpxNav.TurnDir.CONTINUE -> "continue straight"
+        GpxNav.TurnDir.LEFT -> appContext.getString(R.string.nav_speak_left)
+        GpxNav.TurnDir.RIGHT -> appContext.getString(R.string.nav_speak_right)
+        GpxNav.TurnDir.SHARP_LEFT -> appContext.getString(R.string.nav_speak_sharp_left)
+        GpxNav.TurnDir.SHARP_RIGHT -> appContext.getString(R.string.nav_speak_sharp_right)
+        GpxNav.TurnDir.SLIGHT_LEFT -> appContext.getString(R.string.nav_speak_keep_left)
+        GpxNav.TurnDir.SLIGHT_RIGHT -> appContext.getString(R.string.nav_speak_keep_right)
+        GpxNav.TurnDir.UTURN -> appContext.getString(R.string.nav_speak_uturn)
+        GpxNav.TurnDir.ROUNDABOUT -> appContext.getString(R.string.nav_speak_roundabout)
+        GpxNav.TurnDir.MERGE_LEFT -> appContext.getString(R.string.nav_speak_merge_left)
+        GpxNav.TurnDir.MERGE_RIGHT -> appContext.getString(R.string.nav_speak_merge_right)
+        GpxNav.TurnDir.FORK_LEFT -> appContext.getString(R.string.nav_speak_fork_left)
+        GpxNav.TurnDir.FORK_RIGHT -> appContext.getString(R.string.nav_speak_fork_right)
+        GpxNav.TurnDir.ARRIVE -> appContext.getString(R.string.nav_speak_arrived)
+        GpxNav.TurnDir.STRAIGHT, GpxNav.TurnDir.CONTINUE -> appContext.getString(R.string.nav_speak_straight)
     }
 
     fun speak(text: String) {

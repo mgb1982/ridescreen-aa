@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Speed-compensated volume (SpeedVolume.kt). Translated: en, es, ca; other locales fall back to English. -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="speed_volume_title">ปริมาณความเร็ว</string>
+    <string name="speed_volume_desc">เพิ่มระดับเสียงสื่อของโทรศัพท์ (เสียงนำทางและเสียงเพลง) ในขณะที่คุณขับขี่เร็วขึ้น เพื่อเอาชนะเสียงลม ปริมาณของคุณเองคือฐาน: เปลี่ยนได้ตลอดเวลาและการเพิ่มจะตามมา หยุดชั่วคราวขณะที่ปุ่มบนแฮนด์ขับ Android Auto</string>
+    <string name="speed_volume_off">ปิด</string>
+    <string name="speed_volume_low">ต่ำ</string>
+    <string name="speed_volume_medium">ปานกลาง</string>
+    <string name="speed_volume_high">สูง</string>
+    <string name="speed_volume_status_off">ปิด</string>
+    <string name="speed_volume_status_waiting">กำลังรอการเชื่อมต่อมอเตอร์ไซค์...</string>
+    <string name="speed_volume_status_paused">หยุดชั่วคราว: ปุ่มบนแฮนด์กำลังตรึงระดับเสียง</string>
+    <string name="speed_volume_status_no_gps">ใช้งานอยู่: กำลังรอความเร็ว GPS...</string>
+    <string name="speed_volume_status_live">ใช้งานอยู่: %1$d กม./ชม. · บูสต์ +%2$d</string>
+    <string name="speed_volume_advanced_show">ขั้นสูง ▾</string>
+    <string name="speed_volume_advanced_hide">ขั้นสูง ▴</string>
+    <string name="speed_volume_custom">เส้นโค้งที่กำหนดเอง (แทนที่เส้นโค้งของระดับ)</string>
+    <string name="speed_volume_start_label">เริ่มเร่งความเร็วที่: %1$d กม./ชม</string>
+    <string name="speed_volume_step_label">อีกหนึ่งก้าวทุก ๆ: %1$d กม./ชม</string>
+    <string name="speed_volume_max_label">บูสต์สูงสุด: +%1$d สเต็ป</string>
+    <string name="speed_volume_custom_hint">ขั้นตอนอยู่ในระดับปริมาตร 15 ขั้นตอน ยังคงต้องเลือกระดับอื่นที่ไม่ใช่ปิดเพื่อให้เส้นโค้งแบบกำหนดเองทำงาน</string>
+</resources>

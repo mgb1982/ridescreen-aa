@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="brand_wordmark" translatable="false">RideScreen AA</string>
+    <string name="brand_wordmark" translatable="false">MTL – MotoLink</string>
+    <string name="app_full_name" translatable="false">MTL – MotoLink</string>
     <string name="main_settings_desc">Settings</string>
     <string name="stat_km_today">km today</string>
     <string name="stat_max_today">max km/h</string>

@@ -96,7 +96,7 @@ class GpxActivity : AppCompatActivity() {
         parsed = track
         displayName = track.name.ifBlank { name }
         offlineReady = false
-        val nav = GpxNav(track)
+        val nav = GpxNav(track, strings = this)
         fileLabel.text = buildString {
             append(displayName)
             append("  ·  ${track.points.size} pts · ${track.waypoints.size} wpt")

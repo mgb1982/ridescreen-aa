@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- Bike switched off for a long time: stop waiting (battery). -->
+    <string name="bike_gone_channel">ไม่พบมอเตอร์ไซค์</string>
+    <string name="bike_gone_title">หยุดรอมอเตอร์ไซค์แล้ว</string>
+    <string name="bike_gone_text">มอเตอร์ไซค์ดับไป 20 นาที แอปจึงหยุดค้นหาเพื่อประหยัดแบตเตอรี่ แตะเชื่อมต่อเมื่อคุณกลับมาขี่มอเตอร์ไซค์อีกครั้ง</string>
+
+    <!-- Trophies -->
+    <string name="tr_channel">ถ้วยรางวัล</string>
+    <string name="tr_unlocked_title">🏆 ปลดล็อคถ้วยรางวัลแล้ว!</string>
+    <string name="tr_screen_title">ถ้วยรางวัล</string>
+    <string name="tr_header">ปลดล็อค %1$d จาก %2$d แล้ว</string>
+    <string name="tr_next">ต่อไป</string>
+    <string name="tr_earned_on">ได้รับเมื่อ %1$s</string>
+    <string name="tr_card_line">🏆 ถ้วยรางวัล: %1$d จาก %2$d · ดูทั้งหมด ›</string>
+    <string name="tr_distance">กิโลเมตร</string>
+    <string name="tr_distance_d">ขี่รวม %1$s กม</string>
+    <string name="tr_longest">ขี่ยาว</string>
+    <string name="tr_longest_d">ขี่หนึ่งครั้งเป็นระยะทาง %1$s กม. ขึ้นไป</string>
+    <string name="tr_speed">ความเร็วสูงสุด</string>
+    <string name="tr_speed_d">เข้าถึง %1$s กม./ชม. (GPS)</string>
+    <string name="tr_streak">บนม้วน</string>
+    <string name="tr_streak_d">ขี่ %1$s วันติดต่อกัน</string>
+    <string name="tr_rides">ปกติ</string>
+    <string name="tr_rides_d">ประหยัด %1$s ขี่</string>
+    <string name="tr_hours">เวลาอาน</string>
+    <string name="tr_hours_d">ขี่ %1$s ชั่วโมง</string>
+    <string name="tr_months">ตลอดทั้งปี</string>
+    <string name="tr_months_d">ขี่ใน %1$s เดือนที่แตกต่างกัน</string>
+    <string name="tr_early">นกตื่นเช้า</string>
+    <string name="tr_early_d">ออกรถก่อน 07.00 น</string>
+    <string name="tr_night">ไรเดอร์กลางคืน</string>
+    <string name="tr_night_d">สิ้นสุดการเดินทางหลังเวลา 23:00 น</string>
+    <string name="tr_weekend">ไรเดอร์สุดสัปดาห์</string>
+    <string name="tr_weekend_d">ขี่ในวันเสาร์และวันอาทิตย์ของสุดสัปดาห์เดียวกัน</string>
+</resources>
