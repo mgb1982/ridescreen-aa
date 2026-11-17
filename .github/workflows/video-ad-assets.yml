@@ -1,0 +1,38 @@
+name: Prepare RideScreen AA video ad assets
+on:
+  push:
+    branches: [promo/video-30s-assets]
+    paths:
+      - .github/workflows/video-ad-assets.yml
+permissions:
+  contents: read
+jobs:
+  assets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout published website and demo media
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: source
+      - name: Package actual RideScreen AA visuals
+        uses: actions/upload-artifact@v4
+        with:
+          name: ridescreen-aa-video-assets
+          path: |
+            source/site/img/hero-video.webp
+            source/site/img/inicio.webp
+            source/site/img/dashboard-estilo.webp
+            source/site/img/dashboard-cuadro-1.webp
+            source/site/img/viaje-obd.webp
+            source/site/img/viaje.webp
+            source/site/img/gasolineras.webp
+            source/site/img/mantenimiento.webp
+            source/site/img/llave.webp
+            source/site/img/reloj-brujula.webp
+            source/site/img/widget-controles.webp
+            source/docs/media/hud-demo.mp4
+            source/docs/media/buttons-demo.mp4
+            source/docs/media/map-demo-1.gif
+            source/docs/media/map-demo-2.gif
+          if-no-files-found: error
