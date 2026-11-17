@@ -332,7 +332,7 @@ PILLS = [
          steps=[
              "Instala el APK de la 2.5 RC1 encima de la app que tengas: se mantienen los ajustes.",
              "Haz un trayecto corto (10-15 min) con RideScreen AA conectado y las cámaras de la moto grabando.",
-             "Al volver, con la moto y el cuadro encendidos, si la app sigue proyectando pulsa [[dashcam_stop_and_continue]].",
+             "Al volver, deja la moto y el cuadro encendidos. Si la app sigue proyectando, te pedirá pararla en el paso siguiente: pulsa [[dashcam_stop_and_continue]].",
              "[[tab_trips]] → [[dashcam_entry]] y elige el viaje del trayecto. La app se une sola al Wi‑Fi de la moto.",
              "Elige [[dashcam_camera_front]], [[dashcam_camera_rear]] o [[dashcam_camera_both]], mira el espacio libre (un clip de 60 s pesa unos 60 MB) y pulsa [[dashcam_import]]. "
              "Deja el móvil cerca de la moto, con la pantalla encendida, hasta que termine.",

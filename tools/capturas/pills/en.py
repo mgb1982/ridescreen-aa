@@ -328,7 +328,7 @@ PILLS = [
          steps=[
              "Install the 2.5 RC1 APK over your current app: your settings are kept.",
              "Ride a short trip (10-15 min) with RideScreen AA connected and the bike's cameras recording.",
-             "Back home, with the bike and its dash on, if the app is still projecting tap [[dashcam_stop_and_continue]].",
+             "Back home, leave the bike and its dash on. If the app is still projecting, it will ask you to stop it in the next step: tap [[dashcam_stop_and_continue]].",
              "[[tab_trips]] → [[dashcam_entry]] and pick the trip of your ride. The app joins the bike's Wi‑Fi by itself.",
              "Choose [[dashcam_camera_front]], [[dashcam_camera_rear]] or [[dashcam_camera_both]], check the free space (a 60 s clip is about 60 MB) and tap [[dashcam_import]]. "
              "Keep the phone near the bike, screen on, until it finishes.",
