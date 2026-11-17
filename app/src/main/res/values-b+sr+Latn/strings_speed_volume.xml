@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="speed_volume_title">Jačina zvuka prema brzini</string>
+    <string name="speed_volume_desc">Pojačava jačinu medija na telefonu (glas navigacije i muziku) što brže vozite, da nadjača buku vetra. Vaša jačina zvuka je osnova: menjajte je kad god želite i pojačanje je prati. Pauzirano dok dugmad na upravljaču upravljaju Android Auto-om.</string>
+    <string name="speed_volume_off">Isključeno</string>
+    <string name="speed_volume_low">Nisko</string>
+    <string name="speed_volume_medium">Srednje</string>
+    <string name="speed_volume_high">Visoko</string>
+    <string name="speed_volume_status_off">Isključeno</string>
+    <string name="speed_volume_status_waiting">Čekam vezu sa motorom…</string>
+    <string name="speed_volume_status_paused">Pauzirano: dugmad na upravljaču fiksiraju jačinu zvuka</string>
+    <string name="speed_volume_status_no_gps">Aktivno: čekam GPS brzinu…</string>
+    <string name="speed_volume_status_live">Aktivno: %1$d km/h · pojačanje +%2$d</string>
+    <string name="speed_volume_advanced_show">Napredno ▾</string>
+    <string name="speed_volume_advanced_hide">Napredno ▴</string>
+    <string name="speed_volume_custom">Prilagođena kriva (zamenjuje krivu nivoa)</string>
+    <string name="speed_volume_start_label">Počni pojačanje od: %1$d km/h</string>
+    <string name="speed_volume_step_label">Još jedan korak na svakih: %1$d km/h</string>
+    <string name="speed_volume_max_label">Maksimalno pojačanje: +%1$d koraka</string>
+    <string name="speed_volume_custom_hint">Koraci su na skali jačine od 15 koraka. Da bi prilagođena kriva radila, mora biti izabran neki nivo osim Isključeno.</string>
+</resources>

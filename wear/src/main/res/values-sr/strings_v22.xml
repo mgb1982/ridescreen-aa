@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crash_title">Да ли сте пали?</string>
+    <string name="crash_im_ok">ДОБРО САМ</string>
+    <string name="crash_sent">Упозорење послато вашим контактима</string>
+    <string name="crash_close">Затвори</string>
+    <string name="wupd_title">Ажурирај RideScreen AA</string>
+    <string name="wupd_ready">Нова верзија примљена са телефона · додирните за инсталацију</string>
+    <string name="wupd_install">Инсталирај</string>
+    <string name="wupd_versions">Инсталирано: %1$s
+Ново: %2$s</string>
+    <string name="wupd_nothing">Нема ажурирања на чекању. Пошаљите га са телефона: ❓ Помоћ → ⌚ Ажурирај апликацију на сату</string>
+    <string name="wupd_installing">Инсталирам… потврдите ако сат затражи</string>
+    <string name="wupd_allow_unknown">Дозволите RideScreen AA да инсталира апликације, па се вратите овде</string>
+    <string name="wupd_no_unknown_setting">Овај сат не дозвољава апликацијама да инсталирају ажурирања. Инсталирајте са рачунара, као први пут</string>
+    <string name="wupd_failed_signature">Ова верзија је другачије потписана од инсталиране. Деинсталирајте апликацију са сата и поново је инсталирајте са рачунара</string>
+    <string name="wupd_cancelled">Инсталација отказана</string>
+    <string name="wupd_failed">Инсталација није успела (%1$s)</string>
+    <string name="wupd_receiving">Примам ажурирање са телефона…</string>
+</resources>

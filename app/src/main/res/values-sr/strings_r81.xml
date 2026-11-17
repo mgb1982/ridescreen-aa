@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Bike switched off for a long time: stop waiting (battery). -->
+    <string name="bike_gone_channel">Мотор није пронађен</string>
+    <string name="bike_gone_title">Престао сам да чекам мотор</string>
+    <string name="bike_gone_text">Мотор је био угашен 20 минута, па је апликација престала да га тражи како би штедела батерију. Додирните Повежи када се вратите на мотор.</string>
+
+    <!-- Trophies -->
+    <string name="tr_channel">Трофеји</string>
+    <string name="tr_unlocked_title">🏆 Трофеј откључан!</string>
+    <string name="tr_screen_title">Трофеји</string>
+    <string name="tr_header">Откључано %1$d од %2$d</string>
+    <string name="tr_next">Следеће</string>
+    <string name="tr_earned_on">Освојено %1$s</string>
+    <string name="tr_card_line">🏆 Трофеји: %1$d од %2$d · прикажи све ›</string>
+    <string name="tr_distance">Километри</string>
+    <string name="tr_distance_d">Укупно пређите %1$s км</string>
+    <string name="tr_longest">Дуга вожња</string>
+    <string name="tr_longest_d">Једна вожња од %1$s км или више</string>
+    <string name="tr_speed">Највећа брзина</string>
+    <string name="tr_speed_d">Достигните %1$s км/ч (GPS)</string>
+    <string name="tr_streak">У налету</string>
+    <string name="tr_streak_d">Возите %1$s дана заредом</string>
+    <string name="tr_rides">Редован</string>
+    <string name="tr_rides_d">Сачувајте %1$s вожњи</string>
+    <string name="tr_hours">Сати у седлу</string>
+    <string name="tr_hours_d">%1$s сати вожње</string>
+    <string name="tr_months">Целе године</string>
+    <string name="tr_months_d">Возите у %1$s различитих месеци</string>
+    <string name="tr_early">Раноранилац</string>
+    <string name="tr_early_d">Крените на вожњу пре 7:00</string>
+    <string name="tr_night">Ноћни возач</string>
+    <string name="tr_night_d">Завршите вожњу после 23:00</string>
+    <string name="tr_weekend">Викенд возач</string>
+    <string name="tr_weekend_d">Возите у суботу и недељу истог викенда</string>
+</resources>

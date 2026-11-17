@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RideScreen AA</string>
+    <string name="status_no_phone">Нема података са телефона</string>
+    <string name="status_streaming">● Повезано са таблом</string>
+    <string name="status_reconnecting">● Поновно повезивање…</string>
+    <string name="status_idle">Не возите</string>
+    <string name="unit_kmh">км/ч</string>
+    <string name="label_dist">км</string>
+    <string name="label_time">у покрету</string>
+    <string name="label_max">макс. км/ч</string>
+    <string name="label_avg">просек км/ч</string>
+    <string name="hint_logging_off">Бележење вожњи је искључено на телефону</string>
+    <string name="btn_ok">У реду</string>
+    <string name="channel_ride">Вожња у току</string>
+    <string name="ride_active">Вожња у току — додирните за податке</string>
+    <string name="label_total">време вожње</string>
+    <string name="label_alt">висина м</string>
+    <string name="label_heading">смер</string>
+    <string name="label_gps">GPS ±м</string>
+    <string name="label_battery">телефон</string>
+    <string name="label_volume">јачина</string>
+    <string name="status_clock_resync">⏱ Подешавам сат на табли…</string>
+    <string name="trips_title">Вожње</string>
+    <string name="trips_loading">Учитавам вожње…</string>
+    <string name="trips_none">Још нема сачуваних вожњи</string>
+    <string name="trips_no_phone">Телефон не одговара</string>
+    <string name="trip_line">%1$s · просек %2$d · макс. %3$d</string>
+    <string name="map_loading">Цртам мапу…</string>
+    <string name="map_no_phone">Мапа још није стигла — да ли је телефон близу?</string>
+    <string name="map_desc">Мапа вожње</string>
+    <string name="pill_max">макс. %d</string>
+    <string name="pill_avg">просек %d</string>
+    <string name="parked_line">🅿️ Мотор паркиран %1$s · пронађи га</string>
+    <string name="parked_no_maps">На сату нема апликације за мапе</string>
+    <string name="tile_label">Вожња</string>
+    <string name="tile_riding">ВОЖЊА</string>
+    <string name="tile_parked">🅿️ ПАРКИРАН</string>
+    <string name="tile_tap_directions">Додирните: отвори, па 🅿️ за упутства</string>
+    <string name="tile_last_ride">ПОСЛЕДЊА ВОЖЊА</string>
+    <string name="tile_no_data">Још нема вожњи</string>
+    <string name="complication_label">RideScreen · км</string>
+    <string name="complication_desc">км вожње</string>
+</resources>

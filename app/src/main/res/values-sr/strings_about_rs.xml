@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rs_about_tagline">Бежични Android Auto на табли вашег мотора (Carbit/EasyConnect табле), са исправкама и додацима за Zontes 125X / ZT125T-X. Засновано на OpenCfMoto.</string>
+    <string name="rs_about_community">Питања, логови или нови мотор? Отворите issue на GitHub-у или питајте у групи. Донације помажу да се покрију трошкови.</string>
+    <string name="rs_about_issues">GitHub</string>
+    <string name="rs_about_copyright">© 2026 Alexandru (zanderp), OpenCfMoto\n© 2026 Manel (mgb1982), RideScreen AA</string>
+    <string name="rs_about_copyright_body">RideScreen AA одржава Manel (mgb1982). Изведено је из OpenCfMoto, © 2026 Alexandru (zanderp), и као и он, слободан је софтвер под лиценцом GNU AGPL v3 или новијом: погледајте LICENSE и NOTICE у репозиторијуму.</string>
+    <string name="rs_about_original">Оригинални пројекат: OpenCfMoto (zanderp)</string>
+    <string name="rs_about_source">Изворни код RideScreen AA</string>
+    <string name="rs_about_credits">• Alexandru (zanderp) — аутор OpenCfMoto, апликације на којој је настао RideScreen AA. Хвала!\n• Manel (mgb1982) — RideScreen AA: исправка сата на табли, Wear OS апликација, нови дизајн, додаци за вожњу\n\nOpenCfMoto се ослања на open-cfmoto заједницу:\n• dcoletto / coletz — оригинални рад на QR-у и EasyConn-у\n• BojanJ — интеграција Android Auto пријемника\n• richardbizik — подршка за 1000 MT‑X\n• ionutradu252 / open-cflink — команде на управљачу, маргине, поновно повезивање и дорада\n• eugen0309 — Wi‑Fi Direct / CL‑C450 путања\n• Martin Escudero (martinescudero) — путања преко сервера главне јединице за Android Auto 17.4+\n• Glifaus — одржавање Wi‑Fi Direct везе\n• sashop2001 — AA DPI, Bluetooth окидач, бугарски превод\n• Authoritt — белешке о телеметрији возила\n• headunit-revived — Android Auto стек за пројекцију (AGPL)\n\nИ свима који су тестирали моторе, делили логове и пријављивали проблеме.\n\nПодржаваоци на Ko-fi — хвала вам!\n• Francisco Javier S.\n• José Antonio R.\n• Raul\n• Три анонимна подржаваоца</string>
+    <string name="rs_thanks_title">Хвала ти, Alexandru</string>
+    <string name="rs_thanks_body">RideScreen AA постоји захваљујући апликацији OpenCfMoto, коју је направио Alexandru (zanderp). Веза са таблом, бежични Android Auto, мапе, команде и скоро све што ова апликација ради његов је рад и рад open-cfmoto заједнице коју је окупио. RideScreen AA само додаје неколико ствари поврх тога. Ако вам је апликација корисна, подржите и њега.</string>
+    <string name="rs_thanks_kofi">❤ Подржи Alexandrua (Ko-fi)</string>
+    <string name="rs_thanks_github">OpenCfMoto на GitHub-у</string>
+    <string name="rs_thanks_discord">OpenCfMoto Discord</string>
+    <string name="rs_bikes_tested_title">Тестирано са RideScreen AA</string>
+    <string name="rs_bikes_tested">Zontes 125X (ZT125T-X) · 125V: све ради, укључујући сат на табли који је увек тачан, Wear OS апликацију и додатке за вожњу. Иста табла, друга маска.\nZontes 368 G / 368 K / 368 E: потврђено да раде; слика се уклапа у велики екран од првог повезивања.\nУ тестирању: Zontes 125M (повезује се преко хотспота телефона) и Zontes 350D (Wi‑Fi Direct QR). Имате неки од њих? Ваш лог помаже.</string>
+</resources>

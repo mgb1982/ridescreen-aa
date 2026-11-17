@@ -21,6 +21,8 @@ Draft locales ship for Discord community languages:
 | `values-tr/` | Türkçe |
 | `values-ko/` | 한국어 |
 | `values-bg/` | Български (sashop2001) |
+| `values-b+sr+Latn/` | Srpski (latinica) |
+| `values-sr/` | Српски (ћирилица) — generated from `values-b+sr+Latn/` |
 
 ## How to improve a translation
 
@@ -38,6 +40,17 @@ Missing keys fall back to English automatically.
 1. Add `<locale android:name="xx"/>` in `app/src/main/res/xml/locales_config.xml`.
 2. Copy `values/strings.xml` → `values-xx/strings.xml` and translate.
 3. Mention the new locale in the PR description.
+
+## Serbian (Latin + Cyrillic)
+
+Serbian is written in both scripts. `values-b+sr+Latn/` (Latin) is the hand-written source; `values-sr/` (Cyrillic, Android's default for `sr`) is a 1:1 transliteration of it. After editing the Latin files, regenerate the Cyrillic ones with:
+
+```sh
+python3 scripts/sr_cyrillic.py app/src/main/res
+python3 scripts/sr_cyrillic.py wear/src/main/res
+```
+
+Placeholders, escapes, brand names and tokens copied from the English source stay in Latin script.
 
 ## Notes for maintainers
 
