@@ -31,6 +31,12 @@ jobs:
             source/site/img/llave.webp
             source/site/img/reloj-brujula.webp
             source/site/img/widget-controles.webp
+            source/app/src/main/res/font/archivo_black.ttf
+            source/app/src/main/res/font/archivo_extrabold.ttf
+            source/app/src/main/res/font/archivo_semibold.ttf
+            source/app/src/main/res/font/archivo_medium.ttf
+            source/app/src/main/res/font/archivo_regular.ttf
+            source/app/src/main/res/values/colors.xml
             source/docs/media/hud-demo.mp4
             source/docs/media/buttons-demo.mp4
             source/docs/media/map-demo-1.gif
