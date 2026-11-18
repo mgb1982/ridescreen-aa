@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · same dashboard settings from Home and from Settings. Non-English: AI translation, no native review. -->
+<resources>
+    <string name="controls_dash_background">Fondo</string>
+    <string name="dash_style_more">Más ajustes del dashboard</string>
+</resources>

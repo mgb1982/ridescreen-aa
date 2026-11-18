@@ -6,7 +6,7 @@
     <string name="settings_sec_display">Οθόνη ταμπλό</string>
     <string name="settings_sec_display_sub">Προσαρμογή οθόνης στο ταμπλό, θέμα ημέρας/νύχτας, λειτουργία ενέργειας</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">Στυλ, πεδία, σειρά καρτών, χρώμα, κλίμακα</string>
+    <string name="settings_sec_dashboard_sub">Στυλ, φόντο, πεδία, σειρά καρτών, χρώμα, κλίμακα</string>
     <string name="settings_sec_handlebar">Τιμόνι και χειριστήρια</string>
     <string name="settings_sec_handlebar_sub">Κουμπιά, καθυστερήσεις πατήματος, ένταση ανά ταχύτητα</string>
     <string name="settings_sec_route">Στον δρόμο</string>

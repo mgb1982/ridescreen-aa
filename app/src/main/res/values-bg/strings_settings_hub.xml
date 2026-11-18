@@ -6,7 +6,7 @@
     <string name="settings_sec_display">Екран на таблото</string>
     <string name="settings_sec_display_sub">Нагласяне на екрана към таблото, дневна/нощна тема, режим на захранване</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">Стил, полета, ред на картите, цвят, мащаб</string>
+    <string name="settings_sec_dashboard_sub">Стил, фон, полета, ред на картите, цвят, мащаб</string>
     <string name="settings_sec_handlebar">Кормило и бутони</string>
     <string name="settings_sec_handlebar_sub">Бутони, забавяне при натискане, сила на звука според скоростта</string>
     <string name="settings_sec_route">По пътя</string>

@@ -6,7 +6,7 @@
     <string name="settings_sec_display">Gösterge ekranı</string>
     <string name="settings_sec_display_sub">Ekranı göstergeye uydur, gündüz/gece teması, güç modu</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">Stil, alanlar, kart sırası, renk, ölçek</string>
+    <string name="settings_sec_dashboard_sub">Stil, arka plan, alanlar, kart sırası, renk, ölçek</string>
     <string name="settings_sec_handlebar">Gidon ve kontroller</string>
     <string name="settings_sec_handlebar_sub">Tuşlar, basma gecikmeleri, hıza göre ses</string>
     <string name="settings_sec_route">Yolda</string>

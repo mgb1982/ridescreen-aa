@@ -6,7 +6,7 @@
     <string name="settings_sec_display">Écran du tableau de bord</string>
     <string name="settings_sec_display_sub">Adapter l’écran au tableau de bord, thème jour/nuit, mode d’alimentation</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">Style, champs, ordre des cartes, couleur, échelle</string>
+    <string name="settings_sec_dashboard_sub">Style, fond, champs, ordre des cartes, couleur, échelle</string>
     <string name="settings_sec_handlebar">Guidon et commandes</string>
     <string name="settings_sec_handlebar_sub">Boutons, délais d’appui, volume selon la vitesse</string>
     <string name="settings_sec_route">En route</string>

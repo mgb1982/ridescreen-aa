@@ -6,7 +6,7 @@
     <string name="settings_sec_display">หน้าจอหน้าปัด</string>
     <string name="settings_sec_display_sub">ปรับหน้าจอให้พอดีกับหน้าปัด ธีมกลางวัน/กลางคืน โหมดพลังงาน</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">สไตล์ ช่องข้อมูล ลำดับการ์ด สี ขนาด</string>
+    <string name="settings_sec_dashboard_sub">สไตล์ พื้นหลัง ช่องข้อมูล ลำดับการ์ด สี ขนาด</string>
     <string name="settings_sec_handlebar">แฮนด์และปุ่มควบคุม</string>
     <string name="settings_sec_handlebar_sub">ปุ่ม ความหน่วงการกด ระดับเสียงตามความเร็ว</string>
     <string name="settings_sec_route">ระหว่างเดินทาง</string>

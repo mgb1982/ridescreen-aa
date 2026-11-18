@@ -6,7 +6,7 @@
     <string name="settings_sec_display">Pantalla del quadre</string>
     <string name="settings_sec_display_sub">Ajustar la pantalla al quadre, tema de dia/nit, mode d\'energia</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">Estil, camps, ordre de targetes, color, escala</string>
+    <string name="settings_sec_dashboard_sub">Estil, fons, camps, ordre de targetes, color, escala</string>
     <string name="settings_sec_handlebar">Manillar i controls</string>
     <string name="settings_sec_handlebar_sub">Botons, retards de pulsació, volum segons la velocitat</string>
     <string name="settings_sec_route">En ruta</string>
