@@ -2005,7 +2005,7 @@ class MainActivity : AppCompatActivity() {
 
         // The bike's link ports are held by the official CFMoto app — offer to close it (see
         // EasyConnProber's bind-conflict path). Show once per error so we don't nag on every redraw.
-        if (phase == Phase.ERROR && detail.contains("CFMoto app", ignoreCase = true)) {
+        if (phase == Phase.ERROR && detail.startsWith("close ") && detail.endsWith(", then reconnect")) {
             if (!rivalPromptShown) { rivalPromptShown = true; promptCloseRival() }
         } else {
             rivalPromptShown = false

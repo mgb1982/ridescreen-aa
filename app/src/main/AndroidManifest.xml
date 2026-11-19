@@ -76,6 +76,9 @@
         <!-- Same for the official Zontes Smart apps (EU/Thailand and CN) and Carbit Ride. -->
         <package android:name="tayo.com.ZontesIntelligence" />
         <package android:name="com.tayo.msbox" />
+        <package android:name="com.cfmoto.motoplay" />
+        <package android:name="net.easyconn.carman" />
+        <package android:name="com.carbit.easyconnect" />
         <package android:name="net.easyconn.easyride.wws" />
         <!-- v2.3: navigation app choice (Google Maps / Waze). -->
         <package android:name="com.google.android.apps.maps" />

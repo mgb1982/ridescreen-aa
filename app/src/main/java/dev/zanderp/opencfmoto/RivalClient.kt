@@ -34,8 +34,18 @@ object RivalClient {
         "tayo.com.ZontesIntelligence",   // Zontes Smart (EU / Thailand build)
         "com.tayo.msbox",                // Zontes Smart (CN)
         PKG,                             // CFMoto
-        "net.easyconn.easyride.wws",     // Carbit Ride (unverified id)
+        "com.cfmoto.motoplay",           // CFMoto MotoPlay
+        "net.easyconn.carman",           // Carbit Ride (id seen in riders' phones by MOTO-HUB)
+        "com.carbit.easyconnect",        // Carbit EasyConnect
+        "net.easyconn.easyride.wws",     // Carbit Ride (older unverified id, kept: harmless if absent)
     )
+
+    /** Names of the installed official apps, as the phone shows them ("Zontes Smart", "CFMOTO"…). */
+    fun installedLabels(ctx: Context): List<String> = installed(ctx).map { pkg ->
+        try {
+            ctx.packageManager.getApplicationLabel(ctx.packageManager.getApplicationInfo(pkg, 0)).toString()
+        } catch (_: Exception) { pkg }
+    }
 
     /** The known apps that are installed on this phone. */
     fun installed(ctx: Context): List<String> = PACKAGES.filter { isInstalled(ctx, it) }
