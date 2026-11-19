@@ -190,4 +190,5 @@
     <string name="tv_clips_none">เลือกอย่างน้อยหนึ่งคลิป</string>
     <string name="tv_look_drag">ลากแผนที่ ความเร็ว หรือชื่อเรื่องบนภาพตัวอย่างไปยังตำแหน่งที่ต้องการ วิดีโอจะถูกสร้างตามตำแหน่งนี้</string>
     <string name="tv_look_reset">↺ ตำแหน่งเริ่มต้น</string>
+    <string name="wear_update_this_build">บิลด์นี้ (%1$s)</string>
 </resources>

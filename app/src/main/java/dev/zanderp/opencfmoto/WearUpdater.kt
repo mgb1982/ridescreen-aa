@@ -30,8 +30,30 @@ object WearUpdater {
 
     private val main = Handler(Looper.getMainLooper())
 
-    /** "Update the watch app" chooser: latest release from GitHub, or an APK already on the phone. */
+    /** The release API URL: the latest stable one, or the pre-release [tag] this build was published as. */
+    internal fun releaseUrl(repo: String, tag: String?): String =
+        if (tag.isNullOrBlank()) "https://api.github.com/repos/$repo/releases/latest"
+        else "https://api.github.com/repos/$repo/releases/tags/" + android.net.Uri.encode(tag)
+
+    /** "Update the watch app" chooser: this build's own watch app (test builds), the latest release, or an APK on the phone. */
     fun showDialog(activity: Activity, pickFile: () -> Unit) {
+        val tag = BuildConfig.BUILD_TAG
+        if (tag.isNotEmpty()) {
+            // A test build: its watch app is the one published next to this phone APK, not the latest stable one.
+            val items = arrayOf(
+                activity.getString(R.string.wear_update_this_build, tag),
+                activity.getString(R.string.wear_update_latest),
+                activity.getString(R.string.wear_update_pick),
+            )
+            AlertDialog.Builder(activity)
+                .setTitle(R.string.wear_update_title)
+                .setItems(items) { _, which ->
+                    when (which) { 0 -> sendLatest(activity, tag); 1 -> sendLatest(activity); else -> pickFile() }
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+            return
+        }
         AlertDialog.Builder(activity)
             .setTitle(R.string.wear_update_title)
             .setMessage(R.string.wear_update_body)
@@ -41,12 +63,13 @@ object WearUpdater {
             .show()
     }
 
-    fun sendLatest(activity: Activity) {
+    /** [tag] null: the latest stable release; otherwise the pre-release with that tag (this build's own). */
+    fun sendLatest(activity: Activity, tag: String? = null) {
         val ctx = activity.applicationContext
         toast(ctx, ctx.getString(R.string.wear_update_downloading))
         Thread {
             val file = File(ctx.cacheDir, "wear-update.apk")
-            val url = latestWearApkUrl()
+            val url = latestWearApkUrl(tag)
             if (url == null) { fail(ctx, R.string.wear_update_no_asset); return@Thread }
             if (!download(url, file)) { fail(ctx, R.string.wear_update_download_failed); return@Thread }
             send(ctx, file)
@@ -72,8 +95,8 @@ object WearUpdater {
     }
 
     /** Blocking: find the Wear OS asset of the latest release. */
-    private fun latestWearApkUrl(): String? = try {
-        val conn = (URL("https://api.github.com/repos/${UpdateChecker.REPO}/releases/latest").openConnection() as HttpURLConnection).apply {
+    private fun latestWearApkUrl(tag: String?): String? = try {
+        val conn = (URL(releaseUrl(UpdateChecker.REPO, tag)).openConnection() as HttpURLConnection).apply {
             connectTimeout = 8000; readTimeout = 8000
             setRequestProperty("Accept", "application/vnd.github+json")
             setRequestProperty("User-Agent", "RideScreenAA")
@@ -88,7 +111,7 @@ object WearUpdater {
                     val name = a.optString("name")
                     if (name.endsWith(".apk", true) && name.contains("wear", true)) { url = a.optString("browser_download_url"); break }
                 }
-                LogBus.log("[WEAR-UPD] latest release ${json.optString("tag_name")} watch asset=${url != null}")
+                LogBus.log("[WEAR-UPD] ${if (tag == null) "latest" else "this build's"} release ${json.optString("tag_name")} watch asset=${url != null}")
                 url
             }
         } finally { conn.disconnect() }

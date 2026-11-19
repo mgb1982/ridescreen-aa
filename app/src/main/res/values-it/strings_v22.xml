@@ -190,4 +190,5 @@
     <string name="tv_clips_none">Seleziona almeno una clip</string>
     <string name="tv_look_drag">Trascina la mappa, la velocità o il titolo nell\'anteprima per metterli dove vuoi; il video verrà creato esattamente così.</string>
     <string name="tv_look_reset">↺ Posizioni predefinite</string>
+    <string name="wear_update_this_build">Questa versione (%1$s)</string>
 </resources>

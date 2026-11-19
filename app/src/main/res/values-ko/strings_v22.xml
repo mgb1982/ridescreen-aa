@@ -192,4 +192,5 @@
     <plurals name="home_tile_trips_today">
         <item quantity="other">오늘 %1$d회</item>
     </plurals>
+    <string name="wear_update_this_build">이 빌드 (%1$s)</string>
 </resources>

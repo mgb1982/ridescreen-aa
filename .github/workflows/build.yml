@@ -31,6 +31,11 @@ jobs:
       - name: Version
         shell: bash
         run: |
+          # The pre-release tag this build is published under (prerelease/<name> -> test-<name>-<run>): the app
+          # uses it to fetch the matching watch APK ("Update the watch with this build").
+          BT=""
+          case "$GITHUB_REF" in refs/heads/prerelease/*) BT="test-${GITHUB_REF_NAME#prerelease/}-${GITHUB_RUN_NUMBER}" ;; esac
+          echo "BUILD_TAG=$BT" >> "$GITHUB_ENV"
           case "$GITHUB_REF" in
             refs/heads/release/v*) V="${GITHUB_REF_NAME#release/v}"; S="" ;;
             refs/tags/v*)          V="${GITHUB_REF_NAME#v}";         S="" ;;
@@ -62,7 +67,7 @@ jobs:
           TELEMETRY_URL: ${{ vars.TELEMETRY_URL }}
         run: |
           set +e
-          ./gradlew assembleGithubDebug -PappVersion="$APP_VERSION" -PversionSuffix="$VERSION_SUFFIX" > debug-build.log 2>&1
+          ./gradlew assembleGithubDebug -PappVersion="$APP_VERSION" -PversionSuffix="$VERSION_SUFFIX" -PbuildTag="$BUILD_TAG" > debug-build.log 2>&1
           rc=$?
           if [ $rc -ne 0 ]; then
             grep -E "What went wrong|rror:|^e: " debug-build.log | grep -v "^\s*at " | head -8 \
@@ -78,9 +83,9 @@ jobs:
           # Keep prerelease builds unminified and arm64-only for Android 16 device compatibility.
           # Branches ending in -slim build exactly like a public release (R8 + resource shrinking), to test it.
           if [[ "$GITHUB_REF" == refs/heads/prerelease/* && "$GITHUB_REF" != *-slim ]]; then
-            ./gradlew assembleGithubRelease bundlePlayRelease -PslimApk=false -Pabi=arm64-v8a -PappVersion="$APP_VERSION" -PversionSuffix="$VERSION_SUFFIX" > release-build.log 2>&1
+            ./gradlew assembleGithubRelease bundlePlayRelease -PslimApk=false -Pabi=arm64-v8a -PappVersion="$APP_VERSION" -PversionSuffix="$VERSION_SUFFIX" -PbuildTag="$BUILD_TAG" > release-build.log 2>&1
           else
-            ./gradlew assembleGithubRelease bundlePlayRelease -PappVersion="$APP_VERSION" -PversionSuffix="$VERSION_SUFFIX" > release-build.log 2>&1
+            ./gradlew assembleGithubRelease bundlePlayRelease -PappVersion="$APP_VERSION" -PversionSuffix="$VERSION_SUFFIX" -PbuildTag="$BUILD_TAG" > release-build.log 2>&1
           fi
           rc=$?
           if [ $rc -ne 0 ]; then

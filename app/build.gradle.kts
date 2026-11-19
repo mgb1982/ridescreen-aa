@@ -55,6 +55,9 @@ android {
             val t = text.trim()
             if (t.matches(Regex("[0-9a-f]{4,40}"))) t else "unknown"
         }.orElse("unknown")
+        // Tag of the pre-release this build is published as ("" for other builds), set by CI (-PbuildTag).
+        val buildTag = ((project.findProperty("buildTag") as String?) ?: "").filter { it.isLetterOrDigit() || it in "._-" }
+        buildConfigField("String", "BUILD_TAG", "\"$buildTag\"")
         buildConfigField("String", "GIT_HASH", "\"${gitHash.get()}\"")
 
     }

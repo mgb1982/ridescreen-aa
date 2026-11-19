@@ -190,4 +190,5 @@
     <string name="tv_clips_none">Coche au moins un clip</string>
     <string name="tv_look_drag">Fais glisser la carte, la vitesse ou le titre dans l’aperçu pour les placer où tu veux ; la vidéo sera créée exactement comme ça.</string>
     <string name="tv_look_reset">↺ Positions par défaut</string>
+    <string name="wear_update_this_build">Cette version (%1$s)</string>
 </resources>

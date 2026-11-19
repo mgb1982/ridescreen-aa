@@ -190,4 +190,5 @@
         <item>Νότος</item>
         <item>Δύση</item>
     </string-array>
+    <string name="wear_update_this_build">Αυτή η έκδοση (%1$s)</string>
 </resources>

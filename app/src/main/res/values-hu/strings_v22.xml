@@ -193,4 +193,5 @@
     <string name="tv_clips_none">Pipálj ki legalább egy klipet</string>
     <string name="tv_look_drag">Húzd a térképet, a sebességet vagy a címet az előnézeten, ahová szeretnéd; a videó pontosan így fog elkészülni.</string>
     <string name="tv_look_reset">↺ Alapértelmezett pozíciók</string>
+    <string name="wear_update_this_build">Ez a verzió (%1$s)</string>
 </resources>

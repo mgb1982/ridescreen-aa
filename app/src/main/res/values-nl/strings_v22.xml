@@ -193,4 +193,5 @@
     <string name="tv_clips_none">Vink minstens één clip aan</string>
     <string name="tv_look_drag">Sleep de kaart, de snelheid of de titel op het voorbeeld naar de gewenste plek; de video wordt precies zo gemaakt.</string>
     <string name="tv_look_reset">↺ Standaardposities</string>
+    <string name="wear_update_this_build">Deze versie (%1$s)</string>
 </resources>

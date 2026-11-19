@@ -197,4 +197,5 @@
     <string name="tv_clips_none">Marca al menos un clip</string>
     <string name="tv_look_drag">Arrastra el mapa, la velocidad o el título en la vista previa para ponerlos donde quieras; el vídeo saldrá tal cual.</string>
     <string name="tv_look_reset">↺ Posiciones originales</string>
+    <string name="wear_update_this_build">Esta versión (%1$s)</string>
 </resources>
