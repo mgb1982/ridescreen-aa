@@ -13,6 +13,8 @@ enum class ClockQueryMode(val id: String) {
     CARBIT("carbit"),
     ZONTES("zontes"),
     NO_ACK("no_ack"),
+    /** v2.5 · time + currentTime + currentTimeZone (+ dateTime only if the dash asks): opt-in, Clock lab. */
+    STANDARD("standard"),
     ;
 
     companion object {

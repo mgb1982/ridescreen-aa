@@ -186,6 +186,7 @@ class EasyConnProber(
             log("already running — forcing PXC restart for clean mode switch")
             stop()
         }
+        RivalClient.portsHeld = false
         probed = false
         framesSent = 0
         lastFrameAt = 0L
@@ -266,6 +267,7 @@ class EasyConnProber(
             val who = holders.joinToString(", ").ifEmpty { "the official CFMoto/Zontes/Carbit app" }
             log("!! link ports are held by another app (installed official apps: ${holders.joinToString(", ").ifEmpty { "none found" }}). " +
                 "Close it (force-stop) and reconnect — RideScreen AA needs ports ${LISTEN_PORTS.toList()}.")
+            RivalClient.portsHeld = true
             ConnectionState.set(Phase.ERROR, "close $who, then reconnect")
             stop()
             return
@@ -969,12 +971,13 @@ class EasyConnProber(
                 pullRequests++
                 // Never leave a request unanswered: an unanswered 114 stalls the dash until its own
                 // media-socket timeout and it drops the link (mirror of a still app, 350E field logs).
-                // If nothing is queued within 0.7 s, re-paint the last picture and wait for that frame.
+                // If nothing is queued within 0.7 s, re-paint the last picture and wait up to 0.8 s more
+                // (1.5 s in all, as before).
                 val vp = video
                 var frame = vp?.pollFrame(700)
                 if (frame == null && vp != null) {
                     vp.kickIdleFrame()
-                    frame = vp.pollFrame(1500)
+                    frame = vp.pollFrame(800)
                     if (frame != null) {
                         idleKicks++
                         if (idleKicks <= 3 || idleKicks % 50 == 0)

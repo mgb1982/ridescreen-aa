@@ -93,9 +93,11 @@ internal class EcBtpTimeLink(
         val label = runCatching { device.name }.getOrNull() ?: device.address
         val callback = object : BluetoothGattCallback() {
             private val proven = AtomicBoolean(false)
+            @Volatile private var connected = false
             @Volatile private var dataCharacteristic: BluetoothGattCharacteristic? = null
 
             override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
+                connected = newState == BluetoothProfile.STATE_CONNECTED
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
                     if (closed.get()) {
                         runCatching { gatt.disconnect() }
@@ -118,9 +120,11 @@ internal class EcBtpTimeLink(
                 dataCharacteristic = characteristic
                 subscribe(gatt, characteristic)
                 log("[EC-BTP] listening to $label")
-                if (DashClock.nameLooksLikeDash(label)) {
+                // Zontes dash names only (ZT851066 style): "ZT"/"QJ"/"MLN" markers elsewhere could match a
+                // stranger's intercom or OBD that shares ffe0/fff0, and we never write to those.
+                if (ZONTES_DASH_NAME.matches(label)) {
                     android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                        if (closed.get() || proven.get()) return@postDelayed
+                        if (closed.get() || proven.get() || !connected) return@postDelayed
                         val target = dataCharacteristic ?: return@postDelayed
                         val push = EcBtpProtocol.syncTimeReply(now().time, zone().rawOffset)
                         val written = runCatching {
@@ -207,6 +211,7 @@ internal class EcBtpTimeLink(
 
     private companion object {
         const val PUSH_AFTER_MS = 4_000L
+        val ZONTES_DASH_NAME = Regex("^ZT[0-9A-Za-z]{4,}(-le)?$", RegexOption.IGNORE_CASE)
         val SERVICE_UUIDS = listOf(
             UUID.fromString("00001c00-d102-11e1-9b23-000efb0000b2"),
             UUID.fromString("0000474d-0000-1000-8000-00805f9b34fb"),

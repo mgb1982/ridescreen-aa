@@ -25,6 +25,9 @@ import android.provider.Settings
 object RivalClient {
     const val PKG = "com.cfmoto.cfmotointernational"
 
+    /** Set by EasyConnProber when the link ports are taken; MainActivity shows the close-app dialog on it. */
+    @Volatile var portsHeld = false
+
     /**
      * Known official apps, in the order they are offered. Each one needs a `<queries>` entry in the manifest
      * (Android 11+ package visibility). Zontes packages come from the Zontes Smart EU / CN APKs; the Carbit Ride

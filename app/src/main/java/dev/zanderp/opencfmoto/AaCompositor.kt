@@ -586,7 +586,6 @@ class AaCompositor(private val log: (String) -> Unit) {
         }
     }
 
-    /** Set the live-frame cap (frames/sec) from the user's [dev.zanderp.opencfmoto.PowerMode]. */
     /**
      * The dash is waiting on a frame request and nothing new arrived (static screen, or a single-app
      * mirror whose app is not redrawing): paint the last picture again right now instead of waiting for
@@ -598,6 +597,7 @@ class AaCompositor(private val log: (String) -> Unit) {
         }
     }
 
+    /** Set the live-frame cap (frames/sec) from the user's [dev.zanderp.opencfmoto.PowerMode]. */
     fun setFrameCap(fps: Int) {
         val clamped = fps.coerceIn(10, 60)
         minFrameIntervalMs = (1000L / clamped)

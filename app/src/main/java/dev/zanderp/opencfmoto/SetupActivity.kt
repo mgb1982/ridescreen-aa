@@ -221,6 +221,9 @@ class SetupActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.clocklab_query_zontes).setOnClickListener {
             setClockLabQuery(ClockQueryMode.ZONTES)
         }
+        findViewById<MaterialButton>(R.id.clocklab_query_standard).setOnClickListener {
+            setClockLabQuery(ClockQueryMode.STANDARD)
+        }
         findViewById<MaterialButton>(R.id.clocklab_query_none).setOnClickListener {
             setClockLabQuery(ClockQueryMode.NO_ACK)
         }
@@ -706,6 +709,7 @@ class SetupActivity : AppCompatActivity() {
             R.id.clocklab_query_empty to ClockQueryMode.EMPTY,
             R.id.clocklab_query_carbit to ClockQueryMode.CARBIT,
             R.id.clocklab_query_zontes to ClockQueryMode.ZONTES,
+            R.id.clocklab_query_standard to ClockQueryMode.STANDARD,
             R.id.clocklab_query_none to ClockQueryMode.NO_ACK)
         highlight(AppSettings.clockLabTimeSync(this),
             R.id.clocklab_sync_echo to ClockTimeSyncMode.ECHO,

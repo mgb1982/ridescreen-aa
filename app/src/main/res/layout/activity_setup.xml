@@ -1485,6 +1485,15 @@
                         android:text="@string/setup_clock_lab_query_zontes" />
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/clocklab_query_standard"
+                        style="@style/Widget.OpenCfMoto.Segment"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
+                        android:text="@string/setup_clock_lab_query_standard" />
+
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/clocklab_query_none"
                         style="@style/Widget.OpenCfMoto.Segment"
                         android:layout_width="0dp"

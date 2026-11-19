@@ -154,7 +154,9 @@ class PxcHandshake(
                 var waited = 0
                 while (lastClientInfo == null && waited < 3000 && !socket.isClosed) { Thread.sleep(100); waited += 100 }
                 val channel = lastClientInfo?.optString("channel")?.trim().orEmpty()
-                if (!touchExpected || clockFixDash(channel, ClockLab.phoneHotspotDash)) return@Thread
+                // Only for a rider who is already troubleshooting touch (Setup ▸ force touch on): without this
+                // it would fire for anyone who simply doesn't tap the dash while riding.
+                if (!touchExpected || !BikeProfileHolder.forceTouch || clockFixDash(channel, ClockLab.phoneHotspotDash)) return@Thread
                 var elapsed = 0
                 while (elapsed < TOUCH_FLAG_WAIT_MS && !socket.isClosed) { Thread.sleep(500); elapsed += 500 }
                 if (socket.isClosed || touchesThisSession > 0) return@Thread
@@ -257,7 +259,8 @@ class PxcHandshake(
         val mode = if (autoZontes) ClockQueryMode.ZONTES else ClockLab.query
         if (autoZontes) log("[CLOCK-LAB] channel $channel${if (channel == ZONTES_125M_CHANNEL) " (125M, phone hotspot)" else ""}: default empty 0x10451 → OEM Zontes JSON")
         val reply = when (mode) {
-            ClockQueryMode.EMPTY -> "standard json"
+            ClockQueryMode.EMPTY -> "empty"
+            ClockQueryMode.STANDARD -> "json"
             ClockQueryMode.CARBIT, ClockQueryMode.ZONTES -> "json"
             ClockQueryMode.NO_ACK -> "no-ack"
         }
@@ -265,12 +268,18 @@ class PxcHandshake(
         when (mode) {
             ClockQueryMode.NO_ACK -> { /* tester: leave 0x10450 unanswered */ }
             ClockQueryMode.EMPTY -> {
-                // v2.5: "empty" is the default setting, and the default now tells the dash the time.
+                PxcFrame(PxcFrame.CMD_HU_QUERY_TIME_ACK, ByteArray(0)).write(out)
+                log("[$tag] HU_QUERY_TIME (0x10450) len=${frame.payload.size} " +
+                    "channel=${channel.ifEmpty { "-" }} → 0x10451 empty")
+            }
+            ClockQueryMode.STANDARD -> {
+                // v2.5 opt-in (Clock lab). MOTO-HUB's Voge log: a dash that asks once and gets an empty
+                // answer never learns the time. dateTime only when the dash itself advertises it.
                 val wantsDate = lastClientInfo?.optBoolean("supportSyncCorrectTime", false) == true
                 val ack = HuQueryTime.standard(channel, wantsDate)
                 PxcFrame(PxcFrame.CMD_HU_QUERY_TIME_ACK, ack.payload).write(out)
                 log("[$tag] HU_QUERY_TIME (0x10450) len=${frame.payload.size} channel=${channel.ifEmpty { "-" }} " +
-                    "→ 0x10451 standard time=${ack.timeMillis} currentTime=${ack.currentTime} zone=${ack.timeZone}" +
+                    "→ 0x10451 standard currentTime=${ack.currentTime} zone=${ack.timeZone}" +
                     if (wantsDate) " dateTime=${ack.dateTime}" else " (no dateTime: dash didn't ask for it)")
             }
             ClockQueryMode.CARBIT -> {
@@ -605,6 +614,7 @@ class PxcHandshake(
         fun onManualResync() {
             resyncGen++
             reconnectFromResync = true
+            ClockLab.resyncStuck = false
         }
     }
 
@@ -623,6 +633,7 @@ class PxcHandshake(
         resyncsThisBoot = 0
         lastResyncAtElapsed = 0L
         slowAfterResync = 0
+        reconnectFromResync = false
         ClockLab.resyncsThisBoot = 0
         ClockLab.resyncStuck = false
         val text = frame.payload.asText()
