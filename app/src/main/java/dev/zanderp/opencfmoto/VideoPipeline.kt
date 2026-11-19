@@ -767,6 +767,18 @@ class VideoPipeline(
     fun canvasSize(): Pair<Int, Int>? = if (encoderW > 0 && encoderH > 0) encoderW to encoderH else null
     val compositing: Boolean get() = aaCompositor != null
 
+    /**
+     * A frame request is waiting and the queue is empty: get a picture out now. With a compositor
+     * (Android Auto, mirror) re-paint the last frame; own-content modes ask the encoder for a sync frame.
+     */
+    fun kickIdleFrame() {
+        val c = aaCompositor ?: mirrorScaler
+        if (c != null) { c.redrawNow(); return }
+        try {
+            codec?.setParameters(android.os.Bundle().apply { putInt(MediaCodec.PARAMETER_KEY_REQUEST_SYNC_FRAME, 0) })
+        } catch (_: Exception) {}
+    }
+
     /** Called by the data socket on each REQ_RV_DATA_NEXT(114). Returns one access unit. */
     fun pollFrame(timeoutMs: Long): ByteArray? {
         lastPullMs = System.currentTimeMillis()
@@ -910,7 +922,12 @@ class VideoPipeline(
          * idle redraw is the primary keep-alive; this is the encoder-side backstop. See idea 5 in
          * docs/06-OPTIMIZATION-IDEAS.md.
          */
-        const val IDLE_ENCODER_REPEAT_US = 900_000L   // 0.9s → ≈1fps floor on a static screen
+        // 0.5 s → ≈2 fps floor on a static screen (was 0.9 s). A repeated picture is a skip P-frame of a few
+        // dozen bytes, so this costs next to nothing; MOTO-HUB measured a KOVE 800X dropping the video socket
+        // after ~8 s at ~1 fps. Kept below the slowest pull rate seen (350E, ~1.4/s → capped encoder) by the
+        // pull model: the dash asks for each frame, so a faster floor would only fill the 8-frame queue there.
+        // The real guarantee for a waiting dash is EasyConnProber's idle kick (kickIdleFrame).
+        const val IDLE_ENCODER_REPEAT_US = 500_000L
 
         /** Diagnostic build flag: dump the H.264 we send to the bike (bounded). Turn on to capture a
          *  .h264 of the exact wire stream for offline ffprobe analysis; off for normal use. */

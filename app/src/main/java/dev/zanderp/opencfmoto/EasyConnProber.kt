@@ -122,6 +122,8 @@ class EasyConnProber(
     private var pullRequests = 0
     private var pullSent = 0
     private var pullEmpty = 0
+    /** Frame requests answered by re-painting the last picture (static screen). */
+    private var idleKicks = 0
     private var pullStats0: LongArray? = null
     /** SoftAP Yunmo path (MOTOMORINI / X-Cape 1200) when EasyConn never answers. */
     private var yunmo: YunmoLink? = null
@@ -956,7 +958,20 @@ class EasyConnProber(
             }
             114 -> { // REQ_RV_DATA_NEXT — bike pulling a frame (data socket); send one access unit raw
                 pullRequests++
-                val frame = video?.pollFrame(1500)
+                // Never leave a request unanswered: an unanswered 114 stalls the dash until its own
+                // media-socket timeout and it drops the link (mirror of a still app, 350E field logs).
+                // If nothing is queued within 0.7 s, re-paint the last picture and wait for that frame.
+                val vp = video
+                var frame = vp?.pollFrame(700)
+                if (frame == null && vp != null) {
+                    vp.kickIdleFrame()
+                    frame = vp.pollFrame(1500)
+                    if (frame != null) {
+                        idleKicks++
+                        if (idleKicks <= 3 || idleKicks % 50 == 0)
+                            log("[$tag] REQ_RV_DATA_NEXT(114): nothing queued — re-sent the last picture (${idleKicks}× so far)")
+                    }
+                }
                 if (frame == null) pullEmpty++ else pullSent++
                 reportPull()
                 if (frame == null) {
