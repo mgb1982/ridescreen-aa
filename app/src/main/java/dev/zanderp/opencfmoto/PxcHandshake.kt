@@ -74,6 +74,7 @@ class PxcHandshake(
                 PxcFrame(PxcFrame.CMD_CHANNEL_CAR_DATA + 1, ByteArray(0)).write(out)
                 onPxcChannelSelected?.invoke(socket, "CAR_DATA")
                 startAppStatusLoop(socket)
+                startTouchFlagProbe(socket)
             }
             PxcFrame.CMD_CLIENT_INFO -> onClientInfo(tag, frame, out)
             PxcFrame.CMD_QUERY_SPEED -> {
@@ -130,6 +131,52 @@ class PxcHandshake(
      * takes the phone's time on every connect, including cold starts. Gated to channel 21340 and
      * the Zontes 125M (see [clockFixDash]).
      */
+    /** Both sides agreed on touch in this session's CLIENT_INFO (dash declared it, we advertised it). */
+    @Volatile private var touchExpected = false
+
+    /**
+     * v2.5 touch experiment (GPX DZ2: "touch doesn't work"). The official Carbit app tells the dash, with
+     * ECP_P2C_APPSTATUS (0x20030) mode 1, that the mirror is live, and sets `enableAccessibility=true` when
+     * it can inject touches. MOTO-HUB found a CFMoto 1000 MT-X that painted their picture and never sent a
+     * touch until that flag was stated (ridedaemon-lib appstatus.go). We never send it outside the Zontes
+     * clock-fix channels.
+     *
+     * Only for a dash where touch should work and doesn't: both sides agreed on touch, it is not a Zontes
+     * clock-fix channel (those keep their own 0x20020 loop untouched), and 30 s of streaming brought no
+     * touch at all. Then one 0x20030 with mode 1 + enableAccessibility=true. Dashes whose touch already works
+     * never see it. The log says whether a touch followed.
+     */
+    private fun startTouchFlagProbe(socket: Socket) {
+        touchesThisSession = 0
+        touchFlagSentAt = 0L
+        Thread({
+            try {
+                var waited = 0
+                while (lastClientInfo == null && waited < 3000 && !socket.isClosed) { Thread.sleep(100); waited += 100 }
+                val channel = lastClientInfo?.optString("channel")?.trim().orEmpty()
+                if (!touchExpected || clockFixDash(channel, ClockLab.phoneHotspotDash)) return@Thread
+                var elapsed = 0
+                while (elapsed < TOUCH_FLAG_WAIT_MS && !socket.isClosed) { Thread.sleep(500); elapsed += 500 }
+                if (socket.isClosed || touchesThisSession > 0) return@Thread
+                val dm = android.content.res.Resources.getSystem().displayMetrics
+                val payload = JSONObject().apply {
+                    put("mode", 1)
+                    put("displayRotation", 0)
+                    put("width", minOf(dm.widthPixels, dm.heightPixels))
+                    put("height", maxOf(dm.widthPixels, dm.heightPixels))
+                    put("enableAccessibility", true)
+                    put("enableAOAHid", true)
+                }.toString().toByteArray(Charsets.UTF_8)
+                PxcFrame(APPSTATUS_BACKGROUND, payload).write(socket.getOutputStream())
+                touchFlagSentAt = System.currentTimeMillis()
+                log("[TOUCH] no touch in ${TOUCH_FLAG_WAIT_MS / 1000} s on a touch dash (channel=${channel.ifEmpty { "-" }}) " +
+                    "→ 0x20030 mode 1 enableAccessibility=true ${String(payload, Charsets.UTF_8)}")
+            } catch (e: Exception) {
+                log("[TOUCH] accessibility flag probe ended: ${e.javaClass.simpleName}: ${e.message}")
+            }
+        }, "pxc-touchflag").apply { isDaemon = true }.start()
+    }
+
     private fun startAppStatusLoop(socket: Socket) {
         if (!APPSTATUS_ENABLED) return
         Thread({
@@ -420,6 +467,7 @@ class PxcHandshake(
         log("[$tag] *** BikeProfile selected: ${profile.name} ***")
 
         val reply = profile.buildClientInfoReply(json, carHuid, phoneUuid)
+        touchExpected = json.optBoolean("supportScreenTouch", false) && reply.optBoolean("supportScreenTouch", false)
         // 14 Nov (GPX DZ2: "touch doesn't work"): one line says what the dash declared and what we told it, so a log
         // alone tells "no touch panel / not enabled" from "we never asked for touch". Touch frames log as [..] TOUCH DOWN/UP.
         log("[TOUCH] dash declares supportScreenTouch=${json.optBoolean("supportScreenTouch", false)} " +
@@ -484,6 +532,19 @@ class PxcHandshake(
         const val APPSTATUS_ENABLED = true
         const val APPSTATUS_FOREGROUND = 0x20020      // ECP_P2C_APPSTATUS_FOREGROUND
         const val APPSTATUS_BACKGROUND = 0x20030      // ECP_P2C_APPSTATUS_BACKGROUND
+        private const val TOUCH_FLAG_WAIT_MS = 30_000
+
+        /** Touches received this session; the touch-flag probe only acts on a dash that sent none. */
+        @Volatile var touchesThisSession = 0
+        @Volatile var touchFlagSentAt = 0L
+
+        /** Called for every touch frame from the dash. */
+        fun noteTouch(log: (String) -> Unit) {
+            touchesThisSession++
+            if (touchesThisSession == 1 && touchFlagSentAt > 0L) {
+                log("[TOUCH] first touch arrived ${(System.currentTimeMillis() - touchFlagSentAt) / 1000} s after the accessibility flag")
+            }
+        }
         const val APPSTATUS_SCREEN_LOCKED = 0x20040   // ECP_P2C_APPSTATUS_SCREEN_LOCKED
         const val APPSTATUS_SCREEN_UNLOCKED = 0x20050 // ECP_P2C_APPSTATUS_SCREEN_UNLOCKED
         /**
