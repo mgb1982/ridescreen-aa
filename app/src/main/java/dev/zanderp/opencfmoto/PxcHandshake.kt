@@ -210,7 +210,7 @@ class PxcHandshake(
         val mode = if (autoZontes) ClockQueryMode.ZONTES else ClockLab.query
         if (autoZontes) log("[CLOCK-LAB] channel $channel${if (channel == ZONTES_125M_CHANNEL) " (125M, phone hotspot)" else ""}: default empty 0x10451 → OEM Zontes JSON")
         val reply = when (mode) {
-            ClockQueryMode.EMPTY -> "empty"
+            ClockQueryMode.EMPTY -> "standard json"
             ClockQueryMode.CARBIT, ClockQueryMode.ZONTES -> "json"
             ClockQueryMode.NO_ACK -> "no-ack"
         }
@@ -218,9 +218,13 @@ class PxcHandshake(
         when (mode) {
             ClockQueryMode.NO_ACK -> { /* tester: leave 0x10450 unanswered */ }
             ClockQueryMode.EMPTY -> {
-                PxcFrame(PxcFrame.CMD_HU_QUERY_TIME_ACK, ByteArray(0)).write(out)
-                log("[$tag] HU_QUERY_TIME (0x10450) len=${frame.payload.size} " +
-                    "channel=${channel.ifEmpty { "-" }} → 0x10451 empty")
+                // v2.5: "empty" is the default setting, and the default now tells the dash the time.
+                val wantsDate = lastClientInfo?.optBoolean("supportSyncCorrectTime", false) == true
+                val ack = HuQueryTime.standard(channel, wantsDate)
+                PxcFrame(PxcFrame.CMD_HU_QUERY_TIME_ACK, ack.payload).write(out)
+                log("[$tag] HU_QUERY_TIME (0x10450) len=${frame.payload.size} channel=${channel.ifEmpty { "-" }} " +
+                    "→ 0x10451 standard time=${ack.timeMillis} currentTime=${ack.currentTime} zone=${ack.timeZone}" +
+                    if (wantsDate) " dateTime=${ack.dateTime}" else " (no dateTime: dash didn't ask for it)")
             }
             ClockQueryMode.CARBIT -> {
                 val ack = HuQueryTime.carbit()
