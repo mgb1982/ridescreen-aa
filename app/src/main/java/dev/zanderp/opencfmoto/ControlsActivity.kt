@@ -502,6 +502,11 @@ class ControlsActivity : AppCompatActivity() {
                     DashboardMode.Design.PIT -> R.string.dash_design_pit
                     DashboardMode.Design.CLASSIC -> R.string.dash_design_classic
                     DashboardMode.Design.FOCUS -> R.string.dash_design_focus
+                    DashboardMode.Design.LED -> R.string.dash_design_led
+                    DashboardMode.Design.ANALOG -> R.string.dash_design_analog
+                    DashboardMode.Design.VFD -> R.string.dash_design_vfd
+                    DashboardMode.Design.MINIMAL -> R.string.dash_design_minimal
+                    DashboardMode.Design.COCKPIT -> R.string.dash_design_cockpit
                     DashboardMode.Design.WINDOW -> R.string.dash_design_window
                 }
                 val card = android.widget.LinearLayout(this).apply {

@@ -5,4 +5,9 @@
     <string name="dash_design_classic">Klasický</string>
     <string name="dash_design_focus">Fokus</string>
     <string name="dash_design_window">Android Auto + data</string>
+    <string name="dash_design_led">LED</string>
+    <string name="dash_design_analog">Analogový</string>
+    <string name="dash_design_vfd">VFD</string>
+    <string name="dash_design_minimal">Minimální</string>
+    <string name="dash_design_cockpit">Kokpit</string>
 </resources>

@@ -5,4 +5,9 @@
     <string name="dash_design_classic">클래식</string>
     <string name="dash_design_focus">포커스</string>
     <string name="dash_design_window">Android Auto + 데이터</string>
+    <string name="dash_design_led">LED</string>
+    <string name="dash_design_analog">아날로그</string>
+    <string name="dash_design_vfd">VFD</string>
+    <string name="dash_design_minimal">미니멀</string>
+    <string name="dash_design_cockpit">콕핏</string>
 </resources>

@@ -138,7 +138,7 @@ internal object DashboardRenderer {
     private var fontsLoaded = false
     private val clock = SimpleDateFormat("HH:mm", Locale.US)
 
-    private data class Metric(
+    internal data class Metric(
         val id: String, val title: String, val value: Double?, val unit: String,
         val max: Double = 100.0,
         /** Text to show instead of the number (clock "14:32", heading "NE"); [value] then only says there is data. */
@@ -269,11 +269,15 @@ internal object DashboardRenderer {
         val base = when (design) {
             // The four v2.6 designs share the Sport palettes (orange accent, or the rider's own).
             DashboardMode.Design.SPORT, DashboardMode.Design.CLEAN, DashboardMode.Design.PIT,
-            DashboardMode.Design.CLASSIC, DashboardMode.Design.FOCUS, DashboardMode.Design.WINDOW -> if (light) sportDay else sportNight
+            DashboardMode.Design.CLASSIC, DashboardMode.Design.FOCUS, DashboardMode.Design.WINDOW,
+            // v2.7 · the photo-real faces paint their own background; the palette only colours a picture's veil.
+            DashboardMode.Design.LED, DashboardMode.Design.ANALOG, DashboardMode.Design.VFD,
+            DashboardMode.Design.MINIMAL, DashboardMode.Design.COCKPIT -> if (light) sportDay else sportNight
             DashboardMode.Design.RACING -> if (light) racingDay else racingNight
             DashboardMode.Design.TOURING -> if (light) touringDay else touringNight
         }
         val p = if (accent == 0) base else base.withAccent(accent, design)
+        skinAccent = accent
         speedMax = DashboardMode.speedMax(ctx)
         rpmMax = DashboardMode.rpmMax(ctx)
         // Focus: which reading is the hero. The live dash keeps the 3 degree hysteresis; a preview doesn't touch it.
@@ -341,6 +345,9 @@ internal object DashboardRenderer {
         return target!!
     }
 
+    /** v2.7 · the rider's accent (0 = the face's own colour) for [DashSkins]: LED and Minimal take it. */
+    private var skinAccent = 0
+
     /** The static layer being built has the rider's picture: skip the gradient and the carbon weave. */
     private var imageBg = false
 
@@ -407,6 +414,15 @@ internal object DashboardRenderer {
         design: DashboardMode.Design, all: Map<String, Metric>, cards: List<Metric>,
     ) {
         if (design == DashboardMode.Design.WINDOW) { drawWindow(ctx, c, d, p, all, cards); return }
+        if (design in DashSkins.DESIGNS) {
+            // v2.7 · own background, own RPM display (no shift lights), own slots ([DashSkins]).
+            DashSkins.draw(design, DashSkins.Frame(c, d, all, day = !night, still = pass == Pass.STATIC, drawBg = !imageBg,
+                speedMax = speedMax, rpmMax = rpmMax, plan = fb, accent = skinAccent))
+            live {
+                if (DashFallback.showWarning(d.obdConfigured, d.obdLive)) txt(c, ctx.getString(R.string.dash_no_obd), 44f, 22f, 13f, p.muted, fLabel)
+            }
+            return
+        }
         if (!imageBg) still { drawBackground(c, p, design) }
         // No header: the dash's own clock bar sits right above the frame.
         // Pit has its own wide RPM bar instead of the shift lights.
@@ -421,6 +437,7 @@ internal object DashboardRenderer {
             DashboardMode.Design.CLASSIC -> drawClassic(c, d, p, all)
             DashboardMode.Design.FOCUS -> drawFocus(c, d, p, all)
             DashboardMode.Design.WINDOW -> Unit   // drawn by drawWindow (early return above)
+            else -> Unit   // v2.7 faces: drawn by DashSkins (early return above)
         }
         live {
             if (DashFallback.showWarning(d.obdConfigured, d.obdLive)) txt(c, ctx.getString(R.string.dash_no_obd), 24f, 22f, 13f, p.muted, fLabel)

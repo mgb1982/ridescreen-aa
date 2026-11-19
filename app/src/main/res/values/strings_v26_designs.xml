@@ -5,4 +5,9 @@
     <string name="dash_design_classic">Classic</string>
     <string name="dash_design_focus">Focus</string>
     <string name="dash_design_window">Android Auto + data</string>
+    <string name="dash_design_led">LED</string>
+    <string name="dash_design_analog">Analog</string>
+    <string name="dash_design_vfd">VFD</string>
+    <string name="dash_design_minimal">Minimal</string>
+    <string name="dash_design_cockpit">Cockpit</string>
 </resources>

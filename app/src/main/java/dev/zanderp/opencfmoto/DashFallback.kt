@@ -53,6 +53,10 @@ internal object DashFallback {
             setOf("coolant", "volt", "load", "intake", "baro")
         DashboardMode.Design.CLEAN -> setOf("coolant", "volt", "throttle")
         DashboardMode.Design.CLASSIC, DashboardMode.Design.FOCUS -> setOf("coolant", "volt")
+        // v2.7 · the photo-real faces ([DashSkins])
+        DashboardMode.Design.LED, DashboardMode.Design.VFD, DashboardMode.Design.MINIMAL -> setOf("throttle", "coolant", "load", "volt")
+        DashboardMode.Design.ANALOG -> setOf("coolant", "volt")
+        DashboardMode.Design.COCKPIT -> setOf("throttle", "load", "coolant", "volt", "intake")
     }
 
     /**
@@ -66,9 +70,12 @@ internal object DashFallback {
     data class Plan(
         val clockDial: Boolean, val compass: Boolean, val touringClock: Boolean,
         val subs: Map<String, String>, val speedBig: Boolean,
+        /** v2.7 · Cockpit's RPM tape becomes a moving altitude tape (the altitude is then not offered as a card). */
+        val altTape: Boolean = false,
     ) {
         /** Part of the renderer's cache key: anything here changes what the cached static layer holds. */
-        val key: String get() = "fb:$clockDial:$compass:$touringClock:$speedBig:" + subs.entries.joinToString(",") { "${it.key}>${it.value}" }
+        val key: String get() = "fb:$clockDial:$compass:$touringClock:$speedBig:" + subs.entries.joinToString(",") { "${it.key}>${it.value}" } +
+            if (altTape) ":alt" else ""
     }
 
     /**
@@ -78,7 +85,7 @@ internal object DashFallback {
     fun plan(design: DashboardMode.Design, visible: Set<String>, available: Set<String>): Plan {
         val touring = design == DashboardMode.Design.TOURING
         val clockDial = "rpm" in visible &&
-            design in setOf(DashboardMode.Design.SPORT, DashboardMode.Design.CLASSIC, DashboardMode.Design.FOCUS)
+            design in setOf(DashboardMode.Design.SPORT, DashboardMode.Design.CLASSIC, DashboardMode.Design.FOCUS, DashboardMode.Design.ANALOG)
         val touringDial = touring && "throttle" in visible
         val compass = touringDial && "heading" in available
         val touringClock = touringDial && !compass
@@ -86,9 +93,11 @@ internal object DashFallback {
         excluded += visible.filter { it in PHONE_IDS }
         if (clockDial || touringClock) excluded += "clock"
         if (compass) excluded += "heading"
+        val altTape = design == DashboardMode.Design.COCKPIT && "rpm" in visible && "alt" in available
+        if (altTape) excluded += "alt"
         val slots = SLOT_ORDER.filter { it in visible && it in drawnSlots(design) && !(touring && it == "throttle") }
         val candidates = PREFERENCE.filter { it !in excluded && it in available }
-        return Plan(clockDial, compass, touringClock, slots.zip(candidates).toMap(), speedBig = design == DashboardMode.Design.RACING)
+        return Plan(clockDial, compass, touringClock, slots.zip(candidates).toMap(), speedBig = design == DashboardMode.Design.RACING, altTape = altTape)
     }
 
     /**

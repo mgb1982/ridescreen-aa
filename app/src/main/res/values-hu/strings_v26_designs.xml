@@ -5,4 +5,9 @@
     <string name="dash_design_classic">Klasszikus</string>
     <string name="dash_design_focus">Fókusz</string>
     <string name="dash_design_window">Android Auto + adatok</string>
+    <string name="dash_design_led">LED</string>
+    <string name="dash_design_analog">Analóg</string>
+    <string name="dash_design_vfd">VFD</string>
+    <string name="dash_design_minimal">Minimál</string>
+    <string name="dash_design_cockpit">Pilótafülke</string>
 </resources>
