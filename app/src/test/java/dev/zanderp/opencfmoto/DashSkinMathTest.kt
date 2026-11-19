@@ -52,7 +52,7 @@ class DashSkinMathTest {
         val rpm = DashSkinMath.arcScale(DashSkinMath.Secondary.RPM, 140, 10_000)
         assertEquals(11, rpm.labels.size)
         assertEquals(0.9f, rpm.redFrom, 1e-6f)
-        assertEquals(7, DashSkinMath.arcScale(DashSkinMath.Secondary.RPM, 140, 14_000).labels.size)   // every 2,000
+        assertEquals(8, DashSkinMath.arcScale(DashSkinMath.Secondary.RPM, 140, 14_000).labels.size)   // every 2,000
         val sp = DashSkinMath.arcScale(DashSkinMath.Secondary.SPEED, 140, 10_000)
         assertEquals(1f, sp.redFrom, 0f)
         assertEquals("140", sp.labels.last().second)
