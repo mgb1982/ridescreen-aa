@@ -437,6 +437,20 @@ if (refresh) try { wm.startScan() } catch (_: Exception) {}
     }
 
     /**
+     * The bike [Network] to pin a socket to right now, given the one a caller captured earlier.
+     * Android hands a re-granted network back as a NEW object, and binding to a handle it has lost
+     * fails with EPERM every time (MOTO-HUB field notes; Voge 800 log 18 Nov: 3 min of EPERM on a
+     * lost network 444 while the bike Wi-Fi was gone). Rules:
+     *  - a live AP network exists → use it (the captured one may be stale);
+     *  - none (lost, waiting to re-join) → null, so callers don't pin to a dead handle;
+     *  - Wi-Fi Direct / phone-hotspot links never had a Network → the captured value (null) stands.
+     */
+    fun liveNetworkFor(captured: Network?): Network? {
+        if (captured == null) return null
+        return currentNetwork
+    }
+
+    /**
      * If we aren't on a live bike [Network], ensure the process isn't stuck on a stale bind
      * (ENONET on ServerSocket / localhost). No-op when [currentNetwork] is set.
      */

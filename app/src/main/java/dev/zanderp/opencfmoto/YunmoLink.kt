@@ -643,7 +643,9 @@ class YunmoLink(
         video?.onBikeDataStart()
     }
 
-    private fun openSocket(network: Network?): Socket? {
+    private fun openSocket(captured: Network?): Socket? {
+        // Never pin to a network Android has lost or replaced (EPERM): see BikeWifi.liveNetworkFor.
+        val network = BikeWifi.liveNetworkFor(captured)
         if (network != null) {
             try {
                 return network.socketFactory.createSocket()

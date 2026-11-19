@@ -634,7 +634,13 @@ class EasyConnProber(
      * Falls back to process-bound / local bike IPv4 if no Network handle is available.
      * Throws [VpnBypassBlockedException] on EPERM (VPN kill-switch) — do not retry.
      */
-    private fun openOnBikeNetwork(network: Network?, myIp: Inet4Address): Socket {
+    private fun openOnBikeNetwork(captured: Network?, myIp: Inet4Address): Socket {
+        val network = BikeWifi.liveNetworkFor(captured)
+        if (captured != null && network == null) {
+            log("[PROBE] bike network $captured is gone (waiting to re-join) — not pinning to it")
+        } else if (captured != null && network != captured) {
+            log("[PROBE] bike network replaced: $captured → $network")
+        }
         if (network != null) {
             try {
                 val s = network.socketFactory.createSocket()
