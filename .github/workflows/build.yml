@@ -6,6 +6,14 @@ on:
     # tagged zontes-N with the APK attached; the tag is created GitHub-side.
     branches: [main, 'test/**', 'feature/**', 'release/**', 'prerelease/**']
     tags: ['v*']
+    # Text-only pushes build nothing (root *.md = CHANGELOG, PRIVACY, README; .github/release-notes.md still builds).
+    paths-ignore: ['*.md', 'docs/**', 'site/**']
+
+# A newer push to the same branch cancels the run still going (it would be thrown away anyway). Releases are never
+# cancelled: they queue.
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref_type == 'branch' && !startsWith(github.ref, 'refs/heads/release/') }}
 
 permissions:
   contents: write
@@ -19,6 +27,7 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+          cache: gradle   # dependencies and wrapper restored instead of downloaded on every run
       - name: Grant execute permission
         run: chmod +x gradlew
 
@@ -36,6 +45,10 @@ jobs:
           BT=""
           case "$GITHUB_REF" in refs/heads/prerelease/*) BT="test-${GITHUB_REF_NAME#prerelease/}-${GITHUB_RUN_NUMBER}" ;; esac
           echo "BUILD_TAG=$BT" >> "$GITHUB_ENV"
+          # feature/** and test/** pushes only compile and run the unit tests (cheap); everything else also builds the
+          # signed release APKs (R8) and publishes.
+          case "$GITHUB_REF" in refs/heads/feature/*|refs/heads/test/*) FULL=false ;; *) FULL=true ;; esac
+          echo "FULL_BUILD=$FULL" >> "$GITHUB_ENV"
           case "$GITHUB_REF" in
             refs/heads/release/v*) V="${GITHUB_REF_NAME#release/v}"; S="" ;;
             refs/tags/v*)          V="${GITHUB_REF_NAME#v}";         S="" ;;
@@ -61,20 +74,11 @@ jobs:
               -dname "CN=Android Debug,O=Android,C=US"
           fi
 
-      - name: Build debug APK
-        shell: bash
-        env:
-          TELEMETRY_URL: ${{ vars.TELEMETRY_URL }}
-        run: |
-          set +e
-          ./gradlew assembleGithubDebug -PappVersion="$APP_VERSION" -PversionSuffix="$VERSION_SUFFIX" -PbuildTag="$BUILD_TAG" > debug-build.log 2>&1
-          rc=$?
-          if [ $rc -ne 0 ]; then
-            grep -E "What went wrong|rror:|^e: " debug-build.log | grep -v "^\s*at " | head -8 \
-              | while IFS= read -r l; do echo "::error::${l:0:900}"; done
-          fi
-          exit $rc
+      # Tests first: a failing test no longer costs a whole release build.
+      - name: Unit tests (all; exclusions with reasons in app/build.gradle.kts)
+        run: ./gradlew testGithubDebugUnitTest
       - name: Build release APK
+        if: env.FULL_BUILD == 'true'
         shell: bash
         env:
           TELEMETRY_URL: ${{ vars.TELEMETRY_URL }}
@@ -96,9 +100,8 @@ jobs:
               | tail -c 3600 | fold -w 900 | while IFS= read -r l; do echo "::error::TAIL ${l}"; done
           fi
           exit $rc
-      - name: Unit tests (all; exclusions with reasons in app/build.gradle.kts)
-        run: ./gradlew testGithubDebugUnitTest
       - name: Show signing certificate
+        if: env.FULL_BUILD == 'true'
         run: |
           BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
           for APK in $(find app/build/outputs/apk/github/release wear/build/outputs/apk/github/release -name '*.apk'); do
@@ -165,22 +168,26 @@ jobs:
       # Test APKs get the build number in the file name: all of them used to be
       # "app-github-release.apk", and an older copy with the same name got sent/installed instead.
       - name: Name test APK
+        if: env.FULL_BUILD == 'true'
         shell: bash
         run: |
           mkdir -p test-apk
           cp "$(find app/build/outputs/apk/github/release -name '*.apk' | head -1)" \
             "test-apk/RideScreen-AA-${{ github.ref_name == 'main' && 'main' || 'test' }}-${{ github.run_number }}.apk"
       - uses: actions/upload-artifact@v4
+        if: env.FULL_BUILD == 'true'
         with:
           name: RideScreen-AA-${{ github.ref_name == 'main' && 'main' || 'test' }}-${{ github.run_number }}
           path: test-apk/*.apk
       - uses: actions/upload-artifact@v4
+        if: env.FULL_BUILD == 'true'
         with:
           name: RideScreen-AA-WearOS-${{ github.ref_name == 'main' && 'main' || 'test' }}-${{ github.run_number }}
           path: wear/build/outputs/apk/github/release/*.apk
       # Google Play bundles (applicationId io.github.mgb1982.ridescreen). Not uploadable yet: Play
       # rejects debug-signed bundles — a real upload key comes with the Play Console setup.
       - uses: actions/upload-artifact@v4
+        if: env.FULL_BUILD == 'true'
         with:
           name: RideScreen-Play-AAB-${{ github.run_number }}
           path: |
