@@ -389,12 +389,13 @@ object RideMotionMath {
 
     /** Detects the phone leaving the mount: gravity > 25 deg off the calibration for > 5 s at under 5 km/h. */
     class MountWatch {
-        private var since = 0L
-        fun reset() { since = 0L }
+        private var since = NONE
+        fun reset() { since = NONE }
         /** True once the calibration should be dropped. Unknown speed counts as "not parked". */
+        private companion object { const val NONE = Long.MIN_VALUE }
         fun update(nowMs: Long, speedKmh: Double?, angleDeg: Double): Boolean {
-            if (speedKmh == null || speedKmh >= MOUNT_MAX_KMH || angleDeg <= MOUNT_MAX_DEG) { since = 0L; return false }
-            if (since == 0L) since = nowMs
+            if (speedKmh == null || speedKmh >= MOUNT_MAX_KMH || angleDeg <= MOUNT_MAX_DEG) { since = NONE; return false }
+            if (since == NONE) since = nowMs
             return nowMs - since > MOUNT_MS
         }
     }
