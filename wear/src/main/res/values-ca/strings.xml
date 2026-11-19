@@ -38,4 +38,6 @@
     <string name="tile_no_data">Encara no hi ha viatges</string>
     <string name="complication_label">RideScreen · km</string>
     <string name="complication_desc">km del viatge</string>
+    <string name="channel_heart">Pols</string>
+    <string name="heart_active">Pols del trajecte</string>
 </resources>

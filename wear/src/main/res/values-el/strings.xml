@@ -41,4 +41,6 @@
     <string name="tile_no_data">Δεν υπάρχουν ακόμη διαδρομές</string>
     <string name="complication_label">RideScreen · km</string>
     <string name="complication_desc">km διαδρομής</string>
+    <string name="channel_heart">Καρδιακός ρυθμός</string>
+    <string name="heart_active">Καρδιακός ρυθμός διαδρομής</string>
 </resources>

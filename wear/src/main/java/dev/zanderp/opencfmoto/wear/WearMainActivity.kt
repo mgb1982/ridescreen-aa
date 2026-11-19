@@ -169,6 +169,7 @@ class WearMainActivity : ComponentActivity(), MessageClient.OnMessageReceivedLis
         val prefs = getSharedPreferences("wear_prefs", MODE_PRIVATE)
         if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
             registerHeartRateSensor()
+            HeartRateService.startIfWanted(this)   // visible now: Android accepts the health service
             requestNotificationPermissionIfNeeded()
         } else if (!prefs.getBoolean(KEY_HEART_ASKED, false)) {
             // Ask once: onResume runs on every wrist raise, and a denied prompt must not come back each time.

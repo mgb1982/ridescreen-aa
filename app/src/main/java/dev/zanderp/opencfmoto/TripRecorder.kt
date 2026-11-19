@@ -46,6 +46,7 @@ class TripRecorder(private val appContext: Context) : LocationListener {
     private val obdSamples = ArrayList<ObdTripSample>()
     private val obdLock = Any()
     private val motionSamples = ArrayList<MotionTripSample>()
+    private var hrBeat = 0
     private var motionTicker: java.util.concurrent.ScheduledFuture<*>? = null
     private var distanceMeters = 0.0
     private var movingTimeMs = 0L
@@ -80,6 +81,7 @@ class TripRecorder(private val appContext: Context) : LocationListener {
         }
         RideMotion.acquire(appContext, MOTION_OWNER)
         startMotionTicker()
+        WearBridge.sendToWatches(appContext, WearBridge.PATH_HR, "on")   // the watch keeps measuring the pulse while we record
         emit()
         return true
     }
@@ -141,6 +143,7 @@ class TripRecorder(private val appContext: Context) : LocationListener {
         motionTicker = motionExec.scheduleWithFixedDelay({
             try {
                 if (!recording) return@scheduleWithFixedDelay
+                if (++hrBeat % HR_KEEPALIVE_TICKS == 0) WearBridge.sendToWatches(appContext, WearBridge.PATH_HR, "on")
                 val m = RideMotion.latest() ?: return@scheduleWithFixedDelay
                 val s = MotionTripSample(
                     m.atMs, m.leanDeg?.let { Math.round(it * 10) / 10.0 },
@@ -159,6 +162,7 @@ class TripRecorder(private val appContext: Context) : LocationListener {
         motionTicker?.cancel(false)
         motionTicker = null
         RideMotion.release(MOTION_OWNER)
+        WearBridge.sendToWatches(appContext, WearBridge.PATH_HR, "off")
     }
 
     override fun onLocationChanged(location: Location) {
@@ -297,6 +301,8 @@ class TripRecorder(private val appContext: Context) : LocationListener {
     companion object {
         private const val CHECKPOINT_EVERY_MS = 30_000L
         private const val MOTION_OWNER = "trip-recorder"
+        /** The motion ticker runs every 250 ms: tell the watch every minute that the trip goes on. */
+        private const val HR_KEEPALIVE_TICKS = 240
         private val motionExec = java.util.concurrent.Executors.newSingleThreadScheduledExecutor { r ->
             Thread(r, "trip-motion").apply { isDaemon = true }
         }

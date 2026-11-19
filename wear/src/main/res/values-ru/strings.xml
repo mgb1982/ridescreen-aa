@@ -41,4 +41,6 @@
     <string name="tile_no_data">Поездок пока нет</string>
     <string name="complication_label">RideScreen · км</string>
     <string name="complication_desc">км поездки</string>
+    <string name="channel_heart">Пульс</string>
+    <string name="heart_active">Пульс в поездке</string>
 </resources>

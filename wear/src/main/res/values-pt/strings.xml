@@ -41,4 +41,6 @@
     <string name="tile_no_data">Ainda não há percursos</string>
     <string name="complication_label">RideScreen · km</string>
     <string name="complication_desc">km percorridos</string>
+    <string name="channel_heart">Pulsação</string>
+    <string name="heart_active">Pulsação da viagem</string>
 </resources>

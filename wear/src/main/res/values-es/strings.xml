@@ -38,4 +38,6 @@
     <string name="tile_no_data">Aún no hay viajes</string>
     <string name="complication_label">RideScreen · km</string>
     <string name="complication_desc">km del viaje</string>
+    <string name="channel_heart">Pulso</string>
+    <string name="heart_active">Pulso del viaje</string>
 </resources>

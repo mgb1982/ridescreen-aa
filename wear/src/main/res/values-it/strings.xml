@@ -38,4 +38,6 @@
     <string name="tile_no_data">Ancora nessun viaggio</string>
     <string name="complication_label">RideScreen · km</string>
     <string name="complication_desc">km del viaggio</string>
+    <string name="channel_heart">Battito</string>
+    <string name="heart_active">Battito del viaggio</string>
 </resources>

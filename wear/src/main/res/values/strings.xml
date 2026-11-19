@@ -41,4 +41,6 @@
     <string name="tile_no_data">No rides yet</string>
     <string name="complication_label">RideScreen · km</string>
     <string name="complication_desc">ride km</string>
+    <string name="channel_heart">Heart rate</string>
+    <string name="heart_active">Heart rate for your ride</string>
 </resources>

@@ -44,6 +44,8 @@ object WearBridge {
     const val PATH_TURN = "/ocm/turn"
     const val PATH_PARKED = "/ocm/parked"
     const val PATH_TILE = "/ocm/tile"
+    /** Phone to watch while a trip is recorded: "on" (every minute) / "off"; the watch keeps the heart-rate sensor on. */
+    const val PATH_HR = "/ocm/hr"
     /** 🆘 Crash alarm: phone → watch "start:<s>" / "stop" / "sent"; watch → phone "ok". */
     const val PATH_CRASH = "/ocm/crash"
     private const val TILE_EVERY_MS = 60_000L

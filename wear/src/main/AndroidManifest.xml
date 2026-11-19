@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.BODY_SENSORS" android:maxSdkVersion="35" />
     <uses-permission android:name="android.permission.health.READ_HEART_RATE" />
+    <!-- Heart rate while a trip is recorded, screen off (HeartRateService). -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_HEALTH" />
     <!-- "Where's my bike?" compass: the watch's own position. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -67,6 +70,7 @@
                 <data android:scheme="wear" android:host="*" android:pathPrefix="/ocm/parked" />
                 <data android:scheme="wear" android:host="*" android:pathPrefix="/ocm/tile" />
                 <data android:scheme="wear" android:host="*" android:pathPrefix="/ocm/crash" />
+                <data android:scheme="wear" android:host="*" android:pathPrefix="/ocm/hr" />
             </intent-filter>
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.CHANNEL_EVENT" />
@@ -78,6 +82,11 @@
                 <data android:scheme="wear" android:host="*" android:pathPrefix="/ocm/bikephoto" />
             </intent-filter>
         </service>
+
+        <service
+            android:name=".HeartRateService"
+            android:exported="false"
+            android:foregroundServiceType="health" />
 
         <!-- ⌚ Self-update (v2.2): install screen + PackageInstaller result. -->
         <activity

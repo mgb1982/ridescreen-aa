@@ -41,4 +41,6 @@
     <string name="tile_no_data">Noch keine Fahrten</string>
     <string name="complication_label">RideScreen · km</string>
     <string name="complication_desc">gefahrene km</string>
+    <string name="channel_heart">Herzfrequenz</string>
+    <string name="heart_active">Herzfrequenz für die Fahrt</string>
 </resources>

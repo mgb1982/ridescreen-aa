@@ -41,4 +41,6 @@
     <string name="tile_no_data">ยังไม่มีทริป</string>
     <string name="complication_label">RideScreen · km</string>
     <string name="complication_desc">ระยะทางขับขี่ km</string>
+    <string name="channel_heart">อัตราการเต้นของหัวใจ</string>
+    <string name="heart_active">อัตราการเต้นของหัวใจระหว่างการเดินทาง</string>
 </resources>

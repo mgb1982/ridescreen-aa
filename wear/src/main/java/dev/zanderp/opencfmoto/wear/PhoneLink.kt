@@ -30,6 +30,8 @@ object PhoneLink {
     const val PATH_TILE = "/ocm/tile"
     const val PATH_BIKEPHOTO = "/ocm/bikephoto"
     const val PATH_HEART = "/ocm/heart"
+    /** Phone to watch while a trip is recorded: "on" (and again every minute) / "off". See [HeartRateService]. */
+    const val PATH_HR = "/ocm/hr"
     /** v2.5: ask the phone to lock the bike ("lock"); the answer comes back on [PATH_LOCK_RESULT]. */
     const val PATH_LOCK = "/ocm/lock"
     const val PATH_LOCK_RESULT = "/ocm/lockres"
@@ -354,6 +356,11 @@ class SessionListenerService : WearableListenerService() {
             return
         }
         when (messageEvent.path) {
+            PhoneLink.PATH_HR -> {
+                PhoneLink.rememberPhone(messageEvent.sourceNodeId)
+                HeartRateService.onPhoneMessage(this, String(messageEvent.data, Charsets.UTF_8))
+                return
+            }
             PhoneLink.PATH_TURN -> {
                 PhoneLink.vibrateTurn(this, String(messageEvent.data, Charsets.UTF_8))
                 return

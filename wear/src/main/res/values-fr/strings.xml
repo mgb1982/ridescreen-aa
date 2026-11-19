@@ -41,4 +41,6 @@
     <string name="tile_no_data">Aucun trajet pour le moment</string>
     <string name="complication_label">RideScreen · km</string>
     <string name="complication_desc">km parcourus</string>
+    <string name="channel_heart">Fréquence cardiaque</string>
+    <string name="heart_active">Fréquence cardiaque du trajet</string>
 </resources>
