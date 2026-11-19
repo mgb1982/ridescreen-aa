@@ -190,4 +190,5 @@
         <item>Sul</item>
         <item>Oeste</item>
     </string-array>
+    <string name="wear_update_this_build">Esta versão (%1$s)</string>
 </resources>

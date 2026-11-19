@@ -193,4 +193,5 @@
     <string name="tv_clips_none">Отметнете поне един клип</string>
     <string name="tv_look_drag">Плъзнете картата, скоростта или заглавието върху прегледа, за да ги поставите където искате; видеото ще се направи точно така.</string>
     <string name="tv_look_reset">↺ Позиции по подразбиране</string>
+    <string name="wear_update_this_build">Тази версия (%1$s)</string>
 </resources>

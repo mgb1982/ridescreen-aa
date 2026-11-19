@@ -195,4 +195,5 @@
     <string name="tv_clips_none">Zaznacz co najmniej jedno nagranie</string>
     <string name="tv_look_drag">Przeciągnij mapę, prędkość lub tytuł na podglądzie, aby ustawić je tam, gdzie chcesz; wideo powstanie dokładnie tak.</string>
     <string name="tv_look_reset">↺ Domyślne pozycje</string>
+    <string name="wear_update_this_build">Ta wersja (%1$s)</string>
 </resources>

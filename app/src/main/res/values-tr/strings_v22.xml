@@ -192,4 +192,5 @@
     <string name="tv_clips_none">En az bir klip işaretle</string>
     <string name="tv_look_drag">Haritayı, hızı veya başlığı önizlemede istediğin yere sürükle; video tam olarak böyle oluşturulur.</string>
     <string name="tv_look_reset">↺ Varsayılan konumlar</string>
+    <string name="wear_update_this_build">Bu sürüm (%1$s)</string>
 </resources>

@@ -192,4 +192,5 @@
         <item>Юг</item>
         <item>Запад</item>
     </string-array>
+    <string name="wear_update_this_build">Эта сборка (%1$s)</string>
 </resources>

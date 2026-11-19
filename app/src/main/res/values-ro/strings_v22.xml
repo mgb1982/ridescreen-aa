@@ -194,4 +194,5 @@
     <string name="tv_clips_none">Bifează cel puțin un clip</string>
     <string name="tv_look_drag">Trage harta, viteza sau titlul pe previzualizare ca să le pui unde vrei; videoclipul se va face exact așa.</string>
     <string name="tv_look_reset">↺ Poziții implicite</string>
+    <string name="wear_update_this_build">Această versiune (%1$s)</string>
 </resources>
