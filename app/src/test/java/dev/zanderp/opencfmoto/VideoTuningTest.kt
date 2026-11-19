@@ -51,11 +51,11 @@ class VideoTuningTest {
 
     @Test fun heatLineFormat() {
         assertEquals(
-            "[PWR] heat thermal=moderate headroom=0.85 battery=38.5°C plugged=no",
+            "[PWR] heat thermal=moderate headroom10s=0.85 battery=38.5°C plugged=no",
             HeatPolicy.line(PowerManager.THERMAL_STATUS_MODERATE, 0.85f, 385, 0),
         )
         assertEquals(
-            "[PWR] heat thermal=none headroom=n/a battery=n/a plugged=usb",
+            "[PWR] heat thermal=none headroom10s=n/a battery=n/a plugged=usb",
             HeatPolicy.line(PowerManager.THERMAL_STATUS_NONE, Float.NaN, null, 2),
         )
     }
@@ -144,5 +144,25 @@ class VideoTuningTest {
         assertEquals("[VIDEO] session loss summary: link-down=5 saturated=3 rejected=0", c.summaryOnce())
         assertNull(c.summaryOnce())
         assertNotNull(c.summary())
+    }
+
+    // ---- frame size window (V1 diagnostics)
+
+    @Test fun frameSizeWindowReportsAvgMaxAndKeyframe() {
+        val st = FrameSizeStats(windowMs = 30_000L)
+        assertNull(st.take(1_000L, false))                       // first call only starts the window
+        st.add(1_000, false); st.add(3_000, false); st.add(20_000, true)
+        assertNull(st.take(20_000L, false))                       // not 30 s yet
+        assertEquals(
+            "[VIDEO] frame sizes 30s: n=3 avg=8000B max=20000B keyframe-max=20000B intra-refresh=off",
+            st.take(31_000L, false),
+        )
+        assertNull(st.take(40_000L, true))                        // a new window
+    }
+
+    @Test fun frameSizeWindowWithoutFramesSaysNothing() {
+        val st = FrameSizeStats(windowMs = 10_000L)
+        st.take(0L, true)
+        assertNull(st.take(11_000L, true))
     }
 }

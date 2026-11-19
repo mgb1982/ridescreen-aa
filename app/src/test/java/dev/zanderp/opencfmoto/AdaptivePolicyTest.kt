@@ -107,4 +107,46 @@ class AdaptivePolicyTest {
         val d = AdaptivePolicy.decide(tinyBase, baseFps, thermalStatus = 6, prevLinkFactor = AdaptivePolicy.LINK_MIN, dropsThisTick = 100)
         assertTrue("must never exceed target", d.bitrate <= tinyBase)
     }
+
+    // ---- v2.7 · faster recovery after a run of clean ticks
+
+    @Test fun increaseStepByCleanRun() {
+        assertEquals(0.05f, AdaptivePolicy.increaseStep(1), 1e-6f)
+        assertEquals(0.05f, AdaptivePolicy.increaseStep(2), 1e-6f)
+        assertEquals(0.10f, AdaptivePolicy.increaseStep(3), 1e-6f)
+        assertEquals(0.10f, AdaptivePolicy.increaseStep(4), 1e-6f)
+        assertEquals(0.20f, AdaptivePolicy.increaseStep(5), 1e-6f)
+        assertEquals(0.20f, AdaptivePolicy.increaseStep(50), 1e-6f)
+        assertEquals(0.05f, AdaptivePolicy.increaseStep(0), 1e-6f)   // never below the base step
+    }
+
+    @Test fun cleanRunCountsAndResets() {
+        assertEquals(1, AdaptivePolicy.nextCleanTicks(0, 0))
+        assertEquals(6, AdaptivePolicy.nextCleanTicks(5, AdaptivePolicy.DROP_CONGESTION_THRESHOLD - 1))
+        assertEquals(0, AdaptivePolicy.nextCleanTicks(9, AdaptivePolicy.DROP_CONGESTION_THRESHOLD))
+    }
+
+    @Test fun recoveryAcceleratesWithTheRun() {
+        // From the floor: ticks 1-2 +0.05, 3-4 +0.10, then +0.20 each, capped at LINK_MAX.
+        var f = AdaptivePolicy.LINK_MIN
+        var clean = 0
+        val seen = ArrayList<Float>()
+        repeat(8) {
+            f = AdaptivePolicy.nextLinkFactor(f, 0, clean); clean = AdaptivePolicy.nextCleanTicks(clean, 0); seen.add(f)
+        }
+        assertEquals(listOf(0.45f, 0.50f, 0.60f, 0.70f, 0.90f, 1.0f, 1.0f, 1.0f), seen.map { Math.round(it * 100) / 100f })
+    }
+
+    @Test fun congestionStillBacksOffByTwentyPercentAndResetsTheRun() {
+        val next = AdaptivePolicy.nextLinkFactor(1.0f, AdaptivePolicy.DROP_CONGESTION_THRESHOLD, cleanTicksBefore = 9)
+        assertEquals(0.8f, next, 1e-6f)
+        assertEquals(1.0f, AdaptivePolicy.nextLinkFactor(0.95f, 0, 20), 0f)   // still never above LINK_MAX
+    }
+
+    @Test fun decideCarriesTheRun() {
+        val d = AdaptivePolicy.decide(2_000_000, 24, 0, 0.5f, 0, cleanTicks = 4)
+        assertEquals(0.7f, d.linkFactor, 1e-6f)    // 5th clean tick: +0.20
+        assertEquals(5, d.cleanTicks)
+        assertEquals(0, AdaptivePolicy.decide(2_000_000, 24, 0, 0.5f, 99, cleanTicks = 4).cleanTicks)
+    }
 }

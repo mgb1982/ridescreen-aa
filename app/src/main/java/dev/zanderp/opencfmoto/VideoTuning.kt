@@ -73,7 +73,7 @@ object HeatPolicy {
     fun line(thermalStatus: Int, headroom: Float, batteryTenthsC: Int?, plugged: Int): String {
         val h = if (headroom.isNaN()) "n/a" else String.format(java.util.Locale.US, "%.2f", headroom)
         val t = if (batteryTenthsC == null) "n/a" else String.format(java.util.Locale.US, "%.1f°C", batteryTenthsC / 10f)
-        return "[PWR] heat thermal=${thermalName(thermalStatus)} headroom=$h battery=$t plugged=${pluggedName(plugged)}"
+        return "[PWR] heat thermal=${thermalName(thermalStatus)} headroom10s=$h battery=$t plugged=${pluggedName(plugged)}"
     }
 
     fun capLine(cap: Cap, thermalStatus: Int): String =
@@ -120,6 +120,36 @@ class HeatGuard(private val context: Context, private val log: (String) -> Unit)
             cap = wanted
             log(HeatPolicy.capLine(wanted, status))
         }
+    }
+}
+
+/**
+ * Sizes of the encoded frames over one window (30 s), to compare the encoder set-ups (keyframes every second vs
+ * intra-refresh): one short log line per window. Used from the encoder drain thread only.
+ */
+class FrameSizeStats(private val windowMs: Long = 30_000L) {
+    private var started = false
+    private var startedAt = 0L
+    private var n = 0
+    private var sum = 0L
+    private var max = 0
+    private var keyMax = 0
+
+    fun add(size: Int, key: Boolean) {
+        n++; sum += size
+        if (size > max) max = size
+        if (key && size > keyMax) keyMax = size
+    }
+
+    /** The line for the window that just ended (and a fresh window), or null while it is still running / empty. */
+    fun take(nowMs: Long, intraRefresh: Boolean): String? {
+        if (!started) { started = true; startedAt = nowMs; return null }
+        if (nowMs - startedAt < windowMs) return null
+        val line = if (n == 0) null else
+            "[VIDEO] frame sizes ${(nowMs - startedAt) / 1000}s: n=$n avg=${sum / n}B max=${max}B keyframe-max=${keyMax}B " +
+                "intra-refresh=${if (intraRefresh) "on" else "off"}"
+        startedAt = nowMs; n = 0; sum = 0; max = 0; keyMax = 0
+        return line
     }
 }
 

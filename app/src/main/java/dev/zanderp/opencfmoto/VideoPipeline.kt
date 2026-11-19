@@ -120,6 +120,10 @@ class VideoPipeline(
     @Volatile private var linkPaused = false
     /** v2.5 option 3 (Setup ▸ Video tuning): read when the encoder is created. */
     @Volatile private var lossSplitOn = false
+    /** The encoder runs with intra-refresh (lab option, only when the codec supports it). */
+    @Volatile private var intraRefreshOn = false
+    /** Frame sizes of the last 30 s, logged to compare intra-refresh with the usual keyframes. */
+    private val frameStats = FrameSizeStats()
     private val loss = LossCounters()
     /** Android already told us the bike Wi-Fi is gone (AP only; Wi-Fi Direct / hotspot links report no Network). */
     private fun linkKnownDown(): Boolean =
@@ -275,11 +279,12 @@ class VideoPipeline(
                 } catch (_: Exception) { false }
                 intraRefresh = EncoderTuning.useIntraRefresh(true, supported)
                 log(if (intraRefresh) "[VIDEO] intra-refresh on (period=${profile.videoFrameRate} frames, keyframe every ${EncoderTuning.INTRA_REFRESH_KEYFRAME_SEC} s)"
-                    else "[VIDEO] intra-refresh requested but ${c.name} does not support it — encoder unchanged")
+                    else "[VIDEO] intra-refresh no soportado por ${c.name} — encoder unchanged")
             }
             log("[VIDEO] tuning: repeat-frame ${repeatUs / 1000}ms heat=${if (AppSettings.heatCap(context)) "on" else "off"} " +
                 "loss-split=${if (AppSettings.lossSplit(context)) "on" else "off"} intra-refresh=${if (intraRefresh) "on" else "off"}")
             lossSplitOn = AppSettings.lossSplit(context)
+            intraRefreshOn = intraRefresh
             val forceBaseline = BikeProfileHolder.active.forceBaseline
             try {
                 if (forceBaseline) {
@@ -644,6 +649,9 @@ class VideoPipeline(
                     val isKey = info.flags and MediaCodec.BUFFER_FLAG_KEY_FRAME != 0
                     encodedFrames++
                     if (isKey) encodedKeyframes++
+                    // One short line every 30 s, also with the option off so there is a baseline to compare with.
+                    frameStats.add(bytes.size, isKey)
+                    frameStats.take(System.currentTimeMillis(), intraRefreshOn)?.let { log(it) }
                     if (awaitKeyframe && !isKey) {
                         // A bike client just attached but this is a P-frame — it references frames the
                         // client never received, so serving it would leave the dash decoder uninitialised

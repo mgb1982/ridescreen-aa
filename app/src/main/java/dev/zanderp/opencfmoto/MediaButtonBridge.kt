@@ -69,6 +69,8 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
     private var volumeObserver: ContentObserver? = null
     /** Volume we hold the stream at while capturing, so there's always headroom up AND down. */
     private var pinnedVolume = -1
+    /** B2 · the rocker came back from ABSENT once this session (see [ButtonVolumeLogic.shouldRepinAfterAbsent]). */
+    private var repinAfterAbsentDone = false
     /** True while STREAM_MUSIC is pinned for handlebar nav ([SpeedVolume] stands aside). */
     val isVolumePinned: Boolean get() = pinnedVolume >= 0
     /** One-shot guard: the dash only needs re-reading once per session. See [reassert]. */
@@ -208,9 +210,7 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
                     cancelReclaim()
                     cancelAbsentVolumeProbe()
                     unpinVolume()
-                    heldSelect.reset()
-                    heldBack.reset()
-                    heldFwd.reset()
+                    for (h in listOf(heldSelect, heldBack, heldFwd)) { disarmNoRelease(h); h.reset() }
                     cancelPendingTaps()
                 }
                 log("[BTN] capture ${if (on) "ON — bars → AA UI (music can play; control it in the AA UI)" else "OFF — bars control media/volume"}")
@@ -455,6 +455,7 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
     fun stop() {
         if (instance === this) instance = null
         cancelPendingTaps()
+        for (h in listOf(heldSelect, heldBack, heldFwd)) { disarmNoRelease(h); h.reset() }
         stopKeepAlive()
         cancelReclaim()
         cancelAbsentVolumeProbe()
@@ -669,9 +670,34 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
                 if (pinnedVolume < 0) {
                     // Not hijacking: just record who changed the volume (bike ▲/▼ or intercom).
                     if (previous >= 0 && now != previous) log("[BTN] volume $previous→$now (phone volume, not AA) · ${mediaOutputs()}")
+                    // B2 · the rocker was marked ABSENT but a volume change we did not cause arrives: it may exist after all.
+                    if (ButtonVolumeLogic.shouldRepinAfterAbsent(
+                            ButtonPresencePrefs.volumeRocker(context), ButtonMode.isVolumeToAa(context),
+                            BikeLink.prober?.isStreaming == true, previous, now, repinAfterAbsentDone,
+                        )
+                    ) {
+                        repinAfterAbsentDone = true
+                        log("[BTN] volume press seen after ABSENT; re-pinning")
+                        ButtonPresencePrefs.setVolumeRocker(context, ButtonPresence.UNKNOWN)
+                        maybePinVolume("press-after-absent")
+                        startAbsentVolumeProbe()
+                    }
                     return
                 }
-                if (now == pinnedVolume) return   // our own re-pin, or nothing to do
+                val change = ButtonVolumeLogic.classify(pinnedVolume, now)
+                if (change == ButtonVolumeLogic.Change.NONE) return   // our own re-pin, or nothing to do
+                if (change == ButtonVolumeLogic.Change.MUTED) {
+                    // B1 · a jump to 0 is the dash muting the phone, not a press: put the volume back, fire nothing.
+                    log("[BTN] volume muted by dash (pin $pinnedVolume→0); restored")
+                    ignoreVolumeChanges = true
+                    try {
+                        audio.setStreamVolume(AudioManager.STREAM_MUSIC, pinnedVolume, 0)
+                    } catch (_: Exception) {
+                    } finally {
+                        handler.postDelayed({ ignoreVolumeChanges = false }, 150)
+                    }
+                    return
+                }
 
                 val jump = now - pinnedVolume            // signed, in Android volume steps
                 val up = jump > 0
@@ -854,6 +880,8 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
     ) {
         var downAt = 0L
         var longFromRepeat = false
+        /** B3 · resolves the press if the key is never released (see [armNoRelease]). */
+        var noRelease: Runnable? = null
         fun reset() { downAt = 0L; longFromRepeat = false }
     }
 
@@ -978,20 +1006,54 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
                 log("[BTN] ${held.name} key-repeat → long press")
                 held.longFromRepeat = true
                 held.downAt = 0L
+                disarmNoRelease(held)
                 taps[held.single]?.pending?.let(handler::removeCallbacks)
                 taps[held.single]?.pending = null
                 run(held.longG)
             }
+            armNoRelease(held)   // a repeat shows the key is alive: its release is still to come
             return
         }
         // Second DOWN while still holding — ignore so we don't invent a long press from key spam.
         if (held.downAt != 0L) return
         held.downAt = SystemClock.elapsedRealtime()
+        armNoRelease(held)
+    }
+
+    /** B3 · some dashes never send the key release: without this the button would stay dead. */
+    private fun armNoRelease(held: HeldButton) {
+        disarmNoRelease(held)
+        val r = Runnable { resolveUnreleased(held) }
+        held.noRelease = r
+        handler.postDelayed(r, ButtonVolumeLogic.NO_RELEASE_MS)
+    }
+
+    private fun disarmNoRelease(held: HeldButton) {
+        held.noRelease?.let(handler::removeCallbacks)
+        held.noRelease = null
+    }
+
+    private fun resolveUnreleased(held: HeldButton) {
+        held.noRelease = null
+        val downAt = held.downAt
+        if (downAt == 0L || held.longFromRepeat) return
+        held.downAt = 0L
+        val heldMs = SystemClock.elapsedRealtime() - downAt
+        val long = ButtonVolumeLogic.isLongPress(heldMs, ButtonTimingPrefs.holdsEnabled(context), ButtonTimingPrefs.longPressMs(context))
+        log("[BTN] ${held.name} without release after ${ButtonVolumeLogic.NO_RELEASE_MS / 1000}s; resolved as ${if (long) "long press" else "tap"}")
+        if (long) {
+            taps[held.single]?.pending?.let(handler::removeCallbacks)
+            taps[held.single]?.pending = null
+            run(held.longG)
+        } else {
+            detectDoubleTap(held.single, held.double, forceDouble = false)
+        }
     }
 
     private fun onKeyUp(keyCode: Int) {
         val held = heldFor(keyCode) ?: return
         lastKeyAt = SystemClock.elapsedRealtime()
+        disarmNoRelease(held)
         if (held.longFromRepeat) {
             held.reset()
             return
@@ -1001,7 +1063,7 @@ class MediaButtonBridge(private val context: Context, private val log: (String) 
         if (downAt == 0L) return // UP without a matching DOWN we own
         val heldMs = SystemClock.elapsedRealtime() - downAt
         val holdsOn = ButtonTimingPrefs.holdsEnabled(context)
-        val long = holdsOn && heldMs >= ButtonTimingPrefs.longPressMs(context)
+        val long = ButtonVolumeLogic.isLongPress(heldMs, holdsOn, ButtonTimingPrefs.longPressMs(context))
         log(
             "[BTN] ${held.name} held ${heldMs}ms → " +
                 when {

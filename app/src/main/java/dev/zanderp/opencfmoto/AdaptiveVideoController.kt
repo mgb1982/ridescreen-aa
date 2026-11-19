@@ -21,7 +21,7 @@ import android.os.PowerManager
  * The two combine on bitrate by taking the smaller factor; fps is driven by thermal only (the link
  * fix is fewer bits per frame, not fewer frames).
  */
-data class AdaptiveDecision(val bitrate: Int, val fps: Int, val linkFactor: Float)
+data class AdaptiveDecision(val bitrate: Int, val fps: Int, val linkFactor: Float, val cleanTicks: Int = 0)
 
 object AdaptivePolicy {
     /** AIMD bounds for the link factor. */
@@ -52,12 +52,30 @@ object AdaptivePolicy {
         else -> minOf(baseFps, 12)
     }
 
-    /** AIMD step: shrink hard on congestion, grow gently when clean. */
-    fun nextLinkFactor(prev: Float, dropsThisTick: Int): Float =
+    /** Recovery after a bump (v2.7): +0.05 on the 1st-2nd clean tick in a row, +0.10 on the 3rd-4th, +0.20 from the 5th. */
+    const val LINK_INCREASE_MID = 0.10f
+    const val LINK_INCREASE_FAST = 0.20f
+
+    /** Link-factor increase for the [cleanStreak]-th clean tick in a row (this tick included, so at least 1). */
+    fun increaseStep(cleanStreak: Int): Float = when {
+        cleanStreak >= 5 -> LINK_INCREASE_FAST
+        cleanStreak >= 3 -> LINK_INCREASE_MID
+        else -> LINK_INCREASE_STEP
+    }
+
+    /** Clean ticks in a row after this tick: a congested tick resets it. */
+    fun nextCleanTicks(cleanBefore: Int, dropsThisTick: Int): Int =
+        if (dropsThisTick >= DROP_CONGESTION_THRESHOLD) 0 else cleanBefore + 1
+
+    /**
+     * AIMD step: shrink hard on congestion, grow when clean — faster the longer the clean run.
+     * [cleanTicksBefore] = clean ticks in a row before this one; 0 keeps the old +0.05 per clean tick.
+     */
+    fun nextLinkFactor(prev: Float, dropsThisTick: Int, cleanTicksBefore: Int = 0): Float =
         if (dropsThisTick >= DROP_CONGESTION_THRESHOLD)
             (prev * LINK_DECREASE).coerceAtLeast(LINK_MIN)
         else
-            (prev + LINK_INCREASE_STEP).coerceAtMost(LINK_MAX)
+            (prev + increaseStep(cleanTicksBefore + 1)).coerceAtMost(LINK_MAX)
 
     /**
      * Compute the next decision from the current inputs and the previous link factor. Deterministic
@@ -69,12 +87,13 @@ object AdaptivePolicy {
         thermalStatus: Int,
         prevLinkFactor: Float,
         dropsThisTick: Int,
+        cleanTicks: Int = 0,
     ): AdaptiveDecision {
-        val link = nextLinkFactor(prevLinkFactor, dropsThisTick)
+        val link = nextLinkFactor(prevLinkFactor, dropsThisTick, cleanTicks)
         val factor = minOf(thermalBitrateFactor(thermalStatus), link)
         val bitrate = (baseBitrate * factor).toInt().coerceIn(MIN_BITRATE.coerceAtMost(baseBitrate), baseBitrate)
         val fps = thermalFpsCap(thermalStatus, baseFps)
-        return AdaptiveDecision(bitrate, fps, link)
+        return AdaptiveDecision(bitrate, fps, link, nextCleanTicks(cleanTicks, dropsThisTick))
     }
 }
 
@@ -97,6 +116,8 @@ class AdaptiveVideoController(
     private var heatFps = -1
 
     private var linkFactor = AdaptivePolicy.LINK_MAX
+    /** Clean ticks in a row (0 after a congested tick): the longer the run, the faster the link factor recovers. */
+    private var cleanTicks = 0
     private var lastDropTotal = 0L
     private var appliedBitrate = -1
     private var appliedFps = -1
@@ -108,6 +129,7 @@ class AdaptiveVideoController(
     /** New session (or resume): forget prior link state so we start fresh at the user's target. */
     fun reset() {
         linkFactor = AdaptivePolicy.LINK_MAX
+        cleanTicks = 0
         lastDropTotal = 0L
         appliedBitrate = -1
         appliedFps = -1
@@ -134,7 +156,8 @@ class AdaptiveVideoController(
         }
         val drops = (total - lastDropTotal).coerceAtLeast(0L).toInt()
         lastDropTotal = total
-        linkFactor = AdaptivePolicy.nextLinkFactor(linkFactor, drops)
+        linkFactor = AdaptivePolicy.nextLinkFactor(linkFactor, drops, cleanTicks)
+        cleanTicks = AdaptivePolicy.nextCleanTicks(cleanTicks, drops)
         val linkBitrate = (base * linkFactor).toInt().coerceIn(AdaptivePolicy.MIN_BITRATE.coerceAtMost(base), base)
         val bitrate = HeatPolicy.clampBitrate(linkBitrate, base, heat.cap)
         if (bitrate != appliedBitrate) {
@@ -196,8 +219,10 @@ class AdaptiveVideoController(
             thermalStatus = status,
             prevLinkFactor = linkFactor,
             dropsThisTick = dropsThisTick,
+            cleanTicks = cleanTicks,
         )
         linkFactor = d.linkFactor
+        cleanTicks = d.cleanTicks
         // Heat ceiling on top of the decision (AUTO already sheds for heat with the same table; the clamp is the
         // sampled value, so the two agree and the lower one wins).
         val bitrate = HeatPolicy.clampBitrate(d.bitrate, base, heat.cap)
