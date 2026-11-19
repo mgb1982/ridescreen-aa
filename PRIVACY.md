@@ -150,8 +150,8 @@ project's service ([opencfmoto-telemetry](https://github.com/zanderp/opencfmoto-
   leaves the device.
 - **Heart rate on trips.** While the phone records a trip, the watch keeps its heart-rate sensor on (an
   ongoing notification shows it) and sends the readings to your phone over Bluetooth. The phone stores
-  them with that trip, and the trip video can show them. Nothing leaves your devices, and the trips you
-  share do not include them. Without the heart-rate permission on the watch, none of this happens.
+  them with that trip, and a trip video you make can show them (it leaves your phone only if you share
+  that video). Nothing else leaves your devices; GPX files and shared trip images do not include them. Without the heart-rate permission on the watch, none of this happens.
 - **Watch compass.** The watch asks for location permission to point at the parked bike; the position
   stays on the watch.
 
