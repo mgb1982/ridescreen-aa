@@ -261,9 +261,12 @@ class EasyConnProber(
         // and the bike connects back to IT, not us). Probing anyway is pointless: no media server means
         // no frames and a blank dash. Fail fast with an actionable message instead of failing silently.
         if (bindConflict) {
-            log("!! link ports are held by another app (usually the official CFMoto/EasyConnect app). " +
+            // Name the app that most likely holds them (MOTO-HUB does the same): a Zontes rider was told "CFMoto".
+            val holders = try { RivalClient.installedLabels(context) } catch (_: Exception) { emptyList() }
+            val who = holders.joinToString(", ").ifEmpty { "the official CFMoto/Zontes/Carbit app" }
+            log("!! link ports are held by another app (installed official apps: ${holders.joinToString(", ").ifEmpty { "none found" }}). " +
                 "Close it (force-stop) and reconnect — RideScreen AA needs ports ${LISTEN_PORTS.toList()}.")
-            ConnectionState.set(Phase.ERROR, "close the official CFMoto app, then reconnect")
+            ConnectionState.set(Phase.ERROR, "close $who, then reconnect")
             stop()
             return
         }
