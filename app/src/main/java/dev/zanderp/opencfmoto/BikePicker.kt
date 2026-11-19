@@ -15,6 +15,9 @@ object BikePicker {
     enum class Model(val label: String, val dashKey: String?) {
         Z125X("Zontes 125X", "125x"),
         Z125V("Zontes 125V", "125x"),
+        // 125D / 125E: same Carbit dash family (QR modelId 21322) and the same screen setup as the 125X, which a 125D rider used.
+        Z125D("Zontes 125D", "125x"),
+        Z125E("Zontes 125E", "125x"),
         // Thailand sells the 125X / 125V as 150 cc: same dash and software, so the same known screen setup.
         Z150X("Zontes 150X", "125x"),
         Z150V("Zontes 150V", "125x"),
