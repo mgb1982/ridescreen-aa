@@ -51,4 +51,20 @@ class HuQueryTimeTest {
             body,
         )
     }
+
+    @Test
+    fun standardOmitsDateTimeUnlessTheDashAsks() {
+        val currentTime = now + madrid.getOffset(now)
+        val plain = String(HuQueryTime.standard("37504", false, now, madrid).payload, Charsets.UTF_8)
+        assertEquals("{\"time\":$now,\"currentTime\":$currentTime,\"currentTimeZone\":\"Europe/Madrid\"}", plain)
+        val withDate = HuQueryTime.standard("37504", true, now, madrid)
+        assertEquals("09.08.2026 12:43:39:244", withDate.dateTime)
+    }
+
+    @Test
+    fun colonDateForCarbitModels21312And21313() {
+        assertEquals("09:08:2026 12:43:39:244", HuQueryTime.standard("21313", true, now, madrid).dateTime)
+        assertEquals("09:08:2026 12:43:39:244", HuQueryTime.dateTimeString(now, madrid, "21312"))
+        assertEquals("09.08.2026 12:43:39:244", HuQueryTime.dateTimeString(now, madrid, "21340"))
+    }
 }
