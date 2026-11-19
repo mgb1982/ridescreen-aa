@@ -24,6 +24,12 @@ import java.util.concurrent.atomic.AtomicBoolean
  *
  * Never scans. Never writes until the peer sends a valid EC-BTP frame (so Cardo / OBD / TPMS
  * that share `ffe0`/`fff0` stay silent). Off unless [AppSettings.bluetoothClockSync] is on.
+ *
+ * v2.5 experiment — one exception: a device whose NAME says it is the dash ([DashClock.nameLooksLikeDash],
+ * e.g. ZT851066) and that stays silent for [PUSH_AFTER_MS] gets ONE unsolicited SYNC_TIME (epoch + raw
+ * offset, the exact Carbit shape). Why: in Zontes riders' logs the BLE link opens and the dash never says a
+ * word, while Carbit's own `sendSyncTime()` is an unsolicited push, not a reply (MOTO-HUB's decompile notes,
+ * EcBtpClockLab). Same aim as the 00:00 work over Wi-Fi; the log says whether the clock was right after.
  */
 @SuppressLint("MissingPermission")
 internal class EcBtpTimeLink(
@@ -112,6 +118,18 @@ internal class EcBtpTimeLink(
                 dataCharacteristic = characteristic
                 subscribe(gatt, characteristic)
                 log("[EC-BTP] listening to $label")
+                if (DashClock.nameLooksLikeDash(label)) {
+                    android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                        if (closed.get() || proven.get()) return@postDelayed
+                        val target = dataCharacteristic ?: return@postDelayed
+                        val push = EcBtpProtocol.syncTimeReply(now().time, zone().rawOffset)
+                        val written = runCatching {
+                            gatt.writeCharacteristic(target, push, BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE)
+                        }.getOrNull()
+                        log("[EC-BTP] $label silent for ${PUSH_AFTER_MS / 1000} s — pushed SYNC_TIME once " +
+                            "(Carbit shape, ${push.size}B, result=$written). Check the dash clock.")
+                    }, PUSH_AFTER_MS)
+                }
             }
 
             override fun onCharacteristicChanged(
@@ -188,6 +206,7 @@ internal class EcBtpTimeLink(
     }
 
     private companion object {
+        const val PUSH_AFTER_MS = 4_000L
         val SERVICE_UUIDS = listOf(
             UUID.fromString("00001c00-d102-11e1-9b23-000efb0000b2"),
             UUID.fromString("0000474d-0000-1000-8000-00805f9b34fb"),
