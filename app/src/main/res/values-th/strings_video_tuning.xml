@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · video tuning. Non-English: AI translation, no native review. -->
+<resources>
+    <string name="tune_title">ปรับแต่งวิดีโอ (ทดลอง)</string>
+    <string name="tune_heat">จำกัดวิดีโอเมื่อโทรศัพท์ร้อน</string>
+    <string name="tune_heat_desc">จำกัดบิตเรตและเฟรมต่อวินาทีตามอุณหภูมิโทรศัพท์ เพิ่มจากการควบคุมแบบปรับอัตโนมัติ</string>
+    <string name="tune_repeat">คงภาพทุก 0.1 วินาทีเมื่อหน้าจอนิ่ง</string>
+    <string name="tune_repeat_desc">ช่วยหน้าปัดที่ตัดวิดีโอเมื่อไม่มีอะไรขยับ ไม่ใช้ในโหมดประหยัดแบตเตอรี่</string>
+    <string name="tune_loss">ลดคุณภาพเมื่อลิงก์เต็มเท่านั้น</string>
+    <string name="tune_loss_desc">นับลิงก์ที่หลุดแยกจากลิงก์ที่ช้า เพื่อไม่ให้ Wi-Fi หลุดทำให้คุณภาพภาพลดลงอีก</string>
+    <string name="tune_intra">Intra-refresh (ห้องทดลอง)</string>
+    <string name="tune_intra_desc">รีเฟรชต่อเนื่องแทนคีย์เฟรมใหญ่เป็นระยะ หากตัวเข้ารหัสของโทรศัพท์รองรับ</string>
+</resources>

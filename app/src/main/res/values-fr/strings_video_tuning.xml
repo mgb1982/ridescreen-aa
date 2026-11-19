@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · video tuning. Non-English: AI translation, no native review. -->
+<resources>
+    <string name="tune_title">Réglage vidéo (expérimental)</string>
+    <string name="tune_heat">Limiter la vidéo si le téléphone chauffe</string>
+    <string name="tune_heat_desc">Plafonne le débit et les images par seconde selon la température du téléphone, en plus du contrôle adaptatif.</string>
+    <string name="tune_repeat">Garder une image toutes les 0,1 s sur un écran fixe</string>
+    <string name="tune_repeat_desc">Aide les tableaux de bord qui coupent la vidéo quand rien ne bouge. Non utilisé en mode Économie de batterie.</string>
+    <string name="tune_loss">Baisser la qualité seulement si la liaison est saturée</string>
+    <string name="tune_loss_desc">Compte la liaison coupée à part de la liaison lente, pour que perdre le Wi-Fi ne baisse plus la qualité de l\'image.</string>
+    <string name="tune_intra">Intra-refresh (labo)</string>
+    <string name="tune_intra_desc">Rafraîchissement continu au lieu de grosses images clés périodiques, si l\'encodeur du téléphone le gère.</string>
+</resources>

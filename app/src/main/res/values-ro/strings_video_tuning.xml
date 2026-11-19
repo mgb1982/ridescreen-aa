@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · video tuning. Non-English: AI translation, no native review. -->
+<resources>
+    <string name="tune_title">Reglaj video (experimental)</string>
+    <string name="tune_heat">Limitează videoul dacă telefonul se încălzește</string>
+    <string name="tune_heat_desc">Limitează rata de biți și cadrele pe secundă după temperatura telefonului, pe lângă controlul adaptiv.</string>
+    <string name="tune_repeat">Păstrează o imagine la fiecare 0,1 s cu ecranul nemișcat</string>
+    <string name="tune_repeat_desc">Ajută bordurile care taie videoul când nimic nu se mișcă. Nu se folosește în Economisire baterie.</string>
+    <string name="tune_loss">Scade calitatea doar când legătura e saturată</string>
+    <string name="tune_loss_desc">Numără legătura căzută separat de cea lentă, ca pierderea Wi-Fi să nu mai scadă calitatea imaginii.</string>
+    <string name="tune_intra">Intra-refresh (laborator)</string>
+    <string name="tune_intra_desc">Reîmprospătare continuă în loc de cadre cheie mari periodice, dacă encoderul telefonului o susține.</string>
+</resources>

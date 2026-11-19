@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · video tuning. Non-English: AI translation, no native review. -->
+<resources>
+    <string name="tune_title">Videó finomhangolás (kísérleti)</string>
+    <string name="tune_heat">Videó korlátozása, ha a telefon felmelegszik</string>
+    <string name="tune_heat_desc">A telefon hőmérséklete szerint korlátozza a bitrátát és a képkockasebességet, az adaptív vezérlés mellett.</string>
+    <string name="tune_repeat">Álló képernyőnél 0,1 másodpercenként egy kép</string>
+    <string name="tune_repeat_desc">Segít a kijelzőknek, amelyek megszakítják a videót, ha semmi sem mozog. Akkumulátorkímélő módban nem használt.</string>
+    <string name="tune_loss">Minőség csökkentése csak telített kapcsolatnál</string>
+    <string name="tune_loss_desc">A megszakadt kapcsolatot külön számolja a lassútól, így a Wi-Fi elvesztése már nem rontja a képminőséget.</string>
+    <string name="tune_intra">Intra-refresh (labor)</string>
+    <string name="tune_intra_desc">Folyamatos frissítés nagy, időszakos kulcsképkockák helyett, ha a telefon kódolója támogatja.</string>
+</resources>

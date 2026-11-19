@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · video tuning. Non-English: AI translation, no native review. -->
+<resources>
+    <string name="tune_title">영상 조정 (실험)</string>
+    <string name="tune_heat">휴대폰이 뜨거우면 영상 제한</string>
+    <string name="tune_heat_desc">적응형 제어에 더해 휴대폰 온도에 따라 비트레이트와 프레임 수를 제한합니다.</string>
+    <string name="tune_repeat">화면이 멈춰 있을 때 0.1초마다 화면 유지</string>
+    <string name="tune_repeat_desc">아무것도 움직이지 않을 때 영상이 끊기는 계기판에 도움이 됩니다. 배터리 절약 모드에서는 사용하지 않습니다.</string>
+    <string name="tune_loss">연결이 포화일 때만 화질 낮추기</string>
+    <string name="tune_loss_desc">끊긴 연결을 느린 연결과 따로 세어, Wi-Fi가 끊겨도 더는 화질이 떨어지지 않습니다.</string>
+    <string name="tune_intra">인트라 리프레시 (실험실)</string>
+    <string name="tune_intra_desc">휴대폰 인코더가 지원하면 큰 주기적 키프레임 대신 연속 새로고침을 사용합니다.</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · video tuning. Non-English: AI translation, no native review. -->
+<resources>
+    <string name="tune_title">Ajust del vídeo (experimental)</string>
+    <string name="tune_heat">Limitar el vídeo si el mòbil s\'escalfa</string>
+    <string name="tune_heat_desc">Limita el bitrate i els fotogrames per segon segons la temperatura del mòbil, a més del control adaptatiu.</string>
+    <string name="tune_repeat">Mantenir una imatge cada 0,1 s amb la pantalla quieta</string>
+    <string name="tune_repeat_desc">Ajuda els quadres que tallen el vídeo quan res no es mou. No s\'usa en Estalvi de bateria.</string>
+    <string name="tune_loss">Baixar la qualitat només amb l\'enllaç saturat</string>
+    <string name="tune_loss_desc">Compta l\'enllaç caigut a part del lent, perquè perdre la Wi-Fi ja no baixi la qualitat de la imatge.</string>
+    <string name="tune_intra">Intra-refresh (laboratori)</string>
+    <string name="tune_intra_desc">Refresc continu en lloc de grans fotogrames clau periòdics, si el codificador del mòbil ho admet.</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · video tuning. Non-English: AI translation, no native review. -->
+<resources>
+    <string name="tune_title">Ρύθμιση βίντεο (πειραματικό)</string>
+    <string name="tune_heat">Περιορισμός βίντεο όταν ζεσταίνεται το κινητό</string>
+    <string name="tune_heat_desc">Περιορίζει το bitrate και τα καρέ ανά δευτερόλεπτο ανάλογα με τη θερμοκρασία του κινητού, επιπλέον του προσαρμοστικού ελέγχου.</string>
+    <string name="tune_repeat">Μία εικόνα ανά 0,1 s με ακίνητη οθόνη</string>
+    <string name="tune_repeat_desc">Βοηθά ταμπλό που κόβουν το βίντεο όταν τίποτα δεν κινείται. Δεν χρησιμοποιείται στην Εξοικονόμηση μπαταρίας.</string>
+    <string name="tune_loss">Μείωση ποιότητας μόνο με κορεσμένη σύνδεση</string>
+    <string name="tune_loss_desc">Μετρά την πεσμένη σύνδεση χωριστά από την αργή, ώστε η απώλεια Wi-Fi να μην μειώνει πια την ποιότητα εικόνας.</string>
+    <string name="tune_intra">Intra-refresh (εργαστήριο)</string>
+    <string name="tune_intra_desc">Συνεχής ανανέωση αντί για μεγάλα περιοδικά καρέ-κλειδιά, αν το κινητό την υποστηρίζει.</string>
+</resources>
