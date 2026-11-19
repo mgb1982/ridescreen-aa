@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">Calibrează înclinarea</string>
+    <string name="motion_calib_sub_off">Necalibrat: înclinarea nu este înregistrată</string>
+    <string name="motion_calib_sub_on">Calibrat la %1$s</string>
+    <string name="motion_calib_msg">Pune telefonul în suport, cu motocicleta dreaptă și oprită, apoi apasă Calibrează. Stai nemișcat 2 secunde. Înclinarea și forțele G se înregistrează doar dacă telefonul este calibrat pe suport; calibrarea se încheie odată cu călătoria.</string>
+    <string name="motion_calib_go">Calibrează</string>
+    <string name="motion_calib_clear">Elimină calibrarea</string>
+    <string name="motion_calib_running">Se măsoară… ține motocicleta nemișcată</string>
+    <string name="motion_calib_ok">Calibrat. Înclinarea și forțele G vor fi înregistrate în călătorie.</string>
+    <string name="motion_calib_moving">Motocicleta se mișcă. Oprește-te și încearcă din nou.</string>
+    <string name="motion_calib_notstill">Telefonul s-a mișcat. Ține motocicleta nemișcată și încearcă din nou.</string>
+    <string name="motion_calib_nosensor">Acest telefon nu are giroscop sau accelerometru.</string>
+    <string name="tvl_lean">ÎNCLINARE</string>
+    <string name="tvl_pulse">PULS</string>
+</resources>

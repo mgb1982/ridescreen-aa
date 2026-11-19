@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">ปรับเทียบความเอียง</string>
+    <string name="motion_calib_sub_off">ยังไม่ได้ปรับเทียบ: ไม่บันทึกความเอียง</string>
+    <string name="motion_calib_sub_on">ปรับเทียบเมื่อ %1$s</string>
+    <string name="motion_calib_msg">วางโทรศัพท์บนที่ยึด โดยให้รถตั้งตรงและจอดนิ่ง แล้วแตะ ปรับเทียบ อยู่นิ่ง ๆ 2 วินาที ความเอียงและแรง G จะบันทึกเฉพาะเมื่อปรับเทียบโทรศัพท์บนที่ยึดแล้ว การปรับเทียบจะสิ้นสุดเมื่อจบทริป</string>
+    <string name="motion_calib_go">ปรับเทียบ</string>
+    <string name="motion_calib_clear">ลบการปรับเทียบ</string>
+    <string name="motion_calib_running">กำลังวัด… อย่าขยับรถ</string>
+    <string name="motion_calib_ok">ปรับเทียบแล้ว ความเอียงและแรง G จะถูกบันทึกในทริป</string>
+    <string name="motion_calib_moving">รถกำลังเคลื่อนที่ หยุดแล้วลองอีกครั้ง</string>
+    <string name="motion_calib_notstill">โทรศัพท์ขยับ ประคองรถให้นิ่งแล้วลองอีกครั้ง</string>
+    <string name="motion_calib_nosensor">โทรศัพท์เครื่องนี้ไม่มีไจโรสโคปหรือเซนเซอร์วัดความเร่ง</string>
+    <string name="tvl_lean">ความเอียง</string>
+    <string name="tvl_pulse">ชีพจร</string>
+</resources>

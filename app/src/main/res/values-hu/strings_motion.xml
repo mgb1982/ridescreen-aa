@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">Dőlésszög kalibrálása</string>
+    <string name="motion_calib_sub_off">Nincs kalibrálva: a dőlésszög nem kerül rögzítésre</string>
+    <string name="motion_calib_sub_on">Kalibrálva: %1$s</string>
+    <string name="motion_calib_msg">Tedd a telefont a tartóba, a motor legyen függőleges és álljon, majd koppints a Kalibrálás gombra. Maradj mozdulatlan 2 másodpercig. A dőlésszög és a G-erők csak akkor kerülnek rögzítésre, ha a telefon a tartón kalibrálva van; a kalibrálás az úttal együtt véget ér.</string>
+    <string name="motion_calib_go">Kalibrálás</string>
+    <string name="motion_calib_clear">Kalibrálás törlése</string>
+    <string name="motion_calib_running">Mérés… tartsd mozdulatlanul a motort</string>
+    <string name="motion_calib_ok">Kalibrálva. A dőlésszög és a G-erők rögzítésre kerülnek az útban.</string>
+    <string name="motion_calib_moving">A motor mozog. Állj meg, és próbáld újra.</string>
+    <string name="motion_calib_notstill">A telefon megmozdult. Tartsd mozdulatlanul a motort, és próbáld újra.</string>
+    <string name="motion_calib_nosensor">Ebben a telefonban nincs giroszkóp vagy gyorsulásmérő.</string>
+    <string name="tvl_lean">DŐLÉS</string>
+    <string name="tvl_pulse">PULZUS</string>
+</resources>

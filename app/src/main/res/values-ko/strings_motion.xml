@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">기울기 보정</string>
+    <string name="motion_calib_sub_off">보정 안 됨: 기울기가 기록되지 않습니다</string>
+    <string name="motion_calib_sub_on">%1$s에 보정됨</string>
+    <string name="motion_calib_msg">휴대폰을 거치대에 두고 오토바이를 똑바로 세워 정지한 상태에서 보정을 누르세요. 2초 동안 움직이지 마세요. 기울기와 G 포스는 휴대폰이 거치대에서 보정된 경우에만 기록되며, 보정은 주행이 끝나면 종료됩니다.</string>
+    <string name="motion_calib_go">보정</string>
+    <string name="motion_calib_clear">보정 삭제</string>
+    <string name="motion_calib_running">측정 중… 오토바이를 움직이지 마세요</string>
+    <string name="motion_calib_ok">보정 완료. 기울기와 G 포스가 주행에 기록됩니다.</string>
+    <string name="motion_calib_moving">오토바이가 움직이고 있습니다. 멈춘 후 다시 시도하세요.</string>
+    <string name="motion_calib_notstill">휴대폰이 움직였습니다. 오토바이를 고정하고 다시 시도하세요.</string>
+    <string name="motion_calib_nosensor">이 휴대폰에는 자이로스코프 또는 가속도계가 없습니다.</string>
+    <string name="tvl_lean">기울기</string>
+    <string name="tvl_pulse">심박수</string>
+</resources>

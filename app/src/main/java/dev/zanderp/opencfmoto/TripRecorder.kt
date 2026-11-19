@@ -45,6 +45,8 @@ class TripRecorder(private val appContext: Context) : LocationListener {
     private val points = ArrayList<TrackPoint>()
     private val obdSamples = ArrayList<ObdTripSample>()
     private val obdLock = Any()
+    private val motionSamples = ArrayList<MotionTripSample>()
+    private var motionTicker: java.util.concurrent.ScheduledFuture<*>? = null
     private var distanceMeters = 0.0
     private var movingTimeMs = 0L
     private var maxSpeedMs = 0f
@@ -76,6 +78,8 @@ class TripRecorder(private val appContext: Context) : LocationListener {
             recording = false
             return false
         }
+        RideMotion.acquire(appContext, MOTION_OWNER)
+        startMotionTicker()
         emit()
         return true
     }
@@ -85,7 +89,9 @@ class TripRecorder(private val appContext: Context) : LocationListener {
         if (!recording) return
         LocationHub.unsubscribe(this)
         recording = false
+        stopMotion()
         finalizeLeg(save = true)
+        RideMotion.clearCalibration(appContext)
         curSpeedKmh = 0
         hasFix = false
         emit()
@@ -95,6 +101,8 @@ class TripRecorder(private val appContext: Context) : LocationListener {
     fun discard() {
         LocationHub.unsubscribe(this)
         recording = false
+        stopMotion()
+        RideMotion.clearCalibration(appContext)
         checkpointIo.execute { TripStore.clearCheckpoint(appContext) }
         resetLeg()
         curSpeedKmh = 0
@@ -115,6 +123,7 @@ class TripRecorder(private val appContext: Context) : LocationListener {
     /** Called from the OBD reader thread. Its wall-clock timestamp matches GPS points and video clips. */
     fun recordObdSample(sample: ObdTripSample) {
         if (!recording || sample.timeMs < startTime) return
+        sample.speedKmh?.let { RideMotion.onSpeed(it, sample.timeMs, fromObd = true) }
         synchronized(obdLock) {
             if (!recording || sample.timeMs < startTime) return
             val previous = obdSamples.lastOrNull()
@@ -123,6 +132,34 @@ class TripRecorder(private val appContext: Context) : LocationListener {
     }
 
     private fun obdSnapshot(): List<ObdTripSample> = synchronized(obdLock) { obdSamples.toList() }
+
+    private fun motionSnapshot(): List<MotionTripSample> = synchronized(obdLock) { motionSamples.toList() }
+
+    /** Every 250 ms: lean, G and heart rate from [RideMotion], only when there is something to store (max 4 Hz). */
+    private fun startMotionTicker() {
+        motionTicker?.cancel(false)
+        motionTicker = motionExec.scheduleWithFixedDelay({
+            try {
+                if (!recording) return@scheduleWithFixedDelay
+                val m = RideMotion.latest() ?: return@scheduleWithFixedDelay
+                val s = MotionTripSample(
+                    m.atMs, m.leanDeg?.let { Math.round(it * 10) / 10.0 },
+                    m.gLat?.let { Math.round(it * 100) / 100.0 }, m.gLon?.let { Math.round(it * 100) / 100.0 }, m.bpm,
+                )
+                synchronized(obdLock) {
+                    if (m.atMs < startTime) return@scheduleWithFixedDelay
+                    val prev = motionSamples.lastOrNull()
+                    if (prev == null || s.timeMs - prev.timeMs >= 240L) motionSamples.add(s)
+                }
+            } catch (_: Throwable) {}
+        }, 250L, 250L, java.util.concurrent.TimeUnit.MILLISECONDS)
+    }
+
+    private fun stopMotion() {
+        motionTicker?.cancel(false)
+        motionTicker = null
+        RideMotion.release(MOTION_OWNER)
+    }
 
     override fun onLocationChanged(location: Location) {
         if (!recording) { if (plausible(location)) lastSeen = location; return }
@@ -144,6 +181,7 @@ class TripRecorder(private val appContext: Context) : LocationListener {
 
         var speedMs = if (location.hasSpeed()) location.speed
             else if (dtMs in 1..5000) d / (dtMs / 1000f) else 0f
+        RideMotion.onSpeed(speedMs * 3.6, System.currentTimeMillis())
 
         val moving = speedMs >= MIN_MOVING_MS
         var bridged = false
@@ -190,6 +228,7 @@ class TripRecorder(private val appContext: Context) : LocationListener {
             distanceMeters = distanceMeters, movingTimeMs = movingTimeMs, maxSpeedMs = maxSpeedMs,
             points = ArrayList(points),
             obdSamples = obdSnapshot(),
+            motionSamples = motionSnapshot(),
         )
         checkpointIo.execute { TripStore.writeCheckpoint(appContext, trip) }
     }
@@ -202,7 +241,7 @@ class TripRecorder(private val appContext: Context) : LocationListener {
     private fun resetLeg() {
         lastCheckpointAt = 0L
         points.clear()
-        synchronized(obdLock) { obdSamples.clear() }
+        synchronized(obdLock) { obdSamples.clear(); motionSamples.clear() }
         distanceMeters = 0.0
         movingTimeMs = 0L
         maxSpeedMs = 0f
@@ -226,6 +265,7 @@ class TripRecorder(private val appContext: Context) : LocationListener {
             maxSpeedMs = maxSpeedMs,
             points = ArrayList(points),
             obdSamples = obdSnapshot(),
+            motionSamples = motionSnapshot(),
         )
         // Writing an hour of track is ~180 KB of JSON: do it off the main thread (points already copied).
         val cb = onTripSaved
@@ -256,6 +296,10 @@ class TripRecorder(private val appContext: Context) : LocationListener {
 
     companion object {
         private const val CHECKPOINT_EVERY_MS = 30_000L
+        private const val MOTION_OWNER = "trip-recorder"
+        private val motionExec = java.util.concurrent.Executors.newSingleThreadScheduledExecutor { r ->
+            Thread(r, "trip-motion").apply { isDaemon = true }
+        }
         private val checkpointIo = java.util.concurrent.Executors.newSingleThreadExecutor { r ->
             Thread(r, "trip-checkpoint").apply { isDaemon = true }
         }

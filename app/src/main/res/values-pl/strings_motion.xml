@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">Kalibruj pochylenie</string>
+    <string name="motion_calib_sub_off">Nie skalibrowano: pochylenie nie jest zapisywane</string>
+    <string name="motion_calib_sub_on">Skalibrowano o %1$s</string>
+    <string name="motion_calib_msg">Włóż telefon do uchwytu, motocykl w pionie i nieruchomy, i dotknij Kalibruj. Nie ruszaj się przez 2 sekundy. Pochylenie i siły G są zapisywane tylko wtedy, gdy telefon jest skalibrowany w uchwycie; kalibracja kończy się wraz z przejazdem.</string>
+    <string name="motion_calib_go">Kalibruj</string>
+    <string name="motion_calib_clear">Usuń kalibrację</string>
+    <string name="motion_calib_running">Pomiar… nie ruszaj motocyklem</string>
+    <string name="motion_calib_ok">Skalibrowano. Pochylenie i siły G będą zapisane w przejeździe.</string>
+    <string name="motion_calib_moving">Motocykl jedzie. Zatrzymaj się i spróbuj ponownie.</string>
+    <string name="motion_calib_notstill">Telefon się poruszył. Trzymaj motocykl nieruchomo i spróbuj ponownie.</string>
+    <string name="motion_calib_nosensor">Ten telefon nie ma żyroskopu ani akcelerometru.</string>
+    <string name="tvl_lean">POCHYLENIE</string>
+    <string name="tvl_pulse">TĘTNO</string>
+</resources>

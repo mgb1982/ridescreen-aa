@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">Eğim kalibrasyonu</string>
+    <string name="motion_calib_sub_off">Kalibre edilmedi: eğim kaydedilmiyor</string>
+    <string name="motion_calib_sub_on">Saat %1$s\'de kalibre edildi</string>
+    <string name="motion_calib_msg">Telefonu tutucuya yerleştir, motor dik ve duruyor olsun, sonra Kalibre et\'e dokun. 2 saniye hareketsiz kal. Eğim ve G kuvvetleri yalnızca telefon tutucuda kalibre edilmişse kaydedilir; kalibrasyon yolculukla birlikte biter.</string>
+    <string name="motion_calib_go">Kalibre et</string>
+    <string name="motion_calib_clear">Kalibrasyonu kaldır</string>
+    <string name="motion_calib_running">Ölçülüyor… motoru sabit tut</string>
+    <string name="motion_calib_ok">Kalibre edildi. Eğim ve G kuvvetleri yolculuğa kaydedilecek.</string>
+    <string name="motion_calib_moving">Motor hareket ediyor. Dur ve tekrar dene.</string>
+    <string name="motion_calib_notstill">Telefon hareket etti. Motoru sabit tut ve tekrar dene.</string>
+    <string name="motion_calib_nosensor">Bu telefonda jiroskop veya ivmeölçer yok.</string>
+    <string name="tvl_lean">EĞİM</string>
+    <string name="tvl_pulse">NABIZ</string>
+</resources>

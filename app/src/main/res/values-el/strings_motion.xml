@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">Βαθμονόμηση κλίσης</string>
+    <string name="motion_calib_sub_off">Χωρίς βαθμονόμηση: η κλίση δεν καταγράφεται</string>
+    <string name="motion_calib_sub_on">Βαθμονομήθηκε στις %1$s</string>
+    <string name="motion_calib_msg">Τοποθέτησε το κινητό στη βάση, με τη μοτοσικλέτα όρθια και ακίνητη, και πάτησε Βαθμονόμηση. Μείνε ακίνητος για 2 δευτερόλεπτα. Η κλίση και οι δυνάμεις G καταγράφονται μόνο αν το κινητό έχει βαθμονομηθεί στη βάση· η βαθμονόμηση λήγει με τη διαδρομή.</string>
+    <string name="motion_calib_go">Βαθμονόμηση</string>
+    <string name="motion_calib_clear">Αφαίρεση βαθμονόμησης</string>
+    <string name="motion_calib_running">Μέτρηση… κράτα τη μοτοσικλέτα ακίνητη</string>
+    <string name="motion_calib_ok">Βαθμονομήθηκε. Η κλίση και οι δυνάμεις G θα καταγραφούν στη διαδρομή.</string>
+    <string name="motion_calib_moving">Η μοτοσικλέτα κινείται. Σταμάτα και δοκίμασε ξανά.</string>
+    <string name="motion_calib_notstill">Το κινητό κουνήθηκε. Κράτα τη μοτοσικλέτα ακίνητη και δοκίμασε ξανά.</string>
+    <string name="motion_calib_nosensor">Αυτό το κινητό δεν έχει γυροσκόπιο ή επιταχυνσιόμετρο.</string>
+    <string name="tvl_lean">ΚΛΙΣΗ</string>
+    <string name="tvl_pulse">ΠΑΛΜΟΙ</string>
+</resources>

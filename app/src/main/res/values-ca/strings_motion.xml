@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">Calibrar inclinació</string>
+    <string name="motion_calib_sub_off">Sense calibrar: no es grava la inclinació</string>
+    <string name="motion_calib_sub_on">Calibrat a les %1$s</string>
+    <string name="motion_calib_msg">Posa el mòbil al suport, amb la moto dreta i aturada, i prem Calibrar. Queda\'t quiet 2 segons. La inclinació i les forces G només es graven si el mòbil està calibrat al suport; la calibració acaba amb el viatge.</string>
+    <string name="motion_calib_go">Calibrar</string>
+    <string name="motion_calib_clear">Treure la calibració</string>
+    <string name="motion_calib_running">Mesurant… no moguis la moto</string>
+    <string name="motion_calib_ok">Calibrat. La inclinació i les forces G es gravaran al viatge.</string>
+    <string name="motion_calib_moving">La moto es mou. Atura\'t i torna-ho a provar.</string>
+    <string name="motion_calib_notstill">El mòbil s\'ha mogut. Mantén la moto quieta i torna-ho a provar.</string>
+    <string name="motion_calib_nosensor">Aquest mòbil no té giroscopi ni acceleròmetre.</string>
+    <string name="tvl_lean">INCLINACIÓ</string>
+    <string name="tvl_pulse">POLS</string>
+</resources>

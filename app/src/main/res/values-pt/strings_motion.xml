@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">Calibrar inclinação</string>
+    <string name="motion_calib_sub_off">Não calibrado: a inclinação não é gravada</string>
+    <string name="motion_calib_sub_on">Calibrado às %1$s</string>
+    <string name="motion_calib_msg">Coloca o telemóvel no suporte, com a mota direita e parada, e toca em Calibrar. Fica quieto durante 2 segundos. A inclinação e as forças G só são gravadas se o telemóvel estiver calibrado no suporte; a calibração termina com a viagem.</string>
+    <string name="motion_calib_go">Calibrar</string>
+    <string name="motion_calib_clear">Remover calibração</string>
+    <string name="motion_calib_running">A medir… não mexas na mota</string>
+    <string name="motion_calib_ok">Calibrado. A inclinação e as forças G serão gravadas na viagem.</string>
+    <string name="motion_calib_moving">A mota está em movimento. Para e tenta de novo.</string>
+    <string name="motion_calib_notstill">O telemóvel mexeu-se. Mantém a mota parada e tenta de novo.</string>
+    <string name="motion_calib_nosensor">Este telemóvel não tem giroscópio nem acelerómetro.</string>
+    <string name="tvl_lean">INCLINAÇÃO</string>
+    <string name="tvl_pulse">PULSAÇÃO</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">Kantelhoek kalibreren</string>
+    <string name="motion_calib_sub_off">Niet gekalibreerd: kantelhoek wordt niet opgenomen</string>
+    <string name="motion_calib_sub_on">Gekalibreerd om %1$s</string>
+    <string name="motion_calib_msg">Zet de telefoon in de houder, met de motor rechtop en stilstaand, en tik op Kalibreren. Blijf 2 seconden stil staan. Kantelhoek en G-krachten worden alleen opgenomen als de telefoon in de houder is gekalibreerd; de kalibratie eindigt met de rit.</string>
+    <string name="motion_calib_go">Kalibreren</string>
+    <string name="motion_calib_clear">Kalibratie wissen</string>
+    <string name="motion_calib_running">Meten… houd de motor stil</string>
+    <string name="motion_calib_ok">Gekalibreerd. Kantelhoek en G-krachten worden in je rit opgenomen.</string>
+    <string name="motion_calib_moving">De motor rijdt. Stop en probeer opnieuw.</string>
+    <string name="motion_calib_notstill">De telefoon bewoog. Houd de motor stil en probeer opnieuw.</string>
+    <string name="motion_calib_nosensor">Deze telefoon heeft geen gyroscoop of versnellingsmeter.</string>
+    <string name="tvl_lean">KANTELING</string>
+    <string name="tvl_pulse">HARTSLAG</string>
+</resources>

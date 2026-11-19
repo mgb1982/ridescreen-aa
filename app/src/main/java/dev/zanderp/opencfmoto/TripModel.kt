@@ -4,6 +4,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import kotlin.math.abs
+import kotlin.math.sqrt
+import org.json.JSONArray
+import org.json.JSONObject
 
 /** One GPS sample on a ride. */
 data class TrackPoint(val lat: Double, val lon: Double, val time: Long, val speedMs: Float)
@@ -31,6 +34,56 @@ data class TripObdSummary(
     val sampleCount: Int,
 )
 
+/**
+ * Lean, G-forces and heart rate at one instant of the ride (see [RideMotion]). Lean: positive = right.
+ * gLat: positive = right. gLon: positive = accelerating. Any field may be null.
+ */
+data class MotionTripSample(
+    val timeMs: Long,
+    val leanDeg: Double? = null,
+    val gLat: Double? = null,
+    val gLon: Double? = null,
+    val bpm: Int? = null,
+)
+
+data class TripMotionSummary(
+    val maxLeanLeftDeg: Double?,
+    val maxLeanRightDeg: Double?,
+    val maxG: Double?,
+    val avgBpm: Int?,
+    val maxBpm: Int?,
+)
+
+/** JSON form of the motion samples: one array per sample, [timeMs, lean, gLat, gLon, bpm], null for unknown. */
+object MotionCodec {
+    fun encode(samples: List<MotionTripSample>): JSONArray = JSONArray().also { out ->
+        for (s in samples) {
+            fun d(v: Double?): Any = v ?: JSONObject.NULL
+            out.put(JSONArray().put(s.timeMs).put(d(s.leanDeg)).put(d(s.gLat)).put(d(s.gLon)).put(s.bpm ?: JSONObject.NULL))
+        }
+    }
+
+    fun decode(array: JSONArray?): List<MotionTripSample> {
+        if (array == null) return emptyList()
+        fun JSONArray.number(i: Int): Double? = if (isNull(i)) null else optDouble(i).takeIf { it.isFinite() }
+        return (0 until array.length()).mapNotNull { i ->
+            val a = array.optJSONArray(i) ?: return@mapNotNull null
+            MotionTripSample(a.optLong(0), a.number(1), a.number(2), a.number(3), a.number(4)?.toInt())
+        }
+    }
+}
+
+fun Trip.motionAt(timeMs: Long, maxAgeMs: Long = 2_000L): MotionTripSample? {
+    if (motionSamples.isEmpty()) return null
+    val i = motionSamples.binarySearchBy(timeMs) { it.timeMs }
+    val nearest = if (i >= 0) i else {
+        val after = (-i - 1).coerceIn(0, motionSamples.lastIndex)
+        val before = (after - 1).coerceAtLeast(0)
+        if (abs(motionSamples[before].timeMs - timeMs) <= abs(motionSamples[after].timeMs - timeMs)) before else after
+    }
+    return motionSamples[nearest].takeIf { abs(it.timeMs - timeMs) <= maxAgeMs }
+}
+
 fun Trip.obdAt(timeMs: Long, maxAgeMs: Long = 5_000L): ObdTripSample? {
     if (obdSamples.isEmpty()) return null
     val i = obdSamples.binarySearchBy(timeMs) { it.timeMs }
@@ -57,6 +110,7 @@ data class Trip(
     val maxSpeedMs: Float,
     val points: List<TrackPoint>,
     val obdSamples: List<ObdTripSample> = emptyList(),
+    val motionSamples: List<MotionTripSample> = emptyList(),
     val archivedByMerge: Boolean = false,
     val mergedFromIds: List<String> = emptyList(),
 ) {
@@ -74,6 +128,23 @@ data class Trip(
             avgThrottlePct = avg(obdSamples.map { it.relativeThrottlePct }), // relative throttle (PID 0x45): more precise on the Zontes
             avgVoltage = avg(obdSamples.map { it.voltage }),
             sampleCount = obdSamples.size,
+        )
+    }
+
+    /** Max lean each side (positive degrees), max combined G, average and max heart rate; null without motion data. */
+    fun motionSummary(): TripMotionSummary? {
+        if (motionSamples.isEmpty()) return null
+        val leans = motionSamples.mapNotNull { it.leanDeg }
+        val gs = motionSamples.mapNotNull { s ->
+            if (s.gLat == null && s.gLon == null) null else sqrt((s.gLat ?: 0.0).let { it * it } + (s.gLon ?: 0.0).let { it * it })
+        }
+        val bpms = motionSamples.mapNotNull { it.bpm }
+        return TripMotionSummary(
+            maxLeanLeftDeg = leans.filter { it < 0 }.minOrNull()?.let { -it },
+            maxLeanRightDeg = leans.filter { it > 0 }.maxOrNull(),
+            maxG = gs.maxOrNull(),
+            avgBpm = bpms.takeIf { it.isNotEmpty() }?.average()?.let { Math.round(it).toInt() },
+            maxBpm = bpms.maxOrNull(),
         )
     }
 

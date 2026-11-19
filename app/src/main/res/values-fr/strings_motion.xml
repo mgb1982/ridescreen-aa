@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">Calibrer l\'inclinaison</string>
+    <string name="motion_calib_sub_off">Non calibré : l\'inclinaison n\'est pas enregistrée</string>
+    <string name="motion_calib_sub_on">Calibré à %1$s</string>
+    <string name="motion_calib_msg">Placez le téléphone sur son support, moto droite et à l\'arrêt, puis touchez Calibrer. Ne bougez pas pendant 2 secondes. L\'inclinaison et les forces G ne sont enregistrées que si le téléphone est calibré sur le support ; la calibration prend fin avec le trajet.</string>
+    <string name="motion_calib_go">Calibrer</string>
+    <string name="motion_calib_clear">Supprimer la calibration</string>
+    <string name="motion_calib_running">Mesure en cours… ne bougez pas la moto</string>
+    <string name="motion_calib_ok">Calibré. L\'inclinaison et les forces G seront enregistrées dans votre trajet.</string>
+    <string name="motion_calib_moving">La moto roule. Arrêtez-vous et réessayez.</string>
+    <string name="motion_calib_notstill">Le téléphone a bougé. Maintenez la moto immobile et réessayez.</string>
+    <string name="motion_calib_nosensor">Ce téléphone n\'a ni gyroscope ni accéléromètre.</string>
+    <string name="tvl_lean">INCLINAISON</string>
+    <string name="tvl_pulse">FRÉQ. CARDIAQUE</string>
+</resources>

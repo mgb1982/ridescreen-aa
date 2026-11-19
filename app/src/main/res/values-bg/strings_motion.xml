@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">Калибриране на наклона</string>
+    <string name="motion_calib_sub_off">Некалибрирано: наклонът не се записва</string>
+    <string name="motion_calib_sub_on">Калибрирано в %1$s</string>
+    <string name="motion_calib_msg">Сложи телефона в стойката, с мотора изправен и спрял, и натисни Калибрирай. Стой неподвижно 2 секунди. Наклонът и G-силите се записват само когато телефонът е калибриран в стойката; калибрирането приключва с пътуването.</string>
+    <string name="motion_calib_go">Калибрирай</string>
+    <string name="motion_calib_clear">Премахни калибрирането</string>
+    <string name="motion_calib_running">Измерване… дръж мотора неподвижен</string>
+    <string name="motion_calib_ok">Калибрирано. Наклонът и G-силите ще се записват в пътуването.</string>
+    <string name="motion_calib_moving">Моторът се движи. Спри и опитай пак.</string>
+    <string name="motion_calib_notstill">Телефонът се премести. Дръж мотора неподвижен и опитай пак.</string>
+    <string name="motion_calib_nosensor">Този телефон няма жироскоп или акселерометър.</string>
+    <string name="tvl_lean">НАКЛОН</string>
+    <string name="tvl_pulse">ПУЛС</string>
+</resources>
