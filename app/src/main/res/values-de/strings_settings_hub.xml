@@ -6,7 +6,7 @@
     <string name="settings_sec_display">Display-Bildschirm</string>
     <string name="settings_sec_display_sub">Bildschirm ans Display anpassen, Tag-/Nachtdesign, Energiemodus</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">Stil, Felder, Kartenreihenfolge, Farbe, Skalierung</string>
+    <string name="settings_sec_dashboard_sub">Stil, Hintergrund, Felder, Kartenreihenfolge, Farbe, Skalierung</string>
     <string name="settings_sec_handlebar">Lenker und Bedienung</string>
     <string name="settings_sec_handlebar_sub">Tasten, Drückverzögerungen, Lautstärke nach Tempo</string>
     <string name="settings_sec_route">Unterwegs</string>

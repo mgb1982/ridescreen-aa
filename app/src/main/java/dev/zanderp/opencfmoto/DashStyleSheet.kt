@@ -76,6 +76,16 @@ class DashStyleSheet : BottomSheetDialogFragment() {
             DashboardMode.setTheme(requireContext(), t)   // the live layer reads it on its next tick
             render(v)
         }
+        // v2.5 · Fields, card order and scale live in Settings ▸ Dashboard: link there from Home.
+        // Opened from that screen already (its Background button), the link would only loop back: hide it.
+        v.findViewById<MaterialButton>(R.id.style_sheet_more).apply {
+            if (activity is ControlsActivity) visibility = View.GONE
+            else setOnClickListener {
+                startActivity(android.content.Intent(requireContext(), ControlsActivity::class.java)
+                    .putExtra(SettingsSection.EXTRA, SettingsSection.DASHBOARD.key))
+                dismissAllowingStateLoss()
+            }
+        }
         render(v)
         return v
     }

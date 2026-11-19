@@ -6,7 +6,7 @@
     <string name="settings_sec_display">Ekran wyświetlacza</string>
     <string name="settings_sec_display_sub">Dopasowanie ekranu do wyświetlacza, motyw dzienny/nocny, tryb zasilania</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">Styl, pola, kolejność kart, kolor, skala</string>
+    <string name="settings_sec_dashboard_sub">Styl, tło, pola, kolejność kart, kolor, skala</string>
     <string name="settings_sec_handlebar">Kierownica i przyciski</string>
     <string name="settings_sec_handlebar_sub">Przyciski, opóźnienia naciśnięcia, głośność zależna od prędkości</string>
     <string name="settings_sec_route">W trasie</string>

@@ -583,6 +583,11 @@ class ControlsActivity : AppCompatActivity() {
         }
         findViewById<MaterialButton>(R.id.btn_dash_card_order).setOnClickListener { showCardOrderDialog() }
         findViewById<MaterialButton>(R.id.btn_dash_accent).setOnClickListener { showAccentDialog() }
+        // v2.5 · The background lived only in Home ▸ Style: open the same sheet here (no second copy of it).
+        findViewById<MaterialButton>(R.id.btn_dash_background).setOnClickListener {
+            if (supportFragmentManager.findFragmentByTag(DashStyleSheet.TAG) == null)
+                DashStyleSheet().show(supportFragmentManager, DashStyleSheet.TAG)
+        }
         findViewById<MaterialButton>(R.id.btn_dash_toggle).setOnClickListener {
             if (DashboardMode.toggle(this) == null) {
                 Toast.makeText(this, R.string.dash_need_stream, Toast.LENGTH_SHORT).show()

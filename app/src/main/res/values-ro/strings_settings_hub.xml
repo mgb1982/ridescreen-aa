@@ -6,7 +6,7 @@
     <string name="settings_sec_display">Ecranul bordului</string>
     <string name="settings_sec_display_sub">Potrivire ecran cu bordul, temă zi/noapte, mod de alimentare</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">Stil, câmpuri, ordinea cardurilor, culoare, scară</string>
+    <string name="settings_sec_dashboard_sub">Stil, fundal, câmpuri, ordinea cardurilor, culoare, scară</string>
     <string name="settings_sec_handlebar">Ghidon și comenzi</string>
     <string name="settings_sec_handlebar_sub">Butoane, întârzieri la apăsare, volum după viteză</string>
     <string name="settings_sec_route">Pe drum</string>

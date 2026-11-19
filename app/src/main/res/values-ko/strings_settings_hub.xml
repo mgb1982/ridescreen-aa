@@ -6,7 +6,7 @@
     <string name="settings_sec_display">계기판 화면</string>
     <string name="settings_sec_display_sub">계기판에 맞춘 화면, 주간/야간 테마, 전원 모드</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">스타일, 항목, 카드 순서, 색상, 배율</string>
+    <string name="settings_sec_dashboard_sub">스타일, 배경, 항목, 카드 순서, 색상, 배율</string>
     <string name="settings_sec_handlebar">핸들바와 버튼</string>
     <string name="settings_sec_handlebar_sub">버튼, 누르기 지연, 속도별 음량</string>
     <string name="settings_sec_route">주행 중</string>

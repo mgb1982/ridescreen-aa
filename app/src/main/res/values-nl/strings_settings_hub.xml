@@ -6,7 +6,7 @@
     <string name="settings_sec_display">Dashboardscherm</string>
     <string name="settings_sec_display_sub">Scherm passend maken voor het dashboard, dag-/nachtthema, energiemodus</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">Stijl, velden, kaartvolgorde, kleur, schaal</string>
+    <string name="settings_sec_dashboard_sub">Stijl, achtergrond, velden, kaartvolgorde, kleur, schaal</string>
     <string name="settings_sec_handlebar">Stuur en knoppen</string>
     <string name="settings_sec_handlebar_sub">Knoppen, indrukvertragingen, volume op snelheid</string>
     <string name="settings_sec_route">Onderweg</string>

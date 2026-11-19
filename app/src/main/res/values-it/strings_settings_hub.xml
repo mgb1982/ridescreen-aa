@@ -6,7 +6,7 @@
     <string name="settings_sec_display">Schermo del cruscotto</string>
     <string name="settings_sec_display_sub">Adatta lo schermo al cruscotto, tema giorno/notte, modalità di alimentazione</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">Stile, campi, ordine delle schede, colore, scala</string>
+    <string name="settings_sec_dashboard_sub">Stile, sfondo, campi, ordine delle schede, colore, scala</string>
     <string name="settings_sec_handlebar">Manubrio e comandi</string>
     <string name="settings_sec_handlebar_sub">Pulsanti, ritardi di pressione, volume in base alla velocità</string>
     <string name="settings_sec_route">In strada</string>

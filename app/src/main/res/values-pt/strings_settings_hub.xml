@@ -6,7 +6,7 @@
     <string name="settings_sec_display">Ecrã do painel</string>
     <string name="settings_sec_display_sub">Ajustar o ecrã ao painel, tema dia/noite, modo de energia</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">Estilo, campos, ordem dos cartões, cor, escala</string>
+    <string name="settings_sec_dashboard_sub">Estilo, fundo, campos, ordem dos cartões, cor, escala</string>
     <string name="settings_sec_handlebar">Guiador e controlos</string>
     <string name="settings_sec_handlebar_sub">Botões, atrasos de premir, volume por velocidade</string>
     <string name="settings_sec_route">Na estrada</string>

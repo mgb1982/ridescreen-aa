@@ -6,7 +6,7 @@
     <string name="settings_sec_display">Pantalla del cuadro</string>
     <string name="settings_sec_display_sub">Ajustar la pantalla al cuadro, tema día/noche, modo de energía</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">Estilo, campos, orden de tarjetas, color, escala</string>
+    <string name="settings_sec_dashboard_sub">Estilo, fondo, campos, orden de tarjetas, color, escala</string>
     <string name="settings_sec_handlebar">Manillar y mandos</string>
     <string name="settings_sec_handlebar_sub">Botones, retardos de pulsación, volumen por velocidad</string>
     <string name="settings_sec_route">En ruta</string>

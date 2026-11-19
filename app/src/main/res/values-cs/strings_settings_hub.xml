@@ -6,7 +6,7 @@
     <string name="settings_sec_display">Obrazovka přístroje</string>
     <string name="settings_sec_display_sub">Přizpůsobit obrazovku přístroji, denní/noční motiv, režim napájení</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">Styl, pole, pořadí karet, barva, měřítko</string>
+    <string name="settings_sec_dashboard_sub">Styl, pozadí, pole, pořadí karet, barva, měřítko</string>
     <string name="settings_sec_handlebar">Řídítka a ovládání</string>
     <string name="settings_sec_handlebar_sub">Tlačítka, prodlevy stisku, hlasitost podle rychlosti</string>
     <string name="settings_sec_route">Na cestě</string>

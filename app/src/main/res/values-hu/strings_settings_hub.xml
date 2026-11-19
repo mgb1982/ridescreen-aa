@@ -6,7 +6,7 @@
     <string name="settings_sec_display">Műszerfal-képernyő</string>
     <string name="settings_sec_display_sub">Képernyő illesztése a műszerfalhoz, nappali/éjszakai téma, energiamód</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">Stílus, mezők, kártyák sorrendje, szín, méretarány</string>
+    <string name="settings_sec_dashboard_sub">Stílus, háttér, mezők, kártyák sorrendje, szín, méretarány</string>
     <string name="settings_sec_handlebar">Kormány és vezérlés</string>
     <string name="settings_sec_handlebar_sub">Gombok, nyomva tartási késleltetés, hangerő sebesség szerint</string>
     <string name="settings_sec_route">Úton</string>

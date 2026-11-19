@@ -6,7 +6,7 @@
     <string name="settings_sec_display">Dash screen</string>
     <string name="settings_sec_display_sub">Fit the screen to the dash, day/night theme, power mode</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">Style, fields, card order, colour, scale</string>
+    <string name="settings_sec_dashboard_sub">Style, background, fields, card order, colour, scale</string>
     <string name="settings_sec_handlebar">Handlebar and controls</string>
     <string name="settings_sec_handlebar_sub">Buttons, press delays, volume by speed</string>
     <string name="settings_sec_route">On the road</string>

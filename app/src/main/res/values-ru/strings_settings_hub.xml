@@ -6,7 +6,7 @@
     <string name="settings_sec_display">Экран приборной панели</string>
     <string name="settings_sec_display_sub">Подгонка экрана под панель, дневная/ночная тема, режим питания</string>
     <string name="settings_sec_dashboard">Dashboard</string>
-    <string name="settings_sec_dashboard_sub">Стиль, поля, порядок карточек, цвет, масштаб</string>
+    <string name="settings_sec_dashboard_sub">Стиль, фон, поля, порядок карточек, цвет, масштаб</string>
     <string name="settings_sec_handlebar">Руль и управление</string>
     <string name="settings_sec_handlebar_sub">Кнопки, задержки нажатия, громкость по скорости</string>
     <string name="settings_sec_route">В пути</string>
