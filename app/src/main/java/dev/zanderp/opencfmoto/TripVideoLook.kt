@@ -23,6 +23,8 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.PI
 import kotlin.math.atan2
+import kotlin.math.abs
+import kotlin.math.sin
 import kotlin.math.cos
 import kotlin.math.floor
 import kotlin.math.ln
@@ -153,7 +155,7 @@ class StreetTiles private constructor(private val dir: File, val zoom: Int) {
 }
 
 /** v2.3: the overlay pieces the rider can drag in the preview; the export draws them where they were left. */
-enum class OverlayPart { TITLE, SPEED, MAP, EXTRA, THROTTLE, DISTANCE }
+enum class OverlayPart { TITLE, SPEED, MAP, EXTRA, THROTTLE, DISTANCE, MOTION }
 
 /** Offset of a piece from its home spot, as fractions of the frame width and height. */
 data class PartOffset(val dx: Float, val dy: Float)
@@ -394,6 +396,7 @@ class TripLook(
         val clock = hhmm.format(Date(tMs))
         val kmDone = cumKm[idx]
         placed.clear()
+        val mo = if (hasMotion) trip.motionAt(tMs) else null
         when (style) {
             VideoStyle.CLASSIC -> {
                 val ts = fitSize(title, Typeface.DEFAULT_BOLD, w - 40 * u, 4.2f * u)
@@ -411,6 +414,10 @@ class TripLook(
                 part(c, OverlayPart.MAP, w, h, box) {
                     minimap(c, box, false, Color.argb(110, 0, 0, 0), null,
                         Color.argb(100, Color.red(yellow), Color.green(yellow), Color.blue(yellow)), yellow, idx, u)
+                }
+                if (hasMotion) {
+                    val mb = RectF(w - 37 * u, h - 17 * u, w - 3 * u, h - 3 * u)
+                    part(c, OverlayPart.MOTION, w, h, mb) { motionBlock(c, mb, u, mo, Color.argb(110, 0, 0, 0), yellow, Typeface.DEFAULT_BOLD) }
                 }
             }
             VideoStyle.SPORT -> {
@@ -454,6 +461,10 @@ class TripLook(
                     minimap(c, box, true, Color.argb(190, 15, 18, 20), amber, Color.argb(130, 255, 255, 255), amber, idx, u)
                     if (map != VideoMap.STREETS || streets == null) text(c, "N", box.centerX(), box.top + 3.4f * u, 2.6f * u, tfCond, amber, Paint.Align.CENTER, false)
                 }
+                if (hasMotion) {
+                    val mb = RectF(w - 40 * u, h - 27 * u, w - 3 * u, h - 14.5f * u)
+                    part(c, OverlayPart.MOTION, w, h, mb) { motionBlock(c, mb, u, mo, Color.argb(130, 0, 0, 0), amber, tfCondItalic) }
+                }
             }
             VideoStyle.MINIMAL -> {
                 val line = "$clock   ·   ${title.uppercase()}"
@@ -471,6 +482,10 @@ class TripLook(
                 part(c, OverlayPart.MAP, w, h, box) {
                     minimap(c, box, false, null, if (map == VideoMap.STREETS) Color.WHITE else null,
                         Color.argb(85, 255, 255, 255), Color.WHITE, idx, u)
+                }
+                if (hasMotion) {
+                    val mb = RectF(w - 36 * u, h - 38 * u, w - 3 * u, h - 25 * u)
+                    part(c, OverlayPart.MOTION, w, h, mb) { motionBlock(c, mb, u, mo, null, Color.WHITE, tfLight) }
                 }
             }
             VideoStyle.CINEMA -> {
@@ -491,6 +506,10 @@ class TripLook(
                 val box = RectF(w - s - 4.5f * u, 1.5f * u, w - 4.5f * u, 1.5f * u + s)
                 part(c, OverlayPart.MAP, w, h, box) {
                     minimap(c, box, false, null, null, Color.argb(90, Color.red(gold), Color.green(gold), Color.blue(gold)), gold, idx, u * 0.7f)
+                }
+                if (hasMotion) {
+                    val mb = RectF(4 * u, 1.5f * u, 40 * u, bar - 1.5f * u)
+                    part(c, OverlayPart.MOTION, w, h, mb) { motionBlock(c, mb, u, mo, null, gold, tfMedium) }
                 }
             }
             VideoStyle.RETRO -> {
@@ -522,6 +541,10 @@ class TripLook(
                 part(c, OverlayPart.MAP, w, h, box) {
                     minimap(c, box, false, null, null, Color.argb(85, 255, 255, 255), Color.WHITE, idx, u)
                 }
+                if (hasMotion) {
+                    val mb = RectF(4 * u, h - 30 * u, 40 * u, h - 15.5f * u)
+                    part(c, OverlayPart.MOTION, w, h, mb) { motionBlock(c, mb, u, mo, null, Color.WHITE, tfMono) }
+                }
             }
             VideoStyle.TELEMETRY -> {
                 val ts = fitSize(title, tfArchivo, w - 4 * u - 24 * u - 6 * u, 4 * u)
@@ -537,6 +560,12 @@ class TripLook(
                 trip.obdAt(tMs)?.let { sample ->
                     val box = RectF(3.5f * u, 14f * u, w - 31f * u, 25f * u)
                     part(c, OverlayPart.EXTRA, w, h, box) { obdChip(c, box, u, sample) }
+                }
+                if (hasMotion) {
+                    // Without RPM this is the star of the screen (big, where the OBD chip would sit); with it, just below.
+                    val big = obd.isEmpty()
+                    val mb = if (big) RectF(3.5f * u, 13.5f * u, w - 29f * u, 27 * u) else RectF(3.5f * u, 26.5f * u, w - 29f * u, 36 * u)
+                    part(c, OverlayPart.MOTION, w, h, mb) { motionBlock(c, mb, u, mo, Color.argb(175, 12, 16, 20), sky, tfArchivoBlack) }
                 }
                 // Mini-map, glass square
                 val s = 24 * u
@@ -688,6 +717,14 @@ class TripLook(
             }
         }
 
+        // Lean, G and heart rate. Without RPM this takes the big bottom-centre slot (the throttle one, when free).
+        if (hasMotion) {
+            val throttleShown = obd.any { it.relativeThrottlePct != null || it.throttlePct != null }
+            val mb = if (throttleShown) RectF(w / 2f - 17 * u, h - 31 * u, w / 2f + 17 * u, h - 19 * u)
+                else RectF(w / 2f - 17 * u, h - (if (hasRpm) 15 else 20) * u, w / 2f + 17 * u, h - 3 * u)
+            part(c, OverlayPart.MOTION, w, h, mb) { motionBlock(c, mb, u, trip.motionAt(tMs), Color.argb(90, 0, 0, 0), amber, tfCondItalic) }
+        }
+
         // Mini-map (bottom-right).
         val s = 20 * u
         val box = RectF(w - s - 3 * u, h - s - 3 * u, w - 3 * u, h - 3 * u)
@@ -695,6 +732,78 @@ class TripLook(
             minimap(c, box, false, Color.argb(150, 12, 14, 16), Color.argb(60, 255, 255, 255),
                 Color.argb(110, 255, 255, 255), amber, idx, u)
         }
+    }
+
+    // ── ride motion (lean, G, heart rate) from the samples recorded with the trip
+
+    private val hasMotion = trip.motionSamples.isNotEmpty()
+    private val motionSummary = trip.motionSummary()
+
+    /** Degrees text; the dot-matrix font has no degree sign. */
+    private fun deg(v: Double, tf: Typeface) = "${v.roundToInt()}" + if (pixel(tf)) "" else "°"
+
+    /**
+     * Lean dial (needle + arc to the side you lean), G and heart rate in [box]. Anything unknown is left out;
+     * nothing is drawn when the sample has no data at all. [panel] is an optional rounded background.
+     */
+    private fun motionBlock(c: Canvas, box: RectF, u: Float, m: MotionTripSample?, panel: Int?, accent: Int, tf: Typeface) {
+        if (m == null) return
+        if (m.leanDeg == null && m.gLat == null && m.gLon == null && m.bpm == null) return
+        val bh = box.height()
+        if (panel != null) c.drawRoundRect(box, 1.6f * u, 1.6f * u, fill(panel))
+        var tx = box.left + bh * 0.25f
+        val lean = m.leanDeg
+        if (lean != null) {
+            val r = bh * 0.42f
+            val cx = box.left + bh * 0.62f
+            val cy = box.top + bh * 0.62f
+            val rect = RectF(cx - r, cy - r, cx + r, cy + r)
+            stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeCap = Paint.Cap.ROUND
+            stroke.strokeWidth = bh * 0.07f; stroke.color = Color.argb(90, 255, 255, 255)
+            c.drawArc(rect, 210f, 120f, false, stroke)                     // -60 to +60 degrees around the top
+            val a = lean.toFloat().coerceIn(-60f, 60f)
+            stroke.color = accent
+            c.drawArc(rect, 270f, a, false, stroke)                         // filled towards the side you lean
+            stroke.strokeWidth = bh * 0.05f; stroke.color = Color.argb(120, 255, 255, 255)
+            for (t in intArrayOf(-60, -30, 0, 30, 60)) {
+                val ang = Math.toRadians((270 + t).toDouble())
+                c.drawLine(cx + (r * 1.08f) * cos(ang).toFloat(), cy + (r * 1.08f) * sin(ang).toFloat(),
+                    cx + (r * 1.22f) * cos(ang).toFloat(), cy + (r * 1.22f) * sin(ang).toFloat(), stroke)
+            }
+            val na = Math.toRadians((270 + a).toDouble())          // the bike: a line tilted by the lean
+            stroke.strokeWidth = bh * 0.09f; stroke.color = Color.WHITE
+            c.drawLine(cx, cy, cx + (r * 0.95f) * cos(na).toFloat(), cy + (r * 0.95f) * sin(na).toFloat(), stroke)
+            c.drawCircle(cx, cy, bh * 0.06f, fill(Color.WHITE))
+            val side = if (lean <= -1.0) "L " else if (lean >= 1.0) "R " else ""
+            text(c, side + deg(abs(lean), tf), cx, box.bottom - bh * 0.05f, bh * 0.28f, tf, Color.WHITE, Paint.Align.CENTER)
+            tx = box.left + bh * 1.35f
+        }
+        val g = if (m.gLat != null || m.gLon != null) sqrt((m.gLat ?: 0.0).let { it * it } + (m.gLon ?: 0.0).let { it * it }) else null
+        val rows = (if (g != null) 1 else 0) + (if (m.bpm != null) 1 else 0)
+        if (rows == 0) return
+        val size = bh * (if (rows == 1) 0.38f else 0.3f)
+        var y = if (rows == 1) box.centerY() + size * 0.36f else box.top + bh * 0.46f
+        if (g != null) {
+            val gs = String.format(Locale.US, "%.2f", g)
+            text(c, gs, tx, y, size, tf, Color.WHITE)
+            text(c, "G", tx + measure(gs, tf, size) + size * 0.25f, y, size * 0.55f, tf, accent)
+            y += bh * 0.38f
+        }
+        if (m.bpm != null) {
+            val hs = size * 0.8f
+            heart(c, tx + hs * 0.55f, y - size * 0.34f, hs * 0.5f, red)
+            text(c, "${m.bpm}", tx + hs * 1.3f, y, size, tf, Color.WHITE)
+        }
+    }
+
+    private fun heart(c: Canvas, cx: Float, cy: Float, s: Float, color: Int) {
+        val path = Path().apply {
+            moveTo(cx, cy + s * 0.9f)
+            cubicTo(cx - s * 1.3f, cy - s * 0.1f, cx - s * 0.8f, cy - s * 1.0f, cx, cy - s * 0.35f)
+            cubicTo(cx + s * 0.8f, cy - s * 1.0f, cx + s * 1.3f, cy - s * 0.1f, cx, cy + s * 0.9f)
+            close()
+        }
+        c.drawPath(path, fill(color))
     }
 
     /** 270° dial: track, red zone from [redFrac], value arc, and a label every [labelEvery] units. */
@@ -824,7 +933,7 @@ class TripLook(
         // Portrait (19 Oct): the stats ran into the logo at the bottom. Reserve the logo's band and
         // the 2×2 stats block first, and give the map what's left (still square, centred).
         val brandTop = h - (if (watermark) 23 * u else 6 * u)
-        val statsH = 39 * u
+        val statsH = (if (trip.motionSummary() != null) 50 else 39) * u
         val mapBox = if (portrait) {
             val side = minOf(w - 16 * u, brandTop - statsH - h * 0.08f)
             RectF((w - side) / 2f, h * 0.08f, (w + side) / 2f, h * 0.08f + side)
@@ -832,14 +941,23 @@ class TripLook(
         routeFit(c, mapBox, accent(), null, 1.1f * u, pts.lastIndex, 1.6f * u)
         val mins = ((trip.end - trip.start) / 60_000L).toInt()
         val avg = if (trip.movingTimeMs > 0) (trip.distanceMeters / (trip.movingTimeMs / 1000.0) * 3.6).roundToInt() else 0
-        val rows = listOf(
-            ctx.getString(R.string.tvl_distance) to "${km(totalKm)} km",
-            ctx.getString(R.string.tvl_time) to "$mins min",
-            ctx.getString(R.string.tvl_avg) to "$avg km/h",
-            ctx.getString(R.string.tvl_max) to "${trip.maxKmh} km/h",
-        )
+        val rows = ArrayList<Pair<String, String>>().apply {
+            add(ctx.getString(R.string.tvl_distance) to "${km(totalKm)} km")
+            add(ctx.getString(R.string.tvl_time) to "$mins min")
+            add(ctx.getString(R.string.tvl_avg) to "$avg km/h")
+            add(ctx.getString(R.string.tvl_max) to "${trip.maxKmh} km/h")
+            val ms = motionSummary
+            val tfH = headline()
+            if (ms != null && (ms.maxLeanLeftDeg != null || ms.maxLeanRightDeg != null)) {
+                val l = ms.maxLeanLeftDeg?.let { "L ${deg(it, tfH)}" }
+                val r = ms.maxLeanRightDeg?.let { "R ${deg(it, tfH)}" }
+                add(ctx.getString(R.string.tvl_lean) to listOfNotNull(l, r).joinToString("  "))
+            }
+            if (ms?.maxBpm != null) add(ctx.getString(R.string.tvl_pulse) to "${ms.maxBpm} bpm")
+        }
         val x0 = if (portrait) 10 * u else w * 0.62f
-        var y = if (portrait) mapBox.bottom + 9 * u else h * 0.3f
+        val many = rows.size > 4
+        var y = if (portrait) mapBox.bottom + 9 * u else h * (if (many) 0.22f else 0.3f)
         text(c, title, x0, y, fitSize(title, headline(), w - x0 - 6 * u, 5.5f * u), headline())
         y += 8 * u
         if (portrait) {
@@ -854,7 +972,7 @@ class TripLook(
         } else for ((k, v) in rows) {
             text(c, k, x0, y, 2.4f * u, tfMedium, accent())
             text(c, v, x0, y + 5.2f * u, 4.6f * u, headline())
-            y += 10 * u
+            y += (if (many) 8.5f else 10f) * u
         }
         if (watermark) brand(c, w, h, u, portrait, x0)
     }

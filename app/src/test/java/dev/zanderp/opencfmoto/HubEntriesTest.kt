@@ -11,12 +11,12 @@ class HubEntriesTest {
         assertEquals(listOf(NavTab.HOME, NavTab.TRIPS, NavTab.BIKE, NavTab.SETTINGS), NavTab.values().toList())
     }
 
-    @Test fun tripsHubHasTenEntriesWithoutDuplicates() {
+    @Test fun tripsHubHasElevenEntriesWithoutDuplicates() {
         val items = HubEntries.trips(true).map { it.item }
-        assertEquals(10, items.size)
+        assertEquals(11, items.size)
         assertEquals(items.size, items.toSet().size)
         assertEquals(HubItem.TRIPS_LIST, items.first())
-        assertEquals(HubItem.HEART_RATE, items.last())
+        assertEquals(HubItem.CALIBRATE_LEAN, items.last())
     }
 
     @Test fun liveShareIsDimmedOnlyWithoutServer() {

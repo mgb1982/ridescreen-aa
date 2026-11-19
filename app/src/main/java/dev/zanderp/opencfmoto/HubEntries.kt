@@ -8,7 +8,7 @@ enum class NavTab { HOME, TRIPS, BIKE, SETTINGS }
 /** Everything the Trips and Bike hubs can list. Pure ids: titles, icons and actions live in the activities. */
 enum class HubItem {
     // Trips
-    TRIPS_LIST, TRIP_NOW, MAP, TRAFFIC_LIGHTS, YEAR, TROPHIES, LIVE, PASSENGER, DASHCAM, HEART_RATE,
+    TRIPS_LIST, TRIP_NOW, MAP, TRAFFIC_LIGHTS, YEAR, TROPHIES, LIVE, PASSENGER, DASHCAM, HEART_RATE, CALIBRATE_LEAN,
     // Bike
     GARAGE, PKE_BATTERY, PKE_LOCK, OBD, CHRONO, MAINTENANCE, FUEL, CRASH,
 }
@@ -29,6 +29,7 @@ object HubEntries {
         HubSlot(HubItem.PASSENGER),
         HubSlot(HubItem.DASHCAM),
         HubSlot(HubItem.HEART_RATE),
+        HubSlot(HubItem.CALIBRATE_LEAN),
     )
 
     fun bike(): List<HubSlot> = listOf(

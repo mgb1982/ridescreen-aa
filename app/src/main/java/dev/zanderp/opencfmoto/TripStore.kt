@@ -35,7 +35,7 @@ object TripStore {
             fromIndex
         } else {
             // First run (or files changed behind our back): rebuild once from the full files.
-            files.mapNotNull { f -> parse(f, includeObd = false)?.copy(points = emptyList(), obdSamples = emptyList()) }.also { writeIndex(ctx, it) }
+            files.mapNotNull { f -> parse(f, includeObd = false)?.copy(points = emptyList(), obdSamples = emptyList(), motionSamples = emptyList()) }.also { writeIndex(ctx, it) }
         }.sortedByDescending { it.start }
         summaryCache = result
         return result.filterNot { it.archivedByMerge }
@@ -106,13 +106,14 @@ object TripStore {
         }
         obj.put("points", pts)
         obj.put("obdSamples", encodeObd(trip.obdSamples))
+        if (trip.motionSamples.isNotEmpty()) obj.put("motion", MotionCodec.encode(trip.motionSamples))
         try {
             File(dir(ctx), "${trip.id}.json").writeText(obj.toString())
         } catch (e: Exception) {
             LogBus.log("[trip] write failed: $e")
             return false
         }
-        updateIndex(ctx) { l -> l.removeAll { it.id == trip.id }; l.add(trip.copy(points = emptyList(), obdSamples = emptyList())) }
+        updateIndex(ctx) { l -> l.removeAll { it.id == trip.id }; l.add(trip.copy(points = emptyList(), obdSamples = emptyList(), motionSamples = emptyList())) }
         return true
     }
 
@@ -147,6 +148,7 @@ object TripStore {
             maxSpeedMs = originals.maxOf { it.maxSpeedMs },
             points = originals.flatMap { it.points }.sortedBy { it.time },
             obdSamples = originals.flatMap { it.obdSamples }.sortedBy { it.timeMs },
+            motionSamples = originals.flatMap { it.motionSamples }.sortedBy { it.timeMs },
             mergedFromIds = originals.map { it.id },
         )
         originals.forEach { save(ctx, it.copy(archivedByMerge = true)) }
@@ -180,6 +182,7 @@ object TripStore {
         for (p in trip.points) pts.put(JSONArray().put(p.lat).put(p.lon).put(p.time).put(p.speedMs.toDouble()))
         obj.put("points", pts)
         obj.put("obdSamples", encodeObd(trip.obdSamples))
+        if (trip.motionSamples.isNotEmpty()) obj.put("motion", MotionCodec.encode(trip.motionSamples))
         runCatching {
             val f = checkpointFile(ctx)
             val tmp = File(f.parentFile, f.name + ".tmp")
@@ -223,6 +226,7 @@ object TripStore {
             maxSpeedMs = o.optDouble("maxSpeedMs").toFloat(),
             points = points,
             obdSamples = if (includeObd) decodeObd(o.optJSONArray("obdSamples")) else emptyList(),
+            motionSamples = if (includeObd) MotionCodec.decode(o.optJSONArray("motion")) else emptyList(),
             archivedByMerge = o.optBoolean("archivedByMerge"),
             mergedFromIds = o.optJSONArray("mergedFromIds")?.let { a -> (0 until a.length()).map { a.optString(it) } } ?: emptyList(),
         )

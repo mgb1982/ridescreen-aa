@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">Calibra l\'inclinazione</string>
+    <string name="motion_calib_sub_off">Non calibrato: l\'inclinazione non viene registrata</string>
+    <string name="motion_calib_sub_on">Calibrato alle %1$s</string>
+    <string name="motion_calib_msg">Metti il telefono nel supporto, con la moto dritta e ferma, poi tocca Calibra. Resta fermo per 2 secondi. L\'inclinazione e le forze G vengono registrate solo se il telefono è calibrato sul supporto; la calibrazione termina con il viaggio.</string>
+    <string name="motion_calib_go">Calibra</string>
+    <string name="motion_calib_clear">Rimuovi la calibrazione</string>
+    <string name="motion_calib_running">Misurazione… tieni ferma la moto</string>
+    <string name="motion_calib_ok">Calibrato. L\'inclinazione e le forze G saranno registrate nel viaggio.</string>
+    <string name="motion_calib_moving">La moto è in movimento. Fermati e riprova.</string>
+    <string name="motion_calib_notstill">Il telefono si è mosso. Tieni ferma la moto e riprova.</string>
+    <string name="motion_calib_nosensor">Questo telefono non ha giroscopio né accelerometro.</string>
+    <string name="tvl_lean">INCLINAZIONE</string>
+    <string name="tvl_pulse">BATTITO</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">Kalibrovat náklon</string>
+    <string name="motion_calib_sub_off">Nekalibrováno: náklon se nezaznamenává</string>
+    <string name="motion_calib_sub_on">Kalibrováno v %1$s</string>
+    <string name="motion_calib_msg">Vlož telefon do držáku, motorku postav rovně a nehybně a klepni na Kalibrovat. Zůstaň 2 sekundy v klidu. Náklon a G síly se zaznamenávají jen tehdy, když je telefon v držáku zkalibrovaný; kalibrace končí s jízdou.</string>
+    <string name="motion_calib_go">Kalibrovat</string>
+    <string name="motion_calib_clear">Odstranit kalibraci</string>
+    <string name="motion_calib_running">Měření… drž motorku v klidu</string>
+    <string name="motion_calib_ok">Zkalibrováno. Náklon a G síly se zaznamenají do jízdy.</string>
+    <string name="motion_calib_moving">Motorka se pohybuje. Zastav a zkus to znovu.</string>
+    <string name="motion_calib_notstill">Telefon se pohnul. Drž motorku v klidu a zkus to znovu.</string>
+    <string name="motion_calib_nosensor">Tento telefon nemá gyroskop ani akcelerometr.</string>
+    <string name="tvl_lean">NÁKLON</string>
+    <string name="tvl_pulse">TEP</string>
+</resources>

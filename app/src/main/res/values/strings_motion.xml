@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">Calibrate lean angle</string>
+    <string name="motion_calib_sub_off">Not calibrated: lean is not recorded</string>
+    <string name="motion_calib_sub_on">Calibrated at %1$s</string>
+    <string name="motion_calib_msg">Put the phone in its mount, with the bike upright and stopped, then tap Calibrate. Keep still for 2 seconds. Lean and G-forces are only recorded when the phone is calibrated on the mount; the calibration ends with the trip.</string>
+    <string name="motion_calib_go">Calibrate</string>
+    <string name="motion_calib_clear">Remove calibration</string>
+    <string name="motion_calib_running">Measuring… keep the bike still</string>
+    <string name="motion_calib_ok">Calibrated. Lean and G-forces will be recorded in your trip.</string>
+    <string name="motion_calib_moving">The bike is moving. Stop and try again.</string>
+    <string name="motion_calib_notstill">The phone moved. Hold the bike still and try again.</string>
+    <string name="motion_calib_nosensor">This phone has no gyroscope or accelerometer.</string>
+    <string name="tvl_lean">LEAN</string>
+    <string name="tvl_pulse">HEART RATE</string>
+</resources>

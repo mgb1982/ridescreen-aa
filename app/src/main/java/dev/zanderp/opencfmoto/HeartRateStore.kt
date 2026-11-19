@@ -15,6 +15,13 @@ internal object HeartRateStore {
         val at = p.getOrNull(1)?.toLongOrNull() ?: System.currentTimeMillis()
         ctx.getSharedPreferences(PREF, Context.MODE_PRIVATE).edit().putInt("bpm", bpm).putLong("at", at).apply()
     }
+    /** Last heart rate from the watch if it is under 20 s old, else null. */
+    fun latest(ctx: Context): Int? {
+        val p = ctx.applicationContext.getSharedPreferences(PREF, Context.MODE_PRIVATE)
+        val bpm = p.getInt("bpm", 0); val at = p.getLong("at", 0L)
+        val age = System.currentTimeMillis() - at
+        return if (bpm > 0 && age in -2_000L until MAX_AGE) bpm else null
+    }
     fun show(ctx: Context) {
         val view = TextView(ctx).apply { textSize = 24f; setPadding(48, 24, 48, 8) }
         val dialog = AlertDialog.Builder(ctx).setTitle(R.string.help_heart_rate).setView(view).setPositiveButton(android.R.string.ok, null).create()

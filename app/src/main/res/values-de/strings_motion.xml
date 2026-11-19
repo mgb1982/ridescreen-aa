@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">Neigung kalibrieren</string>
+    <string name="motion_calib_sub_off">Nicht kalibriert: Neigung wird nicht aufgezeichnet</string>
+    <string name="motion_calib_sub_on">Kalibriert um %1$s</string>
+    <string name="motion_calib_msg">Setze das Handy in die Halterung, Motorrad aufrecht und stehend, und tippe auf Kalibrieren. Halte 2 Sekunden still. Neigung und G-Kräfte werden nur aufgezeichnet, wenn das Handy in der Halterung kalibriert ist; die Kalibrierung endet mit der Fahrt.</string>
+    <string name="motion_calib_go">Kalibrieren</string>
+    <string name="motion_calib_clear">Kalibrierung entfernen</string>
+    <string name="motion_calib_running">Messung… Motorrad ruhig halten</string>
+    <string name="motion_calib_ok">Kalibriert. Neigung und G-Kräfte werden in deiner Fahrt aufgezeichnet.</string>
+    <string name="motion_calib_moving">Das Motorrad bewegt sich. Halte an und versuche es erneut.</string>
+    <string name="motion_calib_notstill">Das Handy hat sich bewegt. Halte das Motorrad still und versuche es erneut.</string>
+    <string name="motion_calib_nosensor">Dieses Handy hat weder Gyroskop noch Beschleunigungssensor.</string>
+    <string name="tvl_lean">NEIGUNG</string>
+    <string name="tvl_pulse">PULS</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">Калибровка наклона</string>
+    <string name="motion_calib_sub_off">Не откалибровано: наклон не записывается</string>
+    <string name="motion_calib_sub_on">Откалибровано в %1$s</string>
+    <string name="motion_calib_msg">Установите телефон в держатель, мотоцикл вертикально и неподвижно, и нажмите «Калибровать». Не двигайтесь 2 секунды. Наклон и перегрузки записываются только если телефон откалиброван в держателе; калибровка заканчивается вместе с поездкой.</string>
+    <string name="motion_calib_go">Калибровать</string>
+    <string name="motion_calib_clear">Сбросить калибровку</string>
+    <string name="motion_calib_running">Измерение… не двигайте мотоцикл</string>
+    <string name="motion_calib_ok">Откалибровано. Наклон и перегрузки будут записаны в поездку.</string>
+    <string name="motion_calib_moving">Мотоцикл движется. Остановитесь и попробуйте снова.</string>
+    <string name="motion_calib_notstill">Телефон сдвинулся. Держите мотоцикл неподвижно и попробуйте снова.</string>
+    <string name="motion_calib_nosensor">В этом телефоне нет гироскопа или акселерометра.</string>
+    <string name="tvl_lean">НАКЛОН</string>
+    <string name="tvl_pulse">ПУЛЬС</string>
+</resources>

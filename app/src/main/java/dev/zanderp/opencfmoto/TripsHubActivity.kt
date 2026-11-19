@@ -25,6 +25,11 @@ class TripsHubActivity : HubActivity() {
         HubItem.PASSENGER -> HubRow(R.drawable.ic_line_people, 0xFFA98BE0.toInt(), clean(R.string.pax_entry))
         HubItem.DASHCAM -> HubRow(R.drawable.ic_line_camera, 0xFFD1A955.toInt(), clean(R.string.dashcam_entry))
         HubItem.HEART_RATE -> HubRow(R.drawable.ic_line_heart, 0xFFE05A5A.toInt(), clean(R.string.help_heart_rate))
+        HubItem.CALIBRATE_LEAN -> HubRow(
+            R.drawable.ic_line_gauge, 0xFF5B8DEF.toInt(), getString(R.string.motion_calib_title),
+            RideMotion.calibratedAt(this)?.let { getString(R.string.motion_calib_sub_on, MotionCalibUi.clock(it)) }
+                ?: getString(R.string.motion_calib_sub_off),
+        )
         else -> HubRow(R.drawable.ic_line_check, 0xFF5B8DEF.toInt(), item.name)
     }
 
@@ -60,6 +65,7 @@ class TripsHubActivity : HubActivity() {
                 } else DashcamImport.showForTrips(this) { stop?.invoke() }
             }
             HubItem.HEART_RATE -> HeartRateStore.show(this)
+            HubItem.CALIBRATE_LEAN -> MotionCalibUi.show(this) { render() }
             else -> Unit
         }
     }

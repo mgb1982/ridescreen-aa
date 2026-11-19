@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="motion_calib_title">Calibrar inclinación</string>
+    <string name="motion_calib_sub_off">Sin calibrar: no se graba la inclinación</string>
+    <string name="motion_calib_sub_on">Calibrado a las %1$s</string>
+    <string name="motion_calib_msg">Pon el móvil en el soporte, con la moto recta y parada, y pulsa Calibrar. Quédate quieto 2 segundos. La inclinación y las fuerzas G solo se graban si el móvil está calibrado en el soporte; la calibración termina con el viaje.</string>
+    <string name="motion_calib_go">Calibrar</string>
+    <string name="motion_calib_clear">Quitar calibración</string>
+    <string name="motion_calib_running">Midiendo… no muevas la moto</string>
+    <string name="motion_calib_ok">Calibrado. La inclinación y las fuerzas G se grabarán en el viaje.</string>
+    <string name="motion_calib_moving">La moto se mueve. Párate e inténtalo de nuevo.</string>
+    <string name="motion_calib_notstill">El móvil se ha movido. Mantén la moto quieta e inténtalo de nuevo.</string>
+    <string name="motion_calib_nosensor">Este móvil no tiene giroscopio ni acelerómetro.</string>
+    <string name="tvl_lean">INCLINACIÓN</string>
+    <string name="tvl_pulse">PULSO</string>
+</resources>
