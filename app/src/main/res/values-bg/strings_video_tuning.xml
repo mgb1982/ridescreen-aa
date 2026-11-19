@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · video tuning. Non-English: AI translation, no native review. -->
+<resources>
+    <string name="tune_title">Настройка на видеото (експериментално)</string>
+    <string name="tune_heat">Ограничи видеото, когато телефонът се загрява</string>
+    <string name="tune_heat_desc">Ограничава битрейта и кадрите в секунда според температурата на телефона, освен адаптивния контрол.</string>
+    <string name="tune_repeat">Държи картина на всеки 0,1 с при неподвижен екран</string>
+    <string name="tune_repeat_desc">Помага на таблата, които прекъсват видеото, когато нищо не се движи. Не се ползва в режим „Икономия на батерия“.</string>
+    <string name="tune_loss">Намалявай качеството само при претоварена връзка</string>
+    <string name="tune_loss_desc">Брои прекъснатата връзка отделно от бавната, за да не пада качеството на картината при загуба на Wi-Fi.</string>
+    <string name="tune_intra">Intra-refresh (лаборатория)</string>
+    <string name="tune_intra_desc">Непрекъснато опресняване вместо големи периодични ключови кадри, ако кодерът на телефона го поддържа.</string>
+</resources>

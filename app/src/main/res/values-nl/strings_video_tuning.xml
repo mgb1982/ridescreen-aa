@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · video tuning. Non-English: AI translation, no native review. -->
+<resources>
+    <string name="tune_title">Videoafstelling (experimenteel)</string>
+    <string name="tune_heat">Video beperken als de telefoon heet wordt</string>
+    <string name="tune_heat_desc">Begrenst bitrate en framerate op basis van de telefoontemperatuur, naast de adaptieve regeling.</string>
+    <string name="tune_repeat">Elke 0,1 s een beeld houden bij stilstaand scherm</string>
+    <string name="tune_repeat_desc">Helpt dashboards die de video afbreken als niets beweegt. Niet gebruikt in Batterijbesparing.</string>
+    <string name="tune_loss">Kwaliteit alleen verlagen bij een verzadigde verbinding</string>
+    <string name="tune_loss_desc">Telt een weggevallen verbinding apart van een trage, zodat verlies van wifi de beeldkwaliteit niet meer verlaagt.</string>
+    <string name="tune_intra">Intra-refresh (lab)</string>
+    <string name="tune_intra_desc">Doorlopende verversing in plaats van grote periodieke keyframes, als de encoder van de telefoon dat ondersteunt.</string>
+</resources>

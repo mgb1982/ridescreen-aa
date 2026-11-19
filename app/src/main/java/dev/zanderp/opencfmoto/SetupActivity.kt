@@ -157,6 +157,23 @@ class SetupActivity : AppCompatActivity() {
                 if (!on) BikeWatchService.stop(this@SetupActivity)
             }
         }
+        // v2.5 video tuning: each option has its own switch; they take effect on the next connect.
+        findViewById<com.google.android.material.materialswitch.MaterialSwitch>(R.id.switch_tune_heat).apply {
+            isChecked = AppSettings.heatCap(this@SetupActivity)
+            setOnCheckedChangeListener { _, on -> AppSettings.setHeatCap(this@SetupActivity, on) }
+        }
+        findViewById<com.google.android.material.materialswitch.MaterialSwitch>(R.id.switch_tune_repeat).apply {
+            isChecked = AppSettings.repeatFrame100(this@SetupActivity)
+            setOnCheckedChangeListener { _, on -> AppSettings.setRepeatFrame100(this@SetupActivity, on) }
+        }
+        findViewById<com.google.android.material.materialswitch.MaterialSwitch>(R.id.switch_tune_loss).apply {
+            isChecked = AppSettings.lossSplit(this@SetupActivity)
+            setOnCheckedChangeListener { _, on -> AppSettings.setLossSplit(this@SetupActivity, on) }
+        }
+        findViewById<com.google.android.material.materialswitch.MaterialSwitch>(R.id.switch_tune_intra).apply {
+            isChecked = AppSettings.intraRefresh(this@SetupActivity)
+            setOnCheckedChangeListener { _, on -> AppSettings.setIntraRefresh(this@SetupActivity, on) }
+        }
         findViewById<com.google.android.material.materialswitch.MaterialSwitch>(R.id.switch_lock_ends_trip).apply {
             isChecked = AppSettings.lockEndsTrip(this@SetupActivity)
             setOnCheckedChangeListener { _, on -> AppSettings.setLockEndsTrip(this@SetupActivity, on) }

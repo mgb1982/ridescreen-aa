@@ -51,6 +51,16 @@ object AppSettings {
     /** v2.2: after 20 min without the bike, keep waiting for its Wi-Fi in low-power mode. */
     /** v2.4: a confirmed PKE lock saves the parking spot and ends the ride (see [LockEndsTrip]). On by default. */
     fun lockEndsTrip(ctx: Context): Boolean = prefs(ctx).getBoolean("lock_ends_trip", true)
+
+    // v2.5 video tuning (Setup ▸ Video tuning). 1 and 2 on by default, 3 and 4 off.
+    fun heatCap(ctx: Context): Boolean = prefs(ctx).getBoolean("tune_heat_cap", true)
+    fun setHeatCap(ctx: Context, on: Boolean) = prefs(ctx).edit().putBoolean("tune_heat_cap", on).apply()
+    fun repeatFrame100(ctx: Context): Boolean = prefs(ctx).getBoolean("tune_repeat_100ms", true)
+    fun setRepeatFrame100(ctx: Context, on: Boolean) = prefs(ctx).edit().putBoolean("tune_repeat_100ms", on).apply()
+    fun lossSplit(ctx: Context): Boolean = prefs(ctx).getBoolean("tune_loss_split", false)
+    fun setLossSplit(ctx: Context, on: Boolean) = prefs(ctx).edit().putBoolean("tune_loss_split", on).apply()
+    fun intraRefresh(ctx: Context): Boolean = prefs(ctx).getBoolean("tune_intra_refresh", false)
+    fun setIntraRefresh(ctx: Context, on: Boolean) = prefs(ctx).edit().putBoolean("tune_intra_refresh", on).apply()
     fun setLockEndsTrip(ctx: Context, on: Boolean) = prefs(ctx).edit().putBoolean("lock_ends_trip", on).apply()
 
     fun waitForBike(ctx: Context): Boolean = prefs(ctx).getBoolean("wait_for_bike", true)

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · video tuning. Non-English: AI translation, no native review. -->
+<resources>
+    <string name="tune_title">Video ayarı (deneysel)</string>
+    <string name="tune_heat">Telefon ısınırsa videoyu sınırla</string>
+    <string name="tune_heat_desc">Uyarlanabilir denetime ek olarak telefonun sıcaklığına göre bit hızını ve kare hızını sınırlar.</string>
+    <string name="tune_repeat">Ekran sabitken her 0,1 sn\'de bir görüntü tut</string>
+    <string name="tune_repeat_desc">Hiçbir şey hareket etmeyince videoyu kesen göstergelere yardım eder. Pil tasarrufunda kullanılmaz.</string>
+    <string name="tune_loss">Kaliteyi yalnızca bağlantı doyduğunda düşür</string>
+    <string name="tune_loss_desc">Kopan bağlantıyı yavaş bağlantıdan ayrı sayar; Wi-Fi kaybı artık görüntü kalitesini düşürmez.</string>
+    <string name="tune_intra">Intra-refresh (laboratuvar)</string>
+    <string name="tune_intra_desc">Telefonun kodlayıcısı destekliyorsa, büyük periyodik anahtar kareler yerine sürekli yenileme.</string>
+</resources>

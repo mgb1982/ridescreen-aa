@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · video tuning. Non-English: AI translation, no native review. -->
+<resources>
+    <string name="tune_title">Ajuste del vídeo (experimental)</string>
+    <string name="tune_heat">Limitar el vídeo si el móvil se calienta</string>
+    <string name="tune_heat_desc">Limita bitrate y fotogramas por segundo según la temperatura del móvil, además del control adaptativo.</string>
+    <string name="tune_repeat">Mantener una imagen cada 0,1 s con la pantalla quieta</string>
+    <string name="tune_repeat_desc">Ayuda a los cuadros que cortan el vídeo cuando nada se mueve. No se usa en Ahorro de batería.</string>
+    <string name="tune_loss">Bajar la calidad solo con el enlace saturado</string>
+    <string name="tune_loss_desc">Cuenta el enlace caído aparte del enlace lento, para que perder la Wi-Fi ya no baje la calidad de la imagen.</string>
+    <string name="tune_intra">Intra-refresh (laboratorio)</string>
+    <string name="tune_intra_desc">Refresco continuo en vez de grandes fotogramas clave periódicos, si el codificador del móvil lo admite.</string>
+</resources>

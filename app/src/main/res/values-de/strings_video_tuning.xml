@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · video tuning. Non-English: AI translation, no native review. -->
+<resources>
+    <string name="tune_title">Videoabstimmung (experimentell)</string>
+    <string name="tune_heat">Video bei heißem Handy begrenzen</string>
+    <string name="tune_heat_desc">Begrenzt Bitrate und Bildrate nach der Handytemperatur, zusätzlich zur adaptiven Steuerung.</string>
+    <string name="tune_repeat">Bei stehendem Bild alle 0,1 s ein Bild halten</string>
+    <string name="tune_repeat_desc">Hilft Displays, die das Video abbrechen, wenn sich nichts bewegt. Nicht im Akkusparmodus.</string>
+    <string name="tune_loss">Qualität nur bei überlasteter Verbindung senken</string>
+    <string name="tune_loss_desc">Zählt eine unterbrochene Verbindung getrennt von einer langsamen, damit verlorenes WLAN die Bildqualität nicht mehr senkt.</string>
+    <string name="tune_intra">Intra-Refresh (Labor)</string>
+    <string name="tune_intra_desc">Fortlaufende Auffrischung statt großer periodischer Keyframes, wenn der Encoder des Handys es unterstützt.</string>
+</resources>

@@ -118,6 +118,12 @@ class VideoPipeline(
     // at ~1 fps, the adaptive controller is frozen. The next pull / bike attach resumes everything.
     @Volatile private var lastPullMs = 0L
     @Volatile private var linkPaused = false
+    /** v2.5 option 3 (Setup ▸ Video tuning): read when the encoder is created. */
+    @Volatile private var lossSplitOn = false
+    private val loss = LossCounters()
+    /** Android already told us the bike Wi-Fi is gone (AP only; Wi-Fi Direct / hotspot links report no Network). */
+    private fun linkKnownDown(): Boolean =
+        BikeWifi.isActive && BikeWifi.currentNetwork == null && !BikeWifiP2p.isConnected
     fun isLinkPaused(): Boolean = linkPaused
 
     private fun pauseForIdleLink(now: Long) {
@@ -219,6 +225,14 @@ class VideoPipeline(
             }
             // Ride MO: color 0x7F000789 (= COLOR_FormatSurface) + bitrate-mode=2 (CBR).
             val colorFmt = MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface
+            // v2.5 option 2: how often a still picture is repeated; option 4 (lab): intra-refresh, set below
+            // once the codec exists and can be asked whether it supports it.
+            val repeatUs = EncoderTuning.repeatAfterUs(
+                AppSettings.repeatFrame100(context),
+                VideoPrefs.power(context) == PowerMode.SAVER,
+                iframeSec,
+            )
+            var intraRefresh = false
             fun baseFormat() = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, w, h).apply {
                 setInteger(MediaFormat.KEY_COLOR_FORMAT, colorFmt)
                 setInteger(MediaFormat.KEY_BIT_RATE, bitrate)
@@ -240,7 +254,12 @@ class VideoPipeline(
                 // unchanging map, which was pure wasted heat/battery (see docs/06-OPTIMIZATION-IDEAS.md
                 // idea 5). At real frame rates the compositor delivers new buffers well before this
                 // fires, so it never caps motion.
-                setLong(MediaFormat.KEY_REPEAT_PREVIOUS_FRAME_AFTER, IDLE_ENCODER_REPEAT_US)
+                setLong(MediaFormat.KEY_REPEAT_PREVIOUS_FRAME_AFTER, repeatUs)
+                if (intraRefresh) {
+                    // Option 4: a rolling refresh instead of big periodic keyframes (steadier frame sizes on Wi-Fi).
+                    setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, EncoderTuning.INTRA_REFRESH_KEYFRAME_SEC)
+                    setInteger(MediaFormat.KEY_INTRA_REFRESH_PERIOD, profile.videoFrameRate)
+                }
                 // Force strictly-ascending output with no B-frame reordering: the bike wire format
                 // sends raw access units with NO timestamps, so a decoder that received reordered
                 // (B-)frames could never reassemble display order → black/garbage. Baseline already
@@ -249,6 +268,18 @@ class VideoPipeline(
                 setInteger(MediaFormat.KEY_LATENCY, 1)
             }
             val c = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_AVC)
+            if (AppSettings.intraRefresh(context)) {
+                val supported = try {
+                    c.codecInfo.getCapabilitiesForType(MediaFormat.MIMETYPE_VIDEO_AVC)
+                        .isFeatureSupported(MediaCodecInfo.CodecCapabilities.FEATURE_IntraRefresh)
+                } catch (_: Exception) { false }
+                intraRefresh = EncoderTuning.useIntraRefresh(true, supported)
+                log(if (intraRefresh) "[VIDEO] intra-refresh on (period=${profile.videoFrameRate} frames, keyframe every ${EncoderTuning.INTRA_REFRESH_KEYFRAME_SEC} s)"
+                    else "[VIDEO] intra-refresh requested but ${c.name} does not support it — encoder unchanged")
+            }
+            log("[VIDEO] tuning: repeat-frame ${repeatUs / 1000}ms heat=${if (AppSettings.heatCap(context)) "on" else "off"} " +
+                "loss-split=${if (AppSettings.lossSplit(context)) "on" else "off"} intra-refresh=${if (intraRefresh) "on" else "off"}")
+            lossSplitOn = AppSettings.lossSplit(context)
             val forceBaseline = BikeProfileHolder.active.forceBaseline
             try {
                 if (forceBaseline) {
@@ -630,10 +661,16 @@ class VideoPipeline(
                         // A2: while nobody pulls, output is discarded (not queued, not counted as drops).
                         val queued = !linkPaused && frameQueue.offerLast(out)
                         val nowMs = System.currentTimeMillis()
-                        if (!queued && !linkPaused && LinkIdle.isIdle(lastPullMs, nowMs)) {
-                            pauseForIdleLink(nowMs)
-                        } else if (!queued && !linkPaused) {
+                        val kind = if (queued) null else LossPolicy.classify(
+                            linkPaused, linkKnownDown(), if (lastPullMs > 0L) nowMs - lastPullMs else 0L, lossSplitOn,
+                        )
+                        if (kind == LossKind.LINK_DOWN) {
+                            loss.onLinkDown()
+                            // Nobody is pulling (or the Wi-Fi is gone): stop feeding the encoder, don't call it congestion.
+                            if (!linkPaused) pauseForIdleLink(nowMs)
+                        } else if (kind == LossKind.SATURATED) {
                             val lost = frameQueue.size + 1
+                            loss.onSaturated(lost.toLong())
                             frameQueue.clear()
                             droppedFrames += lost
                             if (isKey) {
@@ -675,7 +712,7 @@ class VideoPipeline(
     fun targetBitrate(): Int = baseBitrate
 
     /** Monotonic count of encoded frames dropped due to a full queue (downstream congestion signal). */
-    fun droppedFramesTotal(): Long = droppedFrames
+    fun droppedFramesTotal(): Long = loss.saturated
 
     /**
      * Live-adjust the running encoder's target bitrate (no codec re-create) via [MediaCodec.setParameters].
@@ -783,7 +820,12 @@ class VideoPipeline(
     fun pollFrame(timeoutMs: Long): ByteArray? {
         lastPullMs = System.currentTimeMillis()
         if (linkPaused) resumeAfterIdleLink("frame request")
-        return try { frameQueue.pollFirst(timeoutMs, TimeUnit.MILLISECONDS) } catch (e: InterruptedException) { null }
+        val f = try { frameQueue.pollFirst(timeoutMs, TimeUnit.MILLISECONDS) } catch (e: InterruptedException) { null }
+        if (f != null) {
+            val ms = loss.onServed(System.currentTimeMillis())
+            if (ms != null && lossSplitOn) log("[VIDEO] dash re-attached: picture back after $ms ms (keyframe first)")
+        }
+        return f
     }
 
     /**
@@ -799,7 +841,11 @@ class VideoPipeline(
      * (Mirror mode avoided this only by creating its encoder lazily right as the bike attaches.)
      */
     fun onBikeDataStart() {
-        lastPullMs = System.currentTimeMillis()
+        val now = System.currentTimeMillis()
+        // Option 3: a re-attach while the dash was actively pulling = it dropped its decoder (counted as "rejected").
+        val wasPulling = !linkPaused && lastPullMs > 0L && now - lastPullMs < LinkIdle.IDLE_MS
+        loss.onReattach(now, wasPulling)
+        lastPullMs = now
         if (linkPaused) resumeAfterIdleLink("bike attached")
         frameQueue.clear()
         awaitKeyframe = true
@@ -856,6 +902,7 @@ class VideoPipeline(
      */
     fun stop(abandonNavigation: Boolean = true) {
         running = false
+        loss.summaryOnce()?.let { log(it) }
         try { dumpOut?.flush(); dumpOut?.close() } catch (_: Exception) {}
         if (dumpOut != null) log("[DUMP] stopped: $dumpPath ($dumpFrames frames) — Share Log to send it")
         dumpOut = null
@@ -922,12 +969,8 @@ class VideoPipeline(
          * idle redraw is the primary keep-alive; this is the encoder-side backstop. See idea 5 in
          * docs/06-OPTIMIZATION-IDEAS.md.
          */
-        // 0.5 s → ≈2 fps floor on a static screen (was 0.9 s). A repeated picture is a skip P-frame of a few
-        // dozen bytes, so this costs next to nothing; MOTO-HUB measured a KOVE 800X dropping the video socket
-        // after ~8 s at ~1 fps. Kept below the slowest pull rate seen (350E, ~1.4/s → capped encoder) by the
-        // pull model: the dash asks for each frame, so a faster floor would only fill the 8-frame queue there.
-        // The real guarantee for a waiting dash is EasyConnProber's idle kick (kickIdleFrame).
-        const val IDLE_ENCODER_REPEAT_US = 500_000L
+        // Kept for reference only: the interval is now chosen per session by [EncoderTuning.repeatAfterUs].
+        const val IDLE_ENCODER_REPEAT_US = EncoderTuning.REPEAT_STILL_US
 
         /** Diagnostic build flag: dump the H.264 we send to the bike (bounded). Turn on to capture a
          *  .h264 of the exact wire stream for offline ffprobe analysis; off for normal use. */

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · video tuning. Non-English: AI translation, no native review. -->
+<resources>
+    <string name="tune_title">Ladění videa (experimentální)</string>
+    <string name="tune_heat">Omezit video, když se telefon zahřeje</string>
+    <string name="tune_heat_desc">Omezí datový tok a snímky za sekundu podle teploty telefonu, navíc k adaptivnímu řízení.</string>
+    <string name="tune_repeat">Držet obraz každých 0,1 s při stojící obrazovce</string>
+    <string name="tune_repeat_desc">Pomáhá přístrojovkám, které přeruší video, když se nic nehýbe. Nepoužívá se v Úspoře baterie.</string>
+    <string name="tune_loss">Snížit kvalitu jen při přetíženém spojení</string>
+    <string name="tune_loss_desc">Počítá přerušené spojení zvlášť od pomalého, aby ztráta Wi-Fi už nesnižovala kvalitu obrazu.</string>
+    <string name="tune_intra">Intra-refresh (laboratoř)</string>
+    <string name="tune_intra_desc">Průběžné obnovování místo velkých periodických klíčových snímků, pokud to kodér telefonu umí.</string>
+</resources>

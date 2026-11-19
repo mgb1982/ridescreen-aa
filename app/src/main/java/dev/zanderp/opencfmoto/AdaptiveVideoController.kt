@@ -91,6 +91,11 @@ class AdaptiveVideoController(
         context.applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
     }
 
+    /** v2.5 option 1: a heat ceiling on top of whatever the controller decides (every power mode). */
+    private val heat = HeatGuard(context, log)
+    /** fps cap currently applied for heat in a fixed power mode (-1 = never touched). */
+    private var heatFps = -1
+
     private var linkFactor = AdaptivePolicy.LINK_MAX
     private var lastDropTotal = 0L
     private var appliedBitrate = -1
@@ -108,6 +113,8 @@ class AdaptiveVideoController(
         appliedFps = -1
         adapting = false
         autoAdapted = false
+        heatFps = -1
+        heat.reset()
     }
 
     /**
@@ -128,12 +135,23 @@ class AdaptiveVideoController(
         val drops = (total - lastDropTotal).coerceAtLeast(0L).toInt()
         lastDropTotal = total
         linkFactor = AdaptivePolicy.nextLinkFactor(linkFactor, drops)
-        val bitrate = (base * linkFactor).toInt().coerceIn(AdaptivePolicy.MIN_BITRATE.coerceAtMost(base), base)
+        val linkBitrate = (base * linkFactor).toInt().coerceIn(AdaptivePolicy.MIN_BITRATE.coerceAtMost(base), base)
+        val bitrate = HeatPolicy.clampBitrate(linkBitrate, base, heat.cap)
         if (bitrate != appliedBitrate) {
             pipe.setEncoderBitrate(bitrate)
             appliedBitrate = bitrate
-            log("[adaptive-link] drops/tick=$drops link=${pct(linkFactor)} → ${bitrate / 1000}kbps (power ${VideoPrefs.power(context).label})")
+            log("[adaptive-link] drops/tick=$drops link=${pct(linkFactor)} → ${bitrate / 1000}kbps (power ${VideoPrefs.power(context).label})" +
+                if (bitrate < linkBitrate) " [heat cap]" else "")
         }
+    }
+
+    /** Fixed power modes: the heat fps ceiling (AUTO applies its own thermal fps cap, with the same clamp). */
+    private fun heatFpsFixed(pipe: VideoPipeline) {
+        val modeFps = VideoPrefs.power(context).fps
+        val want = HeatPolicy.clampFps(modeFps, heat.cap)
+        if (want == heatFps) return
+        if (want < modeFps || heatFps in 0 until modeFps) pipe.setFrameCap(want)   // cap on, or restore after a cap
+        heatFps = want
     }
 
     /** A2 · the encoder is paused because the dash stopped pulling: don't learn anything from it. */
@@ -141,6 +159,7 @@ class AdaptiveVideoController(
 
     fun onTick(pipeline: VideoPipeline?) {
         val pipe = pipeline ?: return
+        heat.tick()
         if (pipe.isLinkPaused()) {
             if (!frozen) { frozen = true; log("[adaptive] frozen — the dash isn't pulling") }
             return
@@ -155,6 +174,7 @@ class AdaptiveVideoController(
             // Rider switched to a fixed mode mid-session: hand the rate back once.
             if (adapting && autoAdapted) restoreFixed(pipe)
             linkOnly(pipe)
+            heatFpsFixed(pipe)
             return
         }
         autoAdapted = true
@@ -178,18 +198,22 @@ class AdaptiveVideoController(
             dropsThisTick = dropsThisTick,
         )
         linkFactor = d.linkFactor
+        // Heat ceiling on top of the decision (AUTO already sheds for heat with the same table; the clamp is the
+        // sampled value, so the two agree and the lower one wins).
+        val bitrate = HeatPolicy.clampBitrate(d.bitrate, base, heat.cap)
+        val fps = HeatPolicy.clampFps(d.fps, heat.cap)
 
-        if (d.bitrate != appliedBitrate) {
-            pipe.setEncoderBitrate(d.bitrate)
-            appliedBitrate = d.bitrate
+        if (bitrate != appliedBitrate) {
+            pipe.setEncoderBitrate(bitrate)
+            appliedBitrate = bitrate
             adapting = true
-            log("[adaptive] thermal=${thermalName(status)} drops/tick=$dropsThisTick link=${pct(linkFactor)} → ${d.bitrate / 1000}kbps")
+            log("[adaptive] thermal=${thermalName(status)} drops/tick=$dropsThisTick link=${pct(linkFactor)} → ${bitrate / 1000}kbps")
         }
-        if (d.fps != appliedFps) {
-            pipe.setFrameCap(d.fps)
-            appliedFps = d.fps
+        if (fps != appliedFps) {
+            pipe.setFrameCap(fps)
+            appliedFps = fps
             adapting = true
-            log("[adaptive] thermal=${thermalName(status)} → ${d.fps}fps")
+            log("[adaptive] thermal=${thermalName(status)} → ${fps}fps")
         }
     }
 

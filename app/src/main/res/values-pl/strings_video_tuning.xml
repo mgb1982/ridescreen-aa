@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · video tuning. Non-English: AI translation, no native review. -->
+<resources>
+    <string name="tune_title">Strojenie wideo (eksperymentalne)</string>
+    <string name="tune_heat">Ogranicz wideo, gdy telefon się grzeje</string>
+    <string name="tune_heat_desc">Ogranicza przepływność i liczbę klatek na sekundę według temperatury telefonu, oprócz sterowania adaptacyjnego.</string>
+    <string name="tune_repeat">Utrzymuj obraz co 0,1 s przy nieruchomym ekranie</string>
+    <string name="tune_repeat_desc">Pomaga zegarom, które przerywają wideo, gdy nic się nie rusza. Nieużywane w Oszczędzaniu baterii.</string>
+    <string name="tune_loss">Obniżaj jakość tylko przy przeciążonym łączu</string>
+    <string name="tune_loss_desc">Liczy zerwane łącze osobno od wolnego, żeby utrata Wi-Fi nie obniżała już jakości obrazu.</string>
+    <string name="tune_intra">Intra-refresh (laboratorium)</string>
+    <string name="tune_intra_desc">Ciągłe odświeżanie zamiast dużych okresowych klatek kluczowych, jeśli koder telefonu to obsługuje.</string>
+</resources>

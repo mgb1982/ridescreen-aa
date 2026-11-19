@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- v2.5 · video tuning. Non-English: AI translation, no native review. -->
+<resources>
+    <string name="tune_title">Video tuning (experimental)</string>
+    <string name="tune_heat">Limit video when the phone is hot</string>
+    <string name="tune_heat_desc">Caps bitrate and frame rate from the phone\'s temperature, on top of the adaptive control.</string>
+    <string name="tune_repeat">Keep a picture every 0.1 s on a still screen</string>
+    <string name="tune_repeat_desc">Helps docks that cut the video when nothing moves. Not used in Battery saver.</string>
+    <string name="tune_loss">Lower quality only when the link is saturated</string>
+    <string name="tune_loss_desc">Counts a dropped link apart from a slow one, so a lost Wi-Fi no longer lowers the picture quality.</string>
+    <string name="tune_intra">Intra-refresh (lab)</string>
+    <string name="tune_intra_desc">Rolling refresh instead of big periodic keyframes, if the phone\'s encoder supports it.</string>
+</resources>
