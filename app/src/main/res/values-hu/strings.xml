@@ -595,7 +595,7 @@
     <string name="setup_match_dash">Műszerfal igazítása</string>
     <string name="setup_follow_phone">Telefon követése</string>
     <string name="setup_bluetooth_clock">Műszerfali óra beállítása Bluetooth-on (kísérleti)</string>
-    <string name="setup_bluetooth_clock_desc">Egyes műszerfalak Bluetooth-on kérik az időt, nem Wi-Fi-n, és ennek hiányában 00:00-n állnak. Előbb párosítsd a motort az Android Bluetooth-beállításaiban. Alapból ki van kapcsolva: csak akkor válaszolunk, miután a műszerfal a saját protokollján megszólalt.</string>
+    <string name="setup_bluetooth_clock_desc">Egyes műszerfalak Bluetooth-on kérik az időt, nem Wi-Fi-n, és ennek hiányában 00:00-n állnak. Előbb párosítsd a motort az Android Bluetooth-beállításaiban. Alapból ki van kapcsolva. Válaszolunk, ha a műszerfal kérdez; a hallgató Zontes műszerfalnak (ZT…) ezen felül egyszer elküldjük az időt (kísérleti).</string>
     <string name="setup_clock_lab">Óralabor (KÍSÉRLETI)</string>
     <string name="setup_clock_lab_desc">Egy teszt-csomag minden órakísérlethez — Wi‑Fi lekérdezés/szinkron, Bluetooth-figyelés (ZT / EC-BTP), maradás a motor Wi‑Fi-én. Az alapértékek a Latest 2.0.13-at követik (üres 0x10451, visszhang 0x10600, BLE ki). Válassz egy kombinációt, csatlakozz egyszer, majd oszd meg a naplókat a Discord #clock-issue csatornán. Napi használatra ne hagyd bekapcsolva.</string>
     <string name="setup_clock_lab_bt">Bluetooth-figyelés</string>

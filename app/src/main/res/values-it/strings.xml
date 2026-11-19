@@ -381,7 +381,7 @@
     <string name="setup_auto_recovery_watchdog">Ripristino automatico</string>
     <string name="setup_if_the_dash_drops_or_projection_stalls_reconnect">Se il cruscotto si scollega o la proiezione si blocca, si ricollega da sola — senza Ferma/Collega.</string>
     <string name="setup_bluetooth_clock">Imposta l\'orologio del cruscotto via Bluetooth (sperimentale)</string>
-    <string name="setup_bluetooth_clock_desc">Alcuni cruscotti chiedono l\'ora via Bluetooth, non via Wi-Fi, e senza restano a 00:00. Abbina prima la moto nelle impostazioni Bluetooth di Android. Spento per impostazione predefinita — rispondiamo solo dopo che il cruscotto ha parlato con il suo protocollo.</string>
+    <string name="setup_bluetooth_clock_desc">Alcuni cruscotti chiedono l\'ora via Bluetooth, non via Wi-Fi, e senza restano a 00:00. Abbina prima la moto nelle impostazioni Bluetooth di Android. Spento per impostazione predefinita. Rispondiamo quando il cruscotto chiede; su un cruscotto Zontes (ZT…) che resta in silenzio inviamo anche l\'ora una volta (sperimentale).</string>
     <string name="setup_clock_lab">Laboratorio orologio (SPERIMENTALE)</string>
     <string name="setup_clock_lab_desc">Un pacchetto per tester per ogni esperimento sull\'orologio — query/sincronizzazione via Wi‑Fi, ascolto Bluetooth (ZT / EC-BTP), restare sul Wi‑Fi della moto. I valori predefiniti corrispondono alla Latest 2.0.13 (0x10451 vuoto, eco 0x10600, BLE spento). Scegli una combinazione, collega una volta, condividi i log. Non lasciare una combinazione attiva per l\'uso quotidiano.</string>
     <string name="setup_clock_lab_bt">Ascolto Bluetooth</string>

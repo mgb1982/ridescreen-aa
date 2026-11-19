@@ -381,7 +381,7 @@
     <string name="setup_auto_recovery_watchdog">ตรวจสอบและกู้คืนอัตโนมัติ</string>
     <string name="setup_if_the_dash_drops_or_projection_stalls_reconnect">หากหน้าปัดขาดการเชื่อมต่อหรือการฉายภาพค้าง ให้เชื่อมต่อใหม่โดยอัตโนมัติ ไม่ต้องกดหยุด/เริ่ม</string>
     <string name="setup_bluetooth_clock">ตั้งนาฬิกาหน้าปัดผ่าน Bluetooth (ทดลอง)</string>
-    <string name="setup_bluetooth_clock_desc">หน้าปัดบางรุ่นขอเวลาผ่าน Bluetooth ไม่ใช่ Wi‑Fi และจะแสดง 00:00 หากไม่ได้รับเวลา จับคู่รถในการตั้งค่า Bluetooth ของ Android ก่อน ปิดไว้เป็นค่าเริ่มต้น เราจะตอบกลับเฉพาะหลังหน้าปัดส่งข้อมูลตามโปรโตคอลของตัวเอง</string>
+    <string name="setup_bluetooth_clock_desc">หน้าปัดบางรุ่นขอเวลาผ่าน Bluetooth ไม่ใช่ Wi‑Fi และจะแสดง 00:00 หากไม่ได้รับเวลา จับคู่รถในการตั้งค่า Bluetooth ของ Android ก่อน ปิดไว้เป็นค่าเริ่มต้น เราตอบเมื่อหน้าปัดถาม และสำหรับหน้าปัด Zontes (ZT…) ที่เงียบ เราจะส่งเวลาให้หนึ่งครั้งด้วย (ทดลอง)</string>
     <string name="setup_clock_lab">ห้องทดลองนาฬิกา (ทดลอง)</string>
     <string name="setup_clock_lab_desc">ชุดทดสอบเดียวสำหรับการทดลองนาฬิกาทั้งหมด: คำขอ/ซิงค์ Wi‑Fi, รับฟัง Bluetooth (ZT / EC-BTP), คงการเชื่อมต่อ Wi‑Fi ของรถ ค่าเริ่มต้นตรงกับ Latest 2.0.13 (empty 0x10451, echo 0x10600, BLE ปิด) เลือกชุดค่า เชื่อมต่อหนึ่งครั้ง แล้วแชร์บันทึกใน Discord #clock-issue อย่าเปิดชุดค่าใดทิ้งไว้ระหว่างขับขี่ประจำวัน</string>
     <string name="setup_clock_lab_bt">รับฟัง Bluetooth</string>

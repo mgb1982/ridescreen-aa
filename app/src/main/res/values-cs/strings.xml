@@ -535,7 +535,7 @@
     <string name="setup_bt_audio_device">audio zařízení</string>
     <string name="setup_bt_not_connected">Bluetooth je zapnuté, ale zatím není připojeno k motocyklu. Spárujte ho, abyste mohli používat tlačítka na řídítkách.</string>
     <string name="setup_bluetooth_clock">Nastavit hodiny desky přes Bluetooth (experimentální)</string>
-    <string name="setup_bluetooth_clock_desc">Některé desky žádají o čas přes Bluetooth, ne přes Wi-Fi, a bez něj ukazují 00:00. Nejprve spárujte motocykl v nastavení Bluetooth Androidu. Ve výchozím stavu vypnuto – odpovídáme až poté, co deska mluví svým vlastním protokolem.</string>
+    <string name="setup_bluetooth_clock_desc">Některé desky žádají o čas přes Bluetooth, ne přes Wi-Fi, a bez něj ukazují 00:00. Nejprve spárujte motocykl v nastavení Bluetooth Androidu. Ve výchozím stavu vypnuto. Odpovídáme, když se deska ptá; u desky Zontes (ZT…), která mlčí, navíc jednou pošleme čas (experimentální).</string>
     <string name="setup_clock_lab">Laboratoř hodin (EXPERIMENTÁLNÍ)</string>
     <string name="setup_clock_lab_desc">Testerský balíček pro všechny pokusy s hodinami – dotaz a synchronizace přes Wi‑Fi, poslech Bluetooth (ZT / EC-BTP), zůstat na Wi‑Fi motocyklu. Výchozí hodnoty odpovídají verzi Latest 2.0.13 (prázdné 0x10451, echo 0x10600, BLE vypnuto). Vyberte kombinaci, připojte se jednou a sdílejte záznamy v Discordu #clock-issue. Nenechávejte kombinaci zapnutou pro běžnou jízdu.</string>
     <string name="setup_clock_lab_bt">Poslech Bluetooth</string>

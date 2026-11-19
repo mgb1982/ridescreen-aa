@@ -536,7 +536,7 @@
     <string name="setup_bt_audio_device">un dispozitiv audio</string>
     <string name="setup_bt_not_connected">Bluetooth pornit, dar încă nu e conectat la moto. Asociază-l ca să folosești butoanele de ghidon.</string>
     <string name="setup_bluetooth_clock">Setează ceasul bordului prin Bluetooth (experimental)</string>
-    <string name="setup_bluetooth_clock_desc">Unele borduri cer ora prin Bluetooth, nu prin Wi‑Fi, și rămân la 00:00 fără ea. Asociază mai întâi moto în setările Bluetooth Android. Dezactivat implicit — răspundem doar după ce bordul vorbește propriul protocol.</string>
+    <string name="setup_bluetooth_clock_desc">Unele borduri cer ora prin Bluetooth, nu prin Wi‑Fi, și rămân la 00:00 fără ea. Asociază mai întâi moto în setările Bluetooth Android. Dezactivat implicit. Răspundem când bordul întreabă; la un bord Zontes (ZT…) care tace trimitem și ora o dată (experimental).</string>
     <string name="setup_clock_lab">Laborator ceas (EXPERIMENTAL)</string>
     <string name="setup_clock_lab_desc">Un singur pachet de testare pentru toate experimentele de ceas — interogare/sincronizare Wi‑Fi, ascultare Bluetooth (ZT / EC-BTP), rămâi pe Wi‑Fi-ul moto. Valorile implicite corespund Latest 2.0.13 (0x10451 gol, echo 0x10600, BLE oprit). Alege o combinație, conectează-te o dată, partajează jurnalele pe Discord #clock-issue. Nu lăsa o combinație pornită pentru mersul zilnic.</string>
     <string name="setup_clock_lab_bt">Ascultare Bluetooth</string>

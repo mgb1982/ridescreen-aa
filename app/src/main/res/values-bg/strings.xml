@@ -363,7 +363,7 @@
     <string name="setup_auto_recovery_watchdog">Куче-пазач за автоматично възстановяване</string>
     <string name="setup_if_the_dash_drops_or_projection_stalls_reconnect">Ако таблото прекъсне или прожектирането забие, свързва се отново автоматично — без ръчно Спиране/Стартиране.</string>
     <string name="setup_bluetooth_clock">Сверяване на часовника през Bluetooth (експериментално)</string>
-    <string name="setup_bluetooth_clock_desc">Някои табла изискват времето през Bluetooth, а не през Wi-Fi, и стоят на 00:00 без него. Първо сдвоете мотора в Bluetooth настройките на Android. Изключено по подразбиране.</string>
+    <string name="setup_bluetooth_clock_desc">Някои табла изискват времето през Bluetooth, а не през Wi-Fi, и стоят на 00:00 без него. Първо сдвоете мотора в Bluetooth настройките на Android. Изключено по подразбиране. Отговаряме, когато таблото пита; при табло Zontes (ZT…), което мълчи, изпращаме и часа веднъж (експериментално).</string>
     <string name="setup_keep_wifi">Остани свързан с Wi-Fi на мотора след прекъсване</string>
     <string name="setup_keep_wifi_desc">Някои табла забравят часовника, когато SoftAP / Wi-Fi Direct прекъсне. Задържа телефона свързан, докато не напуснете приложението или не изключите Wi-Fi. Изключено по подразбиране.</string>
     <string name="qr_from_photo">Вмъкни QR от снимка</string>

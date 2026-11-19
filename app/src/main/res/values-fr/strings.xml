@@ -532,7 +532,7 @@
     <string name="setup_bt_audio_device">un appareil audio</string>
     <string name="setup_bt_not_connected">Bluetooth est activé, mais la moto n’est pas encore connectée. Associe-la pour utiliser les commandes au guidon.</string>
     <string name="setup_bluetooth_clock">Régler l’horloge de l’écran de la moto par Bluetooth (expérimental)</string>
-    <string name="setup_bluetooth_clock_desc">Certains écrans demandent l’heure par Bluetooth plutôt que par Wi-Fi et restent à 00:00 sans cela. Associe d’abord la moto dans les paramètres Bluetooth d’Android. Désactivé par défaut : nous répondons uniquement après que l’écran a envoyé son propre protocole.</string>
+    <string name="setup_bluetooth_clock_desc">Certains écrans demandent l’heure par Bluetooth plutôt que par Wi-Fi et restent à 00:00 sans cela. Associe d’abord la moto dans les paramètres Bluetooth d’Android. Désactivé par défaut. Nous répondons quand l’écran demande ; sur un écran Zontes (ZT…) resté silencieux, nous envoyons aussi l’heure une fois (expérimental).</string>
     <string name="setup_clock_lab">Laboratoire d’horloge (EXPÉRIMENTAL)</string>
     <string name="setup_clock_lab_desc">Un ensemble de tests pour toutes les expériences d’horloge : requête/synchronisation Wi‑Fi, écoute Bluetooth (ZT / EC-BTP), maintien du Wi‑Fi de la moto. Les valeurs par défaut correspondent à Latest 2.0.13 (0x10451 vide, écho 0x10600, BLE désactivé). Choisis une combinaison, connecte-toi une fois, puis partage les journaux sur Discord #clock-issue. Ne laisse pas une combinaison active au quotidien.</string>
     <string name="setup_clock_lab_bt">Écoute Bluetooth</string>

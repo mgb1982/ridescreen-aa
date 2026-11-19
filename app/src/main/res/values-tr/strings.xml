@@ -554,7 +554,7 @@
     <string name="setup_bt_audio_device">bir ses cihazı</string>
     <string name="setup_bt_not_connected">Bluetooth açık ama motora henüz bağlı değil. Gidon tuşlarını kullanmak için eşleştir.</string>
     <string name="setup_bluetooth_clock">Ekran saatini Bluetooth üzerinden ayarla (deneysel)</string>
-    <string name="setup_bluetooth_clock_desc">Bazı ekranlar saati Wi-Fi yerine Bluetooth üzerinden ister ve bu olmadan 00:00\'da kalır. Önce motoru Android Bluetooth ayarlarında eşleştir. Varsayılan olarak kapalı — yalnızca ekran kendi protokolüyle konuştuktan sonra yanıt veririz.</string>
+    <string name="setup_bluetooth_clock_desc">Bazı ekranlar saati Wi-Fi yerine Bluetooth üzerinden ister ve bu olmadan 00:00\'da kalır. Önce motoru Android Bluetooth ayarlarında eşleştir. Varsayılan olarak kapalı. Ekran sorduğunda yanıt veririz; sessiz kalan bir Zontes ekranına (ZT…) ayrıca saati bir kez göndeririz (deneysel).</string>
     <string name="setup_clock_lab">Saat laboratuvarı (DENEYSEL)</string>
     <string name="setup_clock_lab_desc">Tüm saat denemeleri için tek test paketi — Wi‑Fi sorgu/senkron, Bluetooth dinleme (ZT / EC-BTP), motor Wi‑Fi\'sinde kalma. Varsayılanlar Latest 2.0.13 ile aynı (boş 0x10451, yankı 0x10600, BLE kapalı). Bir kombinasyon seç, bir kez Bağlan, sonra Discord #clock-issue kanalında Günlükleri Paylaş. Bir kombinasyonu günlük sürüşte açık bırakma.</string>
     <string name="setup_clock_lab_bt">Bluetooth dinleme</string>

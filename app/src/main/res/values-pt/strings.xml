@@ -533,7 +533,7 @@
     <string name="setup_bt_audio_device">um dispositivo de áudio</string>
     <string name="setup_bt_not_connected">O Bluetooth está ligado, mas ainda não está ligado à mota. Emparelha-a para usar os botões do guiador.</string>
     <string name="setup_bluetooth_clock">Acertar o relógio do painel por Bluetooth (experimental)</string>
-    <string name="setup_bluetooth_clock_desc">Alguns painéis pedem a hora por Bluetooth, em vez de Wi-Fi, e ficam em 00:00 sem essa ligação. Emparelha primeiro a mota nas definições Bluetooth do Android. A função está desativada por predefinição; só respondemos depois de o painel enviar o seu próprio protocolo.</string>
+    <string name="setup_bluetooth_clock_desc">Alguns painéis pedem a hora por Bluetooth, em vez de Wi-Fi, e ficam em 00:00 sem essa ligação. Emparelha primeiro a mota nas definições Bluetooth do Android. Desativado por predefinição. Respondemos quando o painel pergunta; num painel Zontes (ZT…) que fica calado, enviamos também a hora uma vez (experimental).</string>
     <string name="setup_clock_lab">Laboratório do relógio (EXPERIMENTAL)</string>
     <string name="setup_clock_lab_desc">Um conjunto de testes para todas as experiências do relógio: consulta/sincronização por Wi-Fi, escuta Bluetooth (ZT / EC-BTP) e manutenção do Wi-Fi da mota. As predefinições correspondem à versão mais recente 2.0.13 (resposta vazia 0x10451, eco 0x10600, BLE desligado). Escolhe uma combinação, liga-te uma vez e partilha os registos no Discord #clock-issue. Não deixes uma combinação ativa para as viagens do dia a dia.</string>
     <string name="setup_clock_lab_bt">Escuta Bluetooth</string>

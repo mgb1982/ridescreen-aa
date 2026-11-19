@@ -360,7 +360,7 @@
     <string name="setup_auto_recovery_watchdog">Vigilante de recuperación automática</string>
     <string name="setup_if_the_dash_drops_or_projection_stalls_reconnect">Si el tablero se cae o la proyección se atasca, se reconecta solo, sin parar y arrancar.</string>
     <string name="setup_bluetooth_clock">Poner el reloj del tablero por Bluetooth (experimental)</string>
-    <string name="setup_bluetooth_clock_desc">Algunos tableros piden la hora por Bluetooth, no por Wi-Fi, y se quedan en 00:00 sin ella. Empareja antes la moto en los ajustes de Bluetooth de Android. Desactivado por defecto: solo respondemos cuando el tablero habla su propio protocolo.</string>
+    <string name="setup_bluetooth_clock_desc">Algunos tableros piden la hora por Bluetooth, no por Wi-Fi, y se quedan en 00:00 sin ella. Empareja antes la moto en los ajustes de Bluetooth de Android. Desactivado por defecto. Respondemos cuando el tablero pregunta; en un tablero Zontes (ZT…) que se queda callado, además enviamos la hora una vez (experimental).</string>
     <string name="setup_keep_wifi">Seguir en el Wi-Fi de la moto tras desconectar</string>
     <string name="setup_keep_wifi_desc">Algunos tableros olvidan el reloj cuando se cae el SoftAP / Wi-Fi Direct. Mantiene el teléfono asociado hasta que salgas de la aplicación o apagues el Wi-Fi. Desactivado por defecto.</string>
     <string name="qr_from_photo">Importar QR desde una foto</string>

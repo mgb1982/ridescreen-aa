@@ -277,7 +277,7 @@
     <string name="setup_if_the_dash_drops_or_projection_stalls_reconnect">Jeśli ekran motocykla się rozłączy lub projekcja się zatrzyma, podłącz ponownie automatycznie — nie trzeba robić rozłącz/połącz ponownie.</string>
 
     <string name="setup_bluetooth_clock">Ustaw zegar ekranu poprzez Bluetooth (eksperymentalne)</string>
-    <string name="setup_bluetooth_clock_desc">Niektóre ekrany proszą o podanie czasu przez Bluetooth zamaist Wi-Fi, i ustawiają 00:00 gdy operacja się nie powiedzie. Najpier sparuj motocykl w ustawieniach Bluetooth w Androidzie. \'Wyłączony\' domyślnie — apka poda czas tylko gdy ekran wyśle żądanie swoim protokołem.</string>
+    <string name="setup_bluetooth_clock_desc">Niektóre ekrany proszą o podanie czasu przez Bluetooth zamiast Wi-Fi i bez tego pokazują 00:00. Najpierw sparuj motocykl w ustawieniach Bluetooth w Androidzie. Domyślnie wyłączone. Odpowiadamy, gdy ekran pyta; na ekranie Zontes (ZT…), który milczy, wysyłamy też czas jeden raz (eksperymentalne).</string>
     <string name="setup_clock_lab">Zegar (EKSPERYMENTALNE)</string>
     <string name="setup_clock_lab_desc">One tester pack for every clock experiment — Wi‑Fi query/sync, Bluetooth listen (ZT / EC-BTP), stay-on-bike-Wi‑Fi. Defaults match Latest 2.0.13 (empty 0x10451, echo 0x10600, BLE off). Pick a combo, Connect once, Share Logs in Discord #clock-issue. Do not leave a combo on for daily riding.</string>
     <string name="setup_clock_lab_bt">Nasłuch Bluetooth</string>

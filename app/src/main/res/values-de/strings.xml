@@ -532,7 +532,7 @@
     <string name="setup_bt_audio_device">ein Audiogerät</string>
     <string name="setup_bt_not_connected">Bluetooth ist eingeschaltet, aber noch nicht mit dem Motorrad verbunden. Kopple es, um die Lenkerknöpfe zu verwenden.</string>
     <string name="setup_bluetooth_clock">Uhr des Motorraddisplays über Bluetooth einstellen (experimentell)</string>
-    <string name="setup_bluetooth_clock_desc">Manche Displays fragen die Uhrzeit über Bluetooth statt über WLAN ab und bleiben ohne diese Antwort bei 00:00. Kopple das Motorrad zuerst in den Android-Bluetooth-Einstellungen. Standardmäßig aus: Wir antworten nur, nachdem das Display sein eigenes Protokoll verwendet hat.</string>
+    <string name="setup_bluetooth_clock_desc">Manche Displays fragen die Uhrzeit über Bluetooth statt über WLAN ab und bleiben ohne diese Antwort bei 00:00. Kopple das Motorrad zuerst in den Android-Bluetooth-Einstellungen. Standardmäßig aus. Wir antworten, wenn das Display fragt; bei einem Zontes-Display (ZT…), das stumm bleibt, senden wir die Uhrzeit zusätzlich einmal (experimentell).</string>
     <string name="setup_clock_lab">Uhrenlabor (EXPERIMENTELL)</string>
     <string name="setup_clock_lab_desc">Ein Testpaket für alle Uhrenexperimente: WLAN-Abfrage/Synchronisierung, Bluetooth-Mithören (ZT / EC-BTP), WLAN-Verbindung zum Motorrad beibehalten. Standardwerte wie bei Latest 2.0.13 (leeres 0x10451, Echo 0x10600, BLE aus). Wähle eine Kombination, tippe einmal auf Verbinden und teile die Protokolle in Discord #clock-issue. Lass eine Kombination nicht für den täglichen Gebrauch aktiviert.</string>
     <string name="setup_clock_lab_bt">Bluetooth-Mithören</string>

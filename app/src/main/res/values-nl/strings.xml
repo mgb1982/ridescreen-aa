@@ -536,7 +536,7 @@
     <string name="setup_bt_audio_device">een audioapparaat</string>
     <string name="setup_bt_not_connected">Bluetooth aan, maar nog niet verbonden met de motor. Koppel hem om de stuurknoppen te gebruiken.</string>
     <string name="setup_bluetooth_clock">Dashboardklok instellen via Bluetooth (experimenteel)</string>
-    <string name="setup_bluetooth_clock_desc">Sommige dashboards vragen de tijd via Bluetooth in plaats van Wi-Fi en blijven zonder die tijd op 00:00 staan. Koppel de motor eerst in de Bluetooth-instellingen van Android. Standaard uit — we antwoorden pas nadat het dashboard zijn eigen protocol spreekt.</string>
+    <string name="setup_bluetooth_clock_desc">Sommige dashboards vragen de tijd via Bluetooth in plaats van Wi-Fi en blijven zonder die tijd op 00:00 staan. Koppel de motor eerst in de Bluetooth-instellingen van Android. Standaard uit. We antwoorden als het dashboard vraagt; bij een Zontes-dashboard (ZT…) dat stil blijft sturen we de tijd ook één keer (experimenteel).</string>
     <string name="setup_clock_lab">Klokkenlab (EXPERIMENTEEL)</string>
     <string name="setup_clock_lab_desc">Eén testerpakket voor elk klokexperiment — Wi‑Fi-query/sync, Bluetooth-luisteren (ZT / EC-BTP), op de Wi‑Fi van de motor blijven. Standaardwaarden komen overeen met Latest 2.0.13 (leeg 0x10451, echo 0x10600, BLE uit). Kies een combinatie, verbind één keer, deel logs in Discord #clock-issue. Laat geen combinatie aan voor dagelijks rijden.</string>
     <string name="setup_clock_lab_bt">Bluetooth-luisteren</string>

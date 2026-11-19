@@ -381,7 +381,7 @@
     <string name="setup_auto_recovery_watchdog">Auto-recovery watchdog</string>
     <string name="setup_if_the_dash_drops_or_projection_stalls_reconnect">If the dash drops or projection stalls, reconnect automatically — no Stop/Start.</string>
     <string name="setup_bluetooth_clock">Set dash clock over Bluetooth (experimental)</string>
-    <string name="setup_bluetooth_clock_desc">Some dashes ask for the time over Bluetooth, not Wi-Fi, and sit at 00:00 without it. Pair the bike in Android Bluetooth settings first. Off by default — we only reply after the dash speaks its own protocol.</string>
+    <string name="setup_bluetooth_clock_desc">Some dashes ask for the time over Bluetooth, not Wi-Fi, and sit at 00:00 without it. Pair the bike in Android Bluetooth settings first. Off by default. We reply when the dash asks; on a Zontes dash (ZT…) that stays silent we also send the time once (experimental).</string>
     <string name="setup_clock_lab">Clock lab (EXPERIMENTAL)</string>
     <string name="setup_clock_lab_desc">One tester pack for every clock experiment — Wi‑Fi query/sync, Bluetooth listen (ZT / EC-BTP), stay-on-bike-Wi‑Fi. Defaults match Latest 2.0.13 (empty 0x10451, echo 0x10600, BLE off). Pick a combo, Connect once, Share Logs in Discord #clock-issue. Do not leave a combo on for daily riding.</string>
     <string name="setup_clock_lab_bt">Bluetooth listen</string>
