@@ -1011,6 +1011,7 @@ class EasyConnProber(
      * AaInput's 0=DOWN/1=UP/2=MOVE.
      */
     private fun handleTouch(tag: String, body: ByteArray) {
+        PxcHandshake.noteTouch { log(it) }
         if (body.size < 8) { log("[$tag] touch frame too short (${body.size}b)"); return }
         val b = ByteBuffer.wrap(body).order(ByteOrder.LITTLE_ENDIAN)
         val rawAction = b.getShort(0).toInt() and 0xFFFF
