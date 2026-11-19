@@ -30,11 +30,6 @@ object WearUpdater {
 
     private val main = Handler(Looper.getMainLooper())
 
-    /** The release API URL: the latest stable one, or the pre-release [tag] this build was published as. */
-    internal fun releaseUrl(repo: String, tag: String?): String =
-        if (tag.isNullOrBlank()) "https://api.github.com/repos/$repo/releases/latest"
-        else "https://api.github.com/repos/$repo/releases/tags/" + android.net.Uri.encode(tag)
-
     /** "Update the watch app" chooser: this build's own watch app (test builds), the latest release, or an APK on the phone. */
     fun showDialog(activity: Activity, pickFile: () -> Unit) {
         val tag = BuildConfig.BUILD_TAG
@@ -96,7 +91,7 @@ object WearUpdater {
 
     /** Blocking: find the Wear OS asset of the latest release. */
     private fun latestWearApkUrl(tag: String?): String? = try {
-        val conn = (URL(releaseUrl(UpdateChecker.REPO, tag)).openConnection() as HttpURLConnection).apply {
+        val conn = (URL(WearReleaseUrl.of(UpdateChecker.REPO, tag)).openConnection() as HttpURLConnection).apply {
             connectTimeout = 8000; readTimeout = 8000
             setRequestProperty("Accept", "application/vnd.github+json")
             setRequestProperty("User-Agent", "RideScreenAA")
@@ -225,4 +220,11 @@ object WearUpdater {
     private fun fail(ctx: Context, res: Int) = toast(ctx, ctx.getString(res))
 
     private fun toast(ctx: Context, text: String) = main.post { Toast.makeText(ctx, text, Toast.LENGTH_LONG).show() }
+}
+
+/** The release API URL: the latest stable one, or the pre-release [tag] this build was published as (pure, unit tested). */
+internal object WearReleaseUrl {
+    fun of(repo: String, tag: String?): String =
+        if (tag.isNullOrBlank()) "https://api.github.com/repos/$repo/releases/latest"
+        else "https://api.github.com/repos/$repo/releases/tags/" + java.net.URLEncoder.encode(tag, "UTF-8")
 }
