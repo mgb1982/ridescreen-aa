@@ -592,6 +592,10 @@
     <string name="notif_bike_reconnected">Moto reconectada</string>
     <string name="notif_tap_resume">Toqueu per reprendre la projecció al quadre</string>
     <string name="notif_tap_for_trip">Toca per gravar el viatge: Android ha bloquejat el GPS en segon pla</string>
+    <string name="bgloc_title">Gravar viatges amb el mòbil a la butxaca</string>
+    <string name="bgloc_body">Quan l\'app s\'inicia sola per Bluetooth, Android només li dona GPS complet si la ubicació està permesa \"sempre\". Tria \"Permet sempre\" a la pantalla següent. La ubicació només s\'usa mentre es grava un viatge.</string>
+    <string name="bgloc_allow">Continua</string>
+    <string name="bgloc_later">Ara no</string>
     <string name="notif_map_title">Mapa d\'RideScreen AA</string>
     <string name="notif_map_text">Mapa al quadre: els manillars utilitzen el mapatge de botons</string>
     <string name="notif_mirror_channel">Duplicació de pantalla</string>

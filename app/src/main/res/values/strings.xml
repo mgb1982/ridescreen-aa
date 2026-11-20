@@ -592,6 +592,10 @@
     <string name="notif_bike_reconnected">Bike reconnected</string>
     <string name="notif_tap_resume">Tap to resume projection to the dash</string>
     <string name="notif_tap_for_trip">Tap to record this trip — Android blocked GPS in the background</string>
+    <string name="bgloc_title">Record trips with the phone in your pocket</string>
+    <string name="bgloc_body">When the app starts by itself over Bluetooth, Android only gives it full GPS if location is allowed \"all the time\". Choose \"Allow all the time\" on the next screen. Location is only used while a ride is being recorded.</string>
+    <string name="bgloc_allow">Continue</string>
+    <string name="bgloc_later">Not now</string>
     <string name="notif_map_title">RideScreen AA Map</string>
     <string name="notif_map_text">Map on the dash — handlebars use your button mapping</string>
     <string name="notif_mirror_channel">Screen mirroring</string>

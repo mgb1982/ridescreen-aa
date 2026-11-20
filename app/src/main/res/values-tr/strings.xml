@@ -405,6 +405,10 @@
     <string name="notif_bike_reconnected">Motor yeniden bağlandı</string>
     <string name="notif_tap_resume">Ekrana yansıtmayı sürdürmek için dokun</string>
     <string name="notif_tap_for_trip">Yolculuğu kaydetmek için dokun — Android arka planda GPS\'i engelledi</string>
+    <string name="bgloc_title">Telefon cebindeyken yolculukları kaydet</string>
+    <string name="bgloc_body">Uygulama Bluetooth ile kendiliğinden başladığında Android tam GPS\'i yalnızca konuma \"her zaman\" izin verildiyse verir. Sonraki ekranda \"Her zaman izin ver\"i seç. Konum yalnızca yolculuk kaydedilirken kullanılır.</string>
+    <string name="bgloc_allow">Devam</string>
+    <string name="bgloc_later">Şimdi değil</string>
     <string name="notif_map_title">RideScreen AA Haritası</string>
     <string name="notif_map_text">Harita ekranda — gidon, senin tuş atamalarını kullanır</string>
     <string name="notif_mirror_channel">Ekran yansıtma</string>

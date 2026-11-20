@@ -379,6 +379,10 @@
     <string name="notif_bike_reconnected">Motocykl byl znovu připojen</string>
     <string name="notif_tap_resume">Klepnutím obnovíte promítání na obrazovku</string>
     <string name="notif_tap_for_trip">Klepnutím zaznamenáte jízdu — Android zablokoval GPS na pozadí</string>
+    <string name="bgloc_title">Nahrávej jízdy s telefonem v kapse</string>
+    <string name="bgloc_body">Když se aplikace spustí sama přes Bluetooth, Android jí dá plné GPS jen s polohou povolenou \"vždy\". Na další obrazovce zvol \"Povolit vždy\". Poloha se používá jen při nahrávání jízdy.</string>
+    <string name="bgloc_allow">Pokračovat</string>
+    <string name="bgloc_later">Teď ne</string>
     <string name="notif_map_title">Mapa RideScreen AA</string>
     <string name="notif_map_text">Mapa na přístrojové desce – řídítka používají vaše mapování tlačítek</string>
     <string name="notif_mirror_channel">Zrcadlení obrazovky</string>

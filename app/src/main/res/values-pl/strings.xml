@@ -411,6 +411,10 @@
     <string name="notif_bike_reconnected">Motocykl ponownie podłączony</string>
     <string name="notif_tap_resume">Stuknij, aby wznowić projekcję na ekranie motocykla</string>
     <string name="notif_tap_for_trip">Stuknij, aby zapisać trasę — Android zablokował GPS w tle</string>
+    <string name="bgloc_title">Nagrywaj trasy z telefonem w kieszeni</string>
+    <string name="bgloc_body">Gdy aplikacja uruchamia się sama przez Bluetooth, Android daje pełny GPS tylko przy lokalizacji dozwolonej \"zawsze\". Wybierz \"Zezwalaj zawsze\" na następnym ekranie. Lokalizacja jest używana tylko podczas nagrywania trasy.</string>
+    <string name="bgloc_allow">Dalej</string>
+    <string name="bgloc_later">Nie teraz</string>
     <string name="notif_map_title">Mapa RideScreen AA</string>
     <string name="notif_map_text">Mapa na ekranie motocykla — kierownica korzysta z mapowania przycisków</string>
     <string name="notif_mirror_channel">Odbicie lustrzane ekranu</string>

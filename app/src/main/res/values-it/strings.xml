@@ -586,6 +586,10 @@
     <string name="notif_bike_reconnected">Moto ricollegata</string>
     <string name="notif_tap_resume">Tocca per riprendere la proiezione sul cruscotto</string>
     <string name="notif_tap_for_trip">Tocca per registrare il viaggio: Android ha bloccato il GPS in background</string>
+    <string name="bgloc_title">Registra i viaggi con il telefono in tasca</string>
+    <string name="bgloc_body">Quando l\'app si avvia da sola via Bluetooth, Android le dà il GPS completo solo se la posizione è consentita \"sempre\". Scegli \"Consenti sempre\" nella schermata successiva. La posizione si usa solo mentre si registra un viaggio.</string>
+    <string name="bgloc_allow">Continua</string>
+    <string name="bgloc_later">Non ora</string>
     <string name="notif_map_title">Mappa di RideScreen AA</string>
     <string name="notif_map_text">Mappa sul cruscotto — il manubrio usa la tua mappatura dei pulsanti</string>
     <string name="notif_mirror_channel">Trasmissione dello schermo</string>

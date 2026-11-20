@@ -519,6 +519,10 @@
     <string name="notif_bike_reconnected">Motor újracsatlakozott</string>
     <string name="notif_tap_resume">Koppints a tükrözés folytatásához a műszerfalra</string>
     <string name="notif_tap_for_trip">Koppints az út rögzítéséhez – az Android a háttérben letiltotta a GPS-t</string>
+    <string name="bgloc_title">Utak rögzítése zsebben lévő telefonnal</string>
+    <string name="bgloc_body">Ha az app Bluetooth-on magától indul, az Android csak \"mindig\" engedélyezett helyhozzáféréssel ad teljes GPS-t. A következő képernyőn válaszd a \"Mindig engedélyezés\" lehetőséget. A helyet csak útrögzítés közben használjuk.</string>
+    <string name="bgloc_allow">Tovább</string>
+    <string name="bgloc_later">Most nem</string>
     <string name="notif_map_title">RideScreen AA Térkép</string>
     <string name="notif_map_text">Térkép a műszerfalon — a kormány a gomb-hozzárendelésedet használja</string>
     <string name="notif_mirror_channel">Képernyő tükrözés</string>

@@ -592,6 +592,10 @@
     <string name="notif_bike_reconnected">Η μοτοσικλέτα επανασυνδέθηκε</string>
     <string name="notif_tap_resume">Πάτησε για να συνεχιστεί η προβολή στο ταμπλό</string>
     <string name="notif_tap_for_trip">Πάτησε για καταγραφή της διαδρομής — το Android μπλόκαρε το GPS στο παρασκήνιο</string>
+    <string name="bgloc_title">Καταγραφή διαδρομών με το κινητό στην τσέπη</string>
+    <string name="bgloc_body">Όταν η εφαρμογή ξεκινά μόνη της μέσω Bluetooth, το Android δίνει πλήρες GPS μόνο αν η τοποθεσία επιτρέπεται \"συνεχώς\". Επίλεξε \"Να επιτρέπεται συνεχώς\" στην επόμενη οθόνη. Η τοποθεσία χρησιμοποιείται μόνο κατά την καταγραφή διαδρομής.</string>
+    <string name="bgloc_allow">Συνέχεια</string>
+    <string name="bgloc_later">Όχι τώρα</string>
     <string name="notif_map_title">Χάρτης RideScreen AA</string>
     <string name="notif_map_text">Χάρτης στο ταμπλό — τα κουμπιά τιμονιού χρησιμοποιούν την αντιστοίχισή σου</string>
     <string name="notif_mirror_channel">Κατοπτρισμός οθόνης</string>

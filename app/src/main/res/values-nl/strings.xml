@@ -379,6 +379,10 @@
     <string name="notif_bike_reconnected">Motor opnieuw aangesloten</string>
     <string name="notif_tap_resume">Tik om de projectie naar het dashboard te hervatten</string>
     <string name="notif_tap_for_trip">Tik om de rit op te nemen — Android blokkeerde gps op de achtergrond</string>
+    <string name="bgloc_title">Ritten opnemen met de telefoon in je zak</string>
+    <string name="bgloc_body">Start de app zelf via Bluetooth, dan geeft Android alleen volledige gps als locatie \"altijd\" is toegestaan. Kies \"Altijd toestaan\" op het volgende scherm. Locatie wordt alleen gebruikt tijdens het opnemen van een rit.</string>
+    <string name="bgloc_allow">Doorgaan</string>
+    <string name="bgloc_later">Niet nu</string>
     <string name="notif_map_title">RideScreen AA-kaart</string>
     <string name="notif_map_text">Kaart op het dashboard - het stuur gebruikt uw knoptoewijzing</string>
     <string name="notif_mirror_channel">Schermspiegeling</string>

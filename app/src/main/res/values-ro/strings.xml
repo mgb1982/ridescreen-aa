@@ -379,6 +379,10 @@
     <string name="notif_bike_reconnected">Moto reconectată</string>
     <string name="notif_tap_resume">Atinge ca să reiei proiecția pe bord</string>
     <string name="notif_tap_for_trip">Atinge ca să înregistrezi cursa — Android a blocat GPS-ul în fundal</string>
+    <string name="bgloc_title">Înregistrează cursele cu telefonul în buzunar</string>
+    <string name="bgloc_body">Când aplicația pornește singură prin Bluetooth, Android îi dă GPS complet doar dacă locația e permisă \"tot timpul\". Alege \"Permite tot timpul\" pe ecranul următor. Locația e folosită doar cât se înregistrează o cursă.</string>
+    <string name="bgloc_allow">Continuă</string>
+    <string name="bgloc_later">Nu acum</string>
     <string name="notif_map_title">Hartă RideScreen AA</string>
     <string name="notif_map_text">Hartă pe bord — ghidonul folosește maparea ta de butoane</string>
     <string name="notif_mirror_channel">Oglindire ecran</string>

@@ -594,6 +594,10 @@
     <string name="notif_bike_reconnected">Мотоцикл подключён повторно</string>
     <string name="notif_tap_resume">Нажми, чтобы возобновить проекцию на дисплей</string>
     <string name="notif_tap_for_trip">Нажми, чтобы записать поездку — Android заблокировал GPS в фоне</string>
+    <string name="bgloc_title">Запись поездок с телефоном в кармане</string>
+    <string name="bgloc_body">Когда приложение запускается само по Bluetooth, Android даёт полный GPS только при доступе к местоположению \"всегда\". Выбери \"Разрешить всегда\" на следующем экране. Местоположение используется только во время записи поездки.</string>
+    <string name="bgloc_allow">Далее</string>
+    <string name="bgloc_later">Не сейчас</string>
     <string name="notif_map_title">Карта RideScreen AA</string>
     <string name="notif_map_text">Карта на дисплее — кнопки руля используют назначенные действия</string>
     <string name="notif_mirror_channel">Зеркалирование экрана</string>
