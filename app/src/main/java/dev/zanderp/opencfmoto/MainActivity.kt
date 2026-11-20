@@ -1071,6 +1071,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Support.onResume(this)
+        try { AndroidAutoService.regainForegroundTypes(this) } catch (_: Exception) {}
         renderQuickDestinations()
         renderDashCard(redrawPreview = true)
         // Back from the app's permission page / Bluetooth / Wi‑Fi settings: carry on with Connect.

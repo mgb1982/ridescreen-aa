@@ -410,6 +410,7 @@
     <string name="notif_aa_receiving">Odbieranie Androida Auto na ekran motocykla — dotknij, aby otworzyć</string>
     <string name="notif_bike_reconnected">Motocykl ponownie podłączony</string>
     <string name="notif_tap_resume">Stuknij, aby wznowić projekcję na ekranie motocykla</string>
+    <string name="notif_tap_for_trip">Stuknij, aby zapisać trasę — Android zablokował GPS w tle</string>
     <string name="notif_map_title">Mapa RideScreen AA</string>
     <string name="notif_map_text">Mapa na ekranie motocykla — kierownica korzysta z mapowania przycisków</string>
     <string name="notif_mirror_channel">Odbicie lustrzane ekranu</string>

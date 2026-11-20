@@ -591,6 +591,7 @@
     <string name="notif_aa_receiving">Rebent Android Auto per al quadre de la moto: toqueu per obrir</string>
     <string name="notif_bike_reconnected">Moto reconectada</string>
     <string name="notif_tap_resume">Toqueu per reprendre la projecció al quadre</string>
+    <string name="notif_tap_for_trip">Toca per gravar el viatge: Android ha bloquejat el GPS en segon pla</string>
     <string name="notif_map_title">Mapa d\'RideScreen AA</string>
     <string name="notif_map_text">Mapa al quadre: els manillars utilitzen el mapatge de botons</string>
     <string name="notif_mirror_channel">Duplicació de pantalla</string>

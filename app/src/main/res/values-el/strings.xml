@@ -591,6 +591,7 @@
     <string name="notif_aa_receiving">Λήψη Android Auto για το ταμπλό της μοτοσικλέτας — πάτησε για άνοιγμα</string>
     <string name="notif_bike_reconnected">Η μοτοσικλέτα επανασυνδέθηκε</string>
     <string name="notif_tap_resume">Πάτησε για να συνεχιστεί η προβολή στο ταμπλό</string>
+    <string name="notif_tap_for_trip">Πάτησε για καταγραφή της διαδρομής — το Android μπλόκαρε το GPS στο παρασκήνιο</string>
     <string name="notif_map_title">Χάρτης RideScreen AA</string>
     <string name="notif_map_text">Χάρτης στο ταμπλό — τα κουμπιά τιμονιού χρησιμοποιούν την αντιστοίχισή σου</string>
     <string name="notif_mirror_channel">Κατοπτρισμός οθόνης</string>

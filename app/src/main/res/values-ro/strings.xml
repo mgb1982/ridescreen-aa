@@ -378,6 +378,7 @@
     <string name="notif_aa_receiving">Primește Android Auto pentru bord — atinge ca să deschizi</string>
     <string name="notif_bike_reconnected">Moto reconectată</string>
     <string name="notif_tap_resume">Atinge ca să reiei proiecția pe bord</string>
+    <string name="notif_tap_for_trip">Atinge ca să înregistrezi cursa — Android a blocat GPS-ul în fundal</string>
     <string name="notif_map_title">Hartă RideScreen AA</string>
     <string name="notif_map_text">Hartă pe bord — ghidonul folosește maparea ta de butoane</string>
     <string name="notif_mirror_channel">Oglindire ecran</string>

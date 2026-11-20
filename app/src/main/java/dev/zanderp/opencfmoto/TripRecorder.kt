@@ -259,7 +259,11 @@ class TripRecorder(private val appContext: Context) : LocationListener {
         // The leg ends here either way: its checkpoint goes (same executor, so after any pending write).
         checkpointIo.execute { TripStore.clearCheckpoint(appContext) }
         if (!save) return
-        if (distanceMeters < MIN_SAVE_DISTANCE_M || movingTimeMs < MIN_SAVE_TIME_MS || points.size < 2) return
+        val why = TripKeep.discardReason(distanceMeters, movingTimeMs, points.size, MIN_SAVE_DISTANCE_M, MIN_SAVE_TIME_MS)
+        if (why != null) {
+            if (points.isNotEmpty() || distanceMeters > 0) LogBus.log("[trip] leg NOT kept: $why")
+            return
+        }
         val trip = Trip(
             id = startTime.toString(),
             start = startTime,

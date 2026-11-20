@@ -546,6 +546,7 @@
     <string name="notif_aa_receiving">Recibiendo Android Auto para el tablero de la moto: toca para abrir</string>
     <string name="notif_bike_reconnected">Moto reconectada</string>
     <string name="notif_tap_resume">Toca para reanudar la proyección en el tablero</string>
+    <string name="notif_tap_for_trip">Toca para grabar el viaje: Android bloqueó el GPS en segundo plano</string>
     <string name="notif_map_title">Mapa de RideScreen AA</string>
     <string name="notif_map_text">Mapa en el tablero: los manillares usan el mapeo de botones</string>
     <string name="notif_mirror_channel">Duplicación de pantalla</string>
