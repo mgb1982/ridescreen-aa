@@ -1071,6 +1071,8 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Support.onResume(this)
+        // Mirror ended while we were away (Stop, bike gone for 20 min, a crash): never leave the phone stuck in landscape.
+        if (ProjectionHolder.projection == null) MirrorOrientationLock.clear(this)
         renderQuickDestinations()
         renderDashCard(redrawPreview = true)
         // Back from the app's permission page / Bluetooth / Wi‑Fi settings: carry on with Connect.
@@ -2788,6 +2790,8 @@ class MainActivity : AppCompatActivity() {
         ProjectionHolder.projection = null
         try { GpxSession.clear() } catch (_: Exception) {}
         try { ProjectionService.stop(this) } catch (e: Exception) { log("projection stop: $e") }
+        // Mirror locked the screen to the dash's shape (MirrorOrientationLock): give the phone its rotation back.
+        MirrorOrientationLock.clear(this)
         try { DashClockBle.stop() } catch (e: Exception) { LogBus.log("[BLE] dash clock stop failed: $e") }
         try { BikeWifi.releaseSession(this, ::log) } catch (e: Exception) { log("wifi leave: $e") }
         ConnectionState.set(Phase.STOPPED, "")
