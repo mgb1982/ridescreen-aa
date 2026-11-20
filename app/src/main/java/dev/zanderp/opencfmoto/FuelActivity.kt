@@ -251,16 +251,16 @@ class FuelActivity : AppCompatActivity() {
         return card
     }
 
-    /** Google Maps turn-by-turn → Android Auto shows it on the dash. */
+    /** Ask Waze or Google Maps every time (when both are installed), then start turn-by-turn. */
     private fun navigate(s: FuelStations.Station) {
-        val intents = listOf(
-            Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=${s.lat},${s.lon}")).setPackage("com.google.android.apps.maps"),
-            Intent(Intent.ACTION_VIEW, Uri.parse("geo:${s.lat},${s.lon}?q=${s.lat},${s.lon}(${Uri.encode(s.brand)})")),
-        )
-        for (i in intents) {
-            try { startActivity(i); return } catch (_: Exception) {}
+        val go = {
+            if (!NavLauncher.navigateLatLon(this, s.lat, s.lon, s.brand) { LogBus.log(it) }) {
+                Toast.makeText(this, R.string.open_failed, Toast.LENGTH_SHORT).show()
+            }
         }
-        Toast.makeText(this, R.string.open_failed, Toast.LENGTH_SHORT).show()
+        if (NavApps.installed(this, NavApps.GOOGLE_PKG) && NavApps.installed(this, NavApps.WAZE_PKG)) {
+            NavApps.choose(this) { go() }
+        } else go()
     }
 
     private fun pill(label: String, onClick: () -> Unit) = MaterialButton(this, null, com.google.android.material.R.attr.materialButtonOutlinedStyle).apply {
