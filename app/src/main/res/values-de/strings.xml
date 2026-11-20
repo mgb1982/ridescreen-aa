@@ -378,6 +378,11 @@
     <string name="notif_aa_receiving">Empfang von Android Auto für das Motorrad-Display – zum Öffnen tippen</string>
     <string name="notif_bike_reconnected">Motorrad wieder angeschlossen</string>
     <string name="notif_tap_resume">Tippe, um die Projektion auf das Display fortzusetzen</string>
+    <string name="notif_tap_for_trip">Tippe, um die Fahrt aufzuzeichnen – Android hat GPS im Hintergrund blockiert</string>
+    <string name="bgloc_title">Fahrten mit dem Handy in der Tasche aufzeichnen</string>
+    <string name="bgloc_body">Startet die App selbst per Bluetooth, gibt Android ihr volles GPS nur mit Standortzugriff \"immer\". Wähle im nächsten Bildschirm \"Immer zulassen\". Der Standort wird nur während einer Fahrtaufzeichnung genutzt.</string>
+    <string name="bgloc_allow">Weiter</string>
+    <string name="bgloc_later">Nicht jetzt</string>
     <string name="notif_map_title">RideScreen AA-Karte</string>
     <string name="notif_map_text">Karte auf dem Display – der Lenker nutzt deine Tastenbelegung</string>
     <string name="notif_mirror_channel">Bildschirmspiegelung</string>

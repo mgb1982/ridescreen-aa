@@ -546,6 +546,11 @@
     <string name="notif_aa_receiving">Recibiendo Android Auto para el tablero de la moto: toca para abrir</string>
     <string name="notif_bike_reconnected">Moto reconectada</string>
     <string name="notif_tap_resume">Toca para reanudar la proyección en el tablero</string>
+    <string name="notif_tap_for_trip">Toca para grabar el viaje: Android bloqueó el GPS en segundo plano</string>
+    <string name="bgloc_title">Grabar viajes con el móvil en el bolsillo</string>
+    <string name="bgloc_body">Cuando la app arranca sola por Bluetooth, Android solo le da GPS completo si la ubicación está permitida \"todo el tiempo\". Elige \"Permitir todo el tiempo\" en la siguiente pantalla. La ubicación solo se usa mientras se graba un viaje.</string>
+    <string name="bgloc_allow">Continuar</string>
+    <string name="bgloc_later">Ahora no</string>
     <string name="notif_map_title">Mapa de RideScreen AA</string>
     <string name="notif_map_text">Mapa en el tablero: los manillares usan el mapeo de botones</string>
     <string name="notif_mirror_channel">Duplicación de pantalla</string>

@@ -563,6 +563,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == BackgroundLocationAsk.REQ) {
+            log(if (BackgroundLocationAsk.granted(this)) "→ location allowed all the time — trips record with the phone in the pocket"
+                else "→ background location not allowed — open the app once per ride to record the trip")
+            return
+        }
         if (requestCode == REQ_MIC_FOR_AA) {
             val ok = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
             log(if (ok) "→ microphone allowed — voice commands will work" else "→ microphone denied — voice commands won't work")
@@ -1073,6 +1078,8 @@ class MainActivity : AppCompatActivity() {
         Support.onResume(this)
         // Mirror ended while we were away (Stop, bike gone for 20 min, a crash): never leave the phone stuck in landscape.
         if (ProjectionHolder.projection == null) MirrorOrientationLock.clear(this)
+        try { AndroidAutoService.regainForegroundTypes(this) } catch (_: Exception) {}
+        try { BackgroundLocationAsk.maybeAsk(this) } catch (_: Exception) {}
         renderQuickDestinations()
         renderDashCard(redrawPreview = true)
         // Back from the app's permission page / Bluetooth / Wi‑Fi settings: carry on with Connect.

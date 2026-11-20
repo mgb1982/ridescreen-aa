@@ -15,6 +15,8 @@ import android.content.Context
  */
 object TripAutoLog {
     /** True while [GpxDashUi] is bound (Presentation or in-app map). Cleared on [GpxDashUi.release]. */
+    @Volatile private var linkLostAt = 0L
+
     @Volatile var mapUiLive: Boolean = false
         private set
 
@@ -34,8 +36,14 @@ object TripAutoLog {
             if (rec != null && rec.recording) rec.stopAndSave()
             return
         }
-        val shouldRecord =
-            ConnectionState.phase == Phase.STREAMING || mapUiLive
+        val now = android.os.SystemClock.elapsedRealtime()
+        val live = ConnectionState.phase == Phase.STREAMING || mapUiLive
+        if (live) linkLostAt = 0L
+        else if (linkLostAt == 0L && TripKeep.isLinkGap(ConnectionState.phase)) linkLostAt = now
+        // A dropped link (reconnecting / bike Wi-Fi flapping) keeps the SAME trip going for a while
+        // instead of closing a short leg that is then thrown away (20 Nov: commute lost that way).
+        val shouldRecord = TripKeep.keepRecording(live, ConnectionState.phase, linkLostAt, now)
+        if (!live && !shouldRecord) linkLostAt = 0L
         val rec = TripLogger.get(app)
         if (shouldRecord) {
             if (!rec.recording && rec.start()) {
@@ -47,6 +55,7 @@ object TripAutoLog {
                 LogBus.log("[trip] auto-logging this ride ($via)")
             }
         } else if (rec.recording) {
+            LogBus.log("[trip] ride ends (${ConnectionState.phase.logLabel})")
             rec.stopAndSave()
         }
     }

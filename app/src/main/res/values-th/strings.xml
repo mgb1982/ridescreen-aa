@@ -590,6 +590,11 @@
     <string name="notif_aa_receiving">กำลังรับ Android Auto สำหรับหน้าปัดรถ แตะเพื่อเปิด</string>
     <string name="notif_bike_reconnected">เชื่อมต่อรถอีกครั้งแล้ว</string>
     <string name="notif_tap_resume">แตะเพื่อกลับมาฉายภาพไปยังหน้าปัด</string>
+    <string name="notif_tap_for_trip">แตะเพื่อบันทึกการเดินทาง — Android บล็อก GPS ขณะทำงานเบื้องหลัง</string>
+    <string name="bgloc_title">บันทึกการเดินทางขณะมือถืออยู่ในกระเป๋า</string>
+    <string name="bgloc_body">เมื่อแอปเริ่มเองผ่านบลูทูธ Android จะให้ GPS เต็มที่ก็ต่อเมื่ออนุญาตตำแหน่ง \"ตลอดเวลา\" เลือก \"อนุญาตตลอดเวลา\" ในหน้าถัดไป ตำแหน่งใช้เฉพาะตอนบันทึกการเดินทาง</string>
+    <string name="bgloc_allow">ต่อไป</string>
+    <string name="bgloc_later">ไม่ใช่ตอนนี้</string>
     <string name="notif_map_title">แผนที่ RideScreen AA</string>
     <string name="notif_map_text">แผนที่บนหน้าปัด ปุ่มบนแฮนด์ใช้การกำหนดปุ่มของคุณ</string>
     <string name="notif_mirror_channel">การฉายหน้าจอ</string>

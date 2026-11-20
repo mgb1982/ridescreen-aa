@@ -610,6 +610,9 @@ class AndroidAutoService : Service() {
      * @param allowMicrophone include mic type when RECORD_AUDIO is granted (skip on sticky/bg restart)
      * @return false if every typed attempt failed — caller should [stopSelf] + START_NOT_STICKY
      */
+    @Volatile private var hasLocationType = false
+    @Volatile private var hasMicType = false
+
     fun updateForegroundType(allowMicrophone: Boolean = true): Boolean {
         val notification = buildNotification(
             getString(R.string.notif_aa_title),
@@ -652,6 +655,15 @@ class AndroidAutoService : Service() {
             try {
                 startForeground(NOTIF_ID, notification, fgType)
                 LogBus.log("[AA] foreground service type updated (fgType=$fgType, mic=$hasMicrophone)")
+                hasLocationType = fgType and ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION != 0
+                hasMicType = fgType and ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE != 0
+                if (hasLocation && !hasLocationType) {
+                    // Started from the background (Bluetooth auto-start, phone in the pocket): Android
+                    // refuses the location type, GPS gets throttled and the trip is lost. Ask for one tap:
+                    // opening the app lets [regainForegroundTypes] claim location again.
+                    LogBus.log("[trip] no location FGS type (app in background) — asking the rider to tap the notification")
+                    updateNotification(getString(R.string.notif_aa_title), getString(R.string.notif_tap_for_trip))
+                }
                 return true
             } catch (e: Exception) {
                 lastError = e
@@ -951,6 +963,20 @@ class AndroidAutoService : Service() {
 
         fun updateForegroundType() {
             active?.updateForegroundType(allowMicrophone = true)
+        }
+
+        /**
+         * The app is on screen: if the service was promoted from the background without location
+         * (or mic) type, claim them now so the trip records with full GPS. No-op when already held.
+         */
+        fun regainForegroundTypes(ctx: Context) {
+            val svc = active ?: return
+            val wantLoc = ctx.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            val wantMic = ctx.checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
+            if ((wantLoc && !svc.hasLocationType) || (wantMic && !svc.hasMicType)) {
+                LogBus.log("[AA] app opened — re-claiming foreground types (location=${svc.hasLocationType}, mic=${svc.hasMicType})")
+                svc.updateForegroundType(allowMicrophone = true)
+            }
         }
 
         fun upgradeForegroundForMicrophone() {

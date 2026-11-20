@@ -378,6 +378,11 @@
     <string name="notif_aa_receiving">Réception d’Android Auto pour le tableau de bord de la moto : appuyer pour ouvrir</string>
     <string name="notif_bike_reconnected">Moto reconnecté</string>
     <string name="notif_tap_resume">Appuie pour reprendre la projection sur le tableau de bord</string>
+    <string name="notif_tap_for_trip">Appuie pour enregistrer le trajet : Android a bloqué le GPS en arrière-plan</string>
+    <string name="bgloc_title">Enregistrer les trajets téléphone en poche</string>
+    <string name="bgloc_body">Quand l\'app démarre seule par Bluetooth, Android ne lui donne le GPS complet que si la position est autorisée \"tout le temps\". Choisis \"Toujours autoriser\" à l\'écran suivant. La position ne sert que pendant l\'enregistrement d\'un trajet.</string>
+    <string name="bgloc_allow">Continuer</string>
+    <string name="bgloc_later">Plus tard</string>
     <string name="notif_map_title">Carte RideScreen AA</string>
     <string name="notif_map_text">Carte sur le tableau de bord : les commodos utilisent le mappage de tes boutons</string>
     <string name="notif_mirror_channel">Mise en miroir de l\'écran</string>

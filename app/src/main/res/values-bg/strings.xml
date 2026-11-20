@@ -555,6 +555,11 @@
     <string name="notif_aa_receiving">Получаване на Android Auto за таблото на мотора — докоснете, за да отворите</string>
     <string name="notif_bike_reconnected">Моторът е свързан отново</string>
     <string name="notif_tap_resume">Докоснете, за да възобновите прожектирането към таблото</string>
+    <string name="notif_tap_for_trip">Докоснете, за да запишете пътуването — Android блокира GPS във фонов режим</string>
+    <string name="bgloc_title">Записвай пътувания с телефона в джоба</string>
+    <string name="bgloc_body">Когато приложението стартира само през Bluetooth, Android дава пълен GPS само ако местоположението е разрешено \"през цялото време\". Избери \"Разрешаване през цялото време\" на следващия екран. Местоположението се ползва само докато се записва пътуване.</string>
+    <string name="bgloc_allow">Напред</string>
+    <string name="bgloc_later">Не сега</string>
     <string name="notif_map_title">Карта на RideScreen AA</string>
     <string name="notif_map_text">Карта на таблото — кормилото използва зададените от вас бутони</string>
     <string name="notif_mirror_channel">Огледално предаване на екрана</string>
