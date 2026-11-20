@@ -2,7 +2,7 @@
 // RideScreen AA — anonymous usage & crash-report receiver (Cloudflare Worker + D1).
 //
 //   POST /v1/ping        what the app sends (AnonymousTelemetry.kt): {uuid,type,version,versionCode,
-//                        androidSdk,locale,payload?}; type = ping | crash | error
+//                        androidSdk,locale,device?,ramMb?,payload?}; type = ping | crash | error
 //   POST /tg/<secret>    Telegram webhook (bot commands, only from TELEGRAM_CHAT_ID)
 //   GET  /               health check
 //   cron                 weekly summary to Telegram + 180-day retention cleanup
@@ -81,6 +81,9 @@ async function ingest(request, env, ctx) {
   const versionCode = toInt(b.versionCode);
   const sdk = toInt(b.androidSdk);
   const locale = clip(b.locale, 20);
+  // null when an older build doesn't send them: keep what we already know about this install.
+  const device = b.device ? clip(b.device, 60) : null;
+  const ramMb = b.ramMb != null && toInt(b.ramMb) > 0 ? toInt(b.ramMb) : null;
   // null when an older build doesn't send it: keep what we already know about this install.
   const store = ["github", "play"].includes(b.store) ? b.store : null;
   const payload = type === "ping" ? "" : clip(b.payload, MAX_PAYLOAD);
@@ -96,11 +99,11 @@ async function ingest(request, env, ctx) {
   const isNew = !(await env.DB.prepare("SELECT 1 FROM installs WHERE uuid = ?").bind(uuid).first());
   const stmts = [
     env.DB.prepare(
-      `INSERT INTO installs (uuid, first_seen, last_seen, version, version_code, sdk, locale, store)
-       VALUES (?1, ?2, ?2, ?3, ?4, ?5, ?6, COALESCE(?7, 'github'))
+      `INSERT INTO installs (uuid, first_seen, last_seen, version, version_code, sdk, locale, store, device, ram_mb)
+       VALUES (?1, ?2, ?2, ?3, ?4, ?5, ?6, COALESCE(?7, 'github'), ?8, ?9)
        ON CONFLICT(uuid) DO UPDATE SET last_seen = ?2, version = ?3, version_code = ?4, sdk = ?5, locale = ?6,
-         store = COALESCE(?7, store)`
-    ).bind(uuid, now, version, versionCode, sdk, locale, store),
+         store = COALESCE(?7, store), device = COALESCE(?8, device), ram_mb = COALESCE(?9, ram_mb)`
+    ).bind(uuid, now, version, versionCode, sdk, locale, store, device, ramMb),
   ];
 
   let fp = null;

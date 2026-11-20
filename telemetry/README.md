@@ -3,7 +3,7 @@
 Cloudflare Worker + D1 that receives the app's anonymous pings and crash/error reports
 (`AnonymousTelemetry.kt` → `POST /v1/ping`) and notifies the maintainer on Telegram.
 
-- Stores only what the app sends: random UUID, version, Android API level, UI language,
+- Stores only what the app sends: random UUID, version, Android API level, UI language, phone model and RAM,
   redacted crash/error text. No IP, country or headers. 180-day retention (weekly cron).
 - Same failure on different phones/builds is grouped by a fingerprint (exception + first app
   frames, numbers stripped). Telegram alert on the 1st occurrence, then at 5, 25, 100, 500.

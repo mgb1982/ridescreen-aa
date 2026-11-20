@@ -102,6 +102,7 @@ When **Anonymous usage & crash reports** is on (Setup → Privacy):
 | --- | --- |
 | Random UUID generated on the phone | Name, email, Google account |
 | App version / Android API level / UI locale | Bike SSID, Wi‑Fi password, QR secrets |
+| Phone model (e.g. “samsung SM-S918B”) and installed RAM, rounded | Serial numbers, IMEI, advertising ID |
 | Occasional “still installed” heartbeat | GPS trip routes or destinations |
 | Redacted crash stack / short error text | Dash video, camera frames, contacts |
 
@@ -112,7 +113,7 @@ small local queue and upload later over cellular/home Wi‑Fi. Turning the toggl
 The ingest service is a Cloudflare Worker + D1 database run by the RideScreen AA
 maintainer; its full source is in this repository under [`telemetry/`](telemetry/).
 It stores only what the app sends (the random UUID, version info, Android API
-level, UI language and the redacted crash/error text). It does **not** store your
+level, UI language, the phone model and RAM, and the redacted crash/error text). It does **not** store your
 IP address, country or any request headers. Records are deleted automatically
 after 180 days without activity. New crashes and errors trigger a private
 Telegram notification to the maintainer so they can be fixed quickly; the data is

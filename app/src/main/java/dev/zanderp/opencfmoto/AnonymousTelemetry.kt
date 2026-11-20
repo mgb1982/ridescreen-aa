@@ -231,6 +231,13 @@ object AnonymousTelemetry {
             body.put("store", BuildConfig.STORE)
             body.put("androidSdk", Build.VERSION.SDK_INT)
             body.put("locale", Locale.getDefault().toLanguageTag())
+            // Phone model and RAM (public build info), to see which phones the low-memory kills concentrate on.
+            TelemetryDevice.label(Build.MANUFACTURER, Build.MODEL).takeIf { it.isNotEmpty() }?.let { body.put("device", it) }
+            try {
+                val mi = android.app.ActivityManager.MemoryInfo()
+                (ctx.applicationContext.getSystemService(Context.ACTIVITY_SERVICE) as? android.app.ActivityManager)?.getMemoryInfo(mi)
+                TelemetryDevice.ramMb(mi.totalMem).takeIf { it > 0 }?.let { body.put("ramMb", it) }
+            } catch (_: Exception) {}
             val payload = item.optString("payload", "")
             if (payload.isNotBlank()) body.put("payload", payload)
             val bytes = body.toString().toByteArray(Charsets.UTF_8)
