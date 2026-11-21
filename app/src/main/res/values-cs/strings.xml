@@ -718,4 +718,9 @@
     <string name="dep_perm_location">Poloha (připojení k Wi‑Fi motorky)</string>
     <string name="dep_perm_notifications">Oznámení</string>
     <string name="dep_perm_microphone">Mikrofon</string>
+    <string name="home_dash_options">Možnosti palubní desky</string>
+    <string name="settings_help">Nápověda</string>
+    <string name="settings_help_sub">Průvodce, záznamy, nahlásit problém, o aplikaci</string>
+    <string name="garage_add_bike_scan">Přidat motorku (naskenovat QR)</string>
+    <string name="status_resume_when_bike_back">pokračuje, až se motorka vrátí</string>
 </resources>

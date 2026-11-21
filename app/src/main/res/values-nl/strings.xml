@@ -717,4 +717,9 @@
     <string name="dep_perm_location">Locatie (verbinden met Wi‑Fi van de motor)</string>
     <string name="dep_perm_notifications">Meldingen</string>
     <string name="dep_perm_microphone">Microfoon</string>
+    <string name="home_dash_options">Dashboardopties</string>
+    <string name="settings_help">Help</string>
+    <string name="settings_help_sub">Gids, logboeken, probleem melden, over</string>
+    <string name="garage_add_bike_scan">Motor toevoegen (QR scannen)</string>
+    <string name="status_resume_when_bike_back">wordt hervat wanneer de motor terug is</string>
 </resources>

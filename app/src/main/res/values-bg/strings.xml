@@ -727,4 +727,9 @@
     <string name="dep_perm_location">Местоположение (свързване с Wi‑Fi на мотора)</string>
     <string name="dep_perm_notifications">Известия</string>
     <string name="dep_perm_microphone">Микрофон</string>
+    <string name="home_dash_options">Опции за таблото</string>
+    <string name="settings_help">Помощ</string>
+    <string name="settings_help_sub">Ръководство, дневници, докладване на проблем, относно</string>
+    <string name="garage_add_bike_scan">Добави мотор (сканирай QR)</string>
+    <string name="status_resume_when_bike_back">ще се възобнови, когато моторът се върне</string>
 </resources>

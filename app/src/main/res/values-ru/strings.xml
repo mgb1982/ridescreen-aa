@@ -727,4 +727,9 @@
     <string name="dep_perm_location">Геопозиция (подключение к Wi‑Fi мотоцикла)</string>
     <string name="dep_perm_notifications">Уведомления</string>
     <string name="dep_perm_microphone">Микрофон</string>
+    <string name="home_dash_options">Настройки панели</string>
+    <string name="settings_help">Справка</string>
+    <string name="settings_help_sub">Руководство, журналы, сообщить о проблеме, о приложении</string>
+    <string name="garage_add_bike_scan">Добавить мотоцикл (сканировать QR)</string>
+    <string name="status_resume_when_bike_back">возобновится, когда мотоцикл вернётся</string>
 </resources>

@@ -724,4 +724,9 @@
     <string name="dep_perm_location">위치 (바이크 Wi‑Fi 연결)</string>
     <string name="dep_perm_notifications">알림</string>
     <string name="dep_perm_microphone">마이크</string>
+    <string name="home_dash_options">대시보드 옵션</string>
+    <string name="settings_help">도움말</string>
+    <string name="settings_help_sub">가이드, 로그, 문제 신고, 정보</string>
+    <string name="garage_add_bike_scan">바이크 추가 (QR 스캔)</string>
+    <string name="status_resume_when_bike_back">바이크가 돌아오면 재개됩니다</string>
 </resources>

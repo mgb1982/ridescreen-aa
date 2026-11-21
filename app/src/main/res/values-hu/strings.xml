@@ -726,4 +726,9 @@
     <string name="dep_perm_location">Helymeghatározás (csatlakozás a motor Wi‑Fi-jához)</string>
     <string name="dep_perm_notifications">Értesítések</string>
     <string name="dep_perm_microphone">Mikrofon</string>
+    <string name="home_dash_options">Műszerfal beállításai</string>
+    <string name="settings_help">Súgó</string>
+    <string name="settings_help_sub">Útmutató, naplók, hibabejelentés, névjegy</string>
+    <string name="garage_add_bike_scan">Motor hozzáadása (QR-kód beolvasása)</string>
+    <string name="status_resume_when_bike_back">folytatódik, amint a motor visszaér</string>
 </resources>

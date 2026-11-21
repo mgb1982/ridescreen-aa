@@ -720,4 +720,9 @@
     <string name="dep_perm_location">Localização (ligar ao Wi‑Fi da mota)</string>
     <string name="dep_perm_notifications">Notificações</string>
     <string name="dep_perm_microphone">Microfone</string>
+    <string name="home_dash_options">Opções do painel</string>
+    <string name="settings_help">Ajuda</string>
+    <string name="settings_help_sub">Guia, registos, reportar um problema, sobre</string>
+    <string name="garage_add_bike_scan">Adicionar mota (ler QR)</string>
+    <string name="status_resume_when_bike_back">será retomado quando a mota voltar</string>
 </resources>

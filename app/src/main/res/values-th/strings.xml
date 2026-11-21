@@ -724,4 +724,9 @@
     <string name="dep_perm_location">ตำแหน่ง (เข้าร่วม Wi‑Fi ของรถ)</string>
     <string name="dep_perm_notifications">การแจ้งเตือน</string>
     <string name="dep_perm_microphone">ไมโครโฟน</string>
+    <string name="home_dash_options">ตัวเลือกแดชบอร์ด</string>
+    <string name="settings_help">ช่วยเหลือ</string>
+    <string name="settings_help_sub">คู่มือ บันทึก รายงานปัญหา เกี่ยวกับ</string>
+    <string name="garage_add_bike_scan">เพิ่มมอเตอร์ไซค์ (สแกน QR)</string>
+    <string name="status_resume_when_bike_back">จะกลับมาทำงานต่อเมื่อมอเตอร์ไซค์กลับมา</string>
 </resources>

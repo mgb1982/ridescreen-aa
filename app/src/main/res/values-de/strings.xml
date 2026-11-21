@@ -718,4 +718,9 @@
     <string name="dep_perm_location">Standort (dem WLAN des Motorrads beitreten)</string>
     <string name="dep_perm_notifications">Benachrichtigungen</string>
     <string name="dep_perm_microphone">Mikrofon</string>
+    <string name="home_dash_options">Dashboard-Optionen</string>
+    <string name="settings_help">Hilfe</string>
+    <string name="settings_help_sub">Anleitung, Protokolle, Problem melden, Über</string>
+    <string name="garage_add_bike_scan">Motorrad hinzufügen (QR scannen)</string>
+    <string name="status_resume_when_bike_back">wird fortgesetzt, wenn das Motorrad zurück ist</string>
 </resources>

@@ -718,4 +718,9 @@
     <string name="dep_perm_location">Position (rejoindre le Wi‑Fi de la moto)</string>
     <string name="dep_perm_notifications">Notifications</string>
     <string name="dep_perm_microphone">Microphone</string>
+    <string name="home_dash_options">Options du tableau de bord</string>
+    <string name="settings_help">Aide</string>
+    <string name="settings_help_sub">Guide, journaux, signaler un problème, à propos</string>
+    <string name="garage_add_bike_scan">Ajouter une moto (scanner le QR)</string>
+    <string name="status_resume_when_bike_back">reprendra quand la moto sera de retour</string>
 </resources>

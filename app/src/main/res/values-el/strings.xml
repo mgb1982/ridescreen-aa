@@ -725,4 +725,9 @@
     <string name="dep_perm_location">Τοποθεσία (σύνδεση στο Wi‑Fi της μοτοσικλέτας)</string>
     <string name="dep_perm_notifications">Ειδοποιήσεις</string>
     <string name="dep_perm_microphone">Μικρόφωνο</string>
+    <string name="home_dash_options">Επιλογές πίνακα οργάνων</string>
+    <string name="settings_help">Βοήθεια</string>
+    <string name="settings_help_sub">Οδηγός, αρχεία καταγραφής, αναφορά προβλήματος, σχετικά</string>
+    <string name="garage_add_bike_scan">Προσθήκη μοτοσυκλέτας (σάρωση QR)</string>
+    <string name="status_resume_when_bike_back">θα συνεχιστεί όταν επιστρέψει η μοτοσυκλέτα</string>
 </resources>

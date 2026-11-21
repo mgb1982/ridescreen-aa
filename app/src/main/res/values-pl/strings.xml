@@ -720,4 +720,9 @@
     <string name="dep_perm_location">Lokalizacja (dołączenie do Wi‑Fi motocykla)</string>
     <string name="dep_perm_notifications">Powiadomienia</string>
     <string name="dep_perm_microphone">Mikrofon</string>
+    <string name="home_dash_options">Opcje pulpitu</string>
+    <string name="settings_help">Pomoc</string>
+    <string name="settings_help_sub">Przewodnik, dzienniki, zgłoś problem, o aplikacji</string>
+    <string name="garage_add_bike_scan">Dodaj motocykl (skanuj QR)</string>
+    <string name="status_resume_when_bike_back">wznowi się, gdy motocykl wróci</string>
 </resources>

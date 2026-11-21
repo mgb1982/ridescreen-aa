@@ -724,4 +724,9 @@
     <string name="dep_perm_location">Konum (motorun Wi‑Fi\'sine katıl)</string>
     <string name="dep_perm_notifications">Bildirimler</string>
     <string name="dep_perm_microphone">Mikrofon</string>
+    <string name="home_dash_options">Gösterge paneli seçenekleri</string>
+    <string name="settings_help">Yardım</string>
+    <string name="settings_help_sub">Kılavuz, günlükler, sorun bildir, hakkında</string>
+    <string name="garage_add_bike_scan">Motosiklet ekle (QR tara)</string>
+    <string name="status_resume_when_bike_back">motosiklet geri döndüğünde devam edecek</string>
 </resources>

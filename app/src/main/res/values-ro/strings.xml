@@ -718,4 +718,9 @@
     <string name="dep_perm_location">Locație (conectare la Wi‑Fi-ul motocicletei)</string>
     <string name="dep_perm_notifications">Notificări</string>
     <string name="dep_perm_microphone">Microfon</string>
+    <string name="home_dash_options">Opțiuni tablou de bord</string>
+    <string name="settings_help">Ajutor</string>
+    <string name="settings_help_sub">Ghid, jurnale, raportează o problemă, despre</string>
+    <string name="garage_add_bike_scan">Adaugă motocicletă (scanează QR)</string>
+    <string name="status_resume_when_bike_back">se va relua când motocicleta revine</string>
 </resources>
