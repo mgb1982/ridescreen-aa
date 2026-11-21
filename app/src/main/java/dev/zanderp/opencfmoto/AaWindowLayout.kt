@@ -41,4 +41,41 @@ object AaWindowLayout {
         val h = maxOf(1, (srcH * s).toInt())
         return Box(box.x + (box.w - w) / 2, box.y + (box.h - h) / 2, w, h)
     }
+
+    /** Where the Android Auto picture goes inside the window: [clip] is visible, [draw] may overflow it. */
+    class Placement(val clip: Box, val draw: Box)
+
+    /**
+     * Show in the window exactly what the full-screen Android Auto mode shows, only smaller: the rider's
+     * usable area ([areaW]x[areaH], the canvas minus the screen margins) is aspect-fit into [win] ([clip]),
+     * and the full-screen viewport ([vpX],[vpY] relative to the area, [vpW]x[vpH]) is scaled with it ([draw]).
+     * Under "Fill" the viewport is bigger than the area, so the same top/bottom (or sides) are cut off as
+     * in full screen — the tester's "recorte" (21 Nov 2026), which hides Android Auto's icon row.
+     * Null when the full-screen geometry is not known yet (the caller then letterboxes the whole frame).
+     */
+    fun placeFullScreen(win: Box, areaW: Int, areaH: Int, vpX: Int, vpY: Int, vpW: Int, vpH: Int): Placement? {
+        if (areaW <= 0 || areaH <= 0 || vpW <= 0 || vpH <= 0) return null
+        val clip = fit(win, areaW, areaH)
+        val sx = clip.w.toDouble() / areaW
+        val sy = clip.h.toDouble() / areaH
+        val draw = Box(
+            clip.x + Math.round(vpX * sx).toInt(),
+            clip.y + Math.round(vpY * sy).toInt(),
+            maxOf(1, Math.round(vpW * sx).toInt()),
+            maxOf(1, Math.round(vpH * sy).toInt()),
+        )
+        return Placement(clip, draw)
+    }
+
+    /**
+     * A touch at ([x],[y]) on the canvas, inside [p].clip, back to usable-area pixels of the full-screen
+     * mode (so the normal full-screen touch mapping applies). Null outside the visible window.
+     */
+    fun windowToArea(p: Placement, areaW: Int, areaH: Int, x: Int, y: Int): Pair<Int, Int>? {
+        val c = p.clip
+        if (x < c.x || y < c.y || x >= c.x + c.w || y >= c.y + c.h) return null
+        val ax = ((x - c.x).toLong() * areaW / c.w).toInt().coerceIn(0, areaW - 1)
+        val ay = ((y - c.y).toLong() * areaH / c.h).toInt().coerceIn(0, areaH - 1)
+        return ax to ay
+    }
 }

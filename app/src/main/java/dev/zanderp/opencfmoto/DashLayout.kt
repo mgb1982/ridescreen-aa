@@ -130,6 +130,25 @@ internal object DashLayout {
         )
     }
 
+    /**
+     * Card with the icon but no title (tester feedback, 21 Nov 2026: "Coolant"/"Voltage" were tiny, English
+     * only, pushed the number off centre and reached the dash's bottom strip). The number grows and sits
+     * vertically centred beside the icon.
+     */
+    fun cardTextIconOnly(b: Box): CardText {
+        val h = b.h
+        val size = .6f * h
+        return CardText(
+            iconX = b.x + .46f * h, iconR = .22f * h, textX = b.x + .92f * h,
+            titleY = b.y, titleSize = 0f,
+            valueY = b.y + h / 2f + .35f * size, valueSize = size,
+        )
+    }
+
+    /** Metrics whose card icon says what they are, so the window column can drop the title. */
+    val ICON_IDS = setOf("coolant", "volt", "load", "clock", "trip", "moving", "avg", "max", "battery",
+        "turn", "alt", "heading", "outside", "intake")
+
     /** Factor (≤ 1) that shrinks text measuring [needed] into [available]. */
     fun fitScale(available: Float, needed: Float): Float =
         if (needed <= 0f || needed <= available) 1f else (available / needed).coerceAtLeast(.4f)

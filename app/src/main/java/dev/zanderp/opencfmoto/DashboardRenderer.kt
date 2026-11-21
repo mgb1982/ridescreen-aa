@@ -1166,7 +1166,7 @@ internal object DashboardRenderer {
                 }
             }
         }
-        cards.take(rows.cards.size).forEachIndexed { i, m -> drawCard(c, m, rows.cards[i], p, CardLook.SPORT) }
+        cards.take(rows.cards.size).forEachIndexed { i, m -> drawCard(c, m, rows.cards[i], p, CardLook.SPORT, iconOnly = true) }
         live {
             if (DashFallback.showWarning(d.obdConfigured, d.obdLive)) txt(c, ctx.getString(R.string.dash_no_obd), col.x.toFloat(), col.y + 14f * k, 13f * k, p.muted, fLabel)
         }
@@ -1544,9 +1544,10 @@ internal object DashboardRenderer {
      * card is a [DashLayout.Box] and everything inside follows its height; text that would run past the
      * right edge is shrunk to fit.
      */
-    private fun drawCard(c: Canvas, m: Metric, b: DashLayout.Box, p: Palette, look: CardLook) {
+    private fun drawCard(c: Canvas, m: Metric, b: DashLayout.Box, p: Palette, look: CardLook, iconOnly: Boolean = false) {
         val x = b.x; val y = b.y; val w = b.w; val h = b.h
-        val t = DashLayout.cardText(b)
+        val titled = !(iconOnly && m.id in DashLayout.ICON_IDS)
+        val t = if (titled) DashLayout.cardText(b) else DashLayout.cardTextIconOnly(b)
         val radius = if (look == CardLook.TOURING) 10f else 7f
         val racing = look == CardLook.RACING || look == CardLook.RACING_WIDE
         // Wide racing cards keep their stripes clear of the text.
@@ -1586,9 +1587,11 @@ internal object DashboardRenderer {
                 }
             }
             drawMetricIcon(c, m.id, t.iconX, y + h / 2f, t.iconR, p.fg)
-            text.typeface = fLabel; text.textSize = t.titleSize
-            val titleSize = t.titleSize * DashLayout.fitScale(textRight - t.textX, text.measureText(m.title))
-            txt(c, m.title, t.textX, t.titleY, titleSize, p.muted, fLabel)
+            if (titled) {
+                text.typeface = fLabel; text.textSize = t.titleSize
+                val titleSize = t.titleSize * DashLayout.fitScale(textRight - t.textX, text.measureText(m.title))
+                txt(c, m.title, t.textX, t.titleY, titleSize, p.muted, fLabel)
+            }
         }
         live {
             val warn = m.id == "coolant" && (m.value ?: 0.0) >= DashboardMode.COOLANT_AMBER
