@@ -822,13 +822,15 @@ class MainActivity : AppCompatActivity() {
         LogBus.listener = { line ->
             runOnUiThread {
                 logView.append("$line\n")
+                // The buffer may hold 1.5 MB; the TextView keeps its own, smaller limit.
+                if (logView.length() > 300_000) logView.text = logView.text.let { it.subSequence(it.length - 200_000, it.length) }
                 logScroll.post { logScroll.fullScroll(ScrollView.FOCUS_DOWN) }
             }
         }
         // Application already hydrated a prior session/crash into LogBus — show it in the view.
         val prior = LogBus.snapshot()
         if (prior.isNotBlank()) {
-            logView.text = prior
+            logView.text = if (prior.length > 200_000) prior.substring(prior.length - 200_000) else prior
             logScroll.post { logScroll.fullScroll(ScrollView.FOCUS_DOWN) }
         }
         maybeShowCrashRecovery()
@@ -1021,6 +1023,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_clear).setOnClickListener {
             LogBus.clear()
             CrashGuard.clearSession(this)
+            DiskLog.clearAll()
             logView.text = ""
             LogBus.logSessionBanner()
         }
@@ -2878,13 +2881,10 @@ class MainActivity : AppCompatActivity() {
                     w.write(crash.readText())
                     log("including crash report: ${crash.name} (${crash.length()} bytes)")
                 }
-                // Previous sessions (rides whose process was killed afterwards), newest first,
-                // only their tail: the end of a session is where it went wrong.
-                CrashGuard.historyDir(this).listFiles()?.sortedByDescending { it.name }?.take(2)?.forEach { h ->
-                    val text = h.readText()
-                    w.write("\n\n===== EARLIER SESSION (${h.name}) =====\n")
-                    w.write(if (text.length > 80_000) "…\n" + text.takeLast(80_000) else text)
-                }
+                // Disk log (today + previous day, full): survives kills and app updates. Total cap ~8 MB;
+                // the in-memory part and crash report count against it, the oldest disk data is dropped first.
+                val used = LogBus.snapshot().length.toLong() + (if (crash.exists()) crash.length() else 0L)
+                DiskLog.writeShare(w, LogStoreLogic.SHARE_CAP_BYTES - used)
             }
             val uris = ArrayList<Uri>()
             uris.add(FileProvider.getUriForFile(this, "$packageName.fileprovider", file))
