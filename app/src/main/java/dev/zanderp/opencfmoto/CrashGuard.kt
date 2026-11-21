@@ -79,6 +79,7 @@ object CrashGuard {
 
     /** Flush the in-memory log so a later kill/crash still has a session file. */
     fun persistSession(appContext: Context) {
+        DiskLog.flushNow()
         try {
             val text = liveSnapshotForDisk()
             if (text.isBlank()) return
@@ -197,6 +198,7 @@ object CrashGuard {
             LogBus.log("[FATAL] ${error.javaClass.name}: ${error.message}")
         } catch (_: Exception) {
         }
+        DiskLog.flushNow()
         val snapshot = try {
             liveSnapshotForDisk()
         } catch (_: Exception) {

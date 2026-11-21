@@ -37,8 +37,11 @@ object LogBus {
         sb.append(line).append('\n')
         // Trigger / wait lines also go to disk at once (see TriggerTrace), always redacted: even with
         // "include secrets in logs" on, a file that lives on may not hold a full MAC.
-        TriggerTrace.onLog(if (includeSecrets) LogRedactor.redact(msg) else safe)
-        if (sb.length > 512 * 1024) sb.delete(0, sb.length - 256 * 1024)
+        val diskSafe = if (includeSecrets) LogRedactor.redact(msg) else safe
+        TriggerTrace.onLog(diskSafe)
+        DiskLog.enqueue(diskSafe)
+        // UI buffer only: the disk log (DiskLog) is the source of truth.
+        if (sb.length > MAX_BUF) sb.delete(0, sb.length - KEEP_BUF)
         // Mirror to logcat so the full diagnostic stream is capturable over adb (`adb logcat -s
         // OpenCfMoto:*`) during on-hardware debugging, not just in the in-app log view.
         Log.i(TAG, safe)
@@ -61,6 +64,9 @@ object LogBus {
         }
         log(msg)
     }
+
+    private const val MAX_BUF = 2 * 1024 * 1024
+    private const val KEEP_BUF = 1536 * 1024
 
     const val TAG = "OpenCfMoto"
 
@@ -93,6 +99,6 @@ object LogBus {
         if (block.isBlank()) return
         val text = if (block.endsWith("\n")) block else "$block\n"
         sb.insert(0, text)
-        if (sb.length > 512 * 1024) sb.delete(0, sb.length - 256 * 1024)
+        if (sb.length > MAX_BUF) sb.delete(0, sb.length - KEEP_BUF)
     }
 }

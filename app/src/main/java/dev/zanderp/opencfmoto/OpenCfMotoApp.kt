@@ -25,6 +25,7 @@ class OpenCfMotoApp : Application() {
         AppVisibility.init(this)
         CrashGuard.hydrateLogBus(this)
         TriggerTrace.init(this)
+        DiskLog.init(this)
         try {
             AppSettings.applyToHolder(this)
             TurnHaptics.load(this)
@@ -36,6 +37,7 @@ class OpenCfMotoApp : Application() {
         }
         // After hydrate so Share Logs still show prior crash, then stamp this process build.
         LogBus.logSessionBanner()
+        LogBus.log(LogStoreLogic.startupLine(DiskLog.entries()))
         TriggerTrace.replay(this)
         try { LastExit.check(this) } catch (_: Exception) {}
         try { TripRecorder.recoverAtStart(this) } catch (_: Exception) {}

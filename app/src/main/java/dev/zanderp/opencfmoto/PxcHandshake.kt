@@ -206,14 +206,15 @@ class PxcHandshake(
                 Thread.sleep(130)
                 val out = socket.getOutputStream()
                 var n = 0
-                var lastLogAt = 0L
+                val dedupe = LogStoreLogic.AppStatusDedupe()
                 while (!socket.isClosed) {
                     PxcFrame(APPSTATUS_FOREGROUND, payload).write(out)
                     n++
                     val now = System.currentTimeMillis()
-                    if (n <= 3 || now - lastLogAt >= 30_000L) {
-                        lastLogAt = now
-                        log("[APPSTATUS] → 0x20020 FOREGROUND #$n ${String(payload, Charsets.UTF_8)}")
+                    // Logged when the payload changes (counter ignored) or as a 10-min heartbeat.
+                    val shown = String(payload, Charsets.UTF_8)
+                    if (dedupe.shouldLog(shown, now)) {
+                        log("[APPSTATUS] → 0x20020 FOREGROUND #$n $shown")
                     }
                     Thread.sleep(1000)
                 }
