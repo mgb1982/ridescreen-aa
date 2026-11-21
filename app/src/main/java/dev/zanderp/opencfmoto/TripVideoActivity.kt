@@ -57,6 +57,9 @@ class TripVideoActivity : AppCompatActivity() {
     private var mapKind = VideoMap.LINE
     /** v2.3: where the rider dragged the map, speed, title… (per style). */
     private var layout = OverlayLayout()
+    /** Data shown in the picture, saved per style; default everything. */
+    private var fields: Set<VideoField> = VideoFields.ALL
+    private val dataFlags by lazy { VideoDataFlags.of(trip) }
     private var previewLook: TripLook? = null
     private var previewBase: android.graphics.Bitmap? = null
     private val previewPlaced = LinkedHashMap<OverlayPart, android.graphics.RectF>()
@@ -150,10 +153,12 @@ class TripVideoActivity : AppCompatActivity() {
         styleRow = chipRow(VideoStyle.values().map { getString(it.labelRes) }) { i ->
             val before = nightStyle(style); style = VideoStyle.values()[i]
             if (nightStyle(style) != before) streets = null
-            loadLayout()
+            loadLayout(); loadFields()
             saveLook(); markLook(); refreshPreview()
         }
         root.addView(scrollRow(styleRow))
+        root.addView(button(getString(R.string.tv_fields)) { pickFields() },
+            LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(6) })
         root.addView(body(getString(R.string.tv_map)))
         mapRow = chipRow(VideoMap.values().map { getString(it.labelRes) }) { i -> mapKind = VideoMap.values()[i]; saveLook(); markLook(); refreshPreview() }
         root.addView(scrollRow(mapRow))
@@ -499,7 +504,7 @@ class TripVideoActivity : AppCompatActivity() {
             ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             askNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
-        val req = TripVideoJob.Request(trip.id, clips, speed, offsetS * 1000L, TripVideo.Look(style, mapKind, cards, watermark, layout),
+        val req = TripVideoJob.Request(trip.id, clips, speed, offsetS * 1000L, TripVideo.Look(style, mapKind, cards, watermark, layout, fields),
             music, duck, highlights)
         resultRow.visibility = View.GONE
         if (!TripVideoJob.start(this, req)) {
@@ -539,8 +544,9 @@ class TripVideoActivity : AppCompatActivity() {
             contentResolver.persistedUriPermissions.any { it.uri == u && it.isReadPermission }
         }
         duck = p.getBoolean("duck", true)
-        loadLayout()
+        loadLayout(); loadFields()
     }
+    private fun loadFields() { fields = VideoFields.load(prefs(), style) }
     private fun loadLayout() { layout = OverlayLayout.decode(prefs().getString("layout_" + style.name, null)) }
     private fun saveLayout() = prefs().edit().putString("layout_" + style.name, layout.encode()).apply()
     private fun saveLook() = prefs().edit().putString("style", style.name).putString("map", mapKind.name)
@@ -554,6 +560,7 @@ class TripVideoActivity : AppCompatActivity() {
         val selectedStyle = style
         val selectedMap = mapKind
         val selectedLayout = layout
+        val selectedFields = fields
         val wantStreets = selectedMap == VideoMap.STREETS && streets == null
         val previewTimestamp = previewTime(clip)
         if (wantStreets) status.setText(R.string.tv_map_loading)
@@ -568,7 +575,7 @@ class TripVideoActivity : AppCompatActivity() {
             if (wantStreets) streets = selectedStreets
             val base = still ?: TripVideo.stillOf(this, clip).also { still = it } ?: return@execute
             val out = base.copy(android.graphics.Bitmap.Config.ARGB_8888, true)
-            val look = TripLook(this, trip, TripNames.title(this, trip), selectedStyle, selectedMap, selectedStreets, selectedLayout)
+            val look = TripLook(this, trip, TripNames.title(this, trip), selectedStyle, selectedMap, selectedStreets, selectedLayout, selectedFields)
             look.drawFrame(android.graphics.Canvas(out), out.width, out.height, previewTimestamp)
             val placed = look.placed.mapValues { android.graphics.RectF(it.value) }
             runOnUiThread {
@@ -583,6 +590,54 @@ class TripVideoActivity : AppCompatActivity() {
             }
         }
     }
+
+    /** "Data in the video": multi-choice list of what this look draws; fields the trip has no data for are greyed out. */
+    private fun pickFields() {
+        val st = style
+        val list = VideoFields.relevant(st)
+        val avail = VideoFields.available(st, dataFlags)
+        val checked = BooleanArray(list.size) { list[it] in VideoFields.checked(fields, st, dataFlags) }
+        val labels = list.map { f -> fieldLabel(f) + if (f in avail) "" else "  (" + getString(R.string.tv_fields_none) + ")" }.toTypedArray()
+        val dlg = com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.tv_fields)
+            .setMultiChoiceItems(labels, checked) { _, i, on -> checked[i] = on }
+            .setNeutralButton(R.string.tv_fields_short, null)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                val picked = list.filterIndexed { i, _ -> checked[i] }.toSet()
+                fields = VideoFields.merge(fields, picked, st, dataFlags)
+                VideoFields.save(prefs(), st, fields)
+                refreshPreview()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .create()
+        dlg.setOnShowListener {
+            val lv = dlg.listView
+            list.forEachIndexed { i, f -> if (f !in avail) { checked[i] = false; lv.setItemChecked(i, false) } }
+            // Disabled rows: ignore taps by undoing them.
+            lv.setOnItemClickListener { _, _, i, _ ->
+                if (list[i] !in avail) { checked[i] = false; lv.setItemChecked(i, false) } else checked[i] = lv.isItemChecked(i)
+            }
+            // Preset: check only what it names, without closing the dialog.
+            dlg.getButton(android.app.AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
+                val preset = VideoFields.shortPreset(st, dataFlags)
+                list.forEachIndexed { i, f -> checked[i] = f in preset; lv.setItemChecked(i, f in preset) }
+            }
+        }
+        dlg.show()
+    }
+
+    private fun fieldLabel(f: VideoField) = getString(when (f) {
+        VideoField.SPEED -> R.string.tv_field_speed
+        VideoField.RPM -> R.string.tv_field_rpm
+        VideoField.COOLANT -> R.string.tv_field_coolant
+        VideoField.THROTTLE_LOAD -> R.string.tv_field_throttle
+        VideoField.VOLTAGE -> R.string.tv_field_voltage
+        VideoField.LEAN -> R.string.tv_field_lean
+        VideoField.G_FORCE -> R.string.tv_field_g
+        VideoField.HEART_RATE -> R.string.tv_field_heart
+        VideoField.MINIMAP -> R.string.tv_field_map
+        VideoField.PEAK_BANNERS -> R.string.tv_field_peaks
+    })
 
     private fun previewTime(clip: TripVideo.Clip) = clip.startMs + offsetS * 1000L + clip.durationMs / 2
 

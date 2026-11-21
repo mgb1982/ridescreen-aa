@@ -193,7 +193,17 @@ class TripLook(
     private val streets: StreetTiles?,
     /** v2.3: where the rider dragged each piece in the preview. */
     var layout: OverlayLayout = OverlayLayout(),
+    /** The data the rider wants in the picture (default: everything). */
+    var fields: Set<VideoField> = VideoFields.ALL,
 ) {
+    private fun on(f: VideoField) = f in fields
+    /** True when the lean/G/heart-rate block has something to show. */
+    private val motionOn get() = hasMotion && (on(VideoField.LEAN) || on(VideoField.G_FORCE) || on(VideoField.HEART_RATE))
+    private fun maskMotion(m: MotionTripSample?): MotionTripSample? = m?.copy(
+        leanDeg = m.leanDeg.takeIf { on(VideoField.LEAN) },
+        gLat = m.gLat.takeIf { on(VideoField.G_FORCE) }, gLon = m.gLon.takeIf { on(VideoField.G_FORCE) },
+        bpm = m.bpm.takeIf { on(VideoField.HEART_RATE) })
+
     private val pts = trip.points
     private val minLat = pts.minOf { it.lat }; private val maxLat = pts.maxOf { it.lat }
     private val minLon = pts.minOf { it.lon }; private val maxLon = pts.maxOf { it.lon }
@@ -407,17 +417,17 @@ class TripLook(
                     text(c, clock, 3 * u, 12 * u, 3.4f * u, Typeface.DEFAULT)
                 }
                 val kw = measure("$kmh", Typeface.DEFAULT_BOLD, 12 * u)
-                part(c, OverlayPart.SPEED, w, h, RectF(2 * u, h - 16 * u, 5.5f * u + kw + measure("km/h", Typeface.DEFAULT, 4 * u), h - 4.5f * u)) {
+                if (on(VideoField.SPEED)) part(c, OverlayPart.SPEED, w, h, RectF(2 * u, h - 16 * u, 5.5f * u + kw + measure("km/h", Typeface.DEFAULT, 4 * u), h - 4.5f * u)) {
                     text(c, "$kmh", 3 * u, h - 6 * u, 12 * u, Typeface.DEFAULT_BOLD)
                     text(c, "km/h", 4.5f * u + kw, h - 6 * u, 4 * u, Typeface.DEFAULT)
                 }
                 val s = 30 * u
                 val box = RectF(w - s - 3 * u, 3 * u, w - 3 * u, 3 * u + s)
-                part(c, OverlayPart.MAP, w, h, box) {
+                if (on(VideoField.MINIMAP)) part(c, OverlayPart.MAP, w, h, box) {
                     minimap(c, box, false, Color.argb(110, 0, 0, 0), null,
                         Color.argb(100, Color.red(yellow), Color.green(yellow), Color.blue(yellow)), yellow, idx, u)
                 }
-                if (hasMotion) {
+                if (motionOn) {
                     val mb = RectF(w - 37 * u, h - 17 * u, w - 3 * u, h - 3 * u)
                     part(c, OverlayPart.MOTION, w, h, mb) { motionBlock(c, mb, u, mo, Color.argb(110, 0, 0, 0), yellow, Typeface.DEFAULT_BOLD) }
                 }
@@ -436,7 +446,7 @@ class TripLook(
                 }
                 // Gauge
                 val cx = 18 * u; val cy = h - 19 * u; val r = 13 * u
-                part(c, OverlayPart.SPEED, w, h, RectF(cx - r - 2.2f * u, cy - r - 2.2f * u, cx + r + 2.2f * u, cy + r + 2.2f * u)) {
+                if (on(VideoField.SPEED)) part(c, OverlayPart.SPEED, w, h, RectF(cx - r - 2.2f * u, cy - r - 2.2f * u, cx + r + 2.2f * u, cy + r + 2.2f * u)) {
                     c.drawCircle(cx, cy, r + 2.2f * u, fill(Color.argb(120, 0, 0, 0)))
                     stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeWidth = 1.6f * u
                     stroke.strokeCap = Paint.Cap.ROUND
@@ -459,11 +469,11 @@ class TripLook(
                 // Round mini-map with north
                 val ms = 26 * u
                 val box = RectF(w - ms - 3 * u, 3 * u, w - 3 * u, 3 * u + ms)
-                part(c, OverlayPart.MAP, w, h, box) {
+                if (on(VideoField.MINIMAP)) part(c, OverlayPart.MAP, w, h, box) {
                     minimap(c, box, true, Color.argb(190, 15, 18, 20), amber, Color.argb(130, 255, 255, 255), amber, idx, u)
                     if (map != VideoMap.STREETS || streets == null) text(c, "N", box.centerX(), box.top + 3.4f * u, 2.6f * u, tfCond, amber, Paint.Align.CENTER, false)
                 }
-                if (hasMotion) {
+                if (motionOn) {
                     val mb = RectF(w - 40 * u, h - 27 * u, w - 3 * u, h - 14.5f * u)
                     part(c, OverlayPart.MOTION, w, h, mb) { motionBlock(c, mb, u, mo, Color.argb(130, 0, 0, 0), amber, tfCondItalic) }
                 }
@@ -475,17 +485,17 @@ class TripLook(
                     text(c, line, 4 * u, 6.5f * u, ls, tfMedium)
                 }
                 val kw = measure("$kmh", tfLight, 16 * u)
-                part(c, OverlayPart.SPEED, w, h, RectF(3 * u, h - 17 * u, 6.5f * u + kw + measure("km/h", tfLight, 3.8f * u), h - 2.5f * u)) {
+                if (on(VideoField.SPEED)) part(c, OverlayPart.SPEED, w, h, RectF(3 * u, h - 17 * u, 6.5f * u + kw + measure("km/h", tfLight, 3.8f * u), h - 2.5f * u)) {
                     text(c, "$kmh", 4 * u, h - 4 * u, 16 * u, tfLight)
                     text(c, "km/h", 5.5f * u + kw, h - 5 * u, 3.8f * u, tfLight)
                 }
                 val s = 20 * u
                 val box = RectF(w - s - 3 * u, h - s - 3 * u, w - 3 * u, h - 3 * u)
-                part(c, OverlayPart.MAP, w, h, box) {
+                if (on(VideoField.MINIMAP)) part(c, OverlayPart.MAP, w, h, box) {
                     minimap(c, box, false, null, if (map == VideoMap.STREETS) Color.WHITE else null,
                         Color.argb(85, 255, 255, 255), Color.WHITE, idx, u)
                 }
-                if (hasMotion) {
+                if (motionOn) {
                     val mb = RectF(w - 36 * u, h - 38 * u, w - 3 * u, h - 25 * u)
                     part(c, OverlayPart.MOTION, w, h, mb) { motionBlock(c, mb, u, mo, null, Color.WHITE, tfLight) }
                 }
@@ -495,21 +505,21 @@ class TripLook(
                 c.drawRect(0f, 0f, w.toFloat(), bar, fill(Color.BLACK))
                 c.drawRect(0f, h - bar, w.toFloat(), h.toFloat(), fill(Color.BLACK))
                 val date = DateFormat.getDateInstance(DateFormat.LONG).format(Date(tMs)).uppercase()
-                val rightW = max(measure("$date · $clock", tfLight, 2.3f * u), measure("$kmh KM/H", tfMedium, 2.8f * u))
+                val rightW = max(measure("$date · $clock", tfLight, 2.3f * u), if (on(VideoField.SPEED)) measure("$kmh KM/H", tfMedium, 2.8f * u) else 0f)
                 val ts = fitSize(title, tfSerifItalic, w - 9 * u - rightW - 4 * u, 5.2f * u)
                 part(c, OverlayPart.TITLE, w, h, RectF(4 * u, h - bar + u, 5 * u + measure(title, tfSerifItalic, ts), h - u)) {
                     text(c, title, 4.5f * u, h - bar / 2 + 1.8f * u, ts, tfSerifItalic, Color.rgb(240, 232, 214), shadow = false)
                 }
                 part(c, OverlayPart.SPEED, w, h, RectF(w - 5 * u - rightW, h - bar + u, w - 4 * u, h - u)) {
                     text(c, "$date · $clock", w - 4.5f * u, h - bar / 2 - 1.2f * u, 2.3f * u, tfLight, Color.rgb(200, 190, 170), Paint.Align.RIGHT, false)
-                    text(c, "$kmh KM/H", w - 4.5f * u, h - bar / 2 + 3.2f * u, 2.8f * u, tfMedium, Color.rgb(240, 232, 214), Paint.Align.RIGHT, false)
+                    if (on(VideoField.SPEED)) text(c, "$kmh KM/H", w - 4.5f * u, h - bar / 2 + 3.2f * u, 2.8f * u, tfMedium, Color.rgb(240, 232, 214), Paint.Align.RIGHT, false)
                 }
                 val s = bar - 3 * u
                 val box = RectF(w - s - 4.5f * u, 1.5f * u, w - 4.5f * u, 1.5f * u + s)
-                part(c, OverlayPart.MAP, w, h, box) {
+                if (on(VideoField.MINIMAP)) part(c, OverlayPart.MAP, w, h, box) {
                     minimap(c, box, false, null, null, Color.argb(90, Color.red(gold), Color.green(gold), Color.blue(gold)), gold, idx, u * 0.7f)
                 }
-                if (hasMotion) {
+                if (motionOn) {
                     val mb = RectF(4 * u, 1.5f * u, 40 * u, bar - 1.5f * u)
                     part(c, OverlayPart.MOTION, w, h, mb) { motionBlock(c, mb, u, mo, null, gold, tfMedium) }
                 }
@@ -528,7 +538,7 @@ class TripLook(
                     text(c, rt, 4.5f * u, 14 * u, rs, tfMono)
                 }
                 val sp = String.format(Locale.US, "%03d KM/H", kmh)
-                part(c, OverlayPart.SPEED, w, h, RectF(4 * u, h - 13.5f * u, 5 * u + measure(sp, tfMono, 6 * u), h - 6 * u)) {
+                if (on(VideoField.SPEED)) part(c, OverlayPart.SPEED, w, h, RectF(4 * u, h - 13.5f * u, 5 * u + measure(sp, tfMono, 6 * u), h - 6 * u)) {
                     text(c, sp, 4.5f * u, h - 7 * u, 6 * u, tfMono)
                 }
                 val d = SimpleDateFormat("MMM.dd yyyy", Locale.ENGLISH).format(Date(tMs)).uppercase()
@@ -540,10 +550,10 @@ class TripLook(
                 }
                 val s = 18 * u
                 val box = RectF(w - s - 4 * u, 12 * u, w - 4 * u, 12 * u + s)
-                part(c, OverlayPart.MAP, w, h, box) {
+                if (on(VideoField.MINIMAP)) part(c, OverlayPart.MAP, w, h, box) {
                     minimap(c, box, false, null, null, Color.argb(85, 255, 255, 255), Color.WHITE, idx, u)
                 }
-                if (hasMotion) {
+                if (motionOn) {
                     val mb = RectF(4 * u, h - 30 * u, 40 * u, h - 15.5f * u)
                     part(c, OverlayPart.MOTION, w, h, mb) { motionBlock(c, mb, u, mo, null, Color.WHITE, tfMono) }
                 }
@@ -559,20 +569,20 @@ class TripLook(
                 // Glass panel
                 val panel = RectF(3 * u, h - 22 * u, w - 3 * u, h - 3 * u)
                 part(c, OverlayPart.SPEED, w, h, panel) { telemetryPanel(c, panel, u, kmh, kmDone, idx, trip.obdAt(tMs)) }
-                trip.obdAt(tMs)?.let { sample ->
+                trip.obdAt(tMs)?.takeIf { on(VideoField.RPM) || on(VideoField.COOLANT) }?.let { sample ->
                     val box = RectF(3.5f * u, 14f * u, w - 31f * u, 25f * u)
                     part(c, OverlayPart.EXTRA, w, h, box) { obdChip(c, box, u, sample) }
                 }
-                if (hasMotion) {
+                if (motionOn) {
                     // Without RPM this is the star of the screen (big, where the OBD chip would sit); with it, just below.
-                    val big = obd.isEmpty()
+                    val big = obd.isEmpty() || !(on(VideoField.RPM) || on(VideoField.COOLANT))
                     val mb = if (big) RectF(3.5f * u, 13.5f * u, w - 29f * u, 27 * u) else RectF(3.5f * u, 26.5f * u, w - 29f * u, 36 * u)
                     part(c, OverlayPart.MOTION, w, h, mb) { motionBlock(c, mb, u, mo, Color.argb(175, 12, 16, 20), sky, tfArchivoBlack) }
                 }
                 // Mini-map, glass square
                 val s = 24 * u
                 val box = RectF(w - s - 3 * u, 3 * u, w - 3 * u, 3 * u + s)
-                part(c, OverlayPart.MAP, w, h, box) {
+                if (on(VideoField.MINIMAP)) part(c, OverlayPart.MAP, w, h, box) {
                     minimap(c, box, false, Color.argb(175, 12, 16, 20), Color.argb(60, 255, 255, 255),
                         Color.argb(110, 255, 255, 255), sky, idx, u)
                 }
@@ -660,16 +670,18 @@ class TripLook(
 
         // Acceleration (top-right) and coolant below it.
         val accel = RectF(w - 42 * u, 2.5f * u, w - 2.5f * u, 15.5f * u)
-        part(c, OverlayPart.EXTRA, w, h, accel) {
-            val g = accelG(tMs)
-            val box = RectF(w - 18 * u, 3 * u, w - 3 * u, 9.5f * u)
-            val braking = g < -0.05
-            c.drawRoundRect(box, 1 * u, 1 * u, fill(if (braking) red else amber))
-            text(c, String.format(Locale.US, "%.2f g", g).replace("-0.00", "0.00"), box.centerX(), box.bottom - 1.6f * u,
-                3.8f * u, tfCondItalic, Color.rgb(20, 20, 20), Paint.Align.CENTER, shadow = false)
-            text(c, if (braking) "BRAKING" else "ACCELERATION", box.left - 1.5f * u, box.bottom - 1.8f * u, 2.2f * u,
-                tfMedium, if (braking) red else amber, Paint.Align.RIGHT)
-            obdValue(tMs) { it.coolantC }?.let { t ->
+        if (on(VideoField.G_FORCE) || on(VideoField.COOLANT)) part(c, OverlayPart.EXTRA, w, h, accel) {
+            if (on(VideoField.G_FORCE)) {
+                val g = accelG(tMs)
+                val box = RectF(w - 18 * u, 3 * u, w - 3 * u, 9.5f * u)
+                val braking = g < -0.05
+                c.drawRoundRect(box, 1 * u, 1 * u, fill(if (braking) red else amber))
+                text(c, String.format(Locale.US, "%.2f g", g).replace("-0.00", "0.00"), box.centerX(), box.bottom - 1.6f * u,
+                    3.8f * u, tfCondItalic, Color.rgb(20, 20, 20), Paint.Align.CENTER, shadow = false)
+                text(c, if (braking) "BRAKING" else "ACCELERATION", box.left - 1.5f * u, box.bottom - 1.8f * u, 2.2f * u,
+                    tfMedium, if (braking) red else amber, Paint.Align.RIGHT)
+            }
+            if (on(VideoField.COOLANT)) obdValue(tMs) { it.coolantC }?.let { t ->
                 val col = when { t >= 108 -> red; t >= 100 -> amber; else -> Color.WHITE }
                 text(c, "${t.roundToInt()}°C", w - 3 * u, 14.5f * u, 3 * u, tfCondItalic, col, Paint.Align.RIGHT)
                 text(c, "COOLANT", w - 3 * u - measure("${t.roundToInt()}°C", tfCondItalic, 3 * u) - 1.2f * u, 14.5f * u,
@@ -681,22 +693,25 @@ class TripLook(
         val r = 11 * u
         val cx = 4 * u + r + 3 * u
         val cy = h - 4 * u - r
-        part(c, OverlayPart.SPEED, w, h, RectF(cx - r - 4 * u, cy - r - 4 * u, cx + r + 4 * u, cy + r + 3 * u)) {
+        val useRpm = hasRpm && on(VideoField.RPM)
+        if (on(VideoField.SPEED) || useRpm) part(c, OverlayPart.SPEED, w, h, RectF(cx - r - 4 * u, cy - r - 4 * u, cx + r + 4 * u, cy + r + 3 * u)) {
             val kmhNow = speedKmhAt(tMs).coerceAtLeast(0.0)
-            val rpm = if (hasRpm) obdValue(tMs) { it.rpm } else null
-            val scale = if (hasRpm) rpmScaleK else speedScale
-            val value = if (hasRpm) (rpm ?: 0.0) / 1000.0 else kmhNow
-            dial(c, cx, cy, r, u, value, scale.toDouble(), if (hasRpm) 0.85f else 2f, labelEvery = if (hasRpm) 1 else 20)
-            text(c, String.format(Locale.US, "%03d", kmhNow.roundToInt()), cx, cy + 2.6f * u, 8 * u, tfCondItalic, align = Paint.Align.CENTER)
-            text(c, "KM/H", cx, cy + 5.6f * u, 2 * u, tfMedium, dim, Paint.Align.CENTER)
-            text(c, if (hasRpm) (rpm?.let { "${(it / 10).roundToInt() * 10} RPM" } ?: "— RPM") else "GPS",
-                cx, cy + r * 0.92f, 2 * u, tfMedium, if (hasRpm) amber else dim, Paint.Align.CENTER)
+            val rpm = if (useRpm) obdValue(tMs) { it.rpm } else null
+            val scale = if (useRpm) rpmScaleK else speedScale
+            val value = if (useRpm) (rpm ?: 0.0) / 1000.0 else kmhNow
+            dial(c, cx, cy, r, u, value, scale.toDouble(), if (useRpm) 0.85f else 2f, labelEvery = if (useRpm) 1 else 20)
+            if (on(VideoField.SPEED)) {
+                text(c, String.format(Locale.US, "%03d", kmhNow.roundToInt()), cx, cy + 2.6f * u, 8 * u, tfCondItalic, align = Paint.Align.CENTER)
+                text(c, "KM/H", cx, cy + 5.6f * u, 2 * u, tfMedium, dim, Paint.Align.CENTER)
+            }
+            text(c, if (useRpm) (rpm?.let { "${(it / 10).roundToInt() * 10} RPM" } ?: "— RPM") else "GPS",
+                cx, cy + r * 0.92f, 2 * u, tfMedium, if (useRpm) amber else dim, Paint.Align.CENTER)
         }
 
         // Throttle and engine load (bottom-centre), only when the trip has them.
         val thr = obdValue(tMs) { it.relativeThrottlePct ?: it.throttlePct }
         val load = obdValue(tMs) { it.engineLoadPct }
-        if (obd.any { it.relativeThrottlePct != null || it.throttlePct != null }) {
+        if (on(VideoField.THROTTLE_LOAD) && obd.any { it.relativeThrottlePct != null || it.throttlePct != null }) {
             val tr = 8.5f * u
             val tx = w / 2f
             val ty = h - 6.5f * u
@@ -721,17 +736,17 @@ class TripLook(
         }
 
         // Lean, G and heart rate. Without RPM this takes the big bottom-centre slot (the throttle one, when free).
-        if (hasMotion) {
-            val throttleShown = obd.any { it.relativeThrottlePct != null || it.throttlePct != null }
+        if (motionOn) {
+            val throttleShown = on(VideoField.THROTTLE_LOAD) && obd.any { it.relativeThrottlePct != null || it.throttlePct != null }
             val mb = if (throttleShown) RectF(w / 2f - 17 * u, h - 31 * u, w / 2f + 17 * u, h - 19 * u)
-                else RectF(w / 2f - 17 * u, h - (if (hasRpm) 15 else 20) * u, w / 2f + 17 * u, h - 3 * u)
+                else RectF(w / 2f - 17 * u, h - (if (useRpm) 15 else 20) * u, w / 2f + 17 * u, h - 3 * u)
             part(c, OverlayPart.MOTION, w, h, mb) { motionBlock(c, mb, u, trip.motionAt(tMs), Color.argb(90, 0, 0, 0), amber, tfCondItalic) }
         }
 
         // Mini-map (bottom-right).
         val s = 20 * u
         val box = RectF(w - s - 3 * u, h - s - 3 * u, w - 3 * u, h - 3 * u)
-        part(c, OverlayPart.MAP, w, h, box) {
+        if (on(VideoField.MINIMAP)) part(c, OverlayPart.MAP, w, h, box) {
             minimap(c, box, false, Color.argb(150, 12, 14, 16), Color.argb(60, 255, 255, 255),
                 Color.argb(110, 255, 255, 255), amber, idx, u)
         }
@@ -852,7 +867,7 @@ class TripLook(
         // G ball (top-right): dot moves with lateral and braking/acceleration G, short tail behind it.
         val gr = 8.5f * u
         val gcx = w - 3.5f * u - gr; val gcy = 3.5f * u + gr
-        part(c, OverlayPart.EXTRA, w, h, RectF(gcx - gr - 1 * u, gcy - gr - 1 * u, gcx + gr + 1 * u, gcy + gr + 6 * u)) {
+        if (on(VideoField.G_FORCE)) part(c, OverlayPart.EXTRA, w, h, RectF(gcx - gr - 1 * u, gcy - gr - 1 * u, gcx + gr + 1 * u, gcy + gr + 6 * u)) {
             hudGDot(c, gcx, gcy, gr, u, tMs)
             val gv = mo?.let { HudMath.combinedG(it) } ?: abs(accelG(tMs))
             val braking = (mo?.gLon ?: accelG(tMs)) < -0.08
@@ -861,13 +876,15 @@ class TripLook(
 
         // Side readouts. Left: coolant and load from the OBD. Right: heart rate and throttle.
         val y0 = if (portrait) h * 0.36f else 38f * u
-        val coolant = obdValue(tMs) { it.coolantC }
-        val load = obdValue(tMs) { it.engineLoadPct }
-        val thr = obdValue(tMs) { it.relativeThrottlePct ?: it.throttlePct }
+        val coolant = obdValue(tMs) { it.coolantC }.takeIf { on(VideoField.COOLANT) }
+        val load = obdValue(tMs) { it.engineLoadPct }.takeIf { on(VideoField.THROTTLE_LOAD) }
+        val thr = obdValue(tMs) { it.relativeThrottlePct ?: it.throttlePct }.takeIf { on(VideoField.THROTTLE_LOAD) }
+        // Each side column is as tall as the rows it holds: 10u for one, 26u for two.
         if (coolant != null || load != null) {
-            part(c, OverlayPart.READOUT_L, w, h, RectF(3 * u, y0 - 7 * u, 30 * u, y0 + 22 * u)) {
+            val rowsL = (if (coolant != null) 1 else 0) + (if (load != null) 1 else 0)
+            part(c, OverlayPart.READOUT_L, w, h, RectF(3 * u, y0 - 7 * u, 30 * u, y0 + (6 + 16 * (rowsL - 1)) * u)) {
                 stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeWidth = 0.35f * u; stroke.color = Color.argb(150, 255, 176, 32)
-                c.drawLine(3 * u, y0 - 6 * u, 3 * u, y0 + 20 * u, stroke)
+                c.drawLine(3 * u, y0 - 6 * u, 3 * u, y0 + (4 + 16 * (rowsL - 1)) * u, stroke)
                 var by = y0
                 coolant?.let {
                     val col = when { it >= 108 -> red; it >= 100 -> amber; else -> Color.WHITE }
@@ -876,11 +893,12 @@ class TripLook(
                 load?.let { hudReadout(c, 5.5f * u, false, by, u, "${it.roundToInt()}", "%", "ENGINE LOAD", dim) }
             }
         }
-        val bpm = mo?.bpm
+        val bpm = mo?.bpm.takeIf { on(VideoField.HEART_RATE) }
         if (bpm != null || thr != null) {
-            part(c, OverlayPart.READOUT_R, w, h, RectF(w - 32 * u, y0 - 7 * u, w - 3 * u, y0 + 22 * u)) {
+            val rowsR = (if (bpm != null) 1 else 0) + (if (thr != null) 1 else 0)
+            part(c, OverlayPart.READOUT_R, w, h, RectF(w - 32 * u, y0 - 7 * u, w - 3 * u, y0 + (6 + 16 * (rowsR - 1)) * u)) {
                 stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeWidth = 0.35f * u; stroke.color = Color.argb(150, 255, 176, 32)
-                c.drawLine(w - 3 * u, y0 - 6 * u, w - 3 * u, y0 + 20 * u, stroke)
+                c.drawLine(w - 3 * u, y0 - 6 * u, w - 3 * u, y0 + (4 + 16 * (rowsR - 1)) * u, stroke)
                 var by = y0
                 if (bpm != null) { hudHeartRow(c, w - 5.5f * u, by, u, bpm, tMs, dim); by += 16 * u }
                 thr?.let { hudReadout(c, w - 5.5f * u, true, by, u, "${it.roundToInt()}", "%", "THROTTLE", dim) }
@@ -891,9 +909,10 @@ class TripLook(
         val lift = if (portrait) 25f * u else 0f
         val kmhNow = speedKmhAt(tMs).coerceAtLeast(0.0)
         val sb = RectF(3 * u, h - 31 * u - lift, 44 * u, h - 3 * u - lift)
-        part(c, OverlayPart.SPEED, w, h, sb) {
+        val useRpm = hasRpm && on(VideoField.RPM)
+        if (on(VideoField.SPEED) || useRpm) part(c, OverlayPart.SPEED, w, h, sb) {
             val barW = 38f * u; val x0 = 4 * u; val barBottom = h - 21.5f * u - lift
-            if (hasRpm) {
+            if (useRpm) {
                 val rpmK = (obdValue(tMs) { it.rpm } ?: 0.0) / 1000.0
                 val step = max(1, rpmScaleK / 10)
                 var k = 0
@@ -906,14 +925,16 @@ class TripLook(
             } else {
                 hudBar(c, x0, barBottom, barW, 1.2f * u, u, HudMath.litSegments(kmhNow, speedScale.toDouble()), 20, 21)
             }
-            val ns = String.format(Locale.US, "%03d", kmhNow.roundToInt())
-            text(c, ns, x0, h - 5.5f * u - lift, 15f * u, tfCondItalic)
-            text(c, "KM/H", x0 + measure(ns, tfCondItalic, 15f * u) + 1.4f * u, h - 5.5f * u - lift, 2.6f * u, tfMedium, dim)
+            if (on(VideoField.SPEED)) {
+                val ns = String.format(Locale.US, "%03d", kmhNow.roundToInt())
+                text(c, ns, x0, h - 5.5f * u - lift, 15f * u, tfCondItalic)
+                text(c, "KM/H", x0 + measure(ns, tfCondItalic, 15f * u) + 1.4f * u, h - 5.5f * u - lift, 2.6f * u, tfMedium, dim)
+            }
         }
 
         // Lean arc (bottom-centre): angle, peak of the last 10 s, flash on a new best, ride maximum under it.
         val lean = mo?.leanDeg
-        if (hasMotion && lean != null) {
+        if (hasMotion && lean != null && on(VideoField.LEAN)) {
             val r = 15f * u; val cx = w / 2f; val cy = h - 11f * u
             part(c, OverlayPart.MOTION, w, h, RectF(cx - r - 4 * u, cy - r - 4 * u, cx + r + 4 * u, h - 1 * u)) {
                 val rect = RectF(cx - r, cy - r, cx + r, cy + r)
@@ -951,13 +972,18 @@ class TripLook(
         // Mini-map (bottom-right).
         val ms = 20 * u
         val mbox = RectF(w - ms - 3 * u, h - ms - 3 * u, w - 3 * u, h - 3 * u)
-        part(c, OverlayPart.MAP, w, h, mbox) {
+        if (on(VideoField.MINIMAP)) part(c, OverlayPart.MAP, w, h, mbox) {
             minimap(c, mbox, false, Color.argb(120, 12, 14, 16), Color.argb(110, 255, 255, 255), Color.argb(110, 255, 255, 255), amber, idx, u)
         }
 
         // Peaks of the ride: a short banner as the video passes each one.
         var row = 0
-        for (b in hudBanners) {
+        if (on(VideoField.PEAK_BANNERS)) for (b in hudBanners) {
+            if (when (b.kind) {
+                    HudMath.Kind.TOP_SPEED -> !on(VideoField.SPEED)
+                    HudMath.Kind.MAX_LEAN -> !on(VideoField.LEAN)
+                    HudMath.Kind.MAX_G -> !on(VideoField.G_FORCE)
+                }) continue
             val al = HudMath.bannerAlpha(b, tMs)
             if (al <= 0f) continue
             val (label, value) = when (b.kind) {
@@ -980,8 +1006,8 @@ class TripLook(
      * Lean dial (needle + arc to the side you lean), G and heart rate in [box]. Anything unknown is left out;
      * nothing is drawn when the sample has no data at all. [panel] is an optional rounded background.
      */
-    private fun motionBlock(c: Canvas, box: RectF, u: Float, m: MotionTripSample?, panel: Int?, accent: Int, tf: Typeface) {
-        if (m == null) return
+    private fun motionBlock(c: Canvas, box: RectF, u: Float, m0: MotionTripSample?, panel: Int?, accent: Int, tf: Typeface) {
+        val m = maskMotion(m0) ?: return
         if (m.leanDeg == null && m.gLat == null && m.gLon == null && m.bpm == null) return
         val bh = box.height()
         if (panel != null) c.drawRoundRect(box, 1.6f * u, 1.6f * u, fill(panel))
@@ -1069,23 +1095,33 @@ class TripLook(
         c.drawRoundRect(panel, 2.5f * u, 2.5f * u, fill(Color.argb(175, 12, 16, 20)))
         stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeWidth = 0.15f * u
         stroke.color = Color.argb(60, 255, 255, 255); c.drawRoundRect(panel, 2.5f * u, 2.5f * u, stroke)
-        text(c, ctx.getString(R.string.tvl_speed), panel.left + 3 * u, panel.top + 4.5f * u, 2 * u, tfArchivo, sky, shadow = false)
-        text(c, "$kmh", panel.left + 3 * u, panel.top + 13.5f * u, 10 * u, tfArchivoBlack, shadow = false)
-        text(c, "km/h", panel.left + 3 * u, panel.top + 17.5f * u, 2.4f * u, tfArchivo, Color.argb(210, 220, 230, 240), shadow = false)
+        if (on(VideoField.SPEED)) {
+            text(c, ctx.getString(R.string.tvl_speed), panel.left + 3 * u, panel.top + 4.5f * u, 2 * u, tfArchivo, sky, shadow = false)
+            text(c, "$kmh", panel.left + 3 * u, panel.top + 13.5f * u, 10 * u, tfArchivoBlack, shadow = false)
+            text(c, "km/h", panel.left + 3 * u, panel.top + 17.5f * u, 2.4f * u, tfArchivo, Color.argb(210, 220, 230, 240), shadow = false)
+        }
         text(c, ctx.getString(R.string.tvl_distance), panel.right - 3 * u, panel.top + 4.5f * u, 2 * u, tfArchivo, sky, Paint.Align.RIGHT, false)
         text(c, km(kmDone), panel.right - 3 * u, panel.top + 12 * u, 6.5f * u, tfArchivoBlack, align = Paint.Align.RIGHT, shadow = false)
         text(c, ctx.getString(R.string.tvl_of_km, km(totalKm)), panel.right - 3 * u, panel.top + 16.5f * u, 2.2f * u, tfArchivo,
             Color.argb(210, 220, 230, 240), Paint.Align.RIGHT, false)
         // If OBD samples exist, reserve two compact readouts above the graph.
-        if (obd != null) {
-            val line1 = "RPM ${obd.rpm?.roundToInt() ?: "—"}   COOLANT ${obd.coolantC?.roundToInt()?.let { "$it°C" } ?: "—"}"
-            val line2 = "THROTTLE ${obd.relativeThrottlePct?.roundToInt()?.let { "$it%" } ?: "—"}   VOLT ${obd.voltage?.let { String.format(Locale.US, "%.1fV", it) } ?: "—"}"
-            text(c, line1, panel.left + 22 * u, panel.top + 5.5f * u, 2.1f * u, tfArchivo, Color.WHITE, shadow = false)
-            text(c, line2, panel.left + 22 * u, panel.top + 8.5f * u, 2.1f * u, tfArchivo, Color.WHITE, shadow = false)
+        val lines = if (obd == null) emptyList() else listOf(
+            listOfNotNull(
+                if (on(VideoField.RPM)) "RPM ${obd.rpm?.roundToInt() ?: "—"}" else null,
+                if (on(VideoField.COOLANT)) "COOLANT ${obd.coolantC?.roundToInt()?.let { "$it°C" } ?: "—"}" else null,
+            ),
+            listOfNotNull(
+                if (on(VideoField.THROTTLE_LOAD)) "THROTTLE ${obd.relativeThrottlePct?.roundToInt()?.let { "$it%" } ?: "—"}" else null,
+                if (on(VideoField.VOLTAGE)) "VOLT ${obd.voltage?.let { String.format(Locale.US, "%.1fV", it) } ?: "—"}" else null,
+            ),
+        ).filter { it.isNotEmpty() }.map { it.joinToString("   ") }
+        lines.forEachIndexed { i, l ->
+            text(c, l, panel.left + 22 * u, panel.top + (5.5f + 3f * i) * u, 2.1f * u, tfArchivo, Color.WHITE, shadow = false)
         }
-        // Speed over the whole trip, filled up to now
+        // Speed over the whole trip, filled up to now (left out when speed is off)
+        if (!on(VideoField.SPEED)) return
         val gx0 = panel.left + 22 * u; val gx1 = panel.right - 21 * u
-        val gy0 = panel.top + (if (obd != null) 10f else 3f) * u; val gy1 = panel.bottom - 3 * u
+        val gy0 = panel.top + (when (lines.size) { 0 -> 3f; 1 -> 7f; else -> 10f }) * u; val gy1 = panel.bottom - 3 * u
         val n = speedSeries.size
         val frac = (idx.toFloat() / pts.lastIndex).coerceIn(0f, 1f)
         val cur = (frac * (n - 1)).roundToInt()
