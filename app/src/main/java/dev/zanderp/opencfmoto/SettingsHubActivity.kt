@@ -58,6 +58,16 @@ class SettingsHubActivity : AppCompatActivity() {
             insets
         }
         val list = findViewById<LinearLayout>(R.id.hub_list)
+        // First row: Help (it used to be the "?" icon on Home). Home owns the callbacks, so it shows the menu.
+        val help = LayoutInflater.from(this).inflate(R.layout.row_settings_section, list, false)
+        help.findViewById<TextView>(R.id.row_icon).text = "❓"
+        help.findViewById<TextView>(R.id.row_title).setText(R.string.settings_help)
+        help.findViewById<TextView>(R.id.row_sub).setText(R.string.settings_help_sub)
+        help.setOnClickListener {
+            HubHooks.helpPending = true
+            HubHooks.openHome(this)
+        }
+        list.addView(help)
         for (section in SettingsSection.entries) {
             val row = LayoutInflater.from(this).inflate(R.layout.row_settings_section, list, false)
             row.findViewById<TextView>(R.id.row_icon).text = section.icon

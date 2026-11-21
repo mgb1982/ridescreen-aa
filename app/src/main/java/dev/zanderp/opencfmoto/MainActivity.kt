@@ -810,8 +810,6 @@ class MainActivity : AppCompatActivity() {
             "v${BuildConfig.VERSION_NAME}"
         // v2.2 home (proposal A): "Más" row icons + the tiles (icon bubble, title, live detail).
         (findViewById<View>(R.id.btn_gpx) as? MaterialButton)?.setIconResource(R.drawable.ic_place)
-        (findViewById<View>(R.id.btn_mirror_start) as? MaterialButton)?.setIconResource(R.drawable.ic_cast)
-        (findViewById<View>(R.id.btn_aa_start) as? MaterialButton)?.setIconResource(R.drawable.ic_qr)
         (findViewById<View>(R.id.btn_devices) as? MaterialButton)?.setIconResource(R.drawable.ic_devices)
         (findViewById<View>(R.id.btn_controls_more) as? MaterialButton)?.setIconResource(R.drawable.ic_tune)
         (findViewById<View>(R.id.btn_setup) as? MaterialButton)?.setIconResource(R.drawable.ic_settings)
@@ -904,9 +902,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        findViewById<Button>(R.id.btn_aa_start).setOnClickListener { startAaScan() }
-
-        findViewById<Button>(R.id.btn_mirror_start).setOnClickListener { onMirrorPressed() }
         findViewById<View>(R.id.btn_gpx).setOnClickListener { onMapPressed() }
         findViewById<Button>(R.id.btn_aa_stop).setOnClickListener { stopEverything() }
 
@@ -997,11 +992,8 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_share_log).setOnClickListener { shareLog() }
 
         findViewById<Button>(R.id.btn_setup).setOnClickListener { SetupActivity.start(this) }
-        // 2.6 menus: the gear opens the Settings hub, "?" opens Help (always visible), tabs at the bottom.
-        findViewById<View>(R.id.btn_hero_menu).setOnClickListener { startActivity(BottomNav.settingsIntent(this)) }
-        findViewById<View>(R.id.btn_hero_help)?.setOnClickListener {
-            HelpMenu.show(this, shareLogs = { shareLog() }, reportProblem = { reportProblem() }, extras = helpExtras())
-        }
+        // Menus: tapping the bike header opens the Garage; Help lives in Settings (first row); tabs at the bottom.
+        findViewById<View>(R.id.hero_card).setOnClickListener { GarageActivity.start(this) }
         BottomNav.bind(this, NavTab.HOME)
         HubHooks.stopEverything = { stopEverything() }
         findViewById<View>(R.id.btn_trips_list).setOnClickListener { TripsListActivity.start(this) }
@@ -1076,6 +1068,13 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Support.onResume(this)
+        // "Mirror" is picked on the Cuadro screen, which closes and hands the tap over to this Activity.
+        if (HubHooks.mirrorPending) { HubHooks.mirrorPending = false; onMirrorPressed() }
+        // Settings ▸ Help: the same menu (and callbacks) the "?" icon on Home used to open.
+        if (HubHooks.helpPending) {
+            HubHooks.helpPending = false
+            HelpMenu.show(this, shareLogs = { shareLog() }, reportProblem = { reportProblem() }, extras = helpExtras())
+        }
         // Mirror ended while we were away (Stop, bike gone for 20 min, a crash): never leave the phone stuck in landscape.
         if (ProjectionHolder.projection == null) MirrorOrientationLock.clear(this)
         try { AndroidAutoService.regainForegroundTypes(this) } catch (_: Exception) {}
@@ -1582,7 +1581,6 @@ class MainActivity : AppCompatActivity() {
             }, "dash-card-preview").start()
         }
         val on = DashboardMode.wanted && connected
-        val atConnect = DashboardMode.startInDashboard(this)
         val designName = getString(when (design) {
             DashboardMode.Design.SPORT -> R.string.dash_design_sport
             DashboardMode.Design.RACING -> R.string.dash_design_racing
@@ -1603,25 +1601,15 @@ class MainActivity : AppCompatActivity() {
             connected -> getString(R.string.home_dash_sub_ready, designName)
             else -> getString(R.string.home_dash_sub_off, designName)
         }
-        val toggle = findViewById<com.google.android.material.button.MaterialButton>(R.id.dash_card_toggle)
-        toggle.setText(when {
-            connected -> if (on) R.string.controls_dash_hide else R.string.controls_dash_show
-            else -> if (atConnect) R.string.home_dash_at_connect_on else R.string.home_dash_at_connect_off
-        })
-        toggle.setOnClickListener {
-            if (connected) {
-                if (DashboardMode.toggle(this) == null) Toast.makeText(this, R.string.dash_need_stream, Toast.LENGTH_SHORT).show()
-            } else {
-                DashboardMode.setStartInDashboard(this, !DashboardMode.startInDashboard(this))
-            }
-            renderDashCard()
-        }
+        findViewById<TextView>(R.id.dash_card_style_name).text = designName
+        // One entry point: the dashboard settings (style, show / hide on the dash, open at connect).
         val open = View.OnClickListener {
-            if (supportFragmentManager.findFragmentByTag(DashStyleSheet.TAG) == null) {
-                DashStyleSheet().show(supportFragmentManager, DashStyleSheet.TAG)
-            }
+            startActivity(
+                Intent(this, ControlsActivity::class.java)
+                    .putExtra(SettingsSection.EXTRA, SettingsSection.DASHBOARD.key),
+            )
         }
-        findViewById<View>(R.id.dash_card_style).setOnClickListener(open)
+        findViewById<View>(R.id.dash_card_options).setOnClickListener(open)
         img.setOnClickListener(open)
         card.visibility = View.VISIBLE
     }
@@ -2059,10 +2047,7 @@ class MainActivity : AppCompatActivity() {
         // Connect/Stop always tappable except pure idle race — Stop while busy/live, Connect otherwise.
         connectBtn.isEnabled = true
         applyCancelLockLook()
-        // Scan only when not mid-flight.
-        setEnabled(R.id.btn_aa_start, !busy)
-        // Map / Mirror stay available while live so the rider can switch dash content.
-        setEnabled(R.id.btn_mirror_start, !busy || live)
+        // Map stays available while live so the rider can switch dash content.
         setEnabled(R.id.btn_gpx, !busy || live)
         setEnabled(R.id.btn_aa_stop, busy || live)
         renderHomeMode(phase)

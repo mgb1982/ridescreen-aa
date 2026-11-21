@@ -24,6 +24,18 @@ import androidx.core.view.ViewCompat
  */
 object HubHooks {
     @Volatile var stopEverything: (() -> Unit)? = null
+    /** Settings ▸ Help asked for the Help menu: MainActivity (which owns its callbacks) shows it on resume. */
+    @Volatile var helpPending: Boolean = false
+    /** Cuadro asked for Mirror: MainActivity starts it (same screen-capture flow) on resume. */
+    @Volatile var mirrorPending: Boolean = false
+
+    /** Brings Home to the front so it can act on a pending request. */
+    fun openHome(ctx: android.content.Context) {
+        ctx.startActivity(
+            android.content.Intent(ctx, MainActivity::class.java)
+                .addFlags(android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION),
+        )
+    }
 }
 
 /** What one hub row looks like. */

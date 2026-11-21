@@ -729,4 +729,9 @@
     <string name="dep_perm_location">Location (join bike Wi‑Fi)</string>
     <string name="dep_perm_notifications">Notifications</string>
     <string name="dep_perm_microphone">Microphone</string>
+    <string name="home_dash_options">Dashboard options</string>
+    <string name="settings_help">Help</string>
+    <string name="settings_help_sub">Guide, logs, report a problem, about</string>
+    <string name="garage_add_bike_scan">Add bike (scan QR)</string>
+    <string name="status_resume_when_bike_back">will resume when the bike is back</string>
 </resources>

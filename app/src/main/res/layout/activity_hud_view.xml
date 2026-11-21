@@ -81,6 +81,18 @@
                 android:paddingHorizontal="4dp"
                 android:text="@string/cuadro_mode_map"
                 android:textSize="12sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/hud_mode_mirror"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingHorizontal="4dp"
+                android:text="@string/main_mirror"
+                android:textSize="12sp" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <Button

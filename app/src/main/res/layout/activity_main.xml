@@ -96,29 +96,6 @@
                             android:textSize="11sp"
                             tools:text="v2.0.18" />
                     </LinearLayout>
-
-                    <ImageButton
-                        android:id="@+id/btn_hero_help"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/bg_round_glass"
-                        android:contentDescription="@string/home_tile_help"
-                        android:padding="12dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_line_help"
-                        app:tint="@color/text_primary" />
-
-                    <ImageButton
-                        android:id="@+id/btn_hero_menu"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/bg_round_glass"
-                        android:contentDescription="@string/main_settings_desc"
-                        android:padding="12dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_settings"
-                        app:tint="@color/text_primary" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -483,14 +460,31 @@
                     android:orientation="horizontal"
                     android:padding="12dp">
 
-                    <ImageView
-                        android:id="@+id/dash_card_preview"
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.1"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/home_dash_title"
-                        android:scaleType="fitCenter" />
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/dash_card_preview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/home_dash_title"
+                            android:scaleType="fitCenter" />
+
+                        <TextView
+                            android:id="@+id/dash_card_style_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:ellipsize="end"
+                            android:gravity="center_horizontal"
+                            android:maxLines="1"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -518,20 +512,12 @@
                             android:textSize="12sp" />
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/dash_card_toggle"
+                            android:id="@+id/dash_card_options"
                             style="@style/Widget.OpenCfMoto.Segment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:textSize="13sp" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/dash_card_style"
-                            style="@style/Widget.OpenCfMoto.Segment"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:text="@string/home_dash_style"
+                            android:text="@string/home_dash_options"
                             android:textSize="13sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -737,8 +723,6 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton android:id="@+id/btn_gpx" style="@style/HomeMore" android:text="@string/gpx_map" />
-                    <com.google.android.material.button.MaterialButton android:id="@+id/btn_mirror_start" style="@style/HomeMore" android:text="@string/main_mirror" />
-                    <com.google.android.material.button.MaterialButton android:id="@+id/btn_aa_start" style="@style/HomeMore" android:text="@string/main_scan" />
                     <com.google.android.material.button.MaterialButton android:id="@+id/btn_devices" android:visibility="gone" style="@style/HomeMore" android:text="@string/garage_garage" />
                     <com.google.android.material.button.MaterialButton android:id="@+id/btn_controls_more" android:visibility="gone" style="@style/HomeMore" android:text="@string/controls_controls" />
                     <com.google.android.material.button.MaterialButton android:id="@+id/btn_setup" android:visibility="gone" style="@style/HomeMore" android:text="@string/home_settings_short" />

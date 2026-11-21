@@ -83,7 +83,7 @@
             android:id="@+id/garage_scan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/garage_scan_new_bike"
+            android:text="@string/garage_add_bike_scan"
             app:icon="@drawable/ic_qr" />
 
         <com.google.android.material.button.MaterialButton
