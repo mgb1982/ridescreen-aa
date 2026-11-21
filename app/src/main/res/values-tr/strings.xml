@@ -724,4 +724,17 @@
     <string name="dep_perm_location">Konum (motorun Wi‑Fi\'sine katıl)</string>
     <string name="dep_perm_notifications">Bildirimler</string>
     <string name="dep_perm_microphone">Mikrofon</string>
+    <string name="tv_fields">Videodaki veriler</string>
+    <string name="tv_fields_none">bu yolculukta veri yok</string>
+    <string name="tv_fields_short">Kısa video</string>
+    <string name="tv_field_speed">Hız</string>
+    <string name="tv_field_rpm">Devir (RPM)</string>
+    <string name="tv_field_coolant">Soğutma sıvısı sıcaklığı</string>
+    <string name="tv_field_throttle">Gaz ve motor yükü</string>
+    <string name="tv_field_voltage">Akü voltajı</string>
+    <string name="tv_field_lean">Yatış açısı</string>
+    <string name="tv_field_g">G kuvveti</string>
+    <string name="tv_field_heart">Kalp atış hızı</string>
+    <string name="tv_field_map">Mini harita</string>
+    <string name="tv_field_peaks">Rekor bannerları (en yüksek hız, en yüksek yatış, en yüksek G)</string>
 </resources>

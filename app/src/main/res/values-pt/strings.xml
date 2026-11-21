@@ -720,4 +720,17 @@
     <string name="dep_perm_location">Localização (ligar ao Wi‑Fi da mota)</string>
     <string name="dep_perm_notifications">Notificações</string>
     <string name="dep_perm_microphone">Microfone</string>
+    <string name="tv_fields">Dados no vídeo</string>
+    <string name="tv_fields_none">sem dados nesta viagem</string>
+    <string name="tv_fields_short">Vídeo curto</string>
+    <string name="tv_field_speed">Velocidade</string>
+    <string name="tv_field_rpm">RPM</string>
+    <string name="tv_field_coolant">Temperatura do líquido de arrefecimento</string>
+    <string name="tv_field_throttle">Acelerador e carga do motor</string>
+    <string name="tv_field_voltage">Tensão da bateria</string>
+    <string name="tv_field_lean">Ângulo de inclinação</string>
+    <string name="tv_field_g">Força G</string>
+    <string name="tv_field_heart">Frequência cardíaca</string>
+    <string name="tv_field_map">Minimapa</string>
+    <string name="tv_field_peaks">Banners de recordes (velocidade máx., inclinação máx., G máx.)</string>
 </resources>

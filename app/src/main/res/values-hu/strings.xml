@@ -726,4 +726,17 @@
     <string name="dep_perm_location">Helymeghatározás (csatlakozás a motor Wi‑Fi-jához)</string>
     <string name="dep_perm_notifications">Értesítések</string>
     <string name="dep_perm_microphone">Mikrofon</string>
+    <string name="tv_fields">Adatok a videóban</string>
+    <string name="tv_fields_none">nincs adat ebben az útban</string>
+    <string name="tv_fields_short">Rövid videó</string>
+    <string name="tv_field_speed">Sebesség</string>
+    <string name="tv_field_rpm">Fordulatszám</string>
+    <string name="tv_field_coolant">Hűtőfolyadék hőmérséklete</string>
+    <string name="tv_field_throttle">Gázállás és motorterhelés</string>
+    <string name="tv_field_voltage">Akkumulátorfeszültség</string>
+    <string name="tv_field_lean">Dőlésszög</string>
+    <string name="tv_field_g">G-erő</string>
+    <string name="tv_field_heart">Pulzusszám</string>
+    <string name="tv_field_map">Minitérkép</string>
+    <string name="tv_field_peaks">Rekordbannerek (max. sebesség, max. dőlés, max. G)</string>
 </resources>

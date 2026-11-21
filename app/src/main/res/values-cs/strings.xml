@@ -718,4 +718,17 @@
     <string name="dep_perm_location">Poloha (připojení k Wi‑Fi motorky)</string>
     <string name="dep_perm_notifications">Oznámení</string>
     <string name="dep_perm_microphone">Mikrofon</string>
+    <string name="tv_fields">Údaje ve videu</string>
+    <string name="tv_fields_none">žádné údaje v této jízdě</string>
+    <string name="tv_fields_short">Krátké video</string>
+    <string name="tv_field_speed">Rychlost</string>
+    <string name="tv_field_rpm">Otáčky (RPM)</string>
+    <string name="tv_field_coolant">Teplota chladicí kapaliny</string>
+    <string name="tv_field_throttle">Plyn a zatížení motoru</string>
+    <string name="tv_field_voltage">Napětí baterie</string>
+    <string name="tv_field_lean">Úhel náklonu</string>
+    <string name="tv_field_g">Přetížení (G)</string>
+    <string name="tv_field_heart">Tepová frekvence</string>
+    <string name="tv_field_map">Minimapa</string>
+    <string name="tv_field_peaks">Banner s rekordy (max. rychlost, max. náklon, max. G)</string>
 </resources>

@@ -717,4 +717,17 @@
     <string name="dep_perm_location">Locatie (verbinden met Wi‑Fi van de motor)</string>
     <string name="dep_perm_notifications">Meldingen</string>
     <string name="dep_perm_microphone">Microfoon</string>
+    <string name="tv_fields">Gegevens in de video</string>
+    <string name="tv_fields_none">geen gegevens in deze rit</string>
+    <string name="tv_fields_short">Korte video</string>
+    <string name="tv_field_speed">Snelheid</string>
+    <string name="tv_field_rpm">Toerental</string>
+    <string name="tv_field_coolant">Koelvloeistoftemperatuur</string>
+    <string name="tv_field_throttle">Gas en motorbelasting</string>
+    <string name="tv_field_voltage">Accuspanning</string>
+    <string name="tv_field_lean">Hellingshoek</string>
+    <string name="tv_field_g">G-kracht</string>
+    <string name="tv_field_heart">Hartslag</string>
+    <string name="tv_field_map">Minikaart</string>
+    <string name="tv_field_peaks">Recordbanners (topsnelheid, max. hellingshoek, max. G)</string>
 </resources>

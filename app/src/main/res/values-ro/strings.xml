@@ -718,4 +718,17 @@
     <string name="dep_perm_location">Locație (conectare la Wi‑Fi-ul motocicletei)</string>
     <string name="dep_perm_notifications">Notificări</string>
     <string name="dep_perm_microphone">Microfon</string>
+    <string name="tv_fields">Date în video</string>
+    <string name="tv_fields_none">nu există date în această cursă</string>
+    <string name="tv_fields_short">Videoclip scurt</string>
+    <string name="tv_field_speed">Viteză</string>
+    <string name="tv_field_rpm">Turații (RPM)</string>
+    <string name="tv_field_coolant">Temperatura lichidului de răcire</string>
+    <string name="tv_field_throttle">Accelerație și sarcina motorului</string>
+    <string name="tv_field_voltage">Tensiunea bateriei</string>
+    <string name="tv_field_lean">Unghi de înclinare</string>
+    <string name="tv_field_g">Forță G</string>
+    <string name="tv_field_heart">Ritm cardiac</string>
+    <string name="tv_field_map">Minihartă</string>
+    <string name="tv_field_peaks">Bannere cu recorduri (viteză max., înclinare max., G max.)</string>
 </resources>

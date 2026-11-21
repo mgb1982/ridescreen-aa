@@ -718,4 +718,17 @@
     <string name="dep_perm_location">Position (rejoindre le Wi‑Fi de la moto)</string>
     <string name="dep_perm_notifications">Notifications</string>
     <string name="dep_perm_microphone">Microphone</string>
+    <string name="tv_fields">Données dans la vidéo</string>
+    <string name="tv_fields_none">aucune donnée pour ce trajet</string>
+    <string name="tv_fields_short">Vidéo courte</string>
+    <string name="tv_field_speed">Vitesse</string>
+    <string name="tv_field_rpm">Régime (tr/min)</string>
+    <string name="tv_field_coolant">Température du liquide de refroidissement</string>
+    <string name="tv_field_throttle">Accélérateur et charge moteur</string>
+    <string name="tv_field_voltage">Tension de la batterie</string>
+    <string name="tv_field_lean">Angle d\'inclinaison</string>
+    <string name="tv_field_g">Force G</string>
+    <string name="tv_field_heart">Fréquence cardiaque</string>
+    <string name="tv_field_map">Mini-carte</string>
+    <string name="tv_field_peaks">Bandeaux de records (vitesse max., inclinaison max., G max.)</string>
 </resources>

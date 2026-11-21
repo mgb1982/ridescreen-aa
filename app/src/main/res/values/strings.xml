@@ -729,4 +729,17 @@
     <string name="dep_perm_location">Location (join bike Wi‑Fi)</string>
     <string name="dep_perm_notifications">Notifications</string>
     <string name="dep_perm_microphone">Microphone</string>
+    <string name="tv_fields">Data in the video</string>
+    <string name="tv_fields_none">no data in this trip</string>
+    <string name="tv_fields_short">Short video</string>
+    <string name="tv_field_speed">Speed</string>
+    <string name="tv_field_rpm">RPM</string>
+    <string name="tv_field_coolant">Coolant temperature</string>
+    <string name="tv_field_throttle">Throttle and engine load</string>
+    <string name="tv_field_voltage">Battery voltage</string>
+    <string name="tv_field_lean">Lean angle</string>
+    <string name="tv_field_g">G-force</string>
+    <string name="tv_field_heart">Heart rate</string>
+    <string name="tv_field_map">Mini-map</string>
+    <string name="tv_field_peaks">Peak banners (top speed, max lean, max G)</string>
 </resources>
