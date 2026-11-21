@@ -33,11 +33,16 @@ object DiskLog {
         }, "log-disk").apply { isDaemon = true }.start()
     }
 
+    private val preInit = java.util.concurrent.atomic.AtomicInteger()
+    private const val PRE_INIT_MAX = 2_000
+
     fun dir(): File? = dir
 
     /** Called from LogBus with the already-timestamp-free message; redacts again unconditionally. */
     fun enqueue(msg: String, now: Long = System.currentTimeMillis()) {
-        if (dir == null) return
+        // Lines from before [init] (app start, restored session) wait in the queue; capped so a missing
+        // init can never grow it without bound.
+        if (dir == null && preInit.incrementAndGet() > PRE_INIT_MAX) return
         queue.add(Item(now, LogRedactor.redact(msg)))
     }
 

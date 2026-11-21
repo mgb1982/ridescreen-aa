@@ -2864,6 +2864,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun shareLog() {
+        // Building the file reads up to ~8 MB of disk log: off the main thread, then share on it.
+        Thread({ shareLogInBackground() }, "share-log").start()
+    }
+
+    private fun shareLogInBackground() {
+        val notes = ArrayList<String>()
         try {
             CrashGuard.persistSession(this)
             val dir = File(cacheDir, "logs").apply { mkdirs() }
@@ -2879,7 +2885,7 @@ class MainActivity : AppCompatActivity() {
                 if (crash.exists() && crash.length() > 0L) {
                     w.write("\n\n===== CRASH REPORT (${crash.name}) =====\n")
                     w.write(crash.readText())
-                    log("including crash report: ${crash.name} (${crash.length()} bytes)")
+                    notes += "including crash report: ${crash.name} (${crash.length()} bytes)"
                 }
                 // Disk log (today + previous day, full): survives kills and app updates. Total cap ~8 MB;
                 // the in-memory part and crash report count against it, the oldest disk data is dropped first.
@@ -2894,7 +2900,7 @@ class MainActivity : AppCompatActivity() {
             val dumps = videoDir.listFiles { f -> f.name.endsWith(".h264") }?.sortedBy { it.name } ?: emptyList()
             for (d in dumps) {
                 uris.add(FileProvider.getUriForFile(this, "$packageName.fileprovider", d))
-                log("attaching video dump: ${d.name} (${d.length()} bytes)")
+                notes += "attaching video dump: ${d.name} (${d.length()} bytes)"
             }
 
             val send = Intent(if (uris.size > 1) Intent.ACTION_SEND_MULTIPLE else Intent.ACTION_SEND).apply {
@@ -2909,10 +2915,16 @@ class MainActivity : AppCompatActivity() {
                 }
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
-            startActivity(Intent.createChooser(send, "Share log").addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION))
-            log("log saved: ${file.absolutePath} (${file.length()} bytes)")
+            notes += "log saved: ${file.absolutePath} (${file.length()} bytes)"
+            runOnUiThread {
+                notes.forEach { log(it) }
+                if (isFinishing || isDestroyed) return@runOnUiThread
+                try {
+                    startActivity(Intent.createChooser(send, "Share log").addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION))
+                } catch (e: Exception) { log("share failed: $e") }
+            }
         } catch (e: Exception) {
-            log("share failed: $e")
+            runOnUiThread { notes.forEach { log(it) }; log("share failed: $e") }
         }
     }
 
