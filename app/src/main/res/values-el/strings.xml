@@ -725,4 +725,17 @@
     <string name="dep_perm_location">Τοποθεσία (σύνδεση στο Wi‑Fi της μοτοσικλέτας)</string>
     <string name="dep_perm_notifications">Ειδοποιήσεις</string>
     <string name="dep_perm_microphone">Μικρόφωνο</string>
+    <string name="tv_fields">Δεδομένα στο βίντεο</string>
+    <string name="tv_fields_none">δεν υπάρχουν δεδομένα σε αυτή τη διαδρομή</string>
+    <string name="tv_fields_short">Σύντομο βίντεο</string>
+    <string name="tv_field_speed">Ταχύτητα</string>
+    <string name="tv_field_rpm">Στροφές (RPM)</string>
+    <string name="tv_field_coolant">Θερμοκρασία ψυκτικού</string>
+    <string name="tv_field_throttle">Γκάζι και φορτίο κινητήρα</string>
+    <string name="tv_field_voltage">Τάση μπαταρίας</string>
+    <string name="tv_field_lean">Γωνία κλίσης</string>
+    <string name="tv_field_g">Δύναμη G</string>
+    <string name="tv_field_heart">Καρδιακός ρυθμός</string>
+    <string name="tv_field_map">Μίνι χάρτης</string>
+    <string name="tv_field_peaks">Πανό ρεκόρ (μέγιστη ταχύτητα, μέγιστη κλίση, μέγιστο G)</string>
 </resources>

@@ -724,4 +724,17 @@
     <string name="dep_perm_location">위치 (바이크 Wi‑Fi 연결)</string>
     <string name="dep_perm_notifications">알림</string>
     <string name="dep_perm_microphone">마이크</string>
+    <string name="tv_fields">영상 속 데이터</string>
+    <string name="tv_fields_none">이 주행에는 데이터가 없습니다</string>
+    <string name="tv_fields_short">짧은 영상</string>
+    <string name="tv_field_speed">속도</string>
+    <string name="tv_field_rpm">RPM</string>
+    <string name="tv_field_coolant">냉각수 온도</string>
+    <string name="tv_field_throttle">스로틀 및 엔진 부하</string>
+    <string name="tv_field_voltage">배터리 전압</string>
+    <string name="tv_field_lean">기울기 각도</string>
+    <string name="tv_field_g">G-포스</string>
+    <string name="tv_field_heart">심박수</string>
+    <string name="tv_field_map">미니맵</string>
+    <string name="tv_field_peaks">최고 기록 배너 (최고 속도, 최대 기울기, 최대 G)</string>
 </resources>

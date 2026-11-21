@@ -727,4 +727,17 @@
     <string name="dep_perm_location">Геопозиция (подключение к Wi‑Fi мотоцикла)</string>
     <string name="dep_perm_notifications">Уведомления</string>
     <string name="dep_perm_microphone">Микрофон</string>
+    <string name="tv_fields">Данные в видео</string>
+    <string name="tv_fields_none">нет данных в этой поездке</string>
+    <string name="tv_fields_short">Короткое видео</string>
+    <string name="tv_field_speed">Скорость</string>
+    <string name="tv_field_rpm">Обороты (об/мин)</string>
+    <string name="tv_field_coolant">Температура охлаждающей жидкости</string>
+    <string name="tv_field_throttle">Газ и нагрузка на двигатель</string>
+    <string name="tv_field_voltage">Напряжение батареи</string>
+    <string name="tv_field_lean">Угол наклона</string>
+    <string name="tv_field_g">G-сила</string>
+    <string name="tv_field_heart">Пульс</string>
+    <string name="tv_field_map">Мини-карта</string>
+    <string name="tv_field_peaks">Баннеры рекордов (макс. скорость, макс. наклон, макс. G)</string>
 </resources>

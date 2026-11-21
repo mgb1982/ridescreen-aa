@@ -718,4 +718,17 @@
     <string name="dep_perm_location">Standort (dem WLAN des Motorrads beitreten)</string>
     <string name="dep_perm_notifications">Benachrichtigungen</string>
     <string name="dep_perm_microphone">Mikrofon</string>
+    <string name="tv_fields">Daten im Video</string>
+    <string name="tv_fields_none">keine Daten in dieser Fahrt</string>
+    <string name="tv_fields_short">Kurzvideo</string>
+    <string name="tv_field_speed">Geschwindigkeit</string>
+    <string name="tv_field_rpm">Drehzahl</string>
+    <string name="tv_field_coolant">Kühlmitteltemperatur</string>
+    <string name="tv_field_throttle">Gasgriff und Motorlast</string>
+    <string name="tv_field_voltage">Batteriespannung</string>
+    <string name="tv_field_lean">Schräglage</string>
+    <string name="tv_field_g">G-Kraft</string>
+    <string name="tv_field_heart">Herzfrequenz</string>
+    <string name="tv_field_map">Minikarte</string>
+    <string name="tv_field_peaks">Bestwert-Banner (Höchstgeschwindigkeit, max. Schräglage, max. G)</string>
 </resources>
