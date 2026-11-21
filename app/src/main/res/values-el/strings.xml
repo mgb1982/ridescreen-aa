@@ -738,4 +738,9 @@
     <string name="tv_field_heart">Καρδιακός ρυθμός</string>
     <string name="tv_field_map">Μίνι χάρτης</string>
     <string name="tv_field_peaks">Πανό ρεκόρ (μέγιστη ταχύτητα, μέγιστη κλίση, μέγιστο G)</string>
+    <string name="home_dash_options">Επιλογές πίνακα οργάνων</string>
+    <string name="settings_help">Βοήθεια</string>
+    <string name="settings_help_sub">Οδηγός, αρχεία καταγραφής, αναφορά προβλήματος, σχετικά</string>
+    <string name="garage_add_bike_scan">Προσθήκη μοτοσυκλέτας (σάρωση QR)</string>
+    <string name="status_resume_when_bike_back">θα συνεχιστεί όταν επιστρέψει η μοτοσυκλέτα</string>
 </resources>

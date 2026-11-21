@@ -360,7 +360,7 @@ class AndroidAutoService : Service() {
             if (sawStream) "[AA] bike Wi-Fi gone > ${GRACE_MS / 1000}s — parking Android Auto to save battery; watching for the bike"
             else "[AA] bike never linked in ${ParkPolicy.NEVER_LINKED_MS / 1000}s — parking Android Auto to save battery; watching for the bike",
         )
-        ConnectionState.set(Phase.WAITING_FOR_BIKE, "will resume when the bike is back")
+        ConnectionState.set(Phase.WAITING_FOR_BIKE, getString(R.string.status_resume_when_bike_back))
         tearDownAaKeepService()
         updateNotification(
             "Waiting for bike",

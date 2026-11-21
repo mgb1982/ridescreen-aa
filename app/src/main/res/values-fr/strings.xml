@@ -731,4 +731,9 @@
     <string name="tv_field_heart">Fréquence cardiaque</string>
     <string name="tv_field_map">Mini-carte</string>
     <string name="tv_field_peaks">Bandeaux de records (vitesse max., inclinaison max., G max.)</string>
+    <string name="home_dash_options">Options du tableau de bord</string>
+    <string name="settings_help">Aide</string>
+    <string name="settings_help_sub">Guide, journaux, signaler un problème, à propos</string>
+    <string name="garage_add_bike_scan">Ajouter une moto (scanner le QR)</string>
+    <string name="status_resume_when_bike_back">reprendra quand la moto sera de retour</string>
 </resources>

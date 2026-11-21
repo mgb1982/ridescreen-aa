@@ -731,4 +731,9 @@
     <string name="tv_field_heart">Ritm cardiac</string>
     <string name="tv_field_map">Minihartă</string>
     <string name="tv_field_peaks">Bannere cu recorduri (viteză max., înclinare max., G max.)</string>
+    <string name="home_dash_options">Opțiuni tablou de bord</string>
+    <string name="settings_help">Ajutor</string>
+    <string name="settings_help_sub">Ghid, jurnale, raportează o problemă, despre</string>
+    <string name="garage_add_bike_scan">Adaugă motocicletă (scanează QR)</string>
+    <string name="status_resume_when_bike_back">se va relua când motocicleta revine</string>
 </resources>

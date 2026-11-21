@@ -733,4 +733,9 @@
     <string name="tv_field_heart">Frequência cardíaca</string>
     <string name="tv_field_map">Minimapa</string>
     <string name="tv_field_peaks">Banners de recordes (velocidade máx., inclinação máx., G máx.)</string>
+    <string name="home_dash_options">Opções do painel</string>
+    <string name="settings_help">Ajuda</string>
+    <string name="settings_help_sub">Guia, registos, reportar um problema, sobre</string>
+    <string name="garage_add_bike_scan">Adicionar mota (ler QR)</string>
+    <string name="status_resume_when_bike_back">será retomado quando a mota voltar</string>
 </resources>

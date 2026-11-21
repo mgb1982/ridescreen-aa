@@ -737,4 +737,9 @@
     <string name="tv_field_heart">Kalp atış hızı</string>
     <string name="tv_field_map">Mini harita</string>
     <string name="tv_field_peaks">Rekor bannerları (en yüksek hız, en yüksek yatış, en yüksek G)</string>
+    <string name="home_dash_options">Gösterge paneli seçenekleri</string>
+    <string name="settings_help">Yardım</string>
+    <string name="settings_help_sub">Kılavuz, günlükler, sorun bildir, hakkında</string>
+    <string name="garage_add_bike_scan">Motosiklet ekle (QR tara)</string>
+    <string name="status_resume_when_bike_back">motosiklet geri döndüğünde devam edecek</string>
 </resources>

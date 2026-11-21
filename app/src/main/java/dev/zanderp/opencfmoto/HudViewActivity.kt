@@ -220,6 +220,7 @@ class HudViewActivity : AppCompatActivity() {
         findViewById<View>(R.id.hud_mode_aa).isEnabled = enabled
         findViewById<View>(R.id.hud_mode_dash).isEnabled = enabled
         findViewById<View>(R.id.hud_mode_map).isEnabled = true
+        findViewById<View>(R.id.hud_mode_mirror).isEnabled = true
         val id = when (CuadroLogic.selectedMode(DashboardMode.wanted)) {
             CuadroLogic.Mode.DASHBOARD -> R.id.hud_mode_dash
             CuadroLogic.Mode.ANDROID_AUTO -> R.id.hud_mode_aa
@@ -233,6 +234,13 @@ class HudViewActivity : AppCompatActivity() {
             R.id.hud_mode_aa -> DashboardMode.set(this, false)
             R.id.hud_mode_dash -> if (!DashboardMode.set(this, true)) {
                 Toast.makeText(this, R.string.cuadro_connect_first, Toast.LENGTH_SHORT).show()
+            }
+            R.id.hud_mode_mirror -> {
+                // Same as Home's old "Mirror": Home runs the unchanged screen-capture permission flow.
+                HubHooks.mirrorPending = true
+                HubHooks.openHome(this)
+                finish()
+                return
             }
             R.id.hud_mode_map -> {
                 // Same as MainActivity.onMapPressed.

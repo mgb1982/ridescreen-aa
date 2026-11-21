@@ -740,4 +740,9 @@
     <string name="tv_field_heart">Пулс</string>
     <string name="tv_field_map">Мини карта</string>
     <string name="tv_field_peaks">Банери с рекорди (макс. скорост, макс. наклон, макс. G)</string>
+    <string name="home_dash_options">Опции за таблото</string>
+    <string name="settings_help">Помощ</string>
+    <string name="settings_help_sub">Ръководство, дневници, докладване на проблем, относно</string>
+    <string name="garage_add_bike_scan">Добави мотор (сканирай QR)</string>
+    <string name="status_resume_when_bike_back">ще се възобнови, когато моторът се върне</string>
 </resources>

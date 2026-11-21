@@ -739,4 +739,9 @@
     <string name="tv_field_heart">Freqüència cardíaca</string>
     <string name="tv_field_map">Minimapa</string>
     <string name="tv_field_peaks">Banners de rècords (velocitat màx., inclinació màx., G màx.)</string>
+    <string name="home_dash_options">Opcions del tauler</string>
+    <string name="settings_help">Ajuda</string>
+    <string name="settings_help_sub">Guia, registres, informa d\'un problema, quant a</string>
+    <string name="garage_add_bike_scan">Afegeix moto (escaneja QR)</string>
+    <string name="status_resume_when_bike_back">es reprendrà quan la moto torni</string>
 </resources>

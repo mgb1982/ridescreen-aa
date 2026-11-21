@@ -737,4 +737,9 @@
     <string name="tv_field_heart">อัตราการเต้นของหัวใจ</string>
     <string name="tv_field_map">มินิแมป</string>
     <string name="tv_field_peaks">แบนเนอร์สถิติ (ความเร็วสูงสุด, มุมเอียงสูงสุด, G สูงสุด)</string>
+    <string name="home_dash_options">ตัวเลือกแดชบอร์ด</string>
+    <string name="settings_help">ช่วยเหลือ</string>
+    <string name="settings_help_sub">คู่มือ บันทึก รายงานปัญหา เกี่ยวกับ</string>
+    <string name="garage_add_bike_scan">เพิ่มมอเตอร์ไซค์ (สแกน QR)</string>
+    <string name="status_resume_when_bike_back">จะกลับมาทำงานต่อเมื่อมอเตอร์ไซค์กลับมา</string>
 </resources>

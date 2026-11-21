@@ -739,4 +739,9 @@
     <string name="tv_field_heart">Pulzusszám</string>
     <string name="tv_field_map">Minitérkép</string>
     <string name="tv_field_peaks">Rekordbannerek (max. sebesség, max. dőlés, max. G)</string>
+    <string name="home_dash_options">Műszerfal beállításai</string>
+    <string name="settings_help">Súgó</string>
+    <string name="settings_help_sub">Útmutató, naplók, hibabejelentés, névjegy</string>
+    <string name="garage_add_bike_scan">Motor hozzáadása (QR-kód beolvasása)</string>
+    <string name="status_resume_when_bike_back">folytatódik, amint a motor visszaér</string>
 </resources>
