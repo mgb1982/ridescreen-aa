@@ -40,10 +40,12 @@ enum class VideoStyle(val labelRes: Int) {
     CINEMA(R.string.tvs_cinema), RETRO(R.string.tvs_retro), TELEMETRY(R.string.tvs_telemetry),
     /** v2.4: dials from the trip's OBD data (RPM, speed, throttle, load, coolant) — English only until 2.5. */
     GAUGES(R.string.tvs_gauges),
+    /** v2.5: big numbers straight on the picture (lean, G, heart rate, OBD); English only for now. */
+    HUD(R.string.tvs_hud),
 }
 
 fun nightStyle(s: VideoStyle) = s == VideoStyle.SPORT || s == VideoStyle.TELEMETRY || s == VideoStyle.RETRO ||
-    s == VideoStyle.CINEMA || s == VideoStyle.GAUGES
+    s == VideoStyle.CINEMA || s == VideoStyle.GAUGES || s == VideoStyle.HUD
 
 enum class VideoMap(val labelRes: Int) { LINE(R.string.tvm_line), SPEED(R.string.tvm_speed), STREETS(R.string.tvm_streets) }
 
@@ -155,7 +157,7 @@ class StreetTiles private constructor(private val dir: File, val zoom: Int) {
 }
 
 /** v2.3: the overlay pieces the rider can drag in the preview; the export draws them where they were left. */
-enum class OverlayPart { TITLE, SPEED, MAP, EXTRA, THROTTLE, DISTANCE, MOTION }
+enum class OverlayPart { TITLE, SPEED, MAP, EXTRA, THROTTLE, DISTANCE, MOTION, READOUT_L, READOUT_R }
 
 /** Offset of a piece from its home spot, as fractions of the frame width and height. */
 data class PartOffset(val dx: Float, val dy: Float)
@@ -576,6 +578,7 @@ class TripLook(
                 }
             }
             VideoStyle.GAUGES -> gaugesFrame(c, w, h, tMs, idx, clock, kmDone, u)
+            VideoStyle.HUD -> hudFrame(c, w, h, tMs, idx, clock, kmDone, u)
         }
     }
 
@@ -738,6 +741,237 @@ class TripLook(
 
     private val hasMotion = trip.motionSamples.isNotEmpty()
     private val motionSummary = trip.motionSummary()
+
+    // ── v2.5 HUD look: big numbers straight on the picture, no panels (English labels for now)
+
+    private val hudRecords = HudMath.leanRecords(trip.motionSamples)
+    private val hudBanners = HudMath.banners(pts.map { it.time to it.speedMs * 3.6 }, trip.motionSamples)
+    private val hudMaxLean: Double? = motionSummary?.let { s -> listOfNotNull(s.maxLeanLeftDeg, s.maxLeanRightDeg).maxOrNull() }
+
+    private fun hudBar(c: Canvas, x: Float, bottom: Float, wBar: Float, segH: Float, u: Float, lit: Int, n: Int, redFrom: Int) {
+        val gap = 0.35f * u
+        val segW = (wBar - gap * (n - 1)) / n
+        c.save(); c.translate(x, bottom); c.skew(-0.3f, 0f)
+        for (i in 0 until n) {
+            val col = when {
+                i < lit && i >= redFrom -> red
+                i < lit -> amber
+                i >= redFrom -> Color.argb(110, 229, 57, 53)
+                else -> Color.argb(70, 255, 255, 255)
+            }
+            c.drawRect(i * (segW + gap), -segH, i * (segW + gap) + segW, 0f, fill(col))
+        }
+        c.restore()
+    }
+
+    private fun hudGDot(c: Canvas, cx: Float, cy: Float, r: Float, u: Float, tMs: Long) {
+        c.drawCircle(cx, cy, r, fill(Color.argb(85, 12, 16, 20)))
+        stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeCap = Paint.Cap.ROUND
+        stroke.strokeWidth = 0.45f * u; stroke.color = Color.argb(150, 255, 255, 255)
+        c.drawCircle(cx, cy, r, stroke)
+        stroke.color = Color.argb(60, 255, 255, 255)
+        c.drawCircle(cx, cy, r * 0.5f, stroke)
+        c.drawLine(cx - r, cy, cx + r, cy, stroke); c.drawLine(cx, cy - r, cx, cy + r, stroke)
+        // Position of the dot from the recorded G; without motion data, braking/acceleration from the speed alone.
+        fun pos(m: MotionTripSample?, t: Long): Pair<Float, Float> {
+            val lat = m?.gLat; val lon = m?.gLon
+            return if (lat != null || lon != null) Pair((lat ?: 0.0).toFloat(), (lon ?: 0.0).toFloat()) else Pair(0f, accelG(t).toFloat())
+        }
+        val k = r * 0.85f
+        fun xy(g: Pair<Float, Float>) = Pair(cx + (g.first * k).coerceIn(-r * 0.92f, r * 0.92f), cy - (g.second * k).coerceIn(-r * 0.92f, r * 0.92f))
+        // Short tail: the dot 0.2–0.8 s ago, fading.
+        for (i in 4 downTo 1) {
+            val t = tMs - i * 160L
+            val (x, y) = xy(pos(if (hasMotion) trip.motionAt(t) else null, t))
+            c.drawCircle(x, y, r * (0.07f + 0.012f * (5 - i)), fill(Color.argb(40 + 30 * (5 - i), 255, 255, 255)))
+        }
+        val now = if (hasMotion) trip.motionAt(tMs) else null
+        val g = pos(now, tMs)
+        val (x, y) = xy(g)
+        val braking = g.second < -0.08f
+        c.drawCircle(x, y, r * 0.17f, fill(if (braking) red else amber))
+        c.drawCircle(x, y, r * 0.07f, fill(Color.WHITE))
+    }
+
+    private fun hudHeartRow(c: Canvas, right: Float, baseline: Float, u: Float, bpm: Int, tMs: Long, dim: Int) {
+        val num = "$bpm"
+        val size = 6f * u
+        val nw = measure(num, tfCondItalic, size)
+        text(c, "BPM", right, baseline, 2.1f * u, tfMedium, dim, Paint.Align.RIGHT)
+        val unitW = measure("BPM", tfMedium, 2.1f * u) + 0.8f * u
+        text(c, num, right - unitW, baseline, size, tfCondItalic, align = Paint.Align.RIGHT)
+        val s = 1.7f * u * (1f + 0.3f * HudMath.beat(tMs, bpm))
+        heart(c, right - unitW - nw - 2.6f * u, baseline - size * 0.34f, s, red)
+        text(c, "HEART RATE", right, baseline + 2.8f * u, 2f * u, tfMedium, dim, Paint.Align.RIGHT)
+    }
+
+    private fun hudReadout(c: Canvas, x: Float, right: Boolean, baseline: Float, u: Float, value: String, unit: String, label: String, dim: Int, color: Int = Color.WHITE) {
+        val al = if (right) Paint.Align.RIGHT else Paint.Align.LEFT
+        val size = 6f * u
+        text(c, unit, x, baseline, 2.1f * u, tfMedium, dim, al)
+        val unitW = measure(unit, tfMedium, 2.1f * u) + 0.8f * u
+        text(c, value, if (right) x - unitW else x + unitW, baseline, size, tfCondItalic, color, al)
+        text(c, label, x, baseline + 2.8f * u, 2f * u, tfMedium, dim, al)
+    }
+
+    private fun hudFrame(c: Canvas, w: Int, h: Int, tMs: Long, idx: Int, clock: String, kmDone: Double, u: Float) {
+        val portrait = h > w
+        val dim = Color.argb(205, 255, 255, 255)
+        val mo = if (hasMotion) trip.motionAt(tMs) else null
+
+        // Brand, trip name and time (top-left).
+        val sub = "$title · $clock"
+        val subSize = fitSize(sub, tfMedium, w * 0.4f, 2.3f * u)
+        part(c, OverlayPart.TITLE, w, h, RectF(2.5f * u, 2.5f * u, 2.5f * u + max(24 * u, measure(sub, tfMedium, subSize) + 1 * u), 15 * u)) {
+            val icon = 7f * u
+            try {
+                ResourcesCompat.getDrawable(ctx.resources, R.mipmap.ic_launcher_round, null)?.let { d ->
+                    d.setBounds((3 * u).toInt(), (3 * u).toInt(), (3 * u + icon).toInt(), (3 * u + icon).toInt()); d.draw(c)
+                }
+            } catch (_: Exception) {}
+            text(c, "RIDESCREEN", 3 * u + icon + 1.6f * u, 7.4f * u, 3.1f * u, tfCondItalic)
+            text(c, sub, 3 * u, 13.6f * u, subSize, tfMedium, dim)
+        }
+
+        // Distance (top-centre; below the brand on a tall frame) with its progress line.
+        val dy = if (portrait) 15.5f * u else 0f
+        val dist = RectF(w / 2f - 17 * u, 2.5f * u + dy, w / 2f + 17 * u, 11.5f * u + dy)
+        part(c, OverlayPart.DISTANCE, w, h, dist) {
+            val v = km(kmDone); val vs = 6.2f * u
+            val vw = measure(v, tfCondItalic, vs)
+            text(c, v, w / 2f - 1.5f * u, 8.6f * u + dy, vs, tfCondItalic, align = Paint.Align.CENTER)
+            text(c, "KM", w / 2f - 1.5f * u + vw / 2 + 0.8f * u, 8.6f * u + dy, 2.2f * u, tfMedium, dim)
+            stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeCap = Paint.Cap.ROUND
+            stroke.strokeWidth = 0.4f * u; stroke.color = Color.argb(90, 255, 255, 255)
+            c.drawLine(dist.left + 2 * u, 10.6f * u + dy, dist.right - 2 * u, 10.6f * u + dy, stroke)
+            val frac = if (totalKm > 0) (kmDone / totalKm).toFloat().coerceIn(0f, 1f) else 0f
+            stroke.color = amber
+            c.drawLine(dist.left + 2 * u, 10.6f * u + dy, dist.left + 2 * u + (dist.width() - 4 * u) * frac, 10.6f * u + dy, stroke)
+        }
+
+        // G ball (top-right): dot moves with lateral and braking/acceleration G, short tail behind it.
+        val gr = 8.5f * u
+        val gcx = w - 3.5f * u - gr; val gcy = 3.5f * u + gr
+        part(c, OverlayPart.EXTRA, w, h, RectF(gcx - gr - 1 * u, gcy - gr - 1 * u, gcx + gr + 1 * u, gcy + gr + 6 * u)) {
+            hudGDot(c, gcx, gcy, gr, u, tMs)
+            val gv = mo?.let { HudMath.combinedG(it) } ?: abs(accelG(tMs))
+            val braking = (mo?.gLon ?: accelG(tMs)) < -0.08
+            text(c, String.format(Locale.US, "%.2f G", gv), gcx, gcy + gr + 4.4f * u, 3.4f * u, tfCondItalic, if (braking) red else Color.WHITE, Paint.Align.CENTER)
+        }
+
+        // Side readouts. Left: coolant and load from the OBD. Right: heart rate and throttle.
+        val y0 = if (portrait) h * 0.36f else 38f * u
+        val coolant = obdValue(tMs) { it.coolantC }
+        val load = obdValue(tMs) { it.engineLoadPct }
+        val thr = obdValue(tMs) { it.relativeThrottlePct ?: it.throttlePct }
+        if (coolant != null || load != null) {
+            part(c, OverlayPart.READOUT_L, w, h, RectF(3 * u, y0 - 7 * u, 30 * u, y0 + 22 * u)) {
+                stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeWidth = 0.35f * u; stroke.color = Color.argb(150, 255, 176, 32)
+                c.drawLine(3 * u, y0 - 6 * u, 3 * u, y0 + 20 * u, stroke)
+                var by = y0
+                coolant?.let {
+                    val col = when { it >= 108 -> red; it >= 100 -> amber; else -> Color.WHITE }
+                    hudReadout(c, 5.5f * u, false, by, u, "${it.roundToInt()}", "°C", "COOLANT", dim, col); by += 16 * u
+                }
+                load?.let { hudReadout(c, 5.5f * u, false, by, u, "${it.roundToInt()}", "%", "ENGINE LOAD", dim) }
+            }
+        }
+        val bpm = mo?.bpm
+        if (bpm != null || thr != null) {
+            part(c, OverlayPart.READOUT_R, w, h, RectF(w - 32 * u, y0 - 7 * u, w - 3 * u, y0 + 22 * u)) {
+                stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeWidth = 0.35f * u; stroke.color = Color.argb(150, 255, 176, 32)
+                c.drawLine(w - 3 * u, y0 - 6 * u, w - 3 * u, y0 + 20 * u, stroke)
+                var by = y0
+                if (bpm != null) { hudHeartRow(c, w - 5.5f * u, by, u, bpm, tMs, dim); by += 16 * u }
+                thr?.let { hudReadout(c, w - 5.5f * u, true, by, u, "${it.roundToInt()}", "%", "THROTTLE", dim) }
+            }
+        }
+
+        // Speed with the RPM bar above it (bottom-left); a speed bar instead when the trip has no OBD RPM.
+        val lift = if (portrait) 25f * u else 0f
+        val kmhNow = speedKmhAt(tMs).coerceAtLeast(0.0)
+        val sb = RectF(3 * u, h - 31 * u - lift, 44 * u, h - 3 * u - lift)
+        part(c, OverlayPart.SPEED, w, h, sb) {
+            val barW = 38f * u; val x0 = 4 * u; val barBottom = h - 21.5f * u - lift
+            if (hasRpm) {
+                val rpmK = (obdValue(tMs) { it.rpm } ?: 0.0) / 1000.0
+                val step = max(1, rpmScaleK / 10)
+                var k = 0
+                while (k <= rpmScaleK) {
+                    val hot = k >= rpmScaleK - 1
+                    text(c, "$k", x0 + barW * k / rpmScaleK - 0.9f * u, barBottom - 3.8f * u, 2.2f * u, tfCondItalic, if (hot) red else Color.WHITE)
+                    k += step
+                }
+                hudBar(c, x0, barBottom, barW, 2.6f * u, u, HudMath.litSegments(rpmK, rpmScaleK.toDouble()), 20, 18)
+            } else {
+                hudBar(c, x0, barBottom, barW, 1.2f * u, u, HudMath.litSegments(kmhNow, speedScale.toDouble()), 20, 21)
+            }
+            val ns = String.format(Locale.US, "%03d", kmhNow.roundToInt())
+            text(c, ns, x0, h - 5.5f * u - lift, 15f * u, tfCondItalic)
+            text(c, "KM/H", x0 + measure(ns, tfCondItalic, 15f * u) + 1.4f * u, h - 5.5f * u - lift, 2.6f * u, tfMedium, dim)
+        }
+
+        // Lean arc (bottom-centre): angle, peak of the last 10 s, flash on a new best, ride maximum under it.
+        val lean = mo?.leanDeg
+        if (hasMotion && lean != null) {
+            val r = 15f * u; val cx = w / 2f; val cy = h - 11f * u
+            part(c, OverlayPart.MOTION, w, h, RectF(cx - r - 4 * u, cy - r - 4 * u, cx + r + 4 * u, h - 1 * u)) {
+                val rect = RectF(cx - r, cy - r, cx + r, cy + r)
+                stroke.reset(); stroke.isAntiAlias = true; stroke.style = Paint.Style.STROKE; stroke.strokeCap = Paint.Cap.ROUND
+                val fl = HudMath.flash(hudRecords, tMs)
+                if (fl > 0f) { stroke.strokeWidth = 3.4f * u; stroke.color = Color.argb((140 * fl).toInt(), 255, 176, 32); c.drawArc(rect, 210f, 120f, false, stroke) }
+                stroke.strokeWidth = 0.9f * u; stroke.color = Color.argb(130, 255, 255, 255)
+                c.drawArc(rect, 210f, 120f, false, stroke)
+                for (t in -60..60 step 10) {
+                    val ang = Math.toRadians((270 + t).toDouble()); val long = t % 30 == 0
+                    stroke.strokeWidth = (if (long) 0.6f else 0.4f) * u; stroke.color = Color.argb(if (long) 220 else 150, 255, 255, 255)
+                    val r0 = r * (if (long) 0.84f else 0.9f)
+                    c.drawLine(cx + r0 * cos(ang).toFloat(), cy + r0 * sin(ang).toFloat(), cx + r * 1.06f * cos(ang).toFloat(), cy + r * 1.06f * sin(ang).toFloat(), stroke)
+                }
+                val a = lean.toFloat().coerceIn(-60f, 60f)
+                stroke.strokeWidth = 1.7f * u; stroke.color = amber
+                c.drawArc(rect, 270f, a, false, stroke)
+                val na = Math.toRadians((270 + a).toDouble())
+                stroke.strokeWidth = 0.8f * u; stroke.color = Color.WHITE
+                c.drawLine(cx + r * 0.72f * cos(na).toFloat(), cy + r * 0.72f * sin(na).toFloat(), cx + r * 1.1f * cos(na).toFloat(), cy + r * 1.1f * sin(na).toFloat(), stroke)
+                // Peak of the last 10 s: a small mark outside the arc.
+                HudMath.peakLean(trip.motionSamples, tMs)?.let { pk ->
+                    if (abs(pk) >= 5.0) {
+                        val pa = Math.toRadians((270 + pk.coerceIn(-60.0, 60.0)))
+                        val px = cx + r * 1.22f * cos(pa).toFloat(); val py = cy + r * 1.22f * sin(pa).toFloat()
+                        c.drawCircle(px, py, 0.8f * u, fill(red))
+                    }
+                }
+                val side = if (lean <= -1.0) "L" else if (lean >= 1.0) "R" else ""
+                text(c, "${abs(lean).roundToInt()}°", cx, cy + 0.4f * u, 8.2f * u, tfCondItalic, align = Paint.Align.CENTER)
+                text(c, "LEAN $side" + (hudMaxLean?.let { "  ·  MAX ${it.roundToInt()}°" } ?: ""), cx, cy + 6.6f * u, 2.3f * u, tfMedium, dim, Paint.Align.CENTER)
+            }
+        }
+
+        // Mini-map (bottom-right).
+        val ms = 20 * u
+        val mbox = RectF(w - ms - 3 * u, h - ms - 3 * u, w - 3 * u, h - 3 * u)
+        part(c, OverlayPart.MAP, w, h, mbox) {
+            minimap(c, mbox, false, Color.argb(120, 12, 14, 16), Color.argb(110, 255, 255, 255), Color.argb(110, 255, 255, 255), amber, idx, u)
+        }
+
+        // Peaks of the ride: a short banner as the video passes each one.
+        var row = 0
+        for (b in hudBanners) {
+            val al = HudMath.bannerAlpha(b, tMs)
+            if (al <= 0f) continue
+            val (label, value) = when (b.kind) {
+                HudMath.Kind.TOP_SPEED -> "TOP SPEED" to "${b.value.roundToInt()} km/h"
+                HudMath.Kind.MAX_LEAN -> "MAX LEAN" to "${b.value.roundToInt()}° " + (if (b.right) "R" else "L")
+                HudMath.Kind.MAX_G -> "MAX G" to String.format(Locale.US, "%.2f G", b.value)
+            }
+            val by = (if (portrait) 38f * u else 25f * u) + row * 11f * u
+            val a255 = (255 * al).toInt()
+            text(c, label, w / 2f, by, 2.6f * u, tfMedium, Color.argb(a255, 255, 255, 255), Paint.Align.CENTER)
+            text(c, value, w / 2f, by + 6.6f * u, 6.6f * u, tfCondItalic, Color.argb(a255, 255, 176, 32), Paint.Align.CENTER)
+            row++
+        }
+    }
 
     /** Degrees text; the dot-matrix font has no degree sign. */
     private fun deg(v: Double, tf: Typeface) = "${v.roundToInt()}" + if (pixel(tf)) "" else "°"

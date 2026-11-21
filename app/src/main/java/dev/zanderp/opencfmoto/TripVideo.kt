@@ -333,7 +333,7 @@ object TripVideo {
             if (baseUs < 0) baseUs = presentationTimeUs
             val tMs = clip.startMs + ((presentationTimeUs - baseUs) / 1000L * timeScale).toLong()
             // Gauges move: redraw every 100 ms there (needles interpolate between OBD samples).
-            val bucket = tMs / (if (look.style == VideoStyle.GAUGES) 100L else 500L)
+            val bucket = tMs / (when (look.style) { VideoStyle.HUD -> 50L; VideoStyle.GAUGES -> 100L; else -> 500L })
             bmp?.let { if (bucket == lastBucket) return it }
             lastBucket = bucket
             val b = bmp ?: Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888).also { bmp = it }
