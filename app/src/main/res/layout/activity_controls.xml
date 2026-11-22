@@ -269,6 +269,15 @@
                     android:text="@string/controls_dash_accent" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_dash_window_crop"
+                    style="@style/Widget.OpenCfMoto.Segment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone"
+                    android:text="@string/dash_window_crop_title" />
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_dash_background"
                     style="@style/Widget.OpenCfMoto.Segment"
                     android:layout_width="match_parent"
