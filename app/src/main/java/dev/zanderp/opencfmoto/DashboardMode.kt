@@ -147,6 +147,15 @@ object DashboardMode {
         return DashBackground.Setting(mode, bgFit(ctx), bgVeil(ctx), version, DashBackgroundStore.file(ctx).absolutePath)
     }
 
+    /** Share (percent) of the Android Auto window hidden at the bottom (its shortcut bar); per bike. */
+    fun windowCrop(ctx: Context): Int =
+        WindowCrop.coerce(BikeScope.getInt(prefs(ctx), ctx, "aa_window_crop", WindowCrop.DEFAULT))
+    fun setWindowCrop(ctx: Context, pct: Int) {
+        val v = WindowCrop.coerce(pct)
+        BikeScope.putInt(prefs(ctx), ctx, "aa_window_crop", v)
+        AaWindowLayout.bottomCropPct = v   // the compositor reads it every frame: live
+    }
+
     /** 2.5 · the dashboard shows Android Auto in a window ([AaWindowLayout]). */
     fun aaWindow(ctx: Context): Boolean = design(ctx) == Design.WINDOW
 
@@ -340,6 +349,7 @@ object DashboardMode {
         wanted = on
         val app = ctx.applicationContext
         if (on && saver(app) && !aaWindow(app)) applySaver(app, true) else if (!on || aaWindow(app)) applySaver(app, false)
+        AaWindowLayout.bottomCropPct = windowCrop(app)   // per-bike value in force whenever the layer goes up/down
         obdSeenAt = 0L   // each time the dashboard goes up, a configured adapter gets its 30 s before the phone layout
         vp?.setLiveLayer(
             if (on) liveBuilder(app) else null,

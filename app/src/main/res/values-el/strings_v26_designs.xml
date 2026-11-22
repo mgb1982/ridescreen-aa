@@ -10,4 +10,9 @@
     <string name="dash_design_vfd">VFD</string>
     <string name="dash_design_minimal">Λιτό</string>
     <string name="dash_design_cockpit">Πιλοτήριο</string>
+    <string name="dash_window_crop_title">Παράθυρο Android Auto: απόκρυψη κάτω γραμμής</string>
+    <string name="dash_window_crop_off">Όχι</string>
+    <string name="dash_window_crop_small">Μικρή</string>
+    <string name="dash_window_crop_medium">Μεσαία (προεπιλογή)</string>
+    <string name="dash_window_crop_large">Μεγάλη</string>
 </resources>

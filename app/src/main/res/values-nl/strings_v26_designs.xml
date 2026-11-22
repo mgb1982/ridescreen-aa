@@ -10,4 +10,9 @@
     <string name="dash_design_vfd">VFD</string>
     <string name="dash_design_minimal">Minimaal</string>
     <string name="dash_design_cockpit">Cockpit</string>
+    <string name="dash_window_crop_title">Android Auto-venster: onderste balk verbergen</string>
+    <string name="dash_window_crop_off">Uit</string>
+    <string name="dash_window_crop_small">Klein</string>
+    <string name="dash_window_crop_medium">Gemiddeld (standaard)</string>
+    <string name="dash_window_crop_large">Groot</string>
 </resources>

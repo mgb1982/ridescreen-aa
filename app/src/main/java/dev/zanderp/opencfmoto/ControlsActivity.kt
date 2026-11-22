@@ -537,6 +537,7 @@ class ControlsActivity : AppCompatActivity() {
                 card.addView(image, android.widget.LinearLayout.LayoutParams(-1, dp(210)).apply { topMargin = dp(6) })
                 card.setOnClickListener {
                     DashboardMode.setDesign(this, design)
+                    updateWindowCropRow()
                     picker.dismiss()
                 }
                 list.addView(card, android.widget.LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(10) })
@@ -588,6 +589,20 @@ class ControlsActivity : AppCompatActivity() {
         }
         findViewById<MaterialButton>(R.id.btn_dash_card_order).setOnClickListener { showCardOrderDialog() }
         findViewById<MaterialButton>(R.id.btn_dash_accent).setOnClickListener { showAccentDialog() }
+        findViewById<MaterialButton>(R.id.btn_dash_window_crop).setOnClickListener {
+            val values = WindowCrop.OPTIONS
+            val names = arrayOf(R.string.dash_window_crop_off, R.string.dash_window_crop_small,
+                R.string.dash_window_crop_medium, R.string.dash_window_crop_large).map { getString(it) }.toTypedArray()
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle(R.string.dash_window_crop_title)
+                .setSingleChoiceItems(names, WindowCrop.indexOf(DashboardMode.windowCrop(this))) { d, i ->
+                    DashboardMode.setWindowCrop(this, values[i])
+                    d.dismiss()
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+        }
+        updateWindowCropRow()
         // v2.5 · The background lived only in Home ▸ Style: open the same sheet here (no second copy of it).
         findViewById<MaterialButton>(R.id.btn_dash_background).setOnClickListener {
             if (supportFragmentManager.findFragmentByTag(DashStyleSheet.TAG) == null)
@@ -744,6 +759,12 @@ class ControlsActivity : AppCompatActivity() {
             .setView(list)
             .setPositiveButton(android.R.string.ok, null)
             .show()
+    }
+
+    /** The crop row only makes sense for the Android Auto window design. */
+    private fun updateWindowCropRow() {
+        findViewById<View>(R.id.btn_dash_window_crop).visibility =
+            if (DashboardMode.aaWindow(this)) View.VISIBLE else View.GONE
     }
 
     private fun showAccentDialog() {

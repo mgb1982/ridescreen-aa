@@ -10,4 +10,9 @@
     <string name="dash_design_vfd">VFD</string>
     <string name="dash_design_minimal">Minimale</string>
     <string name="dash_design_cockpit">Cabina</string>
+    <string name="dash_window_crop_title">Finestra di Android Auto: nascondi la barra inferiore</string>
+    <string name="dash_window_crop_off">No</string>
+    <string name="dash_window_crop_small">Piccola</string>
+    <string name="dash_window_crop_medium">Media (predefinita)</string>
+    <string name="dash_window_crop_large">Grande</string>
 </resources>

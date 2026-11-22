@@ -10,4 +10,9 @@
     <string name="dash_design_vfd">VFD</string>
     <string name="dash_design_minimal">Minimal</string>
     <string name="dash_design_cockpit">Cockpit</string>
+    <string name="dash_window_crop_title">Android Auto window: hide bottom bar</string>
+    <string name="dash_window_crop_off">Off</string>
+    <string name="dash_window_crop_small">Small</string>
+    <string name="dash_window_crop_medium">Medium (default)</string>
+    <string name="dash_window_crop_large">Large</string>
 </resources>
