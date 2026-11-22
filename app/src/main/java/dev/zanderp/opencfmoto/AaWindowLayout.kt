@@ -76,4 +76,52 @@ object AaWindowLayout {
         val h = maxOf(1, (srcH * s).toInt())
         return Box(box.x + (box.w - w) / 2, box.y + (box.h - h) / 2, w, h)
     }
+
+    /**
+     * Share (percent) of the Android Auto picture hidden at the bottom of the window, where Android Auto
+     * draws its shortcut bar. At full screen the 125X's own strip covers that part; in the window nothing
+     * does, so the picture is zoomed and cut. Set from the dashboard settings ([DashboardMode]); 0 = off.
+     */
+    @Volatile var bottomCropPct: Int = DEFAULT_BOTTOM_CROP_PCT
+    const val DEFAULT_BOTTOM_CROP_PCT = 25
+    const val MAX_BOTTOM_CROP_PCT = 40
+
+    /** Most of the width (percent, both sides together) that zooming may cut to fill the window's height. */
+    const val MAX_SIDE_CROP_PCT = 10
+
+    /** [clip] is the visible part, [draw] is the whole Android Auto picture (it overflows [clip]). */
+    class Placement(val clip: Box, val draw: Box)
+
+    /**
+     * Zoom the [frameW]x[frameH] Android Auto picture into [win]: the bottom [cropPct]% is cut off, and the
+     * rest is enlarged to fill the window's height as far as [MAX_SIDE_CROP_PCT] of the width may be cut,
+     * otherwise it is simply fitted (nothing cropped sideways, so the guidance card stays whole).
+     * With [cropPct] 0 and no side crop it is the plain [fit].
+     */
+    fun placeZoomed(win: Box, frameW: Int, frameH: Int, cropPct: Int, maxSideCropPct: Int = MAX_SIDE_CROP_PCT): Placement {
+        if (frameW <= 0 || frameH <= 0) return Placement(win, win)
+        val c = cropPct.coerceIn(0, MAX_BOTTOM_CROP_PCT)
+        val side = maxSideCropPct.coerceIn(0, 40)
+        val keepH = frameH * (100 - c) / 100.0
+        val sFit = minOf(win.w / frameW.toDouble(), win.h / keepH)
+        val sCover = maxOf(win.w / frameW.toDouble(), win.h / keepH)
+        val s = minOf(sCover, sFit / (1.0 - side / 100.0))
+        val drawW = maxOf(1, Math.round(frameW * s).toInt())
+        val drawH = maxOf(1, Math.round(frameH * s).toInt())
+        val clipW = minOf(win.w, drawW)
+        val clipH = minOf(win.h, maxOf(1, Math.round(keepH * s).toInt()))
+        val clip = Box(win.x + (win.w - clipW) / 2, win.y + (win.h - clipH) / 2, clipW, clipH)
+        // centred sideways, top-aligned: the cut is at the bottom
+        return Placement(clip, Box(clip.x + (clipW - drawW) / 2, clip.y, drawW, drawH))
+    }
+
+    /** A touch at ([x],[y]) on the canvas to a pixel of the [srcW]x[srcH] source; null outside the visible clip. */
+    fun windowToSource(p: Placement, srcW: Int, srcH: Int, x: Int, y: Int): Pair<Int, Int>? {
+        val c = p.clip
+        if (x < c.x || y < c.y || x >= c.x + c.w || y >= c.y + c.h) return null
+        val d = p.draw
+        val sx = ((x - d.x).toLong() * srcW / d.w).toInt().coerceIn(0, srcW - 1)
+        val sy = ((y - d.y).toLong() * srcH / d.h).toInt().coerceIn(0, srcH - 1)
+        return sx to sy
+    }
 }

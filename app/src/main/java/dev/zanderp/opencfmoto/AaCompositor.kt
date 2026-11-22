@@ -457,12 +457,8 @@ class AaCompositor(private val log: (String) -> Unit) {
         if (liveBuild != null && cardUntil <= android.os.SystemClock.uptimeMillis()) {
             // Custom dashboard on the dash: only a touch inside the Android Auto window goes to Android Auto.
             if (!windowOn() || canvasW <= 0 || canvasH <= 0) return null
-            val win = AaWindowLayout.window(canvasW, canvasH)
-            val f = AaWindowLayout.fit(win, if (bufW > 0) (bufW * cropU).toInt() else win.w, if (bufH > 0) (bufH * cropV).toInt() else win.h)
-            val wx = cx - f.x
-            val wy = cy - f.y
-            if (wx < 0 || wy < 0 || wx >= f.w || wy >= f.h) return null
-            return (wx.toLong() * srcW / f.w).toInt().coerceIn(0, srcW - 1) to (wy.toLong() * srcH / f.h).toInt().coerceIn(0, srcH - 1)
+            val place = windowPlacement(AaWindowLayout.window(canvasW, canvasH))
+            return AaWindowLayout.windowToSource(place, srcW, srcH, cx, cy)
         }
         val rx = cx - vpX
         val ry = cy - vpY
@@ -760,22 +756,32 @@ class AaCompositor(private val log: (String) -> Unit) {
 
     private fun windowOn(): Boolean = windowCached && liveBuild != null
 
+    /** Where the Android Auto picture goes in the dashboard's window: zoomed so its shortcut bar is cut off. */
+    private fun windowPlacement(win: AaWindowLayout.Box): AaWindowLayout.Placement {
+        val contentW = if (bufW > 0) (bufW * cropU).toInt() else win.w
+        val contentH = if (bufH > 0) (bufH * cropV).toInt() else win.h
+        return AaWindowLayout.placeZoomed(win, contentW, contentH, AaWindowLayout.bottomCropPct)
+    }
+
     /** The latched Android Auto frame, aspect-fit into the dashboard's window (GL thread, target current). */
     private fun drawAaWindow(rx: Int, ry: Int, rw: Int, rh: Int) {
         if (canvasW <= 0 || canvasH <= 0) return
-        val win = AaWindowLayout.window(canvasW, canvasH)
-        val contentW = if (bufW > 0) (bufW * cropU).toInt() else win.w
-        val contentH = if (bufH > 0) (bufH * cropV).toInt() else win.h
-        val f = AaWindowLayout.fit(win, contentW, contentH)
+        val place = windowPlacement(AaWindowLayout.window(canvasW, canvasH))
+        val clip = place.clip
+        val f = place.draw
         // layout is top-left origin, GL viewports bottom-left; the rect is the canvas (or its scaled mirror)
         val sx = rw.toFloat() / canvasW
         val sy = rh.toFloat() / canvasH
+        val cxg = rx + (clip.x * sx).toInt()
+        val cyg = ry + ((canvasH - clip.y - clip.h) * sy).toInt()
+        val cwg = maxOf(1, (clip.w * sx).toInt())
+        val chg = maxOf(1, (clip.h * sy).toInt())
         val gx = rx + (f.x * sx).toInt()
         val gy = ry + ((canvasH - f.y - f.h) * sy).toInt()
         val gw = maxOf(1, (f.w * sx).toInt())
         val gh = maxOf(1, (f.h * sy).toInt())
         GLES20.glEnable(GLES20.GL_SCISSOR_TEST)
-        GLES20.glScissor(gx, gy, gw, gh)
+        GLES20.glScissor(cxg, cyg, cwg, chg)   // what is visible: the zoomed picture is cut here
         GLES20.glViewport(gx, gy, gw, gh)
         GLES20.glUseProgram(program)
         quad.position(0)

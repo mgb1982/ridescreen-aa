@@ -49,4 +49,44 @@ class AaWindowLayoutTest {
         assertTrue("dead band ${win.h - f.h}px", win.h - f.h <= 20)
         assertEquals(win.w, f.w)
     }
+
+    private val win125 = AaWindowLayout.window(800, 416)
+
+    @Test fun noCropIsThePlainFit() {
+        val p = AaWindowLayout.placeZoomed(win125, 800, 480, 0, 0)
+        val f = AaWindowLayout.fit(win125, 800, 480)
+        assertEquals(f.w, p.draw.w); assertEquals(f.h, p.draw.h); assertEquals(f.x, p.clip.x); assertEquals(f.y, p.clip.y)
+    }
+
+    @Test fun bottomBarIsCutAndNothingLeavesTheWindow() {
+        val p = AaWindowLayout.placeZoomed(win125, 800, 480, 25)
+        assertTrue(p.clip.x >= win125.x && p.clip.y >= win125.y)
+        assertTrue(p.clip.x + p.clip.w <= win125.x + win125.w && p.clip.y + p.clip.h <= win125.y + win125.h)
+        val hidden = (p.draw.y + p.draw.h) - (p.clip.y + p.clip.h)
+        assertTrue("hidden ${hidden}px of ${p.draw.h}", hidden >= p.draw.h * 22 / 100 && hidden <= p.draw.h * 28 / 100)
+        assertTrue("top of the picture stays", p.draw.y == p.clip.y)
+    }
+
+    @Test fun zoomFillsMoreOfTheWindowButCutsLittleSideways() {
+        val plain = AaWindowLayout.placeZoomed(win125, 800, 480, 25, 0)
+        val zoom = AaWindowLayout.placeZoomed(win125, 800, 480, 25)
+        assertTrue(zoom.clip.h > plain.clip.h)
+        val cutSide = (zoom.draw.w - zoom.clip.w) * 100 / zoom.draw.w
+        assertTrue("cut $cutSide% sideways", cutSide <= AaWindowLayout.MAX_SIDE_CROP_PCT)
+    }
+
+    @Test fun touchesMapThroughTheZoom() {
+        val p = AaWindowLayout.placeZoomed(win125, 800, 480, 25)
+        val c = p.clip
+        val top = AaWindowLayout.windowToSource(p, 800, 480, c.x + c.w / 2, c.y)!!
+        assertTrue(top.second <= 2)
+        val bottom = AaWindowLayout.windowToSource(p, 800, 480, c.x + c.w / 2, c.y + c.h - 1)!!
+        assertTrue("bottom of the visible part is ${bottom.second} of 480", bottom.second in 340..365)
+        assertEquals(null, AaWindowLayout.windowToSource(p, 800, 480, c.x - 1, c.y))
+        assertEquals(null, AaWindowLayout.windowToSource(p, 800, 480, c.x, c.y + c.h))
+    }
+
+    @Test fun unknownFrameKeepsTheWindow() {
+        assertEquals(win125.w, AaWindowLayout.placeZoomed(win125, 0, 0, 25).clip.w)
+    }
 }
