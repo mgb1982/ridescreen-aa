@@ -458,26 +458,12 @@ class AaCompositor(private val log: (String) -> Unit) {
             // Custom dashboard on the dash: only a touch inside the Android Auto window goes to Android Auto.
             if (!windowOn() || canvasW <= 0 || canvasH <= 0) return null
             val win = AaWindowLayout.window(canvasW, canvasH)
-            val place = windowPlacement(win)
-            if (place != null) {
-                // Same picture as full screen, scaled down: back to full-screen canvas pixels, then the usual map.
-                val a = AaWindowLayout.windowToArea(place, areaWpx, areaHpx, cx, cy) ?: return null
-                return fullScreenToSource(a.first + areaX, a.second + areaY)
-            }
             val f = AaWindowLayout.fit(win, if (bufW > 0) (bufW * cropU).toInt() else win.w, if (bufH > 0) (bufH * cropV).toInt() else win.h)
             val wx = cx - f.x
             val wy = cy - f.y
             if (wx < 0 || wy < 0 || wx >= f.w || wy >= f.h) return null
             return (wx.toLong() * srcW / f.w).toInt().coerceIn(0, srcW - 1) to (wy.toLong() * srcH / f.h).toInt().coerceIn(0, srcH - 1)
         }
-        return fullScreenToSource(cx, cy)
-    }
-
-    /** The window shows the full-screen picture ([AaWindowLayout.placeFullScreen]); null until the viewport is known. */
-    private fun windowPlacement(win: AaWindowLayout.Box): AaWindowLayout.Placement? =
-        AaWindowLayout.placeFullScreen(win, areaWpx, areaHpx, vpX - areaX, vpY - areaY, vpW, vpH)
-
-    private fun fullScreenToSource(cx: Int, cy: Int): Pair<Int, Int>? {
         val rx = cx - vpX
         val ry = cy - vpY
         if (rx < 0 || ry < 0 || rx >= vpW || ry >= vpH) return null
@@ -778,29 +764,18 @@ class AaCompositor(private val log: (String) -> Unit) {
     private fun drawAaWindow(rx: Int, ry: Int, rw: Int, rh: Int) {
         if (canvasW <= 0 || canvasH <= 0) return
         val win = AaWindowLayout.window(canvasW, canvasH)
-        // Same picture as full-screen Android Auto (same "Fill" crop and margins), scaled into the window;
-        // before the full-screen viewport is known, the whole frame letterboxed as before.
-        val place = windowPlacement(win) ?: run {
-            val contentW = if (bufW > 0) (bufW * cropU).toInt() else win.w
-            val contentH = if (bufH > 0) (bufH * cropV).toInt() else win.h
-            val f = AaWindowLayout.fit(win, contentW, contentH)
-            AaWindowLayout.Placement(f, f)
-        }
-        val clip = place.clip
-        val f = place.draw
+        val contentW = if (bufW > 0) (bufW * cropU).toInt() else win.w
+        val contentH = if (bufH > 0) (bufH * cropV).toInt() else win.h
+        val f = AaWindowLayout.fit(win, contentW, contentH)
         // layout is top-left origin, GL viewports bottom-left; the rect is the canvas (or its scaled mirror)
         val sx = rw.toFloat() / canvasW
         val sy = rh.toFloat() / canvasH
-        val cxg = rx + (clip.x * sx).toInt()
-        val cyg = ry + ((canvasH - clip.y - clip.h) * sy).toInt()
-        val cwg = maxOf(1, (clip.w * sx).toInt())
-        val chg = maxOf(1, (clip.h * sy).toInt())
         val gx = rx + (f.x * sx).toInt()
         val gy = ry + ((canvasH - f.y - f.h) * sy).toInt()
         val gw = maxOf(1, (f.w * sx).toInt())
         val gh = maxOf(1, (f.h * sy).toInt())
         GLES20.glEnable(GLES20.GL_SCISSOR_TEST)
-        GLES20.glScissor(cxg, cyg, cwg, chg)
+        GLES20.glScissor(gx, gy, gw, gh)
         GLES20.glViewport(gx, gy, gw, gh)
         GLES20.glUseProgram(program)
         quad.position(0)

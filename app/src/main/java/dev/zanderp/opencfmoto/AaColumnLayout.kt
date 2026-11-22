@@ -16,7 +16,9 @@ internal object AaColumnLayout {
     fun rows(col: AaWindowLayout.Box, cardCount: Int): Rows {
         val x = col.x.toFloat(); val y = col.y.toFloat(); val w = col.w.toFloat(); val h = col.h.toFloat()
         val n = cardCount.coerceIn(0, MAX_CARDS)
-        val speed = DashLayout.Box(x, y, w, h * .32f)
+        // The column now ends above the dash's strip, so with three or more cards the big speed gives up
+        // some height to keep them readable.
+        val speed = DashLayout.Box(x, y, w, h * (if (n >= 3) .24f else .32f))
         val labelSize = (h * .045f).coerceAtLeast(11f)
         val barY = speed.bottom + h * .07f
         val bar = DashLayout.Box(x, barY, w, (h * .06f).coerceAtLeast(8f))

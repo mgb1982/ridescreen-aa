@@ -31,27 +31,22 @@ class AaWindowLayoutTest {
         assertEquals(3, AaWindowLayout.fit(box, 0, 0).w)
     }
 
-    @Test fun fillCropIsKeptInTheWindow() {
-        // 125X-like: area 1024x464, Android Auto 800x480 under "Fill" → viewport 1024x614, 75 px cut top and bottom.
-        val win = AaWindowLayout.Box(8, 8, 640, 448)
-        val p = AaWindowLayout.placeFullScreen(win, 1024, 464, 0, -75, 1024, 614)!!
-        assertTrue(p.clip.x >= win.x && p.clip.x + p.clip.w <= win.x + win.w)
-        assertTrue(p.clip.y >= win.y && p.clip.y + p.clip.h <= win.y + win.h)
-        assertEquals(640, p.clip.w)                       // area aspect fits the window by width
-        assertTrue("picture overflows the clip like full screen", p.draw.h > p.clip.h && p.draw.y < p.clip.y)
-        assertEquals(p.clip.w, p.draw.w)
+    @Test fun windowAndColumnStayAboveTheDashStrip() {
+        for ((w, h) in listOf(800 to 416, 1024 to 464, 1280 to 535)) {
+            val win = AaWindowLayout.window(w, h)
+            val col = AaWindowLayout.column(w, h)
+            assertTrue("window runs under the strip at ${w}x$h", win.y + win.h <= AaWindowLayout.visibleBottom(w, h))
+            assertTrue("column runs under the raised strip at ${w}x$h", col.y + col.h <= AaWindowLayout.visibleBottomRight(w, h))
+            assertTrue(win.h > h / 2 && col.h > h / 2)
+        }
     }
 
-    @Test fun windowTouchMapsBackToFullScreenArea() {
-        val win = AaWindowLayout.Box(8, 8, 640, 448)
-        val p = AaWindowLayout.placeFullScreen(win, 1024, 464, 0, -75, 1024, 614)!!
-        val centre = AaWindowLayout.windowToArea(p, 1024, 464, p.clip.x + p.clip.w / 2, p.clip.y + p.clip.h / 2)!!
-        assertEquals(512, centre.first)
-        assertEquals(232, centre.second)
-        assertEquals(null, AaWindowLayout.windowToArea(p, 1024, 464, p.clip.x - 1, p.clip.y))
-    }
-
-    @Test fun unknownGeometryFallsBack() {
-        assertEquals(null, AaWindowLayout.placeFullScreen(AaWindowLayout.Box(0, 0, 10, 10), 0, 0, 0, 0, 0, 0))
+    @Test fun the125xWindowFitsAndroidAutoAlmostExactly() {
+        // 800x416 canvas: window ~500x314 (aspect 1.59) for a 800x480 Android Auto (1.67): nearly no dead band.
+        val win = AaWindowLayout.window(800, 416)
+        assertEquals(320, AaWindowLayout.visibleBottom(800, 416) - 6)
+        val f = AaWindowLayout.fit(win, 800, 480)
+        assertTrue("dead band ${win.h - f.h}px", win.h - f.h <= 20)
+        assertEquals(win.w, f.w)
     }
 }

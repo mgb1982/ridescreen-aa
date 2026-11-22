@@ -26,8 +26,9 @@ class AaColumnLayoutTest {
 
     @Test fun fourCardsStayReadable() {
         for ((w, h) in sizes) {
-            val r = AaColumnLayout.rows(AaWindowLayout.column(w, h), 4)
-            assertTrue("card height ${r.cards[0].h} at $w x $h", r.cards[0].h >= h * .11f)
+            val col = AaWindowLayout.column(w, h)
+            val r = AaColumnLayout.rows(col, 4)
+            assertTrue("card height ${r.cards[0].h} at $w x $h", r.cards[0].h >= col.h * .125f)
         }
     }
 }
