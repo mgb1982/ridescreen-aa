@@ -44,6 +44,13 @@ object AppSettings {
     private fun prefs(ctx: Context) =
         ctx.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
 
+    /** Per-bike relative-throttle cap for [ThrottleScale]; the un-scoped value is the fallback. */
+    fun throttleCap(ctx: Context): Double =
+        BikeScope.getString(prefs(ctx), ctx, ThrottleScale.PREF_KEY, null)?.toDoubleOrNull()
+            ?.takeIf { it in ThrottleScale.DEFAULT_CAP..100.0 } ?: ThrottleScale.DEFAULT_CAP
+    fun setThrottleCap(ctx: Context, cap: Double) =
+        BikeScope.putString(prefs(ctx), ctx, ThrottleScale.PREF_KEY, cap.toString())
+
     fun autoConnect(ctx: Context): Boolean = prefs(ctx).getBoolean(KEY_AUTO_CONNECT, true)
     fun setAutoConnect(ctx: Context, on: Boolean) =
         prefs(ctx).edit().putBoolean(KEY_AUTO_CONNECT, on).apply()

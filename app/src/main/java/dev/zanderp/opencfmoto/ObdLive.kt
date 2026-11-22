@@ -56,6 +56,15 @@ object ObdLive {
      *  stop() + start() resets [stopFlag]; the old thread must not keep using the adapter). */
     private fun stopping(): Boolean = stopFlag || worker !== Thread.currentThread()
     @Volatile private var engine: Boolean? = null
+    /** Peak-held cap for the displayed relative throttle ([ThrottleScale]); loaded at reader start. */
+    @Volatile private var throttleCap = ThrottleScale.DEFAULT_CAP
+    private var throttleCapSaved = ThrottleScale.DEFAULT_CAP
+    private var throttleCapSavedAt = 0L
+    /** Last raw PID 0x45 value, kept for the log line. */
+    @Volatile private var rawRelThrottle: Double? = null
+    private var appCtx: Context? = null
+    private val throttlePeak = ThrottlePeak()
+    private var peakLogAt = 0L
     @Volatile private var yieldedToPke = false
     /** Set by AndroidAutoService while the bike's link is lost but Android Auto is not parked yet (grace). */
     @Volatile var linkLost = false
@@ -89,6 +98,13 @@ object ObdLive {
             return
         }
         stopFlag = false
+        appCtx = app
+        throttleCap = AppSettings.throttleCap(app)
+        throttleCapSaved = throttleCap
+        throttleCapSavedAt = SystemClock.elapsedRealtime()
+        rawRelThrottle = null
+        throttlePeak.take()
+        peakLogAt = SystemClock.elapsedRealtime()
         val t = Thread({ loop(app, name) }, "obd-live")
         t.isDaemon = true
         worker = t
@@ -103,7 +119,20 @@ object ObdLive {
         if (wait) runCatching { t.join(3_000) }
         worker = null
         latest = null
+        saveThrottleCap(force = true)
         setEngine(null)
+    }
+
+    /** Persists the cap only when it changed, at most every [ThrottleScale.SAVE_EVERY_MS] unless [force]. */
+    private fun saveThrottleCap(force: Boolean = false) {
+        val c = appCtx ?: return
+        val cap = throttleCap
+        if (cap == throttleCapSaved) return
+        val now = SystemClock.elapsedRealtime()
+        if (!force && now - throttleCapSavedAt < ThrottleScale.SAVE_EVERY_MS) return
+        runCatching { AppSettings.setThrottleCap(c, cap) }
+        throttleCapSaved = cap
+        throttleCapSavedAt = now
     }
 
     private fun setEngine(now: Boolean?) {
@@ -233,11 +262,22 @@ object ObdLive {
                     failed = 0
                     got.forEach { (pid, v) -> stats.record(pid, v) }
                     val prev = latest
+                    got[0x45]?.let { raw ->
+                        rawRelThrottle = raw
+                        throttleCap = ThrottleScale.nextCap(throttleCap, raw)
+                        saveThrottleCap()
+                        throttlePeak.add(raw, got[0x11])
+                    }
+                    if (now - peakLogAt >= 60_000L) {
+                        peakLogAt = now
+                        throttlePeak.take()?.let { log(ThrottlePeak.line(it, throttleCap)) }
+                    }
+                    val relThrottle = got[0x45]?.let { ThrottleScale.scale(it, throttleCap) } ?: prev?.relativeThrottle
                     val snapshot = Snapshot(
                         got[0x0C], got[0x0D] ?: prev?.speed, got[0x05] ?: prev?.coolant,
                         got[0x11] ?: prev?.throttle, now, got[0x42] ?: prev?.volt,
                         got[0x04] ?: prev?.load, got[0x0F] ?: prev?.intake, got[0x33] ?: prev?.baro,
-                        got[0x43] ?: prev?.absoluteLoad, got[0x45] ?: prev?.relativeThrottle,
+                        got[0x43] ?: prev?.absoluteLoad, relThrottle,
                     )
                     latest = snapshot
                     TripLogger.current?.recordObdSample(snapshot.asTripSample())
@@ -317,7 +357,7 @@ object ObdLive {
 
     private fun describe(s: Snapshot?): String = if (s == null) "-" else listOfNotNull(
         s.rpm?.let { "rpm ${"%.0f".format(it)}" }, s.speed?.let { "speed ${"%.0f".format(it)}" },
-        s.coolant?.let { "coolant ${"%.0f".format(it)}" }, s.relativeThrottle?.let { "throttle ${"%.1f".format(it)}" },
+        s.coolant?.let { "coolant ${"%.0f".format(it)}" }, s.relativeThrottle?.let { "throttle ${"%.1f".format(it)}" + (rawRelThrottle?.let { r -> " (raw ${"%.1f".format(r)}, cap ${"%.1f".format(throttleCap)})" } ?: "") },
         s.volt?.let { "volt ${"%.1f".format(it)}" },
     ).joinToString(" · ")
 
