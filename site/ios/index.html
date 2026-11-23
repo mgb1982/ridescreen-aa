@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-lang]");if(a){try{localStorage.setItem("rs_lang",a.dataset.lang)}catch(_){}}});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RideScreen para iPhone · Mapa y datos en el cuadro de tu moto</title>
+<meta name="description" content="RideScreen para iPhone dibuja el mapa, la navegación y los datos de tu moto en su cuadro, también con el iPhone bloqueado. Gratis en la App Store, con un desbloqueo único.">
+<link rel="canonical" href="https://ridescreen.app/ios/">
+<link rel="alternate" hreflang="es" href="https://ridescreen.app/ios/"><link rel="alternate" hreflang="ca" href="https://ridescreen.app/ca/ios/"><link rel="alternate" hreflang="en" href="https://ridescreen.app/en/ios/"><link rel="alternate" hreflang="x-default" href="https://ridescreen.app/en/ios/">
+<link rel="icon" href="../img/icon.svg" type="image/svg+xml"><link rel="icon" href="../favicon.png" type="image/png"><link rel="apple-touch-icon" href="../img/icon.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://ridescreen.app/ios/"><meta property="og:title" content="RideScreen para iPhone"><meta property="og:description" content="El mapa y los datos de tu moto en su cuadro, con el iPhone bloqueado.">
+<meta property="og:image" content="https://ridescreen.app/img/og-ios-es.jpg"><meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#161D18">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"MobileApplication","name":"RideScreen","operatingSystem":"iOS 16+","applicationCategory":"NavigationApplication","description":"#x27;RideScreen para iPhone dibuja el mapa, la navegación y los datos de tu moto en su cuadro, también con el iPhone bloqueado. Gratis en la App Store, con un desbloqueo único.&#x27","url":"https://ridescreen.app/ios/","downloadUrl":"https://apps.apple.com/app/id6837837867","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"inLanguage":["es","ca","en"]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap">
+<style>
+/* Same palette and type as the guides (the app's own): forest green surfaces, brass accent. */
+:root {
+  --bg: #161D18; --surface: #212B24; --surface-2: #2A362E; --fg: #EEF2EA; --muted: #A9B5A6;
+  --accent: #D1A955; --accent-ink: #18211A; --line: #34423A;
+  --display: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --body: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+    --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F4F2EC; --surface: #FFFFFF; --surface-2: #EDEAE1; --fg: #18211A; --muted: #5C665D;
+  --accent: #8F6A1E; --accent-ink: #FFFFFF; --line: #DCD7CB; color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 17px; line-height: 1.55; }
+a { color: var(--accent); }
+img { max-width: 100%; height: auto; display: block; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 18px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(34px, 6.4vw, 62px); line-height: 1.02; letter-spacing: -.01em; }
+h1 span, h2 span { color: var(--accent); }
+h2 { font-family: var(--display); font-weight: 400; font-size: clamp(26px, 4vw, 36px); line-height: 1.08; }
+h3 { font-size: 19px; font-weight: 700; }
+.eyebrow { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.muted { color: var(--muted); }
+
+/* top bar */
+.top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding-block: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg); font-weight: 700; font-size: 18px; white-space: nowrap; flex-shrink: 0; }
+.brand img { width: 34px; height: 34px; border-radius: 50%; }
+.top nav { margin-left: auto; display: flex; gap: 8px 18px; flex-wrap: wrap; justify-content: flex-end; }
+.top nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 15px; }
+.top nav a:hover { color: var(--fg); }
+
+/* hero */
+.hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; align-items: center; padding-block: 28px 56px; }
+.hero .lede { color: var(--muted); font-size: 19px; margin: 18px 0 26px; max-width: 54ch; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 22px; border-radius: 999px; font-weight: 700; text-decoration: none; font-size: 17px; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); }
+.btn.ghost { border: 2px solid var(--line); color: var(--fg); }
+.btn:hover { filter: brightness(1.06); }
+.facts { margin-top: 18px; font-size: 14px; color: var(--muted); }
+.facts.alt { margin-top: 6px; }
+.facts.alt a { color: var(--muted); text-decoration: underline; }
+.hero-media { position: relative; justify-self: center; width: min(360px, 100%); }
+.hero-media .video { border-radius: 26px; border: 3px solid var(--line); aspect-ratio: 9 / 16; object-fit: cover; width: 100%; }
+.hero-media .phone { position: absolute; width: 46%; left: -18%; bottom: -6%; border-radius: 20px; border: 3px solid var(--line); box-shadow: 0 18px 50px rgba(0,0,0,.45); }
+.badge { position: absolute; right: -10px; top: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 8px 12px; font-size: 13px; font-weight: 700; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+
+/* sections */
+section { padding-block: 56px; border-top: 1px solid var(--line); }
+section > .eyebrow { display: block; margin-bottom: 6px; }
+.sub { color: var(--muted); max-width: 62ch; margin: 12px 0 0; }
+
+.bikes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.chip { background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; font-weight: 600; }
+.chip.main { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-top: 26px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px; }
+.card .ic { font-size: 28px; line-height: 1; }
+.card h3 { margin-top: 12px; }
+.card p { margin: 6px 0 0; color: var(--muted); font-size: 15.5px; }
+.card .tag { display: inline-block; margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .08em; }
+
+.shots { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; margin-top: 26px; }
+.shots figure { margin: 0; flex: 0 0 200px; scroll-snap-align: start; }
+.shots img { border-radius: 18px; border: 2px solid var(--line); }
+.shots figcaption { margin-top: 8px; font-size: 14px; color: var(--muted); text-align: center; }
+
+.duo { display: grid; grid-template-columns: 1.3fr 1fr; gap: 22px; margin-top: 26px; align-items: center; }
+.duo .dash img { border-radius: 18px; border: 2px solid var(--line); }
+.duo .watch { display: flex; gap: 16px; justify-content: center; }
+.duo .watch img { width: 140px; height: 140px; border-radius: 50%; box-shadow: 0 0 0 6px #2b2b2b, 0 0 0 8px #555; }
+.caption { margin-top: 10px; color: var(--muted); font-size: 15px; text-align: center; }
+
+.steps { counter-reset: s; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 26px; padding: 0; list-style: none; }
+.steps li { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px 20px 20px 70px; position: relative; }
+.steps li::before { counter-increment: s; content: counter(s); position: absolute; left: 18px; top: 18px; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-family: var(--display); display: grid; place-items: center; }
+
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 18px; margin-top: 10px; }
+summary { cursor: pointer; font-weight: 700; }
+details p { margin: 10px 0 2px; color: var(--muted); }
+
+footer { border-top: 1px solid var(--line); padding-block: 34px 48px; color: var(--muted); font-size: 14px; }
+footer .links { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
+footer a { color: var(--fg); }
+
+@media (max-width: 820px) {
+  .hero { grid-template-columns: 1fr; gap: 34px; }
+  .hero-media { width: min(300px, 78%); margin-left: 14%; }
+  .duo { grid-template-columns: 1fr; }
+  .top nav { gap: 12px; }
+  .top nav .opt { display: none; }
+}
+.top nav a:has(.flag) { display: inline-flex; align-items: center; }
+.flag { width: 24px; height: 16px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.18); display: block; }
+.top nav a:has(.flag):hover .flag { box-shadow: 0 0 0 2px var(--accent); }
+.thanks { margin: 6px 0 0 1.2em; padding: 0; color: var(--muted); columns: 2 220px; }
+.thanks li { margin: 2px 0; break-inside: avoid; }
+
+.ios-note{display:block;margin:0 0 6px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 16px;text-decoration:none;color:var(--fg);font-weight:600;font-size:15px}.ios-note b{color:var(--accent)}
+
+.ios-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding-block:28px 56px}
+.ios-hero h1{font-size:clamp(30px,5vw,50px)}
+.ios-hero .lede{color:var(--muted);font-size:19px;margin:18px 0 26px;max-width:54ch}
+.appstore{display:inline-flex;align-items:center;gap:12px;background:#000;color:#fff;border:1px solid #6a6a6a;border-radius:14px;padding:10px 22px 10px 16px;text-decoration:none}
+.appstore svg{width:30px;height:30px;fill:#fff}.appstore small{display:block;font-size:12px;line-height:1.1;letter-spacing:.02em}.appstore b{display:block;font-size:23px;line-height:1.1;font-weight:600}
+.shots figure{flex:0 0 230px}
+.cmp{width:100%;border-collapse:collapse;margin-top:22px;font-size:16px}.cmp th,.cmp td{border:1px solid var(--line);padding:12px 14px;text-align:left;vertical-align:top}.cmp th{background:var(--surface-2)}
+.ios-note{display:block;margin:0 0 6px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 16px;text-decoration:none;color:var(--fg);font-weight:600;font-size:15px}.ios-note b{color:var(--accent)}
+.hero-media .phone-ios{width:min(300px,100%);border-radius:30px;border:3px solid var(--line);box-shadow:0 18px 50px rgba(0,0,0,.45)}
+@media(max-width:820px){.ios-hero{grid-template-columns:1fr;gap:34px}.shots figure{flex:0 0 200px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><a class="brand" href="../"><img src="../img/icon.svg" alt="" width="34" height="34">RideScreen</a>
+    <nav><a href="#funciones" class="opt">Funciones</a><a href="#compat" class="opt">Compatibilidad</a><a href="#empezar" class="opt">Cómo empezar</a><a href="../">Android</a><a href="../ca/ios/" lang="ca" hreflang="ca" data-lang="ca">Català</a><a href="../en/ios/" lang="en" hreflang="en" data-lang="en">English</a></nav>
+  </header>
+  <div class="ios-hero">
+    <div>
+      <div class="eyebrow">Para iPhone · iOS 16 o superior</div>
+      <h1>El mapa y los datos de tu moto en su cuadro, <span>con el iPhone bloqueado</span></h1>
+      <p class="lede">RideScreen para iPhone dibuja el mapa, la navegación, la velocidad y los datos del motor en la pantalla de tu moto, y sigue haciéndolo con el móvil en el bolsillo. Diseños a tu gusto, viajes con récords, llave sin contacto y mucho más.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://apps.apple.com/app/id6837837867">Descárgala en la App Store</a>
+        <a class="btn ghost" href="#empezar">Cómo empezar</a>
+      </div>
+      <p class="facts">Gratis para empezar · desbloqueo completo con un único pago, sin suscripción · sin anuncios</p>
+    </div>
+    <div class="hero-media"><img class="phone-ios" src="../img/ios/es-01.webp" alt="Inicio, con la moto conectada" width="540" height="1174"></div>
+  </div>
+  <section id="capturas"><span class="eyebrow">Capturas</span><h2>Así se ve</h2><div class="shots"><figure><img src="../img/ios/es-01.webp" alt="Inicio, con la moto conectada" width="540" height="1174" loading="lazy"><figcaption>Inicio, con la moto conectada</figcaption></figure><figure><img src="../img/ios/es-02.webp" alt="Elige el diseño de tu cuadro" width="540" height="1174" loading="lazy"><figcaption>Elige el diseño de tu cuadro</figcaption></figure><figure><img src="../img/ios/es-03.webp" alt="Todos tus trayectos" width="540" height="1174" loading="lazy"><figcaption>Todos tus trayectos</figcaption></figure><figure><img src="../img/ios/es-04.webp" alt="El mapa de velocidad de cada ruta" width="540" height="1174" loading="lazy"><figcaption>El mapa de velocidad de cada ruta</figcaption></figure><figure><img src="../img/ios/es-05.webp" alt="Tu moto en la mano" width="540" height="1174" loading="lazy"><figcaption>Tu moto en la mano</figcaption></figure></div></section>
+  <section id="funciones"><span class="eyebrow">Funciones</span><h2>Todo lo que hace <span>en tu iPhone</span></h2><div class="grid"><div class="card"><div class="ic">🗺️</div><h3>Mapa con el móvil bloqueado</h3><p>Dibuja el mapa de Apple, tu posición, el destino y la próxima maniobra, y sigue enviándolo al cuadro con el iPhone en el bolsillo.</p></div><div class="card"><div class="ic">🎛️</div><h3>Diez diseños del cuadro</h3><p>Mapa, limpio, LED, analógico, VFD, minimal, cockpit, Pit, Classic y Focus, en día, noche o automático, con márgenes ajustables.</p></div><div class="card"><div class="ic">🖼️</div><h3>Tu foto de fondo</h3><p>Pon una foto tuya detrás de los datos, con el velo que prefieras, y ve el resultado antes de salir.</p></div><div class="card"><div class="ic">📍</div><h3>Viajes y récords</h3><p>Graba tus rutas con el GPS, con mapa de calor, récords, trofeos y resúmenes de la semana y del año.</p></div><div class="card"><div class="ic">🧭</div><h3>Rutas y GPX</h3><p>Planifica una ruta, importa o exporta GPX y recibe avisos por voz y de semáforos.</p></div><div class="card"><div class="ic">⚙️</div><h3>Datos del motor (OBD)</h3><p>Con un adaptador ELM327 por Bluetooth o Wi‑Fi: revoluciones, temperatura y voltaje en el cuadro.</p></div><div class="card"><div class="ic">🔑</div><h3>Llave sin contacto</h3><p>Bloquea, desbloquea y abre el asiento y el depósito desde el móvil. Escanea el QR de información de la moto para configurarlo.</p></div><div class="card"><div class="ic">🎬</div><h3>Vídeo del viaje</h3><p>Un clip tuyo con la ruta, la velocidad y la hora encima, en varios estilos.</p></div><div class="card"><div class="ic">🔔</div><h3>Widgets y Siri</h3><p>Controla la moto desde la pantalla de inicio o con la voz, y recibe avisos de mantenimiento, batería y caídas.</p></div></div></section>
+  <section id="compat"><span class="eyebrow">Compatibilidad</span><h2>¿Funciona con <span>mi moto</span>?</h2><p class="sub">Necesitas una moto con cuadro TFT que muestre un <b>código QR</b> para conectar el móvil (MotoPlay / EasyConnect). La app se prueba a diario en una Zontes 125X y ya ha funcionado con otros cuadros, como el JCDZ34. Si el tuyo muestra ese QR, pruébala: la app te dice si es compatible.</p></section>
+  <section id="android"><span class="eyebrow">Android o iPhone</span><h2>Dos apps, <span>una por sistema</span></h2><table class='cmp'><thead><tr><th></th><th>RideScreen AA (Android)</th><th>RideScreen (iPhone)</th></tr></thead><tbody><tr><td>Qué hace</td><td>Pone Android Auto inalámbrico en el cuadro: Google Maps, Waze, música y el Asistente.</td><td>Dibuja su propia imagen en el cuadro: mapa de Apple, navegación y datos de la moto.</td></tr><tr><td>Otras apps en el cuadro</td><td>Sí, las de Android Auto.</td><td>No. Solo lo suyo, por limitaciones de iOS.</td></tr><tr><td>Precio</td><td>Gratis, de código abierto.</td><td>Gratis, con un desbloqueo único en la App Store.</td></tr></tbody></table><p class="muted" style="margin-top:14px">¿Tienes Android? <a href="../">RideScreen AA</a> es otra app, gratuita y de código abierto.</p></section>
+  <section id="empezar"><span class="eyebrow">Primeros pasos</span><h2>Listo en <span>cinco minutos</span></h2><ol class="steps"><li><h3>Descárgala</h3><p>Instala RideScreen desde la App Store y abre la app. Acepta los permisos de Bluetooth, red local y cámara.</p></li><li><h3>Empareja el cuadro</h3><p>En Inicio pulsa Más → Emparejar y escanea el QR del cuadro. Únete una vez a su Wi‑Fi.</p></li><li><h3>Conecta</h3><p>Pulsa Conectar. La imagen aparece en el cuadro, y la app graba el viaje mientras tanto. Después conecta sola.</p></li><li><h3>Opcional: la llave</h3><p>En los ajustes del PKE, escanea el QR de información de la moto. Si la caja no responde, añade la contraseña Bluetooth de la app oficial.</p></li></ol></section>
+  <section id="faq"><span class="eyebrow">Preguntas</span><h2>Preguntas <span>frecuentes</span></h2><details><summary>¿Cuánto cuesta?</summary><p>La app es gratuita. Con ella puedes emparejar, conectar y ver el cuadro con velocidad y hora. El desbloqueo completo (diseños, mapa, OBD, llave, viajes, rutas, Siri…) es un único pago, sin suscripción, y sirve en todos tus dispositivos con el mismo Apple ID.</p></details><details><summary>¿Puedo usar Waze o Google Maps en el cuadro?</summary><p>No. En iPhone la app solo puede dibujar su propia imagen con el móvil bloqueado, y eso se hace con el mapa de Apple. Puedes pegar un destino de Google Maps y lo navega ella.</p></details><details><summary>La llave sin contacto no responde</summary><p>Si la caja contesta pero no obedece, escribe en los ajustes del PKE la contraseña Bluetooth de 6 caracteres que pusiste al vincular la moto en la app oficial. Déjala vacía si ya te funciona.</p></details><details><summary>¿Qué datos recoge?</summary><p>Los viajes y ajustes se quedan en tu iPhone. No hay cuentas ni anuncios. El envío de datos anónimos es opcional y nunca incluye tu ubicación. Todo está en la <a href="../privacidad/">política de privacidad</a>.</p></details><details><summary>Algo no funciona</summary><p>Ajustes → Datos anónimos y problemas → Informar de un problema, o escribe a <a href="mailto:hola@ridescreen.app">hola@ridescreen.app</a> contando tu moto y qué ha pasado.</p></details></section>
+</div>
+<footer><div class="wrap"><div class="links"><a href="../">Inicio</a><a href="../guia/">Guía de RideScreen AA</a><a href="../privacidad/">Privacidad</a><a href="mailto:hola@ridescreen.app">hola@ridescreen.app</a></div><p>RideScreen para iPhone es una app independiente: no es oficial ni está afiliada con ningún fabricante de motos. Apple, iPhone, App Store y Apple Maps son marcas de Apple Inc. Úsala con responsabilidad: la vista, siempre en la carretera.</p></div></footer>
+</body>
+</html>
