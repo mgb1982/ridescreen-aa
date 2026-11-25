@@ -60,6 +60,8 @@ object CrashDetector : SensorEventListener {
     private const val STILL_MS = 10_000L
     private const val STILL_TOLERANCE = 0.6f          // m/s² deviation from 1 g
     private const val STOPPED_KMH = 5f
+    /** After an impact, riding on at ≥ [ARM_SPEED_KMH] this long means it was a bump, not a crash. */
+    internal const val KEEP_RIDING_MS = 5_000L
     /**
      * v2.2 field test: two false alarms in one day, both a pothole/kerb bump (4–5 g, which a phone on
      * a handlebar mount sees all the time) followed by a red light (still + stopped). What a red light
@@ -83,6 +85,7 @@ object CrashDetector : SensorEventListener {
     /** Speed when the last real impact was detected; added to the SMS (v2.3). */
     @Volatile private var lastImpactKmh: Float? = null
     private var stillSince = 0L
+    private var movingSince = 0L
     private val grav = FloatArray(3)
     private var gravReady = false
     private val ridingGrav = FloatArray(3)
@@ -183,10 +186,22 @@ object CrashDetector : SensorEventListener {
             if (mag >= IMPACT_G * SensorManager.GRAVITY_EARTH && now - lastFastAt <= ARM_WINDOW_MS) {
                 impactAt = now
                 stillSince = 0L
+                movingSince = 0L
                 lastImpactKmh = v
                 BlackBox.onImpact(app, mag / SensorManager.GRAVITY_EARTH, v)
                 LogBus.log("[CRASH] impact ${"%.1f".format(mag / SensorManager.GRAVITY_EARTH)} g at ${v?.toInt() ?: "?"} km/h — watching for stillness")
             }
+            return
+        }
+        // Field logs (21 and 25 Nov 2026): most "impacts" are bumps at 20-50 km/h and the rider just rides
+        // on, yet each one kept the detector watching for 30 s. Riding on at speed ends the watch at once
+        // (a crash can't do that), so a later stop right after a bump can't be taken for one.
+        movingSince = CrashRules.movingSince(movingSince, v, ARM_SPEED_KMH, now)
+        if (CrashRules.rodeOn(movingSince, now, KEEP_RIDING_MS)) {
+            LogBus.log("[CRASH] impact dismissed: still riding at ${v?.toInt() ?: "?"} km/h for ${KEEP_RIDING_MS / 1000} s")
+            BlackBox.onOutcome("moving")
+            impactAt = 0L
+            movingSince = 0L
             return
         }
         if (now - impactAt > CONFIRM_WINDOW_MS) {
