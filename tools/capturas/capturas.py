@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from lib.base import PHONE_DPR, PHONE_H, PHONE_W, WATCH_DPR, WATCH_W  # noqa: E402
 from lib.render import Job, render  # noqa: E402
-from screens import guide, phone, pills, stats, v24, watch  # noqa: E402
+from screens import guide, phone, pills, stats, v24, v25, watch  # noqa: E402
 
 DOCS_M = "docs/screenshots/ridescreen/movil/"
 DOCS_W = "docs/screenshots/ridescreen/reloj/"
@@ -52,6 +52,22 @@ SCREENS = {
     "v24_dash_scale": (lambda l: v24.dash_scale(l), "phone", lambda l: [(WEB_IMG[l] + "dashboard-escala.webp", PHONE_WEB)]),
     "v24_trip_obd": (lambda l: v24.trip_obd(l), "phone", lambda l: [(WEB_IMG[l] + "viaje-obd.webp", PHONE_WEB)]),
     "v24_pulse": (lambda l: v24.pulse(l), "phone", lambda l: [(WEB_IMG[l] + "pulso.webp", PHONE_WEB)]),
+    # 2.5 (RC11): settings hub, Cuadro, dashboard settings (hide bottom bar), Home Dashboard card. Docs 30-34, web per language.
+    "v25_settings": (lambda l: v25.settings_hub(l), "phone",
+                     lambda l: ([(DOCS_M + "30_ajustes.png", PHONE_DOCS)] if l == "es" else [])
+                     + [(WEB_IMG[l] + "ajustes.webp", PHONE_WEB)]),
+    "v25_cuadro": (lambda l: v25.cuadro(l), "phone",
+                   lambda l: ([(DOCS_M + "31_cuadro_selector.png", PHONE_DOCS)] if l == "es" else [])
+                   + [(WEB_IMG[l] + "cuadro-vista.webp", PHONE_WEB)]),
+    "v25_dash_window": (lambda l: v25.dash_window(l), "phone",
+                        lambda l: ([(DOCS_M + "32_dashboard_ocultar_barra.png", PHONE_DOCS)] if l == "es" else [])
+                        + [(WEB_IMG[l] + "dashboard-ventana.webp", PHONE_WEB)]),
+    "v25_dash_window_dlg": (lambda l: v25.dash_window(l, dialog=True), "phone",
+                            lambda l: ([(DOCS_M + "33_dashboard_ocultar_barra_dialogo.png", PHONE_DOCS)] if l == "es" else [])
+                            + [(WEB_IMG[l] + "dashboard-ventana-dialogo.webp", PHONE_WEB)]),
+    "v25_home_dash": (lambda l: v25.home_dash(l), "phone",
+                      lambda l: ([(DOCS_M + "34_inicio_dashboard.png", PHONE_DOCS)] if l == "es" else [])
+                      + [(WEB_IMG[l] + "inicio-dashboard.webp", PHONE_WEB)]),
     "home_stop": (lambda l: phone.home(l), "phone",
                   lambda l: [(DOCS_M + "01_inicio_parada.png", PHONE_DOCS)] if l == "es" else []),
     "home_conn": (lambda l: phone.home(l, connected=True, battery="running", locked=False, actions=True), "phone",
