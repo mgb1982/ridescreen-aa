@@ -1,6 +1,6 @@
 # OpenCfMoto — Privacy & Permissions
 
-_Last updated: 2026-10-23 (RideScreen AA v2.3 / v2.4 test builds)_
+_Last updated: 2026-11-25 (RideScreen AA v2.5 test builds / release candidates)_
 
 > **RideScreen AA** is a fork of OpenCfMoto maintained by Manel (GitHub: mgb1982). Everything
 > below applies to it; the only difference is **who receives the anonymous reports** — since
@@ -79,6 +79,16 @@ Google account.
 | **Bike profiles** — SSID, Wi-Fi password, QR metadata, display name | App-private storage (`SharedPreferences`) | Stored in the app's sandbox on the device. It is **not** transmitted anywhere by the app. It is currently stored in plaintext within app-private storage (encryption at rest is a planned improvement); anyone with a rooted device could read it. It is **excluded from Android backups and phone-to-phone transfers** (since v2.4). |
 | **Trip logs** — GPS route points, distance, duration, max/avg speed, timestamps | App-private storage | Created only when *Log trips automatically* is on, or when you start a manual recording. Viewable under **Trip ▸ Saved trips**, shown on a map, and deletable by long-press. Never uploaded by the app. They are **not** excluded from Android's own backup, so if you have Google's device backup on, Android may keep a copy in your Google account (see "Android backups"). |
 | **Diagnostic log** | In-memory / app-private storage | A rolling technical log for troubleshooting. Shared **only** when you tap **Logs ▸ Share** and pick a destination yourself. |
+
+- **Local log (v2.5).** The app keeps its own log on the phone for up to 7 days and at most 20 MB, in
+  app-private storage; it survives app updates. Passwords and serial numbers are redacted, and Bluetooth
+  and Wi‑Fi (MAC) addresses keep only their last two bytes, before a line is written. It is shared only when
+  you tap **Logs ▸ Share**, and the Clear button on the log screen deletes it. It stays on the device. It is
+  not excluded from Android's own backup, so if backups are on, Android may keep a copy in your Google account
+  (see "Android backups").
+- **Bike and dash values (v2.5).** Stored on the phone only: the odometer reading from the bike's ECU (OBD
+  PID 31) for the maintenance logbook, the throttle calibration value, the lean-angle calibration, and the
+  dashboard background picture you choose. The picture is also excluded from Android backups.
 
 ### Trip logging (location history)
 
@@ -200,6 +210,13 @@ project's service ([opencfmoto-telemetry](https://github.com/zanderp/opencfmoto-
 - **Updates.** The app and the watch app ask GitHub's public API (`api.github.com`) for the latest
   RideScreen AA release. GitHub receives the request like any website would, including your IP address.
   Nothing about you is sent.
+
+## v2.5 additions
+
+- **Parking widget.** A home-screen widget shows your saved parking spot. Tapping it opens walking directions
+  in a maps app. It reads the spot from the phone and makes no network request of its own.
+- **Trip video fields.** The data fields you choose for a trip video are saved on the phone. The video is
+  made and stored on the phone, and shared only when you tap Share.
 
 ## Android backups
 
