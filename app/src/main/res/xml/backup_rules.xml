@@ -2,7 +2,7 @@
 <!-- RideScreen AA · Android Auto backup (API ≤ 30). Everything is backed up except what must not
      leave the phone: the bike's Wi‑Fi password (inside the saved QR), the phone-hotspot password,
      emergency / arrival contacts, the passenger-mode pairing, the keyless-box code (pke_box) and device key (pke_unlock) and the
-     black-box impact recordings (GPS + motion). After a restore the rider scans the bike QR again. Keep in sync with data_extraction_rules.xml. -->
+     black-box impact recordings (GPS + motion) and the app's own logs (logs/, log-history/, last_session.log, last_crash.txt). After a restore the rider scans the bike QR again. Keep in sync with data_extraction_rules.xml. -->
 <full-backup-content>
     <exclude domain="sharedpref" path="opencfmoto_bike.xml" />
     <exclude domain="sharedpref" path="opencfmoto_phone_hotspot.xml" />
@@ -14,4 +14,8 @@
     <exclude domain="file" path="blackbox/" />
     <exclude domain="file" path="dash_bg/" />
     <exclude domain="file" path="trigger_trace.txt" />
+    <exclude domain="file" path="logs/" />
+    <exclude domain="file" path="log-history/" />
+    <exclude domain="file" path="last_session.log" />
+    <exclude domain="file" path="last_crash.txt" />
 </full-backup-content>
