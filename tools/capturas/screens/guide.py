@@ -10,6 +10,7 @@ Where each text comes from:
 """
 import json
 import os
+import re
 
 from lib.base import phone_page
 from lib.res import Strings, esc
@@ -267,6 +268,21 @@ def aa_server(lang):
     return _page(body)
 
 
+# g7, paso 3 desde la 2.5: tocar «Conectar» abre la cámara si todavía no hay ninguna moto guardada.
+STEP3_CONNECT = {
+    "es": "3. En RideScreen toca <b>{connect}</b>: se abre la cámara. Apúntala al código.",
+    "ca": "3. A RideScreen toca <b>{connect}</b>: s'obre la càmera. Apunta-la al codi.",
+    "en": "3. In RideScreen tap <b>{connect}</b>: the camera opens. Point it at the code.",
+    "it": "3. In RideScreen tocca <b>{connect}</b>: si apre la fotocamera. Inquadra il codice.",
+    "el": "3. Στο RideScreen πάτησε <b>{connect}</b>: ανοίγει η κάμερα. Σημάδεψέ την στον κωδικό.",
+    "ru": "3. В RideScreen нажми <b>{connect}</b>: откроется камера. Наведи её на код.",
+    "de": "3. Tippe in RideScreen auf <b>{connect}</b>: Die Kamera öffnet sich. Richte sie auf den Code.",
+    "fr": "3. Dans RideScreen, appuie sur <b>{connect}</b> : l’appareil photo s’ouvre. Vise le code.",
+    "pt": "3. No RideScreen toca em <b>{connect}</b>: abre-se a câmara. Aponta-a ao código.",
+    "th": "3. ใน RideScreen แตะ <b>{connect}</b> กล้องจะเปิดขึ้น แล้วเล็งกล้องไปที่โค้ด",
+}
+
+
 def scan_qr(lang):
     """g7 · Scanning the dash QR (interface 3). The dash is drawn without its own labels."""
     s = Strings(lang)
@@ -282,7 +298,8 @@ def scan_qr(lang):
             if on:
                 qr.append(f'<rect x="{x}" y="{y}" width="1" height="1"/>')
     svg = f'<svg viewBox="-1 -1 23 23" width="132" height="132" style="background:#fff;display:block"><g fill="#000">{"".join(qr)}</g></svg>'
-    note = NOTES["g7"][lang].replace("{scan}", esc(s("main_scan"))).replace("{more}", esc(s("main_more")))
+    # 2.5: «Escanear» (en «Más») ya no existe en Inicio; la primera vez, «Conectar» abre la cámara (no hay moto guardada).
+    note = re.sub(r"3\. .*?(?=<br>|$)", lambda m: STEP3_CONNECT[lang], NOTES["g7"][lang], count=1, flags=re.S).replace("{connect}", esc(s("main_connect")))
     body = (f'<div class="sys" style="background:linear-gradient(#141615,#0B0D0B)"></div>'
             f'<div style="position:absolute;left:58px;right:58px;top:150px;height:190px;background:#000;border-radius:14px;'
             f'display:flex;align-items:center;justify-content:center">'
