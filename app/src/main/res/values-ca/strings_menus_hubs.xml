@@ -13,4 +13,8 @@
     <string name="hub_key_sub">Clau de la moto (PKE)</string>
     <string name="hub_sub_obd">Lectura en directe i prova del lector</string>
     <string name="hub_sub_crash">i caixa negra</string>
+    <string name="obd_throttle_reset_title">Restableix el calibratge de l\'accelerador</string>
+    <string name="obd_throttle_reset_sub">Gas total = %1$s %% des de la ECU</string>
+    <string name="obd_throttle_reset_confirm">El gas mostrat es reescala amb un valor après de la teva moto. Restablir-lo al valor per defecte (65 %) perquè s\'aprengui de nou en el proper trajecte?</string>
+    <string name="obd_throttle_reset_do">Restableix</string>
 </resources>

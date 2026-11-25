@@ -13,4 +13,8 @@
     <string name="hub_key_sub">Chave da mota (PKE)</string>
     <string name="hub_sub_obd">Leitura em direto e teste do leitor</string>
     <string name="hub_sub_crash">e caixa negra</string>
+    <string name="obd_throttle_reset_title">Repor calibração do acelerador</string>
+    <string name="obd_throttle_reset_sub">Acelerador total = %1$s %% da ECU</string>
+    <string name="obd_throttle_reset_confirm">O acelerador exibido é reescalado por um valor aprendido da sua moto. Repor para o padrão (65 %) para ser aprendido de novo na próxima viagem?</string>
+    <string name="obd_throttle_reset_do">Repor</string>
 </resources>

@@ -13,4 +13,8 @@
     <string name="hub_key_sub">바이크 키 (PKE)</string>
     <string name="hub_sub_obd">실시간 데이터와 리더기 테스트</string>
     <string name="hub_sub_crash">및 블랙박스</string>
+    <string name="obd_throttle_reset_title">스로틀 보정 초기화</string>
+    <string name="obd_throttle_reset_sub">전체 개방 = ECU %1$s %%</string>
+    <string name="obd_throttle_reset_confirm">표시되는 스로틀 값은 오토바이에서 학습한 값으로 보정됩니다. 기본값(65 %)으로 초기화해서 다음 주행부터 다시 학습하시겠습니까?</string>
+    <string name="obd_throttle_reset_do">초기화</string>
 </resources>

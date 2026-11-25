@@ -13,4 +13,8 @@
     <string name="hub_key_sub">กุญแจรถ (PKE)</string>
     <string name="hub_sub_obd">ค่าสดและการทดสอบเครื่องอ่าน</string>
     <string name="hub_sub_crash">และกล่องดำ</string>
+    <string name="obd_throttle_reset_title">รีเซ็ตการปรับเทียบคันเร่ง</string>
+    <string name="obd_throttle_reset_sub">คันเร่งเต็ม = %1$s %% จาก ECU</string>
+    <string name="obd_throttle_reset_confirm">ค่าคันเร่งที่แสดงจะถูกปรับด้วยค่าที่เรียนรู้จากรถของคุณ รีเซ็ตเป็นค่าเริ่มต้น (65 %) เพื่อให้เรียนรู้ใหม่ในการขับครั้งถัดไปหรือไม่</string>
+    <string name="obd_throttle_reset_do">รีเซ็ต</string>
 </resources>

@@ -13,4 +13,8 @@
     <string name="hub_key_sub">Ключ от мотоцикла (PKE)</string>
     <string name="hub_sub_obd">Данные в реальном времени и тест считывателя</string>
     <string name="hub_sub_crash">и чёрный ящик</string>
+    <string name="obd_throttle_reset_title">Сбросить калибровку газа</string>
+    <string name="obd_throttle_reset_sub">Полный газ = %1$s %% от ECU</string>
+    <string name="obd_throttle_reset_confirm">Отображаемый газ пересчитывается по значению, полученному от вашего мотоцикла. Сбросить его до значения по умолчанию (65 %), чтобы оно заново определилось при следующей поездке?</string>
+    <string name="obd_throttle_reset_do">Сбросить</string>
 </resources>

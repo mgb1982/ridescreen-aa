@@ -13,4 +13,8 @@
     <string name="hub_key_sub">Cheia motocicletei (PKE)</string>
     <string name="hub_sub_obd">Citire în timp real și test al cititorului</string>
     <string name="hub_sub_crash">și cutia neagră</string>
+    <string name="obd_throttle_reset_title">Resetează calibrarea accelerației</string>
+    <string name="obd_throttle_reset_sub">Accelerație maximă = %1$s %% de la ECU</string>
+    <string name="obd_throttle_reset_confirm">Accelerația afișată este recalibrată cu o valoare învățată de la motocicleta ta. O resetezi la valoarea implicită (65 %), ca să fie învățată din nou la următoarea cursă?</string>
+    <string name="obd_throttle_reset_do">Resetează</string>
 </resources>

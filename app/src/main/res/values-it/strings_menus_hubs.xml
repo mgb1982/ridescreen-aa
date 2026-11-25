@@ -13,4 +13,8 @@
     <string name="hub_key_sub">Chiave della moto (PKE)</string>
     <string name="hub_sub_obd">Lettura in tempo reale e test del lettore</string>
     <string name="hub_sub_crash">e scatola nera</string>
+    <string name="obd_throttle_reset_title">Ripristina la calibrazione del gas</string>
+    <string name="obd_throttle_reset_sub">Gas pieno = %1$s %% dalla ECU</string>
+    <string name="obd_throttle_reset_confirm">Il gas visualizzato è riscalato con un valore appreso dalla tua moto. Ripristinarlo al valore predefinito (65 %) così viene appreso di nuovo dal prossimo giro?</string>
+    <string name="obd_throttle_reset_do">Ripristina</string>
 </resources>

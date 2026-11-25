@@ -13,4 +13,8 @@
     <string name="hub_key_sub">Kulcs nélküli kulcs (PKE)</string>
     <string name="hub_sub_obd">Élő adatok és olvasóteszt</string>
     <string name="hub_sub_crash">és fekete doboz</string>
+    <string name="obd_throttle_reset_title">Gázpedál-kalibráció visszaállítása</string>
+    <string name="obd_throttle_reset_sub">Teljes gáz = %1$s %% az ECU-tól</string>
+    <string name="obd_throttle_reset_confirm">A kijelzett gázállás a motorodból tanult érték alapján van átskálázva. Visszaállítsd az alapértelmezettre (65 %), hogy a következő útnál újra megtanulja?</string>
+    <string name="obd_throttle_reset_do">Visszaállítás</string>
 </resources>
