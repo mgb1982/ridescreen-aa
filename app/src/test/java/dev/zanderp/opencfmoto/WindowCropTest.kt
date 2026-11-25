@@ -23,4 +23,9 @@ class WindowCropTest {
         assertEquals(3, WindowCrop.indexOf(40))
         assertEquals(1, WindowCrop.indexOf(14))
     }
+    @Test fun logLineUsesClampedPercent() {
+        assertEquals("[DASHBOARD] AA window crop = 22 %", WindowCrop.logLine(22))
+        assertEquals("[DASHBOARD] AA window crop = 40 %", WindowCrop.logLine(99))
+        assertEquals("[DASHBOARD] AA window crop = 0 %", WindowCrop.logLine(-1))
+    }
 }
