@@ -969,8 +969,14 @@ class AndroidAutoService : Service() {
          * The app is on screen: if the service was promoted from the background without location
          * (or mic) type, claim them now so the trip records with full GPS. No-op when already held.
          */
+        @Volatile private var lastRegainAt: Long? = null
+
         fun regainForegroundTypes(ctx: Context) {
             val svc = active ?: return
+            // Opening the app calls this several times within ~0.1 s; each re-ran startForeground.
+            val now = android.os.SystemClock.elapsedRealtime()
+            if (!ReclaimDebounce.shouldRun(lastRegainAt, now)) return
+            lastRegainAt = now
             val wantLoc = ctx.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
             val wantMic = ctx.checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
             if ((wantLoc && !svc.hasLocationType) || (wantMic && !svc.hasMicType)) {
