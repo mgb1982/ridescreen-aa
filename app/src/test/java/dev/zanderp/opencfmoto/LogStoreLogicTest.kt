@@ -57,6 +57,34 @@ class LogStoreLogicTest {
         assertEquals(listOf(10L, 20L), LogStoreLogic.skipBytes(listOf(10, 20), -5))
     }
 
+    private val banner = "10:00:00.000  [BUILD] versionName=1 versionCode=1 git=x flags=y\n" +
+        "10:00:00.001  [BUILD] phone=P android=14 (sdk 34)\n10:00:00.002  [CLOCK-LAB] q\n" +
+        "10:00:00.003  [BUILD] --- session start ---\n10:00:00.004  [LOGS] on disk: 1 file(s), 1 KB, oldest 2024-01-08\n"
+
+    @Test fun cutSessionStartedToday() {
+        val today = "09:00:00.000  old session\n09:59:00.000  [NAV] guidance stopped\n09:59:59.000  [NAV] x\n" + banner + "10:01:00.000  now\n"
+        val out = LogStoreLogic.cutCurrentSession(listOf("y\n", today))
+        assertEquals("y\n", out[0])
+        assertEquals("09:00:00.000  old session\n", out[1])
+    }
+
+    @Test fun cutSessionStartedYesterdayCrossedMidnight() {
+        val yesterday = "a\n" + banner + "23:59:00.000  ride\n"
+        val out = LogStoreLogic.cutCurrentSession(listOf(yesterday, "00:01:00.000  ride goes on\n"))
+        assertEquals(listOf("a\n", ""), out)
+    }
+
+    @Test fun cutUsesLastBannerAndKeepsNavNotAdjacent() {
+        val t = banner + "[NAV] keep\nmid\n" + banner + "tail\n"
+        assertEquals(banner + "[NAV] keep\nmid\n", LogStoreLogic.cutCurrentSession(listOf(t))[0])
+    }
+
+    @Test fun cutWithoutBannerKeepsEverything() {
+        val l = listOf("a\n", "b\n")
+        assertEquals(l, LogStoreLogic.cutCurrentSession(l))
+        assertEquals(listOf(""), LogStoreLogic.cutCurrentSession(listOf("")))
+    }
+
     @Test fun startupLine() {
         assertEquals("[LOGS] on disk: 2 file(s), 2 KB, oldest 2024-01-05",
             LogStoreLogic.startupLine(listOf(e("20240106", 1024), e("20240105", 1024))))

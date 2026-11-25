@@ -79,6 +79,24 @@ object LogStoreLogic {
         return skips
     }
 
+    /**
+     * Share writes the in-memory session first, so the disk part must stop where the CURRENT process's
+     * session began. [texts] are the share files oldest first. Cuts at the last `[BUILD] versionName=`
+     * line (the newest banner = this process), moved up over `[NAV]` lines just before it, and empties
+     * every later file (a ride that crossed midnight). No banner anywhere: returned unchanged.
+     */
+    fun cutCurrentSession(texts: List<String>): List<String> {
+        val fi = texts.indexOfLast { it.contains(BANNER) }
+        if (fi < 0) return texts
+        val lines = texts[fi].split('\n')
+        var li = lines.indexOfLast { it.contains(BANNER) }
+        while (li > 0 && lines[li - 1].contains("[NAV]")) li--
+        val kept = lines.subList(0, li).joinToString("\n") + if (li > 0) "\n" else ""
+        return texts.mapIndexed { i, t -> if (i < fi) t else if (i == fi) kept else "" }
+    }
+
+    private const val BANNER = "[BUILD] versionName="
+
     /** `[LOGS] on disk: <n> file(s), <KB> KB, oldest <yyyy-mm-dd>` */
     fun startupLine(files: List<Entry>): String {
         val ours = files.filter { dayOf(it.name) != null }
