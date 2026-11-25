@@ -100,6 +100,25 @@ Los HTML intermedios y los másters quedan en `tools/capturas/out/`, que git ign
 - **Otras:** el marco amarillo del cuadro (`cuadro/01`), la historia del año (`imagenes/02`) y el fotograma real del vídeo (`imagenes/04`, una foto real).
 
 
+## 2.5 (RC11, `prerelease/v25-rc11-slim`)
+Los textos, colores, iconos y layouts del móvil salen del RC11 (`RS_APP_RES=<árbol del RC11>/app/src/main/res`). Una pantalla por función; `screens/v25.py`, datos en `lib/demo_v25.py`:
+
+| Pantalla | Qué recrea | Salida (es en `docs/…/movil/`, todos los idiomas en `site/img/<idioma>/`) |
+|---|---|---|
+| Inicio (`phone.home`) | `activity_main.xml` + `include_bottom_nav.xml`: sin engranaje ni «?» en la cabecera, tarjeta Dashboard (vista previa, nombre del estilo, un solo botón «Opciones del dashboard»), barra inferior Inicio / Viajes / Moto / Ajustes, «Más» solo con Mapa | `01_`, `02_`, `09_`, `inicio.webp`, `aparcamiento.webp` |
+| Ajustes (`v25_settings`) | `SettingsHubActivity`: Ayuda y las 8 secciones | `30_ajustes.png`, `ajustes.webp` |
+| Cuadro (`v25_cuadro`) | `HudViewActivity`: selector Android Auto / Dashboard / Mapa / Espejo | `31_cuadro_selector.png`, `cuadro-vista.webp` |
+| Dashboard, ocultar barra (`v25_dash_window`, `_dlg`) | `ControlsActivity`: fila de la ventana de Android Auto y el diálogo 0–40 % (25 %) | `32_`, `33_`, `dashboard-ventana(-dialogo).webp` |
+| Tarjeta Dashboard (`v25_home_dash`) | Inicio conectado, desplazado a la tarjeta | `34_inicio_dashboard.png`, `inicio-dashboard.webp` |
+
+Cambios en pantallas que ya existían: viajes (4 botones, tarjeta de récords, distancia con 2 decimales y fecha `EEE d MMM yyyy`, `tv_button_clips` es un plural), mapa del viaje (cabecera localizada con `fmt_avg_max`, fila «Reproducir ruta»), ayuda (sin modo pasajero ni caja de llave) y widget del aparcamiento (hora de reloj, ya no «hace 12 minutos»).
+
+**Aproximaciones (no son capturas exactas):**
+- **Vista previa del Dashboard** (Inicio y Cuadro): es el render de la 2.4 (`assets/dash24rc`, Robolectric) del estilo Sport; el RC11 puede dibujarlo algo distinto.
+- **Cuadro:** el vídeo en vivo del cuadro no se puede recrear; se muestra la vista previa del dashboard y la imagen lleva «Maqueta». Los botones del selector son estrechos a 412 dp: el texto parte las palabras como lo haría Android (hay que mirarlo en un móvil). El estado marcado del selector y los botones rellenos de la barra superior son una estimación del tema Material.
+- **Mapa del viaje y de las tarjetas:** mapa sintético (la app usa teselas de OSM).
+- **Tamaño de letra de los botones «píldora»** (autoajuste 11–15 sp): estimado por la longitud del texto.
+
 ## Textos que no son de la app (guía g2–g7 y píldoras)
 - **Android** (fuentes desconocidas, permisos, «Mostrar sobre otras aplicaciones», ajustes restringidos): textos de AOSP en `lib/android_aosp.json`, en los 6 idiomas. Son los de Android puro; Samsung o Xiaomi pueden decirlo distinto.
 - **Play Protect y Android Auto** (g3, g5, g6) no son de código abierto: ES/CA/EN mantienen los textos de la guía publicada; IT/EL/RU están traducidos del inglés y **sin verificar** (`screens/guide.py`).

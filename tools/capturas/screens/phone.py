@@ -11,62 +11,75 @@ HERO = "file://" + os.path.join(ASSETS, "hero.png")
 
 CSS = """
 .hero{position:relative;height:300px;background:var(--surface-high) url(HERO) center/cover no-repeat}
-.hero .brand{position:absolute;left:22px;top:44px;font-size:19px;color:#fff}
+.hero:before{content:"";position:absolute;left:0;right:0;top:0;height:96px;background:linear-gradient(180deg,#991A231D,#001A231D)}
+.hero:after{content:"";position:absolute;left:0;right:0;bottom:0;height:150px;background:linear-gradient(0deg,#F01A231D,#801A231D,#001A231D)}
+.hero .brand{position:absolute;left:22px;top:44px;font-size:19px;color:var(--text);z-index:2}
 .hero .brand b{color:var(--gold);font-weight:400}
-.hero .menu{position:absolute;right:16px;top:34px;width:44px;height:44px;border-radius:50%;
-  background:rgba(26,35,29,.55);display:flex;align-items:center;justify-content:center;color:#fff}
-.hero .name{position:absolute;left:22px;bottom:30px;font-size:40px;color:var(--gold);line-height:1}
-.hero .sub{position:absolute;left:22px;bottom:12px;font-size:12.5px;color:var(--text)}
-.wrap{padding:6px 16px 0}
+.hero .hn{position:absolute;left:22px;bottom:18px;z-index:2}
+.hero .name{font-size:46px;color:var(--gold);line-height:1.18}
+.hero .sub{font-size:13px;color:#E6F1F4EC;line-height:1.2}
+.wrap{padding:6px 16px 16px}
 .card{background:var(--surface);border-radius:20px}
 .status{padding:16px}
 .status .row{display:flex;align-items:center;gap:12px}
-.dot{width:12px;height:12px;border-radius:50%;flex:none}
-.status .t{font-weight:600;font-size:17px}
-.status .s{margin:2px 0 0 24px;font-size:13px;color:var(--text2)}
+.dot{width:14px;height:14px;border-radius:50%;flex:none}
+.status .t{font-weight:400;font-size:17px}
+.status .s{margin:2px 0 0 26px;font-size:13px;color:var(--text2)}
 .status hr{border:0;height:1px;background:var(--surface-high);margin:14px 0 12px}
-.stats{display:flex}
+.stats{display:flex;align-items:flex-end}
 .stats>div{flex:1}
-.stats .v{font-family:'ArchivoBlack';font-size:24px;line-height:1.15}
-.stats .l{font-size:12.5px;color:var(--text2)}
-.stats .v small{font-family:'Archivo';font-weight:600;font-size:12px;color:var(--text2);margin-left:3px}
-.parked{display:flex;gap:12px;padding:12px;margin-top:10px;align-items:center}
-.parked .ph{width:64px;height:72px;border-radius:16px;background:url(HERO) 30% 40%/240px auto;flex:none}
-.parked .t{font-weight:600;font-size:15.5px}
-.parked .s{font-size:13px;color:var(--text2);margin-top:2px}
-.btn-o{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--outline);border-radius:999px;
-  padding:5px 12px;font-size:13px;color:var(--text);margin-top:8px;margin-right:6px;white-space:nowrap}
+.stats .v{font-family:'ArchivoBlack';font-size:25px;line-height:1.2}
+.stats .l{font-size:12px;color:var(--text2);margin-top:2px}
+.stats .sp{flex:1.3}
+.stats .sp .v{font-size:44px;color:var(--gold);line-height:1.1}
+.stats .sp .v small{font-family:'Archivo';font-weight:400;font-size:14px;color:var(--text2);margin-left:6px}
+.seg{display:inline-flex;align-items:center;justify-content:center;background:var(--surface-high);color:var(--text);
+  border-radius:12px;min-height:44px;padding:0 12px;font-size:12px;font-weight:500;text-align:center;line-height:1.25}
+.dcard{display:flex;align-items:center;margin-top:12px;padding:12px}
+.dcard .l{flex:1.1;min-width:0}
+.dcard .l img{display:block;width:100%;height:auto;border-radius:6px}
+.dcard .l .n{margin-top:4px;text-align:center;font-size:12px;color:var(--text2)}
+.dcard .r{flex:1;margin-left:12px;min-width:0}
+.dcard .r .t{font-size:16px;font-weight:700}
+.dcard .r .s{font-size:12px;color:var(--text2);margin-top:2px;line-height:1.3}
+.dcard .r .seg{display:flex;margin-top:8px;font-size:13px}
+.parked{display:flex;gap:14px;padding:14px;margin-top:12px;align-items:center}
+.parked .ph{width:76px;height:76px;border-radius:16px;background:url(HERO) 30% 40%/280px auto;flex:none}
+.parked .tx{flex:1;min-width:0}
+.parked .t{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.parked .s{font-size:13px;color:var(--text2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.parked .bs{display:flex;gap:8px;margin-top:4px}
+.parked .seg{font-size:13px;padding:0 12px}
 .tiles{display:flex;gap:10px;margin-top:10px}
-.tile{flex:1;min-height:108px;background:var(--surface);border-radius:20px;padding:14px 6px 12px;
-  display:flex;flex-direction:column;align-items:center;text-align:center}
-.tile .b{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px}
-.tile .t{font-weight:500;font-size:13px;margin-top:8px;line-height:1.2}
-.tile .s{font-size:11px;color:var(--text2);line-height:1.25;margin-top:1px}
-.tile.big{min-height:112px;align-items:flex-start;text-align:left;padding:14px 10px 12px 16px;justify-content:center}
-.tile.big .b{width:42px;height:42px;font-size:20px}
-.tile.big .t{font-size:15px}
-.tile.sel{outline:1.5px solid var(--gold);outline-offset:-1.5px}
-.more-t{font-size:11.5px;letter-spacing:1.2px;color:var(--text2);margin:16px 4px 4px;text-transform:uppercase}
+.tile{flex:1;min-height:112px;background:var(--surface);border-radius:20px;padding:14px 10px 12px 16px;
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:center;text-align:left}
+.tiles.first{margin-top:12px}
+.tile .b{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.tile .t{font-weight:500;font-size:15px;margin-top:8px;line-height:1.2}
+.tile .s{font-size:11px;color:var(--text2);line-height:1.25}
+.more-t{font-size:12px;letter-spacing:1.44px;color:var(--text2);margin:22px 4px 4px;text-transform:uppercase}
 .more{display:flex}
-.more div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;color:var(--text2);
-  padding:6px 0}
-.search{display:flex;gap:10px;align-items:center;margin-top:12px}
-.search .in{flex:1;border-bottom:1px solid var(--outline);padding:10px 2px;font-size:15px;color:var(--text2)}
-.search .go{border:1px solid var(--outline);border-radius:999px;padding:8px 14px;font-size:14px}
-.chips{display:flex;gap:8px;margin-top:10px;white-space:nowrap;overflow:hidden}
+.more div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;color:var(--text2);padding:8px 0}
+.search{display:flex;gap:8px;align-items:center;margin-top:8px}
+.search .in{flex:1;border-bottom:1px solid var(--outline);padding:14px 4px 10px;font-size:16px;color:var(--text2);white-space:nowrap;overflow:hidden}
+.chips{display:flex;gap:8px;margin-top:6px;white-space:nowrap;overflow:hidden}
 .chips span{border:1px solid var(--outline);border-radius:999px;padding:7px 12px;font-size:13px}
-.scroll{position:absolute;left:0;right:0;top:0;height:835px;overflow:hidden}
-.cta{position:absolute;left:20px;right:20px;bottom:14px;height:58px;border-radius:999px;background:var(--gold);
-  color:var(--on-brand);display:flex;align-items:center;justify-content:center;gap:10px;
-  font-family:'Archivo';font-weight:800;font-size:16.5px;letter-spacing:1.6px;text-transform:uppercase}
+.scroll{position:absolute;left:0;right:0;top:0;height:769px;overflow:hidden}
+.cta{position:absolute;left:20px;right:20px;bottom:74px;height:64px;border-radius:32px;background:var(--gold);
+  color:var(--on-brand);display:flex;align-items:center;justify-content:center;gap:6px;
+  font-family:'ArchivoBlack';font-weight:400;font-size:16px;letter-spacing:1.28px;text-transform:uppercase}
+.nav{position:absolute;left:0;right:0;bottom:0;height:60px;background:var(--surface);display:flex}
+.nav div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  font-weight:500;font-size:11px;color:var(--text2)}
+.nav div.on{color:var(--gold)}
+.sbfill{position:absolute;left:0;right:0;top:0;height:30px;background:var(--bg);z-index:40}
 .scrim{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:20}
-.sheet{position:absolute;left:24px;right:24px;top:330px;background:#2A362D;border-radius:28px;padding:22px 22px 30px;z-index:30}
+.sheet{position:absolute;left:24px;right:24px;top:330px;background:var(--surface-high);border-radius:28px;padding:22px 22px 30px;z-index:30}
 .sheet h3{font-weight:500;font-size:21px;margin-bottom:10px}
 .sheet div{font-size:16.5px;padding:13px 2px}
 """.replace("HERO", HERO)
 
-TILE_COL = {"trips": "#5B8DEF", "fuel": "#E5774E", "maint": "#4FB6A6", "tl": "#E05A5A", "live": "#5FD07A",
-            "help": "#A98BE0", "park": "#D1A955", "controls": "#5B8DEF", "hud": "#4FB6A6", "trip": "#5FD07A"}
+TILE_COL = {"park": "#D1A955", "controls": "#5B8DEF", "hud": "#4FB6A6", "trip": "#5FD07A"}
 
 
 def _bubble(col):
@@ -74,53 +87,68 @@ def _bubble(col):
     return f"background:rgba({r},{g},{b},.2)"
 
 
-# v2.4 · MainActivity.buildTile: line icon tinted with the tile's accent in a 20 %-tinted circle.
-TILE_ICON = {"trips": "ic_line_trips", "fuel": "ic_line_fuel", "maint": "ic_line_maint", "tl": "ic_line_traffic",
-             "live": "ic_line_live", "help": "ic_line_help", "park": "ic_line_camera", "controls": "ic_line_pad",
-             "hud": "ic_line_dash", "trip": "ic_line_watch"}
+# MainActivity.setupHomeTiles / buildTile: line icon tinted with the tile's accent in a 20 %-tinted circle.
+TILE_ICON = {"park": "ic_line_camera", "controls": "ic_line_pad", "hud": "ic_line_dash", "trip": "ic_line_watch"}
 
 
-def _tile(emoji, key, title, sub="", big=False, sel=False):
-    cls = "tile big" if big else "tile"
-    if sel:
-        cls += " sel"
+def _tile(key, title, sub=""):
+    """HomeTile.Big (the only tiles RC11 shows on Home, while connected)."""
     s = f'<div class="s">{esc(sub)}</div>' if sub else ""
-    size = 42 if big else 46
-    glyph = icon(TILE_ICON[key], TILE_COL[key], size - 2 * (10 if big else 11)) if key in TILE_ICON else emoji
-    return (f'<div class="{cls}"><div class="b" style="{_bubble(TILE_COL[key])}">{glyph}</div>'
+    return (f'<div class="tile"><div class="b" style="{_bubble(TILE_COL[key])}">{icon(TILE_ICON[key], TILE_COL[key], 22)}</div>'
             f'<div class="t">{esc(title)}</div>{s}</div>')
 
 
-def _hero(s, h=280):
-    # MainActivity: hero is 280 dp, 190 dp while connected.
+def _hero(s, h=280, live=False):
+    # MainActivity.renderHomeMode: hero 280 dp (190 while connected), name 46 sp (34). No gear, no "?": the hero opens the Garage.
     return (f'<div class="hero" style="height:{h}px"><div class="brand display">RideScreen <b>AA</b></div>'
-            f'<div class="menu">{icon("ic_settings", "#fff", 22)}</div>'
-            f'<div class="name display">{esc(D.BIKE)}</div><div class="sub">{D.DASH_SSID}</div></div>')
+            f'<div class="hn"><div class="name display" style="font-size:{34 if live else 46}px">{esc(D.BIKE)}</div>'
+            f'<div class="sub">{D.DASH_SSID}</div></div></div>')
 
 
-def _tiles_grid(s, lang):
-    trips_sub = " · ".join([s("home_streak", D.STREAK_NOW), s.plural("home_tile_trips_today", D.TODAY["trips"])])
-    maint_sub = f'{s(D.MAINT["task_key"])}: ' + s("maint_status_km_left", D.km(lang, D.MAINT["left_km"], 0))
-    return (f'<div class="tiles">{_tile("🏍️", "trips", s("home_tile_trips"), trips_sub)}'
-            f'{_tile("⛽", "fuel", s("home_tile_fuel"), s("home_tile_fuel_sub"))}'
-            f'{_tile("🔧", "maint", s("home_tile_maint"), maint_sub)}</div>'
-            f'<div class="tiles">{_tile("🚦", "tl", s("home_tile_tl"))}'
-            f'{_tile("📍", "live", s("home_tile_live"))}'
-            f'{_tile("❓", "help", s("home_tile_help"), s("home_tile_help_sub"))}</div>')
+DASH_PREVIEW_DIR = os.path.join(ASSETS, "dash24rc")
+
+
+def dash_preview(lang, design="sport", theme="night"):
+    """DashboardMode.preview(480×250): the app draws it with Robolectric-free sample data. The file is the 2.4 render of the
+    same renderer (assets/dash24rc), the nearest thing available here: see README (2.5)."""
+    f = os.path.join(DASH_PREVIEW_DIR, f"{design}-{theme}-140-10000-{lang}.png")
+    if not os.path.exists(f):
+        f = os.path.join(DASH_PREVIEW_DIR, f"{design}-{theme}-140-10000-en.png")
+    return "file://" + f
+
+
+def dash_card(lang, state="off", design="sport", theme="night"):
+    """activity_main.xml #dash_card + MainActivity.renderDashCard. state: off (bike not connected), ready, on."""
+    s = Strings(lang)
+    name = s("dash_design_" + design)
+    sub = s({"off": "home_dash_sub_off", "ready": "home_dash_sub_ready", "on": "home_dash_sub_on"}[state], name)
+    return (f'<div class="card dcard"><div class="l"><img src="{dash_preview(lang, design, theme)}"><div class="n">{esc(name)}</div></div>'
+            f'<div class="r"><div class="t">{esc(s("home_dash_title"))}</div><div class="s">{esc(sub)}</div>'
+            f'<div class="seg">{esc(s("home_dash_options"))}</div></div></div>')
+
+
+def bottom_nav(lang, current="home"):
+    """include_bottom_nav.xml: Inicio / Viajes / Moto / Ajustes."""
+    s = Strings(lang)
+    tabs = [("home", "ic_line_home", "tab_home"), ("trips", "ic_line_trips", "tab_trips"),
+            ("bike", "ic_line_seat", "tab_bike"), ("settings", "ic_line_gear", "tab_settings")]
+    cells = "".join(f'<div class="{"on" if k == current else ""}">{icon(ic, "currentColor", 24)}<span>{esc(s(t))}</span></div>'
+                    for k, ic, t in tabs)
+    return f'<div class="nav">{cells}</div>'
 
 
 def _more(s):
-    items = [("ic_place", "gpx_map"), ("ic_cast", "main_mirror"), ("ic_qr", "main_scan"),
-             ("ic_devices", "garage_garage"), ("ic_tune", "controls_controls"), ("ic_settings", "home_settings_short")]
-    cells = "".join(f'<div>{icon(i, "var(--text2)", 22)}<span>{esc(s(k))}</span></div>' for i, k in items)
-    return f'<div class="more-t">{esc(s("main_more"))}</div><div class="more">{cells}</div>'
+    # Only "Map" is left in "Más" (Mirror moved to Dash view, QR scan and the Garage / Controls / Settings buttons are gone).
+    return (f'<div class="more-t">{esc(s("main_more"))}</div>'
+            f'<div class="more"><div>{icon("ic_place", "var(--text2)", 22)}<span>{esc(s("gpx_map"))}</span></div></div>')
 
 
-def home(lang, connected=False, sheet=False, battery=None, locked=True, actions=False):
+def home(lang, connected=False, sheet=False, battery=None, locked=True, actions=False, scroll=0, dash_state=None):
+    """RC11 Home (activity_main.xml + include_bottom_nav.xml). scroll: px the page is scrolled (for the Dashboard card shot)."""
     s = Strings(lang)
     if connected:
         state, dot, sub = s("conn_streaming"), "var(--live)", D.BIKE
-        stats = (f'<div><div class="v">{D.LIVE["speed"]}<small>km/h</small></div><div class="l">{esc(s("stat_speed_now"))}</div></div>'
+        stats = (f'<div class="sp"><div class="v">{D.LIVE["speed"]}<small>km/h</small></div><div class="l">{esc(s("stat_speed_now"))}</div></div>'
                  f'<div><div class="v">{D.num(lang, D.TODAY["km"])}</div><div class="l">{esc(s("stat_km_today"))}</div></div>'
                  f'<div><div class="v">18:42</div><div class="l">{esc(s("stat_clock_ok"))}</div></div>')
     else:
@@ -131,106 +159,138 @@ def home(lang, connected=False, sheet=False, battery=None, locked=True, actions=
     status = (f'<div class="card status"><div class="row"><span class="dot" style="background:{dot}"></span>'
               f'<span class="t">{esc(state)}</span></div><div class="s">{esc(sub)}</div><hr>'
               f'<div class="stats">{stats}</div></div>')
-    body = '<div class="scroll">' + _hero(s, 190 if connected else 280) + '<div class="wrap">' + status
+    body = ('<div class="scroll"><div style="transform:translateY(-%dpx)">' % scroll
+            + _hero(s, 190 if connected else 280, live=connected) + '<div class="wrap">' + status)
     if battery:
         body += battery_card(lang, running=(battery == "running"), locked=locked)
     if actions:
         body += key_actions(lang)
+    body += dash_card(lang, dash_state or ("on" if connected else "off"))
     if connected:
-        nav = s("dest_home"), s("dest_work")
-        body += (f'<div class="tiles">{_tile("📸", "park", s("home_big_park"), s("home_big_park_sub"), big=True, sel=True)}'
-                 f'{_tile("🎮", "controls", s("controls_controls"), s("home_big_controls_sub"), big=True)}</div>'
-                 f'<div class="tiles">{_tile("🖥️", "hud", s("hud_dash_view"), s("home_big_hud_sub"), big=True)}'
-                 f'{_tile("⏱️", "trip", s("home_big_trip"), s("home_big_trip_sub"), big=True)}</div>'
+        body += (f'<div class="tiles first">{_tile("park", s("home_big_park"), s("home_big_park_sub"))}'
+                 f'{_tile("controls", s("home_big_pad"), s("home_big_controls_sub"))}</div>'
+                 f'<div class="tiles">{_tile("hud", s("cuadro_title"), s("home_big_hud_sub"))}'
+                 f'{_tile("trip", s("home_big_trip"), s("home_big_trip_sub"))}</div>'
                  f'<div class="search"><div class="in">{esc(s("main_search_a_place_or_address"))}</div>'
-                 f'<div class="go">{esc(s("main_go"))}</div></div>'
-                 f'<div class="chips"><span>🏠 {esc(nav[0])}</span><span>💼 {esc(nav[1])} 📨</span>'
+                 f'<div class="seg">{esc(s("main_go"))}</div></div>'
+                 f'<div class="chips"><span>🏠 {esc(s("dest_home"))}</span><span>💼 {esc(s("dest_work"))} 📨</span>'
                  f'<span>🧭 Google Maps</span><span>📅 {esc(s("dest_calendar"))}</span></div>')
-        body += _tiles_grid(s, lang) + "</div></div>"
-        body += f'<div class="cta">■&nbsp; {esc(s("main_stop"))}</div>'
     else:
         ago = D.ago_minutes(lang, D.PARKED["minutes"])
-        body += (f'<div class="card parked"><div class="ph"></div><div><div class="t">'
+        body += (f'<div class="card parked"><div class="ph"></div><div class="tx"><div class="t">'
                  f'{esc(s("home_parked_title_dist", D.PARKED["dist"]))}</div>'
                  f'<div class="s">{esc(s("home_parked_sub", ago))}</div>'
-                 f'<span class="btn-o">{esc(s("parked_walk"))}</span><span class="btn-o">{esc(s("home_view_photo"))}</span>'
-                 f'</div></div>')
-        body += _tiles_grid(s, lang) + _more(s) + "</div></div>"
-        body += f'<div class="cta">{icon("ic_power", "var(--on-brand)", 22)}{esc(s("main_connect_to", D.BIKE))}</div>'
-        if sheet:
-            items = [s("parked_walk"), s("parked_view_photo"), s("parked_retake_photo"), s("parked_delete")]
-            body += ('<div class="scrim"></div><div class="sheet">'
-                     f'<h3>{esc(s("parked_options_title"))}</h3>' + "".join(f"<div>{esc(i)}</div>" for i in items) + "</div>")
+                 f'<div class="bs"><span class="seg">{esc(s("parked_walk"))}</span>'
+                 f'<span class="seg">{esc(s("home_view_photo"))}</span></div></div></div>')
+    body += _more(s) + "</div></div></div>"
+    if scroll:
+        body += '<div class="sbfill"></div>'
+    ctaicon = icon("ic_stop" if connected else "ic_power", "var(--on-brand)", 24)
+    label = s("main_stop") if connected else s("main_connect_to", D.BIKE)
+    body += f'<div class="cta">{ctaicon}{esc(label)}</div>' + bottom_nav(lang, "home")
+    if sheet and not connected:
+        items = [s("parked_walk"), s("parked_view_photo"), s("parked_retake_photo"), s("parked_delete")]
+        body += ('<div class="scrim"></div><div class="sheet">'
+                 f'<h3>{esc(s("parked_options_title"))}</h3>' + "".join(f"<div>{esc(i)}</div>" for i in items) + "</div>")
     return phone_page(body, extra_css=CSS)
 
 
-# ---------------------------------------------------------------- trips list
+# ---------------------------------------------------------------- trips list (TripsListActivity, activity_trips.xml)
 
 TRIPS_CSS = """
-.top{padding:44px 20px 10px;display:flex;align-items:center;gap:10px}
-.top .h{font-family:'ArchivoBlack';font-size:20px;line-height:1.1;flex:1}
+.top{padding:36px 20px 6px;display:flex;align-items:center;gap:10px}
+.top .h{font-size:20px;font-weight:700;flex:1}
 .pill{display:inline-flex;align-items:center;justify-content:center;gap:5px;border-radius:999px;
-  background:var(--surface);padding:10px 14px;font-size:14.5px;white-space:nowrap}
-.pill.o{background:transparent;border:1.5px solid var(--gold);display:flex;margin:0 20px 8px;padding:11px}
-.pill.g{background:var(--gold);color:var(--on-brand);font-weight:600}
-.off{margin:0 20px 8px;border:1.5px solid var(--gold);border-radius:20px;padding:12px 14px;display:flex;
-  gap:10px;align-items:center;font-size:13px;line-height:1.35}
-.rec{margin:0 20px 8px;background:var(--surface);border-radius:16px;padding:10px 14px;font-size:13px;line-height:1.45}
-.rec .tr{color:var(--gold);font-weight:600}
-.day{display:flex;align-items:center;margin:6px 20px 10px}
-.day .arr{width:40px;height:40px;border-radius:50%;border:1px solid var(--outline);display:flex;
-  align-items:center;justify-content:center;font-size:15px}
-.day .c{flex:1;text-align:center}
-.day .c b{font-size:16.5px;display:block}
-.day .c span{font-size:12.5px;color:var(--text2)}
-.trip{margin:0 20px 12px;background:var(--surface);border-radius:20px;padding:12px 12px 12px}
-.trip .map{border-radius:14px;overflow:hidden;height:150px}
-.trip .nm{color:var(--gold);font-size:14px;margin-top:10px}
-.trip .tm{font-family:'ArchivoBlack';font-size:18px}
-.trip .st{display:flex;margin-top:6px}
-.trip .st div{flex:1;font-size:11.5px;color:var(--text2)}
-.trip .st b{display:block;color:var(--text);font-size:14.5px;font-weight:700}
-.trip .bt{display:flex;gap:8px;margin-top:10px}
-.trip .bt span{flex:1;text-align:center;border:1px solid var(--outline);border-radius:999px;padding:9px;font-size:14px}
-.trip .vid{display:block;text-align:center;border:1.5px solid var(--gold);color:var(--gold);border-radius:999px;
-  padding:9px;font-size:14px;margin-top:8px}
+  background:var(--surface);padding:0 16px;min-height:56px;font-weight:600;white-space:nowrap;color:var(--text)}
+.pill.s{min-height:44px;padding:0 6px;flex:1}
+.pgrid{margin:0 20px 8px}
+.prow{display:flex;gap:8px}
+.prow+.prow{margin-top:6px}
+.off{margin:0 20px 8px;background:var(--surface);border-radius:20px;padding:12px;display:flex;gap:8px;align-items:center;font-size:13px}
+.off .tx{flex:1}
+.rec{margin:0 20px 6px;background:var(--surface);border-radius:20px;padding:12px;font-size:13px;line-height:1.3;white-space:pre-line}
+.day{display:flex;align-items:center;padding:4px 12px}
+.day .arr{width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--text)}
+.day .c{flex:1;text-align:center;padding:0 4px}
+.day .c b{font-size:18px;display:block}
+.day .c span{font-size:13px;color:var(--text2)}
+.cards{padding:0 16px}
+.trip{margin-top:10px;background:var(--surface);border-radius:18px;padding:14px 16px}
+.trip .map{border-radius:12px;overflow:hidden;height:112px;margin-bottom:10px;background:var(--surface-high)}
+.trip .nm{color:var(--gold);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trip .tm{font-size:17px;font-weight:700}
+.trip .st{display:flex;margin-top:10px}
+.trip .st div{flex:1;font-size:10px;color:var(--text2);text-transform:uppercase}
+.trip .st b{display:block;color:var(--text);font-size:15px;font-weight:700;text-transform:none}
+.trip .bt{display:flex;gap:8px;margin-top:8px}
+.ob{display:flex;align-items:center;justify-content:center;border:1px solid var(--outline);border-radius:999px;color:var(--gold);
+  min-height:40px;padding:0 12px;font-size:13px;font-weight:500;white-space:nowrap}
+.trip .bt .ob{flex:1}
+.trip .vid{margin-top:4px}
+.trip .vid.on{border-color:var(--gold)}
 """
+
+
+def autosize(text, avail, hi=15, lo=11, per_em=0.58):
+    """android:autoSizeTextType=uniform (Widget.OpenCfMoto.Button.Pill: 11–15 sp, one line): largest size that fits `avail` px."""
+    est = max(1.0, len(text) * per_em)
+    return max(lo, min(hi, int(avail / est)))
+
+
+def day_label(lang, d):
+    """TripsListActivity.DAY_FMT = "EEE d MMM yyyy" in the phone's language."""
+    if lang in D.BABEL:
+        return D._babel(lang, d, "EEE d MMM yyyy")
+    return f"{D.short_date(lang, d)} {d.year}"
 
 
 def _trip_card(s, lang, t, route):
     def stat(label, value):
         return f"<div>{esc(label)}<b>{value}</b></div>"
-    vid = (s("tv_button_clips", t["clips"]) if t["clips"] else s("tv_button"))
-    return (f'<div class="trip"><div class="map">{map_svg(372, 150, "dark", route)}</div>'
+    vid, on = (s.plural("tv_button_clips", t["clips"]), True) if t["clips"] else (s("tv_button"), False)
+    return (f'<div class="trip"><div class="map">{map_svg(348, 112, "dark", route)}</div>'
             f'<div class="nm">{esc(t["name"][lang])}</div><div class="tm">{t["start"]} – {t["end"]}</div>'
-            f'<div class="st">{stat(s("trip_distance"), D.km(lang, t["km"]))}{stat(s("trips_stat_time"), D.dur(t["secs"]))}'
+            f'<div class="st">{stat(s("trip_distance"), D.km(lang, t["km"], 2))}{stat(s("trips_stat_time"), D.dur(t["secs"], hours=True))}'
             f'{stat(s("trips_stat_avg"), str(t["avg"]) + " km/h")}{stat(s("trips_stat_max"), str(t["max"]) + " km/h")}</div>'
-            f'<div class="bt"><span>{esc(s("share_button"))}</span><span>{esc(s("trips_export_gpx"))}</span></div>'
-            f'<span class="vid">{esc(vid)}</span></div>')
+            f'<div class="bt"><span class="ob">{esc(s("share_button"))}</span><span class="ob">{esc(s("trips_export_gpx"))}</span></div>'
+            f'<div class="ob vid{" on" if on else ""}" style="margin-top:4px">{esc(vid)}</div></div>')
+
+
+def _pill(text, avail, cls="pill s"):
+    return f'<span class="{cls}" style="font-size:{autosize(text, avail)}px">{esc(text)}</span>'
 
 
 def trips(lang, logging_off=False):
+    """RC11 TripsListActivity: Year / All, 2×2 shortcuts (red lights, week, import, merge), records card, day bar, cards."""
     s = Strings(lang)
-    head = (f'<div class="top">{icon("ic_speed", "var(--gold)", 26) if _has("ic_speed") else ""}'
-            f'<div class="h">{esc(s("trip_saved_trips"))}</div>'
-            f'<span class="pill">{esc(s("yir_button"))}</span><span class="pill">{esc(s("all_rides_button"))}</span></div>')
-    body = head + f'<div class="pill o">{esc(s("tl_entry"))}</div>'
-    if logging_off:
-        body += (f'<div class="off"><div>{esc(s("trips_logging_off"))}</div>'
-                 f'<span class="pill g">{esc(s("trips_logging_enable"))}</span></div>')
-    else:
-        body += f'<div class="pill o">{esc(s("week_button"))}</div>'
-        r = D.RECORDS
-        rec = s("records_line", D.km(lang, r["longest"]), r["top"], D.km(lang, r["best_day"]), r["streak"])
-        body += (f'<div class="rec">{esc(rec)}<div class="tr">{esc(s("tr_card_line", *D.TROPHIES))}</div></div>')
+    yir, allr = s("yir_button"), s("all_rides_button")
+    head = (f'<div class="top">{icon("ic_speed", "var(--gold)", 24)}<div class="h">{esc(s("trip_saved_trips"))}</div>'
+            f'<span class="pill" style="font-size:{autosize(yir, 70)}px">{esc(yir)}</span>'
+            f'<span class="pill" style="font-size:{autosize(allr, 70)}px">{esc(allr)}</span></div>')
     n = 1 if logging_off else 2
+    half = 168
+    merge = "" if n < 2 else _pill(s("trips_merge_select"), half)
+    imp = s("trips_import")
+    row2 = _pill(imp, half if merge else 2 * half + 8) + merge
+    body = (head + f'<div class="pgrid"><div class="prow">{_pill(s("tl_entry"), half)}{_pill(s("week_button"), half)}</div>'
+            f'<div class="prow">{row2}</div></div>')
+    if logging_off:
+        body += (f'<div class="off"><div class="tx">{esc(s("trips_logging_off"))}</div>'
+                 f'<span class="pill" style="font-size:{autosize(s("trips_logging_enable"), 90)}px">{esc(s("trips_logging_enable"))}</span></div>')
+    r = D.RECORDS
+    trophies = s("tr_card_line", *D.TROPHIES)
+    # renderRecords: a single ride has no records yet, only the trophy line.
+    rec = trophies if n < 2 else s("records_line", D.km(lang, r["longest"]), r["top"], D.km(lang, r["best_day"]), r["streak"]) + "\n" + trophies
+    body += f'<div class="rec">{esc(rec)}</div>'
     total = D.TRIP["km"] + (0 if logging_off else D.TRIP_2["km"])
     summary = s.plural("trips_day_summary", n, n, D.num(lang, total))
-    body += (f'<div class="day"><span class="arr">‹</span><div class="c"><b>{esc(D.long_date(lang, D.TRIP["date"]))}</b>'
+    body += (f'<div class="day"><span class="arr">‹</span><div class="c"><b>{esc(day_label(lang, D.TRIP["date"]))}</b>'
              f'<span>{esc(summary)}</span></div><span class="arr">›</span></div>')
-    body += _trip_card(s, lang, D.TRIP, "main")
+    body += '<div class="cards">'
+    # the newest ride first (sortedByDescending start): the afternoon one, then the morning one
     if not logging_off:
         body += _trip_card(s, lang, D.TRIP_2, "short")
+    body += _trip_card(s, lang, D.TRIP, "main") + "</div>"
     return phone_page(body, extra_css=TRIPS_CSS)
 
 
@@ -241,29 +301,41 @@ def _has(name):
 
 # ---------------------------------------------------------------- trip map
 
-# The app has no strings for these yet (TripMapActivity hard-codes "avg/max", see README). The captures use the
-# app's own short forms from share_avg/share_max in each language.
+# Used by screens/v24.py (trip_obd); RC11's TripMapActivity itself now uses the localised string fmt_avg_max.
 AVG_MAX = {"es": ("media", "máx"), "ca": ("mitjana", "màx"), "en": ("avg", "max"), "it": ("media", "max"),
            "el": ("μ.ό.", "μέγ."), "ru": ("ср.", "макс."), "th": ("เฉลี่ย", "สูงสุด")}
 
 
 def trip_map(lang):
+    """RC11 TripMapActivity (activity_trip_map.xml): title, stats line (localised, 2 decimals), Video / Share pills,
+    replay bar (Play route + seek bar), then the map (a synthetic one here: the app draws OSM tiles)."""
     s = Strings(lang)
     t = D.TRIP
-    avg, mx = AVG_MAX[lang]
-    stats = f'{D.km(lang, t["km"])} · {D.dur(t["secs"], hours=True)} · {avg} {t["avg"]} · {mx} {t["max"]} km/h'
+    stats = (f'{D.km(lang, t["km"], 2)} · {D.dur(t["secs"], hours=True)} · '
+             + s("fmt_avg_max", f'{t["avg"]} km/h', f'{t["max"]} km/h'))
     css = """
-.mh{position:absolute;left:0;right:0;top:0;padding:40px 16px 12px 20px;background:var(--bg);z-index:5}
-.mh h1{font-family:'ArchivoBlack';font-weight:400;font-size:22px}
-.mh p{font-size:13px;color:var(--text2);line-height:1.4;margin-top:4px}
-.mh .b{display:flex;gap:8px;margin-top:10px}
-.mh .b span{border-radius:999px;background:var(--surface);padding:9px 16px;font-size:14px}
-.mp{position:absolute;left:0;right:0;top:170px;bottom:0}
+.mh{padding:36px 20px 10px}
+.mh h1{font-size:20px;font-weight:700;line-height:1.25}
+.mh p{font-size:13px;color:var(--text2);margin-top:2px;line-height:1.3}
+.mh .b{display:flex;gap:10px;margin-top:8px;justify-content:flex-end}
+.mh .b span{display:inline-flex;align-items:center;border-radius:999px;background:var(--surface);min-height:56px;padding:0 16px;
+  font-size:15px;font-weight:600}
+.pb{display:flex;align-items:center;gap:8px;padding:0 12px 4px}
+.pb .pl{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:var(--surface);min-width:88px;
+  min-height:48px;padding:0 16px;font-size:15px;font-weight:600}
+.pb .sk{flex:1;height:48px;position:relative}
+.pb .sk:before{content:"";position:absolute;left:12px;right:12px;top:23px;height:4px;border-radius:2px;background:var(--outline)}
+.pb .sk:after{content:"";position:absolute;left:4px;top:14px;width:20px;height:20px;border-radius:50%;background:var(--gold)}
+.mp{position:absolute;left:0;right:0;top:SKIPpx;bottom:0}
 """
+    head_h = 36 + 26 + 17 + 17 + 17 + 8 + 56 + 10
+    pb_h = 52
+    top = head_h + pb_h
     body = (f'<div class="mh"><h1>{esc(t["name"][lang])}</h1><p>{esc(stats)}<br>{esc(s("map_speed_legend"))}</p>'
             f'<div class="b"><span>{esc(s("tv_button"))}</span><span>{esc(s("share_button"))}</span></div></div>'
-            f'<div class="mp">{map_svg(412, 745, "light", "main", speed_colours=True, line_w=6, pad=0.15)}</div>')
-    return phone_page(body, extra_css=css)
+            f'<div class="pb"><span class="pl">{esc(s("trip_replay_play"))}</span><div class="sk"></div></div>'
+            f'<div class="mp">{map_svg(412, PHONE_H - top, "light", "main", speed_colours=True, line_w=6, pad=0.15)}</div>')
+    return phone_page(body, extra_css=css.replace("SKIP", str(top)))
 
 
 # ---------------------------------------------------------------- crash detector settings
@@ -445,11 +517,22 @@ WIDGET_W, WIDGET_H = 412, 440
 LAUNCHER = "file://" + os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "site", "img", "icon.png"))
 
 
+def parked_clock(lang):
+    """Weekday + time the bike was parked (NOW minus D.PARKED minutes), as DateUtils.formatDateTime writes it."""
+    when = D.NOW - __import__("datetime").timedelta(minutes=D.PARKED["minutes"])
+    if lang in D.BABEL:
+        return D._babel(lang, when.date(), "EEE") + " " + when.strftime("%H:%M")
+    wd = D.WD_SHORT[lang][when.weekday()]
+    if lang == "en":
+        return f"{wd} {when.hour % 12 or 12}:{when.minute:02d} {'AM' if when.hour < 12 else 'PM'}"
+    return f"{wd} {when.strftime('%H:%M')}"
+
+
 def widget(lang):
     s = Strings(lang)
     t = D.TRIP
-    ago = D.ago_minutes(lang, D.PARKED["minutes"])
-    ago = ago[0].upper() + ago[1:]
+    # RC11 ParkingWidget: a clock time (weekday + time, DateUtils FORMAT_SHOW_WEEKDAY|ABBREV|SHOW_TIME), no "12 minutes ago".
+    at = parked_clock(lang)
     ride = (f'{s("widget_last_ride")}: {D.km(lang, t["km"])} · ' + s("widget_last_ride_sub", t["avg"], t["max"]))
     apps = [("#4285F4", "Maps"), ("#25D366", "WhatsApp"), (None, "RideScreen"),
             ("#EA4335", {"es": "Fotos", "ca": "Fotos", "en": "Photos", "it": "Foto"}[lang])]
@@ -471,7 +554,7 @@ def widget(lang):
 .ap{position:absolute;left:20px;right:20px;top:220px;display:flex;justify-content:space-around}
 """.replace("HERO", HERO)
     body = (f'<div class="hs"></div><div class="wd"><div><div class="wt">{esc(s("widget_parked"))}</div>'
-            f'<div class="wm">{D.PARKED["dist"]}</div><div class="ws">{esc(ago)}</div>'
+            f'<div class="wm">{D.PARKED["dist"]}</div><div class="ws">{esc(at)}</div>'
             f'<div class="wr">{esc(ride)}</div></div></div><div class="ap">{icons}</div>')
     from lib.base import root_css
     return (f'<!doctype html><html><head><meta charset="utf-8"><style>{root_css()}{css}'
@@ -581,9 +664,9 @@ def guide_wifi(lang):
 
 def help_menu(lang):
     s = Strings(lang)
+    # HelpMenu.show + MainActivity.helpExtras (RC11): passenger mode and the keyless box moved to the Trips / Bike tabs.
     keys = ["help_guide", "help_interfaces", "help_watch_guide", "help_share_logs", "help_whats_new", "help_report",
-            "help_view_logs", "help_about", "help_check_update", "help_update_watch", "pax_entry", "pke_entry",
-            "help_support"]
+            "help_view_logs", "help_about", "help_check_update", "help_update_watch", "help_support"]
     items = "".join(f'<div style="font-size:15.5px;padding:10px 2px">{esc(s(k))}</div>' for k in keys)
     return _over_home(lang, f'<div class="dim"></div><div class="dlg" style="top:70px;padding-bottom:18px">'
                             f'<h3>{esc(s("help_title"))}</h3>{items}</div>')
