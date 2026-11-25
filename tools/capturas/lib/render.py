@@ -45,6 +45,8 @@ def render(jobs, dry=False):
             kw["executable_path"] = cp
         br = p.chromium.launch(**kw)
         for j in jobs:
+            if j.html is None:   # builder had nothing to show (e.g. a pill missing in that language)
+                continue
             hp = os.path.abspath(os.path.join(OUT, "html", j.name + ".html"))
             with open(hp, "w", encoding="utf-8") as f:
                 f.write(j.html)

@@ -55,7 +55,11 @@ def label(s, spec):
     if "|" in spec:
         spec, emoji = spec.split("|", 1)
     m = ARGS.match(spec)
-    text = s(m.group(1), *[a.strip() for a in m.group(2).split(",")]) if m else s(spec)
+    if m and m.group(1) in s.p and m.group(1) not in s.s:   # <plurals> (e.g. tv_button_clips(3)): first argument is the quantity
+        args = [a.strip() for a in m.group(2).split(",")]
+        text = s.plural(m.group(1), int(args[0]) if args[0].isdigit() else 2, *args)   # "N" = a placeholder, plural form "other"
+    else:
+        text = s(m.group(1), *[a.strip() for a in m.group(2).split(",")]) if m else s(spec)
     if re.search(r"%(\d+\$)?[sdf]", text):
         raise ValueError(f"[[{spec}]] needs arguments: {text!r}")
     return f"{emoji} {text}" if emoji else text
@@ -83,8 +87,9 @@ def pill(lang, n):
     """n is 1-based."""
     s = Strings(lang)
     ps = texts(lang)
-    if len(ps) != len(texts("es")):
-        raise ValueError(f"pills/{lang}.py has {len(ps)} pills, pills/es.py has {len(texts('es'))}")
+    if n > len(ps):   # this language has fewer pills than Spanish: skip (render() ignores a job without HTML)
+        print(f"skipped pill {n} for {lang}: no text")
+        return None
     p = ps[n - 1]
     steps = "".join(f'<div class="st"><div class="n">{i}</div><div class="tx">{markup(s, t)}</div></div>'
                     for i, t in enumerate(p["steps"], 1))
