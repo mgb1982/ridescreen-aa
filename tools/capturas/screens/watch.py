@@ -135,7 +135,7 @@ def pad(lang):
     def b(label, x, y, d=50, hi=False, fs=18):
         ring = f"box-shadow:0 0 0 2.5px {GOLD};" if hi else ""
         return (f'<div style="position:absolute;left:{x - d / 2}px;top:{y - d / 2}px;width:{d}px;height:{d}px;'
-                f'border-radius:50%;background:#2B3A2F;{ring}display:flex;align-items:center;justify-content:center;'
+                f'border-radius:50%;background:#26332A;{ring}display:flex;align-items:center;justify-content:center;'
                 f'font-size:{fs}px;color:#fff">{label}</div>')
     c = 112.5
     body = (b("OK", c, c, 56, fs=15) + b("▲", c, c - 57, hi=True) + b("▼", c, c + 57, hi=True) +
@@ -157,13 +157,16 @@ def info(lang):
     s, L = Strings(lang, WEAR_RES), D.LIVE
 
     def cell(v, label):
-        return (f'<div style="width:80px;margin:2px 0;white-space:nowrap"><div style="color:{GOLD};font-size:16px;font-weight:500">'
+        return (f'<div style="width:80px;margin:2px 0;white-space:nowrap"><div style="color:{GOLD};font-size:16px;font-weight:700">'
                 f'<span style="{COND}">{v}</span></div><div style="color:{GREY};font-size:9px">{esc(label)}</div></div>')
     grid = (cell(D.dur(L["secs"]), s("label_total")) + cell(L["alt"], s("label_alt")) +
             cell(s.a["compass_points"][L["heading"]], s("label_heading")) + cell(L["gps"], s("label_gps")) +
             cell(f'{L["phone_batt"]}% · {L["temp"]}°', s("label_battery")) + cell("12/15 +3", s("label_volume")))
-    body = (f'<div style="font-size:40px;font-weight:500;line-height:1"><span style="{COND}">18:42</span></div>'
-            f'<div style="display:flex;flex-wrap:wrap;width:164px;justify-content:center;margin-top:6px">{grid}</div>'
+    body = (f'<div style="font-size:40px;font-weight:700;line-height:1"><span style="{COND}">18:42</span></div>'
+            f'<div style="display:flex;flex-wrap:wrap;width:161px;justify-content:center;margin-top:2px">{grid}</div>'
+            # v2.5 info_lock (page_info.xml): bg_pill #22302A r14dp, 12sp bold #F1F4EC, shown while riding with keyless lock
+            f'<div style="margin-top:4px;background:#22302A;border-radius:14px;padding:5px 14px;color:#F1F4EC;'
+            f'font-size:12px;font-weight:700">{esc(s("lock_bike"))}</div>'
             + dots(PAGES, 2))
     return watch_page(body, extra_css=CSS)
 
@@ -174,7 +177,7 @@ def trips(lang):
     for t in D.WATCH_TRIPS:
         date = f'{D.short_date(lang, t["date"])} · {t["start"]}–{t["end"]}'
         detail = s("trip_line", D.dur(t["secs"]), t["avg"], t["max"])
-        cards += (f'<div style="background:#1E2A21;border-radius:16px;padding:6px 10px 7px;margin:5px 0;width:170px">'
+        cards += (f'<div style="background:#1E2A22;border-radius:18px;padding:6px 10px 7px;margin:5px 0;width:170px">'
                   f'<div style="color:{GREY};font-size:11px">{esc(date)}</div>'
                   f'<div style="color:{GOLD};font-size:20px;font-weight:500;line-height:1.15">'
                   f'<span style="{COND}">{D.km(lang, t["km"], 2)}</span></div>'

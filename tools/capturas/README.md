@@ -10,7 +10,7 @@ Toman de la app todo lo que pueden:
 
 Lo demás sale de un único fichero de datos de ejemplo.
 
-**Textos de la app:** los `strings*.xml` son los de la build 376 (`prerelease/v24-pke-live`, 1cc0102): app y reloj traducidos en ES, CA, IT, EL y RU (el reloj aún no tiene italiano: sale en inglés, como en el reloj de verdad). Si a un idioma le falta un texto, sale en inglés, como hace Android. Cuando cambien las traducciones, trae los `strings*.xml` nuevos y regenera.
+**Textos de la app:** los `strings*.xml` de `app/` y `wear/` son por defecto los de la build del repo; para la 2.5 se apuntan al RC11 (`prerelease/v25-rc11-slim`, commit e8db487) con `RS_APP_RES=<árbol RC11>/app/src/main/res` y `RS_WEAR_RES=<árbol RC11>/wear/src/main/res` (los dos son necesarios: el reloj de la 2.5 tiene el botón «Bloquear» y `strings_v25.xml`). Los plurales (`tv_found`, `tv_button_clips`…) se leen con `Strings.plural`; en las píldoras, `[[clave(N)]]` sobre un `<plurals>` usa la forma «other» y deja la N visible. Si a un idioma le falta un texto, sale en inglés, como hace Android. Si una clave desaparece del RC, `lib/res.py` da `KeyError` a propósito: busca su sustituto en el Kotlin y actualiza la pantalla.
 
 ## Uso
 
@@ -39,7 +39,7 @@ Los HTML intermedios y los másters quedan en `tools/capturas/out/`, que git ign
 | `screens/phone.py`, `screens/watch.py` | Las pantallas |
 | `screens/stats.py` | Pantallas 12 y 16–23 (gasolineras, mapa de calor, semáforos, trayectos, vídeo, trofeos, mantenimiento, tu año) |
 | `screens/pills.py`, `pills/<idioma>.py` | Píldoras: plantilla y textos (ver abajo) |
-| `screens/guide.py` | Guía de instalación, pasos g2–g7 |
+| `screens/guide.py` | Guía de instalación, pasos g2–g7 (g4 = Ajustes → Conexión, como el RC11) |
 | `lib/android_aosp.json` | Textos de Android (AOSP) en los 6 idiomas |
 | `fonts/` | Roboto (latin, griego, cirílico) |
 | `assets/hero.png` | Foto del Garaje de la cabecera (ver abajo) |
@@ -82,6 +82,7 @@ Los HTML intermedios y los másters quedan en `tools/capturas/out/`, que git ign
 - Textos en `pills/<idioma>.py`, una lista por idioma en el mismo orden; el número N/total sale solo.
 - Los botones de la app se escriben `[[clave]]` y salen de `strings.xml` en cada idioma. `[[w:clave]]` es un texto del reloj y `[[=texto]]` uno que no es nuestro (Android, Android Auto, ⋮). Detalle en `screens/pills.py`.
 - 1–16 conservan su número; 17–21 son de la 2.3. Se publican en `docs/pildoras/<idioma>/`.
+- **Regla de omisión:** si un idioma tiene menos píldoras que `es.py` (hoy `ca` no tiene la 22 ni la 23), esa píldora se salta con una línea `skipped pill N for <idioma>: no text` y el resto se genera igual. No se rellena con otro idioma.
 - Textos de Android: los de AOSP (ver abajo). Los de Android Auto en IT/EL/RU, **sin verificar**; en EL/RU el menú de desarrollador lleva también el nombre en inglés.
 
 ## Diferencias conocidas con la app (a 23 oct 2026)
