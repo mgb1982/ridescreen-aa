@@ -1071,6 +1071,8 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Support.onResume(this)
+        // The parking widget has no periodic refresh: redraw it (distance from here) whenever the app opens.
+        try { ParkingWidget.updateAll(this) } catch (_: Exception) {}
         // "Mirror" is picked on the Cuadro screen, which closes and hands the tap over to this Activity.
         if (HubHooks.mirrorPending) { HubHooks.mirrorPending = false; onMirrorPressed() }
         // Settings ▸ Help: the same menu (and callbacks) the "?" icon on Home used to open.
