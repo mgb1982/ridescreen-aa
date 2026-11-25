@@ -94,12 +94,17 @@ object DiskLog {
         flushNow()
         val names = LogStoreLogic.shareFiles(entries().map { it.name }, LogStoreLogic.dayKey(System.currentTimeMillis()))
         val files = names.map { File(d, it) }
-        val skips = LogStoreLogic.skipBytes(files.map { it.length() }, budget)
+        // Stop before this process's session banner: Share already wrote the in-memory session.
+        val cut = LogStoreLogic.cutCurrentSession(files.map { f ->
+            try { String(f.readBytes(), Charsets.UTF_8) } catch (_: Exception) { "" }
+        }).map { it.toByteArray(Charsets.UTF_8) }
+        val skips = LogStoreLogic.skipBytes(cut.map { it.size.toLong() }, budget)
         var written = 0L
         files.forEachIndexed { i, f ->
+            val bytes = cut[i]
+            if (bytes.isEmpty()) return@forEachIndexed
             val header = "\n\n===== DISK LOG (${f.name}) =====\n"
             w.write(header)
-            val bytes = try { f.readBytes() } catch (_: Exception) { ByteArray(0) }
             var from = skips[i].toInt().coerceAtMost(bytes.size)
             if (from > 0) {
                 while (from < bytes.size && bytes[from - 1] != '\n'.code.toByte()) from++
