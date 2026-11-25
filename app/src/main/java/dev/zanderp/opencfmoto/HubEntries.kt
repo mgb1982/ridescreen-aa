@@ -10,7 +10,7 @@ enum class HubItem {
     // Trips
     TRIPS_LIST, TRIP_NOW, MAP, TRAFFIC_LIGHTS, YEAR, TROPHIES, LIVE, PASSENGER, DASHCAM, HEART_RATE, CALIBRATE_LEAN,
     // Bike
-    GARAGE, PKE_BATTERY, PKE_LOCK, OBD, CHRONO, MAINTENANCE, FUEL, CRASH,
+    GARAGE, PKE_BATTERY, PKE_LOCK, OBD, OBD_THROTTLE, CHRONO, MAINTENANCE, FUEL, CRASH,
 }
 
 data class HubSlot(val item: HubItem, val enabled: Boolean = true)
@@ -37,6 +37,7 @@ object HubEntries {
         HubSlot(HubItem.PKE_BATTERY),
         HubSlot(HubItem.PKE_LOCK),
         HubSlot(HubItem.OBD),
+        HubSlot(HubItem.OBD_THROTTLE),
         HubSlot(HubItem.CHRONO),
         HubSlot(HubItem.MAINTENANCE),
         HubSlot(HubItem.FUEL),

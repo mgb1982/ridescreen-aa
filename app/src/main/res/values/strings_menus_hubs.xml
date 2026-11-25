@@ -13,4 +13,8 @@
     <string name="hub_key_sub">Keyless key (PKE)</string>
     <string name="hub_sub_obd">Live reading and reader test</string>
     <string name="hub_sub_crash">and black box</string>
+    <string name="obd_throttle_reset_title">Reset throttle calibration</string>
+    <string name="obd_throttle_reset_sub">Full throttle = %1$s %% from the ECU</string>
+    <string name="obd_throttle_reset_confirm">The displayed throttle is rescaled by a value learned from your bike. Reset it to the default (65 %) so it is learned again from the next ride?</string>
+    <string name="obd_throttle_reset_do">Reset</string>
 </resources>

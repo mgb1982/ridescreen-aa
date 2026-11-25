@@ -14,6 +14,8 @@ class BikeHubActivity : HubActivity() {
         HubItem.PKE_BATTERY -> HubRow(R.drawable.ic_line_power, 0xFF5FD07A.toInt(), clean(R.string.pke_entry), getString(R.string.hub_key_sub))
         HubItem.PKE_LOCK -> HubRow(R.drawable.ic_line_lock, 0xFFD1A955.toInt(), clean(R.string.pke_unlock_entry), getString(R.string.hub_key_sub))
         HubItem.OBD -> HubRow(R.drawable.ic_line_dash, 0xFF4FB6A6.toInt(), clean(R.string.obd_entry), getString(R.string.hub_sub_obd))
+        HubItem.OBD_THROTTLE -> HubRow(R.drawable.ic_line_gauge, 0xFF4FB6A6.toInt(), getString(R.string.obd_throttle_reset_title),
+            getString(R.string.obd_throttle_reset_sub, ThrottleScale.capText(ObdLive.throttleCapNow(this))))
         HubItem.CHRONO -> HubRow(R.drawable.ic_line_gauge, 0xFFE5774E.toInt(), getString(R.string.chr_open))
         HubItem.MAINTENANCE -> HubRow(R.drawable.ic_line_maint, 0xFF4FB6A6.toInt(), getString(R.string.home_tile_maint))
         HubItem.FUEL -> HubRow(R.drawable.ic_line_fuel, 0xFFE5774E.toInt(), getString(R.string.home_tile_fuel), getString(R.string.home_tile_fuel_sub))
@@ -27,6 +29,12 @@ class BikeHubActivity : HubActivity() {
             HubItem.PKE_BATTERY -> PkeBatteryUi.show(this)
             HubItem.PKE_LOCK -> PkeUnlockUi.show(this)
             HubItem.OBD -> ObdProbeUi.show(this)
+            HubItem.OBD_THROTTLE -> com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.obd_throttle_reset_title)
+                .setMessage(R.string.obd_throttle_reset_confirm)
+                .setPositiveButton(R.string.obd_throttle_reset_do) { _, _ -> ObdLive.resetThrottleCap(this); render() }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
             HubItem.CHRONO -> startActivity(android.content.Intent(this, ChronoActivity::class.java))
             HubItem.MAINTENANCE -> MaintenanceActivity.start(this)
             HubItem.FUEL -> FuelActivity.start(this)
