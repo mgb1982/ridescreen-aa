@@ -15,4 +15,8 @@
     <string name="dash_window_crop_small">Mică</string>
     <string name="dash_window_crop_medium">Medie (implicit)</string>
     <string name="dash_window_crop_large">Mare</string>
+    <string name="dash_window_crop_row">%1$s (%2$d %%)</string>
+    <string name="dash_window_crop_value">Ascunde %1$d %% din partea de jos</string>
+    <string name="dash_window_crop_done">Gata</string>
+    <string name="dash_window_crop_default">Implicit (%1$d %%)</string>
 </resources>

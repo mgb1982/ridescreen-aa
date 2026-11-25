@@ -589,19 +589,7 @@ class ControlsActivity : AppCompatActivity() {
         }
         findViewById<MaterialButton>(R.id.btn_dash_card_order).setOnClickListener { showCardOrderDialog() }
         findViewById<MaterialButton>(R.id.btn_dash_accent).setOnClickListener { showAccentDialog() }
-        findViewById<MaterialButton>(R.id.btn_dash_window_crop).setOnClickListener {
-            val values = WindowCrop.OPTIONS
-            val names = arrayOf(R.string.dash_window_crop_off, R.string.dash_window_crop_small,
-                R.string.dash_window_crop_medium, R.string.dash_window_crop_large).map { getString(it) }.toTypedArray()
-            androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle(R.string.dash_window_crop_title)
-                .setSingleChoiceItems(names, WindowCrop.indexOf(DashboardMode.windowCrop(this))) { d, i ->
-                    DashboardMode.setWindowCrop(this, values[i])
-                    d.dismiss()
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .show()
-        }
+        findViewById<MaterialButton>(R.id.btn_dash_window_crop).setOnClickListener { showWindowCropDialog() }
         updateWindowCropRow()
         // v2.5 · The background lived only in Home ▸ Style: open the same sheet here (no second copy of it).
         findViewById<MaterialButton>(R.id.btn_dash_background).setOnClickListener {
@@ -763,8 +751,56 @@ class ControlsActivity : AppCompatActivity() {
 
     /** The crop row only makes sense for the Android Auto window design. */
     private fun updateWindowCropRow() {
-        findViewById<View>(R.id.btn_dash_window_crop).visibility =
-            if (DashboardMode.aaWindow(this)) View.VISIBLE else View.GONE
+        val row = findViewById<MaterialButton>(R.id.btn_dash_window_crop)
+        row.visibility = if (DashboardMode.aaWindow(this)) View.VISIBLE else View.GONE
+        row.text = getString(R.string.dash_window_crop_row, getString(R.string.dash_window_crop_title),
+            DashboardMode.windowCrop(this))
+    }
+
+    /** Fine-tune the hidden bottom share (0..40 %), applied live while dragging; logged once on close. */
+    private fun showWindowCropDialog() {
+        val dp = resources.displayMetrics.density
+        val start = DashboardMode.windowCrop(this)
+        val label = TextView(this).apply { textSize = 16f }
+        fun show(v: Int) { label.text = getString(R.string.dash_window_crop_value, v) }
+        show(start)
+        val bar = SeekBar(this).apply {
+            max = AaWindowLayout.MAX_BOTTOM_CROP_PCT
+            progress = start
+            setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(sb: SeekBar, p: Int, fromUser: Boolean) {
+                    show(p)
+                    if (fromUser) DashboardMode.setWindowCrop(this@ControlsActivity, p)
+                }
+                override fun onStartTrackingTouch(sb: SeekBar) {}
+                override fun onStopTrackingTouch(sb: SeekBar) {}
+            })
+        }
+        val box = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding((24 * dp).toInt(), (16 * dp).toInt(), (24 * dp).toInt(), 0)
+            addView(label); addView(bar)
+        }
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(R.string.dash_window_crop_title)
+            .setView(box)
+            .setPositiveButton(R.string.dash_window_crop_done, null)
+            .setNeutralButton(getString(R.string.dash_window_crop_default, WindowCrop.DEFAULT), null)
+            .setOnDismissListener {
+                val end = DashboardMode.windowCrop(this)
+                if (end != start) LogBus.log(WindowCrop.logLine(end))
+                updateWindowCropRow()
+            }
+            .create().also { d ->
+                d.setOnShowListener {
+                    // Default must not close the dialog: move the bar (and apply) instead.
+                    d.getButton(android.content.DialogInterface.BUTTON_NEUTRAL).setOnClickListener {
+                        bar.progress = WindowCrop.DEFAULT
+                        DashboardMode.setWindowCrop(this, WindowCrop.DEFAULT)
+                        show(WindowCrop.DEFAULT)
+                    }
+                }
+            }.show()
     }
 
     private fun showAccentDialog() {
