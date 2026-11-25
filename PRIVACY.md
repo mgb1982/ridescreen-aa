@@ -83,9 +83,8 @@ Google account.
 - **Local log (v2.5).** The app keeps its own log on the phone for up to 7 days and at most 20 MB, in
   app-private storage; it survives app updates. Passwords and serial numbers are redacted, and Bluetooth
   and Wi‑Fi (MAC) addresses keep only their last two bytes, before a line is written. It is shared only when
-  you tap **Logs ▸ Share**, and the Clear button on the log screen deletes it. It stays on the device. It is
-  not excluded from Android's own backup, so if backups are on, Android may keep a copy in your Google account
-  (see "Android backups").
+  you tap **Logs ▸ Share**, and the Clear button on the log screen deletes it. It stays on the device and is
+  excluded from Android's own backup and from device-to-device transfer, like the black-box recordings.
 - **Bike and dash values (v2.5).** Stored on the phone only: the odometer reading from the bike's ECU (OBD
   PID 31) for the maintenance logbook, the throttle calibration value, the lean-angle calibration, and the
   dashboard background picture you choose. The picture is also excluded from Android backups.
