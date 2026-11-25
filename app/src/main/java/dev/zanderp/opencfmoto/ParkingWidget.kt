@@ -109,12 +109,17 @@ class ParkingWidget : AppWidgetProvider() {
                     ctx.getString(R.string.widget_last_ride_sub, it.avgKmh, it.maxKmh)
             }
             if (spot != null) {
-                // Parked: where (distance if the phone knows where it is) + when, then the last ride.
-                val dist = Parking.distanceFromHere(ctx, spot)
-                val ago = DateUtils.getRelativeTimeSpanString(spot.time, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS)
+                // Parked: when (a clock time, never stale), tap for walking directions, then the last ride.
+                // No periodic refresh (Manel, 25 Nov 2026): updatePeriodMillis woke the whole app every 30 min
+                // all night. "5 min ago" and the distance from the phone went stale without it, so the widget
+                // shows the weekday and time instead (plus the date after a week); it is redrawn when parking.
+                val week = 6 * DateUtils.DAY_IN_MILLIS
+                val flags = DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_WEEKDAY or DateUtils.FORMAT_ABBREV_WEEKDAY or
+                    (if (System.currentTimeMillis() - spot.time > week) DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_ABBREV_MONTH else 0)
+                val at = DateUtils.formatDateTime(ctx, spot.time, flags)
                 v.setTextViewText(R.id.w_title, ctx.getString(R.string.widget_parked))
-                v.setTextViewText(R.id.w_main, dist?.let { Parking.distanceText(it) } ?: ago)
-                v.setTextViewText(R.id.w_sub, if (dist != null) ago else ctx.getString(R.string.widget_tap_directions))
+                v.setTextViewText(R.id.w_main, at)
+                v.setTextViewText(R.id.w_sub, ctx.getString(R.string.widget_tap_directions))
                 v.setTextViewText(R.id.w_ride, lastLine ?: "")
                 v.setViewVisibility(R.id.w_ride, if (lastLine != null) android.view.View.VISIBLE else android.view.View.GONE)
                 val walk = PendingIntent.getActivity(ctx, 2, Parking.walkIntent(spot), PendingIntent.FLAG_IMMUTABLE)
