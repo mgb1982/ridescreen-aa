@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 APP_RES = os.environ.get("RS_APP_RES") or os.path.join(ROOT, "app", "src", "main", "res")  # RS_APP_RES: e.g. a release tag's res
-WEAR_RES = os.path.join(ROOT, "wear", "src", "main", "res")
+WEAR_RES = os.environ.get("RS_WEAR_RES") or os.path.join(ROOT, "wear", "src", "main", "res")  # RS_WEAR_RES: e.g. a release tag's wear res
 FONT_DIR = os.path.join(APP_RES, "font")
 
 # Language code → Android values folder suffix ("" = default, which is English).
