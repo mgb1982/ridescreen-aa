@@ -74,7 +74,7 @@ def heat_map(lang):
                       for x, y, w in cells)
     from lib.maps import fit_bbox
     bbox = fit_bbox([(x, y) for x, y, _ in cells], 412 / 750, pad=0.08)
-    stats = s("all_rides_stats", D.CAREER["trips"], D.num(lang, D.CAREER["km"], 0))
+    stats = s("all_rides_stats", D.CAREER["trips"], D.km(lang, D.CAREER["km"], 0))
     seg = [("map_mode_routes", False), ("map_mode_heat", True), None,
            ("map_period_month", False), ("map_period_year", False), ("map_period_all", True)]
     segs = "".join('<i class="sep"></i>' if x is None else
@@ -208,7 +208,7 @@ def video(lang):
             f'<div class="h24">{esc(s("tv_title"))}</div>'
             f'<div class="b13">{esc(D.TRIP["name"][lang])} · {D.TRIP["start"]}–{D.TRIP["end"]}</div>'
             f'<div class="b13">{esc(s("tv_how"))}</div>'
-            f'<div class="b13" style="color:var(--text);font-size:15px">{esc(s("tv_found", clip_n, total // 60, total % 60))}</div>'
+            f'<div class="b13" style="color:var(--text);font-size:15px">{esc(s.plural("tv_found", clip_n, clip_n, total // 60, total % 60))}</div>'
             f'<div style="height:520px"></div>'   # clips, your videos and the live preview (not part of this capture)
             f'<div class="b13" id="cut">{esc(s("tv_style"))}</div><div class="chips">{styles}</div>'
             f'<div class="b13">{esc(s("tv_map"))}</div><div class="chips">{maps}</div>'

@@ -198,7 +198,7 @@ def play_protect(lang):
 
 
 def setup_permissions(lang):
-    """g4 · RideScreen AA → ⚙️ → Configuration (activity_setup.xml, first card), before granting."""
+    """g4 · RideScreen AA → ⚙️ → Settings → Connection (activity_setup.xml, card_start), before granting."""
     s = Strings(lang)
     css = """
 .su{position:absolute;inset:30px 0 0;background:var(--bg);padding:0 16px}
@@ -213,9 +213,9 @@ def setup_permissions(lang):
 .tx{display:inline-block;line-height:40px;padding:0 12px;font-size:14px;font-weight:500;color:var(--gold);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 """
-    body = (f'<div class="su"><h1>{esc(s("setup_setup_settings"))}</h1>'
-            f'<div class="ds">{esc(s("setup_a_one_time_setup_so_android_auto_can_project_to_"))}</div>'
-            f'<div class="cd"><div class="lb">{esc(s("setup_get_started"))}</div>'
+    # RC11: Settings hub → «Connection» section; SetupActivity.applySection() sets the title and hides the subtitle
+    body = (f'<div class="su"><h1 style="margin-bottom:12px">{esc(s("settings_sec_connection"))}</h1>'
+            f'<div class="cd"><div class="lb">{esc(s("settings_initial_assistant"))}</div>'
             f'<div class="st" style="margin-top:12px">✓ {esc(s("setup_1_android_auto"))}</div>'
             f'<div class="sd">{esc(s("setup_android_auto_runs_maps_waze_opencfmoto_relays_it"))}</div>'
             f'<span class="tb">{esc(s("setup_open_android_auto"))}</span>'

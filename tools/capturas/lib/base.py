@@ -117,7 +117,7 @@ def watch_page(body, bg="#000", extra_css=""):
 body{{font-family:{WATCH_SANS}}}
 .w{{position:relative;width:{w}px;height:{w}px;border-radius:50%;overflow:hidden;background:{bg};
 display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff}}
-.pill{{background:rgba(255,255,255,.14);border-radius:999px;padding:4px 11px;font-size:13.5px;font-weight:500}}
+.pill{{background:#22302A;border-radius:14px;padding:5px 11px;font-size:13.5px;font-weight:500}}
 .dots{{position:absolute;bottom:9px;left:0;right:0;display:flex;gap:4px;justify-content:center}}
 .dots i{{width:4.5px;height:4.5px;border-radius:50%;border:1px solid #aaa;display:block}}
 .dots i.on{{background:#fff;border-color:#fff}}
