@@ -900,6 +900,25 @@ class EasyConnProber(
                 val wantEncoder = if (body.size >= 12) cfg.getInt(8) else 2
                 val supportExtend = if (body.size >= 30) body[29] else 0
                 log("[$tag] REQ_CONFIG_CAPTURE w=$w h=$h fps=$fps wantEncoder=$wantEncoder ext=$supportExtend len=${body.size}")
+                val askedAt = android.os.SystemClock.elapsedRealtime()
+                val (rw, rh) = handshake.profile.roundCaptureDimensions(w, h)
+                negW = rw
+                negH = rh
+                // Reply FIRST, then set up the encoder. The dash waits for this reply before it opens :10920
+                // and asks for the time; every ms spent here before replying pushes its QUERY_TIME later, and
+                // past ~2 s the dash shows 00:00. Starting the encoder first (200-590 ms since build 521, vs
+                // 56-172 ms in 451/458) made 00:00 frequent (logs 6-25 Nov: correlation 0.91). The reply only
+                // needs the rounded size. The next request on this socket (REQ_RV_DATA_START, ~0.5 s later) is
+                // read by this same thread after configureBikeCanvas returns, so frames never start early.
+                // RLY_RV_CONFIG_CAPTURE (17): encoder(i32) | width&~15(s16) | height&~15(s16) | ext(byte)
+                val rly = ByteBuffer.allocate(9).order(ByteOrder.LITTLE_ENDIAN)
+                rly.putInt(0, if (wantEncoder == 0) 2 else wantEncoder)
+                rly.putShort(4, negW.toShort())
+                rly.putShort(6, negH.toShort())
+                rly.put(8, supportExtend)
+                sendReqBase(out, 17, rly.array())
+                log("[$tag] → RLY_CONFIG_CAPTURE(17) encoder=${if (wantEncoder==0) 2 else wantEncoder} w=$negW h=$negH " +
+                    "(${android.os.SystemClock.elapsedRealtime() - askedAt} ms after the request)")
                 // Learn this dash's shape so an unknown bike auto-picks the right AA orientation next time.
                 if (w > 0 && h > 0) {
                     val ssid = BikeMemory.lastQr(context)?.ssid
@@ -911,20 +930,11 @@ class EasyConnProber(
                             "but AA is ${if (aaPortrait) "portrait" else "landscape"} — reconnect once to auto-apply the right orientation")
                     }
                 }
-                val (rw, rh) = handshake.profile.roundCaptureDimensions(w, h)
-                negW = rw
-                negH = rh
                 // If Android Auto is the source (shared pipeline), size its encoder + letterbox
                 // compositor to this bike canvas now — before the bike starts pulling frames (112/114).
+                val setupAt = android.os.SystemClock.elapsedRealtime()
                 AaVideoBridge.pipeline?.configureBikeCanvas(negW, negH)
-                // RLY_RV_CONFIG_CAPTURE (17): encoder(i32) | width&~15(s16) | height&~15(s16) | ext(byte)
-                val rly = ByteBuffer.allocate(9).order(ByteOrder.LITTLE_ENDIAN)
-                rly.putInt(0, if (wantEncoder == 0) 2 else wantEncoder)
-                rly.putShort(4, negW.toShort())
-                rly.putShort(6, negH.toShort())
-                rly.put(8, supportExtend)
-                log("[$tag] → RLY_CONFIG_CAPTURE(17) encoder=${if (wantEncoder==0) 2 else wantEncoder} w=$negW h=$negH")
-                sendReqBase(out, 17, rly.array())
+                log("[$tag] video set up for the bike canvas in ${android.os.SystemClock.elapsedRealtime() - setupAt} ms (after the reply)")
             }
             48 -> { // REQ_GET_VERSION → 49 (two LE ints: version, subVersion=1) per ctrl thread
                 log("[$tag] REQ_GET_VERSION → RLY 49")
