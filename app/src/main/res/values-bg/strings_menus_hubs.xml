@@ -13,4 +13,8 @@
     <string name="hub_key_sub">Ключ за мотора (PKE)</string>
     <string name="hub_sub_obd">Четене на живо и тест на четеца</string>
     <string name="hub_sub_crash">и черна кутия</string>
+    <string name="obd_throttle_reset_title">Нулиране на калибровката на газта</string>
+    <string name="obd_throttle_reset_sub">Пълен газ = %1$s %% от ECU</string>
+    <string name="obd_throttle_reset_confirm">Показаният газ се преизчислява със стойност, научена от мотора ви. Да се нулира до стойността по подразбиране (65 %), за да се научи отново при следващото каране?</string>
+    <string name="obd_throttle_reset_do">Нулиране</string>
 </resources>

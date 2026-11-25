@@ -13,4 +13,8 @@
     <string name="hub_key_sub">Schlüssellos-Schlüssel (PKE)</string>
     <string name="hub_sub_obd">Live-Werte und Lesegerät-Test</string>
     <string name="hub_sub_crash">und Blackbox</string>
+    <string name="obd_throttle_reset_title">Gaskalibrierung zurücksetzen</string>
+    <string name="obd_throttle_reset_sub">Vollgas = %1$s %% von der ECU</string>
+    <string name="obd_throttle_reset_confirm">Die angezeigte Gasstellung wird mit einem Wert skaliert, der von deinem Motorrad gelernt wurde. Auf den Standardwert (65 %) zurücksetzen, damit er ab der nächsten Fahrt neu gelernt wird?</string>
+    <string name="obd_throttle_reset_do">Zurücksetzen</string>
 </resources>

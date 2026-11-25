@@ -58,8 +58,10 @@ object ObdLive {
     @Volatile private var engine: Boolean? = null
     /** Peak-held cap for the displayed relative throttle ([ThrottleScale]); loaded at reader start. */
     @Volatile private var throttleCap = ThrottleScale.DEFAULT_CAP
-    private var throttleCapSaved = ThrottleScale.DEFAULT_CAP
+    @Volatile private var throttleCapSaved = ThrottleScale.DEFAULT_CAP
     private var throttleCapSavedAt = 0L
+    /** Guards read-modify-write of [throttleCap] / [throttleCapSaved] between the reader loop and [resetThrottleCap]. */
+    private val capLock = Any()
     /** Last raw PID 0x45 value, kept for the log line. */
     @Volatile private var rawRelThrottle: Double? = null
     private var appCtx: Context? = null
@@ -124,15 +126,33 @@ object ObdLive {
     }
 
     /** Persists the cap only when it changed, at most every [ThrottleScale.SAVE_EVERY_MS] unless [force]. */
-    private fun saveThrottleCap(force: Boolean = false) {
-        val c = appCtx ?: return
+    private fun saveThrottleCap(force: Boolean = false) = synchronized(capLock) {
+        val c = appCtx ?: return@synchronized
         val cap = throttleCap
-        if (cap == throttleCapSaved) return
+        if (cap == throttleCapSaved) return@synchronized
         val now = SystemClock.elapsedRealtime()
-        if (!force && now - throttleCapSavedAt < ThrottleScale.SAVE_EVERY_MS) return
+        if (!force && now - throttleCapSavedAt < ThrottleScale.SAVE_EVERY_MS) return@synchronized
         runCatching { AppSettings.setThrottleCap(c, cap) }
         throttleCapSaved = cap
         throttleCapSavedAt = now
+    }
+
+    /** Cap in use: the live one while the reader runs, else the saved one for the current bike. */
+    fun throttleCapNow(ctx: Context): Double =
+        if (worker != null) throttleCap else AppSettings.throttleCap(ctx.applicationContext)
+
+    /** Back to [ThrottleScale.DEFAULT_CAP] for the current bike; the reader loop keeps raising it from there. */
+    fun resetThrottleCap(ctx: Context) {
+        val app = ctx.applicationContext
+        synchronized(capLock) {
+            val old = throttleCapNow(app)
+            val fresh = ThrottleScale.resetValue()
+            throttleCap = fresh
+            runCatching { AppSettings.setThrottleCap(app, fresh) }
+            throttleCapSaved = fresh
+            throttleCapSavedAt = SystemClock.elapsedRealtime()
+            log(ThrottleScale.resetLine(old))
+        }
     }
 
     private fun setEngine(now: Boolean?) {
@@ -264,7 +284,7 @@ object ObdLive {
                     val prev = latest
                     got[0x45]?.let { raw ->
                         rawRelThrottle = raw
-                        throttleCap = ThrottleScale.nextCap(throttleCap, raw)
+                        synchronized(capLock) { throttleCap = ThrottleScale.nextCap(throttleCap, raw) }
                         saveThrottleCap()
                         throttlePeak.add(raw, got[0x11])
                     }

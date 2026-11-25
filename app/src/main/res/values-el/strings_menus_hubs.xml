@@ -13,4 +13,8 @@
     <string name="hub_key_sub">Κλειδί μοτοσικλέτας (PKE)</string>
     <string name="hub_sub_obd">Ζωντανή ανάγνωση και δοκιμή αναγνώστη</string>
     <string name="hub_sub_crash">και μαύρο κουτί</string>
+    <string name="obd_throttle_reset_title">Επαναφορά βαθμονόμησης γκαζιού</string>
+    <string name="obd_throttle_reset_sub">Πλήρες γκάζι = %1$s %% από την ECU</string>
+    <string name="obd_throttle_reset_confirm">Το εμφανιζόμενο γκάζι κλιμακώνεται με μια τιμή που έμαθε η μηχανή σας. Επαναφορά στην προεπιλογή (65 %), ώστε να μάθει ξανά την τιμή στην επόμενη διαδρομή;</string>
+    <string name="obd_throttle_reset_do">Επαναφορά</string>
 </resources>

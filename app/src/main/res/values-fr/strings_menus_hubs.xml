@@ -13,4 +13,8 @@
     <string name="hub_key_sub">Clé de la moto (PKE)</string>
     <string name="hub_sub_obd">Lecture en direct et test du lecteur</string>
     <string name="hub_sub_crash">et boîte noire</string>
+    <string name="obd_throttle_reset_title">Réinitialiser l\'étalonnage des gaz</string>
+    <string name="obd_throttle_reset_sub">Pleins gaz = %1$s %% selon l\'ECU</string>
+    <string name="obd_throttle_reset_confirm">L\'accélérateur affiché est recalibré par une valeur apprise sur votre moto. Le réinitialiser à la valeur par défaut (65 %) pour qu\'il soit de nouveau appris au prochain trajet ?</string>
+    <string name="obd_throttle_reset_do">Réinitialiser</string>
 </resources>

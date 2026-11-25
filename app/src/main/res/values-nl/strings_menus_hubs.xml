@@ -13,4 +13,8 @@
     <string name="hub_key_sub">Motorsleutel (PKE)</string>
     <string name="hub_sub_obd">Live uitlezing en lezertest</string>
     <string name="hub_sub_crash">en black box</string>
+    <string name="obd_throttle_reset_title">Gaskalibratie resetten</string>
+    <string name="obd_throttle_reset_sub">Vol gas = %1$s %% volgens de ECU</string>
+    <string name="obd_throttle_reset_confirm">Het getoonde gas wordt herschaald met een waarde die van je motor is geleerd. Terugzetten naar de standaard (65 %) zodat het bij de volgende rit opnieuw wordt geleerd?</string>
+    <string name="obd_throttle_reset_do">Resetten</string>
 </resources>

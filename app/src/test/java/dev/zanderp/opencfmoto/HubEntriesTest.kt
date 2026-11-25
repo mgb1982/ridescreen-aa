@@ -25,9 +25,9 @@ class HubEntriesTest {
         assertTrue(HubEntries.trips(false).filter { it.item != HubItem.LIVE }.all { it.enabled })
     }
 
-    @Test fun bikeHubHasEightEntriesAndKeyRowsStayTogether() {
+    @Test fun bikeHubHasNineEntriesAndKeyRowsStayTogether() {
         val items = HubEntries.bike().map { it.item }
-        assertEquals(8, items.size)
+        assertEquals(9, items.size)
         assertEquals(items.size, items.toSet().size)
         assertEquals(items.indexOf(HubItem.PKE_BATTERY) + 1, items.indexOf(HubItem.PKE_LOCK))
         assertTrue(HubEntries.bike().all { it.enabled })

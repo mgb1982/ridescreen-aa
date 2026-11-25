@@ -13,4 +13,8 @@
     <string name="hub_key_sub">Kluczyk motocykla (PKE)</string>
     <string name="hub_sub_obd">Odczyt na żywo i test czytnika</string>
     <string name="hub_sub_crash">i czarna skrzynka</string>
+    <string name="obd_throttle_reset_title">Zresetuj kalibrację przepustnicy</string>
+    <string name="obd_throttle_reset_sub">Pełny gaz = %1$s %% z ECU</string>
+    <string name="obd_throttle_reset_confirm">Wyświetlany gaz jest przeskalowany wartością nauczoną z twojego motocykla. Zresetować go do wartości domyślnej (65 %), żeby został ponownie nauczony podczas następnej jazdy?</string>
+    <string name="obd_throttle_reset_do">Zresetuj</string>
 </resources>

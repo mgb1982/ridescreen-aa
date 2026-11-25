@@ -13,4 +13,8 @@
     <string name="hub_key_sub">Klíč od motorky (PKE)</string>
     <string name="hub_sub_obd">Živé čtení a test čtečky</string>
     <string name="hub_sub_crash">a černá skříňka</string>
+    <string name="obd_throttle_reset_title">Resetovat kalibraci plynu</string>
+    <string name="obd_throttle_reset_sub">Plný plyn = %1$s %% z ECU</string>
+    <string name="obd_throttle_reset_confirm">Zobrazený plyn se přepočítává podle hodnoty naučené z vaší motorky. Obnovit výchozí hodnotu (65 %), aby se při další jízdě naučila znovu?</string>
+    <string name="obd_throttle_reset_do">Resetovat</string>
 </resources>

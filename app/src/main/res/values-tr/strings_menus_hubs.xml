@@ -13,4 +13,8 @@
     <string name="hub_key_sub">Motor anahtarı (PKE)</string>
     <string name="hub_sub_obd">Canlı okuma ve okuyucu testi</string>
     <string name="hub_sub_crash">ve kara kutu</string>
+    <string name="obd_throttle_reset_title">Gaz kalibrasyonunu sıfırla</string>
+    <string name="obd_throttle_reset_sub">Tam gaz = ECU\'dan %1$s %%</string>
+    <string name="obd_throttle_reset_confirm">Gösterilen gaz, motosikletinizden öğrenilen bir değerle ölçeklenir. Varsayılan değere (65 %) sıfırlansın ve bir sonraki sürüşte yeniden öğrensin mi?</string>
+    <string name="obd_throttle_reset_do">Sıfırla</string>
 </resources>

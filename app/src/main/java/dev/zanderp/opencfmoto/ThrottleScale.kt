@@ -16,6 +16,14 @@ object ThrottleScale {
     fun scale(raw: Double, cap: Double): Double = (raw * 100.0 / cap).coerceIn(0.0, 100.0)
 
     fun nextCap(cap: Double, raw: Double): Double = if (raw > cap) raw.coerceAtMost(100.0) else cap
+
+    /** The cap a reset goes back to. */
+    fun resetValue(): Double = DEFAULT_CAP
+
+    /** Raw ECU value shown as "full throttle" for [cap], one decimal, locale-independent. */
+    fun capText(cap: Double): String = "%.1f".format(java.util.Locale.ROOT, cap)
+
+    fun resetLine(old: Double): String = "throttle cap reset to ${resetValue().toInt()} (was ${capText(old)})"
 }
 
 /** Running max of raw relative throttle (PID 0x45) over a window, with the absolute throttle (0x11) of the same round when it was read. */

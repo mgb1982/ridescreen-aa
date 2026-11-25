@@ -24,6 +24,21 @@ class ThrottleScaleTest {
     }
 }
 
+class ThrottleResetTest {
+    @Test fun resetGoesBackToDefault() = assertEquals(ThrottleScale.DEFAULT_CAP, ThrottleScale.resetValue(), 0.0)
+    @Test fun resetUndoesASpike() {
+        val spiked = ThrottleScale.nextCap(65.5, 100.0)
+        assertEquals(100.0, spiked, 0.0)
+        assertEquals(65.0, ThrottleScale.resetValue(), 0.0)
+        // after reset a full grip (65.5 raw) raises the cap to the real value again
+        assertEquals(65.5, ThrottleScale.nextCap(ThrottleScale.resetValue(), 65.5), 1e-9)
+    }
+    @Test fun resetLineAndCapText() {
+        assertEquals("throttle cap reset to 65 (was 65.5)", ThrottleScale.resetLine(65.5))
+        assertEquals("100.0", ThrottleScale.capText(100.0))
+    }
+}
+
 class ThrottlePeakTest {
     @Test fun emptyWindowGivesNull() = org.junit.Assert.assertNull(ThrottlePeak().take())
     @Test fun keepsMaxAndItsAbs() {
