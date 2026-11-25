@@ -15,4 +15,8 @@
     <string name="dash_window_crop_small">Малое</string>
     <string name="dash_window_crop_medium">Среднее (по умолчанию)</string>
     <string name="dash_window_crop_large">Большое</string>
+    <string name="dash_window_crop_row">%1$s (%2$d %%)</string>
+    <string name="dash_window_crop_value">Скрыть %1$d %% нижней части</string>
+    <string name="dash_window_crop_done">Готово</string>
+    <string name="dash_window_crop_default">По умолчанию (%1$d %%)</string>
 </resources>

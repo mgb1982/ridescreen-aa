@@ -15,4 +15,8 @@
     <string name="dash_window_crop_small">Küçük</string>
     <string name="dash_window_crop_medium">Orta (varsayılan)</string>
     <string name="dash_window_crop_large">Büyük</string>
+    <string name="dash_window_crop_row">%1$s (%2$d %%)</string>
+    <string name="dash_window_crop_value">Alttan %1$d %% gizle</string>
+    <string name="dash_window_crop_done">Tamam</string>
+    <string name="dash_window_crop_default">Varsayılan (%1$d %%)</string>
 </resources>

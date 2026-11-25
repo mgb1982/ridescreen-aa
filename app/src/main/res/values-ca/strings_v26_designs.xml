@@ -15,4 +15,8 @@
     <string name="dash_window_crop_small">Petita</string>
     <string name="dash_window_crop_medium">Mitjana (per defecte)</string>
     <string name="dash_window_crop_large">Gran</string>
+    <string name="dash_window_crop_row">%1$s (%2$d %%)</string>
+    <string name="dash_window_crop_value">Amaga el %1$d %% inferior</string>
+    <string name="dash_window_crop_done">Fet</string>
+    <string name="dash_window_crop_default">Per defecte (%1$d %%)</string>
 </resources>

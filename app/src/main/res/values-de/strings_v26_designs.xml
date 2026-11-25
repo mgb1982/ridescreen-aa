@@ -15,4 +15,8 @@
     <string name="dash_window_crop_small">Klein</string>
     <string name="dash_window_crop_medium">Mittel (Standard)</string>
     <string name="dash_window_crop_large">Groß</string>
+    <string name="dash_window_crop_row">%1$s (%2$d %%)</string>
+    <string name="dash_window_crop_value">%1$d %% am unteren Rand ausblenden</string>
+    <string name="dash_window_crop_done">Fertig</string>
+    <string name="dash_window_crop_default">Standard (%1$d %%)</string>
 </resources>

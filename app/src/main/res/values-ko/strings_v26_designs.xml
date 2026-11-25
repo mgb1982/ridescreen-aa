@@ -15,4 +15,8 @@
     <string name="dash_window_crop_small">작게</string>
     <string name="dash_window_crop_medium">보통 (기본값)</string>
     <string name="dash_window_crop_large">크게</string>
+    <string name="dash_window_crop_row">%1$s (%2$d %%)</string>
+    <string name="dash_window_crop_value">하단 %1$d %% 숨기기</string>
+    <string name="dash_window_crop_done">완료</string>
+    <string name="dash_window_crop_default">기본값 (%1$d %%)</string>
 </resources>

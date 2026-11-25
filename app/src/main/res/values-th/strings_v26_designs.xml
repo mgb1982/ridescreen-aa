@@ -15,4 +15,8 @@
     <string name="dash_window_crop_small">เล็ก</string>
     <string name="dash_window_crop_medium">กลาง (ค่าเริ่มต้น)</string>
     <string name="dash_window_crop_large">ใหญ่</string>
+    <string name="dash_window_crop_row">%1$s (%2$d %%)</string>
+    <string name="dash_window_crop_value">ซ่อน %1$d %% ด้านล่าง</string>
+    <string name="dash_window_crop_done">เสร็จ</string>
+    <string name="dash_window_crop_default">ค่าเริ่มต้น (%1$d %%)</string>
 </resources>

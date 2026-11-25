@@ -15,4 +15,8 @@
     <string name="dash_window_crop_small">Малка</string>
     <string name="dash_window_crop_medium">Средна (по подразбиране)</string>
     <string name="dash_window_crop_large">Голяма</string>
+    <string name="dash_window_crop_row">%1$s (%2$d %%)</string>
+    <string name="dash_window_crop_value">Скрий %1$d %% от долната част</string>
+    <string name="dash_window_crop_done">Готово</string>
+    <string name="dash_window_crop_default">По подразбиране (%1$d %%)</string>
 </resources>
