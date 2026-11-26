@@ -48,6 +48,9 @@ class PxcHandshake(
     /** Asks the prober to drop every bike socket so its reconnect path re-probes (clock resync). */
     @Volatile var onResyncRequested: ((String) -> Unit)? = null
 
+    /** v2.5 · A handlebar button the dash sent over Wi‑Fi (0x10350 JSON body) — see [DashButtons]. */
+    @Volatile var onDashButton: ((String) -> Unit)? = null
+
     /**
      * Called when the bike selects a PXC channel on a :10922 socket (CAR_CTRL or CAR_DATA).
      * [EasyConnProber] starts a proactive 0x70000000 heartbeat on **each** of those sockets —
@@ -106,6 +109,10 @@ class PxcHandshake(
             PxcFrame.CMD_HU_TIME_SYNC -> onHuTimeSync(tag, frame, out)
             PxcFrame.CMD_HU_QUERY_TIME -> onHuQueryTime(tag, frame, out)
             else -> {
+                if (frame.cmd == DashButtons.CMD_SEND_BTN_EVENT) {
+                    // Handled on the side; the reply stays the profile's usual cmd+1 ack below.
+                    onDashButton?.invoke(String(frame.payload, Charsets.UTF_8))
+                }
                 if (frame.cmd == PxcFrame.CMD_CARINFO_NIGHTMODE) {
                     // Log only: the reply stays whatever the profile does for unknown frames (cmd+1 ack).
                     DashNight.note(String(frame.payload, Charsets.UTF_8), System.currentTimeMillis(), log)

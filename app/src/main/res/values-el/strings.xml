@@ -672,6 +672,8 @@
     <string name="controls_dash_scale_rpm">Στροφόμετρο έως</string>
     <string name="controls_volume_drives_aa">Τα ▲/▼ ελέγχουν και το Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Απενεργοποιημένο: τα κουμπιά έντασης συνεχίζουν να αλλάζουν την ένταση του κινητού (και η ενδοεπικοινωνία), και η ένταση δεν κλειδώνει ποτέ. Το Android Auto λαμβάνει μόνο τα υπόλοιπα κουμπιά του τιμονιού.</string>
+    <string name="controls_dash_wifi_buttons">Κουμπιά τιμονιού μέσω Wi‑Fi (beta)</string>
+    <string name="controls_dash_wifi_buttons_desc">Για καντράν που στέλνουν τα κουμπιά του τιμονιού μέσω του Wi‑Fi προβολής αντί για Bluetooth (πιστεύουμε ότι το κάνει η σειρά Zontes 368). Μουσική και ένταση πάντα· βέλη, OK, πίσω και βοηθός μόνο όταν τα κουμπιά ελέγχουν το Android Auto. Απενεργοποιημένο από προεπιλογή: ενεργοποίησέ το μόνο αν τα κουμπιά σου δεν κάνουν τίποτα και στείλε μας τα αρχεία καταγραφής.</string>
     <string name="tvs_gauges">Όργανα</string>
     <string name="garage_added">Προστέθηκε το %s</string>
     <string name="garage_image_unreadable">Δεν ήταν δυνατή η ανάγνωση της εικόνας</string>

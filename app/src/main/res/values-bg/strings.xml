@@ -607,6 +607,8 @@
     <string name="controls_dash_scale_rpm">Оборотомер до</string>
     <string name="controls_volume_drives_aa">▲/▼ управляват и Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Изключено: бутоните за сила на звука продължават да променят звука на телефона (и интеркомът също), а звукът никога не се заключва. Android Auto получава само останалите бутони на кормилото.</string>
+    <string name="controls_dash_wifi_buttons">Бутони на кормилото през Wi‑Fi (бета)</string>
+    <string name="controls_dash_wifi_buttons_desc">За табла, които изпращат бутоните на кормилото през Wi‑Fi за проекция вместо през Bluetooth (смятаме, че серията Zontes 368 го прави). Музика и сила на звука винаги; стрелки, OK, назад и асистент само ако бутоните управляват Android Auto. По подразбиране е изключено: включи го само ако бутоните ти не правят нищо и ни изпрати журналите.</string>
     <string name="buttons_remote_pad">Bluetooth дистанционно управление</string>
     <string name="buttons_remote_pad_desc">Сдвоете геймпад, пръстеново дистанционно или клавиатура. AVRCP дистанционните вече управляват Android Auto, когато е включено улавяне от кормилото. HID D-пад / бутоните трябва този екран или основното приложение да са на преден план. Всяко натискане замества жест от кормилото.</string>
     <string name="buttons_teach_remote">Научете бутон на дистанционното…</string>

@@ -456,6 +456,8 @@
     <string name="controls_dash_scale_rpm">회전계 최대</string>
     <string name="controls_volume_drives_aa">▲/▼로 Android Auto도 조작</string>
     <string name="controls_volume_drives_aa_desc">끄면 볼륨 버튼은 계속 휴대폰 볼륨을 바꾸고(인터컴도 마찬가지) 볼륨이 고정되지 않습니다. Android Auto는 나머지 핸들 버튼만 받습니다.</string>
+    <string name="controls_dash_wifi_buttons">Wi‑Fi로 받는 핸들바 버튼 (베타)</string>
+    <string name="controls_dash_wifi_buttons_desc">핸들바 버튼을 블루투스 대신 미러링 Wi‑Fi로 보내는 계기판용입니다 (Zontes 368 시리즈가 그렇다고 봅니다). 음악과 볼륨은 항상, 화살표·확인·뒤로·어시스턴트는 버튼이 Android Auto를 제어할 때만 동작합니다. 기본값은 꺼짐: 버튼이 아무 동작도 하지 않을 때만 켜고 로그를 보내 주세요.</string>
     <string name="buttons_bt_status_placeholder">Bluetooth: …</string>
     <string name="buttons_teach_handlebar">핸들바 버튼 가르치기…</string>
     <string name="buttons_remote_pad">Bluetooth 리모컨 패드</string>

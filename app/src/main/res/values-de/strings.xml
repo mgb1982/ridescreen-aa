@@ -665,6 +665,8 @@
     <string name="controls_dash_scale_rpm">Drehzahlmesser bis</string>
     <string name="controls_volume_drives_aa">▲/▼ steuern auch Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Aus: Die Lautstärketasten ändern weiter die Handy-Lautstärke (auch die Gegensprechanlage), und die Lautstärke wird nie festgehalten. Android Auto bekommt dann nur die übrigen Lenkertasten.</string>
+    <string name="controls_dash_wifi_buttons">Lenkerknöpfe über WLAN (Beta)</string>
+    <string name="controls_dash_wifi_buttons_desc">Für Cockpits, die die Lenkerknöpfe über das Projektions-WLAN statt per Bluetooth senden (vermutlich die Zontes-368-Reihe). Musik und Lautstärke immer; Pfeile, OK, Zurück und Assistent nur, wenn die Knöpfe Android Auto steuern. Standardmäßig aus: nur einschalten, wenn deine Knöpfe nichts tun, und uns die Protokolle schicken.</string>
     <string name="tvs_gauges">Anzeigen</string>
     <string name="garage_added">%s hinzugefügt</string>
     <string name="garage_image_unreadable">Das Bild konnte nicht gelesen werden</string>

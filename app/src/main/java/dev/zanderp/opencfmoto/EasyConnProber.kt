@@ -77,6 +77,7 @@ class EasyConnProber(
         // previously left idle, which is what triggered the ~7s 800NK flap.
         it.onPxcChannelSelected = { sock, label -> startCtrlHeartbeat(sock, label) }
         it.onResyncRequested = { reason -> forceResync(reason) }
+        it.onDashButton = { body -> DashButtons.onFrame(context, body, log) }
     }
 
     /**

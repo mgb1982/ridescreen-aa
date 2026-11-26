@@ -665,6 +665,8 @@
     <string name="controls_dash_scale_rpm">Compte-tours jusqu\'à</string>
     <string name="controls_volume_drives_aa">▲/▼ pilotent aussi Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Désactivé : les boutons de volume continuent de régler le volume du téléphone (l\'intercom aussi), et le volume n\'est jamais bloqué. Android Auto ne reçoit alors que les autres boutons du guidon.</string>
+    <string name="controls_dash_wifi_buttons">Boutons du guidon par Wi‑Fi (bêta)</string>
+    <string name="controls_dash_wifi_buttons_desc">Pour les tableaux de bord qui envoient les boutons du guidon par le Wi‑Fi de projection au lieu du Bluetooth (nous pensons que la gamme Zontes 368 le fait). Musique et volume toujours ; flèches, OK, retour et assistant seulement si les boutons contrôlent Android Auto. Désactivé par défaut : activez-le seulement si vos boutons ne font rien, et envoyez-nous vos journaux.</string>
     <string name="tvs_gauges">Jauges</string>
     <string name="garage_added">%s ajoutée</string>
     <string name="garage_image_unreadable">Impossible de lire cette image</string>

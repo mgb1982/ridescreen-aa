@@ -671,6 +671,8 @@
     <string name="controls_dash_scale_rpm">มาตรวัดรอบถึง</string>
     <string name="controls_volume_drives_aa">▲/▼ ควบคุม Android Auto ด้วย</string>
     <string name="controls_volume_drives_aa_desc">ปิด: ปุ่มเสียงยังปรับระดับเสียงของโทรศัพท์ได้ตามปกติ (อินเตอร์คอมก็เช่นกัน) และระดับเสียงจะไม่ถูกล็อก Android Auto จะได้รับเฉพาะปุ่มอื่นบนแฮนด์</string>
+    <string name="controls_dash_wifi_buttons">ปุ่มแฮนด์ผ่าน Wi‑Fi (เบต้า)</string>
+    <string name="controls_dash_wifi_buttons_desc">สำหรับหน้าปัดที่ส่งปุ่มแฮนด์ผ่าน Wi‑Fi ของการฉายภาพแทนบลูทูธ (เราคิดว่ารุ่น Zontes 368 เป็นแบบนี้) เพลงและระดับเสียงใช้ได้เสมอ ส่วนลูกศร ตกลง ย้อนกลับ และผู้ช่วย ใช้ได้เฉพาะเมื่อปุ่มควบคุม Android Auto ปิดไว้เป็นค่าเริ่มต้น: เปิดเฉพาะเมื่อปุ่มของคุณไม่ทำงาน แล้วส่งบันทึกให้เรา</string>
     <string name="tvs_gauges">มาตรวัด</string>
     <string name="garage_added">เพิ่ม %s แล้ว</string>
     <string name="garage_image_unreadable">อ่านรูปภาพนั้นไม่ได้</string>

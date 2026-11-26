@@ -667,6 +667,8 @@
     <string name="controls_dash_scale_rpm">Conta-rotações até</string>
     <string name="controls_volume_drives_aa">▲/▼ também controlam o Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Desligado: os botões de volume continuam a mudar o volume do telemóvel (e também o intercomunicador), e o volume nunca fica fixo. O Android Auto recebe só os outros botões do guiador.</string>
+    <string name="controls_dash_wifi_buttons">Botões do guiador por Wi‑Fi (beta)</string>
+    <string name="controls_dash_wifi_buttons_desc">Para painéis que enviam os botões do guiador pelo Wi‑Fi de projeção em vez de Bluetooth (achamos que a gama Zontes 368 o faz). Música e volume sempre; setas, OK, voltar e assistente só se os botões controlarem o Android Auto. Desativado por predefinição: ative-o só se os seus botões não fizerem nada e envie-nos os registos.</string>
     <string name="tvs_gauges">Indicadores</string>
     <string name="garage_added">%s adicionada</string>
     <string name="garage_image_unreadable">Não foi possível ler essa imagem</string>
