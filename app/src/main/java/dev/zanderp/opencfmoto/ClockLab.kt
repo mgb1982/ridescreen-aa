@@ -106,9 +106,12 @@ object ClockLab {
      * v2.5 · Resyncs stopped helping this dash boot (late again after [STUCK_AFTER_SLOW_RESYNCS] in a
      * row): tell the rider to reboot the dash instead of dropping the link again. 17 Nov 2026 (125X):
      * four reconnects in 40 s, automatic and by hand, all late and 00:00; a lock + unlock fixed it at once.
+     * 3 since 26 Nov 2026: on cold mornings (25 and 26 Nov, 05:00, 125X) the dash asked late twice after
+     * resyncs and the third reconnect (the rider's button) came back in time, so give that third try
+     * automatically. [PxcHandshake.MAX_RESYNCS_PER_BOOT] still caps the drops at 3 per dash boot.
      */
     @Volatile var resyncStuck: Boolean = false
-    const val STUCK_AFTER_SLOW_RESYNCS = 2
+    const val STUCK_AFTER_SLOW_RESYNCS = 3
 
     /** Pure: resyncs in a row that came back late again → stop dropping the link this dash boot. */
     fun dashLooksStuck(slowAfterResync: Int): Boolean = slowAfterResync >= STUCK_AFTER_SLOW_RESYNCS
