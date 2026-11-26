@@ -46,7 +46,7 @@ WATCH_TRIPS = [
     dict(date=dt.date(2026, 10, 5), start="13:31", end="13:42", km=2.38, secs=329, avg=25, max=53),
 ]
 
-VERSION = "2.3"
+VERSION = "2.5"
 REPO = "mgb1982/ridescreen-aa"
 
 # ---------------------------------------------------------------- locale formatting

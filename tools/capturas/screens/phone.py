@@ -469,7 +469,7 @@ G1 = {
     "ru": ("RideScreen AA is wireless Android Auto on your bike's dash…",
            "✅ Этот — для <b>телефона</b>.<br>❌ Файл с <b>WearOS-reloj</b> — для часов: на телефон он не установится (недопустимый пакет)."),
 }
-APK_MB, WATCH_MB = 29.6, 11.5   # v2.3 release assets (31,024,282 and 12,100,956 bytes)
+APK_MB, WATCH_MB = 32.5, 11.6   # v2.5 (RC11 build 572 assets: 34,101,418 and 12,148,260 bytes)
 
 
 def guide_download(lang):
