@@ -56,7 +56,10 @@
                 android:insetBottom="0dp"
                 android:paddingHorizontal="4dp"
                 android:text="@string/cuadro_mode_aa"
-                android:textSize="12sp" />
+                android:maxLines="2"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="9sp"
+                app:autoSizeMaxTextSize="12sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/hud_mode_dash"
@@ -68,7 +71,10 @@
                 android:insetBottom="0dp"
                 android:paddingHorizontal="4dp"
                 android:text="@string/cuadro_mode_dashboard"
-                android:textSize="12sp" />
+                android:maxLines="2"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="9sp"
+                app:autoSizeMaxTextSize="12sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/hud_mode_map"
@@ -80,7 +86,10 @@
                 android:insetBottom="0dp"
                 android:paddingHorizontal="4dp"
                 android:text="@string/cuadro_mode_map"
-                android:textSize="12sp" />
+                android:maxLines="2"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="9sp"
+                app:autoSizeMaxTextSize="12sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/hud_mode_mirror"
@@ -92,7 +101,10 @@
                 android:insetBottom="0dp"
                 android:paddingHorizontal="4dp"
                 android:text="@string/main_mirror"
-                android:textSize="12sp" />
+                android:maxLines="2"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="9sp"
+                app:autoSizeMaxTextSize="12sp" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <Button
