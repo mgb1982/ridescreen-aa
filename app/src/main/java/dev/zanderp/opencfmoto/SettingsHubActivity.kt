@@ -82,5 +82,12 @@ class SettingsHubActivity : AppCompatActivity() {
             }
             list.addView(row)
         }
+        // v2.5: last row, always there but quiet — Ko-fi on GitHub builds, Play Billing on the Play build.
+        val support = LayoutInflater.from(this).inflate(R.layout.row_settings_section, list, false)
+        support.findViewById<TextView>(R.id.row_icon).text = "☕"
+        support.findViewById<TextView>(R.id.row_title).setText(R.string.settings_support)
+        support.findViewById<TextView>(R.id.row_sub).setText(R.string.settings_support_sub)
+        support.setOnClickListener { Support.open(this) }
+        list.addView(support)
     }
 }

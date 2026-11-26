@@ -12,4 +12,6 @@
     <string name="support_tank">⛽ Plná nádrž</string>
     <string name="support_thanks">Moc děkuji! 🙌</string>
     <string name="support_unavailable">Dary momentálně nejsou k dispozici. Zkuste to prosím později.</string>
+    <string name="settings_support">Podpoř RideScreen AA</string>
+    <string name="settings_support_sub">Zdarma, bez reklam a open source. Káva pomáhá, aby dál rostla.</string>
 </resources>

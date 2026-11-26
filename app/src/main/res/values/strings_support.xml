@@ -12,4 +12,6 @@
     <string name="support_tank">⛽ A full tank</string>
     <string name="support_thanks">Thank you so much! 🙌</string>
     <string name="support_unavailable">Donations aren\'t available right now. Please try again later.</string>
+    <string name="settings_support">Support RideScreen AA</string>
+    <string name="settings_support_sub">Free, ad-free and open source. A coffee helps it keep growing.</string>
 </resources>

@@ -12,4 +12,6 @@
     <string name="support_tank">⛽ Tam depo</string>
     <string name="support_thanks">Çok teşekkürler! 🙌</string>
     <string name="support_unavailable">Bağışlar şu anda kullanılamıyor. Lütfen daha sonra tekrar dene.</string>
+    <string name="settings_support">RideScreen AA\'yı destekle</string>
+    <string name="settings_support_sub">Ücretsiz, reklamsız ve açık kaynak. Bir kahve büyümeye devam etmesine yardım eder.</string>
 </resources>

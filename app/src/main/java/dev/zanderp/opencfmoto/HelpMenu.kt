@@ -56,7 +56,7 @@ object HelpMenu {
  */
 object WhatsNew {
     /** Bump together with whats_new_body / whats_new_title for the next feature release. */
-    private const val RELEASE = "2.3"
+    private const val RELEASE = "2.5"
     private const val PREFS = "whats_new"
     private const val KEY_SEEN = "seen"
 
@@ -80,6 +80,8 @@ object WhatsNew {
             .setTitle(R.string.whats_new_title)
             .setMessage(R.string.whats_new_body)
             .setPositiveButton(R.string.whats_new_ok, null)
+            // v2.5: a quiet second button; the sheet only shows once per release.
+            .setNeutralButton(R.string.help_support) { _, _ -> Support.open(activity) }
             .show()
     }
 }

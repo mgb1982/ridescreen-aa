@@ -12,4 +12,6 @@
     <string name="support_tank">⛽ Pełny bak</string>
     <string name="support_thanks">Bardzo dziękuję! 🙌</string>
     <string name="support_unavailable">Wpłaty są teraz niedostępne. Spróbuj ponownie później.</string>
+    <string name="settings_support">Wesprzyj RideScreen AA</string>
+    <string name="settings_support_sub">Darmowe, bez reklam i open source. Kawa pomaga mu dalej rosnąć.</string>
 </resources>

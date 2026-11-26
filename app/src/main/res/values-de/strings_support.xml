@@ -12,4 +12,6 @@
     <string name="support_tank">⛽ Ein voller Tank</string>
     <string name="support_thanks">Vielen lieben Dank! 🙌</string>
     <string name="support_unavailable">Spenden sind derzeit nicht verfügbar. Bitte versuche es später erneut.</string>
+    <string name="settings_support">RideScreen AA unterstützen</string>
+    <string name="settings_support_sub">Kostenlos, werbefrei und Open Source. Ein Kaffee hilft, dass es weiter wächst.</string>
 </resources>

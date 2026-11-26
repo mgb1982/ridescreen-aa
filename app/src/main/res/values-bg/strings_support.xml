@@ -12,4 +12,6 @@
     <string name="support_tank">⛽ Пълен резервоар</string>
     <string name="support_thanks">Благодаря ви много! 🙌</string>
     <string name="support_unavailable">Дарения в момента не са налични. Опитайте отново по-късно.</string>
+    <string name="settings_support">Подкрепи RideScreen AA</string>
+    <string name="settings_support_sub">Безплатно, без реклами и с отворен код. Едно кафе му помага да расте.</string>
 </resources>
