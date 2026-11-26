@@ -456,6 +456,8 @@
     <string name="controls_dash_scale_rpm">Devir göstergesi en fazla</string>
     <string name="controls_volume_drives_aa">▲/▼ Android Auto\'yu da kontrol eder</string>
     <string name="controls_volume_drives_aa_desc">Kapalı: ses düğmeleri telefonun sesini değiştirmeye devam eder (interkom da), ses asla sabitlenmez. Android Auto yalnızca diğer gidon düğmelerini alır.</string>
+    <string name="controls_dash_wifi_buttons">Gidon düğmeleri Wi‑Fi ile (beta)</string>
+    <string name="controls_dash_wifi_buttons_desc">Gidon düğmelerini Bluetooth yerine yansıtma Wi‑Fi\'ı üzerinden gönderen göstergeler için (Zontes 368 serisinin böyle yaptığını düşünüyoruz). Müzik ve ses her zaman; oklar, Tamam, geri ve asistan yalnızca düğmeler Android Auto\'yu kontrol ediyorsa. Varsayılan olarak kapalı: yalnızca düğmeleriniz hiçbir şey yapmıyorsa açın ve bize günlükleri gönderin.</string>
     <string name="buttons_bt_status_placeholder">Bluetooth: …</string>
     <string name="buttons_teach_handlebar">Gidon tuşlarını öğret…</string>
     <string name="buttons_remote_pad">Bluetooth uzaktan kumanda pedi</string>

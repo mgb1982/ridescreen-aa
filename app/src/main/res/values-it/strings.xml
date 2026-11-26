@@ -662,6 +662,8 @@
     <string name="controls_dash_scale_rpm">Contagiri fino a</string>
     <string name="controls_volume_drives_aa">▲/▼ controllano anche Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Disattivato: i tasti del volume continuano a cambiare il volume del telefono (anche l\'interfono), e il volume non viene mai bloccato. Android Auto riceve solo gli altri tasti del manubrio.</string>
+    <string name="controls_dash_wifi_buttons">Pulsanti del manubrio via Wi‑Fi (beta)</string>
+    <string name="controls_dash_wifi_buttons_desc">Per i cruscotti che inviano i pulsanti del manubrio tramite il Wi‑Fi di proiezione invece che via Bluetooth (pensiamo la gamma Zontes 368). Musica e volume sempre; frecce, OK, indietro e assistente solo se i pulsanti controllano Android Auto. Disattivato di default: attivalo solo se i tuoi pulsanti non fanno nulla, e mandaci i log.</string>
     <string name="tvs_gauges">Indicatori</string>
     <string name="garage_added">%s aggiunta</string>
     <string name="garage_image_unreadable">Impossibile leggere quell\'immagine</string>

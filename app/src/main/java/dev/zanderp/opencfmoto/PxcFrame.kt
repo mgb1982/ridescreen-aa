@@ -132,6 +132,7 @@ data class PxcFrame(val cmd: Int, val payload: ByteArray) {
             CMD_MCU_START_MIRROR       -> "MCU_START_MIRROR"
             CMD_MCU_CHECK_OTA          -> "MCU_CHECK_OTA"
             CMD_MCU_START_OTA          -> "MCU_START_OTA"
+            DashButtons.CMD_SEND_BTN_EVENT -> "SEND_BTN_EVENT (handlebar button)"
             else                       -> "?"
         }
 

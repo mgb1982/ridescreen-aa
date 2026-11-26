@@ -659,6 +659,8 @@
     <string name="controls_dash_scale_rpm">Cuentarrevoluciones hasta</string>
     <string name="controls_volume_drives_aa">▲/▼ también controlan Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Desactivado: los botones de volumen siguen cambiando el volumen del móvil (y también el intercomunicador), y el volumen nunca queda fijo. Android Auto solo recibe los demás botones del manillar.</string>
+    <string name="controls_dash_wifi_buttons">Botones del manillar por Wi‑Fi (beta)</string>
+    <string name="controls_dash_wifi_buttons_desc">Para cuadros que mandan los botones del manillar por la Wi‑Fi de proyección en vez de por Bluetooth (creemos que la gama Zontes 368). Música y volumen siempre; flechas, OK, atrás y asistente solo si los botones controlan Android Auto. Desactivado por defecto: actívalo solo si tus botones no hacen nada, y mándanos los registros.</string>
     <string name="tvs_gauges">Indicadores</string>
     <string name="garage_added">Se ha añadido %s</string>
     <string name="garage_image_unreadable">No se pudo leer esa imagen</string>

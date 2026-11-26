@@ -570,6 +570,8 @@
     <string name="controls_dash_scale_rpm">Fordulatszámmérő eddig</string>
     <string name="controls_volume_drives_aa">A ▲/▼ az Android Autót is vezérli</string>
     <string name="controls_volume_drives_aa_desc">Ki: a hangerőgombok továbbra is a telefon hangerejét állítják (a kommunikátor is), és a hangerő sosem rögzül. Az Android Auto csak a többi kormánygombot kapja.</string>
+    <string name="controls_dash_wifi_buttons">Kormánygombok Wi‑Fi-n (béta)</string>
+    <string name="controls_dash_wifi_buttons_desc">Olyan műszerfalakhoz, amelyek a kormánygombokat a kivetítési Wi‑Fi-n küldik Bluetooth helyett (úgy gondoljuk, a Zontes 368 család ilyen). Zene és hangerő mindig; nyilak, OK, vissza és asszisztens csak akkor, ha a gombok az Android Autót vezérlik. Alapból ki van kapcsolva: csak akkor kapcsold be, ha a gombjaid nem csinálnak semmit, és küldd el nekünk a naplókat.</string>
     <string name="buttons_bt_status_placeholder">Bluetooth: …</string>
     <string name="buttons_teach_handlebar">Kormánygomb betanítása…</string>
     <string name="buttons_remote_pad">Bluetooth távirányító-panel</string>

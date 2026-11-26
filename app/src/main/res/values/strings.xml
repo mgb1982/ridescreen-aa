@@ -673,6 +673,8 @@
     <string name="controls_dash_scale_rpm">Rev counter up to</string>
     <string name="controls_volume_drives_aa">▲/▼ also drive Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Off: the volume buttons keep changing the phone volume (and your intercom too), and the phone volume is never locked. Android Auto then only gets the other handlebar buttons.</string>
+    <string name="controls_dash_wifi_buttons">Handlebar buttons over Wi‑Fi (beta)</string>
+    <string name="controls_dash_wifi_buttons_desc">For dashes that send their handlebar buttons over the projection Wi‑Fi instead of Bluetooth (we think the Zontes 368 range does). Music and volume always; arrows, OK, back and the assistant only when the buttons control Android Auto. Off by default: turn it on only if your buttons do nothing, and send us your logs.</string>
     <string name="garage_added">Added %s</string>
     <string name="garage_image_unreadable">Couldn\'t read that image</string>
     <string name="garage_selected">Selected %s</string>

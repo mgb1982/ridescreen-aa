@@ -161,6 +161,14 @@ class ControlsActivity : AppCompatActivity() {
             LogBus.log("→ handlebar ▲/▼ ${if (on) "drive Android Auto" else "control the phone volume"}")
         }
 
+        // v2.5: buttons some dashes send over the projection Wi‑Fi (0x10350). Off by default.
+        val swWifiBtn = findViewById<MaterialSwitch>(R.id.switch_dash_wifi_buttons)
+        swWifiBtn.isChecked = DashButtons.isEnabled(this)
+        swWifiBtn.setOnCheckedChangeListener { _, on ->
+            DashButtons.setEnabled(this, on)
+            LogBus.log("→ handlebar buttons over Wi‑Fi ${if (on) "on" else "off"}")
+        }
+
         findViewById<MaterialButton>(R.id.btn_customize).setOnClickListener {
             startActivity(Intent(this, ButtonMappingActivity::class.java))
         }

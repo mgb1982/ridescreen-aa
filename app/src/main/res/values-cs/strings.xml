@@ -426,6 +426,8 @@
     <string name="controls_dash_scale_rpm">Otáčkoměr do</string>
     <string name="controls_volume_drives_aa">▲/▼ ovládají i Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Vypnuto: tlačítka hlasitosti dál mění hlasitost telefonu (i interkomu) a hlasitost se nikdy nezamkne. Android Auto pak dostává jen ostatní tlačítka na řídítkách.</string>
+    <string name="controls_dash_wifi_buttons">Tlačítka na řídítkách přes Wi‑Fi (beta)</string>
+    <string name="controls_dash_wifi_buttons_desc">Pro přístrojové desky, které posílají tlačítka z řídítek přes projekční Wi‑Fi místo Bluetooth (myslíme si, že řada Zontes 368). Hudba a hlasitost vždy; šipky, OK, zpět a asistent jen tehdy, když tlačítka ovládají Android Auto. Ve výchozím stavu vypnuto: zapni jen tehdy, když tlačítka nic nedělají, a pošli nám záznamy.</string>
     <string name="app_name">RideScreen AA</string>
     <string name="buttons_bt_status_placeholder">Bluetooth: …</string>
     <string name="buttons_teach_handlebar">Naučit tlačítka na řídítkách…</string>

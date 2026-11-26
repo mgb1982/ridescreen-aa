@@ -427,6 +427,8 @@
     <string name="controls_dash_scale_rpm">Turometru până la</string>
     <string name="controls_volume_drives_aa">▲/▼ controlează și Android Auto</string>
     <string name="controls_volume_drives_aa_desc">Oprit: butoanele de volum continuă să schimbe volumul telefonului (și intercomul), iar volumul nu se blochează niciodată. Android Auto primește doar celelalte butoane de pe ghidon.</string>
+    <string name="controls_dash_wifi_buttons">Butoanele ghidonului prin Wi‑Fi (beta)</string>
+    <string name="controls_dash_wifi_buttons_desc">Pentru bordurile care trimit butoanele ghidonului prin Wi‑Fi-ul de proiecție în loc de Bluetooth (credem că gama Zontes 368 face asta). Muzică și volum mereu; săgeți, OK, înapoi și asistent doar dacă butoanele controlează Android Auto. Dezactivat implicit: activează-l doar dacă butoanele tale nu fac nimic și trimite-ne jurnalele.</string>
     <string name="app_name">RideScreen AA</string>
     <string name="buttons_bt_status_placeholder">Bluetooth: …</string>
     <string name="buttons_teach_handlebar">Învață ghidonul meu…</string>
