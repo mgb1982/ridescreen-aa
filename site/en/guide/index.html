@@ -122,8 +122,8 @@ a { color: var(--accent); }
       <li class="step">
         <div class="txt">
           <h3>Download the phone APK</h3>
-          <p>Tap the button: the latest version downloads directly (<strong>RideScreen-AA-v2.4.1.apk</strong> or whichever is current).</p>
-          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4.1/RideScreen-AA-v2.4.1.apk" data-apk="phone">Download the APK<span class="apk-meta"></span></a>
+          <p>Tap the button: the latest version downloads directly (<strong>RideScreen-AA-v2.5.apk</strong> or whichever is current).</p>
+          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.5/RideScreen-AA-v2.5.apk" data-apk="phone">Download the APK<span class="apk-meta"></span></a>
           <p>Prefer GitHub? On the <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">latest release page</a>, under <strong>Assets</strong>, tap the APK that starts with <strong>RideScreen-AA-v</strong>.</p>
           <div class="note warn">Don't download the one marked <strong>WearOS-reloj</strong>: it's for the watch, and on a phone it says "package appears to be invalid".</div>
         </div>
@@ -150,6 +150,7 @@ a { color: var(--accent); }
           <h3>Open RideScreen and accept the permissions</h3>
           <p>The first time, Settings opens. Accept every permission it asks for, or tap <strong>All granted</strong> to check them all at once.</p>
           <p>Android requires location to join the bike's Wi‑Fi and to save your rides. The app doesn't track you.</p>
+          <p>Later it will ask once for the optional location <strong>«Allow all the time»</strong>. It's optional, but with it the ride is recorded even when the bike connects with the phone in your pocket.</p>
         </div>
         <img src="g4_permisos.png" alt="RideScreen permissions screen with the All granted button" loading="lazy">
       </li>
@@ -186,7 +187,7 @@ a { color: var(--accent); }
       <li class="step">
         <div class="txt">
           <h3>Scan the dash QR</h3>
-          <p>On the dash, switch to the <strong>screen mirroring interface</strong> (screen 3 on the 125X): the phone projection screen, which shows a QR code. In RideScreen tap <strong>Scan</strong> (at the bottom, under <strong>More</strong>) and point the camera at it.</p>
+          <p>On the dash, switch to the <strong>screen mirroring interface</strong> (screen 3 on the 125X): the phone projection screen, which shows a QR code. In RideScreen tap <strong>Connect</strong>: the first time, as no bike is saved yet, the camera opens. Point it at the code. (To add another bike later: tap the photo of your bike on <strong>Home</strong> → <strong>Garage</strong> → <strong>Scan new bike</strong>.)</p>
           <div class="note warn">The QR under <strong>Information</strong> is not the right one: scan the one on the screen mirroring interface. Leave the dash on that screen while it connects.</div>
         </div>
         <img src="g7_qr.png" alt="Phone camera pointing at the dash QR code" loading="lazy">
@@ -194,7 +195,7 @@ a { color: var(--accent); }
       <li class="step">
         <div class="txt">
           <h3>Accept the bike's Wi‑Fi</h3>
-          <p>Tap <strong>Connect</strong> in RideScreen. Android asks whether the app may connect to the bike's Wi‑Fi (it's named after your bike, e.g. ZT…). Tap <strong>Connect</strong>.</p>
+          <p>When you scan, RideScreen starts connecting (if not, tap <strong>Connect</strong>). Android asks whether the app may connect to the bike's Wi‑Fi (it's named after your bike, e.g. ZT…). Tap <strong>Connect</strong>.</p>
           <div class="note warn">Be quick: the prompt expires after a minute and a half. If you miss it, tap Connect in the app again.</div>
         </div>
         <img src="g8_wifi.png" alt="Android prompt to connect to the bike's Wi‑Fi with Connect highlighted" loading="lazy">
@@ -203,7 +204,7 @@ a { color: var(--accent); }
         <div class="txt">
           <h3>Done: Android Auto on the dash</h3>
           <p>A few seconds later Android Auto appears on the bike's screen. You can put your phone in your pocket.</p>
-          <p>Next time, just tap <strong>Connect</strong>. To have it connect by itself when you start the bike: <strong>⚙️ Settings</strong> → <strong>Connect when a Bluetooth device joins</strong> → pick the dash's Bluetooth (it starts with "ZT") and allow <strong>Display over other apps</strong>.</p>
+          <p>Next time, just tap <strong>Connect</strong>. To have it connect by itself when you start the bike: <strong>Settings</strong> → <strong>Connection</strong> → <strong>Connect when a Bluetooth device joins</strong> → pick the dash's Bluetooth (it starts with "ZT") and allow <strong>Display over other apps</strong>.</p>
           <p><strong>Tip:</strong> once connected, you can switch the dash to <strong>another interface</strong> to see the original dash. The app stays connected and keeps logging the ride, and when you go back to the screen mirroring one Android Auto is there straight away.</p>
           <p>The first time you connect, the app asks for the <strong>microphone</strong>: choose <strong>While using the app</strong> so you can use "Ok Google" and your intercom's voice button.</p>
         </div>
@@ -230,7 +231,7 @@ a { color: var(--accent); }
         <ul>
           <li>The bike's Wi‑Fi prompt appeared and wasn't accepted in time. Tap Connect again and accept straight away.</li>
           <li>If the prompt never shows up: the bike must be on and nearby, with the dash on the screen mirroring interface.</li>
-          <li>If it shows but never connects, check you scanned the QR on the screen mirroring interface and not the Information one. If in doubt, scan it again.</li>
+          <li>If it shows but never connects, check you scanned the QR on the screen mirroring interface and not the Information one. If in doubt, scan it again (<strong>Home</strong> → bike photo → <strong>Garage</strong> → <strong>Scan new bike</strong>).</li>
         </ul>
       </details>
       <details>

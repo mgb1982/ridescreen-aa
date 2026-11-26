@@ -122,8 +122,8 @@ a { color: var(--accent); }
       <li class="step">
         <div class="txt">
           <h3>ดาวน์โหลด APK สำหรับมือถือ</h3>
-          <p>แตะปุ่ม: เวอร์ชันล่าสุดจะดาวน์โหลดทันที (<strong>RideScreen-AA-v2.4.1.apk</strong> หรือเวอร์ชันปัจจุบัน)</p>
-          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4.1/RideScreen-AA-v2.4.1.apk" data-apk="phone">ดาวน์โหลด APK<span class="apk-meta"></span></a>
+          <p>แตะปุ่ม: เวอร์ชันล่าสุดจะดาวน์โหลดทันที (<strong>RideScreen-AA-v2.5.apk</strong> หรือเวอร์ชันปัจจุบัน)</p>
+          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.5/RideScreen-AA-v2.5.apk" data-apk="phone">ดาวน์โหลด APK<span class="apk-meta"></span></a>
           <p>ชอบ GitHub มากกว่า ที่<a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">หน้าเวอร์ชันล่าสุด</a> ใต้ <strong>Assets</strong> แตะ APK ที่ขึ้นต้นด้วย <strong>RideScreen-AA-v</strong></p>
           <div class="note warn">อย่าดาวน์โหลดไฟล์ที่มีคำว่า <strong>WearOS-reloj</strong> ไฟล์นั้นสำหรับนาฬิกา และบนมือถือจะขึ้นว่าแพ็กเกจไม่ถูกต้อง</div>
         </div>
@@ -150,6 +150,7 @@ a { color: var(--accent); }
           <h3>เปิด RideScreen และอนุญาตสิทธิ์</h3>
           <p>ครั้งแรกจะเปิดหน้าการตั้งค่า อนุญาตทุกสิทธิ์ที่ขอ หรือแตะ <strong>อนุญาตทั้งหมดแล้ว</strong> เพื่อตรวจทั้งหมดในครั้งเดียว</p>
           <p>Android ต้องใช้ตำแหน่งเพื่อเชื่อมต่อ Wi‑Fi ของรถและบันทึกการเดินทาง แอปไม่ได้ติดตามคุณ</p>
+          <p>ภายหลังแอปจะขอสิทธิ์ตำแหน่ง <strong>«อนุญาตตลอดเวลา»</strong> ครั้งเดียว ซึ่งไม่บังคับ แต่ถ้าเปิดไว้ การเดินทางจะถูกบันทึกแม้รถจะเชื่อมต่อขณะที่มือถืออยู่ในกระเป๋า</p>
         </div>
         <img src="g4_permisos.png" alt="หน้าจอสิทธิ์ของ RideScreen พร้อมปุ่มอนุญาตทั้งหมดแล้ว" loading="lazy">
       </li>
@@ -186,7 +187,7 @@ a { color: var(--accent); }
       <li class="step">
         <div class="txt">
           <h3>สแกน QR บนหน้าปัด</h3>
-          <p>ที่หน้าปัด เปลี่ยนไปที่<strong>หน้าจอฉายภาพมือถือ</strong> (หน้าจอ 3 ใน 125X) ที่แสดงรหัส QR ใน RideScreen แตะ <strong>สแกน</strong> (ด้านล่าง ใน <strong>เพิ่มเติม</strong>) แล้วเล็งกล้อง</p>
+          <p>ที่หน้าปัด เปลี่ยนไปที่<strong>หน้าจอฉายภาพมือถือ</strong> (หน้าจอ 3 ใน 125X) ที่แสดงรหัส QR ใน RideScreen แตะ <strong>เชื่อมต่อ</strong> ใน RideScreen: ครั้งแรกที่ยังไม่มีรถที่บันทึกไว้ กล้องจะเปิดขึ้น เล็งไปที่รหัส (หากต้องการเพิ่มรถคันอื่นภายหลัง: แตะรูปรถของคุณที่ <strong>หน้าแรก</strong> → <strong>โรงรถ</strong> → <strong>สแกนรถคันใหม่</strong>)</p>
           <div class="note warn">QR ในเมนู <strong>Information</strong> ไม่ใช่อันที่ถูกต้อง ให้สแกน QR ของหน้าจอฉายภาพ และค้างหน้าปัดไว้ที่หน้าจอนั้นระหว่างเชื่อมต่อ</div>
         </div>
         <img src="g7_qr.png" alt="กล้องมือถือเล็งไปที่รหัส QR บนหน้าปัด" loading="lazy">
@@ -194,7 +195,7 @@ a { color: var(--accent); }
       <li class="step">
         <div class="txt">
           <h3>ยอมรับ Wi‑Fi ของรถ</h3>
-          <p>แตะ <strong>เชื่อมต่อ</strong> ใน RideScreen Android จะถามว่าอนุญาตให้แอปเชื่อมต่อ Wi‑Fi ของรถไหม (ชื่อตามรถของคุณ เช่น ZT…) แตะ <strong>เชื่อมต่อ</strong></p>
+          <p>เมื่อสแกนแล้ว RideScreen จะเริ่มเชื่อมต่อ (ถ้าไม่เริ่ม ให้แตะ <strong>เชื่อมต่อ</strong>) Android จะถามว่าอนุญาตให้แอปเชื่อมต่อ Wi‑Fi ของรถไหม (ชื่อตามรถของคุณ เช่น ZT…) แตะ <strong>เชื่อมต่อ</strong></p>
           <div class="note warn">ต้องรีบ คำขอจะหมดเวลาในหนึ่งนาทีครึ่ง ถ้าพลาด ให้แตะเชื่อมต่อในแอปอีกครั้ง</div>
         </div>
         <img src="g8_wifi.png" alt="หน้าต่าง Android สำหรับเชื่อมต่อ Wi‑Fi ของรถ ไฮไลต์เชื่อมต่อ" loading="lazy">
@@ -203,7 +204,7 @@ a { color: var(--accent); }
         <div class="txt">
           <h3>เสร็จแล้ว: Android Auto บนหน้าปัด</h3>
           <p>ไม่กี่วินาทีต่อมา Android Auto จะขึ้นบนหน้าจอรถ เก็บมือถือใส่กระเป๋าได้เลย</p>
-          <p>ครั้งต่อไป แค่แตะ <strong>เชื่อมต่อ</strong> ถ้าอยากให้เชื่อมต่อเองเมื่อสตาร์ทรถ: <strong>⚙️ การตั้งค่า</strong> → <strong>เชื่อมต่อเมื่ออุปกรณ์ Bluetooth เชื่อมต่อเข้ามา</strong> → เลือก Bluetooth ของหน้าปัด (ขึ้นต้นด้วย "ZT") และอนุญาต <strong>แสดงทับบนแอปอื่นๆ</strong></p>
+          <p>ครั้งต่อไป แค่แตะ <strong>เชื่อมต่อ</strong> ถ้าอยากให้เชื่อมต่อเองเมื่อสตาร์ทรถ: <strong>การตั้งค่า</strong> → <strong>การเชื่อมต่อ</strong> → <strong>เชื่อมต่อเมื่ออุปกรณ์ Bluetooth เชื่อมต่อเข้ามา</strong> → เลือก Bluetooth ของหน้าปัด (ขึ้นต้นด้วย "ZT") และอนุญาต <strong>แสดงทับบนแอปอื่นๆ</strong></p>
           <p><strong>เคล็ดลับ:</strong> เมื่อเชื่อมต่อแล้ว คุณเปลี่ยนหน้าปัดไป<strong>หน้าจออื่น</strong>เพื่อดูหน้าปัดเดิมได้ แอปยังเชื่อมต่ออยู่และบันทึกการเดินทางต่อ และเมื่อกลับมาหน้าจอฉายภาพ Android Auto จะอยู่ตรงนั้นทันที</p>
           <p>ครั้งแรกที่เชื่อมต่อ แอปจะขอสิทธิ์<strong>ไมโครโฟน</strong>: เลือก <strong>ขณะใช้แอป</strong> เพื่อใช้ "Ok Google" และปุ่มสั่งงานด้วยเสียงของอินเตอร์คอม</p>
         </div>
@@ -230,7 +231,7 @@ a { color: var(--accent); }
         <ul>
           <li>หน้าต่าง Wi‑Fi ของรถขึ้นมาแล้วแต่ไม่ได้ยอมรับทันเวลา แตะเชื่อมต่ออีกครั้งแล้วยอมรับทันที</li>
           <li>ถ้าหน้าต่างไม่ขึ้นเลย: รถต้องเปิดอยู่และอยู่ใกล้ โดยหน้าปัดอยู่ที่หน้าจอฉายภาพมือถือ</li>
-          <li>ถ้าขึ้นแต่ไม่เชื่อมต่อ ตรวจว่าคุณสแกน QR ของหน้าจอฉายภาพ ไม่ใช่ของหน้าข้อมูล ถ้าไม่แน่ใจ สแกนใหม่</li>
+          <li>ถ้าขึ้นแต่ไม่เชื่อมต่อ ตรวจว่าคุณสแกน QR ของหน้าจอฉายภาพ ไม่ใช่ของหน้าข้อมูล ถ้าไม่แน่ใจ สแกนใหม่ (<strong>หน้าแรก</strong> → รูปรถ → <strong>โรงรถ</strong> → <strong>สแกนรถคันใหม่</strong>)</li>
         </ul>
       </details>
       <details>

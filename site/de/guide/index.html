@@ -122,8 +122,8 @@ a { color: var(--accent); }
       <li class="step">
         <div class="txt">
           <h3>Die Handy-APK herunterladen</h3>
-          <p>Tippe auf den Button: Die neueste Version wird direkt heruntergeladen (<strong>RideScreen-AA-v2.4.1.apk</strong> oder die aktuelle).</p>
-          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4.1/RideScreen-AA-v2.4.1.apk" data-apk="phone">APK herunterladen<span class="apk-meta"></span></a>
+          <p>Tippe auf den Button: Die neueste Version wird direkt heruntergeladen (<strong>RideScreen-AA-v2.5.apk</strong> oder die aktuelle).</p>
+          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.5/RideScreen-AA-v2.5.apk" data-apk="phone">APK herunterladen<span class="apk-meta"></span></a>
           <p>Lieber GitHub? Tippe auf der <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">Seite der neuesten Version</a> unter <strong>Assets</strong> auf die APK, die mit <strong>RideScreen-AA-v</strong> beginnt.</p>
           <div class="note warn">Lade nicht die mit <strong>WearOS-reloj</strong> markierte herunter: Sie ist für die Uhr, und auf dem Handy heißt es, das Paket sei ungültig.</div>
         </div>
@@ -150,6 +150,7 @@ a { color: var(--accent); }
           <h3>RideScreen öffnen und die Berechtigungen erlauben</h3>
           <p>Beim ersten Mal öffnen sich die Einstellungen. Erlaube alle Berechtigungen, die sie anfragt, oder tippe auf <strong>Alle Berechtigungen erteilt</strong>, um alle auf einmal zu prüfen.</p>
           <p>Android verlangt den Standort, um sich mit dem WLAN des Motorrads zu verbinden und deine Fahrten zu speichern. Die App verfolgt dich nicht.</p>
+          <p>Später fragt die App einmal nach dem optionalen Standort <strong>„Immer zulassen“</strong>. Das ist optional, aber damit wird die Fahrt auch aufgezeichnet, wenn sich das Motorrad verbindet, während das Handy in der Tasche steckt.</p>
         </div>
         <img src="g4_permisos.png" alt="Berechtigungsbildschirm von RideScreen mit dem Button Alle Berechtigungen erteilt" loading="lazy">
       </li>
@@ -186,7 +187,7 @@ a { color: var(--accent); }
       <li class="step">
         <div class="txt">
           <h3>Den QR-Code im Display scannen</h3>
-          <p>Wechsle im Display zur <strong>Spiegelungsansicht</strong> (Ansicht 3 bei der 125X): dem Bildschirm für die Handy-Projektion, der einen QR-Code zeigt. Tippe in RideScreen auf <strong>Scan</strong> (unten, unter <strong>Mehr</strong>) und richte die Kamera darauf.</p>
+          <p>Wechsle im Display zur <strong>Spiegelungsansicht</strong> (Ansicht 3 bei der 125X): dem Bildschirm für die Handy-Projektion, der einen QR-Code zeigt. Tippe in RideScreen auf <strong>Verbinden</strong>: Beim ersten Mal, solange noch kein Motorrad gespeichert ist, öffnet sich die Kamera. Richte sie auf den Code. (Um später ein weiteres Motorrad hinzuzufügen: tippe auf das Foto deines Motorrads unter <strong>Heim</strong> → <strong>Garage</strong> → <strong>Neues Motorrad scannen</strong>.)</p>
           <div class="note warn">Der QR unter <strong>Information</strong> ist nicht der richtige: Scanne den in der Spiegelungsansicht. Lass das Display auf diesem Bildschirm, während es sich verbindet.</div>
         </div>
         <img src="g7_qr.png" alt="Handykamera, die auf den QR-Code im Display zeigt" loading="lazy">
@@ -194,7 +195,7 @@ a { color: var(--accent); }
       <li class="step">
         <div class="txt">
           <h3>Das WLAN des Motorrads annehmen</h3>
-          <p>Tippe in RideScreen auf <strong>Verbinden</strong>. Android fragt, ob sich die App mit dem WLAN des Motorrads verbinden darf (es heißt wie dein Motorrad, z. B. ZT…). Tippe auf <strong>Verbinden</strong>.</p>
+          <p>Beim Scannen beginnt RideScreen mit dem Verbinden (falls nicht, tippe auf <strong>Verbinden</strong>). Android fragt, ob sich die App mit dem WLAN des Motorrads verbinden darf (es heißt wie dein Motorrad, z. B. ZT…). Tippe auf <strong>Verbinden</strong>.</p>
           <div class="note warn">Sei schnell: Die Abfrage läuft nach anderthalb Minuten ab. Wenn du sie verpasst, tippe in der App erneut auf Verbinden.</div>
         </div>
         <img src="g8_wifi.png" alt="Android-Abfrage zum Verbinden mit dem WLAN des Motorrads, Verbinden hervorgehoben" loading="lazy">
@@ -203,7 +204,7 @@ a { color: var(--accent); }
         <div class="txt">
           <h3>Fertig: Android Auto im Display</h3>
           <p>Ein paar Sekunden später erscheint Android Auto auf dem Bildschirm des Motorrads. Du kannst das Handy einstecken.</p>
-          <p>Nächstes Mal reicht ein Tippen auf <strong>Verbinden</strong>. Damit sie sich beim Starten des Motorrads von selbst verbindet: <strong>⚙️ Einstellungen</strong> → <strong>Verbinden, wenn sich ein Bluetooth-Gerät verbindet</strong> → wähle das Bluetooth des Displays (beginnt mit „ZT“) und erlaube <strong>Über anderen Apps einblenden</strong>.</p>
+          <p>Nächstes Mal reicht ein Tippen auf <strong>Verbinden</strong>. Damit sie sich beim Starten des Motorrads von selbst verbindet: <strong>Einstellungen</strong> → <strong>Verbindung</strong> → <strong>Verbinden, wenn sich ein Bluetooth-Gerät verbindet</strong> → wähle das Bluetooth des Displays (beginnt mit „ZT“) und erlaube <strong>Über anderen Apps einblenden</strong>.</p>
           <p><strong>Tipp:</strong> Sobald die Verbindung steht, kannst du im Display zu einer <strong>anderen Ansicht</strong> wechseln, um das Original-Display zu sehen. Die App bleibt verbunden und zeichnet die Fahrt weiter auf, und wenn du zur Spiegelungsansicht zurückkehrst, ist Android Auto sofort da.</p>
           <p>Beim ersten Verbinden fragt die App nach dem <strong>Mikrofon</strong>: Wähle <strong>Bei Nutzung der App</strong>, damit du „Ok Google“ und die Sprachtaste deines Headsets nutzen kannst.</p>
         </div>
@@ -230,7 +231,7 @@ a { color: var(--accent); }
         <ul>
           <li>Die WLAN-Abfrage des Motorrads kam und wurde nicht rechtzeitig bestätigt. Tippe erneut auf Verbinden und bestätige sofort.</li>
           <li>Wenn die Abfrage nie erscheint: Das Motorrad muss an und in der Nähe sein, mit dem Display in der Spiegelungsansicht.</li>
-          <li>Wenn sie erscheint, aber keine Verbindung zustande kommt, prüfe, ob du den QR in der Spiegelungsansicht gescannt hast und nicht den unter Information. Im Zweifel scanne ihn noch einmal.</li>
+          <li>Wenn sie erscheint, aber keine Verbindung zustande kommt, prüfe, ob du den QR in der Spiegelungsansicht gescannt hast und nicht den unter Information. Im Zweifel scanne ihn noch einmal (<strong>Heim</strong> → Foto des Motorrads → <strong>Garage</strong> → <strong>Neues Motorrad scannen</strong>).</li>
         </ul>
       </details>
       <details>

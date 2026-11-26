@@ -138,8 +138,8 @@ a { color: var(--accent); }
       <li class="step">
         <div class="txt">
           <h3>Descarga el APK del móvil</h3>
-          <p>Toca el botón: se descarga directamente la última versión (<strong>RideScreen-AA-v2.4.1.apk</strong> o la que toque).</p>
-          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4.1/RideScreen-AA-v2.4.1.apk" data-apk="phone">Descargar el APK<span class="apk-meta"></span></a>
+          <p>Toca el botón: se descarga directamente la última versión (<strong>RideScreen-AA-v2.5.apk</strong> o la que toque).</p>
+          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.5/RideScreen-AA-v2.5.apk" data-apk="phone">Descargar el APK<span class="apk-meta"></span></a>
           <p>¿Prefieres GitHub? En la <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">página de la última versión</a>, en <strong>Assets</strong>, toca el APK que empieza por <strong>RideScreen-AA-v</strong>.</p>
           <div class="note warn">No descargues el que pone <strong>WearOS-reloj</strong>: es para el reloj y en el móvil da "el paquete no es válido".</div>
         </div>
@@ -166,6 +166,7 @@ a { color: var(--accent); }
           <h3>Abre RideScreen y acepta los permisos</h3>
           <p>La primera vez se abre la Configuración. Acepta todos los permisos que pida, o toca <strong>Todos concedidos</strong> para revisarlos de una vez.</p>
           <p>La ubicación la exige Android para unirse al Wi‑Fi de la moto y para guardar tus viajes. La app no te rastrea.</p>
+          <p>Más adelante te pedirá, una sola vez, la ubicación <strong>«Permitir todo el tiempo»</strong>. Es opcional, pero con ella el viaje se graba aunque la moto conecte con el móvil en el bolsillo.</p>
         </div>
         <img src="g4_permisos.png" alt="Pantalla de permisos de RideScreen con el botón Todos concedidos" loading="lazy">
       </li>
@@ -202,7 +203,7 @@ a { color: var(--accent); }
       <li class="step">
         <div class="txt">
           <h3>Escanea el QR del cuadro</h3>
-          <p>En el cuadro, cambia a la <strong>interfaz de screen mirroring</strong> (en la 125X, la 3): la pantalla de proyección del móvil, que muestra un código QR. En RideScreen toca <strong>Escanear</strong> (abajo, en <strong>Más</strong>) y apunta la cámara.</p>
+          <p>En el cuadro, cambia a la <strong>interfaz de screen mirroring</strong> (en la 125X, la 3): la pantalla de proyección del móvil, que muestra un código QR. En RideScreen toca <strong>Conectar</strong>: la primera vez, como todavía no hay ninguna moto guardada, se abre la cámara. Apúntala al código. (Para añadir otra moto más adelante: toca la foto de tu moto en <strong>Inicio</strong> → <strong>Garaje</strong> → <strong>Escanear una moto nueva</strong>.)</p>
           <div class="note warn">El QR que aparece en <strong>Información</strong> no es el bueno: escanea el de la interfaz de screen mirroring. Deja el cuadro en esa pantalla mientras conecta.</div>
         </div>
         <img src="g7_qr.png" alt="Cámara del móvil apuntando al código QR del cuadro" loading="lazy">
@@ -210,7 +211,7 @@ a { color: var(--accent); }
       <li class="step">
         <div class="txt">
           <h3>Acepta el Wi‑Fi de la moto</h3>
-          <p>Toca <strong>Conectar</strong> en RideScreen. Android pregunta si la app puede conectarse al Wi‑Fi de la moto (se llama como tu moto, por ejemplo ZT…). Toca <strong>Conectar</strong>.</p>
+          <p>Al escanear, RideScreen empieza a conectar (si no, toca <strong>Conectar</strong>). Android pregunta si la app puede conectarse al Wi‑Fi de la moto (se llama como tu moto, por ejemplo ZT…). Toca <strong>Conectar</strong>.</p>
           <div class="note warn">Hazlo enseguida: la ventana caduca al minuto y medio. Si se te pasa, vuelve a tocar Conectar en la app.</div>
         </div>
         <img src="g8_wifi.png" alt="Ventana de Android para conectar al Wi‑Fi de la moto con Conectar resaltado" loading="lazy">
@@ -219,7 +220,7 @@ a { color: var(--accent); }
         <div class="txt">
           <h3>Listo: Android Auto en el cuadro</h3>
           <p>En unos segundos aparece Android Auto en la pantalla de la moto. Puedes guardar el móvil en el bolsillo.</p>
-          <p>La próxima vez basta con tocar <strong>Conectar</strong>. Para que se conecte sola al arrancar la moto: <strong>⚙️ Ajustes</strong> → <strong>Conectar cuando se conecte un dispositivo Bluetooth</strong> → elige el Bluetooth del cuadro (empieza por "ZT") y permite <strong>Mostrar sobre otras apps</strong>.</p>
+          <p>La próxima vez basta con tocar <strong>Conectar</strong>. Para que se conecte sola al arrancar la moto: <strong>Ajustes</strong> → <strong>Conexión</strong> → <strong>Conectar cuando se conecte un dispositivo Bluetooth</strong> → elige el Bluetooth del cuadro (empieza por "ZT") y permite <strong>Mostrar sobre otras apps</strong>.</p>
           <p><strong>Truco:</strong> una vez conectada, puedes pasar el cuadro a <strong>otra interfaz</strong> para ver el cuadro original. La app sigue conectada y registrando el viaje, y al volver a la de screen mirroring Android Auto aparece al momento.</p>
           <p>La primera vez que conectes, la app te pedirá el <strong>micrófono</strong>: elige <strong>Mientras se usa la app</strong> para poder usar «Ok Google» y el botón de voz del intercomunicador.</p>
         </div>
@@ -246,7 +247,7 @@ a { color: var(--accent); }
         <ul>
           <li>Salió la ventana del Wi‑Fi de la moto y no se aceptó a tiempo. Toca Conectar otra vez y acepta enseguida.</li>
           <li>Si la ventana no llega a salir: la moto tiene que estar encendida y cerca, y el cuadro en la interfaz de screen mirroring.</li>
-          <li>Si sale pero nunca conecta, comprueba que escaneaste el QR de la interfaz de screen mirroring y no el de Información. Si dudas, vuelve a escanearlo.</li>
+          <li>Si sale pero nunca conecta, comprueba que escaneaste el QR de la interfaz de screen mirroring y no el de Información. Si dudas, vuelve a escanearlo (<strong>Inicio</strong> → foto de la moto → <strong>Garaje</strong> → <strong>Escanear una moto nueva</strong>).</li>
         </ul>
       </details>
       <details>

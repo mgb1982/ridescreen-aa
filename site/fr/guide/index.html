@@ -122,8 +122,8 @@ a { color: var(--accent); }
       <li class="step">
         <div class="txt">
           <h3>Télécharge l’APK du téléphone</h3>
-          <p>Appuie sur le bouton : la dernière version se télécharge directement (<strong>RideScreen-AA-v2.4.1.apk</strong> ou celle du moment).</p>
-          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.4.1/RideScreen-AA-v2.4.1.apk" data-apk="phone">Télécharger l’APK<span class="apk-meta"></span></a>
+          <p>Appuie sur le bouton : la dernière version se télécharge directement (<strong>RideScreen-AA-v2.5.apk</strong> ou celle du moment).</p>
+          <a class="cta" href="https://github.com/mgb1982/ridescreen-aa/releases/download/v2.5/RideScreen-AA-v2.5.apk" data-apk="phone">Télécharger l’APK<span class="apk-meta"></span></a>
           <p>Tu préfères GitHub ? Sur la <a href="https://github.com/mgb1982/ridescreen-aa/releases/latest">page de la dernière version</a>, sous <strong>Assets</strong>, appuie sur l’APK qui commence par <strong>RideScreen-AA-v</strong>.</p>
           <div class="note warn">Ne télécharge pas celui marqué <strong>WearOS-reloj</strong> : il est pour la montre, et sur un téléphone il indique que le paquet n’est pas valide.</div>
         </div>
@@ -150,6 +150,7 @@ a { color: var(--accent); }
           <h3>Ouvre RideScreen et accepte les autorisations</h3>
           <p>La première fois, les Réglages s’ouvrent. Accepte toutes les autorisations demandées, ou appuie sur <strong>Toutes les autorisations sont accordées</strong> pour les vérifier d’un coup.</p>
           <p>Android exige la localisation pour se connecter au Wi‑Fi de la moto et enregistrer tes trajets. L’app ne te suit pas.</p>
+          <p>Plus tard, l’app te demandera une seule fois la localisation <strong>« Toujours autoriser »</strong>. C’est facultatif, mais avec elle le trajet est enregistré même quand la moto se connecte alors que le téléphone est dans ta poche.</p>
         </div>
         <img src="g4_permisos.png" alt="Écran des autorisations de RideScreen avec le bouton Toutes les autorisations sont accordées" loading="lazy">
       </li>
@@ -186,7 +187,7 @@ a { color: var(--accent); }
       <li class="step">
         <div class="txt">
           <h3>Scanne le QR du tableau de bord</h3>
-          <p>Sur le tableau de bord, passe à l’<strong>interface de recopie d’écran</strong> (l’écran 3 sur la 125X) : celle de la projection du téléphone, qui affiche un code QR. Dans RideScreen, appuie sur <strong>Scanner</strong> (en bas, dans <strong>Plus</strong>) et vise-le.</p>
+          <p>Sur le tableau de bord, passe à l’<strong>interface de recopie d’écran</strong> (l’écran 3 sur la 125X) : celle de la projection du téléphone, qui affiche un code QR. Dans RideScreen, appuie sur <strong>Connecter</strong> : la première fois, comme aucune moto n’est encore enregistrée, la caméra s’ouvre. Vise le code. (Pour ajouter une autre moto plus tard : appuie sur la photo de ta moto dans <strong>Maison</strong> → <strong>Garage</strong> → <strong>Scanner une nouvelle moto</strong>.)</p>
           <div class="note warn">Le QR de <strong>Information</strong> n’est pas le bon : scanne celui de l’interface de recopie. Laisse le tableau de bord sur cet écran pendant la connexion.</div>
         </div>
         <img src="g7_qr.png" alt="Caméra du téléphone pointée sur le code QR du tableau de bord" loading="lazy">
@@ -194,7 +195,7 @@ a { color: var(--accent); }
       <li class="step">
         <div class="txt">
           <h3>Accepte le Wi‑Fi de la moto</h3>
-          <p>Appuie sur <strong>Connecter</strong> dans RideScreen. Android demande si l’app peut se connecter au Wi‑Fi de la moto (il porte le nom de ta moto, par ex. ZT…). Appuie sur <strong>Connecter</strong>.</p>
+          <p>Dès que tu scannes, RideScreen commence à se connecter (sinon, appuie sur <strong>Connecter</strong>). Android demande si l’app peut se connecter au Wi‑Fi de la moto (il porte le nom de ta moto, par ex. ZT…). Appuie sur <strong>Connecter</strong>.</p>
           <div class="note warn">Fais vite : la demande expire au bout d’une minute et demie. Si tu la rates, appuie à nouveau sur Connecter dans l’app.</div>
         </div>
         <img src="g8_wifi.png" alt="Demande Android pour se connecter au Wi‑Fi de la moto, avec Connecter en évidence" loading="lazy">
@@ -203,7 +204,7 @@ a { color: var(--accent); }
         <div class="txt">
           <h3>C’est fait : Android Auto sur le tableau de bord</h3>
           <p>Quelques secondes plus tard, Android Auto apparaît sur l’écran de la moto. Tu peux ranger ton téléphone.</p>
-          <p>La prochaine fois, appuie juste sur <strong>Connecter</strong>. Pour qu’elle se connecte toute seule au démarrage de la moto : <strong>⚙️ Paramètres</strong> → <strong>Se connecter lorsqu’un appareil Bluetooth se connecte</strong> → choisis le Bluetooth du tableau de bord (il commence par « ZT ») et autorise la <strong>Superposition sur d'autres applis</strong>.</p>
+          <p>La prochaine fois, appuie juste sur <strong>Connecter</strong>. Pour qu’elle se connecte toute seule au démarrage de la moto : <strong>Réglages</strong> → <strong>Connexion</strong> → <strong>Se connecter lorsqu’un appareil Bluetooth se connecte</strong> → choisis le Bluetooth du tableau de bord (il commence par « ZT ») et autorise la <strong>Superposition sur d'autres applis</strong>.</p>
           <p><strong>Astuce :</strong> une fois connecté, tu peux passer le tableau de bord sur <strong>une autre interface</strong> pour voir le tableau d’origine. L’app reste connectée et continue d’enregistrer le trajet, et quand tu reviens à l’interface de recopie, Android Auto est là tout de suite.</p>
           <p>À la première connexion, l’app demande le <strong>micro</strong> : choisis <strong>Lorsque vous utilisez l'appli</strong> pour pouvoir utiliser « Ok Google » et le bouton vocal de ton intercom.</p>
         </div>
@@ -230,7 +231,7 @@ a { color: var(--accent); }
         <ul>
           <li>La demande Wi‑Fi de la moto est apparue et n’a pas été acceptée à temps. Appuie de nouveau sur Connecter et accepte tout de suite.</li>
           <li>Si la demande n’apparaît jamais : la moto doit être allumée et à proximité, avec le tableau de bord sur l’interface de recopie d’écran.</li>
-          <li>Si elle apparaît mais ne se connecte jamais, vérifie que tu as scanné le QR de l’interface de recopie et pas celui d’Information. Dans le doute, scanne-le à nouveau.</li>
+          <li>Si elle apparaît mais ne se connecte jamais, vérifie que tu as scanné le QR de l’interface de recopie et pas celui d’Information. Dans le doute, scanne-le à nouveau (<strong>Maison</strong> → photo de la moto → <strong>Garage</strong> → <strong>Scanner une nouvelle moto</strong>).</li>
         </ul>
       </details>
       <details>
