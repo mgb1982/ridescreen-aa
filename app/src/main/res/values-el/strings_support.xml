@@ -12,4 +12,6 @@
     <string name="support_tank">⛽ Ένα γεμάτο ρεζερβουάρ</string>
     <string name="support_thanks">Σε ευχαριστώ πάρα πολύ! 🙌</string>
     <string name="support_unavailable">Οι δωρεές δεν είναι διαθέσιμες αυτή τη στιγμή. Δοκίμασε ξανά αργότερα.</string>
+    <string name="settings_support">Στήριξε το RideScreen AA</string>
+    <string name="settings_support_sub">Δωρεάν, χωρίς διαφημίσεις και ανοιχτού κώδικα. Ένας καφές το βοηθά να μεγαλώνει.</string>
 </resources>

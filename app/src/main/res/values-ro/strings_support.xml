@@ -12,4 +12,6 @@
     <string name="support_tank">⛽ Un rezervor plin</string>
     <string name="support_thanks">Mulțumesc mult! 🙌</string>
     <string name="support_unavailable">Donațiile nu sunt disponibile acum. Încearcă din nou mai târziu.</string>
+    <string name="settings_support">Susține RideScreen AA</string>
+    <string name="settings_support_sub">Gratuit, fără reclame și open source. O cafea îl ajută să crească.</string>
 </resources>

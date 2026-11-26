@@ -12,4 +12,6 @@
     <string name="support_tank">⛽ Un pieno</string>
     <string name="support_thanks">Grazie mille! 🙌</string>
     <string name="support_unavailable">Le donazioni non sono disponibili in questo momento. Riprova più tardi.</string>
+    <string name="settings_support">Sostieni RideScreen AA</string>
+    <string name="settings_support_sub">Gratis, senza pubblicità e open source. Un caffè lo aiuta a crescere.</string>
 </resources>

@@ -12,4 +12,6 @@
     <string name="support_tank">⛽ Teli tank</string>
     <string name="support_thanks">Nagyon köszönöm! 🙌</string>
     <string name="support_unavailable">Az adományozás most nem érhető el. Próbáld meg később.</string>
+    <string name="settings_support">Támogasd a RideScreen AA-t</string>
+    <string name="settings_support_sub">Ingyenes, reklámmentes és nyílt forráskódú. Egy kávé segít, hogy tovább fejlődjön.</string>
 </resources>

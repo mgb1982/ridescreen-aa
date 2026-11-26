@@ -12,4 +12,6 @@
     <string name="support_tank">⛽ Een volle tank</string>
     <string name="support_thanks">Heel erg bedankt! 🙌</string>
     <string name="support_unavailable">Donaties zijn nu niet beschikbaar. Probeer het later opnieuw.</string>
+    <string name="settings_support">Steun RideScreen AA</string>
+    <string name="settings_support_sub">Gratis, zonder advertenties en open source. Een koffie helpt het verder te groeien.</string>
 </resources>
