@@ -4,6 +4,7 @@
 //   POST /v1/ping        what the app sends (AnonymousTelemetry.kt): {uuid,type,version,versionCode,
 //                        androidSdk,locale,device?,ramMb?,payload?}; type = ping | crash | error
 //   POST /tg/<secret>    Telegram webhook (bot commands, only from TELEGRAM_CHAT_ID)
+//   POST /v1/apple       App Store Server Notifications v2 (iOS purchases/refunds → one Telegram line)
 //   GET  /               health check
 //   cron                 weekly summary to Telegram + 180-day retention cleanup
 //
@@ -13,6 +14,7 @@
 
 import { handleLive, cleanupLive } from "./live.js";
 import { handleExport } from "./export.js";
+import { handleApple } from "./apple.js";
 
 const TYPES = new Set(["ping", "crash", "error"]);
 const MAX_BODY = 64 * 1024;
@@ -30,6 +32,20 @@ export default {
     try {
       if (request.method === "POST" && url.pathname === "/v1/ping") return await ingest(request, env, ctx);
       if (request.method === "POST" && url.pathname.startsWith("/tg/")) return await telegramWebhook(request, env, url);
+      if (request.method === "POST" && url.pathname === "/v1/apple") {
+        // App Store Server Notifications (iOS purchases) → Telegram.
+        return await handleApple(request, env, {
+          notify: async (html) => { if (await alertBudget(env)) await tgSend(env, html); },
+          firstTime: async (uuid) => {
+            // Apple retries until it gets a 200: remember the id for the day (the weekly cleanup drops it).
+            const day = Math.floor(Date.now() / 86_400_000);
+            const r = await env.DB.prepare(
+              "INSERT INTO rate (key, bucket, n) VALUES (?, ?, 1) ON CONFLICT(key, bucket) DO UPDATE SET n = n + 1 RETURNING n"
+            ).bind("asn:" + uuid, day).first();
+            return !r || r.n <= 1;
+          },
+        });
+      }
       if (request.method === "GET" && url.pathname === "/") return text("RideScreen AA telemetry: ok");
       if (request.method === "GET" && url.pathname === "/v1/export") return await handleExport(request, env, url);
       if (url.pathname.startsWith("/v1/live") || url.pathname.startsWith("/l/")) {
