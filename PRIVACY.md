@@ -113,8 +113,9 @@ small local queue and upload later over cellular/home Wi‑Fi. Turning the toggl
 The ingest service is a Cloudflare Worker + D1 database run by the RideScreen AA
 maintainer; its full source is in this repository under [`telemetry/`](telemetry/).
 It stores only what the app sends (the random UUID, version info, Android API
-level, UI language, the phone model and RAM, and the redacted crash/error text). It does **not** store your
-IP address, country or any request headers. Records are deleted automatically
+level, UI language, the phone model and RAM, and the redacted crash/error text), plus
+the country your connection comes from (a two-letter code such as ES or TH, as
+Cloudflare resolves it). It does **not** store your IP address, city or any request headers. Records are deleted automatically
 after 180 days without activity. New crashes and errors trigger a private
 Telegram notification to the maintainer so they can be fixed quickly; the data is
 not shared with anyone else and is used for maintenance only.

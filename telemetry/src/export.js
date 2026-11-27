@@ -30,6 +30,7 @@ export async function handleExport(request, env, url) {
     bySdk: await all("SELECT sdk, COUNT(*) AS n FROM installs WHERE last_seen >= ? GROUP BY sdk ORDER BY sdk", now - 30 * DAY),
     byStore: await all("SELECT store, COUNT(*) AS n FROM installs WHERE last_seen >= ? GROUP BY store", now - 30 * DAY),
     byLocale: await all("SELECT locale, COUNT(*) AS n FROM installs WHERE last_seen >= ? GROUP BY locale ORDER BY n DESC", now - 30 * DAY),
+    byCountry: await all("SELECT country, COUNT(*) AS n FROM installs WHERE last_seen >= ? GROUP BY country ORDER BY n DESC", now - 30 * DAY),
   };
   const fingerprints = await all(
     "SELECT f.*, (SELECT COUNT(DISTINCT uuid) FROM events e WHERE e.fp = f.id) AS phones FROM fingerprints f ORDER BY last_seen DESC",

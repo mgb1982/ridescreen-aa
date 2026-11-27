@@ -7,8 +7,9 @@
 //   GET  /               health check
 //   cron                 weekly summary to Telegram + 180-day retention cleanup
 //
-// Privacy: no IP, no country, no headers are stored — only what the app sends, which is a random
-// UUID, version info and an already-redacted crash/error text.
+// Privacy: no IP and no headers are stored — only what the app sends, which is a random UUID,
+// version info and an already-redacted crash/error text, plus the country Cloudflare derives from
+// the connection (two-letter code only).
 
 import { handleLive, cleanupLive } from "./live.js";
 import { handleExport } from "./export.js";
@@ -87,6 +88,9 @@ async function ingest(request, env, ctx) {
   // null when an older build doesn't send it: keep what we already know about this install.
   const store = ["github", "play"].includes(b.store) ? b.store : null;
   const payload = type === "ping" ? "" : clip(b.payload, MAX_PAYLOAD);
+  // Where the phone connects from (Cloudflare's lookup; "XX"/"T1" = unknown/Tor → null).
+  const cc = String(request.cf?.country || "").toUpperCase();
+  const country = /^[A-Z]{2}$/.test(cc) && cc !== "XX" && cc !== "T1" ? cc : null;
   const now = Date.now();
 
   // Per-install rate limit (a stuck loop on one phone must not flood the DB or Telegram).
@@ -99,11 +103,12 @@ async function ingest(request, env, ctx) {
   const isNew = !(await env.DB.prepare("SELECT 1 FROM installs WHERE uuid = ?").bind(uuid).first());
   const stmts = [
     env.DB.prepare(
-      `INSERT INTO installs (uuid, first_seen, last_seen, version, version_code, sdk, locale, store, device, ram_mb)
-       VALUES (?1, ?2, ?2, ?3, ?4, ?5, ?6, COALESCE(?7, 'github'), ?8, ?9)
+      `INSERT INTO installs (uuid, first_seen, last_seen, version, version_code, sdk, locale, store, device, ram_mb, country)
+       VALUES (?1, ?2, ?2, ?3, ?4, ?5, ?6, COALESCE(?7, 'github'), ?8, ?9, ?10)
        ON CONFLICT(uuid) DO UPDATE SET last_seen = ?2, version = ?3, version_code = ?4, sdk = ?5, locale = ?6,
-         store = COALESCE(?7, store), device = COALESCE(?8, device), ram_mb = COALESCE(?9, ram_mb)`
-    ).bind(uuid, now, version, versionCode, sdk, locale, store, device, ramMb),
+         store = COALESCE(?7, store), device = COALESCE(?8, device), ram_mb = COALESCE(?9, ram_mb),
+         country = COALESCE(?10, country)`
+    ).bind(uuid, now, version, versionCode, sdk, locale, store, device, ramMb, country),
   ];
 
   let fp = null;
@@ -254,6 +259,12 @@ async function summary(env, days) {
   ).bind(now - 30 * 86_400_000).all();
   if (stores.results.some((r) => r.store === "play")) {
     s += "\nOrigen (30 d): " + stores.results.map((r) => `${r.store === "play" ? "Play Store" : "GitHub"} ${r.n}`).join(" · ");
+  }
+  const countries = await env.DB.prepare(
+    "SELECT country, COUNT(*) n FROM installs WHERE last_seen >= ? AND country IS NOT NULL GROUP BY country ORDER BY n DESC LIMIT 8"
+  ).bind(since).all();
+  if (countries.results.length) {
+    s += `\nPaíses (${days} d): ` + countries.results.map((r) => `${esc(r.country)} ${r.n}`).join(" · ");
   }
   return s;
 }
